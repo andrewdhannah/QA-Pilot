@@ -1,0 +1,1271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QA Platform — Admin Dashboard</title>
+  <link rel="stylesheet" href="../css/main.css">
+
+  <style>
+    /* 
+       Page-specific styles for the Admin Dashboard.
+       Inherits base tokens from main.css.
+    */
+
+    .topbar {
+      background: var(--color-surface);
+      border-bottom: 1px solid var(--color-border);
+      padding: var(--space-4) var(--space-6);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .topbar-brand {
+      font-size: var(--text-base);
+      font-weight: var(--weight-bold);
+      color: var(--color-ink);
+    }
+
+    .topbar-admin-badge {
+      display: inline-block;
+      background: var(--color-info-light);
+      color: var(--color-info);
+      font-size: var(--text-xs);
+      font-weight: var(--weight-bold);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 2px var(--space-2);
+      border-radius: var(--radius-full);
+      margin-left: var(--space-3);
+    }
+
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: var(--space-4);
+      font-size: var(--text-sm);
+      color: var(--color-ink-muted);
+    }
+
+    .main-content {
+      max-width: 1100px; /* Expanded to accommodate Time Spent column */
+      margin: var(--space-10) auto;
+      padding: 0 var(--space-6);
+    }
+
+    .page-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: var(--space-6);
+    }
+
+    .page-title {
+      font-size: var(--text-xl);
+      font-weight: var(--weight-bold);
+      color: var(--color-ink);
+    }
+
+    .admin-nav {
+      display: flex;
+      gap: var(--space-4);
+      margin-bottom: var(--space-6);
+      border-bottom: 1px solid var(--color-border);
+      padding-bottom: var(--space-4);
+    }
+
+    .admin-nav a {
+      font-size: var(--text-sm);
+      color: var(--color-ink-muted);
+      padding-bottom: var(--space-2);
+      text-decoration: none;
+    }
+
+    .admin-nav a.active {
+      color: var(--color-primary);
+      font-weight: var(--weight-medium);
+      border-bottom: 2px solid var(--color-primary);
+    }
+
+    .admin-nav a:hover {
+      color: var(--color-primary);
+    }
+
+    .table-card {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-sm);
+      overflow: hidden;
+    }
+
+    .student-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: var(--text-sm);
+    }
+
+    .student-table thead tr {
+      background: var(--color-bg);
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .student-table th {
+      padding: var(--space-3) var(--space-4);
+      text-align: left;
+      font-size: var(--text-xs);
+      font-weight: var(--weight-bold);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--color-ink-muted);
+      white-space: nowrap;
+    }
+
+    .student-table tbody tr {
+      border-bottom: 1px solid var(--color-border);
+      transition: background var(--transition-fast);
+    }
+
+    .student-table tbody tr:last-child { border-bottom: none; }
+    .student-table tbody tr:hover { background: var(--color-bg); }
+
+    .student-table td {
+      padding: var(--space-4);
+      color: var(--color-ink);
+      vertical-align: middle;
+    }
+
+    .case-id {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--color-ink-soft);
+    }
+
+    .student-name { font-weight: var(--weight-medium); }
+    .student-email { color: var(--color-ink-muted); font-size: var(--text-xs); }
+
+    .empty-state {
+      padding: var(--space-12) var(--space-6);
+      text-align: center;
+      color: var(--color-ink-muted);
+    }
+
+    .empty-state p { margin-bottom: var(--space-4); font-size: var(--text-sm); }
+
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.45);
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
+      padding: var(--space-6);
+    }
+
+    .modal-overlay.open { display: flex; }
+
+    .modal-panel {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-lg);
+      width: 100%;
+      max-width: 480px;
+      padding: var(--space-8);
+      position: relative;
+    }
+
+    .modal-title {
+      font-size: var(--text-lg);
+      font-weight: var(--weight-bold);
+      color: var(--color-ink);
+      margin-bottom: var(--space-6);
+    }
+
+    .modal-close {
+      position: absolute;
+      top: var(--space-4);
+      right: var(--space-4);
+      background: none;
+      border: none;
+      font-size: var(--text-lg);
+      color: var(--color-ink-muted);
+      cursor: pointer;
+      padding: var(--space-1) var(--space-2);
+      border-radius: var(--radius-sm);
+      line-height: 1;
+    }
+
+    .modal-close:hover { background: var(--color-bg); color: var(--color-ink); }
+
+    .modal-footer {
+      display: flex;
+      justify-content: flex-end;
+      gap: var(--space-3);
+      margin-top: var(--space-6);
+      padding-top: var(--space-5);
+      border-top: 1px solid var(--color-border);
+    }
+
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+
+    /* ── ASSIGN TAB ── */
+    .path-tag { display: inline-block; background: var(--color-bg); padding: 2px 6px; border-radius: var(--radius-sm); font-size: var(--text-xs); margin-right: 4px; border: 1px solid var(--color-border); }
+    .override-badge { font-size: var(--text-xs); color: var(--color-warning); font-weight: var(--weight-bold); }
+    .checkbox-item { display: flex; align-items: center; gap: var(--space-3); cursor: pointer; font-size: var(--text-base); padding: var(--space-3) 0; }
+    .checkbox-item input { width: 18px; height: 18px; }
+    .lesson-dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 8px; flex-shrink: 0; }
+    .dot-1 { background: var(--color-primary); }
+    .dot-2 { background: var(--color-info); }
+    .dot-3 { background: var(--color-warning); }
+    .dot-4 { background: var(--color-success); }
+    .dot-cap { background: var(--color-ink); }
+
+    /* ── BUG LAB ── */
+    .warning-card { background: #fffbeb; border: 1px solid #fbbf24; border-radius: var(--radius-md); padding: var(--space-6); color: #92400e; margin-bottom: var(--space-8); }
+    .bug-list { display: flex; flex-direction: column; gap: var(--space-3); }
+    .bug-row {
+      display: flex; align-items: center; gap: var(--space-6); padding: var(--space-5);
+      background: var(--color-surface); border: 1px solid var(--color-border);
+      border-radius: var(--radius-md); cursor: pointer; transition: background 0.2s;
+    }
+    .bug-row:hover { background: var(--color-bg); }
+    .bug-info { flex: 1; }
+    .bug-id { font-family: var(--font-mono); font-weight: bold; color: var(--color-error); margin-right: 8px; }
+    .bug-desc { font-size: var(--text-sm); color: var(--color-ink-soft); }
+    .checkbox-custom { width: 20px; height: 20px; accent-color: var(--color-primary); cursor: pointer; }
+
+    /* ── EXPANDABLE STUDENT ROWS ── */
+    .student-row { cursor: pointer; }
+    .student-row td:first-child { position: relative; }
+    .expand-icon {
+      display: inline-block;
+      width: 16px;
+      text-align: center;
+      margin-right: var(--space-2);
+      font-size: var(--text-xs);
+      color: var(--color-ink-muted);
+      transition: transform var(--transition-fast);
+    }
+    .expand-icon.open { transform: rotate(90deg); }
+
+    .student-detail-row { display: none; }
+    .student-detail-row.open { display: table-row; }
+
+    .student-detail-cell {
+      padding: var(--space-4) var(--space-6) var(--space-6) var(--space-10);
+      background: var(--color-bg);
+    }
+
+    .detail-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-6);
+    }
+
+    @media (max-width: 640px) {
+      .detail-grid { grid-template-columns: 1fr; }
+    }
+
+    .detail-card {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      padding: var(--space-4);
+    }
+
+    .detail-card-title {
+      font-size: var(--text-xs);
+      font-weight: var(--weight-bold);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--color-ink-muted);
+      margin-bottom: var(--space-3);
+    }
+
+    .detail-lesson {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: var(--space-2) 0;
+      border-bottom: 1px solid var(--color-border);
+      font-size: var(--text-sm);
+    }
+
+    .detail-lesson:last-child { border-bottom: none; }
+
+    .detail-lesson-name { color: var(--color-ink); font-weight: var(--weight-medium); }
+
+    .detail-badge {
+      display: inline-block;
+      padding: 1px var(--space-2);
+      font-size: 10px;
+      font-weight: var(--weight-bold);
+      letter-spacing: 0.04em;
+      border-radius: var(--radius-full);
+    }
+
+    .detail-badge.pass { background: var(--color-success-light); color: var(--color-success); }
+    .detail-badge.fail { background: var(--color-error-light); color: var(--color-error); }
+    .detail-badge.pending { background: var(--color-bg); color: var(--color-ink-muted); border: 1px solid var(--color-border); }
+
+    .detail-actions { margin-top: var(--space-4); }
+  </style>
+</head>
+<body>
+
+  <nav class="topbar">
+    <div class="topbar-left">
+      <span class="topbar-brand">QA Onboarding Training</span>
+      <span class="topbar-admin-badge">Admin</span>
+    </div>
+    <div class="topbar-right">
+      <button class="btn btn-ghost" onclick="handleAdminLogout()">Sign out</button>
+    </div>
+  </nav>
+
+  <main class="main-content">
+
+    <div class="page-header">
+      <h1 class="page-title" id="page-title">Students</h1>
+      <button class="btn btn-primary" id="page-action-btn" onclick="openAddStudentModal()">
+        + Add Student
+      </button>
+    </div>
+
+    <nav class="admin-nav">
+      <a href="#" class="active" data-tab="students">Students</a>
+      <a href="#" data-tab="settings">Settings</a>
+      <a href="#" data-tab="assign">Assign Lessons</a>
+      <a href="#" data-tab="editor">Content Editor</a>
+      <a href="#" data-tab="bugs">Bug Lab</a>
+    </nav>
+
+    <!-- ── STUDENTS TAB ── -->
+    <div id="tab-students" class="tab-content active">
+      <div class="table-card">
+        <table class="student-table" aria-label="Student list">
+          <thead>
+            <tr>
+              <th>Case ID</th>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Role</th>
+              <th>Date Created</th>
+              <th>Status</th>
+              <th>Time Spent</th>
+              <th>Certificate</th>
+            </tr>
+          </thead>
+          <tbody id="student-table-body">
+            <tr id="empty-row">
+              <td colspan="8" class="empty-state">
+                <p>No students yet.</p>
+                <button class="btn btn-primary" onclick="openAddStudentModal()">
+                  Add the first student
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ── SETTINGS TAB ── -->
+    <div id="tab-settings" class="tab-content">
+      <div class="card" style="max-width:480px;">
+        <h2 class="card-title" style="margin-bottom:var(--space-6);">Change Admin Password</h2>
+        <form id="admin-password-form" novalidate>
+          <div class="form-group">
+            <label class="form-label" for="admin-current-password">Current password</label>
+            <input type="password" id="admin-current-password" class="form-control" autocomplete="current-password">
+            <span class="field-error" id="admin-current-password-error"></span>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="admin-new-password">New password</label>
+            <input type="password" id="admin-new-password" class="form-control" autocomplete="new-password">
+            <span class="field-error" id="admin-new-password-error"></span>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="admin-confirm-password">Confirm new password</label>
+            <input type="password" id="admin-confirm-password" class="form-control" autocomplete="new-password">
+            <span class="field-error" id="admin-confirm-password-error"></span>
+          </div>
+          <button type="submit" class="btn btn-primary" id="save-admin-password-btn">Update Password</button>
+        </form>
+      </div>
+
+      <div class="card" style="max-width:480px;margin-top:var(--space-6);">
+        <h2 class="card-title" style="margin-bottom:var(--space-6);">Lesson Settings</h2>
+        <div class="form-group">
+          <label class="form-label" for="page-wait-time">Page wait time (seconds)</label>
+          <input type="number" id="page-wait-time" class="form-control" min="0" max="300" value="15">
+          <span class="field-error" id="page-wait-time-error"></span>
+          <p class="text-xs text-muted" style="margin-top:var(--space-1);">How long students must wait before clicking "Next" on each lesson chapter. Set to 0 to disable.</p>
+        </div>
+        <button class="btn btn-primary" id="save-page-wait-btn" onclick="savePageWaitTime()">Save</button>
+      </div>
+    </div>
+
+    <!-- ── ASSIGN LESSONS TAB ── -->
+    <div id="tab-assign" class="tab-content">
+      <div class="table-card">
+        <table class="student-table" aria-label="Student assignments">
+          <thead>
+            <tr><th>Student</th><th>Case ID</th><th>Current Path</th><th>Override</th><th>Action</th></tr>
+          </thead>
+          <tbody id="assign-list-body"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ── CONTENT EDITOR TAB ── -->
+    <div id="tab-editor" class="tab-content">
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title">Certificate Settings</h2>
+          <p style="font-size:var(--text-sm);color:var(--color-ink-muted);margin-top:var(--space-2);">These values appear on the completion certificate and in the email template.</p>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="issuer-name">Issuer Name</label>
+          <input type="text" id="issuer-name" class="form-control" placeholder="e.g. Agile Testing Team">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="email-template">Congratulations Email Template</label>
+          <textarea id="email-template" class="form-control" rows="8" style="font-family:var(--font-mono);font-size:var(--text-sm);"></textarea>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title">Role Names</h2>
+          <p style="font-size:var(--text-sm);color:var(--color-ink-muted);margin-top:var(--space-2);">The display names for the two roles.</p>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-5);">
+          <div class="form-group">
+            <label class="form-label" for="role-senior">Senior role name</label>
+            <input type="text" id="role-senior" class="form-control">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="role-junior">Junior role name</label>
+            <input type="text" id="role-junior" class="form-control">
+          </div>
+        </div>
+      </div>
+      <div style="display:flex;gap:var(--space-4);margin-top:var(--space-4);">
+        <button class="btn btn-primary" onclick="editorSave()">Save Changes</button>
+        <button class="btn btn-ghost" onclick="editorReset()">Reset to Defaults</button>
+      </div>
+    </div>
+
+    <!-- ── BUG LAB TAB ── -->
+    <div id="tab-bugs" class="tab-content">
+      <div class="warning-card">
+        <strong>Warning:</strong> Active bugs are visible to all students. Deactivate when not running a training session.
+      </div>
+      <div class="bug-list" id="bug-list"></div>
+      <div style="margin-top:var(--space-6);">
+        <button class="btn btn-primary" onclick="bugsSave()">Save Bug Settings</button>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ADD STUDENT MODAL -->
+  <div class="modal-overlay" id="add-student-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modal-panel">
+      <button class="modal-close" onclick="closeAddStudentModal()" aria-label="Close modal">✕</button>
+      <h2 class="modal-title" id="modal-title">Add New Student</h2>
+      <form id="add-student-form" novalidate>
+        <div class="form-group">
+          <label class="form-label" for="student-name">Full name <span class="required">*</span></label>
+          <input type="text" id="student-name" class="form-control" placeholder="e.g. Jane Smith" autocomplete="off">
+          <span class="field-error" id="name-error"></span>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="student-email">Email address <span class="required">*</span></label>
+          <input type="email" id="student-email" class="form-control" placeholder="jane.smith@example.com" autocomplete="off">
+          <span class="field-error" id="email-error"></span>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="student-password">Password <span class="required">*</span></label>
+          <input type="password" id="student-password" class="form-control" placeholder="Set a temporary password" autocomplete="new-password">
+          <span class="field-error" id="password-error"></span>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="student-role">Role <span class="required">*</span></label>
+          <select id="student-role" class="form-control">
+            <option value="">— Select a role —</option>
+            <option value="junior">Junior Investigator</option>
+            <option value="senior">Senior Investigator</option>
+          </select>
+          <span class="field-error" id="role-error"></span>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-ghost" onclick="closeAddStudentModal()">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="save-student-btn">Create student account</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- RESET STUDENT PASSWORD MODAL -->
+  <div class="modal-overlay" id="reset-student-password-modal" role="dialog" aria-modal="true">
+    <div class="modal-panel">
+      <button class="modal-close" onclick="closeResetStudentPasswordModal()" aria-label="Close modal">✕</button>
+      <h2 class="modal-title">Reset Student Password</h2>
+      <p class="text-sm text-muted" style="margin-bottom:var(--space-4);" id="reset-password-student-name"></p>
+      <form id="reset-student-password-form" novalidate>
+        <div class="form-group">
+          <label class="form-label" for="reset-student-new-password">New password <span class="required">*</span></label>
+          <input type="password" id="reset-student-new-password" class="form-control" placeholder="Enter new password" autocomplete="new-password">
+          <span class="field-error" id="reset-student-new-password-error"></span>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="reset-student-confirm-password">Confirm new password <span class="required">*</span></label>
+          <input type="password" id="reset-student-confirm-password" class="form-control" placeholder="Confirm new password" autocomplete="new-password">
+          <span class="field-error" id="reset-student-confirm-password-error"></span>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-ghost" onclick="closeResetStudentPasswordModal()">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="reset-student-password-btn">Reset Password</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ASSIGNMENT PANEL -->
+  <div id="assignment-panel" style="display:none;position:fixed;top:0;right:0;bottom:0;left:0;background:rgba(0,0,0,0.5);z-index:100;align-items:center;justify-content:center;">
+    <div style="background:var(--color-surface);width:500px;border-radius:var(--radius-lg);box-shadow:var(--shadow-lg);padding:var(--space-8);">
+      <h2 class="text-lg font-bold" style="margin-bottom:var(--space-2);">Assign Lessons: <span id="panel-student-name"></span></h2>
+      <p class="text-sm text-muted" style="margin-bottom:var(--space-6);">Select the lessons this student should complete.</p>
+      <div id="lesson-checkboxes" style="display:flex;flex-direction:column;gap:var(--space-4);margin-bottom:var(--space-6);"></div>
+      <div style="display:flex;justify-content:flex-end;gap:var(--space-4);">
+        <button class="btn btn-ghost" onclick="closeAssignPanel()">Cancel</button>
+        <button class="btn btn-secondary" id="btn-reset-path">Reset to Survey</button>
+        <button class="btn btn-primary" id="btn-save-assignment">Save Assignment</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script src="../data/content.js"></script>
+  <script src="../data/quiz-questions.js"></script>
+  <script src="../js/db.js"></script>
+  <script src="../js/app.js"></script>
+
+  <script>
+    // ── SECTION 1: INITIALISATION ──────────────────────────────────────────────────
+
+    var _cachedStudents = [];
+    var _cachedProgress = [];
+    var _resetTargetCaseId = null;
+    var _activeAssignStudent = null;
+
+    var ALL_LESSONS = ['lesson-1', 'lesson-2', 'lesson-3', 'lesson-4', 'capstone'];
+    var LESSON_META = {
+      'lesson-1': { label: 'Lesson 1 — Testing 101',         dotClass: 'dot-1' },
+      'lesson-2': { label: 'Lesson 2 — Acceptance Criteria', dotClass: 'dot-2' },
+      'lesson-3': { label: 'Lesson 3 — Dynamics 365 CRM',    dotClass: 'dot-3' },
+      'lesson-4': { label: 'Lesson 4 — Azure DevOps',        dotClass: 'dot-4' },
+      'capstone': { label: 'Capstone Assessment',             dotClass: 'dot-cap' },
+    };
+    var TAG_COLORS = {
+      'lesson-1': 'var(--color-primary)',
+      'lesson-2': 'var(--color-info)',
+      'lesson-3': 'var(--color-warning)',
+      'lesson-4': 'var(--color-success)',
+      'capstone': 'var(--color-ink)',
+    };
+
+    var BUG_DEFINITIONS = [
+      { id: 'BUG-01', desc: 'Junior Investigator can see the Outcome/Resolution field (rendered when should be hidden)' },
+      { id: 'BUG-02', desc: 'Junior Investigator can edit the Outcome/Resolution field (visible AND editable)' },
+      { id: 'BUG-03', desc: 'Date Opened accepts future dates without validation error' },
+      { id: 'BUG-04', desc: 'Escalation Reason dropdown does not appear when Escalated is checked' },
+      { id: 'BUG-05', desc: 'Case Title allows blank save — required validation not firing' },
+      { id: 'BUG-06', desc: 'Status can be set to Resolved without Outcome populated' },
+      { id: 'BUG-07', desc: 'Last Updated timestamp does not refresh after save' },
+      { id: 'BUG-08', desc: 'Junior can set Status to Closed (role-based restriction not enforced)' },
+    ];
+
+    initDB()
+      .then(function() {
+        var isAdmin = requireAdmin();
+        if (!isAdmin) return;
+        return loadStudentList();
+      })
+      .catch(function(error) {
+        console.error('Admin dashboard: failed to initialise.', error);
+      });
+
+    async function loadStudentList() {
+      try {
+        const [students, allProgress] = await Promise.all([
+          getAllStudents(),
+          getAllProgressRecords()
+        ]);
+        _cachedStudents = students;
+        _cachedProgress = allProgress;
+        renderStudentTable(students, allProgress);
+      } catch (error) {
+        console.error('Error loading data for table:', error);
+        showToast('Error loading student records.', 'error');
+      }
+    }
+
+    // ── SECTION 2: TAB SWITCHING ──────────────────────────────────────────────────
+
+    document.querySelectorAll('.admin-nav a[data-tab]').forEach(function(link) {
+      link.addEventListener('click', function(event) {
+        event.preventDefault();
+        document.querySelectorAll('.admin-nav a').forEach(function(a) { a.classList.remove('active'); });
+        link.classList.add('active');
+
+        var tab = link.getAttribute('data-tab');
+        document.querySelectorAll('.tab-content').forEach(function(tc) { tc.classList.remove('active'); });
+        var tabEl = document.getElementById('tab-' + tab);
+        if (tabEl) tabEl.classList.add('active');
+
+        var title = document.getElementById('page-title');
+        var actionBtn = document.getElementById('page-action-btn');
+        switch (tab) {
+          case 'students':
+            title.textContent = 'Students';
+            actionBtn.style.display = '';
+            actionBtn.innerHTML = '+ Add Student';
+            actionBtn.onclick = openAddStudentModal;
+            break;
+          case 'settings':
+            title.textContent = 'Settings';
+            actionBtn.style.display = 'none';
+            loadPageWaitTime();
+            break;
+          case 'assign':
+            title.textContent = 'Assign Lessons';
+            actionBtn.style.display = 'none';
+            loadAssignList();
+            break;
+          case 'editor':
+            title.textContent = 'Content Editor';
+            actionBtn.style.display = 'none';
+            loadEditorFields();
+            break;
+          case 'bugs':
+            title.textContent = 'Bug Lab';
+            actionBtn.style.display = 'none';
+            loadBugs();
+            break;
+        }
+      });
+    });
+
+    // ── SECTION 3: STUDENTS TAB ──────────────────────────────────────────────────
+
+    function renderStudentTable(students, allProgress) {
+      var tbody = document.getElementById('student-table-body');
+      tbody.innerHTML = '';
+
+      if (students.length === 0) {
+        var emptyRow = document.createElement('tr');
+        emptyRow.innerHTML = '<td colspan="8" class="empty-state"><p>No students yet.</p><button class="btn btn-primary" onclick="openAddStudentModal()">Add the first student</button></td>';
+        tbody.appendChild(emptyRow);
+        return;
+      }
+
+      students.sort(function(a, b) { return a.caseId.localeCompare(b.caseId); });
+
+      var content = loadContent();
+      var lessonMeta = {};
+      content.courseMetadata.lessons.forEach(function(lesson) { lessonMeta[lesson.id] = lesson; });
+
+      students.forEach(function(student) {
+        var row = document.createElement('tr');
+        row.className = 'student-row';
+
+        var roleName = content.roleNames[student.role] || student.role;
+        var roleBadge = student.role === 'senior'
+          ? '<span class="badge badge-info">' + roleName + '</span>'
+          : '<span class="badge badge-neutral">' + roleName + '</span>';
+
+        var statusBadge = student.active
+          ? '<span class="badge badge-success">Active</span>'
+          : '<span class="badge badge-neutral">Inactive</span>';
+
+        var prog = allProgress.find(function(p) { return p.caseId === student.caseId; });
+
+        var certStatus = '<span class="text-muted">Not Started</span>';
+        if (prog) {
+          if (prog.certificateEarned) {
+            certStatus = '<span class="badge badge-success">✓ Earned — ' + formatDate(prog.certificateDate) + '</span>';
+          } else {
+            certStatus = '<span class="badge badge-neutral">In Progress</span>';
+          }
+        }
+
+        var timeSpentValue = formatTimeSpent(prog ? prog.timeSpent : undefined);
+
+        row.innerHTML =
+          '<td><span class="expand-icon">&#9654;</span><span class="case-id">' + student.caseId + '</span></td>' +
+          '<td><div class="student-name">' + escapeHtml(student.name) + '</div></td>' +
+          '<td><span class="student-email">' + escapeHtml(student.email) + '</span></td>' +
+          '<td>' + roleBadge + '</td>' +
+          '<td>' + formatDate(student.dateCreated) + '</td>' +
+          '<td>' + statusBadge + '</td>' +
+          '<td>' + timeSpentValue + '</td>' +
+          '<td>' + certStatus + '</td>';
+
+        tbody.appendChild(row);
+
+        var detailRow = document.createElement('tr');
+        detailRow.className = 'student-detail-row';
+        detailRow.setAttribute('data-case-id', student.caseId);
+        var detailTd = document.createElement('td');
+        detailTd.colSpan = 8;
+        detailTd.className = 'student-detail-cell';
+        detailTd.innerHTML = buildDetailContent(student, prog, lessonMeta);
+        detailRow.appendChild(detailTd);
+        tbody.appendChild(detailRow);
+
+        row.addEventListener('click', function() {
+          detailRow.classList.toggle('open');
+          row.querySelector('.expand-icon').classList.toggle('open');
+        });
+      });
+    }
+
+    function buildDetailContent(student, prog, lessonMeta) {
+      var lessons = [
+        { id: 'lesson-1', title: 'Testing 101' },
+        { id: 'lesson-2', title: 'Acceptance Criteria' },
+        { id: 'lesson-3', title: 'Dynamics 365 CRM' },
+        { id: 'lesson-4', title: 'Azure DevOps' },
+        { id: 'capstone', title: 'Capstone Assessment' }
+      ];
+
+      var lessonsComplete = (prog && prog.lessonsComplete) || [];
+      var quizResults = (prog && prog.quizResults) || {};
+      var timeSpent = (prog && prog.timeSpent) || {};
+
+      var lessonRows = '';
+      lessons.forEach(function(lesson) {
+        var isComplete = lessonsComplete.indexOf(lesson.id) !== -1;
+        var qr = quizResults[lesson.id];
+        var ts = timeSpent[lesson.id] || 0;
+        var tsDisplay = ts > 0 ? Math.round(ts / 60) + ' min' : '—';
+
+        var statusLabel, statusClass;
+        if (isComplete) {
+          statusLabel = 'Complete';
+          statusClass = 'pass';
+        } else if (qr) {
+          statusLabel = 'Attempted';
+          statusClass = 'fail';
+        } else {
+          statusLabel = 'Not Started';
+          statusClass = 'pending';
+        }
+
+        var scoreDisplay = '—';
+        if (qr) {
+          scoreDisplay = qr.score + '/' + qr.maxScore + ' (' + qr.percentage + '%)';
+        }
+
+        lessonRows +=
+          '<div class="detail-lesson">' +
+            '<div><span class="detail-lesson-name">' + escapeHtml(lesson.title) + '</span></div>' +
+            '<div style="display:flex;align-items:center;gap:var(--space-3);">' +
+              '<span class="text-xs text-muted">' + tsDisplay + '</span>' +
+              '<span class="detail-badge ' + statusClass + '">' + statusLabel + '</span>' +
+              '<span class="text-xs text-muted">' + scoreDisplay + '</span>' +
+            '</div>' +
+          '</div>';
+      });
+
+      return '<div class="detail-grid">' +
+        '<div class="detail-card">' +
+          '<div class="detail-card-title">Course Progress</div>' +
+          lessonRows +
+        '</div>' +
+        '<div class="detail-card">' +
+          '<div class="detail-card-title">Account</div>' +
+          '<div class="detail-lesson"><span class="detail-lesson-name">Email</span><span class="text-xs text-muted">' + escapeHtml(student.email) + '</span></div>' +
+          '<div class="detail-lesson"><span class="detail-lesson-name">Role</span><span class="text-xs">' + escapeHtml(lessonMeta[student.role] || student.role) + '</span></div>' +
+          '<div class="detail-lesson"><span class="detail-lesson-name">Created</span><span class="text-xs text-muted">' + formatDate(student.dateCreated) + '</span></div>' +
+          '<div class="detail-lesson"><span class="detail-lesson-name">Status</span>' + (student.active ? '<span class="badge badge-success" style="font-size:10px;">Active</span>' : '<span class="badge badge-neutral" style="font-size:10px;">Inactive</span>') + '</div>' +
+          '<div class="detail-actions" style="display:flex;gap:var(--space-2);">' +
+            '<button class="btn btn-ghost" style="font-size:var(--text-sm);padding:var(--space-1) var(--space-3);" onclick="openResetStudentPassword(\'' + student.caseId + '\')">Reset Password</button>' +
+            '<button class="btn btn-ghost" style="font-size:var(--text-sm);padding:var(--space-1) var(--space-3);color:var(--color-warning);" onclick="resetStudentProgress(\'' + student.caseId + '\')">Reset Progress</button>' +
+          '</div>' +
+        '</div>' +
+      '</div>';
+    }
+
+    function formatTimeSpent(timeSpent) {
+      if (!timeSpent) return '—';
+      var totalSeconds = 0;
+      for (var key in timeSpent) {
+        if (timeSpent.hasOwnProperty(key)) {
+          totalSeconds += (timeSpent[key] || 0);
+        }
+      }
+      if (totalSeconds === 0) return '—';
+      var minutes = Math.round(totalSeconds / 60);
+      return minutes + ' min';
+    }
+
+    // ── SECTION 4: SETTINGS TAB — ADMIN PASSWORD ─────────────────────────────────
+
+    document.getElementById('admin-password-form').addEventListener('submit', function(event) {
+      event.preventDefault();
+
+      var current = document.getElementById('admin-current-password').value;
+      var newPass = document.getElementById('admin-new-password').value;
+      var confirm = document.getElementById('admin-confirm-password').value;
+
+      clearFieldError(document.getElementById('admin-current-password'), document.getElementById('admin-current-password-error'));
+      clearFieldError(document.getElementById('admin-new-password'), document.getElementById('admin-new-password-error'));
+      clearFieldError(document.getElementById('admin-confirm-password'), document.getElementById('admin-confirm-password-error'));
+
+      var valid = true;
+      if (!current) { showFieldError(document.getElementById('admin-current-password'), document.getElementById('admin-current-password-error'), 'Enter your current password.'); valid = false; }
+      if (!newPass) { showFieldError(document.getElementById('admin-new-password'), document.getElementById('admin-new-password-error'), 'Enter a new password.'); valid = false; }
+      else if (newPass.length < 6) { showFieldError(document.getElementById('admin-new-password'), document.getElementById('admin-new-password-error'), 'Password must be at least 6 characters.'); valid = false; }
+      if (newPass !== confirm) { showFieldError(document.getElementById('admin-confirm-password'), document.getElementById('admin-confirm-password-error'), 'Passwords do not match.'); valid = false; }
+      if (!valid) return;
+
+      var btn = document.getElementById('save-admin-password-btn');
+      btn.disabled = true;
+      btn.textContent = 'Updating…';
+
+      getAdminPassword().then(function(storedPassword) {
+        var correctPassword = storedPassword || 'QAAdmin2026';
+        if (current !== correctPassword) {
+          showFieldError(document.getElementById('admin-current-password'), document.getElementById('admin-current-password-error'), 'Current password is incorrect.');
+          btn.disabled = false;
+          btn.textContent = 'Update Password';
+          return;
+        }
+        return setAdminPassword(newPass);
+      }).then(function() {
+        if (!btn.disabled) return;
+        document.getElementById('admin-current-password').value = '';
+        document.getElementById('admin-new-password').value = '';
+        document.getElementById('admin-confirm-password').value = '';
+        showToast('Admin password updated successfully.', 'success');
+        btn.disabled = false;
+        btn.textContent = 'Update Password';
+      }).catch(function(error) {
+        console.error('Failed to update admin password:', error);
+        showToast('Error updating password.', 'error');
+        btn.disabled = false;
+        btn.textContent = 'Update Password';
+      });
+    });
+
+    // ── SECTION 5: SETTINGS — LOAD PAGE WAIT TIME ─────────────────────────────────
+    // Loaded when the settings tab is activated (via tab switch in section 2).
+    async function loadPageWaitTime() {
+      var val = await getSetting('pageWaitTime');
+      document.getElementById('page-wait-time').value = val !== undefined ? val : 15;
+    }
+
+    function savePageWaitTime() {
+      var val = parseInt(document.getElementById('page-wait-time').value, 10);
+      if (isNaN(val) || val < 0) {
+        showFieldError(document.getElementById('page-wait-time'), document.getElementById('page-wait-time-error'), 'Enter a valid number (0 or more).');
+        return;
+      }
+      clearFieldError(document.getElementById('page-wait-time'), document.getElementById('page-wait-time-error'));
+      saveSetting('pageWaitTime', val).then(function() {
+        showToast('Page wait time saved.', 'success');
+      }).catch(function(error) {
+        console.error('Failed to save page wait time:', error);
+        showToast('Error saving setting.', 'error');
+      });
+    }
+
+    // ── SECTION 6: ASSIGN LESSONS TAB ────────────────────────────────────────────
+
+    async function loadAssignList() {
+      var students = await getAllStudents();
+      var body = document.getElementById('assign-list-body');
+      body.innerHTML = '';
+
+      for (var i = 0; i < students.length; i++) {
+        var student = students[i];
+        var assignment = await getAssignment(student.caseId);
+        var path = (assignment && assignment.assignedLessons) ? assignment.assignedLessons : ['None assigned'];
+
+        var pathHtml = path.map(function(id) {
+          var color = TAG_COLORS[id] || 'var(--color-ink-muted)';
+          var label = LESSON_META[id] ? LESSON_META[id].label : id;
+          return '<span class="path-tag" style="border-color:' + color + '; color:' + color + ';">' + label + '</span>';
+        }).join('');
+
+        var row = document.createElement('tr');
+        row.innerHTML =
+          '<td>' + escapeHtml(student.name) + '</td>' +
+          '<td class="text-sm" style="font-family:var(--font-mono);">' + student.caseId + '</td>' +
+          '<td>' + pathHtml + '</td>' +
+          '<td>' + (assignment && assignment.adminOverride ? '<span class="override-badge">YES</span>' : 'No') + '</td>' +
+          '<td><button class="btn btn-secondary" style="font-size:var(--text-sm);" onclick="openAssignPanel(\'' + student.caseId + '\')">Edit</button></td>';
+        body.appendChild(row);
+      }
+    }
+
+    async function openAssignPanel(caseId) {
+      _activeAssignStudent = await getStudent(caseId);
+      var assignment = await getAssignment(caseId);
+      document.getElementById('panel-student-name').textContent = _activeAssignStudent.name;
+
+      var container = document.getElementById('lesson-checkboxes');
+      container.innerHTML = '';
+
+      ALL_LESSONS.forEach(function(id) {
+        var isChecked = assignment && assignment.assignedLessons && assignment.assignedLessons.indexOf(id) !== -1;
+        var meta = LESSON_META[id] || { label: id, dotClass: '' };
+        var label = document.createElement('label');
+        label.className = 'checkbox-item';
+        label.innerHTML =
+          '<input type="checkbox" value="' + id + '" ' + (isChecked ? 'checked' : '') + '>' +
+          '<span class="lesson-dot ' + meta.dotClass + '"></span>' +
+          '<span>' + meta.label + '</span>';
+        container.appendChild(label);
+      });
+
+      document.getElementById('assignment-panel').style.display = 'flex';
+    }
+
+    function closeAssignPanel() {
+      document.getElementById('assignment-panel').style.display = 'none';
+      _activeAssignStudent = null;
+    }
+
+    document.getElementById('btn-save-assignment').addEventListener('click', async function() {
+      var checkboxes = document.querySelectorAll('#lesson-checkboxes input:checked');
+      var selectedLessons = Array.from(checkboxes).map(function(cb) { return cb.value; });
+
+      if (selectedLessons.length === 0) {
+        showToast('Select at least one lesson.', 'error');
+        return;
+      }
+
+      await saveAssignment({
+        caseId: _activeAssignStudent.caseId,
+        assignedLessons: selectedLessons,
+        adminOverride: true,
+        assignedBy: 'admin',
+        assignedDate: new Date().toISOString().split('T')[0],
+        notes: 'Manually assigned by admin.'
+      });
+      showToast('Assignment saved.', 'success');
+      closeAssignPanel();
+      loadAssignList();
+    });
+
+    document.getElementById('btn-reset-path').addEventListener('click', async function() {
+      var progress = await getProgress(_activeAssignStudent.caseId);
+      if (!progress || !progress.placementSurvey) {
+        showToast('No survey data found.', 'error');
+        return;
+      }
+
+      await saveAssignment({
+        caseId: _activeAssignStudent.caseId,
+        assignedLessons: progress.placementSurvey.recommendedPath,
+        adminOverride: false,
+        assignedBy: 'survey',
+        assignedDate: new Date().toISOString().split('T')[0],
+        notes: 'Reset to survey recommendation.'
+      });
+      showToast('Reset to survey path.', 'success');
+      closeAssignPanel();
+      loadAssignList();
+    });
+
+    // ── SECTION 7: CONTENT EDITOR TAB ────────────────────────────────────────────
+
+    function loadEditorFields() {
+      var content = loadContent();
+      document.getElementById('issuer-name').value = content.certificate.issuerName || '';
+      document.getElementById('email-template').value = content.certificate.congratsEmail || '';
+      document.getElementById('role-senior').value = content.roleNames.senior || '';
+      document.getElementById('role-junior').value = content.roleNames.junior || '';
+    }
+
+    function editorSave() {
+      var content = loadContent();
+      content.certificate.issuerName = document.getElementById('issuer-name').value.trim();
+      content.certificate.congratsEmail = document.getElementById('email-template').value;
+      content.roleNames.senior = document.getElementById('role-senior').value.trim();
+      content.roleNames.junior = document.getElementById('role-junior').value.trim();
+
+      if (!content.certificate.issuerName) {
+        showToast('Issuer name cannot be blank.', 'error');
+        document.getElementById('issuer-name').focus();
+        return;
+      }
+
+      var saved = saveContent(content);
+      showToast(saved ? 'Content saved successfully.' : 'Failed to save content.', saved ? 'success' : 'error');
+    }
+
+    function editorReset() {
+      if (!confirm('Reset all content to defaults? This cannot be undone.')) return;
+      resetContent();
+      loadEditorFields();
+      showToast('Content reset to defaults.', 'success');
+    }
+
+    // ── SECTION 8: BUG LAB TAB ───────────────────────────────────────────────────
+
+    async function loadBugs() {
+      var raw = await getSetting('activeBugs');
+      var activeBugs = raw ? JSON.parse(raw) : [];
+      var list = document.getElementById('bug-list');
+      list.innerHTML = '';
+
+      BUG_DEFINITIONS.forEach(function(bug) {
+        var checked = activeBugs.indexOf(bug.id) !== -1 ? 'checked' : '';
+        var row = document.createElement('label');
+        row.className = 'bug-row';
+        row.innerHTML =
+          '<input type="checkbox" class="checkbox-custom" value="' + bug.id + '" ' + checked + '>' +
+          '<div class="bug-info"><span class="bug-id">' + bug.id + '</span><span class="bug-desc">' + bug.desc + '</span></div>';
+        list.appendChild(row);
+      });
+    }
+
+    async function bugsSave() {
+      var checked = Array.from(document.querySelectorAll('#bug-list input:checked')).map(function(cb) { return cb.value; });
+      await saveSetting('activeBugs', JSON.stringify(checked));
+      showToast('Bug settings saved.', 'success');
+    }
+
+    // ── SECTION 9: STUDENT PASSWORD RESET ─────────────────────────────────────────
+
+    function openResetStudentPassword(caseId) {
+      _resetTargetCaseId = caseId;
+      var student = _cachedStudents.find(function(s) { return s.caseId === caseId; });
+      if (student) {
+        document.getElementById('reset-password-student-name').textContent = 'Resetting password for: ' + student.name + ' (' + caseId + ')';
+      }
+      document.getElementById('reset-student-new-password').value = '';
+      document.getElementById('reset-student-confirm-password').value = '';
+      clearFieldError(document.getElementById('reset-student-new-password'), document.getElementById('reset-student-new-password-error'));
+      clearFieldError(document.getElementById('reset-student-confirm-password'), document.getElementById('reset-student-confirm-password-error'));
+      document.getElementById('reset-student-password-modal').classList.add('open');
+      document.getElementById('reset-student-new-password').focus();
+    }
+
+    function closeResetStudentPasswordModal() {
+      document.getElementById('reset-student-password-modal').classList.remove('open');
+      _resetTargetCaseId = null;
+    }
+
+    document.getElementById('reset-student-password-modal').addEventListener('click', function(event) {
+      if (event.target === this) closeResetStudentPasswordModal();
+    });
+
+    document.getElementById('reset-student-password-form').addEventListener('submit', function(event) {
+      event.preventDefault();
+      var newPass = document.getElementById('reset-student-new-password').value;
+      var confirm = document.getElementById('reset-student-confirm-password').value;
+
+      clearFieldError(document.getElementById('reset-student-new-password'), document.getElementById('reset-student-new-password-error'));
+      clearFieldError(document.getElementById('reset-student-confirm-password'), document.getElementById('reset-student-confirm-password-error'));
+
+      var valid = true;
+      if (!newPass || newPass.length < 6) { showFieldError(document.getElementById('reset-student-new-password'), document.getElementById('reset-student-new-password-error'), 'Password must be at least 6 characters.'); valid = false; }
+      if (newPass !== confirm) { showFieldError(document.getElementById('reset-student-confirm-password'), document.getElementById('reset-student-confirm-password-error'), 'Passwords do not match.'); valid = false; }
+      if (!valid || !_resetTargetCaseId) return;
+
+      var btn = document.getElementById('reset-student-password-btn');
+      btn.disabled = true;
+      btn.textContent = 'Resetting…';
+
+      getStudent(_resetTargetCaseId).then(function(student) {
+        if (!student) throw new Error('Student not found');
+        student.password = newPass;
+        return saveStudent(student);
+      }).then(function() {
+        closeResetStudentPasswordModal();
+        showToast('Password reset successfully.', 'success');
+        btn.disabled = false;
+        btn.textContent = 'Reset Password';
+      }).catch(function(error) {
+        console.error('Failed to reset password:', error);
+        showToast('Error resetting password.', 'error');
+        btn.disabled = false;
+        btn.textContent = 'Reset Password';
+      });
+    });
+
+    // ── SECTION 10: RESET STUDENT PROGRESS ─────────────────────────────────────────
+
+    function resetStudentProgress(caseId) {
+      if (!confirm('Reset all course progress for this student? This will clear lessons, quiz scores, and time spent. The survey will be kept.')) return;
+      if (!confirm('Are you sure? This cannot be undone.')) return;
+
+      getProgress(caseId).then(function(progress) {
+        if (!progress) {
+          showToast('No progress record found for this student.', 'error');
+          return;
+        }
+
+        progress.lessonsComplete = [];
+        progress.chaptersRead = {};
+        progress.timeSpent = {};
+        progress.quizResults = {};
+        progress.certificateAwarded = false;
+        progress.certificateEarned = false;
+        progress.certificateDate = undefined;
+        progress.currentLesson = undefined;
+        progress.lastActivity = undefined;
+
+        return saveProgress(progress);
+      }).then(function() {
+        showToast('Progress reset successfully.', 'success');
+        return loadStudentList();
+      }).catch(function(error) {
+        console.error('Failed to reset progress:', error);
+        showToast('Error resetting progress.', 'error');
+      });
+    }
+
+    // ── SECTION 11: ADD STUDENT MODAL ─────────────────────────────────────────────
+
+    function openAddStudentModal() {
+      resetAddStudentForm();
+      document.getElementById('add-student-modal').classList.add('open');
+      document.getElementById('student-name').focus();
+    }
+
+    function closeAddStudentModal() {
+      document.getElementById('add-student-modal').classList.remove('open');
+    }
+
+    function resetAddStudentForm() {
+      document.getElementById('student-name').value = '';
+      document.getElementById('student-email').value = '';
+      document.getElementById('student-password').value = '';
+      document.getElementById('student-role').value = '';
+      clearFieldError(document.getElementById('student-name'),     document.getElementById('name-error'));
+      clearFieldError(document.getElementById('student-email'),    document.getElementById('email-error'));
+      clearFieldError(document.getElementById('student-password'), document.getElementById('password-error'));
+      clearFieldError(document.getElementById('student-role'), document.getElementById('role-error'));
+      var saveBtn = document.getElementById('save-student-btn');
+      saveBtn.disabled = false;
+      saveBtn.textContent = 'Create student account';
+    }
+
+    document.getElementById('add-student-modal').addEventListener('click', function(event) {
+      if (event.target === this) closeAddStudentModal();
+    });
+
+    document.addEventListener('keydown', function(event) {
+      if (event.key === 'Escape') {
+        closeAddStudentModal();
+        closeResetStudentPasswordModal();
+        closeAssignPanel();
+      }
+    });
+
+    document.getElementById('add-student-form').addEventListener('submit', function(event) {
+      event.preventDefault();
+      var name     = document.getElementById('student-name').value.trim();
+      var email    = document.getElementById('student-email').value.trim();
+      var password = document.getElementById('student-password').value;
+      var role     = document.getElementById('student-role').value;
+
+      if (!validateAddStudentForm(name, email, password, role)) return;
+
+      var saveBtn = document.getElementById('save-student-btn');
+      saveBtn.disabled = true;
+      saveBtn.textContent = 'Creating…';
+
+      findStudentByEmail(email).then(function(existing) {
+        if (existing) {
+          showFieldError(document.getElementById('student-email'), document.getElementById('email-error'), 'A student with this email address already exists.');
+          saveBtn.disabled = false;
+          saveBtn.textContent = 'Create student account';
+          return;
+        }
+        return generateNextCaseId().then(function(caseId) {
+          var today = new Date().toISOString().split('T')[0];
+          var newStudent = {
+            caseId:      caseId,
+            name:        name,
+            email:       email.toLowerCase(),
+            password:    password,
+            role:        role,
+            dateCreated: today,
+            active:      true,
+          };
+          return saveStudent(newStudent).then(function() { return caseId; });
+        });
+      }).then(function(caseId) {
+        if (!caseId) return;
+        closeAddStudentModal();
+        showToast('Student account created. Case ID: ' + caseId, 'success');
+        return loadStudentList();
+      }).catch(function(error) {
+        console.error('Failed to create student:', error);
+        showToast('Error creating student. Please try again.', 'error');
+        saveBtn.disabled = false;
+        saveBtn.textContent = 'Create student account';
+      });
+    });
+
+    function validateAddStudentForm(name, email, password, role) {
+      var valid = true;
+      var nameField     = document.getElementById('student-name');
+      var emailField    = document.getElementById('student-email');
+      var passwordField = document.getElementById('student-password');
+      var roleField     = document.getElementById('student-role');
+      var nameError     = document.getElementById('name-error');
+      var emailError    = document.getElementById('email-error');
+      var passwordError = document.getElementById('password-error');
+      var roleError     = document.getElementById('role-error');
+
+      clearFieldError(nameField, nameError);
+      clearFieldError(emailField, emailError);
+      clearFieldError(passwordField, passwordError);
+      clearFieldError(roleField, roleError);
+
+      if (!name) { showFieldError(nameField, nameError, 'Full name is required.'); valid = false; }
+      if (!email) { showFieldError(emailField, emailError, 'Email address is required.'); valid = false; }
+      else if (email.indexOf('@') === -1 || email.indexOf('.') === -1) { showFieldError(emailField, emailError, 'Please enter a valid email address.'); valid = false; }
+      if (!password) { showFieldError(passwordField, passwordError, 'Password is required.'); valid = false; }
+      else if (password.length < 6) { showFieldError(passwordField, passwordError, 'Password must be at least 6 characters.'); valid = false; }
+      if (!role) { showFieldError(roleField, roleError, 'Please select a role.'); valid = false; }
+
+      if (!valid) scrollToFirstError();
+      return valid;
+    }
+
+    // ── SECTION 12: UTILITIES ────────────────────────────────────────────────────
+
+    function handleAdminLogout() {
+      sessionStorage.removeItem('qa_admin');
+      window.location.href = 'index.html';
+    }
+
+    function escapeHtml(text) {
+      var div = document.createElement('div');
+      div.appendChild(document.createTextNode(text));
+      return div.innerHTML;
+    }
+
+    function formatDate(dateString) {
+      if (!dateString) return '—';
+      var date = new Date(dateString + 'T00:00:00');
+      return date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+    }
+  </script>
+</body>
+</html>

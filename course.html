@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QA Pilot Academy — My Course</title>
+  <link rel="stylesheet" href="css/main.css">
+
+  <style>
+    /* Top navigation bar - Fix for Sprint 6A */
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;  /* Brand left, User info right */
+      padding: var(--space-4) var(--space-6);
+      background: var(--color-surface);
+      border-bottom: 1px solid var(--color-border);
+      position: sticky;
+      top: 0;
+      z-index: 10;  /* Keeps nav above lesson cards when scrolling */
+    }
+
+    .topbar-brand {
+      font-size: var(--text-base);
+      font-weight: var(--weight-bold);
+      color: var(--color-ink);
+    }
+
+    .topbar-user {
+      display: flex;
+      align-items: center;
+      gap: var(--space-4);
+      font-size: var(--text-sm);
+      color: var(--color-ink-muted);
+    }
+
+    .main-content {
+      max-width: 760px;
+      margin: var(--space-10) auto;
+      padding: 0 var(--space-6);
+    }
+
+    .welcome-heading {
+      font-size: var(--text-xl);
+      font-weight: var(--weight-bold);
+      color: var(--color-ink);
+      margin-bottom: var(--space-2);
+    }
+
+    .welcome-sub {
+      font-size: var(--text-sm);
+      color: var(--color-ink-muted);
+      margin-bottom: var(--space-8);
+    }
+
+    /* Survey Styles */
+    .survey-card {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-sm);
+      padding: var(--space-8);
+      margin-bottom: var(--space-6);
+    }
+
+    .survey-title {
+      font-size: var(--text-lg);
+      font-weight: var(--weight-bold);
+      color: var(--color-ink);
+      margin-bottom: var(--space-2);
+    }
+
+    .survey-intro {
+      font-size: var(--text-sm);
+      color: var(--color-ink-muted);
+      margin-bottom: var(--space-8);
+      line-height: var(--leading-base);
+    }
+
+    .survey-progress {
+      font-size: var(--text-xs);
+      font-weight: var(--weight-bold);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--color-ink-muted);
+      margin-bottom: var(--space-4);
+    }
+
+    .survey-question-text {
+      font-size: var(--text-md);
+      font-weight: var(--weight-medium);
+      color: var(--color-ink);
+      margin-bottom: var(--space-5);
+      line-height: var(--leading-tight);
+    }
+
+    .survey-options {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-3);
+      margin-bottom: var(--space-8);
+    }
+
+    .survey-option {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      padding: var(--space-3) var(--space-4);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      transition: border-color var(--transition-fast), background var(--transition-fast);
+      font-size: var(--text-base);
+      color: var(--color-ink);
+    }
+
+    .survey-option:hover {
+      border-color: var(--color-primary);
+      background: var(--color-primary-light);
+    }
+
+    .survey-option input[type="radio"] {
+      accent-color: var(--color-primary);
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
+    }
+
+    .survey-option.selected {
+      border-color: var(--color-primary);
+      background: var(--color-primary-light);
+    }
+
+    .survey-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .survey-error {
+      font-size: var(--text-xs);
+      color: var(--color-error);
+      display: none;
+    }
+
+    .survey-error.visible {
+      display: block;
+    }
+
+    .section-heading {
+      font-size: var(--text-md);
+      font-weight: var(--weight-bold);
+      color: var(--color-ink);
+      margin-bottom: var(--space-4);
+    }
+
+    .lesson-list {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-3);
+    }
+
+    .lesson-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: var(--space-4) var(--space-5);
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .lesson-item.available {
+      border-left: 4px solid var(--color-primary);
+    }
+
+    .lesson-item.complete {
+      border-left: 4px solid var(--color-success);
+      background: var(--color-success-light);
+    }
+
+    .lesson-item.locked {
+      opacity: 0.6;
+    }
+
+    .lesson-info {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-1);
+    }
+
+    .lesson-number {
+      font-size: var(--text-xs);
+      font-weight: var(--weight-bold);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--color-ink-muted);
+    }
+
+    .lesson-title {
+      font-size: var(--text-base);
+      font-weight: var(--weight-medium);
+      color: var(--color-ink);
+    }
+
+    .lesson-type {
+      font-size: var(--text-xs);
+      color: var(--color-ink-muted);
+    }
+
+    .lock-icon {
+      font-size: var(--text-lg);
+      color: var(--color-ink-muted);
+    }
+
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.45);
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
+      padding: var(--space-6);
+    }
+
+    .modal-overlay.open { display: flex; }
+
+    .modal-panel {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-lg);
+      width: 100%;
+      max-width: 480px;
+      padding: var(--space-8);
+      position: relative;
+    }
+
+    .modal-title {
+      font-size: var(--text-lg);
+      font-weight: var(--weight-bold);
+      color: var(--color-ink);
+      margin-bottom: var(--space-6);
+    }
+
+    .modal-close {
+      position: absolute;
+      top: var(--space-4);
+      right: var(--space-4);
+      background: none;
+      border: none;
+      font-size: var(--text-lg);
+      color: var(--color-ink-muted);
+      cursor: pointer;
+      padding: var(--space-1) var(--space-2);
+      border-radius: var(--radius-sm);
+      line-height: 1;
+    }
+
+    .modal-close:hover { background: var(--color-bg); color: var(--color-ink); }
+
+    .modal-footer {
+      display: flex;
+      justify-content: flex-end;
+      gap: var(--space-3);
+      margin-top: var(--space-6);
+      padding-top: var(--space-5);
+      border-top: 1px solid var(--color-border);
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="topbar">
+    <div class="topbar-brand">QA Onboarding Training</div>
+    <div class="topbar-user">
+      <span id="user-name-display">Loading…</span>
+      <button class="btn btn-ghost" style="font-size:var(--text-sm);padding:var(--space-1) var(--space-3);" onclick="openChangePasswordModal()">Change Password</button>
+      <a href="index.html" class="btn btn-ghost" onclick="handleLogout()">Sign Out</a>
+    </div>
+  </nav>
+
+  <main class="main-content">
+    <h1 class="welcome-heading" id="welcome-heading">Welcome back!</h1>
+    <p class="welcome-sub" id="welcome-sub">Loading your course…</p>
+
+    <div id="survey-section" style="display: none;">
+      <div class="survey-card">
+        <h2 class="survey-title">Placement Skills Survey</h2>
+        <p class="survey-intro">
+          Before we set up your course, we'd like to understand your background.
+          There are no right or wrong answers — this helps us recommend the best
+          starting point for you. It takes about 2 minutes.
+        </p>
+        <div class="survey-progress" id="survey-progress">Question 1 of 5</div>
+        <p class="survey-question-text" id="survey-question-text"></p>
+        <div class="survey-options" id="survey-options"></div>
+        <p class="survey-error" id="survey-error">Please select an answer before continuing.</p>
+        <div class="survey-nav">
+          <button class="btn btn-ghost" id="survey-back-btn" onclick="surveyBack()" style="display:none;">Back</button>
+          <button class="btn btn-primary" id="survey-next-btn" onclick="surveyNext()">Next question</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="lesson-section" style="display: none;">
+      <h2 class="section-heading">Your Course</h2>
+      <div class="lesson-list" id="lesson-list"></div>
+    </div>
+  </main>
+
+  <!-- CHANGE PASSWORD MODAL -->
+  <div class="modal-overlay" id="change-password-modal" role="dialog" aria-modal="true">
+    <div class="modal-panel">
+      <button class="modal-close" onclick="closeChangePasswordModal()" aria-label="Close modal">✕</button>
+      <h2 class="modal-title">Change Your Password</h2>
+      <form id="change-password-form" novalidate>
+        <div class="form-group">
+          <label class="form-label" for="change-current-password">Current password</label>
+          <input type="password" id="change-current-password" class="form-control" autocomplete="current-password">
+          <span class="field-error" id="change-current-password-error"></span>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="change-new-password">New password</label>
+          <input type="password" id="change-new-password" class="form-control" placeholder="At least 6 characters" autocomplete="new-password">
+          <span class="field-error" id="change-new-password-error"></span>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="change-confirm-password">Confirm new password</label>
+          <input type="password" id="change-confirm-password" class="form-control" autocomplete="new-password">
+          <span class="field-error" id="change-confirm-password-error"></span>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-ghost" onclick="closeChangePasswordModal()">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="change-password-btn">Update Password</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script src="data/content.js"></script>
+  <script src="data/quiz-questions.js"></script>
+  <script src="js/db.js"></script>
+  <script src="js/app.js"></script>
+
+  <script>
+    /**
+     * course.html — Page Logic
+     * ==========================
+     * WHAT THIS PAGE DOES:
+     * - Verifies student session and loads user data.
+     * - Renders the placement survey if not yet completed.
+     * - Displays the personalized lesson list based on survey or admin assignment.
+     * - Manages the lock/unlock state of lessons, specifically the Capstone.
+     *
+     * FLOW:
+     * 1. initDB() prepares database
+     * 2. requireLogin() checks for session
+     * 3. getStudent() loads profile
+     * 4. getProgress/getAssignment() determine current course state
+     * 5. render lesson cards with logic to unlock capstone after lesson-4
+     *
+     * READS FROM:   IndexedDB (students, progress, assignments)
+     * WRITES TO:    IndexedDB (progress, assignments)
+     */
+
+    // ── SECTION 1: SURVEY DATA ──────────────────────────────────────────────────
+
+    var SURVEY_QUESTIONS = [
+      {
+        text: 'Have you written test cases before?',
+        options: ['Yes, formally', 'Yes, informally', 'No'],
+        countsAs: ['Yes, formally', 'Yes, informally'],
+      },
+      {
+        text: 'Have you used a CRM system (like Dynamics 365 or Salesforce)?',
+        options: ['Yes, Dynamics 365', 'Yes, other CRM', 'No'],
+        countsAs: ['Yes, Dynamics 365', 'Yes, other CRM'],
+      },
+      {
+        text: 'Have you filed bugs in a tracking tool (like Azure DevOps or Jira)?',
+        options: ['Yes, Azure DevOps', 'Yes, other tool', 'No'],
+        countsAs: ['Yes, Azure DevOps', 'Yes, other tool'],
+      },
+      {
+        text: 'Are you familiar with Given / When / Then acceptance criteria format?',
+        options: ['Yes', 'Heard of it', 'No'],
+        countsAs: ['Yes'],
+      },
+      {
+        text: 'How would you describe your QA experience level?',
+        options: ['None', 'Some', 'Experienced'],
+        countsAs: ['Some', 'Experienced'],
+      },
+    ];
+
+    var DEFAULT_LESSON_ORDER = ['lesson-1', 'lesson-2', 'lesson-3', 'lesson-4', 'capstone']; 
+
+    // ── SECTION 2: PAGE STATE ──────────────────────────────────────────────────
+
+    var currentSession  = null;
+    var currentStudent  = null;
+    var surveyAnswers   = [];
+    var currentQuestion = 0;
+
+    // ── SECTION 3: INITIALISE ───────────────────────────────────────────────────
+
+    initDB()
+      .then(function() {
+        currentSession = requireLogin();
+        if (!currentSession) return;
+        return getStudent(currentSession.caseId);
+      })
+      .then(function(student) {
+        if (!student) {
+          handleLogout();
+          return;
+        }
+        currentStudent = student;
+        document.getElementById('user-name-display').textContent = student.name;
+        document.getElementById('welcome-heading').textContent = 'Welcome, ' + student.name + '!';
+        return Promise.all([
+          getProgress(currentSession.caseId),
+          getAssignment(currentSession.caseId)
+        ]);
+      })
+      .then(function(results) {
+        if (!currentStudent) return;
+        var progress = results[0];
+        var assignment = results[1];
+
+        if (!progress || !progress.placementSurvey || !progress.placementSurvey.completed) {
+          document.getElementById('welcome-sub').textContent = 'Before we get started, we have a few quick questions to find your best starting point.';
+          showSurvey();
+        } else {
+          document.getElementById('welcome-sub').textContent = 'Here is your course. Complete each lesson in order.';
+          showLessonList(progress, assignment);
+        }
+      })
+      .catch(function(error) {
+        console.error('course.html: Failed to load page data.', error);
+        document.getElementById('welcome-sub').textContent = 'Something went wrong loading your course. Please refresh the page.';
+      });
+
+    // ── SECTION 4: SURVEY LOGIC ────────────────────────────────────────────────
+
+    /**
+     * showSurvey()
+     * Activates the survey UI and loads the first question.
+     */
+    function showSurvey() {
+      document.getElementById('survey-section').style.display = 'block';
+      renderQuestion(0);
+    }
+
+    /**
+     * renderQuestion(index)
+     * Builds the HTML for a specific survey question.
+     * 
+     * @param {number} index - Index of the question to render.
+     */
+    function renderQuestion(index) {
+      var q = SURVEY_QUESTIONS[index];
+      document.getElementById('survey-progress').textContent = 'Question ' + (index + 1) + ' of ' + SURVEY_QUESTIONS.length;
+      document.getElementById('survey-question-text').textContent = q.text;
+
+      var optionsContainer = document.getElementById('survey-options');
+      optionsContainer.innerHTML = '';
+
+      q.options.forEach(function(optionText) {
+        var label = document.createElement('label');
+        label.className = 'survey-option';
+
+        var radio = document.createElement('input');
+        radio.type  = 'radio';
+        radio.name  = 'survey-q' + index;
+        radio.value = optionText;
+
+        if (surveyAnswers[index] === optionText) {
+          radio.checked = true;
+          label.classList.add('selected');
+        }
+
+        radio.addEventListener('change', function() {
+          optionsContainer.querySelectorAll('.survey-option').forEach(function(el) {
+            el.classList.remove('selected');
+          });
+          label.classList.add('selected');
+          document.getElementById('survey-error').classList.remove('visible');
+        });
+
+        label.appendChild(radio);
+        label.appendChild(document.createTextNode(optionText));
+        optionsContainer.appendChild(label);
+      });
+
+      var backBtn = document.getElementById('survey-back-btn');
+      backBtn.style.display = index > 0 ? 'inline-flex' : 'none';
+
+      var nextBtn = document.getElementById('survey-next-btn');
+      nextBtn.textContent = index === SURVEY_QUESTIONS.length - 1 ? 'See my course' : 'Next question';
+      document.getElementById('survey-error').classList.remove('visible');
+
+      currentQuestion = index;
+    }
+
+    /**
+     * surveyNext()
+     * Validates the current selection and advances the survey.
+     */
+    function surveyNext() {
+      var selected = document.querySelector('input[name="survey-q' + currentQuestion + '"]:checked');
+      if (!selected) {
+        document.getElementById('survey-error').classList.add('visible');
+        return;
+      }
+      surveyAnswers[currentQuestion] = selected.value;
+      if (currentQuestion === SURVEY_QUESTIONS.length - 1) {
+        completeSurvey();
+      } else {
+        renderQuestion(currentQuestion + 1);
+      }
+    }
+
+    /**
+     * surveyBack()
+     * Moves the user to the previous question.
+     */
+    function surveyBack() {
+      if (currentQuestion > 0) {
+        var selected = document.querySelector('input[name="survey-q' + currentQuestion + '"]:checked');
+        if (selected) surveyAnswers[currentQuestion] = selected.value;
+        renderQuestion(currentQuestion - 1);
+      }
+    }
+
+    /**
+     * completeSurvey()
+     * Scores the survey and initializes student progress/assignment records in DB.
+     */
+    function completeSurvey() {
+      var score = 0;
+      surveyAnswers.forEach(function(answer, i) {
+        if (SURVEY_QUESTIONS[i].countsAs.includes(answer)) score++;
+      });
+
+      var recommendedPath = (score >= 3) 
+        ? ['lesson-2', 'lesson-3', 'capstone'] 
+        : DEFAULT_LESSON_ORDER.slice();
+
+      var caseId = currentStudent.caseId;
+      var now    = new Date().toISOString();
+      var today  = now.split('T')[0];
+
+      var progressRecord = {
+        caseId: caseId,
+        lessonsComplete: [],
+        currentLesson: recommendedPath[0],
+        quizResults: {},
+        placementSurvey: { completed: true, recommendedPath: recommendedPath, answers: surveyAnswers.slice() },
+        certificateEarned: false,
+        lastActivity: now,
+      };
+
+      var assignmentRecord = {
+        caseId: caseId,
+        assignedLessons: recommendedPath,
+        adminOverride: false,
+        assignedBy: 'survey',
+        assignedDate: today,
+        notes: 'Auto-assigned via survey: ' + score + '/5 points.',
+      };
+
+      saveProgress(progressRecord)
+        .then(function() { return saveAssignment(assignmentRecord); })
+        .then(function() {
+          document.getElementById('survey-section').style.display = 'none';
+          document.getElementById('welcome-sub').textContent = 'Here is your course. Complete each lesson in order.';
+          showLessonList(progressRecord, assignmentRecord);
+        })
+        .catch(function(error) {
+          showToast('Error saving your answers.', 'error');
+        });
+    }
+
+    // ── SECTION 5: LESSON LIST LOGIC ──────────────────────────────────────────
+
+    /**
+     * isCapstoneUnlocked(progress)
+     * Returns true if the student has completed Lesson 4.
+     * The Capstone card is locked until all prerequisite material is finished.
+     *
+     * @param {Object} progress - The student's progress record.
+     * @returns {boolean} True if the capstone should be available.
+     */
+    function isCapstoneUnlocked(progress, assignment) {
+      if (!progress || !progress.lessonsComplete) return false;
+
+      var completed = progress.lessonsComplete;
+
+      // Standard path: lesson-4 completion always unlocks the capstone
+      if (completed.includes('lesson-4') || completed.includes('lesson4') || completed.includes(4)) {
+        return true;
+      }
+
+      // Advanced / custom paths: the student may have been assigned a path that
+      // skips lesson-4 (e.g. the 3-lesson accelerated route from the placement
+      // survey). In that case, unlock the capstone when ALL assigned lessons
+      // (except 'capstone' itself) are marked complete.
+      var path = (assignment && assignment.assignedLessons)
+                   ? assignment.assignedLessons
+                   : (progress.placementSurvey && progress.placementSurvey.recommendedPath)
+                   ? progress.placementSurvey.recommendedPath
+                   : null;
+
+      if (!path) return false;
+
+      var required = path.filter(function(id) { return id !== 'capstone'; });
+      return required.length > 0 && required.every(function(id) { return completed.includes(id); });
+    }
+
+    /**
+     * showLessonList(progress, assignment)
+     * Renders the list of lessons with status indicators based on progress.
+     *
+     * @param {Object} progress - Student's progress record.
+     * @param {Object} assignment - Student's assignment record.
+     */
+    function showLessonList(progress, assignment) {
+      var lessonSection = document.getElementById('lesson-section');
+      var lessonList    = document.getElementById('lesson-list');
+
+      lessonSection.style.display = 'block';
+      lessonList.innerHTML = '';
+
+      // Guard: placementSurvey may be absent for admin-created students who
+      // were never walked through the placement flow. Fall back to the full
+      // standard path so the lesson list still renders without crashing.
+      var assignedPath = (assignment && assignment.assignedLessons)
+                          ? assignment.assignedLessons
+                          : (progress.placementSurvey && progress.placementSurvey.recommendedPath)
+                          ? progress.placementSurvey.recommendedPath
+                          : ['lesson-1', 'lesson-2', 'lesson-3', 'lesson-4', 'capstone'];
+      
+      var completed    = progress.lessonsComplete || [];
+      var nextLesson   = assignedPath.find(function(id) { return !completed.includes(id); });
+
+      var content = loadContent();
+      var lessonMeta = {};
+      content.courseMetadata.lessons.forEach(function(lesson) { lessonMeta[lesson.id] = lesson; });
+
+      assignedPath.forEach(function(lessonId, i) {
+        var meta       = lessonMeta[lessonId] || { title: lessonId, type: '' };
+        var isComplete = completed.includes(lessonId);
+        var isNext     = lessonId === nextLesson;
+        var isLocked   = !isComplete && !isNext;
+
+        // SPECIAL LOGIC: Override lock state for Capstone
+        if (lessonId === 'capstone') {
+          var unlocked = isCapstoneUnlocked(progress, assignment);
+          isLocked = !unlocked;
+          isNext = (isNext && unlocked); // Capstone is "Next" only if actually unlocked
+        }
+
+        var stateClass = isComplete ? 'complete' : isNext ? 'available' : 'locked';
+        var item = document.createElement('div');
+        item.className = 'lesson-item ' + stateClass;
+
+        var info = document.createElement('div');
+        info.className = 'lesson-info';
+        info.innerHTML = `
+          <span class="lesson-number">Lesson ${i + 1}</span>
+          <span class="lesson-title">${meta.title}</span>
+          <span class="lesson-type">${meta.type}</span>
+        `;
+
+        var rightSide = document.createElement('div');
+        if (isComplete) {
+          rightSide.innerHTML = '<span class="badge badge-success">Complete</span>';
+        } else if (isNext) {
+          // Link to the lesson HTML file. Capstone uses capstone.html specifically.
+          var targetPage = (lessonId === 'capstone') ? 'capstone.html' : lessonId + '.html';
+          rightSide.innerHTML = `<a href="${targetPage}" class="btn btn-primary">${completed.length === 0 ? 'Start' : 'Continue'}</a>`;
+          
+          // Add "Ready" indicator specifically for unlocked Capstone
+          if (lessonId === 'capstone') {
+            var readyBadge = document.createElement('span');
+            readyBadge.className = 'badge badge-success';
+            readyBadge.textContent = 'Ready';
+            readyBadge.style.marginLeft = 'var(--space-3)';
+            rightSide.appendChild(readyBadge);
+          }
+        } else {
+          rightSide.innerHTML = '<span class="lock-icon">🔒</span>';
+        }
+
+        item.appendChild(info);
+        item.appendChild(rightSide);
+        lessonList.appendChild(item);
+      });
+    }
+
+    // ── SECTION 6: LOGOUT ──────────────────────────────────────────────────────
+
+    /**
+     * handleLogout()
+     * Destroys the current session and returns to login.
+     */
+    function handleLogout() {
+      endSession();
+      window.location.href = 'index.html';
+    }
+
+    // ── SECTION 7: CHANGE PASSWORD ─────────────────────────────────────────────
+
+    function openChangePasswordModal() {
+      document.getElementById('change-current-password').value = '';
+      document.getElementById('change-new-password').value = '';
+      document.getElementById('change-confirm-password').value = '';
+      clearFieldError(document.getElementById('change-current-password'), document.getElementById('change-current-password-error'));
+      clearFieldError(document.getElementById('change-new-password'), document.getElementById('change-new-password-error'));
+      clearFieldError(document.getElementById('change-confirm-password'), document.getElementById('change-confirm-password-error'));
+      document.getElementById('change-password-modal').classList.add('open');
+      document.getElementById('change-current-password').focus();
+    }
+
+    function closeChangePasswordModal() {
+      document.getElementById('change-password-modal').classList.remove('open');
+    }
+
+    document.getElementById('change-password-modal').addEventListener('click', function(event) {
+      if (event.target === this) closeChangePasswordModal();
+    });
+
+    document.getElementById('change-password-form').addEventListener('submit', function(event) {
+      event.preventDefault();
+
+      var currentPass = document.getElementById('change-current-password').value;
+      var newPass = document.getElementById('change-new-password').value;
+      var confirmPass = document.getElementById('change-confirm-password').value;
+
+      clearFieldError(document.getElementById('change-current-password'), document.getElementById('change-current-password-error'));
+      clearFieldError(document.getElementById('change-new-password'), document.getElementById('change-new-password-error'));
+      clearFieldError(document.getElementById('change-confirm-password'), document.getElementById('change-confirm-password-error'));
+
+      var valid = true;
+      if (!currentPass) {
+        showFieldError(document.getElementById('change-current-password'), document.getElementById('change-current-password-error'), 'Enter your current password.');
+        valid = false;
+      }
+      if (!newPass || newPass.length < 6) {
+        showFieldError(document.getElementById('change-new-password'), document.getElementById('change-new-password-error'), 'Password must be at least 6 characters.');
+        valid = false;
+      }
+      if (newPass !== confirmPass) {
+        showFieldError(document.getElementById('change-confirm-password'), document.getElementById('change-confirm-password-error'), 'Passwords do not match.');
+        valid = false;
+      }
+      if (!valid || !currentStudent) return;
+
+      if (currentPass !== currentStudent.password) {
+        showFieldError(document.getElementById('change-current-password'), document.getElementById('change-current-password-error'), 'Current password is incorrect.');
+        return;
+      }
+
+      var btn = document.getElementById('change-password-btn');
+      btn.disabled = true;
+      btn.textContent = 'Updating…';
+
+      currentStudent.password = newPass;
+      saveStudent(currentStudent).then(function() {
+        closeChangePasswordModal();
+        showToast('Password changed successfully.', 'success');
+        btn.disabled = false;
+        btn.textContent = 'Update Password';
+      }).catch(function(error) {
+        console.error('Failed to change password:', error);
+        showToast('Error changing password.', 'error');
+        btn.disabled = false;
+        btn.textContent = 'Update Password';
+      });
+    });
+
+    document.addEventListener('keydown', function(event) {
+      if (event.key === 'Escape') closeChangePasswordModal();
+    });
+  </script>
+</body>
+</html>

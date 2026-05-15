@@ -1,0 +1,338 @@
+<!doctype html>
+<!--
+  QA Pilot Desktop
+  ─────────────────────────────────────────────────────────────
+  Part of the QA Pilot training platform.
+  This file is the DEV entry point — it loads os.css and os.bundle.js
+  as separate files (run `node build.js` first).
+  For distribution (SharePoint / OneNote / USB), use dist.html instead —
+  it is fully self-contained with everything inlined.
+
+  Visual style inspired by:
+    Windows 11 Desktop Simulator (MIT licence)
+    github.com/username/windows-11-desktop-simulator
+  Built collaboratively with GitHub Copilot & Claude (Anthropic)
+-->
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>QA Pilot Desktop</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="os.css" />
+  </head>
+  <body>
+    <div class="qa-shell qa-theme-light" id="qa-shell">
+      <!-- LOCK SCREEN -->
+      <div id="qa-lock-screen" class="qa-lock-screen">
+        <div class="qa-lock-center">
+          <div class="qa-lock-time" id="qa-lock-time">00:00</div>
+          <div class="qa-lock-date" id="qa-lock-date">
+            Monday, January 1
+          </div>
+
+          <div class="qa-lock-user">
+            <div class="qa-lock-avatar">A</div>
+            <div class="qa-lock-username">Andrew</div>
+          </div>
+
+          <div class="qa-lock-notifications">
+            <div class="qa-lock-notify-item">
+              Dynamics case awaiting review
+            </div>
+            <div class="qa-lock-notify-item">
+              1 bug draft in Azure DevOps
+            </div>
+          </div>
+
+          <div class="qa-lock-swipe-hint">
+            Click or press any key to sign in
+          </div>
+        </div>
+      </div>
+
+      <!-- TOPBAR -->
+      <header class="qa-topbar">
+        <div class="qa-topbar-left">
+          <div class="qa-topbar-title">QA Pilot Desktop</div>
+          <div class="qa-topbar-subtitle">
+            Dynamics · Azure DevOps · AC Panel · Browser
+          </div>
+        </div>
+        <div class="qa-topbar-right">
+          <span id="qa-role-label" class="qa-role-label">
+            Role: Junior Investigator
+          </span>
+        </div>
+      </header>
+
+      <!-- WORKSPACE -->
+      <main class="qa-workspace">
+        <!-- Desktop icons — Fluent SVG icons at 32×32                      -->
+        <!-- Double-click any icon to open the app.                          -->
+        <!-- To add an app: copy a button block, change data-app to the      -->
+        <!-- app id, update the SVG and label. Register the id in APPS {}    -->
+        <!-- in src/os-core.js and add apps/myapp.html, then run build.js.  -->
+        <div class="qa-desktop-icons">
+
+          <!-- Dynamics CRM -->
+          <button class="qa-desktop-icon" data-app="dynamics">
+            <div class="qa-desktop-icon-img">
+              <svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+                <rect x="3" y="5" width="26" height="22" rx="4" fill="#0078D4"/>
+                <rect x="11" y="2" width="10" height="7" rx="2" fill="#004B8C"/>
+                <rect x="7" y="13" width="18" height="2.5" rx="1.25" fill="white" opacity="0.95"/>
+                <rect x="7" y="18" width="13" height="2" rx="1" fill="white" opacity="0.7"/>
+                <rect x="7" y="23" width="9" height="2" rx="1" fill="white" opacity="0.5"/>
+              </svg>
+            </div>
+            <div class="qa-desktop-icon-label">Dynamics</div>
+          </button>
+
+          <!-- Azure DevOps -->
+          <button class="qa-desktop-icon" data-app="ado">
+            <div class="qa-desktop-icon-img">
+              <svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+                <rect x="2" y="2" width="28" height="28" rx="6" fill="#5C2D91"/>
+                <rect x="6" y="9" width="20" height="14" rx="3" fill="#7B3FC4" opacity="0.8"/>
+                <circle cx="11" cy="13" r="2.5" fill="white"/>
+                <circle cx="21" cy="19" r="2.5" fill="white"/>
+                <path d="M13 13 L19 13 L19 19" stroke="white" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <div class="qa-desktop-icon-label">Azure DevOps</div>
+          </button>
+
+          <!-- AC Panel -->
+          <button class="qa-desktop-icon" data-app="ac">
+            <div class="qa-desktop-icon-img">
+              <svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+                <rect x="3" y="3" width="26" height="26" rx="5" fill="#107C10"/>
+                <path d="M9 16 L13 20 L23 10" stroke="white" stroke-width="2.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                <rect x="9" y="23" width="14" height="2" rx="1" fill="white" opacity="0.5"/>
+              </svg>
+            </div>
+            <div class="qa-desktop-icon-label">AC Panel</div>
+          </button>
+
+          <!-- QA Browser — tabbed workspace for Dynamics + ADO + AC -->
+          <button class="qa-desktop-icon" data-app="browser">
+            <div class="qa-desktop-icon-img">
+              <svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+                <rect x="2" y="4" width="28" height="24" rx="5" fill="#0099BC"/>
+                <rect x="2" y="4" width="28" height="9" rx="5" fill="#007A99"/>
+                <rect x="2" y="9" width="28" height="4" fill="#007A99"/>
+                <circle cx="7" cy="9" r="2" fill="#00C2EB" opacity="0.8"/>
+                <circle cx="13" cy="9" r="2" fill="#00C2EB" opacity="0.5"/>
+                <circle cx="19" cy="9" r="2" fill="#00C2EB" opacity="0.3"/>
+                <rect x="6" y="18" width="20" height="2" rx="1" fill="white" opacity="0.7"/>
+                <rect x="6" y="22" width="14" height="2" rx="1" fill="white" opacity="0.4"/>
+              </svg>
+            </div>
+            <div class="qa-desktop-icon-label">Browser</div>
+          </button>
+
+          <!-- Training -->
+          <button class="qa-desktop-icon" data-app="training">
+            <div class="qa-desktop-icon-img">
+              <svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+                <rect x="2" y="2" width="28" height="28" rx="6" fill="#CA5010"/>
+                <path d="M16 8 L28 14 L16 20 L4 14 Z" fill="white" opacity="0.9"/>
+                <path d="M8 17 L8 23 Q16 27 24 23 L24 17" stroke="white" stroke-width="2" fill="none" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <div class="qa-desktop-icon-label">Training</div>
+          </button>
+
+          <!-- Settings -->
+          <button class="qa-desktop-icon" data-app="settings">
+            <div class="qa-desktop-icon-img">
+              <svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+                <rect x="2" y="2" width="28" height="28" rx="6" fill="#2B2B2B"/>
+                <circle cx="16" cy="16" r="4.5" fill="none" stroke="white" stroke-width="2.5"/>
+                <path d="M16 6 L16 9 M16 23 L16 26 M6 16 L9 16 M23 16 L26 16 M8.9 8.9 L11 11 M21 21 L23.1 23.1 M23.1 8.9 L21 11 M11 21 L8.9 23.1" stroke="white" stroke-width="2.2" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <div class="qa-desktop-icon-label">Settings</div>
+          </button>
+
+        </div>
+
+        <div id="qa-window-area" class="qa-window-area"></div>
+      </main>
+
+      <!-- TASKBAR — Win11 style: Start+TaskView+Apps centered, system tray right -->
+      <footer class="qa-taskbar">
+
+        <!-- Invisible left spacer keeps center group truly centred -->
+        <div class="qa-taskbar-left" aria-hidden="true"></div>
+
+        <!-- Centre group: Windows logo · Task view · Running apps -->
+        <div class="qa-taskbar-center">
+          <button id="qa-start-button" class="qa-start-button" title="Start">
+            <!-- Windows 11 four-square logo -->
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="2"  y="2"  width="9" height="9" rx="1" fill="#60cdff"/>
+              <rect x="13" y="2"  width="9" height="9" rx="1" fill="#60cdff" opacity="0.85"/>
+              <rect x="2"  y="13" width="9" height="9" rx="1" fill="#60cdff" opacity="0.85"/>
+              <rect x="13" y="13" width="9" height="9" rx="1" fill="#60cdff" opacity="0.7"/>
+            </svg>
+          </button>
+
+          <button id="qa-taskview-button" class="qa-taskview-button" title="Task view">
+            <!-- Task view overlapping windows icon -->
+            <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+              <rect x="2"  y="3"  width="9"  height="7" rx="1.5" opacity="0.9"/>
+              <rect x="13" y="3"  width="9"  height="7" rx="1.5" opacity="0.9"/>
+              <rect x="2"  y="13" width="9"  height="8" rx="1.5" opacity="0.9"/>
+              <rect x="13" y="13" width="9"  height="8" rx="1.5" opacity="0.9"/>
+            </svg>
+          </button>
+
+          <!-- Running app buttons injected here by JS -->
+          <div id="qa-taskbar-apps" class="qa-taskbar-apps"></div>
+        </div>
+
+        <!-- Right: system tray icons · notification · quick settings · clock -->
+        <div class="qa-taskbar-right">
+
+          <!-- Decorative system-tray icons (Wi-Fi, Sound, Battery) -->
+          <div class="qa-system-tray-icons" title="Network · Sound · Battery">
+            <!-- Wi-Fi -->
+            <svg class="qa-tray-icon" viewBox="0 0 24 24" fill="white">
+              <path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.07 2.93 1 9zm8 8l3 3 3-3c-1.65-1.66-4.34-1.66-6 0zm-4-4l2 2c2.76-2.76 7.24-2.76 10 0l2-2C15.14 9.14 8.87 9.14 5 13z"/>
+            </svg>
+            <!-- Volume -->
+            <svg class="qa-tray-icon" viewBox="0 0 24 24" fill="white">
+              <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/>
+            </svg>
+            <!-- Battery -->
+            <svg class="qa-tray-icon" viewBox="0 0 24 24" fill="white">
+              <path d="M15.67 4H14V2h-4v2H8.33C7.6 4 7 4.6 7 5.33v15.33C7 21.4 7.6 22 8.33 22h7.33c.74 0 1.34-.6 1.34-1.33V5.33C17 4.6 16.4 4 15.67 4z"/>
+              <rect x="19" y="8" width="1.5" height="6" rx="0.75" fill="white"/>
+            </svg>
+          </div>
+
+          <!-- Notification bell -->
+          <button id="qa-notify-button" class="qa-tray-btn" title="Notifications">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/>
+            </svg>
+          </button>
+
+          <!-- Quick settings (☰ replaced with a proper icon) -->
+          <button id="qa-quick-button" class="qa-tray-btn" title="Quick settings">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+            </svg>
+          </button>
+
+          <!-- Role pill (kept small in tray) -->
+          <span id="qa-taskbar-role" class="qa-taskbar-role">Junior</span>
+
+          <!-- Clock + date stacked, Win11 style -->
+          <div class="qa-clock-widget">
+            <span id="qa-taskbar-clock" class="qa-taskbar-clock">00:00</span>
+            <span id="qa-taskbar-date"  class="qa-taskbar-date">Mon 1/1</span>
+          </div>
+        </div>
+
+      </footer>
+
+      <!-- START MENU -->
+      <div id="qa-start-menu" class="qa-start-menu qa-start-menu-hidden">
+        <div class="qa-start-search">
+          <input type="text" placeholder="Type here to search" disabled />
+        </div>
+
+        <div class="qa-start-section">
+          <div class="qa-start-section-title">Pinned</div>
+          <div id="qa-start-grid" class="qa-start-grid"></div>
+        </div>
+
+        <div class="qa-start-section">
+          <div class="qa-start-section-title">Recommended</div>
+          <div class="qa-start-recommended">
+            <div class="qa-start-reco-item">
+              <div class="qa-start-reco-title">Case Investigation</div>
+              <div class="qa-start-reco-sub">
+                Recently used · Dynamics
+              </div>
+            </div>
+            <div class="qa-start-reco-item">
+              <div class="qa-start-reco-title">Bug Report</div>
+              <div class="qa-start-reco-sub">
+                Recently used · Azure DevOps
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="qa-start-section qa-start-section-secondary">
+          <div class="qa-start-section-title">Settings</div>
+          <div class="qa-start-grid">
+            <button class="qa-start-item" id="qa-role-switcher">
+              <div class="qa-start-icon">👤</div>
+              <div class="qa-start-label">Switch Role</div>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- NOTIFICATION CENTER -->
+      <div id="qa-notify-center" class="qa-notify-center qa-notify-hidden">
+        <div class="qa-notify-header">
+          <span>Notifications</span>
+          <button id="qa-notify-clear" class="qa-notify-clear">
+            Clear all
+          </button>
+        </div>
+        <div id="qa-notify-list" class="qa-notify-list"></div>
+      </div>
+
+      <!-- QUICK SETTINGS -->
+      <div id="qa-quick-panel" class="qa-quick-panel qa-quick-hidden">
+        <div class="qa-quick-row">
+          <button class="qa-quick-toggle qa-quick-active">Wi‑Fi</button>
+          <button class="qa-quick-toggle">Bluetooth</button>
+          <button class="qa-quick-toggle">Focus</button>
+        </div>
+        <div class="qa-quick-row">
+          <label class="qa-quick-slider-label">
+            Volume
+            <input type="range" min="0" max="100" value="70" />
+          </label>
+        </div>
+        <div class="qa-quick-row">
+          <label class="qa-quick-slider-label">
+            Brightness
+            <input id="qa-brightness-slider" type="range" min="50" max="120" value="100" />
+          </label>
+        </div>
+        <div class="qa-quick-row qa-quick-theme-row">
+          <span>Theme</span>
+          <button
+            id="qa-theme-light"
+            class="qa-quick-toggle qa-quick-active"
+          >
+            Light
+          </button>
+          <button id="qa-theme-dark" class="qa-quick-toggle">
+            Dark
+          </button>
+        </div>
+      </div>
+
+      <!-- TASK VIEW OVERLAY -->
+      <div
+        id="qa-taskview-overlay"
+        class="qa-taskview-overlay qa-taskview-hidden"
+      >
+        <div class="qa-taskview-inner" id="qa-taskview-inner"></div>
+      </div>
+    </div>
+
+    <script src="os.bundle.js"></script>
+    
+
+  </body>
+</html>

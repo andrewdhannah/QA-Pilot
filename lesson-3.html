@@ -1,0 +1,1062 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lesson 3: Dynamics CRM Mock — QA Training</title>
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/dynamics-mock.css">
+  <style>
+    /* ── LESSON SPECIFIC LAYOUT ──────────────────────────────────────────────── */
+    .lesson-layout {
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      gap: 0;
+      min-height: calc(100vh - 57px);
+    }
+    .chapter-sidebar {
+      background: var(--color-surface);
+      border-right: 1px solid var(--color-border);
+      padding: var(--space-6);
+      position: sticky;
+      top: 57px;
+      align-self: start;
+      height: calc(100vh - 57px);
+      overflow-y: auto;
+    }
+    .chapter-sidebar-title {
+      font-size: var(--text-sm);
+      font-weight: var(--weight-bold);
+      color: var(--color-ink-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: var(--space-5);
+    }
+    .chapter-list { display: flex; flex-direction: column; gap: var(--space-2); }
+    .chapter-list-item {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      padding: var(--space-2) var(--space-3);
+      border-radius: var(--radius-sm);
+      font-size: var(--text-sm);
+      color: var(--color-ink-muted);
+      cursor: default;
+      transition: background var(--transition-fast);
+    }
+    .chapter-list-item.current {
+      background: var(--color-primary-light);
+      color: var(--color-primary);
+      font-weight: var(--weight-medium);
+    }
+    .chapter-list-item.complete {
+      color: var(--color-success);
+      cursor: pointer;
+    }
+    .chapter-list-item.complete:hover { background: var(--color-success-light); }
+    .chapter-check { font-size: 12px; }
+    .chapter-main {
+      padding: var(--space-10) var(--space-12);
+      max-width: 720px;
+    }
+    .chapter-progress-bar {
+      height: 4px;
+      background: var(--color-border);
+      border-radius: var(--radius-full);
+      margin-bottom: var(--space-2);
+    }
+    .chapter-progress-fill {
+      height: 100%;
+      background: var(--color-primary);
+      border-radius: var(--radius-full);
+      transition: width var(--transition-slow);
+    }
+    .chapter-label {
+      font-size: var(--text-xs);
+      color: var(--color-ink-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: var(--space-8);
+    }
+    .chapter-nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: var(--space-10);
+      padding-top: var(--space-6);
+      border-top: 1px solid var(--color-border);
+    }
+    .chapter-timer-notice {
+      font-size: var(--text-xs);
+      color: var(--color-ink-muted);
+      font-style: italic;
+    }
+    .chapter-content h1 {
+      font-size: var(--text-xl);
+      font-weight: var(--weight-bold);
+      color: var(--color-ink);
+      margin-bottom: var(--space-2);
+    }
+    .chapter-content .chapter-intro {
+      font-size: var(--text-md);
+      color: var(--color-ink-muted);
+      margin-bottom: var(--space-8);
+      line-height: var(--leading-loose);
+    }
+    .chapter-content p {
+      color: var(--color-ink-soft);
+      margin-bottom: var(--space-5);
+      line-height: var(--leading-base);
+    }
+    .callout {
+      background: var(--color-primary-light);
+      border-left: 4px solid var(--color-primary);
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      padding: var(--space-4) var(--space-5);
+      margin: var(--space-6) 0;
+      font-size: var(--text-sm);
+      color: var(--color-ink);
+      font-style: italic;
+    }
+    .callout strong { color: var(--color-primary); font-style: normal; }
+    .comparison-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-4);
+      margin: var(--space-6) 0;
+    }
+    .comparison-card {
+      padding: var(--space-4);
+      border-radius: var(--radius-sm);
+      font-size: var(--text-sm);
+    }
+    .comparison-card.bad  { background: var(--color-error-light);   border: 1px solid var(--color-error-border);   }
+    .comparison-card.good { background: var(--color-success-light); border: 1px solid var(--color-success-border); }
+    .comparison-label { font-weight: var(--weight-bold); margin-bottom: var(--space-2); }
+    .comparison-card.bad  .comparison-label { color: var(--color-error);   }
+    .comparison-card.good .comparison-label { color: var(--color-success); }
+    
+    .quiz-card {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-sm);
+      padding: var(--space-8);
+      text-align: center;
+      max-width: 720px;
+      margin: 0 auto;
+    }
+    .answer-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--space-4);
+      margin: var(--space-6) 0;
+    }
+    .btn-answer {
+      padding: var(--space-6);
+      font-size: var(--text-base);
+      border: 2px solid var(--color-border);
+      background: var(--color-surface);
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      text-align: left;
+      transition: all var(--transition-fast);
+    }
+    .btn-answer.correct {
+      border-color: var(--color-success);
+      background: var(--color-success-light);
+      color: var(--color-success);
+    }
+    .btn-answer.incorrect {
+      border-color: var(--color-error);
+      background: var(--color-error-light);
+      color: var(--color-error);
+    }
+    .feedback-panel {
+      margin-top: var(--space-6);
+      padding: var(--space-6);
+      border-radius: var(--radius-md);
+      text-align: left;
+      display: none;
+    }
+    .feedback-panel.visible { display: block; }
+    .feedback-correct { background: var(--color-success-light); border: 1px solid var(--color-success-border); }
+    .feedback-incorrect { background: var(--color-error-light); border: 1px solid var(--color-error-border); }
+
+    .result-row {
+      display: flex;
+      gap: var(--space-4);
+      padding: var(--space-4);
+      border-bottom: 1px solid var(--color-border);
+      align-items: flex-start;
+    }
+    .result-icon { font-size: var(--text-lg); }
+    .result-details { flex: 1; }
+    .explanation-toggle {
+      font-size: var(--text-xs);
+      color: var(--color-primary);
+      cursor: pointer;
+      text-decoration: underline;
+      margin-top: var(--space-2);
+      display: block;
+    }
+    .explanation-text {
+      font-size: var(--text-sm);
+      color: var(--color-ink-soft);
+      margin-top: var(--space-2);
+      display: none;
+    }
+    #phase-results {
+      padding: var(--space-10) var(--space-12);
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    .ac-ref-panel {
+      background: var(--color-bg);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      margin-bottom: var(--space-6);
+      overflow: hidden;
+    }
+    .ac-ref-header {
+      padding: var(--space-3) var(--space-4);
+      background: var(--color-surface);
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--color-border);
+    }
+    .ac-ref-body {
+      padding: var(--space-6);
+      display: none;
+      font-size: var(--text-sm);
+      color: var(--color-ink-soft);
+    }
+    .ac-ref-body.visible { display: block; }
+  </style>
+</head>
+<body>
+
+  <!-- FIX 2: Corrected Topbar Layout and Syntax -->
+  <nav class="topbar flex justify-between items-center">
+    <div class="topbar-brand">QA Onboarding Training</div>
+    <div class="topbar-user flex items-center gap-4">
+      <span id="user-name-display"></span>
+      <button class="btn btn-ghost" onclick="signOut()">Sign Out</button>
+    </div>
+  </nav>
+
+  <!-- PHASE 1: LEARNING CONTENT -->
+  <div id="phase-content" class="lesson-layout">
+    <aside class="chapter-sidebar">
+      <div class="chapter-sidebar-title">Lesson 3 — Dynamics CRM</div>
+      <nav class="chapter-list" id="chapter-list">
+        <!-- Injected by buildSidebar() -->
+      </nav>
+    </aside>
+
+    <main class="chapter-main">
+      <div class="chapter-progress-bar">
+        <div class="chapter-progress-fill" id="chapter-progress-fill"></div>
+      </div>
+      <div class="chapter-label" id="chapter-label">Chapter 1 of 5</div>
+      <div id="chapter-content"></div>
+
+      <div class="chapter-nav">
+        <button class="btn btn-ghost" id="btn-prev" onclick="prevChapter()">← Previous</button>
+        <div id="chapter-timer-notice" class="chapter-timer-notice"></div>
+        <button class="btn btn-primary" id="btn-next" onclick="nextChapter()">Next →</button>
+      </div>
+    </main>
+  </div>
+
+  <!-- PHASE 2: THE QUIZ -->
+  <div id="phase-quiz" style="display: none;">
+    <div class="quiz-card">
+      <div class="ac-ref-panel">
+        <div class="ac-ref-header" onclick="toggleACRef()">
+          <span class="font-medium">📋 View Acceptance Criteria</span>
+          <span id="ac-ref-toggle">▼</span>
+        </div>
+        <div id="ac-ref-body" class="ac-ref-body">
+          <!-- Injected by buildACReference() -->
+        </div>
+      </div>
+
+      <span class="label-caps" id="quiz-progress">Question 1 of 5</span>
+      <p id="quiz-question-text" class="text-md font-medium my-6"></p>
+      
+      <div class="answer-grid" id="quiz-options">
+        <!-- Injected by renderQuestion() -->
+      </div>
+
+      <div id="quiz-feedback" class="feedback-panel">
+        <div id="feedback-title" class="font-bold mb-2"></div>
+        <div id="feedback-body" class="text-sm"></div>
+        <div class="footer-nav" style="justify-content: center; margin-top: var(--space-6);">
+          <button class="btn btn-primary" id="btn-next-q" onclick="nextQuestion()">Next question → </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PHASE 3: THE RESULTS -->
+  <div id="phase-results" style="display: none;">
+    <div class="quiz-card" style="text-align: left;">
+      <h2 class="text-lg font-bold text-center">Quiz Complete</h2>
+      <p id="score-text" class="text-center font-bold my-4"></p>
+      
+      <div id="results-list" class="my-6">
+        <!-- Per-question results -->
+      </div>
+
+      <div class="footer-nav" style="justify-content: center;">
+        <button class="btn btn-primary" onclick="completeLesson()">Complete Lesson</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script src="data/content.js"></script>
+  <script src="data/quiz-questions.js"></script>
+  <script src="js/db.js"></script>
+  <script src="js/app.js"></script>
+
+  <script>
+    /**
+     * lesson-3.html — Page Logic
+     * ==========================
+     * WHAT THIS PAGE DOES:
+     * - Introduces Dynamics 365 CRM concepts via guided chapters.
+     * - Provides an interactive mock CRM screen for students to explore.
+     * - Implements a Role Switcher to test Junior vs Senior visibility.
+     * - Tests the student's ability to map UI behaviour to AC in a quiz.
+     *
+     * FLOW:
+     * 1. initDB() and requireLogin().
+     * 2. Resume reading from last chapter recorded in IndexedDB.
+     * 3. Chapters 1-3: Theory. Chapter 4: Interactive Mock.
+     * 4. Quiz: Uses a collapsible AC panel as a reference for the student.
+     *
+     * READS FROM:   IndexedDB via db.js
+     * WRITES TO:    IndexedDB via db.js
+     * REDIRECTS TO: index.html (logout), course.html (completion)
+     */
+
+    // ── SECTION 1: PAGE STATE ──────────────────────────────────────────────────
+
+    var currentSession  = null;
+    var currentStudent  = null;
+    var currentProgress = null;
+    var currentChapter  = 0;
+    var lessonTimer     = null;
+    var lessonSeconds   = 0;
+
+    // Mock state
+    var activeRole      = 'junior'; 
+    var activeBugs      = [];
+    var timelineEntries = [];
+
+    // Quiz state
+    var quizQuestions   = [];
+    var currentQuestion = 0;
+    var quizAnswers     = [];
+
+    // ── SECTION 2: CHAPTER DEFINITIONS ────────────────────────────────────────
+
+    var CHAPTER_1 = `
+    <div class="chapter-content">
+      <h1>What Is Dynamics 365?</h1>
+      <p class="chapter-intro">Dynamics 365 is Microsoft's cloud CRM suite — the team uses it to track cases from open to close.</p>
+      <p>Key concepts to understand:</p>
+      <ul style="padding-left:var(--space-5); color:var(--color-ink-soft); margin-bottom:var(--space-5);">
+        <li style="margin-bottom:var(--space-3);"><strong style="color:var(--color-ink);">Forms:</strong> Data entry screens (like the one you'll see in Chapter 4).</li>
+        <li style="margin-bottom:var(--space-3);"><strong style="color:var(--color-ink);">Views:</strong> Filtered lists of records.</li>
+        <li style="margin-bottom:var(--space-3);"><strong style="color:var(--color-ink);">Fields:</strong> Individual data points (Title, Status, etc.).</li>
+        <li style="margin-bottom:var(--space-3);"><strong style="color:var(--color-ink);">Role-based security:</strong> Different users see and do different things based on their permissions.</li>
+      </ul>
+      <p>As a tester, you are checking that the CRM behaves <strong style="color:var(--color-primary)">exactly</strong> as the AC specifies — not based on your instinct or how you think it "should" work.</p>
+      <svg viewBox="0 0 700 300" xmlns="http://www.w3.org/2000/svg" style="width:100%; margin:var(--space-6) 0; border-radius:8px; display:block;">
+        <rect width="700" height="300" rx="8" fill="#f3f2f1"/>
+        <rect width="700" height="44" rx="8" fill="#0078d4"/>
+        <rect y="34" width="700" height="10" fill="#0078d4"/>
+        <rect x="10" y="10" width="11" height="11" fill="#f25022"/>
+        <rect x="23" y="10" width="11" height="11" fill="#7fba00"/>
+        <rect x="10" y="23" width="11" height="11" fill="#00a4ef"/>
+        <rect x="23" y="23" width="11" height="11" fill="#ffb900"/>
+        <text x="42" y="30" font-family="inherit" font-size="13" fill="white" font-weight="600">Dynamics 365</text>
+        <text x="154" y="30" font-family="inherit" font-size="13" fill="rgba(255,255,255,0.75)">|  Case Investigations</text>
+        <circle cx="668" cy="22" r="14" fill="rgba(255,255,255,0.2)"/>
+        <text x="668" y="27" text-anchor="middle" font-family="inherit" font-size="11" fill="white" font-weight="700">JI</text>
+        <rect x="0" y="44" width="48" height="256" fill="#1b1a19"/>
+        <rect x="8" y="60" width="32" height="32" rx="4" fill="#0078d4"/>
+        <text x="24" y="81" text-anchor="middle" font-family="inherit" font-size="15" fill="white">⊞</text>
+        <text x="24" y="114" text-anchor="middle" font-family="inherit" font-size="15" fill="#a19f9d">📋</text>
+        <text x="24" y="148" text-anchor="middle" font-family="inherit" font-size="15" fill="#a19f9d">👥</text>
+        <text x="24" y="182" text-anchor="middle" font-family="inherit" font-size="15" fill="#a19f9d">📊</text>
+        <text x="24" y="216" text-anchor="middle" font-family="inherit" font-size="15" fill="#a19f9d">⚙</text>
+        <rect x="48" y="44" width="155" height="256" fill="#faf9f8" stroke="#e1dfdd" stroke-width="1"/>
+        <text x="66" y="72" font-family="inherit" font-size="12" font-weight="700" fill="#323130">Cases</text>
+        <rect x="48" y="78" width="155" height="30" fill="#edebe9"/>
+        <text x="66" y="98" font-family="inherit" font-size="12" fill="#0078d4" font-weight="700">▸ Active Cases</text>
+        <text x="66" y="126" font-family="inherit" font-size="11" fill="#605e5c">   My Cases</text>
+        <text x="66" y="148" font-family="inherit" font-size="11" fill="#605e5c">   All Cases</text>
+        <text x="66" y="170" font-family="inherit" font-size="11" fill="#605e5c">   Closed Cases</text>
+        <line x1="56" y1="183" x2="195" y2="183" stroke="#e1dfdd" stroke-width="1"/>
+        <text x="66" y="200" font-family="inherit" font-size="11" fill="#605e5c">   New Case</text>
+        <text x="66" y="222" font-family="inherit" font-size="11" fill="#605e5c">   Import Cases</text>
+        <rect x="203" y="44" width="497" height="256" fill="white"/>
+        <rect x="203" y="44" width="497" height="42" fill="#f3f2f1"/>
+        <text x="220" y="70" font-family="inherit" font-size="13" font-weight="700" fill="#323130">Active Cases  (14)</text>
+        <rect x="568" y="54" width="112" height="24" rx="4" fill="#0078d4"/>
+        <text x="624" y="71" text-anchor="middle" font-family="inherit" font-size="11" fill="white" font-weight="600">+ New Case</text>
+        <rect x="203" y="86" width="497" height="26" fill="#faf9f8" stroke="#e1dfdd" stroke-width="1"/>
+        <text x="220" y="104" font-family="inherit" font-size="9" fill="#605e5c" font-weight="700">CASE ID</text>
+        <text x="300" y="104" font-family="inherit" font-size="9" fill="#605e5c" font-weight="700">SUBJECT</text>
+        <text x="478" y="104" font-family="inherit" font-size="9" fill="#605e5c" font-weight="700">STATUS</text>
+        <text x="552" y="104" font-family="inherit" font-size="9" fill="#605e5c" font-weight="700">PRIORITY</text>
+        <text x="626" y="104" font-family="inherit" font-size="9" fill="#605e5c" font-weight="700">OWNER</text>
+        <rect x="203" y="112" width="497" height="28" fill="white"/>
+        <text x="220" y="131" font-family="monospace" font-size="10" fill="#0078d4">CASE-0091</text>
+        <text x="300" y="131" font-family="inherit" font-size="10" fill="#323130">Smith, J — Income Verification</text>
+        <rect x="472" y="118" width="50" height="16" rx="8" fill="#dff6dd"/>
+        <text x="497" y="130" text-anchor="middle" font-family="inherit" font-size="9" fill="#107c10" font-weight="700">Active</text>
+        <text x="563" y="131" font-family="inherit" font-size="10" fill="#a80000" font-weight="600">High</text>
+        <text x="626" y="131" font-family="inherit" font-size="10" fill="#605e5c">E. Hannah</text>
+        <rect x="203" y="140" width="497" height="28" fill="#faf9f8"/>
+        <text x="220" y="159" font-family="monospace" font-size="10" fill="#0078d4">CASE-0090</text>
+        <text x="300" y="159" font-family="inherit" font-size="10" fill="#323130">Chen, M — Address Change</text>
+        <rect x="472" y="146" width="50" height="16" rx="8" fill="#fff4ce"/>
+        <text x="497" y="158" text-anchor="middle" font-family="inherit" font-size="9" fill="#835c00" font-weight="700">Pending</text>
+        <text x="563" y="159" font-family="inherit" font-size="10" fill="#605e5c">Normal</text>
+        <text x="626" y="159" font-family="inherit" font-size="10" fill="#605e5c">T. Parks</text>
+        <rect x="203" y="168" width="497" height="28" fill="white"/>
+        <text x="220" y="187" font-family="monospace" font-size="10" fill="#0078d4">CASE-0089</text>
+        <text x="300" y="187" font-family="inherit" font-size="10" fill="#323130">Williams, P — Benefits Review</text>
+        <rect x="472" y="174" width="50" height="16" rx="8" fill="#dff6dd"/>
+        <text x="497" y="186" text-anchor="middle" font-family="inherit" font-size="9" fill="#107c10" font-weight="700">Active</text>
+        <text x="563" y="187" font-family="inherit" font-size="10" fill="#a80000" font-weight="600">High</text>
+        <text x="626" y="187" font-family="inherit" font-size="10" fill="#605e5c">E. Hannah</text>
+        <rect x="203" y="196" width="497" height="28" fill="#faf9f8"/>
+        <text x="220" y="215" font-family="monospace" font-size="10" fill="#0078d4">CASE-0088</text>
+        <text x="300" y="215" font-family="inherit" font-size="10" fill="#323130">Okafor, T — Employment Check</text>
+        <rect x="472" y="202" width="50" height="16" rx="8" fill="#dff6dd"/>
+        <text x="497" y="214" text-anchor="middle" font-family="inherit" font-size="9" fill="#107c10" font-weight="700">Active</text>
+        <text x="563" y="215" font-family="inherit" font-size="10" fill="#a80000" font-weight="600">High</text>
+        <text x="626" y="215" font-family="inherit" font-size="10" fill="#605e5c">T. Parks</text>
+        <text x="452" y="291" text-anchor="middle" font-family="inherit" font-size="10" fill="#8892a4">Dynamics 365 — Active Cases list view (wireframe representation — not real client data)</text>
+      </svg>
+    </div>`;
+
+    var CHAPTER_2 = `
+    <div class="chapter-content">
+      <h1>Field Types and What to Test</h1>
+      <p class="chapter-intro">Different fields require different testing strategies. Use this table as your guide.</p>
+      <table style="width:100%; border-collapse:collapse; margin:var(--space-6) 0; font-size:var(--text-sm);">
+        <thead style="background:var(--color-bg); border-bottom:2px solid var(--color-border);">
+          <tr style="color:var(--color-ink-muted); font-size:var(--text-xs); text-transform:uppercase;">
+            <th style="text-align:left; padding:var(--space-3) var(--space-4);">Field Type</th>
+            <th style="text-align:left; padding:var(--space-3) var(--space-4);">Example</th>
+            <th style="text-align:left; padding:var(--space-3) var(--space-4);">What to Test</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="border-bottom:1px solid var(--color-border);">
+            <td style="padding:var(--space-3) var(--space-4);">Text input</td>
+            <td style="padding:var(--space-3) var(--space-4);">Case Title</td>
+            <td style="padding:var(--space-3) var(--space-4); color:var(--color-ink-soft);">Required validation, char limits, special characters</td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--color-border);">
+            <td style="padding:var(--space-3) var(--space-4);">Dropdown</td>
+            <td style="padding:var(--space-3) var(--space-4);">Status, Priority</td>
+            <td style="padding:var(--space-3) var(--space-4); color:var(--color-ink-soft);">Valid options only, default value, role restrictions</td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--color-border);">
+            <td style="padding:var(--space-3) var(--space-4);">Date picker</td>
+            <td style="padding:var(--space-3) var(--space-4);">Date Opened</td>
+            <td style="padding:var(--space-3) var(--space-4); color:var(--color-ink-soft);">Format enforced, future dates rejected, required</td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--color-border);">
+            <td style="padding:var(--space-3) var(--space-4);">Read-only</td>
+            <td style="padding:var(--space-3) var(--space-4);">Case ID</td>
+            <td style="padding:var(--space-3) var(--space-4); color:var(--color-ink-soft);">Cannot be edited, system-generated, correct format</td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--color-border);">
+            <td style="padding:var(--space-3) var(--space-4);">Role-gated</td>
+            <td style="padding:var(--space-3) var(--space-4);">Outcome</td>
+            <td style="padding:var(--space-3) var(--space-4); color:var(--color-ink-soft);">Absent from DOM for Junior (not just disabled)</td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--color-border);">
+            <td style="padding:var(--space-3) var(--space-4);">Multi-line text</td>
+            <td style="padding:var(--space-3) var(--space-4);">Investigation Notes</td>
+            <td style="padding:var(--space-3) var(--space-4); color:var(--color-ink-soft);">Max length, line breaks preserved</td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--color-border);">
+            <td style="padding:var(--space-3) var(--space-4);">Checkbox</td>
+            <td style="padding:var(--space-3) var(--space-4);">Escalated</td>
+            <td style="padding:var(--space-3) var(--space-4); color:var(--color-ink-soft);">Toggles correctly, triggers conditional field</td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--color-border);">
+            <td style="padding:var(--space-3) var(--space-4);">Conditional</td>
+            <td style="padding:var(--space-3) var(--space-4);">Escalation Reason</td>
+            <td style="padding:var(--space-3) var(--space-4); color:var(--color-ink-soft);">Only visible when Escalated checked — test both states</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="callout"><strong>Crucial Distinction:</strong> There is a difference between a field that is <em>disabled</em> (visible but not editable) and a field that is <em>absent</em> (not in the HTML at all). If the AC says "absent," a disabled field is a bug.</div>
+    </div>`;
+
+    var CHAPTER_3 = `
+    <div class="chapter-content">
+      <h1>Role-Based Testing</h1>
+      <p class="chapter-intro">Testing role-based behaviour means deliberately switching perspectives to ensure permissions are enforced.</p>
+      <p>Follow this precise process for every role-gated feature:</p>
+      <ul style="padding-left:var(--space-5); color:var(--color-ink-soft); margin-bottom:var(--space-5);">
+        <li style="margin-bottom:var(--space-4);"><strong style="color:var(--color-ink);">1. Test as Role A:</strong> Verify you CAN do what the AC says you should be able to do.</li>
+        <li style="margin-bottom:var(--space-4);"><strong style="color:var(--color-ink);">2. Test as Role B:</strong> Verify you CANNOT do those things.</li>
+        <li style="margin-bottom:var(--space-4);"><strong style="color:var(--color-ink);">3. Verify Messages:</strong> Ensure the correct error messages appear when an action is blocked.</li>
+        <li style="margin-bottom:var(--space-4);"><strong style="color:var(--color-ink);">4. Check the DOM:</strong> Use Browser DevTools (F12) to confirm "absent" fields are truly gone from the HTML.</li>
+      </ul>
+      <svg viewBox="0 0 700 298" xmlns="http://www.w3.org/2000/svg" style="width:100%; margin:var(--space-6) 0; border-radius:8px; display:block;">
+        <rect width="700" height="298" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1.5"/>
+        <rect width="700" height="42" rx="8" fill="#0f172a"/>
+        <rect y="32" width="700" height="10" fill="#0f172a"/>
+        <text x="350" y="27" text-anchor="middle" font-family="inherit" font-size="13" font-weight="700" fill="white">Case Investigation — Role Permissions Map</text>
+        <rect x="328" y="48" width="164" height="28" rx="6" fill="#fffbeb" stroke="#d97706" stroke-width="1.5"/>
+        <rect x="502" y="48" width="186" height="28" rx="6" fill="#eff6ff" stroke="#2563eb" stroke-width="1.5"/>
+        <text x="18" y="67" font-family="inherit" font-size="10" font-weight="700" fill="#8892a4">PERMISSION</text>
+        <text x="410" y="67" text-anchor="middle" font-family="inherit" font-size="11" font-weight="700" fill="#d97706">Junior Investigator</text>
+        <text x="595" y="67" text-anchor="middle" font-family="inherit" font-size="11" font-weight="700" fill="#2563eb">Senior Investigator</text>
+        <line x1="323" y1="44" x2="323" y2="284" stroke="#e2e8f0" stroke-width="1"/>
+        <line x1="497" y1="44" x2="497" y2="284" stroke="#e2e8f0" stroke-width="1"/>
+        <line x1="10" y1="82" x2="690" y2="82" stroke="#e2e8f0" stroke-width="1"/>
+        <rect x="10" y="112" width="680" height="28" fill="#f1f5f9"/>
+        <rect x="10" y="168" width="680" height="28" fill="#f1f5f9"/>
+        <rect x="10" y="224" width="680" height="28" fill="#f1f5f9"/>
+        <rect x="10" y="140" width="680" height="28" fill="#fff5f5"/>
+        <rect x="10" y="196" width="680" height="28" fill="#fff5f5"/>
+        <rect x="10" y="252" width="680" height="28" fill="#fff5f5"/>
+        <text x="18" y="102" font-family="inherit" font-size="12" fill="#0f172a">Create new investigation</text>
+        <text x="410" y="102" text-anchor="middle" font-family="inherit" font-size="14" font-weight="700" fill="#16a34a">✓</text>
+        <text x="595" y="102" text-anchor="middle" font-family="inherit" font-size="14" font-weight="700" fill="#16a34a">✓</text>
+        <line x1="10" y1="110" x2="690" y2="110" stroke="#e2e8f0" stroke-width="0.5"/>
+        <text x="18" y="130" font-family="inherit" font-size="12" fill="#0f172a">Edit standard fields</text>
+        <text x="410" y="130" text-anchor="middle" font-family="inherit" font-size="14" font-weight="700" fill="#16a34a">✓</text>
+        <text x="595" y="130" text-anchor="middle" font-family="inherit" font-size="14" font-weight="700" fill="#16a34a">✓</text>
+        <line x1="10" y1="138" x2="690" y2="138" stroke="#e2e8f0" stroke-width="0.5"/>
+        <text x="18" y="158" font-family="inherit" font-size="12" fill="#0f172a">Mark Status → Closed</text>
+        <text x="370" y="150" font-family="inherit" font-size="9" fill="#dc2626">blocked</text>
+        <text x="410" y="162" text-anchor="middle" font-family="inherit" font-size="14" font-weight="700" fill="#dc2626">✗</text>
+        <text x="595" y="158" text-anchor="middle" font-family="inherit" font-size="14" font-weight="700" fill="#16a34a">✓</text>
+        <line x1="10" y1="166" x2="690" y2="166" stroke="#e2e8f0" stroke-width="0.5"/>
+        <text x="18" y="186" font-family="inherit" font-size="12" fill="#0f172a">Set case Priority</text>
+        <text x="410" y="186" text-anchor="middle" font-family="inherit" font-size="14" font-weight="700" fill="#16a34a">✓</text>
+        <text x="595" y="186" text-anchor="middle" font-family="inherit" font-size="14" font-weight="700" fill="#16a34a">✓</text>
+        <line x1="10" y1="194" x2="690" y2="194" stroke="#e2e8f0" stroke-width="0.5"/>
+        <text x="18" y="212" font-family="inherit" font-size="12" fill="#0f172a">View "Outcome" field</text>
+        <text x="370" y="206" font-family="inherit" font-size="9" fill="#dc2626">absent from DOM</text>
+        <text x="410" y="218" text-anchor="middle" font-family="inherit" font-size="14" font-weight="700" fill="#dc2626">✗</text>
+        <text x="595" y="214" text-anchor="middle" font-family="inherit" font-size="14" font-weight="700" fill="#16a34a">✓</text>
+        <line x1="10" y1="222" x2="690" y2="222" stroke="#e2e8f0" stroke-width="0.5"/>
+        <text x="18" y="242" font-family="inherit" font-size="12" fill="#0f172a">Set final Outcome</text>
+        <text x="410" y="242" text-anchor="middle" font-family="inherit" font-size="14" font-weight="700" fill="#16a34a">✓</text>
+        <text x="595" y="242" text-anchor="middle" font-family="inherit" font-size="14" font-weight="700" fill="#16a34a">✓</text>
+        <line x1="10" y1="250" x2="690" y2="250" stroke="#e2e8f0" stroke-width="0.5"/>
+        <text x="18" y="270" font-family="inherit" font-size="12" fill="#0f172a">Override escalation flag</text>
+        <text x="370" y="262" font-family="inherit" font-size="9" fill="#dc2626">blocked</text>
+        <text x="410" y="276" text-anchor="middle" font-family="inherit" font-size="14" font-weight="700" fill="#dc2626">✗</text>
+        <text x="595" y="270" text-anchor="middle" font-family="inherit" font-size="14" font-weight="700" fill="#16a34a">✓</text>
+        <line x1="10" y1="278" x2="690" y2="278" stroke="#e2e8f0" stroke-width="0.5"/>
+        <text x="350" y="292" text-anchor="middle" font-family="inherit" font-size="10" fill="#8892a4">Red rows = role gaps — verify these are truly enforced, not just visually hidden</text>
+      </svg>
+    </div>`;
+
+    var CHAPTER_4 = `
+    <div class="chapter-content">
+      <h1>The Mock CRM Screen</h1>
+      <p class="chapter-intro">You are now entering the simulated Dynamics 365 environment. Use the tool below to practice your testing skills.</p>
+      
+      <div style="display:flex; align-items:center; gap:var(--space-4); margin-bottom:var(--space-4); padding:var(--space-3) var(--space-4); background:var(--color-bg); border:1px solid var(--color-border); border-radius:var(--radius-md);">
+        <span style="font-size:var(--text-sm); color:var(--color-ink-soft);">
+          Active role: <strong id="active-role-label">Junior Investigator</strong>
+        </span>
+        <button class="btn btn-secondary" onclick="toggleRole()" style="font-size:var(--text-xs);">
+          Switch Role
+        </button>
+        <span style="font-size:var(--text-xs); color:var(--color-ink-muted);">
+          (UI only)
+        </span>
+      </div>
+
+      <div class="dyn-page">
+        <div class="dyn-topbar">
+          <div class="dyn-topbar-brand">☰ Contoso Investigations</div>
+          <div class="dyn-topbar-breadcrumb" id="breadcrumb">Cases > Case List > ...</div>
+          <div class="dyn-topbar-right">
+            <span>🔍</span><span>🔔</span><span>?</span>
+            <div class="dyn-avatar" id="user-avatar">??</div>
+          </div>
+        </div>
+        <div id="bug-banner" class="dyn-bug-banner">⚠ Training mode: bugs are active on this screen.</div>
+        <div class="dyn-layout">
+          <div class="dyn-rail">
+            <div class="dyn-rail-btn">🏠</div><div class="dyn-rail-btn">📋</div><div class="dyn-rail-btn">📊</div>
+          </div>
+          <div class="dyn-main">
+            <div class="dyn-command-bar">
+              <div id="command-breadcrumb" class="text-muted text-xs">Case Investigation</div>
+              <div style="flex:1"></div>
+              <button class="dyn-command-btn primary" onclick="handleSave(false)">Save</button>
+              <button class="dyn-command-btn" onclick="handleSave(true)">Save & Close</button>
+              <button class="dyn-command-btn" onclick="handleDiscard()">Discard</button>
+            </div>
+            <div class="dyn-content-area">
+              <aside class="dyn-sidebar">
+                <div class="dyn-sidebar-title">Investigation Summary</div>
+                <div class="dyn-sidebar-row"><span class="dyn-sidebar-label">Case ID</span><span class="dyn-sidebar-value" id="side-caseid">...</span></div>
+                <div class="dyn-sidebar-row"><span class="dyn-sidebar-label">Assigned To</span><span class="dyn-sidebar-value" id="side-assigned">...</span></div>
+                <div class="dyn-sidebar-row"><span class="dyn-sidebar-label">Role</span><span class="dyn-sidebar-value" id="side-role">...</span></div>
+                <div class="dyn-sidebar-row"><span class="dyn-sidebar-label">Date Opened</span><span class="dyn-sidebar-value" id="side-date">...</span></div>
+                <div class="dyn-sidebar-row"><span class="dyn-sidebar-label">Last Updated</span><span class="dyn-sidebar-value" id="side-updated">...</span></div>
+                <div class="dyn-sidebar-row"><span class="dyn-sidebar-label">Status</span><span class="dyn-sidebar-value"><span id="side-status-dot" class="dyn-status-dot"></span><span id="side-status-text">Open</span></span></div>
+                <div class="dyn-timeline" id="timeline"></div>
+              </aside>
+              <section class="dyn-form-panel">
+                <div class="dyn-form-section">
+                  <div class="dyn-field">
+                    <label class="dyn-label"><span id="lbl-caseTitle">Case Title</span> <span class="required-star">*</span></label>
+                    <input type="text" id="field-caseTitle" class="dyn-input" maxlength="120">
+                    <div id="err-caseTitle" class="dyn-field-error"></div>
+                    <div class="dyn-char-counter" id="count-caseTitle">0 / 120 characters</div>
+                  </div>
+                  <div style="display:grid; grid-template-columns: 1fr 1fr; gap:16px;">
+                    <div class="dyn-field">
+                      <label class="dyn-label"><span id="lbl-status">Status</span></label>
+                      <select id="field-status" class="dyn-select"></select>
+                      <div id="err-status" class="dyn-field-error"></div>
+                    </div>
+                    <div class="dyn-field">
+                      <label class="dyn-label"><span id="lbl-priority">Priority</span></label>
+                      <select id="field-priority" class="dyn-select"></select>
+                    </div>
+                  </div>
+                  <div class="dyn-field">
+                    <label class="dyn-label"><span id="lbl-dateOpened">Date Opened</span> <span class="required-star">*</span></label>
+                    <input type="date" id="field-dateOpened" class="dyn-input">
+                    <div id="err-dateOpened" class="dyn-field-error"></div>
+                  </div>
+                  <div class="dyn-field">
+                    <label class="dyn-label"><span id="lbl-notes">Investigation Notes</span></label>
+                    <textarea id="field-notes" class="dyn-textarea" maxlength="2000" rows="5"></textarea>
+                    <div class="dyn-char-counter" id="count-notes">0 / 2000 characters</div>
+                  </div>
+                  <div class="dyn-field">
+                    <label class="dyn-checkbox-row">
+                      <input type="checkbox" id="field-escalated"> <span id="lbl-escalated">Mark as escalated</span>
+                    </label>
+                    <div id="div-escalationReason" style="display:none; margin-top:12px;">
+                      <label class="dyn-label"><span id="lbl-reason">Escalation Reason</span> <span class="required-star">*</span></label>
+                      <select id="field-reason" class="dyn-select"></select>
+                      <div id="err-reason" class="dyn-field-error"></div>
+                    </div>
+                  </div>
+                  <div id="div-senior-fields" style="display:none;">
+                    <div class="dyn-senior-only">
+                      <span class="dyn-senior-label">Senior Investigator Only</span>
+                      <div class="dyn-field">
+                        <label class="dyn-label"><span id="lbl-outcome">Outcome / Resolution</span></label>
+                        <textarea id="field-outcome" class="dyn-textarea" rows="4"></textarea>
+                        <div id="err-outcome" class="dyn-field-error"></div>
+                      </div>
+                      <div class="dyn-field">
+                        <label class="dyn-label"><span id="lbl-assignedTo">Assigned To</span></label>
+                        <input type="text" id="field-assignedTo" class="dyn-input" placeholder="Search...">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </section>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button class="dyn-user-story-toggle" onclick="toggleUserStory()">📋 User Story</button>
+      <div id="user-story-panel" class="dyn-user-story-panel">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+          <h2 class="text-md font-bold">Acceptance Criteria</h2>
+          <button class="btn btn-ghost" onclick="toggleUserStory()">✕</button>
+        </div>
+        <div id="ac-list" class="text-sm"></div>
+      </div>
+    </div>
+    <div class="callout" style="margin-top:var(--space-6);"><strong>Challenge:</strong> Use the Role Switcher to verify that a Junior cannot see the Outcome field, but a Senior can.</div>
+    </div>`;
+
+    var CHAPTER_5 = `
+    <div class="chapter-content">
+      <h1>Knowledge Check</h1>
+      <p class="chapter-intro">You've explored the mock CRM. Now, let's see if you can accurately identify defects based on the Acceptance Criteria.</p>
+      <p>In the quiz, you will be given scenarios. You should use the <strong>Acceptance Criteria</strong> reference panel to verify if the behaviour described is a bug or expected functionality.</p>
+      <div class="callout">Remember: If it's not in the AC, it's not a bug — it's a gap to be flagged.</div>
+    </div>`;
+
+    var CHAPTERS = [
+      { id: 'chapter-1', title: 'What Is Dynamics 365?', type: 'content', content: CHAPTER_1 },
+      { id: 'chapter-2', title: 'Field Types & Testing', type: 'content', content: CHAPTER_2 },
+      { id: 'chapter-3', title: 'Role-Based Testing',   type: 'content', content: CHAPTER_3 },
+      { id: 'chapter-4', title: 'Interactive Mock',    type: 'content', content: CHAPTER_4 },
+      { id: 'chapter-5', title: 'Quiz Intro',           type: 'content', content: CHAPTER_5 },
+      { id: 'chapter-6', title: 'Quiz',                 type: 'quiz'    },
+    ];
+
+    var MIN_READ_SECONDS = 15;
+
+    // ── SECTION 3: INITIALISE ─────────────────────────────────────────────────────
+
+    initDB().then(function() {
+      currentSession = requireLogin();
+      if (!currentSession) return;
+      return getSetting('pageWaitTime').then(function(val) {
+        if (val !== undefined) MIN_READ_SECONDS = val;
+      }).then(function() {
+        return Promise.all([getStudent(currentSession.caseId), getProgress(currentSession.caseId)]);
+      });
+    }).then(function(results) {
+      if (!results) return;
+      currentStudent = results[0];
+      currentProgress = results[1];
+      document.getElementById('user-name-display').textContent = currentStudent.name;
+
+      if (currentProgress && currentProgress.lessonsComplete && currentProgress.lessonsComplete.includes('lesson-3')) {
+        window.location.href = 'course.html';
+        return;
+      }
+
+      var chaptersRead = (currentProgress && currentProgress.chaptersRead && currentProgress.chaptersRead['lesson-3']) || [];
+      var resumeIndex = 0;
+      for (var i = 0; i < CHAPTERS.length - 1; i++) {
+        if (chaptersRead.includes(CHAPTERS[i].id)) resumeIndex = i + 1;
+      }
+      currentChapter = Math.min(resumeIndex, CHAPTERS.length - 1);
+      buildSidebar();
+      showChapter(currentChapter);
+      startLessonTimer();
+    });
+
+    // ── SECTION 4: CHAPTER NAVIGATION ─────────────────────────────────────────────
+
+    function showChapter(index) {
+      currentChapter = index;
+      var chapter = CHAPTERS[index];
+      document.getElementById('chapter-label').textContent = 'Chapter ' + (index + 1) + ' of ' + CHAPTERS.length;
+      var pct = ((index + 1) / CHAPTERS.length * 100).toFixed(0);
+      document.getElementById('chapter-progress-fill').style.width = pct + '%';
+
+      if (chapter.type === 'quiz') {
+        document.getElementById('phase-content').style.display = 'none';
+        document.getElementById('phase-quiz').style.display = 'block';
+        startQuiz(); 
+      } else {
+        document.getElementById('chapter-content').innerHTML = chapter.content;
+        if (index === 3) setupMock();
+        
+        var btnNext = document.getElementById('btn-next');
+        btnNext.disabled = true;
+        document.getElementById('chapter-timer-notice').textContent = 'Please take a moment to read before continuing.';
+        setTimeout(function() {
+          btnNext.disabled = false;
+          document.getElementById('chapter-timer-notice').textContent = '';
+        }, MIN_READ_SECONDS * 1000);
+      }
+      document.getElementById('btn-prev').disabled = (index === 0);
+      buildSidebar();
+    }
+
+    async function nextChapter() {
+      var chapter = CHAPTERS[currentChapter];
+      if (chapter.type === 'content') await saveChapterRead(currentSession.caseId, 'lesson-3', chapter.id);
+      if (currentChapter < CHAPTERS.length - 1) showChapter(currentChapter + 1);
+    }
+
+    function prevChapter() { if (currentChapter > 0) showChapter(currentChapter - 1); }
+
+    function goToChapter(index) {
+      var chaptersRead = (currentProgress && currentProgress.chaptersRead && currentProgress.chaptersRead['lesson-3']) || [];
+      if (chaptersRead.includes(CHAPTERS[index].id)) showChapter(index);
+    }
+
+    function buildSidebar() {
+      var chaptersRead = (currentProgress && currentProgress.chaptersRead && currentProgress.chaptersRead['lesson-3']) || [];
+      var list = document.getElementById('chapter-list');
+      list.innerHTML = '';
+      CHAPTERS.forEach(function(chapter, i) {
+        var isComplete = chaptersRead.includes(chapter.id);
+        var isCurrent  = (i === currentChapter);
+        var item = document.createElement('div');
+        item.className = 'chapter-list-item' + (isCurrent ? ' current' : '') + (isComplete ? ' complete' : '');
+        if (isComplete && !isCurrent) item.onclick = function() { goToChapter(i); };
+        item.innerHTML = '<span class="chapter-check">' + (isComplete ? '✓' : (isCurrent ? '▶' : '○')) + '</span><span>' + chapter.title + '</span>';
+        list.appendChild(item);
+      });
+    }
+
+    function startLessonTimer() {
+      lessonTimer = setInterval(function() {
+        lessonSeconds++;
+        if (lessonSeconds % 30 === 0) addTimeSpent(currentSession.caseId, 'lesson-3', 30);
+      }, 1000);
+      window.addEventListener('beforeunload', function() {
+        var remainder = lessonSeconds % 30;
+        if (remainder > 0) addTimeSpent(currentSession.caseId, 'lesson-3', remainder);
+      });
+    }
+
+    // ── SECTION 5: MOCK CRM LOGIC ─────────────────────────────────────────────
+
+    function setupMock() {
+      const content = loadContent();
+      document.getElementById('breadcrumb').textContent = `Cases > Case List > ${currentSession.caseId}`;
+      document.getElementById('user-avatar').textContent = currentStudent.name.split(' ').map(n => n[0]).join('').toUpperCase().substring(0,2);
+      
+      document.getElementById('lbl-caseTitle').textContent = content.fieldLabels.caseTitle;
+      document.getElementById('lbl-status').textContent = content.fieldLabels.status;
+      document.getElementById('lbl-priority').textContent = content.fieldLabels.priority;
+      document.getElementById('lbl-dateOpened').textContent = content.fieldLabels.dateOpened;
+      document.getElementById('lbl-notes').textContent = content.fieldLabels.investigationNotes;
+      document.getElementById('lbl-escalated').textContent = content.fieldLabels.escalated;
+      document.getElementById('lbl-reason').textContent = content.fieldLabels.escalationReason;
+      document.getElementById('lbl-outcome').textContent = content.fieldLabels.outcome;
+      document.getElementById('lbl-assignedTo').textContent = content.fieldLabels.assignedTo;
+
+      populateSelect('field-status', content.dropdownOptions.status);
+      populateSelect('field-priority', content.dropdownOptions.priority);
+      populateSelect('field-reason', content.dropdownOptions.escalationReason);
+
+      document.getElementById('side-caseid').textContent = currentSession.caseId;
+      document.getElementById('side-assigned').textContent = currentStudent.name;
+      document.getElementById('side-role').textContent = content.roleNames[activeRole];
+      document.getElementById('field-dateOpened').value = getTodayString();
+      document.getElementById('side-date').textContent = getTodayString();
+      
+      applyRoleVisibility(activeRole);
+      addTimelineEntry("Case opened");
+      updateSidebarStatus();
+
+      document.getElementById('field-status').addEventListener('change', updateSidebarStatus);
+      document.getElementById('field-escalated').addEventListener('change', function() {
+        document.getElementById('div-escalationReason').style.display = this.checked ? 'block' : 'none';
+      });
+      renderACs();
+    }
+
+    function toggleRole() {
+      activeRole = (activeRole === 'junior') ? 'senior' : 'junior';
+      var label = activeRole === 'senior' ? 'Senior Investigator' : 'Junior Investigator';
+      document.getElementById('active-role-label').textContent = label;
+      document.getElementById('side-role').textContent = label;
+      applyRoleVisibility(activeRole);
+      showToast('Role switched to: ' + label, 'default');
+    }
+
+    function applyRoleVisibility(role) {
+      const isSenior = role === 'senior';
+      document.getElementById('div-senior-fields').style.display = isSenior ? 'block' : 'none';
+    }
+
+    function populateSelect(id, options) {
+      const sel = document.getElementById(id);
+      sel.innerHTML = '';
+      options.forEach(opt => {
+        const o = document.createElement('option');
+        o.value = opt; o.textContent = opt;
+        sel.appendChild(o);
+      });
+    }
+
+    function updateSidebarStatus() {
+      const status = document.getElementById('field-status').value;
+      document.getElementById('side-status-text').textContent = status;
+      const dot = document.getElementById('side-status-dot');
+      dot.className = 'dyn-status-dot';
+      const colorMap = { 'Open': 'var(--status-open)', 'In Progress': 'var(--status-in-progress)', 'Pending Review': 'var(--status-pending)', 'Resolved': 'var(--status-resolved)', 'Closed': 'var(--status-closed)' };
+      dot.style.backgroundColor = colorMap[status] || 'grey';
+    }
+
+    function addTimelineEntry(text) {
+      const time = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+      const list = document.getElementById('timeline');
+      const div = document.createElement('div');
+      div.className = 'dyn-timeline-entry';
+      div.textContent = `[${time}] ${text}`;
+      list.appendChild(div);
+    }
+
+    function renderACs() {
+      const content = loadContent();
+      const acs = [
+        `AC-1.2: Outcome/Resolution visible ONLY to Senior Investigators. Absent from DOM for Juniors.`,
+        `AC-2.1: Case Title is required. Save is blocked if blank.`,
+        `AC-2.2: Case Title max 120 chars. 121st not accepted.`,
+        `AC-3.4: When the Escalated checkbox is checked, the Escalation Reason dropdown must appear.`,
+        `AC-4.2: Junior Investigators cannot set Status to Resolved or Closed. Save is blocked with: "You do not have permission to resolve or close cases."`,
+        `AC-5.2: The Last Updated timestamp in the sidebar updates to the current time after every successful save.`,
+      ];
+      document.getElementById('ac-list').innerHTML = acs.map((ac, i) => `<div style="margin-bottom:4px;">${i+1}. ${ac}</div>`).join('');
+    }
+
+    function toggleACRef() {
+      const body = document.getElementById('ac-ref-body');
+      const toggle = document.getElementById('ac-ref-toggle');
+      const isVisible = body.classList.contains('visible');
+      body.classList.toggle('visible');
+      toggle.textContent = isVisible ? '▼' : '▲';
+    }
+
+    function buildACReference() {
+      const acs = [
+        `AC-1.2: Outcome/Resolution visible ONLY to Senior Investigators. Absent from DOM for Juniors.`,
+        `AC-2.1: Case Title is required. Save is blocked if blank.`,
+        `AC-2.2: Case Title max 120 chars. 121st not accepted.`,
+        `AC-3.4: When the Escalated checkbox is checked, the Escalation Reason dropdown must appear.`,
+        `AC-4.2: Junior Investigators cannot set Status to Resolved or Closed. Save is blocked with: "You do not have permission to resolve or close cases."`,
+        `AC-5.2: The Last Updated timestamp in the sidebar updates to the current time after every successful save.`,
+      ];
+      document.getElementById('ac-ref-body').innerHTML = acs.map((ac, i) => `<div style="margin-bottom:8px; font-size:var(--text-sm); color:var(--color-ink-soft);">${i+1}. ${ac}</div>`).join('');
+    }
+
+    // ── SECTION 6: QUIZ ENGINE ──────────────────────────────────────────────────
+
+    /**
+     * startQuiz()
+     * Initializes the quiz by fetching the lesson-3 question bank and resetting state.
+     * This was the missing function causing the quiz to not render.
+     */
+    function startQuiz() {
+      quizQuestions = getQuestionsForLesson('lesson-3');
+      currentQuestion = 0;
+      quizAnswers = [];
+      buildACReference();
+      renderQuestion();
+    }
+
+    /**
+     * renderQuestion()
+     * Displays the current question and its multiple-choice options.
+     */
+    function renderQuestion() {
+      const q = quizQuestions[currentQuestion];
+      document.getElementById('quiz-progress').textContent = `Question ${currentQuestion + 1} of ${quizQuestions.length}`;
+      document.getElementById('quiz-question-text').textContent = q.questionText;
+      const container = document.getElementById('quiz-options');
+      container.innerHTML = '';
+      q.options.forEach(opt => {
+        const btn = document.createElement('button');
+        btn.className = 'btn-answer';
+        btn.textContent = opt;
+        btn.onclick = () => handleAnswer(opt);
+        container.appendChild(btn);
+      });
+      document.getElementById('quiz-feedback').className = 'feedback-panel';
+    }
+
+    /**
+     * handleAnswer(selected)
+     * Evaluates the selected answer, provides immediate feedback, and marks the option.
+     * @param {string} selected - The text of the option clicked by the user.
+     */
+    function handleAnswer(selected) {
+      const q = quizQuestions[currentQuestion];
+      const isCorrect = (selected === q.correctAnswer);
+      quizAnswers.push({ questionId: q.questionId, selectedAnswer: selected, correct: isCorrect });
+      const btns = document.querySelectorAll('.btn-answer');
+      btns.forEach(btn => {
+        btn.disabled = true;
+        if (btn.textContent === q.correctAnswer) btn.classList.add('correct');
+        else if (btn.textContent === selected && !isCorrect) btn.classList.add('incorrect');
+      });
+      const panel = document.getElementById('quiz-feedback');
+      panel.className = 'feedback-panel visible ' + (isCorrect ? 'feedback-correct' : 'feedback-incorrect');
+      document.getElementById('feedback-title').innerHTML = isCorrect ? '✓ Correct!' : `✗ Incorrect. <br>The correct answer is: ${q.correctAnswer}`;
+      document.getElementById('feedback-body').textContent = q.explanation;
+      document.getElementById('btn-next-q').textContent = (currentQuestion === quizQuestions.length - 1) ? 'See results → ' : 'Next question → ';
+    }
+
+    /**
+     * nextQuestion()
+     * Advances to the next question in the bank or shows final results.
+     */
+    function nextQuestion() {
+      currentQuestion++;
+      if (currentQuestion < quizQuestions.length) {
+        document.getElementById('quiz-feedback').className = 'feedback-panel';
+        renderQuestion();
+      } else {
+        showResults();
+      }
+    }
+
+    /**
+     * showResults()
+     * Calculates final score and renders a detailed breakdown of all answers.
+     */
+    function showResults() {
+      document.getElementById('phase-quiz').style.display = 'none';
+      document.getElementById('phase-results').style.display = 'block';
+      const correctCount = quizAnswers.filter(a => a.correct).length;
+      const scoreText = document.getElementById('score-text');
+      scoreText.textContent = `You got ${correctCount} of ${quizQuestions.length} correct.`;
+      scoreText.className = 'text-center font-bold my-4 ' + (correctCount >= 4 ? 'text-success' : correctCount >= 2 ? 'text-warning' : 'text-muted');
+      const list = document.getElementById('results-list');
+      list.innerHTML = '';
+      quizAnswers.forEach((ans, i) => {
+        const q = quizQuestions[i];
+        const row = document.createElement('div');
+        row.className = 'result-row';
+        row.innerHTML = `<div class="result-icon">${ans.correct ? '✓' : '✗'}</div><div class="result-details">
+          <div class="font-medium text-sm">${q.questionText}</div>
+          ${!ans.correct ? `<div class="text-xs text-muted">Correct: ${q.correctAnswer}</div>` : ''}
+          <span class="explanation-toggle" onclick="toggleExp(this)">Show explanation</span>
+          <div class="explanation-text">${q.explanation}</div>
+        </div>`;
+        list.appendChild(row);
+      });
+    }
+
+    function toggleExp(el) {
+      const text = el.nextElementSibling;
+      const isHidden = text.style.display === 'none' || text.style.display === '';
+      text.style.display = isHidden ? 'block' : 'none';
+      el.textContent = isHidden ? 'Hide explanation' : 'Show explanation';
+    }
+
+    async function completeLesson() {
+      try {
+        const progress = await getProgress(currentSession.caseId);
+        const now = new Date().toISOString();
+        var remainder = lessonSeconds % 30;
+        if (remainder > 0) await addTimeSpent(currentSession.caseId, 'lesson-3', remainder);
+        const results = {};
+        quizAnswers.forEach(ans => { results[ans.questionId] = { selectedAnswer: ans.selectedAnswer, correct: ans.correct, answeredAt: now }; });
+        const updatedProgress = progress || { caseId: currentSession.caseId, lessonsComplete: [], currentLesson: 'lesson-3', quizResults: {}, placementSurvey: { completed: true, recommendedPath: [], answers: [] }, certificateEarned: false };
+        updatedProgress.quizResults['lesson-3'] = results;
+        if (!updatedProgress.lessonsComplete.includes('lesson-3')) {
+          updatedProgress.lessonsComplete.push('lesson-3');
+        }
+        updatedProgress.lastActivity = now;
+        await saveProgress(updatedProgress);
+        window.location.href = 'course.html';
+      } catch (e) { console.error(e); showToast('Error saving progress', 'error'); }
+    }
+
+    function handleLogout() {
+      var remainder = lessonSeconds % 30;
+      if (remainder > 0 && currentSession) addTimeSpent(currentSession.caseId, 'lesson-3', remainder);
+      endSession();
+      window.location.href = 'index.html';
+    }
+  </script>
+</body>
+</html>

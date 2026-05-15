@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lesson 1: Testing 101 — QA Onboarding</title>
+  <link rel="stylesheet" href="css/main.css">
+  <style>
+    /* ── LESSON SPECIFIC LAYOUT ──────────────────────────────────────────────── */
+    .lesson-layout {
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      gap: 0;
+      min-height: calc(100vh - 57px); /* full height minus topbar */
+    }
+
+    /* Sidebar */
+    .chapter-sidebar {
+      background: var(--color-surface);
+      border-right: 1px solid var(--color-border);
+      padding: var(--space-6);
+      position: sticky;
+      top: 57px;  /* topbar height */
+      align-self: start;
+      height: calc(100vh - 57px);
+      overflow-y: auto;
+    }
+    .chapter-sidebar-title {
+      font-size: var(--text-sm);
+      font-weight: var(--weight-bold);
+      color: var(--color-ink-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: var(--space-5);
+    }
+    .chapter-list { display: flex; flex-direction: column; gap: var(--space-2); }
+    .chapter-list-item {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      padding: var(--space-2) var(--space-3);
+      border-radius: var(--radius-sm);
+      font-size: var(--text-sm);
+      color: var(--color-ink-muted);
+      cursor: default;
+      transition: background var(--transition-fast);
+    }
+    .chapter-list-item.current {
+      background: var(--color-primary-light);
+      color: var(--color-primary);
+      font-weight: var(--weight-medium);
+    }
+    .chapter-list-item.complete {
+      color: var(--color-success);
+      cursor: pointer;
+    }
+    .chapter-list-item.complete:hover { background: var(--color-success-light); }
+    .chapter-check { font-size: 12px; }
+
+    /* Main content */
+    .chapter-main {
+      padding: var(--space-10) var(--space-12);
+      max-width: 720px;
+    }
+    .chapter-progress-bar {
+      height: 4px;
+      background: var(--color-border);
+      border-radius: var(--radius-full);
+      margin-bottom: var(--space-2);
+    }
+    .chapter-progress-fill {
+      height: 100%;
+      background: var(--color-primary);
+      border-radius: var(--radius-full);
+      transition: width var(--transition-slow);
+    }
+    .chapter-label {
+      font-size: var(--text-xs);
+      color: var(--color-ink-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: var(--space-8);
+    }
+    .chapter-nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: var(--space-10);
+      padding-top: var(--space-6);
+      border-top: 1px solid var(--color-border);
+    }
+    .chapter-timer-notice {
+      font-size: var(--text-xs);
+      color: var(--color-ink-muted);
+      font-style: italic;
+    }
+
+    /* Lesson content typography */
+    .chapter-content h1 {
+      font-size: var(--text-xl);
+      font-weight: var(--weight-bold);
+      color: var(--color-ink);
+      margin-bottom: var(--space-2);
+    }
+    .chapter-content .chapter-intro {
+      font-size: var(--text-md);
+      color: var(--color-ink-muted);
+      margin-bottom: var(--space-8);
+      line-height: var(--leading-loose);
+    }
+    .chapter-content p {
+      color: var(--color-ink-soft);
+      margin-bottom: var(--space-5);
+      line-height: var(--leading-base);
+    }
+    .callout {
+      background: var(--color-primary-light);
+      border-left: 4px solid var(--color-primary);
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      padding: var(--space-4) var(--space-5);
+      margin: var(--space-6) 0;
+      font-size: var(--text-sm);
+      color: var(--color-ink);
+      font-style: italic;
+    }
+    .callout strong { color: var(--color-primary); font-style: normal; }
+    .comparison-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-4);
+      margin: var(--space-6) 0;
+    }
+    .comparison-card {
+      padding: var(--space-4);
+      border-radius: var(--radius-sm);
+      font-size: var(--text-sm);
+    }
+    .comparison-card.bad  { background: var(--color-error-light);   border: 1px solid var(--color-error-border);   }
+    .comparison-card.good { background: var(--color-success-light); border: 1px solid var(--color-success-border); }
+    .comparison-label { font-weight: var(--weight-bold); margin-bottom: var(--space-2); }
+    .comparison-card.bad  .comparison-label { color: var(--color-error);   }
+    .comparison-card.good .comparison-label { color: var(--color-success); }
+    
+    /* Quiz phase styles - preserved from original */
+    .quiz-card {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-sm);
+      padding: var(--space-8);
+      text-align: center;
+      max-width: 720px;
+      margin: 0 auto;
+    }
+    .answer-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-4);
+      margin: var(--space-6) 0;
+    }
+    @media (max-width: 480px) {
+      .answer-grid { grid-template-columns: 1fr; }
+    }
+    .btn-answer {
+      padding: var(--space-6);
+      font-size: var(--text-lg);
+      border: 2px solid var(--color-border);
+      background: var(--color-surface);
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      transition: all var(--transition-fast);
+    }
+    .btn-answer.correct {
+      border-color: var(--color-success);
+      background: var(--color-success-light);
+      color: var(--color-success);
+    }
+    .btn-answer.incorrect {
+      border-color: var(--color-error);
+      background: var(--color-error-light);
+      color: var(--color-error);
+    }
+    .feedback-panel {
+      margin-top: var(--space-6);
+      padding: var(--space-6);
+      border-radius: var(--radius-md);
+      text-align: left;
+      display: none;
+    }
+    .feedback-panel.visible { display: block; }
+    .feedback-correct { background: var(--color-success-light); border: 1px solid var(--color-success-border); }
+    .feedback-incorrect { background: var(--color-error-light); border: 1px solid var(--color-error-border); }
+
+    .result-row {
+      display: flex;
+      gap: var(--space-4);
+      padding: var(--space-4);
+      border-bottom: 1px solid var(--color-border);
+      align-items: flex-start;
+    }
+    .result-row:last-child { border-bottom: none; }
+    .result-icon { font-size: var(--text-lg); }
+    .result-details { flex: 1; }
+    .explanation-toggle {
+      font-size: var(--text-xs);
+      color: var(--color-primary);
+      cursor: pointer;
+      text-decoration: underline;
+      margin-top: var(--space-2);
+      display: block;
+    }
+    .explanation-text {
+      font-size: var(--text-sm);
+      color: var(--color-ink-soft);
+      margin-top: var(--space-2);
+      display: none;
+    }
+    #phase-results {
+      padding: var(--space-10) var(--space-12);
+      max-width: 720px;
+      margin: 0 auto;
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="topbar flex justify-between items-center">
+    <div class="topbar-brand">QA Onboarding Training</div>
+    <div class="topbar-user flex items-center gap-4">
+      <span id="user-name-display"></span>
+      <button class="btn btn-ghost" onclick="signOut()">Sign Out</button>
+    </div>
+  </nav>
+
+  <!-- PHASE 1: LEARNING CONTENT -->
+  <div id="phase-content" class="lesson-layout">
+    <aside class="chapter-sidebar">
+      <div class="chapter-sidebar-title">Lesson 1 — Testing 101</div>
+      <nav class="chapter-list" id="chapter-list">
+        <!-- Injected by buildSidebar() -->
+      </nav>
+    </aside>
+
+    <main class="chapter-main">
+      <div class="chapter-progress-bar">
+        <div class="chapter-progress-fill" id="chapter-progress-fill"></div>
+      </div>
+      <div class="chapter-label" id="chapter-label">Chapter 1 of 5</div>
+      <div id="chapter-content"></div>
+
+      <div class="chapter-nav">
+        <button class="btn btn-ghost" id="btn-prev" onclick="prevChapter()">← Previous</button>
+        <div id="chapter-timer-notice" class="chapter-timer-notice"></div>
+        <button class="btn btn-primary" id="btn-next" onclick="nextChapter()">Next →</button>
+      </div>
+    </main>
+  </div>
+
+  <!-- PHASE 2: THE QUIZ -->
+  <div id="phase-quiz" style="display: none;">
+    <div class="quiz-card">
+      <span class="label-caps" id="quiz-progress">Question 1 of 5</span>
+      <p id="quiz-question-text" class="text-md font-medium my-6"></p>
+      
+      <div class="answer-grid">
+        <button class="btn-answer" onclick="handleAnswer('True')">True</button>
+        <button class="btn-answer" onclick="handleAnswer('False')">False</button>
+      </div>
+
+      <div id="quiz-feedback" class="feedback-panel">
+        <div id="feedback-title" class="font-bold mb-2"></div>
+        <div id="feedback-body" class="text-sm"></div>
+        <div class="footer-nav" style="justify-content: center; margin-top: var(--space-6);">
+          <button class="btn btn-primary" id="btn-next-q" onclick="nextQuestion()">Next question → </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PHASE 3: THE RESULTS -->
+  <div id="phase-results" style="display: none;">
+    <div class="quiz-card" style="text-align: left;">
+      <h2 class="text-lg font-bold text-center">Quiz Complete</h2>
+      <p id="score-text" class="text-center font-bold my-4"></p>
+      
+      <div id="results-list" class="my-6">
+        <!-- Per-question results -->
+      </div>
+
+      <div class="footer-nav" style="justify-content: center;">
+        <button class="btn btn-primary" onclick="completeLesson()">Complete Lesson</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script src="data/content.js"></script>
+  <script src="data/quiz-questions.js"></script>
+  <script src="js/db.js"></script>
+  <script src="js/app.js"></script>
+
+  <script>
+    /**
+     * lesson-1.html — Page Logic
+     * ==========================
+     * WHAT THIS PAGE DOES:
+     * - Provides a multi-chapter guided learning experience for "Testing 101".
+     * - Tracks time spent per lesson and marks chapters as read in IndexedDB.
+     * - Transitions to a True/False quiz upon completion of all reading.
+     *
+     * FLOW:
+     * 1. initDB() opens connection.
+     * 2. requireLogin() ensures user is authenticated.
+     * 3. Page checks if lesson-1 is already complete (redirects if so).
+     * 4. Page resumes from the first unread chapter.
+     * 5. User reads through 5 chapters (15s lock per chapter).
+     * 6. User takes the quiz, views results, and triggers completeLesson().
+     *
+     * READS FROM:   IndexedDB via db.js
+     * WRITES TO:    IndexedDB via db.js
+     * REDIRECTS TO: index.html (logout), course.html (completion)
+     */
+
+    // ── SECTION 1: PAGE STATE ──────────────────────────────────────────────────
+
+    var currentSession  = null;   // CaseId and role
+    var currentStudent  = null;   // Full student record
+    var currentProgress = null;   // Progress record
+    var currentChapter  = 0;      // 0-based index
+    var lessonTimer     = null;   // Timer handle
+    var lessonSeconds   = 0;      // Cumulative seconds for this session
+
+    // Quiz state
+    var quizQuestions   = [];
+    var currentQuestion = 0;
+    var quizAnswers     = [];
+
+    // ── SECTION 2: CHAPTER DEFINITIONS ────────────────────────────────────────
+
+    var CHAPTER_1 = `
+    <div class="chapter-content">
+      <h1>What Is Software Testing, and Why Does It Exist?</h1>
+      <p class="chapter-intro">Before we talk about how to test, it helps to understand why testing exists at all.</p>
+      <p>Imagine you write a feature that calculates an invoice total. It works perfectly on your machine. You ship it. Three days later, a client's invoice comes out to $0.00. The developer checked it. The designer reviewed it. Nobody tested it under the specific conditions that exposed the bug. That's what testers are for.</p>
+      <p><strong>Software testing</strong> is the systematic process of checking that software does what it is supposed to do — and does <em>not</em> do what it is not supposed to do. Both halves of that sentence matter equally.</p>
+      <h2 style="margin: var(--space-6) 0 var(--space-3);">Verification vs. Validation</h2>
+      <p>These two words sound similar but mean different things in QA:</p>
+      <ul style="padding-left:var(--space-5); color:var(--color-ink-soft); margin-bottom:var(--space-5);">
+        <li style="margin-bottom:var(--space-3);"><strong>Verification</strong> — Did we build it right? Does the software match its technical specification?</li>
+        <li style="margin-bottom:var(--space-3);"><strong>Validation</strong> — Did we build the right thing? Does the software actually solve the user's real problem?</li>
+      </ul>
+      <p>A feature can pass verification and fail validation. Good QA catches both.</p>
+      <h2 style="margin: var(--space-6) 0 var(--space-3);">Why Can't Developers Test Their Own Code?</h2>
+      <p>They can — and should. But developers make poor end-to-end testers of their own work due to <strong>Proximity bias</strong> (testing only the intended path) and <strong>Assumption blindness</strong> (using the software "correctly" because they know how it works).</p>
+      <!-- SVG: Bar chart — relative cost of finding a bug at each stage of the cycle -->
+      <!-- Heights are visual/proportional (log-inspired), not mathematically exact -->
+      <svg viewBox="0 0 700 270" xmlns="http://www.w3.org/2000/svg" style="width:100%; margin:var(--space-6) 0; border-radius:8px; background:#f8fafc; display:block;">
+        <!-- Chart title -->
+        <text x="350" y="28" text-anchor="middle" font-family="inherit" font-size="14" font-weight="700" fill="#0f172a">The Cost of a Bug at Each Stage</text>
+        <text x="350" y="46" text-anchor="middle" font-family="inherit" font-size="11" fill="#8892a4">The later a bug is caught, the more expensive it is to fix</text>
+        <!-- Y-axis line -->
+        <line x1="100" y1="40" x2="100" y2="222" stroke="#e2e8f0" stroke-width="1.5"/>
+        <!-- Baseline -->
+        <line x1="100" y1="222" x2="630" y2="222" stroke="#e2e8f0" stroke-width="2"/>
+        <!-- Y-axis label -->
+        <text x="88" y="224" text-anchor="end" font-family="inherit" font-size="10" fill="#8892a4">$</text>
+        <text x="88" y="50" text-anchor="end" font-family="inherit" font-size="10" fill="#8892a4">$$$</text>
+        <!-- Bar 1: Development — 1× cost (green) -->
+        <rect x="130" y="192" width="80" height="30" fill="#16a34a" rx="4"/>
+        <text x="170" y="184" text-anchor="middle" font-family="inherit" font-size="12" font-weight="700" fill="#16a34a">1×</text>
+        <text x="170" y="240" text-anchor="middle" font-family="inherit" font-size="11" fill="#0f172a" font-weight="600">Development</text>
+        <!-- Bar 2: QA — 5× cost (amber) -->
+        <rect x="250" y="142" width="80" height="80" fill="#d97706" rx="4"/>
+        <text x="290" y="134" text-anchor="middle" font-family="inherit" font-size="12" font-weight="700" fill="#d97706">5×</text>
+        <text x="290" y="240" text-anchor="middle" font-family="inherit" font-size="11" fill="#0f172a" font-weight="600">QA</text>
+        <!-- Bar 3: UAT — 15× cost (orange) -->
+        <rect x="370" y="92" width="80" height="130" fill="#ea580c" rx="4"/>
+        <text x="410" y="84" text-anchor="middle" font-family="inherit" font-size="12" font-weight="700" fill="#ea580c">15×</text>
+        <text x="410" y="240" text-anchor="middle" font-family="inherit" font-size="11" fill="#0f172a" font-weight="600">UAT</text>
+        <!-- Bar 4: Production — 100× cost (red) -->
+        <rect x="490" y="42" width="80" height="180" fill="#dc2626" rx="4"/>
+        <text x="530" y="34" text-anchor="middle" font-family="inherit" font-size="13" font-weight="700" fill="#dc2626">100×</text>
+        <text x="530" y="240" text-anchor="middle" font-family="inherit" font-size="11" fill="#0f172a" font-weight="600">Production</text>
+        <!-- Source note -->
+        <text x="350" y="260" text-anchor="middle" font-family="inherit" font-size="10" fill="#8892a4">Based on IBM Systems Sciences Institute research — relative cost multipliers by phase</text>
+      </svg>
+      <div class="callout"><strong>Key takeaway:</strong> A tester's job is not to break software. It is to find out what reality is, and compare it honestly against what was promised.</div>
+    </div>`;
+
+    var CHAPTER_2 = `
+    <div class="chapter-content">
+      <h1>Agile and Where You Fit</h1>
+      <p class="chapter-intro">Understanding the process around you makes you a better tester. Here's how Agile works and where your role sits inside it.</p>
+      <!-- System Tester role callout — added so the team understands their specific title -->
+      <div class="callout" style="margin-bottom:var(--space-5);">
+        <strong>Your role: System Tester.</strong> You verify that the full application works end-to-end — that every feature behaves exactly as the Acceptance Criteria specify. This is called <em>System Testing</em>. UAT (User Acceptance Testing) comes after you and is performed by the client or business owners. Your job is to catch issues <em>before</em> they ever reach UAT.
+      </div>
+      <h2 style="margin: var(--space-6) 0 var(--space-3);">What Is Agile?</h2>
+      <p>Agile is a way of building software in short, focused cycles called <strong>sprints</strong> — usually one to two weeks long.</p>
+      <!-- SVG: Agile Sprint Cycle — 5 pill-shaped nodes with a dashed return arc -->
+      <!-- The Test node is slightly larger and highlighted — this is where QA sits -->
+      <!-- Marker IDs use unique prefix "l1ch2" to avoid collisions with other chapter SVGs -->
+      <svg viewBox="0 0 700 185" xmlns="http://www.w3.org/2000/svg" style="width:100%; margin:var(--space-6) 0; border-radius:8px; background:#f8fafc; display:block;">
+        <defs>
+          <!-- Forward arrow marker (points right) -->
+          <marker id="l1ch2-fwd" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto">
+            <path d="M0,0 L0,6 L8,3 z" fill="#8892a4"/>
+          </marker>
+          <!-- Return arc arrow marker (points left, toward Plan) -->
+          <marker id="l1ch2-back" markerWidth="8" markerHeight="8" refX="1" refY="3" orient="auto">
+            <path d="M8,0 L8,6 L0,3 z" fill="#8892a4"/>
+          </marker>
+        </defs>
+        <!-- Diagram title and subtitle -->
+        <text x="350" y="22" text-anchor="middle" font-family="inherit" font-size="13" font-weight="700" fill="#0f172a">The Agile Sprint Cycle</text>
+        <text x="350" y="38" text-anchor="middle" font-family="inherit" font-size="10" fill="#8892a4">Each sprint is 1–2 weeks. QA testing runs throughout — not just at the end.</text>
+        <!-- Forward connector arrows between pills -->
+        <line x1="141" y1="82" x2="158" y2="82" stroke="#8892a4" stroke-width="1.5" marker-end="url(#l1ch2-fwd)"/>
+        <line x1="281" y1="82" x2="298" y2="82" stroke="#8892a4" stroke-width="1.5" marker-end="url(#l1ch2-fwd)"/>
+        <line x1="421" y1="82" x2="438" y2="82" stroke="#8892a4" stroke-width="1.5" marker-end="url(#l1ch2-fwd)"/>
+        <line x1="561" y1="82" x2="578" y2="82" stroke="#8892a4" stroke-width="1.5" marker-end="url(#l1ch2-fwd)"/>
+        <!-- Dashed return arc — Release looping back to Plan for next sprint -->
+        <path d="M 668,100 C 678,150 678,162 350,162 C 22,162 22,150 32,100"
+              stroke="#8892a4" stroke-width="1.5" fill="none" stroke-dasharray="5,3"
+              marker-end="url(#l1ch2-back)"/>
+        <text x="350" y="178" text-anchor="middle" font-family="inherit" font-size="10" fill="#8892a4">↺  start next sprint</text>
+        <!-- Pill 1: Plan (blue) -->
+        <rect x="20" y="60" width="120" height="44" rx="22" fill="#eff6ff" stroke="#2563eb" stroke-width="1.5"/>
+        <text x="80" y="87" text-anchor="middle" font-family="inherit" font-size="12" font-weight="700" fill="#2563eb">Plan</text>
+        <!-- Pill 2: Develop (purple) -->
+        <rect x="160" y="60" width="120" height="44" rx="22" fill="#faf5ff" stroke="#7c3aed" stroke-width="1.5"/>
+        <text x="220" y="87" text-anchor="middle" font-family="inherit" font-size="12" font-weight="700" fill="#7c3aed">Develop</text>
+        <!-- Pill 3: Test (amber) — slightly taller to emphasise this is QA's stage -->
+        <rect x="300" y="54" width="120" height="56" rx="28" fill="#fffbeb" stroke="#d97706" stroke-width="2.5"/>
+        <text x="360" y="80" text-anchor="middle" font-family="inherit" font-size="12" font-weight="700" fill="#d97706">Test</text>
+        <text x="360" y="96" text-anchor="middle" font-family="inherit" font-size="9" fill="#d97706">← you are here</text>
+        <!-- Pill 4: Review (green) -->
+        <rect x="440" y="60" width="120" height="44" rx="22" fill="#f0fdf4" stroke="#16a34a" stroke-width="1.5"/>
+        <text x="500" y="87" text-anchor="middle" font-family="inherit" font-size="12" font-weight="700" fill="#16a34a">Review</text>
+        <!-- Pill 5: Release (teal) -->
+        <rect x="580" y="60" width="100" height="44" rx="22" fill="#f0f9ff" stroke="#0891b2" stroke-width="1.5"/>
+        <text x="630" y="87" text-anchor="middle" font-family="inherit" font-size="12" font-weight="700" fill="#0891b2">Release</text>
+      </svg>
+      <h2 style="margin: var(--space-6) 0 var(--space-3);">Agile vs. Waterfall Testing</h2>
+      <div class="comparison-grid">
+        <div class="comparison-card bad">
+          <div class="comparison-label">❌ Waterfall</div>
+          All development finishes first. Then testing begins. The gap is long. Bugs found late are expensive to fix.
+        </div>
+        <div class="comparison-card good">
+          <div class="comparison-label">✓ Agile</div>
+          Testing runs alongside development every sprint. Issues surface early when they're cheap to fix.
+        </div>
+      </div>
+      <h2 style="margin: var(--space-6) 0 var(--space-3);">What Is UAT?</h2>
+      <p><strong>User Acceptance Testing (UAT)</strong> is the final check before a feature ships. It answers: does this do what the business agreed it would do?</p>
+      <div class="callout"><strong>Key takeaway:</strong> In Agile, you are not a gatekeeper at the end of the line. You are a quality signal throughout the whole process.</div>
+    </div>`;
+
+    var CHAPTER_3 = `
+    <div class="chapter-content">
+      <h1>Types of Testing</h1>
+      <p class="chapter-intro">There are many kinds of testing. Knowing which type does what helps you understand where your work fits in the bigger picture.</p>
+      <table style="width:100%; border-collapse:collapse; margin:var(--space-6) 0; font-size:var(--text-sm);">
+        <thead style="background:var(--color-bg); border-bottom:2px solid var(--color-border);">
+          <tr>
+            <th style="text-align:left; padding:var(--space-3) var(--space-4); color:var(--color-ink-muted); font-size:var(--text-xs); text-transform:uppercase;">Type</th>
+            <th style="text-align:left; padding:var(--space-3) var(--space-4); color:var(--color-ink-muted); font-size:var(--text-xs); text-transform:uppercase;">What It Tests</th>
+            <th style="text-align:left; padding:var(--space-3) var(--space-4); color:var(--color-ink-muted); font-size:var(--text-xs); text-transform:uppercase;">Analogy</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="border-bottom:1px solid var(--color-border);">
+            <td style="padding:var(--space-3) var(--space-4);"><strong>Unit</strong></td>
+            <td style="padding:var(--space-3) var(--space-4); color:var(--color-ink-soft);">A single function in isolation</td>
+            <td style="padding:var(--space-3) var(--space-4); color:var(--color-ink-soft);">Testing one light switch works</td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--color-border);">
+            <td style="padding:var(--space-3) var(--space-4);"><strong>Integration</strong></td>
+            <td style="padding:var(--space-3) var(--space-4); color:var(--color-ink-soft);">How components work together</td>
+            <td style="padding:var(--space-3) var(--space-4); color:var(--color-ink-soft);">Testing the switch connects to the light</td>
+          </tr>
+          <!-- System row highlighted — this team does system-level testing against AC, not just UAT -->
+          <tr style="border-bottom:1px solid var(--color-border); background:var(--color-primary-light);">
+            <td style="padding:var(--space-3) var(--space-4);"><strong>System ← You are here</strong></td>
+            <td style="padding:var(--space-3) var(--space-4); color:var(--color-ink-soft);">The whole application end-to-end</td>
+            <td style="padding:var(--space-3) var(--space-4); color:var(--color-ink-soft);">Walking every room, checking every switch</td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--color-border);">
+            <td style="padding:var(--space-3) var(--space-4);"><strong>UAT</strong></td>
+            <td style="padding:var(--space-3) var(--space-4); color:var(--color-ink-soft);">Whether it meets the user's real needs</td>
+            <td style="padding:var(--space-3) var(--space-4); color:var(--color-ink-soft);">Asking if this is the house they wanted</td>
+          </tr>
+          <tr>
+            <td style="padding:var(--space-3) var(--space-4);"><strong>Regression</strong></td>
+            <td style="padding:var(--space-3) var(--space-4); color:var(--color-ink-soft);">That new changes didn't break old things</td>
+            <td style="padding:var(--space-3) var(--space-4); color:var(--color-ink-soft);">Checking no other switches broke</td>
+          </tr>
+        </tbody>
+      </table>
+      <!-- SVG: Example test case document — TC-001, complete and correctly filled in -->
+      <!-- Shows the structure a tester should follow for every test case they write -->
+      <svg viewBox="0 0 700 300" xmlns="http://www.w3.org/2000/svg" style="width:100%; margin:var(--space-6) 0; border-radius:8px; display:block;">
+        <!-- Card background -->
+        <rect width="700" height="300" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1.5"/>
+        <!-- Header bar -->
+        <rect width="700" height="42" rx="8" fill="#2563eb"/>
+        <rect y="32" width="700" height="10" fill="#2563eb"/>
+        <text x="20" y="27" font-family="inherit" font-size="13" font-weight="700" fill="white">Test Case Document  —  TC-001</text>
+        <!-- PASS badge in header -->
+        <rect x="604" y="11" width="76" height="22" rx="11" fill="#16a34a"/>
+        <text x="642" y="27" text-anchor="middle" font-family="inherit" font-size="11" font-weight="700" fill="white">✓  PASS</text>
+        <!-- Meta fields row -->
+        <rect x="10" y="48" width="680" height="24" rx="0" fill="#eff6ff"/>
+        <text x="20" y="64" font-family="inherit" font-size="10" fill="#3b82f6">AC Ref:</text>
+        <text x="60" y="64" font-family="inherit" font-size="10" fill="#1e40af" font-weight="700">AC-4.2</text>
+        <text x="130" y="64" font-family="inherit" font-size="10" fill="#3b82f6">Priority:</text>
+        <text x="178" y="64" font-family="inherit" font-size="10" fill="#1e40af" font-weight="700">High</text>
+        <text x="230" y="64" font-family="inherit" font-size="10" fill="#3b82f6">Tester:</text>
+        <text x="270" y="64" font-family="inherit" font-size="10" fill="#1e40af">E. Hannah</text>
+        <text x="370" y="64" font-family="inherit" font-size="10" fill="#3b82f6">Date:</text>
+        <text x="398" y="64" font-family="inherit" font-size="10" fill="#1e40af">2026-05-10</text>
+        <text x="490" y="64" font-family="inherit" font-size="10" fill="#3b82f6">Environment:</text>
+        <text x="558" y="64" font-family="inherit" font-size="10" fill="#1e40af">Chrome / Windows 11</text>
+        <!-- Test title -->
+        <text x="20" y="92" font-family="inherit" font-size="10" font-weight="700" fill="#8892a4">TEST TITLE</text>
+        <rect x="10" y="98" width="680" height="26" rx="4" fill="white" stroke="#e2e8f0" stroke-width="1"/>
+        <text x="20" y="116" font-family="inherit" font-size="12" fill="#0f172a" font-weight="600">Verify duplicate warning displays when Subject Name matches an open case</text>
+        <!-- Preconditions -->
+        <text x="20" y="140" font-family="inherit" font-size="10" font-weight="700" fill="#8892a4">PRECONDITION</text>
+        <rect x="10" y="146" width="680" height="22" rx="4" fill="white" stroke="#e2e8f0" stroke-width="1"/>
+        <text x="20" y="162" font-family="monospace" font-size="11" fill="#323130">Logged in as Senior Investigator. Case CASE-0091 (Smith, J) is already open in the system.</text>
+        <!-- Steps -->
+        <text x="20" y="186" font-family="inherit" font-size="10" font-weight="700" fill="#8892a4">TEST STEPS</text>
+        <rect x="10" y="192" width="680" height="52" rx="4" fill="white" stroke="#e2e8f0" stroke-width="1"/>
+        <text x="20" y="210" font-family="monospace" font-size="11" fill="#323130">1. Click New Case in the left nav to open a blank Case Investigation form</text>
+        <text x="20" y="226" font-family="monospace" font-size="11" fill="#323130">2. In the Subject Name field, type "Smith, J" (matching the existing open case)</text>
+        <text x="20" y="242" font-family="monospace" font-size="11" fill="#323130">3. Click Save or tab out of the Subject Name field</text>
+        <!-- Expected result -->
+        <text x="20" y="262" font-family="inherit" font-size="10" font-weight="700" fill="#16a34a">EXPECTED RESULT  (AC-4.2)</text>
+        <rect x="10" y="268" width="680" height="22" rx="4" fill="#f0fdf4" stroke="#16a34a" stroke-width="1"/>
+        <text x="20" y="284" font-family="monospace" font-size="11" fill="#166534">Warning banner displays: "Possible duplicate — Case CASE-0091 already open." Dismiss button present.</text>
+      </svg>
+    </div>`;
+
+    var CHAPTER_4 = `
+    <div class="chapter-content">
+      <h1>The Bug Lifecycle</h1>
+      <p class="chapter-intro">A bug doesn't just get filed and disappear. It travels through a defined set of states.</p>
+      <svg viewBox="0 0 700 200" xmlns="http://www.w3.org/2000/svg" style="width:100%; margin:var(--space-6) 0;">
+        <rect x="10" y="60" width="110" height="44" rx="6" fill="#eff6ff" stroke="#2563eb" stroke-width="1.5"/>
+        <text x="65" y="86" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="600" fill="#2563eb">New</text>
+        <line x1="120" y1="82" x2="170" y2="82" stroke="#8892a4" stroke-width="1.5" marker-end="url(#arrow)"/>
+        <rect x="170" y="60" width="110" height="44" rx="6" fill="#fffbeb" stroke="#d97706" stroke-width="1.5"/>
+        <text x="225" y="86" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="600" fill="#d97706">Active</text>
+        <line x1="280" y1="82" x2="330" y2="82" stroke="#8892a4" stroke-width="1.5" marker-end="url(#arrow)"/>
+        <rect x="330" y="60" width="110" height="44" rx="6" fill="#faf5ff" stroke="#7c3aed" stroke-width="1.5"/>
+        <text x="385" y="86" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="600" fill="#7c3aed">Resolved</text>
+        <line x1="440" y1="82" x2="490" y2="82" stroke="#8892a4" stroke-width="1.5" marker-end="url(#arrow)"/>
+        <rect x="490" y="60" width="110" height="44" rx="6" fill="#f0faf4" stroke="#16a34a" stroke-width="1.5"/>
+        <text x="545" y="86" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="600" fill="#16a34a">Closed</text>
+        <line x1="385" y1="104" x2="385" y2="150" stroke="#dc2626" stroke-width="1.5" stroke-dasharray="4,3"/>
+        <rect x="330" y="150" width="110" height="36" rx="6" fill="#fff5f5" stroke="#dc2626" stroke-width="1.5"/>
+        <text x="385" y="172" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="600" fill="#dc2626">Re-opened</text>
+        <line x1="330" y1="168" x2="225" y2="168" stroke="#dc2626" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrow-red)"/>
+        <line x1="225" y1="168" x2="225" y2="104" stroke="#dc2626" stroke-width="1.5" stroke-dasharray="4,3"/>
+        <defs>
+          <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#8892a4"/></marker>
+          <marker id="arrow-red" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#dc2626"/></marker>
+        </defs>
+      </svg>
+      <div class="callout"><strong>Critical distinction:</strong> "Resolved" means the developer thinks it's done. "Closed" means <em>you</em> have confirmed it's done.</div>
+    </div>`;
+
+    var CHAPTER_5 = `
+    <div class="chapter-content">
+      <h1>What Makes a Good Test Case?</h1>
+      <p class="chapter-intro">A test case is a documented set of conditions used to verify a specific behaviour.</p>
+      <h2 style="margin: var(--space-6) 0 var(--space-3);">The Three Required Parts</h2>
+      <ul style="padding-left:var(--space-5); color:var(--color-ink-soft); margin-bottom:var(--space-6);">
+        <li style="margin-bottom:var(--space-4);"><strong>Preconditions</strong> — What state must the system be in? Who is logged in?</li>
+        <li style="margin-bottom:var(--space-4);"><strong>Steps</strong> — What exact actions do you perform? Numbered and specific.</li>
+        <li style="margin-bottom:var(--space-4);"><strong>Expected result</strong> — What should happen? Reference the Acceptance Criteria.</li>
+      </ul>
+      <div class="comparison-grid">
+        <div class="comparison-card bad">
+          <div class="comparison-label">❌ Bad test case</div>
+          <p style="margin:0; font-size:var(--text-sm); color:var(--color-ink-soft);">"Check that the status field works."</p>
+        </div>
+        <div class="comparison-card good">
+          <div class="comparison-label">✓ Good test case</div>
+          <p style="margin:0 0 var(--space-2); font-size:var(--text-sm); color:var(--color-ink-soft);">
+            <strong>Precondition:</strong> Logged in as Junior Investigator.<br>
+            <strong>Steps:</strong> 1. Set Status to "Closed", 2. Click Save.<br>
+            <strong>Expected:</strong> Save blocked. Validation reads: "You do not have permission..."
+          </p>
+        </div>
+      </div>
+      <div class="callout"><strong>Key takeaway:</strong> Write expected results so precisely that there is only one possible reading.</div>
+      <p style="margin-top:var(--space-6);">You've now covered the foundations. Click Next to test your understanding.</p>
+    </div>`;
+
+    var CHAPTERS = [
+      { id: 'chapter-1', title: 'What Is Testing?',         type: 'content', content: CHAPTER_1 },
+      { id: 'chapter-2', title: 'Agile and Where You Fit',  type: 'content', content: CHAPTER_2 },
+      { id: 'chapter-3', title: 'Types of Testing',         type: 'content', content: CHAPTER_3 },
+      { id: 'chapter-4', title: 'The Bug Lifecycle',        type: 'content', content: CHAPTER_4 },
+      { id: 'chapter-5', title: 'Writing Test Cases',       type: 'content', content: CHAPTER_5 },
+      { id: 'chapter-6', title: 'Quiz',                     type: 'quiz'    },
+    ];
+
+    var MIN_READ_SECONDS = 15;
+
+    // ── SECTION 3: INITIALISE ─────────────────────────────────────────────────────
+
+    initDB().then(function() {
+      currentSession = requireLogin();
+      if (!currentSession) return;
+      return getSetting('pageWaitTime').then(function(val) {
+        if (val !== undefined) MIN_READ_SECONDS = val;
+      }).then(function() {
+        return Promise.all([
+          getStudent(currentSession.caseId),
+          getProgress(currentSession.caseId)
+        ]);
+      });
+    }).then(function(results) {
+      if (!results) return;
+      currentStudent = results[0];
+      currentProgress = results[1];
+
+      document.getElementById('user-name-display').textContent = currentStudent.name;
+
+      // Guard: If lesson-1 is already complete, redirect
+      if (currentProgress && currentProgress.lessonsComplete && currentProgress.lessonsComplete.includes('lesson-1')) {
+        window.location.href = 'course.html';
+        return;
+      }
+
+      // Determine resume point
+      var chaptersRead = (currentProgress && currentProgress.chaptersRead && currentProgress.chaptersRead['lesson-1']) || [];
+      var resumeIndex = 0;
+      for (var i = 0; i < CHAPTERS.length - 1; i++) {
+        if (chaptersRead.includes(CHAPTERS[i].id)) resumeIndex = i + 1;
+      }
+      currentChapter = Math.min(resumeIndex, CHAPTERS.length - 1);
+
+      buildSidebar();
+      showChapter(currentChapter);
+      startLessonTimer();
+    });
+
+    // ── SECTION 4: CHAPTER NAVIGATION ─────────────────────────────────────────────
+
+    /**
+     * showChapter(index)
+     * Handles UI transitions between content chapters and the quiz phase.
+     * @param {number} index - 0-based index of CHAPTERS array.
+     */
+    function showChapter(index) {
+      currentChapter = index;
+      var chapter = CHAPTERS[index];
+
+      document.getElementById('chapter-label').textContent = 'Chapter ' + (index + 1) + ' of ' + CHAPTERS.length;
+      var pct = ((index + 1) / CHAPTERS.length * 100).toFixed(0);
+      document.getElementById('chapter-progress-fill').style.width = pct + '%';
+
+      if (chapter.type === 'quiz') {
+        document.getElementById('phase-content').style.display = 'none';
+        document.getElementById('phase-quiz').style.display = 'block';
+        startQuiz();
+      } else {
+        document.getElementById('chapter-content').innerHTML = chapter.content;
+        var btnNext = document.getElementById('btn-next');
+        btnNext.disabled = true;
+        document.getElementById('chapter-timer-notice').textContent = 'Please take a moment to read before continuing.';
+
+        setTimeout(function() {
+          btnNext.disabled = false;
+          document.getElementById('chapter-timer-notice').textContent = '';
+        }, MIN_READ_SECONDS * 1000);
+      }
+      document.getElementById('btn-prev').disabled = (index === 0);
+      buildSidebar();
+    }
+
+    async function nextChapter() {
+      var chapter = CHAPTERS[currentChapter];
+      if (chapter.type === 'content') {
+        await saveChapterRead(currentSession.caseId, 'lesson-1', chapter.id);
+      }
+      if (currentChapter < CHAPTERS.length - 1) showChapter(currentChapter + 1);
+    }
+
+    function prevChapter() {
+      if (currentChapter > 0) showChapter(currentChapter - 1);
+    }
+
+    function goToChapter(index) {
+      var chaptersRead = (currentProgress && currentProgress.chaptersRead && currentProgress.chaptersRead['lesson-1']) || [];
+      if (chaptersRead.includes(CHAPTERS[index].id)) showChapter(index);
+    }
+
+    // ── SECTION 5: SIDEBAR ────────────────────────────────────────────────────────
+
+    function buildSidebar() {
+      var chaptersRead = (currentProgress && currentProgress.chaptersRead && currentProgress.chaptersRead['lesson-1']) || [];
+      var list = document.getElementById('chapter-list');
+      list.innerHTML = '';
+
+      CHAPTERS.forEach(function(chapter, i) {
+        var isComplete = chaptersRead.includes(chapter.id);
+        var isCurrent  = (i === currentChapter);
+        var item = document.createElement('div');
+        item.className = 'chapter-list-item' + (isCurrent ? ' current' : '') + (isComplete ? ' complete' : '');
+        if (isComplete && !isCurrent) item.onclick = function() { goToChapter(i); };
+        item.innerHTML = '<span class="chapter-check">' + (isComplete ? '✓' : (isCurrent ? '▶' : '○')) + '</span>' + '<span>' + chapter.title + '</span>';
+        list.appendChild(item);
+      });
+    }
+
+    // ── SECTION 6: TIME TRACKING ───────────────────────────────────────────────────
+
+    function startLessonTimer() {
+      lessonTimer = setInterval(function() {
+        lessonSeconds++;
+        if (lessonSeconds % 30 === 0) addTimeSpent(currentSession.caseId, 'lesson-1', 30);
+      }, 1000);
+
+      window.addEventListener('beforeunload', function() {
+        var remainder = lessonSeconds % 30;
+        if (remainder > 0) addTimeSpent(currentSession.caseId, 'lesson-1', remainder);
+      });
+    }
+
+    // ── SECTION 7: QUIZ ENGINE ────────────────────────────────────────────────────
+
+    function startQuiz() {
+      quizQuestions = getQuestionsForLesson('lesson-1');
+      currentQuestion = 0;
+      quizAnswers = [];
+      renderQuestion();
+    }
+
+    function renderQuestion() {
+      const q = quizQuestions[currentQuestion];
+      document.getElementById('quiz-progress').textContent = `Question ${currentQuestion + 1} of ${quizQuestions.length}`;
+      document.getElementById('quiz-question-text').textContent = q.questionText;
+      
+      const btns = document.querySelectorAll('.btn-answer');
+      btns.forEach(b => {
+        b.className = 'btn-answer';
+        b.disabled = false;
+      });
+      document.getElementById('quiz-feedback').className = 'feedback-panel';
+    }
+
+    function handleAnswer(selected) {
+      const q = quizQuestions[currentQuestion];
+      const isCorrect = (selected === q.correctAnswer);
+      
+      quizAnswers.push({
+        questionId: q.questionId,
+        selectedAnswer: selected,
+        correct: isCorrect
+      });
+
+      const btns = document.querySelectorAll('.btn-answer');
+      btns.forEach(b => {
+        b.disabled = true;
+        if (b.textContent === q.correctAnswer) b.classList.add('correct');
+        else if (b.textContent === selected && !isCorrect) b.classList.add('incorrect');
+      });
+
+      const panel = document.getElementById('quiz-feedback');
+      panel.className = 'feedback-panel visible ' + (isCorrect ? 'feedback-correct' : 'feedback-incorrect');
+      document.getElementById('feedback-title').innerHTML = isCorrect ? '✓ Correct!' : `✗ Incorrect. <br>The correct answer is: ${q.correctAnswer}`;
+      document.getElementById('feedback-body').textContent = q.explanation;
+
+      document.getElementById('btn-next-q').textContent = 
+        (currentQuestion === quizQuestions.length - 1) ? 'See results → ' : 'Next question → ';
+    }
+
+    function nextQuestion() {
+      currentQuestion++;
+      if (currentQuestion < quizQuestions.length) {
+        document.getElementById('quiz-feedback').className = 'feedback-panel';
+        renderQuestion();
+      } else {
+        showResults();
+      }
+    }
+
+    function showResults() {
+      document.getElementById('phase-quiz').style.display = 'none';
+      document.getElementById('phase-results').style.display = 'block';
+
+      const correctCount = quizAnswers.filter(a => a.correct).length;
+      const scoreText = document.getElementById('score-text');
+      scoreText.textContent = `You got ${correctCount} of ${quizQuestions.length} correct.`;
+      
+      if (correctCount >= 4) scoreText.className = 'text-center font-bold my-4 text-success';
+      else if (correctCount >= 2) scoreText.className = 'text-center font-bold my-4 text-warning';
+      else scoreText.className = 'text-center font-bold my-4 text-muted';
+
+      const list = document.getElementById('results-list');
+      list.innerHTML = '';
+
+      quizAnswers.forEach((ans, i) => {
+        const q = quizQuestions[i];
+        const row = document.createElement('div');
+        row.className = 'result-row';
+        row.innerHTML = `
+          <div class="result-icon">${ans.correct ? '✓' : '✗'}</div>
+          <div class="result-details">
+            <div class="font-medium text-sm">${q.questionText}</div>
+            ${!ans.correct ? `<div class="text-xs text-muted">Correct: ${q.correctAnswer}</div>` : ''}
+            <span class="explanation-toggle" onclick="toggleExp(this)">Show explanation</span>
+            <div class="explanation-text">${q.explanation}</div>
+          </div>
+        `;
+        list.appendChild(row);
+      });
+    }
+
+    function toggleExp(el) {
+      const text = el.nextElementSibling;
+      const isHidden = text.style.display === 'none' || text.style.display === '';
+      text.style.display = isHidden ? 'block' : 'none';
+      el.textContent = isHidden ? 'Hide explanation' : 'Show explanation';
+    }
+
+    async function completeLesson() {
+      try {
+        const progress = await getProgress(currentSession.caseId);
+        const now = new Date().toISOString();
+
+        // Save total time spent including the final remaining seconds
+        var remainder = lessonSeconds % 30;
+        if (remainder > 0) await addTimeSpent(currentSession.caseId, 'lesson-1', remainder);
+
+        const results = {};
+        quizAnswers.forEach(ans => {
+          results[ans.questionId] = {
+            selectedAnswer: ans.selectedAnswer,
+            correct: ans.correct,
+            answeredAt: now
+          };
+        });
+
+        const updatedProgress = progress || {
+          caseId: currentSession.caseId,
+          lessonsComplete: [],
+          currentLesson: 'lesson-1',
+          quizResults: {},
+          placementSurvey: { completed: true, recommendedPath: [], answers: [] },
+          certificateEarned: false,
+        };
+
+        updatedProgress.quizResults['lesson-1'] = results;
+        if (!updatedProgress.lessonsComplete.includes('lesson-1')) {
+          updatedProgress.lessonsComplete.push('lesson-1');
+        }
+        updatedProgress.lastActivity = now;
+
+        await saveProgress(updatedProgress);
+        window.location.href = 'course.html';
+      } catch (e) {
+        console.error(e);
+        showToast('Error saving progress', 'error');
+      }
+    }
+
+    function handleLogout() {
+      var remainder = lessonSeconds % 30;
+      if (remainder > 0 && currentSession) addTimeSpent(currentSession.caseId, 'lesson-1', remainder);
+      endSession();
+      window.location.href = 'index.html';
+    }
+  </script>
+</body>
+</html>

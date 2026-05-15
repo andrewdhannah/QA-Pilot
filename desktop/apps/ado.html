@@ -1,0 +1,990 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>Azure DevOps — Bug</title>
+        <style>
+            :root {
+                --ado-bg: #ffffff;
+                --ado-bg-alt: #f3f2f1;
+                --ado-surface: #ffffff;
+                --ado-border: #d0d0d0;
+                --ado-border-subtle: #e1dfdd;
+                --ado-text: #201f1e;
+                --ado-text-subtle: #605e5c;
+                --ado-blue: #0078d4;
+                --ado-blue-dark: #005a9e;
+                --ado-header-bg: #0078d4;
+                --ado-header-text: #ffffff;
+                --ado-nav-bg: #f3f2f1;
+                --ado-nav-icon: #201f1e;
+                --ado-status-new: #f2f2f2;
+                --ado-status-active: #e1f3ff;
+                --ado-status-resolved: #dff6dd;
+                --ado-status-closed: #f3f2f1;
+                --ado-required: #a4262c;
+            }
+
+            body.theme-dark {
+                --ado-bg: #1b1a19;
+                --ado-bg-alt: #252423;
+                --ado-surface: #252423;
+                --ado-border: #3b3a39;
+                --ado-border-subtle: #3b3a39;
+                --ado-text: #f3f2f1;
+                --ado-text-subtle: #c8c6c4;
+                --ado-blue: #3aa0ff;
+                --ado-blue-dark: #2893f5;
+                --ado-header-bg: #004578;
+                --ado-header-text: #ffffff;
+                --ado-nav-bg: #201f1e;
+                --ado-nav-icon: #f3f2f1;
+                --ado-status-new: #323130;
+                --ado-status-active: #24374a;
+                --ado-status-resolved: #294025;
+                --ado-status-closed: #252423;
+                --ado-required: #f1707b;
+            }
+
+            body {
+                margin: 0;
+                font-family:
+                    system-ui,
+                    -apple-system,
+                    "Segoe UI",
+                    sans-serif;
+                font-size: 13px;
+                background: var(--ado-bg);
+                color: var(--ado-text);
+                display: flex;
+                height: 100vh;
+                overflow: hidden;
+            }
+
+            .ado-nav {
+                width: 52px;
+                background: var(--ado-nav-bg);
+                border-right: 1px solid var(--ado-border-subtle);
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                padding-top: 8px;
+                box-sizing: border-box;
+            }
+
+            .ado-nav-logo {
+                width: 32px;
+                height: 32px;
+                border-radius: 4px;
+                background: var(--ado-blue);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin-bottom: 12px;
+            }
+
+            .ado-nav-logo span {
+                color: #fff;
+                font-size: 16px;
+                font-weight: 600;
+            }
+
+            .ado-nav-item {
+                width: 100%;
+                height: 40px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+            }
+
+            .ado-nav-item svg {
+                width: 18px;
+                height: 18px;
+                fill: var(--ado-nav-icon);
+            }
+
+            .ado-main {
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+                background: var(--ado-bg-alt);
+            }
+
+            .ado-header {
+                height: 40px;
+                background: var(--ado-header-bg);
+                color: var(--ado-header-text);
+                display: flex;
+                align-items: center;
+                padding: 0 12px;
+                box-sizing: border-box;
+            }
+
+            .ado-header-left {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+            }
+
+            .ado-header-project {
+                font-size: 12px;
+                opacity: 0.9;
+            }
+
+            .ado-header-title {
+                font-size: 13px;
+                font-weight: 600;
+            }
+
+            .ado-header-right {
+                margin-left: auto;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                font-size: 12px;
+            }
+
+            .ado-header-avatar {
+                width: 24px;
+                height: 24px;
+                border-radius: 50%;
+                background: rgba(255, 255, 255, 0.2);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 11px;
+            }
+
+            .ado-subnav {
+                height: 32px;
+                background: var(--ado-surface);
+                border-bottom: 1px solid var(--ado-border-subtle);
+                display: flex;
+                align-items: center;
+                padding: 0 12px;
+                box-sizing: border-box;
+                gap: 12px;
+                font-size: 12px;
+            }
+
+            .ado-subnav-item {
+                cursor: pointer;
+                color: var(--ado-text-subtle);
+            }
+
+            .ado-subnav-item.active {
+                color: var(--ado-text);
+                font-weight: 600;
+            }
+
+            .ado-body {
+                flex: 1;
+                display: flex;
+                padding: 12px;
+                box-sizing: border-box;
+                overflow: hidden;
+            }
+
+            .ado-form {
+                flex: 2;
+                background: var(--ado-surface);
+                border: 1px solid var(--ado-border-subtle);
+                border-radius: 2px;
+                padding: 12px;
+                box-sizing: border-box;
+                display: flex;
+                flex-direction: column;
+                overflow: hidden;
+            }
+
+            .ado-form-header {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                margin-bottom: 8px;
+            }
+
+            .ado-workitem-id {
+                font-size: 12px;
+                color: var(--ado-text-subtle);
+            }
+
+            .ado-workitem-title {
+                font-size: 14px;
+                font-weight: 600;
+            }
+
+            .ado-status-pill {
+                display: inline-flex;
+                align-items: center;
+                padding: 2px 8px;
+                border-radius: 999px;
+                font-size: 11px;
+            }
+
+            .ado-status-pill[data-status="New"] {
+                background: var(--ado-status-new);
+                color: var(--ado-text-subtle);
+            }
+
+            .ado-status-pill[data-status="Active"] {
+                background: var(--ado-status-active);
+                color: #005a9e;
+            }
+
+            .ado-status-pill[data-status="Resolved"] {
+                background: var(--ado-status-resolved);
+                color: #107c10;
+            }
+
+            .ado-status-pill[data-status="Closed"] {
+                background: var(--ado-status-closed);
+                color: var(--ado-text-subtle);
+            }
+
+            .ado-form-tabs {
+                display: flex;
+                gap: 12px;
+                border-bottom: 1px solid var(--ado-border-subtle);
+                margin-bottom: 8px;
+                font-size: 12px;
+            }
+
+            .ado-form-tab {
+                padding: 4px 0;
+                cursor: pointer;
+                color: var(--ado-text-subtle);
+                border-bottom: 2px solid transparent;
+            }
+
+            .ado-form-tab.active {
+                color: var(--ado-text);
+                border-bottom-color: var(--ado-blue);
+                font-weight: 600;
+            }
+
+            .ado-form-grid {
+                display: grid;
+                grid-template-columns: 2fr 1fr;
+                gap: 8px 16px;
+                flex: 1;
+                overflow-y: auto;
+                padding-right: 4px;
+            }
+
+            .ado-field {
+                display: flex;
+                flex-direction: column;
+                font-size: 12px;
+            }
+
+            .ado-field-label {
+                display: flex;
+                align-items: center;
+                gap: 4px;
+                margin-bottom: 2px;
+                color: var(--ado-text-subtle);
+            }
+
+            .ado-field-required-bar {
+                width: 3px;
+                height: 12px;
+                background: var(--ado-required);
+                border-radius: 2px;
+            }
+
+            .ado-field input,
+            .ado-field select,
+            .ado-field textarea {
+                font-size: 12px;
+                padding: 4px 6px;
+                border-radius: 2px;
+                border: 1px solid var(--ado-border);
+                background: var(--ado-bg);
+                color: var(--ado-text);
+                box-sizing: border-box;
+            }
+
+            .ado-field textarea {
+                resize: vertical;
+                min-height: 80px;
+            }
+
+            .ado-error {
+                color: var(--ado-required);
+                font-size: 11px;
+                margin-bottom: 6px;
+                display: none;
+            }
+
+            .ado-side {
+                flex: 1;
+                margin-left: 8px;
+                display: flex;
+                flex-direction: column;
+                gap: 8px;
+            }
+
+            .ado-card {
+                background: var(--ado-surface);
+                border: 1px solid var(--ado-border-subtle);
+                border-radius: 2px;
+                padding: 8px;
+                box-sizing: border-box;
+                font-size: 12px;
+            }
+
+            .ado-card-title {
+                font-weight: 600;
+                margin-bottom: 4px;
+            }
+
+            .ado-btn {
+                border: 1px solid transparent;
+                background: transparent;
+                padding: 4px 8px;
+                border-radius: 2px;
+                font-size: 12px;
+                display: inline-flex;
+                align-items: center;
+                gap: 4px;
+                cursor: pointer;
+                color: var(--ado-text);
+            }
+
+            .ado-btn-primary {
+                background: var(--ado-blue);
+                color: #fff;
+                border-color: var(--ado-blue-dark);
+            }
+
+            .ado-btn-primary:hover {
+                background: var(--ado-blue-dark);
+            }
+
+            .ado-btn:hover {
+                background: var(--ado-bg-alt);
+                border-color: var(--ado-border-subtle);
+            }
+
+            .ado-confirmation {
+                display: none;
+                background: #dff6dd;
+                color: #107c10;
+                border: 1px solid #a7d8a5;
+                border-radius: 2px;
+                padding: 8px 12px;
+                font-size: 12px;
+                margin-bottom: 8px;
+                align-items: center;
+                gap: 6px;
+            }
+
+            body.theme-dark .ado-confirmation {
+                background: #294025;
+                color: #8dd48b;
+                border-color: #3b6b38;
+            }
+
+            .ado-confirmation.visible {
+                display: flex;
+            }
+
+            .ado-confirmation-icon {
+                width: 16px;
+                height: 16px;
+                flex-shrink: 0;
+            }
+
+            .ado-confirmation-text {
+                flex: 1;
+            }
+        </style>
+    </head>
+    <body class="theme-light">
+        <div class="ado-nav">
+            <div class="ado-nav-logo">
+                <span>A</span>
+            </div>
+            <div class="ado-nav-item">
+                <svg viewBox="0 0 16 16">
+                    <path d="M2 3h12v3H2V3zm0 4h8v3H2V7zm0 4h5v3H2v-3z"></path>
+                </svg>
+            </div>
+            <div class="ado-nav-item">
+                <svg viewBox="0 0 16 16">
+                    <path d="M3 2h10v4H3V2zm0 5h4v7H3V7zm6 0h4v7H9V7z"></path>
+                </svg>
+            </div>
+            <div class="ado-nav-item">
+                <svg viewBox="0 0 16 16">
+                    <path
+                        d="M2 3h12v2H2V3zm0 4h12v2H2V7zm0 4h12v2H2v-2z"
+                    ></path>
+                </svg>
+            </div>
+        </div>
+
+        <div class="ado-main">
+            <div class="ado-header">
+                <div class="ado-header-left">
+                    <div class="ado-header-title">Azure DevOps</div>
+                    <div class="ado-header-project">Contoso / Web</div>
+                </div>
+                <div class="ado-header-right">
+                    <span id="ado-role-label">Senior Investigator</span>
+                    <div class="ado-header-avatar">SI</div>
+                </div>
+            </div>
+
+            <div class="ado-subnav">
+                <div class="ado-subnav-item active">Boards</div>
+                <div class="ado-subnav-item">Repos</div>
+                <div class="ado-subnav-item">Pipelines</div>
+                <div class="ado-subnav-item">Test Plans</div>
+                <div class="ado-subnav-item">Artifacts</div>
+            </div>
+
+            <div class="ado-body">
+                <div class="ado-form">
+                    <div class="ado-confirmation" id="ado-confirmation">
+                        <svg class="ado-confirmation-icon" viewBox="0 0 16 16">
+                            <path d="M8 1a7 7 0 110 14A7 7 0 018 1zm3.36 4.65l-.7-.71a.3.3 0 00-.22-.1.3.3 0 00-.22.1L7.07 8l-1.3-1.29a.3.3 0 00-.22-.1.3.3 0 00-.22.1l-.71.71a.3.3 0 000 .44L6.64 9.5l-.71.71a.3.3 0 000 .44l.7.71a.3.3 0 00.22.1.3.3 0 00.22-.1l.71-.71 2.58-2.58a.3.3 0 000-.44z" fill="currentColor"/>
+                        </svg>
+                        <span class="ado-confirmation-text" id="ado-confirmation-text">Bug saved successfully.</span>
+                    </div>
+                    <div id="ado-error" class="ado-error"></div>
+
+                    <div class="ado-form-header">
+                        <div>
+                            <div class="ado-workitem-id" id="ado-workitem-id">
+                                Bug • ID will be assigned on save
+                            </div>
+                            <div
+                                class="ado-workitem-title"
+                                id="ado-workitem-title"
+                            >
+                                New bug
+                            </div>
+                        </div>
+                        <div>
+                            <span
+                                class="ado-status-pill"
+                                id="ado-status-pill"
+                                data-status="New"
+                                >New</span
+                            >
+                        </div>
+                    </div>
+
+                    <div class="ado-form-tabs">
+                        <div class="ado-form-tab active" data-tab="details">
+                            Details
+                        </div>
+                        <div class="ado-form-tab" data-tab="development">
+                            Development
+                        </div>
+                        <div class="ado-form-tab" data-tab="related">
+                            Related Work
+                        </div>
+                        <div class="ado-form-tab" data-tab="history">
+                            History
+                        </div>
+                    </div>
+
+                    <div class="ado-form-grid">
+                        <div>
+                            <div class="ado-field">
+                                <div class="ado-field-label">
+                                    <div class="ado-field-required-bar"></div>
+                                    <span>Title</span>
+                                </div>
+                                <input id="ado-title" />
+                            </div>
+
+                            <div class="ado-field">
+                                <div class="ado-field-label">
+                                    <span>Area</span>
+                                </div>
+                                <input
+                                    id="ado-area"
+                                    value="Contoso\\Web - Azure DevOps"
+                                />
+                            </div>
+
+                            <div class="ado-field">
+                                <div class="ado-field-label">
+                                    <span>Linked Case</span>
+                                </div>
+                                <input id="ado-linked-case" readonly />
+                            </div>
+
+                            <div class="ado-field">
+                                <div class="ado-field-label">
+                                    <div class="ado-field-required-bar"></div>
+                                    <span>Repro Steps</span>
+                                </div>
+                                <textarea id="ado-repro" rows="6"></textarea>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="ado-field">
+                                <div class="ado-field-label">
+                                    <span>Severity</span>
+                                </div>
+                                <select id="ado-severity">
+                                    <option value="1 - Critical">
+                                        1 - Critical
+                                    </option>
+                                    <option value="2 - High">2 - High</option>
+                                    <option value="3 - Medium">
+                                        3 - Medium
+                                    </option>
+                                    <option value="4 - Low">4 - Low</option>
+                                </select>
+                            </div>
+
+                            <div class="ado-field">
+                                <div class="ado-field-label">
+                                    <span>Assigned To</span>
+                                </div>
+                                <input
+                                    id="ado-assigned"
+                                    value="Senior Investigator"
+                                />
+                            </div>
+
+                            <!-- AC REFERENCE FIELD (Required) -->
+                            <div class="ado-field" id="ado-ac-ref-group">
+                                <div class="ado-field-label">
+                                    <div class="ado-field-required-bar"></div>
+                                    <span>AC Reference</span>
+                                </div>
+                                <input
+                                    id="ado-ac-ref"
+                                    placeholder="e.g. AC-2.1"
+                                    maxlength="20"
+                                />
+                                <div
+                                    id="ado-ac-ref-error"
+                                    class="ado-error"
+                                    style="display:none;"
+                                >
+                                    AC Reference is required.
+                                </div>
+                            </div>
+
+                            <div class="ado-field">
+                                <div class="ado-field-label">
+                                    <span>State</span>
+                                </div>
+                                <select id="ado-state">
+                                    <option value="New">New</option>
+                                    <option value="Active">Active</option>
+                                    <option value="Resolved">Resolved</option>
+                                    <option value="Closed">Closed</option>
+                                </select>
+                            </div>
+
+                            <div class="ado-field">
+                                <div class="ado-field-label">
+                                    <span>Tags</span>
+                                </div>
+                                <input
+                                    id="ado-tags"
+                                    placeholder="e.g. payments; checkout; regression"
+                                />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 8px">
+                        <button
+                            class="ado-btn ado-btn-primary"
+                            id="ado-btn-save"
+                        >
+                            Save
+                        </button>
+                        <button class="ado-btn" id="ado-btn-activate">
+                            Set Active
+                        </button>
+                        <button class="ado-btn" id="ado-btn-resolve">
+                            Resolve
+                        </button>
+                    </div>
+                </div>
+
+                <div class="ado-side">
+                    <div class="ado-card">
+                        <div class="ado-card-title">Links</div>
+                        <div id="ado-links-body">No related work items.</div>
+                    </div>
+
+                    <div class="ado-card">
+                        <div class="ado-card-title">Case context</div>
+                        <div id="ado-case-context">
+                            Load a scenario to see case details.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+   <script>
+    (function () {
+        const OS = window.parent.OS || window.parent.QA_OS;
+
+        const state = {
+            role: "senior",
+            scenarioBugId: "bug-001",
+            bugData: null,
+            linkedCase: null,
+            draft: {
+                title: "",
+                area: "Contoso\\Web - Azure DevOps",
+                severity: "2 - High",
+                state: "New",
+                repro: "",
+                assigned: "Senior Investigator",
+                tags: "",
+                acRef: "", // AC Reference
+            },
+            theme: "light",
+        };
+
+        if (OS && OS.loadAppState) {
+            const saved = OS.loadAppState("ado");
+            if (saved) Object.assign(state, saved);
+        }
+
+        window.addEventListener("message", (event) => {
+            var msg = event.data;
+            if (!msg) return;
+
+            if (msg.type === "APP_BOOT" && msg.appId === "ado") {
+                state.role = msg.role || state.role;
+                state.theme = msg.theme || state.theme || "light";
+                applyTheme();
+                applyRole(state.role);
+                loadScenario(state.scenarioBugId);
+                renderAll();
+            }
+
+            if (msg.type === "ROLE_CHANGE") {
+                state.role = msg.role;
+                applyRole(msg.role);
+                renderHeader();
+                renderForm();
+                if (OS && OS.notify)
+                    OS.notify(
+                        "Azure DevOps: role changed to " + msg.role + "."
+                    );
+            }
+        });
+
+        function applyTheme() {
+            document.body.classList.remove("theme-light", "theme-dark");
+            document.body.classList.add(
+                state.theme === "dark" ? "theme-dark" : "theme-light",
+            );
+        }
+
+        function applyRole(role) {
+            state.role = role;
+            var severityEl = document.getElementById("ado-severity");
+            if (!severityEl) return;
+            var currentValue = severityEl.value;
+            var allSeverities = [
+                "1 - Critical",
+                "2 - High",
+                "3 - Medium",
+                "4 - Low",
+            ];
+            var juniorSeverities = ["3 - Medium", "4 - Low"];
+            var options =
+                role === "junior" ? juniorSeverities : allSeverities;
+            severityEl.innerHTML = "";
+            options.forEach(function (opt) {
+                var option = document.createElement("option");
+                option.value = opt;
+                option.textContent = opt;
+                severityEl.appendChild(option);
+            });
+            if (options.indexOf(currentValue) !== -1) {
+                severityEl.value = currentValue;
+            } else {
+                severityEl.value = options[0];
+                state.draft.severity = options[0];
+            }
+        }
+
+        function persist() {
+            if (OS && OS.saveAppState) {
+                OS.saveAppState("ado", state);
+            }
+        }
+
+        function loadScenario(id) {
+            if (!OS || !OS.loadScenario) return;
+            const s = OS.loadScenario(id);
+            if (!s) return;
+
+            state.scenarioBugId = id;
+            state.bugData = s;
+            state.linkedCase = s.linkedCase
+                ? OS.loadScenario(s.linkedCase)
+                : null;
+
+            if (!state.draft.title) state.draft.title = s.title || "";
+            if (!state.draft.severity)
+                state.draft.severity = s.severity || "2 - High";
+            if (!state.draft.repro && s.reproSteps) {
+                state.draft.repro = s.reproSteps.join("\n");
+            }
+            persist();
+        }
+
+        function renderAll() {
+            renderHeader();
+            renderForm();
+            wireInteractions();
+        }
+
+        function renderHeader() {
+            const roleLabel = document.getElementById("ado-role-label");
+            roleLabel.textContent =
+                state.role === "senior"
+                    ? "Senior Investigator"
+                    : "Junior Investigator";
+
+            const idEl = document.getElementById("ado-workitem-id");
+            const titleEl = document.getElementById("ado-workitem-title");
+            const statusPill = document.getElementById("ado-status-pill");
+
+            idEl.textContent =
+                state.bugData && state.bugData.id
+                    ? "Bug " + state.bugData.id
+                    : "Bug • ID will be assigned on save";
+
+            const title =
+                state.draft.title ||
+                (state.bugData && state.bugData.title) ||
+                "New bug";
+            titleEl.textContent = title;
+
+            const stateVal = state.draft.state || "New";
+            statusPill.textContent = stateVal;
+            statusPill.setAttribute("data-status", stateVal);
+        }
+
+        function renderForm() {
+            const titleEl = document.getElementById("ado-title");
+            const areaEl = document.getElementById("ado-area");
+            const linkedCaseEl = document.getElementById("ado-linked-case");
+            const reproEl = document.getElementById("ado-repro");
+            const severityEl = document.getElementById("ado-severity");
+            const assignedEl = document.getElementById("ado-assigned");
+            const stateEl = document.getElementById("ado-state");
+            const tagsEl = document.getElementById("ado-tags");
+            const acRefEl = document.getElementById("ado-ac-ref");
+            const linksBody = document.getElementById("ado-links-body");
+            const caseContext = document.getElementById("ado-case-context");
+
+            applyRole(state.role);
+
+            titleEl.value = state.draft.title || "";
+            areaEl.value =
+                state.draft.area || "Contoso\\Web - Azure DevOps";
+            reproEl.value = state.draft.repro || "";
+            severityEl.value = state.draft.severity || "2 - High";
+            assignedEl.value = state.draft.assigned || "";
+            stateEl.value = state.draft.state || "New";
+            tagsEl.value = state.draft.tags || "";
+            acRefEl.value = state.draft.acRef || "";
+
+            linkedCaseEl.value =
+                (state.linkedCase && state.linkedCase.id) ||
+                (state.bugData && state.bugData.linkedCase) ||
+                "";
+
+            if (state.linkedCase) {
+                linksBody.textContent = "Linked to case " + state.linkedCase.id;
+                caseContext.textContent =
+                    state.linkedCase.summary ||
+                    state.linkedCase.title ||
+                    "";
+            } else {
+                linksBody.textContent = "No related work items.";
+                caseContext.textContent =
+                    "Load a scenario to see case details.";
+            }
+        }
+
+        function wireInteractions() {
+            const titleEl = document.getElementById("ado-title");
+            const areaEl = document.getElementById("ado-area");
+            const reproEl = document.getElementById("ado-repro");
+            const severityEl = document.getElementById("ado-severity");
+            const assignedEl = document.getElementById("ado-assigned");
+            const stateEl = document.getElementById("ado-state");
+            const tagsEl = document.getElementById("ado-tags");
+            const acRefEl = document.getElementById("ado-ac-ref");
+            const errorEl = document.getElementById("ado-error");
+
+            function syncDraft() {
+                state.draft.title = titleEl.value;
+                state.draft.area = areaEl.value;
+                state.draft.repro = reproEl.value;
+                state.draft.severity = severityEl.value;
+                state.draft.assigned = assignedEl.value;
+                state.draft.state = stateEl.value;
+                state.draft.tags = tagsEl.value;
+                state.draft.acRef = acRefEl.value;
+                persist();
+                renderHeader();
+            }
+
+            titleEl.oninput = syncDraft;
+            areaEl.oninput = syncDraft;
+            reproEl.oninput = syncDraft;
+            severityEl.onchange = syncDraft;
+            assignedEl.oninput = syncDraft;
+            stateEl.onchange = syncDraft;
+            tagsEl.oninput = syncDraft;
+            acRefEl.oninput = syncDraft;
+
+            // Simple dirty tracking flag (for future unsaved-changes UX)
+            function markDirty() {
+                state._dirty = true;
+            }
+
+            [
+                titleEl,
+                areaEl,
+                reproEl,
+                severityEl,
+                assignedEl,
+                stateEl,
+                tagsEl,
+                acRefEl,
+            ].forEach(function (el) {
+                if (el) el.addEventListener("input", markDirty);
+            });
+
+            const saveBtn = document.getElementById("ado-btn-save");
+            const activateBtn = document.getElementById("ado-btn-activate");
+            const resolveBtn = document.getElementById("ado-btn-resolve");
+
+            function validate() {
+                const missing = [];
+                if (!titleEl.value.trim()) missing.push("Title");
+                if (!reproEl.value.trim()) missing.push("Repro Steps");
+
+                // AC Reference required
+                const acRefErr =
+                    document.getElementById("ado-ac-ref-error");
+                if (!acRefEl || !acRefEl.value.trim()) {
+                    if (acRefErr) acRefErr.style.display = "block";
+                    missing.push("AC Reference");
+                } else {
+                    if (acRefErr) acRefErr.style.display = "none";
+                }
+
+                if (missing.length) {
+                    errorEl.textContent =
+                        "Cannot save. Please fill: " +
+                        missing.join(", ");
+                    errorEl.style.display = "block";
+                    if (OS && OS.notify)
+                        OS.notify(
+                            "Azure DevOps: validation failed on save.",
+                        );
+                    return false;
+                }
+                errorEl.style.display = "none";
+                return true;
+            }
+
+            saveBtn.onclick = () => {
+                if (!validate()) return;
+                syncDraft();
+
+                if (OS && OS.notify)
+                    OS.notify("Bug saved in Azure DevOps (training).");
+                if (OS && OS.completeTask)
+                    OS.completeTask("ado-save-bug");
+
+                // BUG_LOGGED message to OS shell
+                var hasSteps =
+                    reproEl &&
+                    reproEl.value &&
+                    reproEl.value.trim().length > 0;
+
+                if (window.parent && window.parent.postMessage) {
+                    window.parent.postMessage(
+                        {
+                            type: "BUG_LOGGED",
+                            data: {
+                                title: titleEl
+                                    ? titleEl.value.trim()
+                                    : "",
+                                severity: severityEl
+                                    ? severityEl.value
+                                    : "",
+                                acRef: acRefEl
+                                    ? acRefEl.value.trim()
+                                    : "",
+                                hasSteps: !!hasSteps,
+                            },
+                        },
+                        "*",
+                    );
+                }
+
+                // Show confirmation state
+                var confirmEl =
+                    document.getElementById("ado-confirmation");
+                var confirmText = document.getElementById(
+                    "ado-confirmation-text"
+                );
+                if (confirmEl && confirmText) {
+                    confirmText.textContent =
+                        "Bug saved. AC Reference: " +
+                        (acRefEl ? acRefEl.value.trim() : "none");
+                    confirmEl.classList.add("visible");
+                    setTimeout(function () {
+                        confirmEl.classList.remove("visible");
+                    }, 4000);
+                }
+
+                // Clear AC Reference after successful save
+                if (acRefEl) {
+                    acRefEl.value = "";
+                    state.draft.acRef = "";
+                    persist();
+                }
+            };
+
+            activateBtn.onclick = () => {
+                state.draft.state = "Active";
+                persist();
+                renderHeader();
+                renderForm();
+                if (OS && OS.notify)
+                    OS.notify("Bug state set to Active.");
+            };
+
+            resolveBtn.onclick = () => {
+                state.draft.state = "Resolved";
+                persist();
+                renderHeader();
+                renderForm();
+                if (OS && OS.notify)
+                    OS.notify("Bug state set to Resolved.");
+            };
+        }
+    })();
+</script>
+     

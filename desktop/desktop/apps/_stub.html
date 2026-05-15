@@ -1,0 +1,55 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>Stub App</title>
+        <style>
+            body {
+                margin: 0;
+                font-family:
+                    system-ui,
+                    -apple-system,
+                    "Segoe UI",
+                    sans-serif;
+                padding: 12px;
+                font-size: 13px;
+            }
+        </style>
+    </head>
+    <body>
+        <h3>Stub App</h3>
+        <p>This app is ready to integrate with the OS.</p>
+
+        <script>
+            (function () {
+                const OS = window.parent.OS || window.parent.QA_OS;
+
+                const appState = {
+                    boot: null,
+                    data: {},
+                };
+
+                // Load persisted state
+                const saved = OS.loadAppState("stub");
+                if (saved) Object.assign(appState, saved);
+
+                window.addEventListener("message", (event) => {
+                    const msg = event.data;
+                    if (!msg || msg.type !== "APP_BOOT") return;
+                    if (msg.appId !== "stub") return;
+
+                    appState.boot = msg;
+                    render();
+                });
+
+                function render() {
+                    // Your UI here
+                }
+
+                function save() {
+                    OS.saveAppState("stub", appState);
+                }
+            })();
+        </script>
+    </body>
+</html>

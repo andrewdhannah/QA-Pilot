@@ -1,0 +1,25 @@
+{
+  "name": "qa-simulator-desktop",
+  "version": "4.0.0",
+  "description": "A Windows 11-style browser-based OS simulator for QA onboarding training. Simulates Dynamics CRM, Azure DevOps, and Acceptance Criteria workflows in a draggable, themeable desktop environment — no web server required.",
+  "main": "build.js",
+  "scripts": {
+    "build": "node build.js",
+    "start": "node build.js && open dist.html"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "keywords": [
+    "qa",
+    "training",
+    "simulator",
+    "windows11",
+    "onboarding",
+    "dynamics",
+    "azure-devops"
+  ],
+  "author": "Andrew Hannah",
+  "license": "MIT",
+  "dependencies": {}
+}

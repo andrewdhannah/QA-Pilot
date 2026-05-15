@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1 own">
+  <title>QA Platform — Content Editor</title>
+  <link rel="stylesheet" href="../css/main.css">
+  <style>
+    .main-content { max-width: 800px; margin: var(--space-10) auto; padding: 0 var(--space-6); }
+    .admin-nav {
+      display: flex;
+      gap: var(--space-4);
+      margin-bottom: var(--space-6);
+      border-bottom: 1px solid var(--color-border);
+      padding-bottom: var(--space-4);
+    }
+    .admin-nav a {
+      font-size: var(--text-sm);
+      color: var(--color-ink-muted);
+      padding-bottom: var(--space-2);
+      text-decoration: none;
+    }
+    .admin-nav a.active {
+      color: var(--color-primary);
+      font-weight: var(--weight-medium);
+      border-bottom: 2px solid var(--color-primary);
+    }
+    .admin-nav a:hover { color: var(--color-primary); }
+    
+    .card {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      padding: var(--space-6);
+      margin-bottom: var(--space-6);
+    }
+    .card-header {
+      border-bottom: 1px solid var(--color-border);
+      padding-bottom: var(--space-4);
+      margin-bottom: var(--space-6);
+    }
+    .card-title {
+      font-size: var(--text-md);
+      font-weight: var(--weight-bold);
+      color: var(--color-ink);
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="topbar">
+    <div class="topbar-brand">QA Onboarding Training</div>
+    <div class="topbar-right">
+      <button class="btn btn-ghost" onclick="handleAdminLogout()">Sign out</button>
+    </div>
+  </nav>
+
+  <main class="main-content">
+    <h1 class="text-xl font-bold mb-6">Content Editor</h1>
+
+    <nav class="admin-nav">
+      <a href="dashboard.html">Students</a>
+      <a href="assign.html">Assign Lessons</a>
+      <a href="editor.html" class="active">Content Editor</a>
+      <a href="bugs.html">Bug Lab</a>
+    </nav>
+
+    <!-- SECTION 1: CERTIFICATE & EMAIL -->
+    <div class="card">
+      <div class="card-header">
+        <h2 class="card-title">Certificate Settings</h2>
+        <p style="font-size:var(--text-sm); color:var(--color-ink-muted); margin-top:var(--space-2);">
+          These values appear on the completion certificate and in the email template.
+        </p>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="issuer-name">
+          Issuer Name
+          <span style="font-weight:normal; color:var(--color-ink-muted);">
+            — appears on the certificate header and footer
+          </span>
+        </label>
+        <input type="text" id="issuer-name" class="form-control" placeholder="e.g. Agile Testing Team">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="email-template">
+          Congratulations Email Template
+          <span style="font-weight:normal; color:var(--color-ink-muted);">
+            — tokens [STUDENT NAME], [COURSE NAME], [ISSUER NAME] are auto-replaced.
+          </span>
+        </label>
+        <textarea id="email-template" class="form-control" rows="12" style="font-family:var(--font-mono); font-size:var(--text-sm);"></textarea>
+      </div>
+    </div>
+
+    <!-- SECTION 2: ROLE NAMES -->
+    <div class="card">
+      <div class="card-header">
+        <h2 class="card-title">Role Names</h2>
+        <p style="font-size:var(--text-sm); color:var(--color-ink-muted); margin-top:var(--space-2);">
+          The display names for the two roles. Changing these updates all pages immediately.
+        </p>
+      </div>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:var(--space-5);">
+        <div class="form-group">
+          <label class="form-label" for="role-senior">Senior role name</label>
+          <input type="text" id="role-senior" class="form-control">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="role-junior">Junior role name</label>
+          <input type="text" id="role-junior" class="form-control">
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 3: COMING SOON -->
+    <div class="card" style="background:var(--color-bg); border-style:dashed;">
+      <div class="card-header">
+        <h2 class="card-title" style="color:var(--color-ink-muted);">CRM Field Labels — Coming Soon</h2>
+      </div>
+      <p style="font-size:var(--text-sm); color:var(--color-ink-muted);">
+        Editing of individual CRM field labels will be available in a future update. 
+        To change labels now, edit the <code>fieldLabels</code> object in <code>data/content.js</code> directly.
+      </p>
+    </div>
+
+    <div style="display:flex; gap:var(--space-4); margin-top:var(--space-8);">
+      <button class="btn btn-primary" onclick="handleSave()">Save Changes</button>
+      <button class="btn btn-ghost" onclick="handleReset()">Reset to Defaults</button>
+    </div>
+  </main>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script src="../data/content.js"></script>
+  <script src="../js/app.js"></script>
+  <script src="../js/db.js"></script>
+
+  <script>
+    /**
+     * admin/editor.html — Logic
+     * =========================
+     * WHAT THIS PAGE DOES:
+     * - Loads the current content object from localStorage via loadContent()
+     * - Populates form fields with current values
+     * - On Save: merges changes back into content object, saves via saveContent()
+     * - On Reset: calls resetContent() to remove overrides, reloads page
+     *
+     * READS FROM:  localStorage via loadContent() (data/content.js)
+     * WRITES TO:   localStorage via saveContent() (data/content.js)
+     */
+
+    initDB().then(function() {
+      if (!requireAdmin()) return;
+      loadEditorFields();
+    });
+
+    /**
+     * loadEditorFields()
+     * Populates form inputs with the current content values.
+     */
+    function loadEditorFields() {
+      var content = loadContent();
+      document.getElementById('issuer-name').value    = content.certificate.issuerName || '';
+      document.getElementById('email-template').value = content.certificate.congratsEmail || '';
+      document.getElementById('role-senior').value = content.roleNames.senior || '';
+      document.getElementById('role-junior').value = content.roleNames.junior || '';
+    }
+
+    /**
+     * handleSave()
+     * Reads form values and saves to the single source of truth in content.js.
+     */
+    function handleSave() {
+      var content = loadContent();
+
+      content.certificate.issuerName    = document.getElementById('issuer-name').value.trim();
+      content.certificate.congratsEmail = document.getElementById('email-template').value;
+      content.roleNames.senior          = document.getElementById('role-senior').value.trim();
+      content.roleNames.junior          = document.getElementById('role-junior').value.trim();
+
+      if (!content.certificate.issuerName) {
+        showToast('Issuer name cannot be blank.', 'error');
+        document.getElementById('issuer-name').focus();
+        return;
+      }
+
+      var saved = saveContent(content);
+      if (saved) {
+        showToast('Content saved successfully.', 'success');
+      } else {
+        showToast('Failed to save content.', 'error');
+      }
+    }
+
+    /**
+     * handleReset()
+     * Wipes localStorage overrides and restores defaults.
+     */
+    function handleReset() {
+      if (!confirm('Reset all content to defaults? This cannot be undone.')) return;
+      resetContent();
+      loadEditorFields();
+      showToast('Content reset to defaults.', 'success');
+    }
+
+    function handleAdminLogout() {
+      sessionStorage.removeItem('qa_admin');
+      window.location.href = 'index.html';
+    }
+  </script>
+</body>
+</html>

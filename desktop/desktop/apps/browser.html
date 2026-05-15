@@ -1,0 +1,681 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>Edge — Training Browser</title>
+        <style>
+            :root {
+                --br-bg: #ffffff;
+                --br-bg-alt: #f3f2f1;
+                --br-surface: #ffffff;
+                --br-border: #d0d0d0;
+                --br-border-subtle: #e1dfdd;
+                --br-text: #201f1e;
+                --br-text-subtle: #605e5c;
+                --br-blue: #0078d4;
+                --br-blue-dark: #005a9e;
+                --br-tab-bg: #f3f2f1;
+                --br-tab-bg-active: #ffffff;
+                --br-tab-border: #e1dfdd;
+                --br-address-bg: #ffffff;
+                --br-address-border: #d0d0d0;
+            }
+
+            body.theme-dark {
+                --br-bg: #1b1a19;
+                --br-bg-alt: #252423;
+                --br-surface: #252423;
+                --br-border: #3b3a39;
+                --br-border-subtle: #3b3a39;
+                --br-text: #f3f2f1;
+                --br-text-subtle: #c8c6c4;
+                --br-blue: #3aa0ff;
+                --br-blue-dark: #2893f5;
+                --br-tab-bg: #252423;
+                --br-tab-bg-active: #1b1a19;
+                --br-tab-border: #3b3a39;
+                --br-address-bg: #1b1a19;
+                --br-address-border: #3b3a39;
+            }
+
+            body {
+                margin: 0;
+                font-family:
+                    system-ui,
+                    -apple-system,
+                    "Segoe UI",
+                    sans-serif;
+                font-size: 13px;
+                background: var(--br-bg);
+                color: var(--br-text);
+                display: flex;
+                flex-direction: column;
+                height: 100vh;
+                overflow: hidden;
+            }
+
+            .br-root {
+                display: flex;
+                flex-direction: column;
+                height: 100%;
+            }
+
+            .br-titlebar {
+                height: 32px;
+                display: flex;
+                align-items: center;
+                padding: 0 8px;
+                box-sizing: border-box;
+                background: var(--br-bg-alt);
+                border-bottom: 1px solid var(--br-border-subtle);
+                gap: 8px;
+            }
+
+            .br-titlebar-icon {
+                width: 18px;
+                height: 18px;
+                border-radius: 4px;
+                background: var(--br-blue);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: #fff;
+                font-size: 12px;
+                font-weight: 600;
+            }
+
+            .br-titlebar-title {
+                font-size: 12px;
+                color: var(--br-text-subtle);
+            }
+
+            .br-tabs-row {
+                height: 32px;
+                display: flex;
+                align-items: flex-end;
+                padding: 0 4px;
+                box-sizing: border-box;
+                background: var(--br-bg-alt);
+                border-bottom: 1px solid var(--br-border-subtle);
+            }
+
+            .br-tab {
+                min-width: 120px;
+                max-width: 220px;
+                height: 26px;
+                margin-right: 4px;
+                border-radius: 6px 6px 0 0;
+                background: var(--br-tab-bg);
+                border: 1px solid transparent;
+                border-bottom: none;
+                display: flex;
+                align-items: center;
+                padding: 0 8px;
+                box-sizing: border-box;
+                font-size: 12px;
+                color: var(--br-text-subtle);
+                cursor: pointer;
+            }
+
+            .br-tab-active {
+                background: var(--br-tab-bg-active);
+                border-color: var(--br-tab-border);
+                color: var(--br-text);
+            }
+
+            .br-tab-title {
+                flex: 1;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            .br-tab-close {
+                width: 16px;
+                height: 16px;
+                border-radius: 999px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 11px;
+                opacity: 0.6;
+            }
+
+            .br-tab-close:hover {
+                background: rgba(0, 0, 0, 0.08);
+                opacity: 1;
+            }
+
+            body.theme-dark .br-tab-close:hover {
+                background: rgba(255, 255, 255, 0.12);
+            }
+
+            .br-tab-new {
+                width: 26px;
+                height: 26px;
+                border-radius: 6px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                color: var(--br-text-subtle);
+            }
+
+            .br-tab-new:hover {
+                background: var(--br-tab-bg);
+            }
+
+            .br-address-bar {
+                height: 36px;
+                display: flex;
+                align-items: center;
+                padding: 0 8px;
+                box-sizing: border-box;
+                background: var(--br-bg-alt);
+                border-bottom: 1px solid var(--br-border-subtle);
+                gap: 6px;
+            }
+
+            .br-nav-btn {
+                width: 24px;
+                height: 24px;
+                border-radius: 999px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                color: var(--br-text-subtle);
+                font-size: 14px;
+            }
+
+            .br-nav-btn:hover {
+                background: rgba(0, 0, 0, 0.06);
+            }
+
+            body.theme-dark .br-nav-btn:hover {
+                background: rgba(255, 255, 255, 0.12);
+            }
+
+            .br-address-input-wrap {
+                flex: 1;
+                display: flex;
+                align-items: center;
+                background: var(--br-address-bg);
+                border-radius: 4px;
+                border: 1px solid var(--br-address-border);
+                padding: 0 6px;
+                box-sizing: border-box;
+            }
+
+            .br-address-input {
+                flex: 1;
+                border: none;
+                outline: none;
+                background: transparent;
+                font-size: 12px;
+                color: var(--br-text);
+                padding: 4px 2px;
+            }
+
+            .br-address-input::placeholder {
+                color: var(--br-text-subtle);
+            }
+
+            .br-address-lock {
+                font-size: 11px;
+                color: var(--br-text-subtle);
+                margin-right: 4px;
+            }
+
+            .br-content {
+                flex: 1;
+                background: var(--br-bg);
+                position: relative;
+            }
+
+            .br-frame {
+                position: absolute;
+                inset: 0;
+                border: none;
+                width: 100%;
+                height: 100%;
+                background: var(--br-bg);
+            }
+        </style>
+    </head>
+    <body class="theme-light">
+        <div class="br-root">
+            <div class="br-titlebar">
+                <div class="br-titlebar-icon">e</div>
+                <div class="br-titlebar-title">Edge — Training Browser</div>
+            </div>
+
+            <div class="br-tabs-row" id="br-tabs-row"></div>
+
+            <div class="br-address-bar">
+                <div class="br-nav-btn" id="br-btn-back">‹</div>
+                <div class="br-nav-btn" id="br-btn-forward">›</div>
+                <div class="br-nav-btn" id="br-btn-refresh">⟳</div>
+                <div class="br-address-input-wrap">
+                    <span class="br-address-lock">os://</span>
+                    <input
+                        id="br-address-input"
+                        class="br-address-input"
+                        placeholder="type a lesson or app route, e.g. lesson/intro"
+                    />
+                </div>
+            </div>
+
+            <div class="br-content">
+                <iframe
+                    id="br-frame"
+                    class="br-frame"
+                    sandbox="allow-scripts"
+                ></iframe>
+            </div>
+        </div>
+
+        <script>
+            (function () {
+                const OS = window.parent.OS || window.parent.QA_OS;
+
+                const state = {
+                    theme: "light",
+                    tabs: [],
+                    activeTabId: null,
+                    history: {}, // tabId -> [urls]
+                    historyIndex: {}, // tabId -> index
+                };
+
+                if (OS && OS.loadAppState) {
+                    const saved = OS.loadAppState("browser");
+                    if (saved) Object.assign(state, saved);
+                }
+
+                window.addEventListener("message", (event) => {
+                    const msg = event.data;
+                    if (
+                        !msg ||
+                        msg.type !== "APP_BOOT" ||
+                        msg.appId !== "browser"
+                    )
+                        return;
+
+                    state.theme = msg.theme || state.theme || "light";
+                    applyTheme();
+
+                    if (!state.tabs || !state.tabs.length) {
+                        createTab({
+                            title: "Home",
+                            route: "home",
+                        });
+                        createTab({
+                            title: "QA Guidelines",
+                            route: "docs/qa-guidelines",
+                        });
+                        if (state.tabs.length > 0) state.activeTabId = state.tabs[0].id;
+                    }
+
+                    renderTabs();
+                    renderActiveTab();
+                });
+
+                function applyTheme() {
+                    document.body.classList.remove("theme-light", "theme-dark");
+                    document.body.classList.add(
+                        state.theme === "dark"
+                            ? "theme-dark"
+                            : "theme-light",
+                    );
+                }
+
+                function persist() {
+                    if (OS && OS.saveAppState) {
+                        OS.saveAppState("browser", state);
+                    }
+                }
+
+                function createTab(opts) {
+                    const id = "tab-" + Date.now() + "-" + Math.floor(Math.random() * 9999);
+                    const tab = {
+                        id: id,
+                        title: opts.title || "New tab",
+                        route: opts.route || "home",
+                    };
+                    state.tabs.push(tab);
+                    state.activeTabId = id;
+                    state.history[id] = [tab.route];
+                    state.historyIndex[id] = 0;
+                    persist();
+                    renderTabs();
+                    renderActiveTab();
+                }
+
+                function closeTab(id) {
+                    const idx = state.tabs.findIndex((t) => t.id === id);
+                    if (idx === -1) return;
+                    state.tabs.splice(idx, 1);
+                    delete state.history[id];
+                    delete state.historyIndex[id];
+
+                    if (state.activeTabId === id) {
+                        if (state.tabs.length) {
+                            const newIdx = Math.max(0, idx - 1);
+                            state.activeTabId = state.tabs[newIdx].id;
+                        } else {
+                            state.activeTabId = null;
+                        }
+                    }
+                    persist();
+                    renderTabs();
+                    renderActiveTab();
+                }
+
+                function setActiveTab(id) {
+                    if (!state.tabs.find((t) => t.id === id)) return;
+                    state.activeTabId = id;
+                    persist();
+                    renderTabs();
+                    renderActiveTab();
+                }
+
+                function navigateActiveTab(route, pushHistory) {
+                    const tab = state.tabs.find(
+                        (t) => t.id === state.activeTabId,
+                    );
+                    if (!tab) return;
+                    tab.route = route;
+
+                    if (!state.history[tab.id]) state.history[tab.id] = [];
+                    if (pushHistory !== false) {
+                        state.history[tab.id].push(route);
+                        state.historyIndex[tab.id] =
+                            state.history[tab.id].length - 1;
+                    }
+
+                    persist();
+                    renderActiveTab();
+                }
+
+                function renderTabs() {
+                    const row = document.getElementById("br-tabs-row");
+                    row.innerHTML = "";
+
+                    state.tabs.forEach((tab) => {
+                        const div = document.createElement("div");
+                        div.className =
+                            "br-tab" +
+                            (tab.id === state.activeTabId
+                                ? " br-tab-active"
+                                : "");
+                        div.setAttribute("data-tab-id", tab.id);
+
+                        const title = document.createElement("div");
+                        title.className = "br-tab-title";
+                        title.textContent = tab.title || "New tab";
+
+                        const close = document.createElement("div");
+                        close.className = "br-tab-close";
+                        close.textContent = "×";
+
+                        close.onclick = (ev) => {
+                            ev.stopPropagation();
+                            closeTab(tab.id);
+                        };
+
+                        div.onclick = () => setActiveTab(tab.id);
+
+                        div.appendChild(title);
+                        div.appendChild(close);
+                        row.appendChild(div);
+                    });
+
+                    const newTab = document.createElement("div");
+                    newTab.className = "br-tab-new";
+                    newTab.textContent = "+";
+                    newTab.onclick = () =>
+                        createTab({
+                            title: "New tab",
+                            route: "home",
+                        });
+                    row.appendChild(newTab);
+                }
+
+                function renderActiveTab() {
+                    const frame = document.getElementById("br-frame");
+                    const addressInput =
+                        document.getElementById("br-address-input");
+
+                    const tab = state.tabs.find(
+                        (t) => t.id === state.activeTabId,
+                    );
+                    if (!tab) {
+                        frame.srcdoc =
+                            "<!doctype html><html><body style='font-family:Segoe UI,system-ui,sans-serif;font-size:13px;padding:16px;color:#666;background:#faf9f8;'>No tabs open. Use the + button to open a new tab.</body></html>";
+                        addressInput.value = "";
+                        return;
+                    }
+
+                    addressInput.value = tab.route || "";
+
+                    const route = tab.route || "home";
+                    frame.srcdoc = buildContentForRoute(route, tab.title);
+                }
+
+                function buildContentForRoute(route, title) {
+                    const safeTitle =
+                        title || "Training Browser";
+                    const safeRoute = route || "home";
+
+                    if (safeRoute === "home") {
+                        return (
+                            "<!doctype html><html><head><meta charset='UTF-8'><title>" +
+                            safeTitle +
+                            "</title><style>" +
+                            "body { font-family: Segoe UI, system-ui, sans-serif; font-size: 13px;" +
+                            "       padding: 20px 24px; background: #faf9f8; color: #201f1e;" +
+                            "       line-height: 1.6; max-width: 720px; }" +
+                            "h1   { font-size: 17px; font-weight: 600; margin: 0 0 16px; color: #0078d4; }" +
+                            "h2   { font-size: 14px; font-weight: 600; margin: 20px 0 8px; color: #201f1e; }" +
+                            "p    { margin: 0 0 10px; }" +
+                            "ol, ul { margin: 0 0 12px; padding-left: 20px; }" +
+                            "li   { margin-bottom: 4px; }" +
+                            "table { border-collapse: collapse; width: 100%; margin-bottom: 12px; }" +
+                            "th   { background: #edebe9; text-align: left; padding: 6px 10px;" +
+                            "       font-size: 12px; font-weight: 600; }" +
+                            "td   { padding: 6px 10px; border-bottom: 1px solid #edebe9; font-size: 12px; }" +
+                            "code { background: #edebe9; padding: 1px 5px; border-radius: 3px;" +
+                            "       font-family: Consolas, monospace; font-size: 12px; }" +
+                            ".tip { background: #f0f6ff; border-left: 3px solid #0078d4;" +
+                            "       padding: 8px 12px; border-radius: 0 4px 4px 0; margin-bottom: 12px; }" +
+                            "</style>" +
+                            "</head><body>" +
+                            "<h1>QA Pilot &mdash; Quick Reference</h1>" +
+                            "<div class='tip'>" +
+                            "<strong>Tip:</strong> Type a route in the address bar above (e.g. <code>docs/qa-guidelines</code>) and press Enter to navigate.</div>" +
+                            "<h2>Workflow</h2>" +
+                            "<ol>" +
+                            "<li><strong>Sign in</strong> and unlock the OS desktop</li>" +
+                            "<li><strong>Open the Dynamics CRM case</strong> from your desktop icon</li>" +
+                            "<li><strong>Open the AC Panel</strong> to review what the system should do</li>" +
+                            "<li><strong>Compare the CRM case against the AC</strong> &mdash; look for anything that doesn't match</li>" +
+                            "<li><strong>Open Azure DevOps</strong> for each bug you find and file a complete report</li>" +
+                            "<li><strong>Click &ldquo;Submit for Certification&rdquo;</strong> in the taskbar when done</li>" +
+                            "</ol>" +
+                            "<h2>App Guide</h2>" +
+                            "<table>" +
+                            "<tr><th>App</th><th>Purpose</th></tr>" +
+                            "<tr><td>Dynamics CRM</td><td>View and investigate the active support case</td></tr>" +
+                            "<tr><td>AC Panel</td><td>Review the Acceptance Criteria &mdash; what correct behaviour looks like</td></tr>" +
+                            "<tr><td>Azure DevOps</td><td>File a bug report for each defect you find</td></tr>" +
+                            "<tr><td>Browser</td><td>This app &mdash; reference material and guidelines</td></tr>" +
+                            "<tr><td>Training</td><td>Starts the capstone assessment with your scenario brief</td></tr>" +
+                            "</table>" +
+                            "<h2>Keyboard Tips</h2>" +
+                            "<ul>" +
+                            "<li><strong>Double-click</strong> a desktop icon to open an app</li>" +
+                            "<li><strong>Click the Windows logo</strong> (taskbar) to open the Start menu</li>" +
+                            "<li><strong>Click Submit</strong> in the taskbar when you are finished</li>" +
+                            "</ul>" +
+                            "</body></html>"
+                        );
+                    }
+
+                    if (safeRoute.indexOf("lesson/") === 0) {
+                        const lessonId = safeRoute.substring("lesson/".length);
+                        return (
+                            "<!doctype html><html><head><meta charset='UTF-8'><title>Lesson " +
+                            lessonId +
+                            "</title></head><body style='font-family:Segoe UI,system-ui,sans-serif;font-size:13px;padding:16px;background:#ffffff;color:#201f1e;'>" +
+                            "<h2 style='margin-top:0;font-size:18px;'>Lesson: " +
+                            escapeHtml(lessonId) +
+                            "</h2>" +
+                            "<p>This is a placeholder lesson host for <strong>" +
+                            escapeHtml(lessonId) +
+                            "</strong>.</p>" +
+                            "<p>You can replace this content later with real lesson HTML, markdown rendering, or scenario-driven walkthroughs.</p>" +
+                            "<p>Because the OS must remain file://-safe, this browser uses <code>srcdoc</code> to render content instead of external network calls.</p>" +
+                            "</body></html>"
+                        );
+                    }
+
+                    if (safeRoute === "docs/qa-guidelines") {
+                        return (
+                            "<!doctype html><html><head><meta charset='UTF-8'><title>" +
+                            safeTitle +
+                            "</title><style>" +
+                            "body { font-family: Segoe UI, system-ui, sans-serif; font-size: 13px;" +
+                            "       padding: 20px 24px; background: #faf9f8; color: #201f1e;" +
+                            "       line-height: 1.6; max-width: 720px; }" +
+                            "h1   { font-size: 17px; font-weight: 600; margin: 0 0 16px; color: #0078d4; }" +
+                            "h2   { font-size: 14px; font-weight: 600; margin: 20px 0 8px; color: #201f1e; }" +
+                            "p    { margin: 0 0 10px; }" +
+                            "ol, ul { margin: 0 0 12px; padding-left: 20px; }" +
+                            "li   { margin-bottom: 4px; }" +
+                            "table { border-collapse: collapse; width: 100%; margin-bottom: 12px; }" +
+                            "th   { background: #edebe9; text-align: left; padding: 6px 10px;" +
+                            "       font-size: 12px; font-weight: 600; }" +
+                            "td   { padding: 6px 10px; border-bottom: 1px solid #edebe9; font-size: 12px; }" +
+                            "code { background: #edebe9; padding: 1px 5px; border-radius: 3px;" +
+                            "       font-family: Consolas, monospace; font-size: 12px; }" +
+                            ".good { background: #eff6ef; border-left: 3px solid #107c10;" +
+                            "       padding: 6px 10px; border-radius: 0 4px 4px 0; margin-bottom: 8px; }" +
+                            ".bad  { background: #fdf0ef; border-left: 3px solid #a4262c;" +
+                            "       padding: 6px 10px; border-radius: 0 4px 4px 0; margin-bottom: 8px; }" +
+                            "</style>" +
+                            "</head><body>" +
+                            "<h1>QA Guidelines &mdash; Writing Bug Reports</h1>" +
+                            "<h2>What is a Bug Report?</h2>" +
+                            "<p>A valid ADO bug report requires:</p>" +
+                            "<ul>" +
+                            "<li><strong>Title:</strong> a clear, one-line description of the defect (not &ldquo;it doesn't work&rdquo;)</li>" +
+                            "<li><strong>Severity:</strong> 1 = Critical, 2 = High, 3 = Medium, 4 = Low</li>" +
+                            "<li><strong>AC Reference:</strong> the specific acceptance criteria the defect violates (e.g. AC-2.1)</li>" +
+                            "<li><strong>Steps to Reproduce:</strong> numbered steps that reliably reproduce the issue</li>" +
+                            "</ul>" +
+                            "<h2>Severity Guide</h2>" +
+                            "<table>" +
+                            "<tr><th>Severity</th><th>Label</th><th>Description</th></tr>" +
+                            "<tr><td>1</td><td>Critical</td><td>System crash, data loss, security issue, blocks all users</td></tr>" +
+                            "<tr><td>2</td><td>High</td><td>Major feature broken, no workaround, affects most users</td></tr>" +
+                            "<tr><td>3</td><td>Medium</td><td>Feature partially broken, workaround exists</td></tr>" +
+                            "<tr><td>4</td><td>Low</td><td>Cosmetic issue, minor inconvenience</td></tr>" +
+                            "</table>" +
+                            "<h2>Good vs Bad Bug Titles</h2>" +
+                            "<div class='bad'><strong>Bad:</strong> &ldquo;Status is broken&rdquo;</div>" +
+                            "<div class='good'><strong>Good:</strong> &ldquo;Junior Investigator can set case Status to Closed &mdash; AC-2.1 violation&rdquo;</div>" +
+                            "<div class='bad'><strong>Bad:</strong> &ldquo;Date field issue&rdquo;</div>" +
+                            "<div class='good'><strong>Good:</strong> &ldquo;Date Opened field accepts future dates &mdash; should be blocked per AC-3.2&rdquo;</div>" +
+                            "</body></html>"
+                        );
+                    }
+
+                    if (safeRoute.indexOf("docs/") === 0) {
+                        const docId = safeRoute.substring("docs/".length);
+                        return (
+                            "<!doctype html><html><head><meta charset='UTF-8'><title>Docs " +
+                            docId +
+                            "</title></head><body style='font-family:Segoe UI,system-ui,sans-serif;font-size:13px;padding:16px;background:#ffffff;color:#201f1e;'>" +
+                            "<h2 style='margin-top:0;font-size:18px;'>Documentation: " +
+                            escapeHtml(docId) +
+                            "</h2>" +
+                            "<p>Use this area to host QA guidelines, playbooks, or reference material.</p>" +
+                            "<p>Route: <code>" +
+                            escapeHtml(safeRoute) +
+                            "</code></p>" +
+                            "</body></html>"
+                        );
+                    }
+
+                    return (
+                        "<!doctype html><html><head><meta charset='UTF-8'><title>" +
+                        safeTitle +
+                        "</title></head><body style='font-family:Segoe UI,system-ui,sans-serif;font-size:13px;padding:16px;background:#ffffff;color:#201f1e;'>" +
+                        "<h2 style='margin-top:0;font-size:18px;'>Route: " +
+                        escapeHtml(safeRoute) +
+                        "</h2>" +
+                        "<p>This route is not yet mapped to a specific lesson or docs template.</p>" +
+                        "<p>You can wire it up later to load richer content, or just use this as a scratchpad.</p>" +
+                        "</body></html>"
+                    );
+                }
+
+                function escapeHtml(str) {
+                    return String(str || "")
+                        .replace(/&/g, "&amp;")
+                        .replace(/</g, "&lt;")
+                        .replace(/>/g, "&gt;")
+                        .replace(/"/g, "&quot;");
+                }
+
+                function wireChrome() {
+                    const addressInput =
+                        document.getElementById("br-address-input");
+                    const backBtn = document.getElementById("br-btn-back");
+                    const fwdBtn = document.getElementById("br-btn-forward");
+                    const refreshBtn =
+                        document.getElementById("br-btn-refresh");
+
+                    addressInput.addEventListener("keydown", (e) => {
+                        if (e.key === "Enter") {
+                            const route = addressInput.value.trim() || "home";
+                            navigateActiveTab(route, true);
+                        }
+                    });
+
+                    backBtn.onclick = () => {
+                        const tabId = state.activeTabId;
+                        if (!tabId) return;
+                        const hist = state.history[tabId] || [];
+                        let idx = state.historyIndex[tabId] || 0;
+                        if (idx > 0) {
+                            idx -= 1;
+                            state.historyIndex[tabId] = idx;
+                            const route = hist[idx];
+                            navigateActiveTab(route, false);
+                        }
+                    };
+
+                    fwdBtn.onclick = () => {
+                        const tabId = state.activeTabId;
+                        if (!tabId) return;
+                        const hist = state.history[tabId] || [];
+                        let idx = state.historyIndex[tabId] || 0;
+                        if (idx < hist.length - 1) {
+                            idx += 1;
+                            state.historyIndex[tabId] = idx;
+                            const route = hist[idx];
+                            navigateActiveTab(route, false);
+                        }
+                    };
+
+                    refreshBtn.onclick = () => {
+                        renderActiveTab();
+                    };
+                }
+
+                wireChrome();
+            })();
+        </script>
+    </body>
+</html>

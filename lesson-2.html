@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lesson 2: Acceptance Criteria — QA Onboarding</title>
+  <link rel="stylesheet" href="css/main.css">
+  <style>
+    /* ── LESSON SPECIFIC LAYOUT ──────────────────────────────────────────────── */
+    .lesson-layout {
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      gap: 0;
+      min-height: calc(100vh - 57px);
+    }
+    .chapter-sidebar {
+      background: var(--color-surface);
+      border-right: 1px solid var(--color-border);
+      padding: var(--space-6);
+      position: sticky;
+      top: 57px;
+      align-self: start;
+      height: calc(100vh - 57px);
+      overflow-y: auto;
+    }
+    .chapter-sidebar-title {
+      font-size: var(--text-sm);
+      font-weight: var(--weight-bold);
+      color: var(--color-ink-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: var(--space-5);
+    }
+    .chapter-list { display: flex; flex-direction: column; gap: var(--space-2); }
+    .chapter-list-item {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      padding: var(--space-2) var(--space-3);
+      border-radius: var(--radius-sm);
+      font-size: var(--text-sm);
+      color: var(--color-ink-muted);
+      cursor: default;
+      transition: background var(--transition-fast);
+    }
+    .chapter-list-item.current {
+      background: var(--color-primary-light);
+      color: var(--color-primary);
+      font-weight: var(--weight-medium);
+    }
+    .chapter-list-item.complete {
+      color: var(--color-success);
+      cursor: pointer;
+    }
+    .chapter-list-item.complete:hover { background: var(--color-success-light); }
+    .chapter-check { font-size: 12px; }
+    .chapter-main {
+      padding: var(--space-10) var(--space-12);
+      max-width: 720px;
+    }
+    .chapter-progress-bar {
+      height: 4px;
+      background: var(--color-border);
+      border-radius: var(--radius-full);
+      margin-bottom: var(--space-2);
+    }
+    .chapter-progress-fill {
+      height: 100%;
+      background: var(--color-primary);
+      border-radius: var(--radius-full);
+      transition: width var(--transition-slow);
+    }
+    .chapter-label {
+      font-size: var(--text-xs);
+      color: var(--color-ink-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: var(--space-8);
+    }
+    .chapter-nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: var(--space-10);
+      padding-top: var(--space-6);
+      border-top: 1px solid var(--color-border);
+    }
+    .chapter-timer-notice {
+      font-size: var(--text-xs);
+      color: var(--color-ink-muted);
+      font-style: italic;
+    }
+    .chapter-content h1 {
+      font-size: var(--text-xl);
+      font-weight: var(--weight-bold);
+      color: var(--color-ink);
+      margin-bottom: var(--space-2);
+    }
+    .chapter-content .chapter-intro {
+      font-size: var(--text-md);
+      color: var(--color-ink-muted);
+      margin-bottom: var(--space-8);
+      line-height: var(--leading-loose);
+    }
+    .chapter-content p {
+      color: var(--color-ink-soft);
+      margin-bottom: var(--space-5);
+      line-height: var(--leading-base);
+    }
+    .callout {
+      background: var(--color-primary-light);
+      border-left: 4px solid var(--color-primary);
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      padding: var(--space-4) var(--space-5);
+      margin: var(--space-6) 0;
+      font-size: var(--text-sm);
+      color: var(--color-ink);
+      font-style: italic;
+    }
+    .callout strong { color: var(--color-primary); font-style: normal; }
+    .comparison-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-4);
+      margin: var(--space-6) 0;
+    }
+    .comparison-card {
+      padding: var(--space-4);
+      border-radius: var(--radius-sm);
+      font-size: var(--text-sm);
+    }
+    .comparison-card.bad  { background: var(--color-error-light);   border: 1px solid var(--color-error-border);   }
+    .comparison-card.good { background: var(--color-success-light); border: 1px solid var(--color-success-border); }
+    .comparison-label { font-weight: var(--weight-bold); margin-bottom: var(--space-2); }
+    .comparison-card.bad  .comparison-label { color: var(--color-error);   }
+    .comparison-card.good .comparison-label { color: var(--color-success); }
+    .quiz-card {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-sm);
+      padding: var(--space-8);
+      text-align: center;
+      max-width: 720px;
+      margin: 0 auto;
+    }
+    .answer-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--space-4);
+      margin: var(--space-6) 0;
+    }
+    .btn-answer {
+      padding: var(--space-6);
+      font-size: var(--text-base);
+      border: 2px solid var(--color-border);
+      background: var(--color-surface);
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      text-align: left;
+      transition: all var(--transition-fast);
+    }
+    .btn-answer.correct {
+      border-color: var(--color-success);
+      background: var(--color-success-light);
+      color: var(--color-success);
+    }
+    .btn-answer.incorrect {
+      border-color: var(--color-error);
+      background: var(--color-error-light);
+      color: var(--color-error);
+    }
+    .feedback-panel {
+      margin-top: var(--space-6);
+      padding: var(--space-6);
+      border-radius: var(--radius-md);
+      text-align: left;
+      display: none;
+    }
+    .feedback-panel.visible { display: block; }
+    .feedback-correct { background: var(--color-success-light); border: 1px solid var(--color-success-border); }
+    .feedback-incorrect { background: var(--color-error-light); border: 1px solid var(--color-error-border); }
+    .result-row {
+      display: flex;
+      gap: var(--space-4);
+      padding: var(--space-4);
+      border-bottom: 1px solid var(--color-border);
+      align-items: flex-start;
+    }
+    .result-icon { font-size: var(--text-lg); }
+    .result-details { flex: 1; }
+    .explanation-toggle {
+      font-size: var(--text-xs);
+      color: var(--color-primary);
+      cursor: pointer;
+      text-decoration: underline;
+      margin-top: var(--space-2);
+      display: block;
+    }
+    .explanation-text {
+      font-size: var(--text-sm);
+      color: var(--color-ink-soft);
+      margin-top: var(--space-2);
+      display: none;
+    }
+    #phase-results {
+      padding: var(--space-10) var(--space-12);
+      max-width: 720px;
+      margin: 0 auto;
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="topbar flex justify-between items-center">
+    <div class="topbar-brand">QA Onboarding Training</div>
+    <div class="topbar-user flex items-center gap-4">
+      <span id="user-name-display"></span>
+      <button class="btn btn-ghost" onclick="signOut()">Sign Out</button>
+    </div>
+  </nav>
+
+  <!-- PHASE 1: LEARNING CONTENT -->
+  <div id="phase-content" class="lesson-layout">
+    <aside class="chapter-sidebar">
+      <div class="chapter-sidebar-title">Lesson 2 — Acceptance Criteria</div>
+      <nav class="chapter-list" id="chapter-list">
+        <!-- Injected by buildSidebar() -->
+      </nav>
+    </aside>
+
+    <main class="chapter-main">
+      <div class="chapter-progress-bar">
+        <div class="chapter-progress-fill" id="chapter-progress-fill"></div>
+      </div>
+      <div class="chapter-label" id="chapter-label">Chapter 1 of 6</div>
+      <div id="chapter-content"></div>
+
+      <div class="chapter-nav">
+        <button class="btn btn-ghost" id="btn-prev" onclick="prevChapter()">← Previous</button>
+        <div id="chapter-timer-notice" class="chapter-timer-notice"></div>
+        <button class="btn btn-primary" id="btn-next" onclick="nextChapter()">Next →</button>
+      </div>
+    </main>
+  </div>
+
+  <!-- PHASE 2: THE QUIZ -->
+  <div id="phase-quiz" style="display: none;">
+    <div class="quiz-card">
+      <span class="label-caps" id="quiz-progress">Question 1 of 5</span>
+      <p id="quiz-question-text" class="text-md font-medium my-6"></p>
+      
+      <div class="answer-grid" id="quiz-options">
+        <!-- Injected by renderQuestion() -->
+      </div>
+
+      <div id="quiz-feedback" class="feedback-panel">
+        <div id="feedback-title" class="font-bold mb-2"></div>
+        <div id="feedback-body" class="text-sm"></div>
+        <div class="footer-nav" style="justify-content: center; margin-top: var(--space-6);">
+          <button class="btn btn-primary" id="btn-next-q" onclick="nextQuestion()">Next question → </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PHASE 3: THE RESULTS -->
+  <div id="phase-results" style="display: none;">
+    <div class="quiz-card" style="text-align: left;">
+      <h2 class="text-lg font-bold text-center">Quiz Complete</h2>
+      <p id="score-text" class="text-center font-bold my-4"></p>
+      
+      <div id="results-list" class="my-6">
+        <!-- Per-question results -->
+      </div>
+
+      <div class="footer-nav" style="justify-content: center;">
+        <button class="btn btn-primary" onclick="completeLesson()">Complete Lesson</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script src="data/content.js"></script>
+  <script src="data/quiz-questions.js"></script>
+  <script src="js/db.js"></script>
+  <script src="js/app.js"></script>
+
+  <script>
+    /**
+     * lesson-2.html — Page Logic
+     * ==========================
+     * WHAT THIS PAGE DOES:
+     * - Teaches the concept of Acceptance Criteria (AC) and Given/When/Then.
+     * - Implements a "Reading Lock" (15s) to ensure students engage with content.
+     * - Resumes progress from the last unread chapter stored in IndexedDB.
+     * - Transitions through Content -> Quiz -> Results phases.
+     *
+     * FLOW:
+     * 1. initDB() and requireLogin().
+     * 2. check completion: if lesson-2 is done, redirect to course.html.
+     * 3. find resume point: check chaptersRead for 'lesson-2'.
+     * 4. start timer: record time spent every 30s via addTimeSpent().
+     * 5. quiz: retrieve 'lesson-2' bank from quiz-questions.js.
+     *
+     * READS FROM:   IndexedDB via db.js
+     * WRITES TO:    IndexedDB via db.js
+     * REDIRECTS TO: index.html (logout), course.html (completion)
+     */
+
+    // ── SECTION 1: PAGE STATE ──────────────────────────────────────────────────
+
+    var currentSession  = null;
+    var currentStudent  = null;
+    var currentProgress = null;
+    var currentChapter  = 0;
+    var lessonTimer     = null;
+    var lessonSeconds   = 0;
+
+    var quizQuestions   = [];
+    var currentQuestion = 0;
+    var quizAnswers     = [];
+
+    // ── SECTION 2: CHAPTER DEFINITIONS ────────────────────────────────────────
+
+    var CHAPTER_1 = `
+    <div class="chapter-content">
+      <h1>What Are Acceptance Criteria?</h1>
+      <p class="chapter-intro">This is the most important concept in this entire course. Everything else builds on it.</p>
+      <p>Imagine building a fence for a client. They said: "I want a fence around the yard." You build it. They are unhappy — they wanted a gate on the south side, painted white, exactly 1.2 metres high. None of that was written down. Whose fault is it?</p>
+      <p><strong>Acceptance Criteria (AC)</strong> exist so that everyone agrees on what "done" looks like before anyone picks up a hammer — or writes a line of code.</p>
+      <h2 style="margin: var(--space-6) 0 var(--space-3);">A Precise Definition</h2>
+      <p>Acceptance Criteria are the agreed conditions a feature must meet to be considered complete. They are written before development begins. They define the contract between the product owner and the team.</p>
+      <p>As a tester, AC are your primary source of truth:</p>
+      <ul style="padding-left:var(--space-5); color:var(--color-ink-soft); margin-bottom:var(--space-5);">
+        <li style="margin-bottom:var(--space-3);">If it is in the AC &rarr; test it</li>
+        <li style="margin-bottom:var(--space-3);">If behaviour is not in the AC &rarr; flag the gap, do not guess</li>
+        <li style="margin-bottom:var(--space-3);">If the software deviates from AC &rarr; that is a bug</li>
+      </ul>
+      <h2 style="margin: var(--space-6) 0 var(--space-3);">AC vs. Requirements</h2>
+      <div class="comparison-grid">
+        <div class="comparison-card bad">
+          <div class="comparison-label">Requirements — what to build</div>
+          "The system shall allow users to create case records."
+        </div>
+        <div class="comparison-card good">
+          <div class="comparison-label">AC — how to verify it's built correctly</div>
+          "Given a logged-in Senior Investigator, when they complete all required fields and click Save, then a new record is created with a unique Case ID in format CASE-XXXXX."
+        </div>
+      </div>
+      <div class="callout"><strong>Remember:</strong> Requirements say <em>what</em> to build. Acceptance Criteria say <em>how you will know</em> it was built correctly.</div>
+    </div>`;
+
+    var CHAPTER_2 = `
+    <div class="chapter-content">
+      <h1>The Given / When / Then Format</h1>
+      <p class="chapter-intro">Most Acceptance Criteria in Agile teams are written in a structured format that makes them directly testable. Here is how to read it.</p>
+      <pre style="background:var(--color-bg); border:1px solid var(--color-border); border-radius:var(--radius-md); padding:var(--space-5); font-family:var(--font-mono); font-size:var(--text-sm); color:var(--color-ink); overflow-x:auto; margin:var(--space-5) 0;">Given  [a specific precondition or state]
+When   [an action is taken]
+Then   [the expected outcome]</pre>
+      <h2 style="margin: var(--space-6) 0 var(--space-3);">A Real Example</h2>
+      <p>Here is an AC from the case management screen you will use in Lesson 3:</p>
+      <pre style="background:var(--color-bg); border:1px solid var(--color-border); border-radius:var(--radius-md); padding:var(--space-5); font-family:var(--font-mono); font-size:var(--text-sm); color:var(--color-ink); overflow-x:auto; margin:var(--space-5) 0;">Given   the user is logged in as a Junior Investigator
+  And   a case record is open in edit mode
+When    the user sets the Status dropdown to "Closed"
+  And   clicks Save
+Then    the save is blocked
+  And   a validation message appears below the Status field
+  And   the message reads exactly:
+        "You do not have permission to resolve or close cases."</pre>
+      <h2 style="margin: var(--space-6) 0 var(--space-3);">Why Each Part Matters</h2>
+      <ul style="padding-left:var(--space-5); color:var(--color-ink-soft); margin-bottom:var(--space-5);">
+        <li style="margin-bottom:var(--space-4);"><strong>Given</strong> — sets up your exact starting conditions. Without it, two testers running the "same" test might get different results.</li>
+        <li style="margin-bottom:var(--space-4);"><strong>When</strong> — one specific, precise action. Not "click around the form" — one thing, done once.</li>
+        <li style="margin-bottom:var(--space-4);"><strong>Then</strong> — the exact outcome, with no interpretation required. Note how the example specifies the exact error message text.</li>
+      </ul>
+      <div class="callout"><strong>Watch out for:</strong> Multiple unrelated "Then" clauses in one AC. If you have five "And" clauses under Then that test different things, the AC should be split.</div>
+    </div>`;
+
+    var CHAPTER_3 = `
+    <div class="chapter-content">
+      <h1>Reading AC as a Tester</h1>
+      <p class="chapter-intro">Your job when reading AC is to turn each statement into test cases. This is a learnable, mechanical process.</p>
+      <h2 style="margin: var(--space-6) 0 var(--space-3);">Three Questions for Every AC</h2>
+      <ul style="padding-left:var(--space-5); color:var(--color-ink-soft); margin-bottom:var(--space-6);">
+        <li style="margin-bottom:var(--space-4);"><strong>What is the happy path?</strong> The action that should succeed.</li>
+        <li style="margin-bottom:var(--space-4);"><strong>What is the unhappy path?</strong> The action that should be rejected.</li>
+        <li style="margin-bottom:var(--space-4);"><strong>What are the edge cases?</strong> Boundary values, empty inputs, role changes.</li>
+      </ul>
+      <h2 style="margin: var(--space-6) 0 var(--space-3);">Worked Example — One AC, Four Test Cases</h2>
+      <p>AC states: <em>"Case Title is required. Maximum 120 characters. Cannot be blank on save."</em></p>
+      <table style="width:100%; border-collapse:collapse; margin:var(--space-5) 0; font-size:var(--text-sm);">
+        <thead style="background:var(--color-bg); border-bottom:2px solid var(--color-border);">
+          <tr>
+            <th style="text-align:left; padding:var(--space-3) var(--space-4); color:var(--color-ink-muted); font-size:var(--text-xs); text-transform:uppercase;">#</th>
+            <th style="text-align:left; padding:var(--space-3) var(--space-4); color:var(--color-ink-muted); font-size:var(--text-xs); text-transform:uppercase;">Test</th>
+            <th style="text-align:left; padding:var(--space-3) var(--space-4); color:var(--color-ink-muted); font-size:var(--text-xs); text-transform:uppercase;">Input</th>
+            <th style="text-align:left; padding:var(--space-3) var(--space-4); color:var(--color-ink-muted); font-size:var(--text-xs); text-transform:uppercase;">Expected Result</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="border-bottom:1px solid var(--color-border); background:var(--color-success-light);">
+            <td style="padding:var(--space-3) var(--space-4);">1</td>
+            <td style="padding:var(--space-3) var(--space-4);">Happy path</td>
+            <td style="padding:var(--space-3) var(--space-4);">Valid title, 50 chars</td>
+            <td style="padding:var(--space-3) var(--space-4);">Saves successfully</td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--color-border); background:var(--color-error-light);">
+            <td style="padding:var(--space-3) var(--space-4);">2</td>
+            <td style="padding:var(--space-3) var(--space-4);">Unhappy path</td>
+            <td style="padding:var(--space-3) var(--space-4);">Blank</td>
+            <td style="padding:var(--space-3) var(--space-4);">Save blocked, error shown</td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--color-border);">
+            <td style="padding:var(--space-3) var(--space-4);">3</td>
+            <td style="padding:var(--space-3) var(--space-4);">Boundary — at limit</td>
+            <td style="padding:var(--space-3) var(--space-4);">Exactly 120 chars</td>
+            <td style="padding:var(--space-3) var(--space-4);">Saves successfully</td>
+          </tr>
+          <tr>
+            <td style="padding:var(--space-3) var(--space-4);">4</td>
+            <td style="padding:var(--space-3) var(--space-4);">Boundary — over limit</td>
+            <td style="padding:var(--space-3) var(--space-4);">121st character typed</td>
+            <td style="padding:var(--space-3) var(--space-4);">Character not accepted</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="callout"><strong>Key insight:</strong> One line of AC generates many test cases. A good tester looks for everything that could go wrong, not just what should go right.</div>
+    </div>`;
+
+    var CHAPTER_4 = `
+    <div class="chapter-content">
+      <h1>When AC Is Missing or Ambiguous</h1>
+      <p class="chapter-intro">The AC won't always cover every scenario you encounter. Here is what to do when that happens.</p>
+      <h2 style="margin: var(--space-6) 0 var(--space-3);">The Four Steps</h2>
+      <ul style="padding-left:var(--space-5); color:var(--color-ink-soft); margin-bottom:var(--space-5);">
+        <li style="margin-bottom:var(--space-5);"><strong>1. Flag it immediately.</strong> Don't guess what the intended behaviour is. Don't assume.</li>
+        <li style="margin-bottom:var(--space-5);"><strong>2. Ask a specific question.</strong> Not "this seems wrong" — but a precise, answerable question.</li>
+        <li style="margin-bottom:var(--space-5);"><strong>3. Do not file a bug without an AC reference.</strong> You cannot call something a bug if there is no defined expectation to deviate from.</li>
+        <li style="margin-bottom:var(--space-5);"><strong>4. Document your assumption if you must proceed.</strong> Note it clearly: <em>"Assumption: blank Priority defaults to Medium — not in AC."</em></li>
+      </ul>
+      <div class="callout"><strong>This protects you:</strong> A tester who files bugs based on personal preference rather than AC will quickly lose credibility. Always anchor your report to a specific AC reference.</div>
+      <!-- SVG: Mock AC document — two real-format Given/When/Then acceptance criteria -->
+      <!-- Shows testers what a properly written AC looks like before they start testing -->
+      <svg viewBox="0 0 700 310" xmlns="http://www.w3.org/2000/svg" style="width:100%; margin:var(--space-6) 0; border-radius:8px; display:block;">
+        <!-- Outer card background -->
+        <rect x="20" y="8" width="660" height="296" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1.5"/>
+        <!-- Header bar -->
+        <rect x="20" y="8" width="660" height="38" rx="8" fill="#2563eb"/>
+        <rect x="20" y="30" width="660" height="16" fill="#2563eb"/>
+        <text x="38" y="32" font-family="monospace" font-size="11" fill="white" font-weight="700">ACCEPTANCE CRITERIA — Case Investigation Screen    v1.2   APPROVED</text>
+        <!-- AC-4.2 block label -->
+        <rect x="38" y="56" width="624" height="110" rx="6" fill="white" stroke="#e2e8f0" stroke-width="1"/>
+        <text x="54" y="76" font-family="monospace" font-size="11" font-weight="700" fill="#2563eb">AC-4.2  |  Duplicate Detection</text>
+        <!-- AC-4.2 Given/When/Then/And lines -->
+        <text x="54" y="96" font-family="monospace" font-size="11" fill="#8892a4">GIVEN</text>
+        <text x="104" y="96" font-family="monospace" font-size="11" fill="#0f172a">a new Case Investigation is being created</text>
+        <text x="54" y="114" font-family="monospace" font-size="11" fill="#8892a4">WHEN </text>
+        <text x="104" y="114" font-family="monospace" font-size="11" fill="#0f172a">the operator enters a Subject Name matching an open case</text>
+        <text x="54" y="132" font-family="monospace" font-size="11" fill="#8892a4">THEN </text>
+        <text x="104" y="132" font-family="monospace" font-size="11" fill="#0f172a">a warning banner displays: "Possible duplicate — Case [ID] already open"</text>
+        <text x="54" y="150" font-family="monospace" font-size="11" fill="#8892a4">AND  </text>
+        <text x="104" y="150" font-family="monospace" font-size="11" fill="#0f172a">the operator can dismiss the warning and continue submitting</text>
+        <!-- AC-2.1 block -->
+        <rect x="38" y="176" width="624" height="110" rx="6" fill="white" stroke="#e2e8f0" stroke-width="1"/>
+        <text x="54" y="196" font-family="monospace" font-size="11" font-weight="700" fill="#7c3aed">AC-2.1  |  Role-Based Field Visibility</text>
+        <!-- AC-2.1 Given/When/Then/And lines -->
+        <text x="54" y="216" font-family="monospace" font-size="11" fill="#8892a4">GIVEN</text>
+        <text x="104" y="216" font-family="monospace" font-size="11" fill="#0f172a">a user is logged in as Junior Investigator</text>
+        <text x="54" y="234" font-family="monospace" font-size="11" fill="#8892a4">WHEN </text>
+        <text x="104" y="234" font-family="monospace" font-size="11" fill="#0f172a">the Case Investigation form is loaded</text>
+        <text x="54" y="252" font-family="monospace" font-size="11" fill="#8892a4">THEN </text>
+        <text x="104" y="252" font-family="monospace" font-size="11" fill="#0f172a">the "Outcome" field is absent from the DOM — not disabled, absent</text>
+        <text x="54" y="270" font-family="monospace" font-size="11" fill="#8892a4">AND  </text>
+        <text x="104" y="270" font-family="monospace" font-size="11" fill="#0f172a">the "Escalated" checkbox is visible but read-only for Junior role</text>
+        <!-- Footer note -->
+        <text x="350" y="298" text-anchor="middle" font-family="inherit" font-size="10" fill="#8892a4">Every bug you file must anchor to a specific AC number — this is your source of truth</text>
+      </svg>
+    </div>`;
+
+    var CHAPTER_5 = `
+    <div class="chapter-content">
+      <h1>The AC for This Course</h1>
+      <p class="chapter-intro">In Lesson 3, you will interact with a simulated CRM screen. Here are the Acceptance Criteria for that screen — read them now so you arrive prepared.</p>
+      <div style="background:var(--color-bg); border:1px solid var(--color-border); border-radius:var(--radius-md); padding:var(--space-6); margin:var(--space-6) 0;">
+        <h2 style="font-size:var(--text-md); color:var(--color-primary); margin-bottom:var(--space-4);">Case Investigation Screen — AC</h2>
+        <h3 style="font-size:var(--text-sm); text-transform:uppercase; letter-spacing:0.08em; color:var(--color-ink-muted); margin:var(--space-5) 0 var(--space-3);">AC-1: Visibility</h3>
+        <ul style="padding-left:var(--space-5); color:var(--color-ink-soft); font-size:var(--text-sm);">
+          <li style="margin-bottom:var(--space-2);">AC-1.1: All standard fields are visible to both roles.</li>
+          <li style="margin-bottom:var(--space-2);">AC-1.2: Outcome/Resolution is visible ONLY to Senior Investigators. Must be absent from DOM for Juniors.</li>
+          <li style="margin-bottom:var(--space-2);">AC-1.3: Assigned To is visible ONLY to Senior Investigators.</li>
+        </ul>
+        <h3 style="font-size:var(--text-sm); text-transform:uppercase; letter-spacing:0.08em; color:var(--color-ink-muted); margin:var(--space-5) 0 var(--space-3);">AC-2: Validation</h3>
+        <ul style="padding-left:var(--space-5); color:var(--color-ink-soft); font-size:var(--text-sm);">
+          <li style="margin-bottom:var(--space-2);">AC-2.1: Case Title is required. Save is blocked if blank.</li>
+          <li style="margin-bottom:var(--space-2);">AC-2.2: Case Title max is 120 chars. 121st char not accepted.</li>
+          <li style="margin-bottom:var(--space-2);">AC-2.3: Date Opened is required. Future dates rejected.</li>
+        </ul>
+        <h3 style="font-size:var(--text-sm); text-transform:uppercase; letter-spacing:0.08em; color:var(--color-ink-muted); margin:var(--space-5) 0 var(--space-3);">AC-3: Conditional Behaviour</h3>
+        <ul style="padding-left:var(--space-5); color:var(--color-ink-soft); font-size:var(--text-sm);">
+          <li style="margin-bottom:var(--space-2);">AC-3.1: Escalation Reason appears ONLY when Escalated is checked.</li>
+          <li style="margin-bottom:var(--space-2);">AC-3.2: Escalation Reason is required when Escalated is checked.</li>
+        </ul>
+        <h3 style="font-size:var(--text-sm); text-transform:uppercase; letter-spacing:0.08em; color:var(--color-ink-muted); margin:var(--space-5) 0 var(--space-3);">AC-4: Roles</h3>
+        <ul style="padding-left:var(--space-5); color:var(--color-ink-soft); font-size:var(--text-sm);">
+          <li style="margin-bottom:var(--space-2);">AC-4.2: Junior cannot set Status to Resolved/Closed. Save blocked: "You do not have permission..."</li>
+        </ul>
+      </div>
+      <div class="callout"><strong>Before you move on:</strong> Pick any one AC above and write out the test cases it generates — happy path, unhappy path, edge cases.</div>
+    </div>`;
+
+    var CHAPTERS = [
+      { id: 'chapter-1', title: 'What Are AC?',         type: 'content', content: CHAPTER_1 },
+      { id: 'chapter-2', title: 'Given/When/Then',     type: 'content', content: CHAPTER_2 },
+      { id: 'chapter-3', title: 'Reading AC',          type: 'content', content: CHAPTER_3 },
+      { id: 'chapter-4', title: 'Ambiguous AC',       type: 'content', content: CHAPTER_4 },
+      { id: 'chapter-5', title: 'Reference AC',        type: 'content', content: CHAPTER_5 },
+      { id: 'chapter-6', title: 'Quiz',                type: 'quiz'    },
+    ];
+
+    var MIN_READ_SECONDS = 15;
+
+    // ── SECTION 3: INITIALISE ─────────────────────────────────────────────────────
+
+    initDB().then(function() {
+      currentSession = requireLogin();
+      if (!currentSession) return;
+      return getSetting('pageWaitTime').then(function(val) {
+        if (val !== undefined) MIN_READ_SECONDS = val;
+      }).then(function() {
+        return Promise.all([
+          getStudent(currentSession.caseId),
+          getProgress(currentSession.caseId)
+        ]);
+      });
+    }).then(function(results) {
+      if (!results) return;
+      currentStudent = results[0];
+      currentProgress = results[1];
+
+      document.getElementById('user-name-display').textContent = currentStudent.name;
+
+      if (currentProgress && currentProgress.lessonsComplete && currentProgress.lessonsComplete.includes('lesson-2')) {
+        window.location.href = 'course.html';
+        return;
+      }
+
+      var chaptersRead = (currentProgress && currentProgress.chaptersRead && currentProgress.chaptersRead['lesson-2']) || [];
+      var resumeIndex = 0;
+      for (var i = 0; i < CHAPTERS.length - 1; i++) {
+        if (chaptersRead.includes(CHAPTERS[i].id)) resumeIndex = i + 1;
+      }
+      currentChapter = Math.min(resumeIndex, CHAPTERS.length - 1);
+
+      buildSidebar();
+      showChapter(currentChapter);
+      startLessonTimer();
+    });
+
+    // ── SECTION 4: CHAPTER NAVIGATION ─────────────────────────────────────────────
+
+    function showChapter(index) {
+      currentChapter = index;
+      var chapter = CHAPTERS[index];
+
+      document.getElementById('chapter-label').textContent = 'Chapter ' + (index + 1) + ' of ' + CHAPTERS.length;
+      var pct = ((index + 1) / CHAPTERS.length * 100).toFixed(0);
+      document.getElementById('chapter-progress-fill').style.width = pct + '%';
+
+      if (chapter.type === 'quiz') {
+        document.getElementById('phase-content').style.display = 'none';
+        document.getElementById('phase-quiz').style.display = 'block';
+        startQuiz();
+      } else {
+        document.getElementById('chapter-content').innerHTML = chapter.content;
+        var btnNext = document.getElementById('btn-next');
+        btnNext.disabled = true;
+        document.getElementById('chapter-timer-notice').textContent = 'Please take a moment to read before continuing.';
+
+        setTimeout(function() {
+          btnNext.disabled = false;
+          document.getElementById('chapter-timer-notice').textContent = '';
+        }, MIN_READ_SECONDS * 1000);
+      }
+      document.getElementById('btn-prev').disabled = (index === 0);
+      buildSidebar();
+    }
+
+    async function nextChapter() {
+      var chapter = CHAPTERS[currentChapter];
+      if (chapter.type === 'content') {
+        await saveChapterRead(currentSession.caseId, 'lesson-2', chapter.id);
+      }
+      if (currentChapter < CHAPTERS.length - 1) showChapter(currentChapter + 1);
+    }
+
+    function prevChapter() {
+      if (currentChapter > 0) showChapter(currentChapter - 1);
+    }
+
+    function goToChapter(index) {
+      var chaptersRead = (currentProgress && currentProgress.chaptersRead && currentProgress.chaptersRead['lesson-2']) || [];
+      if (chaptersRead.includes(CHAPTERS[index].id)) showChapter(index);
+    }
+
+    // ── SECTION 5: SIDEBAR ────────────────────────────────────────────────────────
+
+    function buildSidebar() {
+      var chaptersRead = (currentProgress && currentProgress.chaptersRead && currentProgress.chaptersRead['lesson-2']) || [];
+      var list = document.getElementById('chapter-list');
+      list.innerHTML = '';
+
+      CHAPTERS.forEach(function(chapter, i) {
+        var isComplete = chaptersRead.includes(chapter.id);
+        var isCurrent  = (i === currentChapter);
+        var item = document.createElement('div');
+        item.className = 'chapter-list-item' + (isCurrent ? ' current' : '') + (isComplete ? ' complete' : '');
+        if (isComplete && !isCurrent) item.onclick = function() { goToChapter(i); };
+        item.innerHTML = '<span class="chapter-check">' + (isComplete ? '✓' : (isCurrent ? '▶' : '○')) + '</span><span>' + chapter.title + '</span>';
+        list.appendChild(item);
+      });
+    }
+
+    // ── SECTION 6: TIME TRACKING ───────────────────────────────────────────────────
+
+    function startLessonTimer() {
+      lessonTimer = setInterval(function() {
+        lessonSeconds++;
+        if (lessonSeconds % 30 === 0) addTimeSpent(currentSession.caseId, 'lesson-2', 30);
+      }, 1000);
+
+      window.addEventListener('beforeunload', function() {
+        var remainder = lessonSeconds % 30;
+        if (remainder > 0) addTimeSpent(currentSession.caseId, 'lesson-2', remainder);
+      });
+    }
+
+    // ── SECTION 7: QUIZ ENGINE ────────────────────────────────────────────────────
+
+    function startQuiz() {
+      quizQuestions = getQuestionsForLesson('lesson-2');
+      currentQuestion = 0;
+      quizAnswers = [];
+      renderQuestion();
+    }
+
+    function renderQuestion() {
+      const q = quizQuestions[currentQuestion];
+      document.getElementById('quiz-progress').textContent = `Question ${currentQuestion + 1} of ${quizQuestions.length}`;
+      document.getElementById('quiz-question-text').textContent = q.questionText;
+      
+      const container = document.getElementById('quiz-options');
+      container.innerHTML = '';
+      q.options.forEach(opt => {
+        const btn = document.createElement('button');
+        btn.className = 'btn-answer';
+        btn.textContent = opt;
+        btn.onclick = () => handleAnswer(opt);
+        container.appendChild(btn);
+      });
+      document.getElementById('quiz-feedback').className = 'feedback-panel';
+    }
+
+    function handleAnswer(selected) {
+      const q = quizQuestions[currentQuestion];
+      const isCorrect = (selected === q.correctAnswer);
+      
+      quizAnswers.push({
+        questionId: q.questionId,
+        selectedAnswer: selected,
+        correct: isCorrect
+      });
+
+      const btns = document.querySelectorAll('.btn-answer');
+      btns.forEach(b => {
+        b.disabled = true;
+        if (b.textContent === q.correctAnswer) b.classList.add('correct');
+        else if (b.textContent === selected && !isCorrect) b.classList.add('incorrect');
+      });
+
+      const panel = document.getElementById('quiz-feedback');
+      panel.className = 'feedback-panel visible ' + (isCorrect ? 'feedback-correct' : 'feedback-incorrect');
+      document.getElementById('feedback-title').innerHTML = isCorrect ? '✓ Correct!' : `✗ Incorrect. <br>The correct answer is: ${q.correctAnswer}`;
+      document.getElementById('feedback-body').textContent = q.explanation;
+
+      document.getElementById('btn-next-q').textContent = 
+        (currentQuestion === quizQuestions.length - 1) ? 'See results → ' : 'Next question → ';
+    }
+
+    function nextQuestion() {
+      currentQuestion++;
+      if (currentQuestion < quizQuestions.length) {
+        document.getElementById('quiz-feedback').className = 'feedback-panel';
+        renderQuestion();
+      } else {
+        showResults();
+      }
+    }
+
+    function showResults() {
+      document.getElementById('phase-quiz').style.display = 'none';
+      document.getElementById('phase-results').style.display = 'block';
+
+      const correctCount = quizAnswers.filter(a => a.correct).length;
+      const scoreText = document.getElementById('score-text');
+      scoreText.textContent = `You got ${correctCount} of ${quizQuestions.length} correct.`;
+      
+      if (correctCount >= 4) scoreText.className = 'text-center font-bold my-4 text-success';
+      else if (correctCount >= 2) scoreText.className = 'text-center font-bold my-4 text-warning';
+      else scoreText.className = 'text-center font-bold my-4 text-muted';
+
+      const list = document.getElementById('results-list');
+      list.innerHTML = '';
+
+      quizAnswers.forEach((ans, i) => {
+        const q = quizQuestions[i];
+        const row = document.createElement('div');
+        row.className = 'result-row';
+        row.innerHTML = `
+          <div class="result-icon">${ans.correct ? '✓' : '✗'}</div>
+          <div class="result-details">
+            <div class="font-medium text-sm">${q.questionText}</div>
+            ${!ans.correct ? `<div class="text-xs text-muted">Correct: ${q.correctAnswer}</div>` : ''}
+            <span class="explanation-toggle" onclick="toggleExp(this)">Show explanation</span>
+            <div class="explanation-text">${q.explanation}</div>
+          </div>
+        `;
+        list.appendChild(row);
+      });
+    }
+
+    function toggleExp(el) {
+      const text = el.nextElementSibling;
+      const isHidden = text.style.display === 'none' || text.style.display === '';
+      text.style.display = isHidden ? 'block' : 'none';
+      el.textContent = isHidden ? 'Hide explanation' : 'Show explanation';
+    }
+
+    async function completeLesson() {
+      try {
+        const progress = await getProgress(currentSession.caseId);
+        const now = new Date().toISOString();
+
+        var remainder = lessonSeconds % 30;
+        if (remainder > 0) await addTimeSpent(currentSession.caseId, 'lesson-2', remainder);
+
+        const results = {};
+        quizAnswers.forEach(ans => {
+          results[ans.questionId] = {
+            selectedAnswer: ans.selectedAnswer,
+            correct: ans.correct,
+            answeredAt: now
+          };
+        });
+
+        const updatedProgress = progress || {
+          caseId: currentSession.caseId,
+          lessonsComplete: [],
+          currentLesson: 'lesson-2',
+          quizResults: {},
+          placementSurvey: { completed: true, recommendedPath: [], answers: [] },
+          certificateEarned: false,
+        };
+
+        updatedProgress.quizResults['lesson-2'] = results;
+        if (!updatedProgress.lessonsComplete.includes('lesson-2')) {
+          updatedProgress.lessonsComplete.push('lesson-2');
+        }
+        updatedProgress.lastActivity = now;
+
+        await saveProgress(updatedProgress);
+        window.location.href = 'course.html';
+      } catch (e) {
+        console.error(e);
+        showToast('Error saving progress', 'error');
+      }
+    }
+
+    function handleLogout() {
+      var remainder = lessonSeconds % 30;
+      if (remainder > 0 && currentSession) addTimeSpent(currentSession.caseId, 'lesson-2', remainder);
+      endSession();
+      window.location.href = 'index.html';
+    }
+  </script>
+</body>
+</html>

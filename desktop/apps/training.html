@@ -1,0 +1,63 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>Training Tasks</title>
+        <style>
+            body {
+                margin: 0;
+                font-family:
+                    system-ui,
+                    -apple-system,
+                    "Segoe UI",
+                    sans-serif;
+                padding: 12px;
+                font-size: 13px;
+            }
+            .task {
+                font-size: 12px;
+                padding: 4px 0;
+                border-bottom: 1px solid #ddd;
+                display: flex;
+                align-items: center;
+                gap: 6px;
+            }
+            .task input {
+                margin: 0;
+            }
+        </style>
+    </head>
+    <body>
+        <h3>Training Tasks</h3>
+        <p>
+            These are example capstone tasks. Completion is signaled back to the
+            OS.
+        </p>
+
+        <div class="task">
+            <input type="checkbox" data-task-id="dyn-load-case-001" />
+            <span>Load Dynamics scenario Case 001</span>
+        </div>
+        <div class="task">
+            <input type="checkbox" data-task-id="ado-load-bug-001" />
+            <span>Load ADO bug Bug 001</span>
+        </div>
+
+        <script>
+            (function () {
+                const OS = window.parent.OS;
+                document
+                    .querySelectorAll("input[type=checkbox]")
+                    .forEach((cb) => {
+                        cb.addEventListener("change", () => {
+                            if (cb.checked) {
+                                const id = cb.getAttribute("data-task-id");
+                                OS.completeTask(id);
+                            }
+                        });
+                    });
+            })();
+        </script>
+
+    </body>
+</html>

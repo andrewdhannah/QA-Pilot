@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin — Bug Lab</title>
+  <link rel="stylesheet" href="../css/main.css">
+  <style>
+    .topbar { background: var(--color-surface); border-bottom: 1px solid var(--color-border); padding: var(--space-4) var(--space-6); display: flex; align-items: center; justify-content: space-between; }
+    .topbar-brand { font-size: var(--text-base); font-weight: var(--weight-bold); color: var(--color-ink); }
+    .main-content { max-width: 800px; margin: var(--space-10) auto; padding: 0 var(--space-6); }
+    .admin-nav { display: flex; gap: var(--space-4); margin-bottom: var(--space-6); border-bottom: 1px solid var(--color-border); padding-bottom: var(--space-4); }
+    .admin-nav a { font-size: var(--text-sm); color: var(--color-ink-muted); padding-bottom: var(--space-2); text-decoration: none; }
+    .admin-nav a.active { color: var(--color-primary); font-weight: var(--weight-medium); border-bottom: 2px solid var(--color-primary); }
+    
+    .warning-card { background: #fffbeb; border: 1px solid #fbbf24; border-radius: var(--radius-md); padding: var(--space-6); color: #92400e; margin-bottom: var(--space-8); }
+    
+    .bug-list { display: flex; flex-direction: column; gap: var(--space-3); }
+    .bug-row { 
+      display: flex; align-items: center; gap: var(--space-6); padding: var(--space-5); 
+      background: var(--color-surface); border: 1px solid var(--color-border); 
+      border-radius: var(--radius-md); cursor: pointer; transition: background 0.2s;
+    }
+    .bug-row:hover { background: var(--color-bg); }
+    .bug-info { flex: 1; }
+    .bug-id { font-family: var(--font-mono); font-weight: bold; color: var(--color-error); margin-right: 8px; }
+    .bug-desc { font-size: var(--text-sm); color: var(--color-ink-soft); }
+    
+    .checkbox-custom { width: 20px; height: 20px; accent-color: var(--color-primary); cursor: pointer; }
+  </style>
+</head>
+<body>
+
+  <nav class="topbar">
+    <span class="topbar-brand">QA Onboarding Training — Admin</span>
+    <button class="btn btn-ghost" onclick="handleAdminLogout()">Sign out</button>
+  </nav>
+
+  <main class="main-content">
+    <div class="page-header" style="margin-bottom: var(--space-6);">
+      <h1 class="text-xl font-bold">Bug Lab</h1>
+      <p class="text-muted">Activate intentional defects on the Dynamics mock screen for training exercises.</p>
+    </div>
+
+    <nav class="admin-nav">
+      <a href="dashboard.html">Students</a>
+      <a href="assign.html">Assign Lessons</a>
+      <a href="editor.html">Content Editor</a>
+      <a href="bugs.html" class="active">Bug Lab</a>
+    </nav>
+
+    <div class="warning-card">
+      <strong>Warning:</strong> Active bugs are visible to all students. Deactivate when not running a training session.
+    </div>
+
+    <div class="bug-list" id="bug-list">
+      <!-- Bug toggles injected here -->
+    </div>
+
+    <div class="footer-nav">
+      <button class="btn btn-primary" onclick="saveBugs()">Save Bug Settings</button>
+    </div>
+  </main>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script src="../data/content.js"></script>
+  <script src="../data/quiz-questions.js"></script>
+  <script src="../js/db.js"></script>
+  <script src="../js/app.js"></script>
+
+  <script>
+    const BUG_DEFINITIONS = [
+      { id: 'BUG-01', desc: 'Junior Investigator can see the Outcome/Resolution field (rendered when should be hidden)' },
+      { id: 'BUG-02', desc: 'Junior Investigator can edit the Outcome/Resolution field (visible AND editable)' },
+      { id: 'BUG-03', desc: 'Date Opened accepts future dates without validation error' },
+      { id: 'BUG-04', desc: 'Escalation Reason dropdown does not appear when Escalated is checked' },
+      { id: 'BUG-05', desc: 'Case Title allows blank save — required validation not firing' },
+      { id: 'BUG-06', desc: 'Status can be set to Resolved without Outcome populated' },
+      { id: 'BUG-07', desc: 'Last Updated timestamp does not refresh after save' },
+      { id: 'BUG-08', desc: 'Junior can set Status to Closed (role-based restriction not enforced)' },
+    ];
+
+    initDB().then(function() {
+      if (!requireAdmin()) return;
+      loadBugs();
+    });
+
+    async function loadBugs() {
+      const raw = await getSetting('activeBugs');
+      const activeBugs = raw ? JSON.parse(raw) : [];
+      const list = document.getElementById('bug-list');
+      list.innerHTML = '';
+
+      BUG_DEFINITIONS.forEach(bug => {
+        const checked = activeBugs.includes(bug.id) ? 'checked' : '';
+        const row = document.createElement('label');
+        row.className = 'bug-row';
+        row.innerHTML = `
+          <input type="checkbox" class="checkbox-custom" value="${bug.id}" ${checked}>
+          <div class="bug-info">
+            <span class="bug-id">${bug.id}</span>
+            <span class="bug-desc">${bug.desc}</span>
+          </div>
+        `;
+        list.appendChild(row);
+      });
+    }
+
+    async function saveBugs() {
+      const checked = Array.from(document.querySelectorAll('#bug-list input:checked')).map(cb => cb.value);
+      await saveSetting('activeBugs', JSON.stringify(checked));
+      showToast('Bug settings saved.', 'success');
+    }
+
+    function handleAdminLogout() {
+      sessionStorage.removeItem('qa_admin');
+      window.location.href = 'index.html';
+    }
+  </script>
+</body>
+</html>

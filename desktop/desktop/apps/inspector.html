@@ -1,0 +1,268 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>Scenario Inspector</title>
+        <style>
+            :root {
+                --insp-bg: #f3f2f1;
+                --insp-surface: #ffffff;
+                --insp-border: #d0d0d0;
+                --insp-border-subtle: #e1dfdd;
+                --insp-text: #201f1e;
+                --insp-text-subtle: #605e5c;
+                --insp-blue: #0078d4;
+            }
+
+            body.theme-dark {
+                --insp-bg: #1b1a19;
+                --insp-surface: #252423;
+                --insp-border: #3b3a39;
+                --insp-border-subtle: #3b3a39;
+                --insp-text: #f3f2f1;
+                --insp-text-subtle: #c8c6c4;
+                --insp-blue: #3aa0ff;
+            }
+
+            body {
+                margin: 0;
+                font-family:
+                    system-ui,
+                    -apple-system,
+                    "Segoe UI",
+                    sans-serif;
+                font-size: 13px;
+                background: var(--insp-bg);
+                color: var(--insp-text);
+                height: 100vh;
+                display: flex;
+                flex-direction: column;
+            }
+
+            .insp-header {
+                height: 36px;
+                background: var(--insp-surface);
+                border-bottom: 1px solid var(--insp-border-subtle);
+                display: flex;
+                align-items: center;
+                padding: 0 10px;
+                box-sizing: border-box;
+            }
+
+            .insp-header-title {
+                font-size: 13px;
+                font-weight: 600;
+            }
+
+            .insp-header-sub {
+                font-size: 11px;
+                color: var(--insp-text-subtle);
+                margin-left: 8px;
+            }
+
+            .insp-header-right {
+                margin-left: auto;
+                font-size: 11px;
+                color: var(--insp-text-subtle);
+            }
+
+            .insp-body {
+                flex: 1;
+                padding: 10px;
+                box-sizing: border-box;
+                display: flex;
+                gap: 8px;
+                overflow: hidden;
+            }
+
+            .insp-left {
+                width: 220px;
+                background: var(--insp-surface);
+                border: 1px solid var(--insp-border-subtle);
+                border-radius: 2px;
+                padding: 8px;
+                box-sizing: border-box;
+                display: flex;
+                flex-direction: column;
+            }
+
+            .insp-right {
+                flex: 1;
+                background: var(--insp-surface);
+                border: 1px solid var(--insp-border-subtle);
+                border-radius: 2px;
+                padding: 8px;
+                box-sizing: border-box;
+                display: flex;
+                flex-direction: column;
+                overflow: hidden;
+            }
+
+            .insp-section-title {
+                font-size: 12px;
+                font-weight: 600;
+                margin-bottom: 4px;
+            }
+
+            .insp-select {
+                width: 100%;
+                font-size: 12px;
+                padding: 4px 6px;
+                border-radius: 2px;
+                border: 1px solid var(--insp-border);
+                background: var(--insp-bg);
+                color: var(--insp-text);
+                box-sizing: border-box;
+                margin-bottom: 6px;
+            }
+
+            .insp-meta {
+                font-size: 11px;
+                color: var(--insp-text-subtle);
+                margin-top: 4px;
+            }
+
+            .insp-badge {
+                display: inline-flex;
+                align-items: center;
+                padding: 2px 6px;
+                border-radius: 999px;
+                font-size: 11px;
+                background: var(--insp-bg);
+                color: var(--insp-text-subtle);
+                margin-right: 4px;
+            }
+
+            .insp-json {
+                flex: 1;
+                margin-top: 6px;
+                background: #111;
+                color: #f3f2f1;
+                font-family: "SF Mono", Menlo, Consolas, monospace;
+                font-size: 11px;
+                padding: 8px;
+                border-radius: 2px;
+                overflow: auto;
+                white-space: pre;
+            }
+
+            body.theme-dark .insp-json {
+                background: #000;
+            }
+
+            .insp-hint {
+                font-size: 11px;
+                color: var(--insp-text-subtle);
+                margin-top: 4px;
+            }
+        </style>
+    </head>
+    <body class="theme-light">
+        <div class="insp-header">
+            <div class="insp-header-title">Scenario Inspector</div>
+            <div class="insp-header-sub">Developer view</div>
+            <div class="insp-header-right" id="insp-count">0 scenarios</div>
+        </div>
+        <div class="insp-body">
+            <div class="insp-left">
+                <div class="insp-section-title">Scenario</div>
+                <select id="insp-select" class="insp-select"></select>
+                <div class="insp-meta" id="insp-meta">
+                    No scenario selected.
+                </div>
+                <div class="insp-hint">
+                    Use this to inspect raw scenario JSON while Dynamics and ADO
+                    are running.
+                </div>
+            </div>
+            <div class="insp-right">
+                <div class="insp-section-title">Raw JSON</div>
+                <div class="insp-json" id="insp-json">Loading…</div>
+            </div>
+        </div>
+
+        <script>
+            (function () {
+                const OS = window.parent.OS || window.parent.QA_OS;
+
+                const state = {
+                    theme: "light",
+                };
+
+                window.addEventListener("message", (event) => {
+                    const msg = event.data;
+                    if (
+                        !msg ||
+                        msg.type !== "APP_BOOT" ||
+                        msg.appId !== "inspector"
+                    )
+                        return;
+
+                    state.theme = msg.theme || state.theme || "light";
+                    applyTheme();
+                    init();
+                });
+
+                function applyTheme() {
+                    document.body.classList.remove("theme-light", "theme-dark");
+                    document.body.classList.add(
+                        state.theme === "dark" ? "theme-dark" : "theme-light",
+                    );
+                }
+
+                function init() {
+                    const select = document.getElementById("insp-select");
+                    const jsonEl = document.getElementById("insp-json");
+                    const metaEl = document.getElementById("insp-meta");
+                    const countEl = document.getElementById("insp-count");
+
+                    const scenarios = window.SCENARIOS || {};
+                    const ids = Object.keys(scenarios);
+
+                    countEl.textContent = ids.length + " scenarios";
+
+                    if (!ids.length) {
+                        select.innerHTML = "";
+                        jsonEl.textContent = "No scenarios loaded.";
+                        metaEl.textContent = "";
+                        return;
+                    }
+
+                    select.innerHTML = ids
+                        .map((id) => `<option value="${id}">${id}</option>`)
+                        .join("");
+
+                    function renderFor(id) {
+                        const data =
+                            OS && OS.loadScenario
+                                ? OS.loadScenario(id)
+                                : scenarios[id];
+                        if (!data) {
+                            jsonEl.textContent = "Scenario not found.";
+                            metaEl.textContent = "";
+                            return;
+                        }
+
+                        jsonEl.textContent = JSON.stringify(data, null, 2);
+
+                        const type = data.type || "unknown";
+                        const linked =
+                            data.linkedBug || data.linkedCase || "none";
+                        metaEl.textContent =
+                            "Type: " +
+                            type +
+                            " • Linked: " +
+                            linked +
+                            (data.id ? " • ID: " + data.id : "");
+                    }
+
+                    select.onchange = () => {
+                        renderFor(select.value);
+                    };
+
+                    renderFor(ids[0]);
+                }
+            })();
+        </script>
+    </body>
+</html>

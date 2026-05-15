@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin — Assign Lessons</title>
+  <link rel="stylesheet" href="../css/main.css">
+  <style>
+    .topbar { background: var(--color-surface); border-bottom: 1px solid var(--color-border); padding: var(--space-4) var(--space-6); display: flex; align-items: center; justify-content: space-between; }
+    .main-content { max-width: 1000px; margin: var(--space-10) auto; padding: 0 var(--space-6); }
+    .student-table { width: 100%; border-collapse: collapse; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-md); overflow: hidden; }
+    .student-table th, .student-table td { text-align: left; padding: var(--space-4); border-bottom: 1px solid var(--color-border); }
+    .student-table th { background: var(--color-bg); font-size: var(--text-xs); text-transform: uppercase; color: var(--color-ink-muted); }
+    .path-tag { display: inline-block; background: var(--color-bg); padding: 2px 6px; border-radius: var(--radius-sm); font-size: var(--text-xs); margin-right: 4px; border: 1px solid var(--color-border); }
+    .override-badge { font-size: var(--text-xs); color: var(--color-warning); font-weight: var(--weight-bold); }
+    
+    /* Assignment Panel */
+    #assignment-panel { display: none; position: fixed; top: 0; right: 0; bottom: 0; left: 0; background: rgba(0,0,0,0.5); z-index: 100; align-items: center; justify-content: center; }
+    .panel-card { background: var(--color-surface); width: 500px; border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); padding: var(--space-8); }
+    .checkbox-group { display: flex; flex-direction: column; gap: var(--space-4); margin: var(--space-6) 0; }
+    .checkbox-item { display: flex; align-items: center; gap: var(--space-3); cursor: pointer; font-size: var(--text-base); }
+    .checkbox-item input { width: 18px; height: 18px; }
+    .panel-footer { display: flex; justify-content: flex-end; gap: var(--space-4); margin-top: var(--space-8); }
+
+    /* Lesson Color Accents - Sprint 6A */
+    .lesson-dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 8px; flex-shrink: 0; }
+    .lesson-color-1 { border-left: 3px solid var(--color-primary);  }
+    .lesson-color-2 { border-left: 3px solid var(--color-info);     }
+    .lesson-color-3 { border-left: 3px solid var(--color-warning);  }
+    .lesson-color-4 { border-left: 3px solid var(--color-success);  }
+    .lesson-color-cap { border-left: 3px solid var(--color-ink);    }
+    .dot-1   { background: var(--color-primary); }
+    .dot-2   { background: var(--color-info);    }
+    .dot-3   { background: var(--color-warning); }
+    .dot-4   { background: var(--color-success); }
+    .dot-cap { background: var(--color-ink);     }
+  </style>
+</head>
+<body>
+
+  <nav class="topbar">
+    <span class="topbar-brand">Admin Portal — Lesson Assignment</span>
+    <button class="btn btn-ghost" onclick="location.href='index.html'">← Back to Dashboard</button>
+  </nav>
+
+  <main class="main-content">
+    <h1 class="text-xl font-bold mb-6">Student Lesson Assignments</h1>
+    <table class="student-table">
+      <thead>
+        <tr><th>Student</th><th>Case ID</th><th>Current Path</th><th>Override</th><th>Action</th></tr>
+      </thead>
+      <tbody id="student-list-body"></tbody>
+    </table>
+  </main>
+
+  <div id="assignment-panel">
+    <div class="panel-card">
+      <h2 class="text-lg font-bold">Assign Lessons: <span id="panel-student-name"></span></h2>
+      <p class="text-sm text-muted mb-4">Select the lessons this student should complete.</p>
+      <div class="checkbox-group" id="lesson-checkboxes"></div>
+      <div class="panel-footer">
+        <button class="btn btn-ghost" onclick="closePanel()">Cancel</button>
+        <button class="btn btn-secondary" id="btn-reset-path">Reset to Survey</button>
+        <button class="btn btn-primary" id="btn-save-assignment">Save Assignment</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script src="../data/content.js"></script>
+  <script src="../data/quiz-questions.js"></script>
+  <script src="../js/db.js"></script>
+  <script src="../js/app.js"></script>
+
+  <script>
+    /**
+     * admin/assign.html — Logic
+     * ==========================
+     * WHAT THIS PAGE DOES:
+     * - Allows Admin to define custom lesson paths for students.
+     * - Uses visual color-coding to help the Admin identify lessons quickly.
+     * - Syncs assignment records back to IndexedDB.
+     *
+     * FLOW:
+     * 1. initDB() and requireAdmin() verify access.
+     * 2. loadStudents() renders the assignment table with colored tags.
+     * 3. openAssignPanel() builds the custom checkbox list with dots and borders.
+     * 4. handleSave/handleReset() update the database.
+     */
+
+    // ── SECTION 1: METADATA AND CONSTANTS ──────────────────────────────────────
+
+    var activeStudent = null;
+    var allLessons = ['lesson-1', 'lesson-2', 'lesson-3', 'capstone'];
+
+    var LESSON_META = {
+      'lesson-1': { label: 'Lesson 1 — Testing 101',         colorClass: 'lesson-color-1', dotClass: 'dot-1' },
+      'lesson-2': { label: 'Lesson 2 — Acceptance Criteria', colorClass: 'lesson-color-2', dotClass: 'dot-2' },
+      'lesson-3': { label: 'Lesson 3 — Dynamics 365 CRM',    colorClass: 'lesson-color-3', dotClass: 'dot-3' },
+      'lesson-4': { label: 'Lesson 4 — Azure DevOps',        colorClass: 'lesson-color-4', dotClass: 'dot-4' },
+      'capstone': { label: 'Capstone Assessment',             colorClass: 'lesson-color-cap', dotClass: 'dot-cap' },
+    };
+
+    var tagColor = {
+      'lesson-1': 'var(--color-primary)',
+      'lesson-2': 'var(--color-info)',
+      'lesson-3': 'var(--color-warning)',
+      'lesson-4': 'var(--color-success)',
+      'capstone': 'var(--color-ink)',
+    };
+
+    // ── SECTION 2: INITIALIZATION ──────────────────────────────────────────────
+
+    initDB().then(function() {
+      if (!requireAdmin()) return;
+      loadStudents();
+    });
+
+    // ── SECTION 3: TABLE LOGIC ────────────────────────────────────────────────
+
+    /**
+     * loadStudents()
+     * Fetches and renders students, including color-coded path tags.
+     */
+    async function loadStudents() {
+      const students = await getAllStudents();
+      const body = document.getElementById('student-list-body');
+      body.innerHTML = '';
+
+      for (const student of students) {
+        const assignment = await getAssignment(student.caseId);
+        const path = (assignment && assignment.assignedLessons) ? assignment.assignedLessons : ['None assigned'];
+
+        var pathHtml = path.map(id => {
+          var color = tagColor[id] || 'var(--color-ink-muted)';
+          var label = LESSON_META[id] ? LESSON_META[id].label : id;
+          return `<span class="path-tag" style="border-color:${color}; color:${color};">${label}</span>`;
+        }).join('');
+
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${student.name}</td>
+          <td class="text-sm font-mono">${student.caseId}</td>
+          <td>${pathHtml}</td>
+          <td>${assignment && assignment.adminOverride ? '<span class="override-badge">YES</span>' : 'No'}</td>
+          <td><button class="btn btn-secondary text-xs" onclick="openAssignPanel('${student.caseId}')">Edit</button></td>
+        `;
+        body.appendChild(row);
+      }
+    }
+
+    // ── SECTION 4: ASSIGNMENT PANEL LOGIC ──────────────────────────────────────
+
+    /**
+     * openAssignPanel(caseId)
+     * Opens the modal and injects colored lesson checkboxes.
+     */
+    async function openAssignPanel(caseId) {
+      activeStudent = await getStudent(caseId);
+      const assignment = await getAssignment(caseId);
+      document.getElementById('panel-student-name').textContent = activeStudent.name;
+      
+      const container = document.getElementById('lesson-checkboxes');
+      container.innerHTML = '';
+
+      allLessons.forEach(id => {
+        const isChecked = assignment && assignment.assignedLessons && assignment.assignedLessons.includes(id);
+        const meta = LESSON_META[id] || { label: id, colorClass: '', dotClass: '' };
+        const label = document.createElement('label');
+        label.className = 'checkbox-item ' + meta.colorClass;
+        label.innerHTML = `
+          <input type="checkbox" value="${id}" ${isChecked ? 'checked' : ''}>
+          <span class="lesson-dot ${meta.dotClass}"></span>
+          <span>${meta.label}</span>
+        `;
+        container.appendChild(label);
+      });
+
+      document.getElementById('assignment-panel').style.display = 'flex';
+    }
+
+    function closePanel() {
+      document.getElementById('assignment-panel').style.display = 'none';
+    }
+
+    // ── SECTION 5: SAVE AND RESET LOGIC ────────────────────────────────────────
+
+    async function handleSave() {
+      const checkboxes = document.querySelectorAll('#lesson-checkboxes input:checked');
+      const selectedLessons = Array.from(checkboxes).map(cb => cb.value);
+
+      if (selectedLessons.length === 0) {
+        showToast('Select at least one lesson.', 'error');
+        return;
+      }
+
+      await saveAssignment({
+        caseId: activeStudent.caseId,
+        assignedLessons: selectedLessons,
+        adminOverride: true,
+        assignedBy: 'admin',
+        assignedDate: new Date().toISOString().split('T')[0],
+        notes: 'Manually assigned by admin.'
+      });
+      showToast('Assignment saved.', 'success');
+      closePanel();
+      loadStudents();
+    }
+
+    async function handleReset() {
+      const progress = await getProgress(activeStudent.caseId);
+      if (!progress || !progress.placementSurvey) {
+        showToast('No survey data found.', 'error');
+        return;
+      }
+
+      await saveAssignment({
+        caseId: activeStudent.caseId,
+        assignedLessons: progress.placementSurvey.recommendedPath,
+        adminOverride: false,
+        assignedBy: 'survey',
+        assignedDate: new Date().toISOString().split('T')[0],
+        notes: 'Reset to survey recommendation.'
+      });
+      showToast('Reset to survey path.', 'success');
+      closePanel();
+      loadStudents();
+    }
+
+    document.getElementById('btn-save-assignment').onclick = handleSave;
+    document.getElementById('btn-reset-path').onclick = handleReset;
+  </script>
+</body>
+</html>

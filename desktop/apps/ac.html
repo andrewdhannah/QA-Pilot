@@ -1,0 +1,299 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>Acceptance Criteria</title>
+        <style>
+            :root {
+                --ac-bg: #f3f2f1;
+                --ac-surface: #ffffff;
+                --ac-border: #d0d0d0;
+                --ac-border-subtle: #e1dfdd;
+                --ac-text: #201f1e;
+                --ac-text-subtle: #605e5c;
+                --ac-blue: #0078d4;
+            }
+
+            body.theme-dark {
+                --ac-bg: #1b1a19;
+                --ac-surface: #252423;
+                --ac-border: #3b3a39;
+                --ac-border-subtle: #3b3a39;
+                --ac-text: #f3f2f1;
+                --ac-text-subtle: #c8c6c4;
+                --ac-blue: #3aa0ff;
+            }
+
+            body {
+                margin: 0;
+                font-family:
+                    system-ui,
+                    -apple-system,
+                    "Segoe UI",
+                    sans-serif;
+                font-size: 13px;
+                background: var(--ac-bg);
+                color: var(--ac-text);
+                height: 100vh;
+                display: flex;
+                flex-direction: column;
+            }
+
+            .ac-header {
+                height: 36px;
+                background: var(--ac-surface);
+                border-bottom: 1px solid var(--ac-border-subtle);
+                display: flex;
+                align-items: center;
+                padding: 0 10px;
+                box-sizing: border-box;
+            }
+
+            .ac-header-title {
+                font-size: 13px;
+                font-weight: 600;
+            }
+
+            .ac-header-role {
+                margin-left: auto;
+                font-size: 11px;
+                color: var(--ac-text-subtle);
+            }
+
+            .ac-body {
+                flex: 1;
+                padding: 10px;
+                box-sizing: border-box;
+                overflow-y: auto;
+            }
+
+            .ac-card {
+                background: var(--ac-surface);
+                border: 1px solid var(--ac-border-subtle);
+                border-radius: 2px;
+                padding: 8px;
+                box-sizing: border-box;
+                margin-bottom: 8px;
+            }
+
+            .ac-card-title {
+                font-size: 12px;
+                font-weight: 600;
+                margin-bottom: 4px;
+            }
+
+            .ac-tag {
+                display: inline-flex;
+                align-items: center;
+                padding: 2px 6px;
+                border-radius: 999px;
+                font-size: 11px;
+                background: var(--ac-bg);
+                color: var(--ac-text-subtle);
+                margin-right: 4px;
+            }
+
+            .ac-list {
+                margin: 0;
+                padding-left: 16px;
+                font-size: 12px;
+            }
+
+            .ac-list li {
+                margin-bottom: 2px;
+            }
+
+            .ac-hint {
+                font-size: 11px;
+                color: var(--ac-text-subtle);
+                margin-top: 4px;
+            }
+        </style>
+    </head>
+    <body class="theme-light">
+        <div class="ac-header">
+            <div class="ac-header-title">Acceptance Criteria</div>
+            <div class="ac-header-role" id="ac-role-label">
+                Role: Junior Investigator
+            </div>
+        </div>
+        <div class="ac-body">
+            <div class="ac-card">
+                <div class="ac-card-title">Scenario</div>
+                <div id="ac-scenario-title">No scenario loaded</div>
+                <div class="ac-hint" id="ac-scenario-id"></div>
+            </div>
+
+            <div class="ac-card">
+                <div class="ac-card-title">Global criteria</div>
+                <ul class="ac-list" id="ac-global-list">
+                    <li>Junior cannot perform Senior-only actions.</li>
+                    <li>
+                        Required fields must block save when empty or invalid.
+                    </li>
+                    <li>Bugs must clearly reference the case or scenario.</li>
+                </ul>
+            </div>
+
+            <div class="ac-card">
+                <div class="ac-card-title">Case-specific criteria</div>
+                <ul class="ac-list" id="ac-case-list">
+                    <li>No case-specific criteria loaded.</li>
+                </ul>
+            </div>
+
+            <div class="ac-card">
+                <div class="ac-card-title">Bug-specific criteria</div>
+                <ul class="ac-list" id="ac-bug-list">
+                    <li>No bug-specific criteria loaded.</li>
+                </ul>
+            </div>
+
+            <div class="ac-card">
+                <div class="ac-card-title">Relationship criteria</div>
+                <ul class="ac-list" id="ac-rel-list">
+                    <li>Case must be linked to the correct bug.</li>
+                    <li>Bug must reference the correct case ID.</li>
+                </ul>
+            </div>
+        </div>
+
+        <script>
+            (function () {
+                const OS = window.parent.OS || window.parent.QA_OS;
+
+                const state = {
+                    role: "junior",
+                    scenarioCaseId: "case-001",
+                    caseData: null,
+                    bugData: null,
+                    theme: "light",
+                };
+
+                window.addEventListener("message", (event) => {
+                    const msg = event.data;
+                    if (!msg || msg.type !== "APP_BOOT" || msg.appId !== "ac")
+                        return;
+
+                    state.role = msg.role || state.role;
+                    state.theme = msg.theme || state.theme || "light";
+                    applyTheme();
+                    loadScenario(state.scenarioCaseId);
+                    render();
+                });
+
+                function applyTheme() {
+                    document.body.classList.remove("theme-light", "theme-dark");
+                    document.body.classList.add(
+                        state.theme === "dark" ? "theme-dark" : "theme-light",
+                    );
+                }
+
+                function loadScenario(caseId) {
+                    if (!OS || !OS.loadScenario) return;
+                    const c = OS.loadScenario(caseId);
+                    if (!c) return;
+                    state.caseData = c;
+                    state.bugData = c.linkedBug
+                        ? OS.loadScenario(c.linkedBug)
+                        : null;
+                }
+
+                function render() {
+                    const roleLabel = document.getElementById("ac-role-label");
+                    roleLabel.textContent =
+                        "Role: " +
+                        (state.role === "senior"
+                            ? "Senior Investigator"
+                            : "Junior Investigator");
+
+                    const scenarioTitle =
+                        document.getElementById("ac-scenario-title");
+                    const scenarioId =
+                        document.getElementById("ac-scenario-id");
+                    const globalList =
+                        document.getElementById("ac-global-list");
+                    const caseList = document.getElementById("ac-case-list");
+                    const bugList = document.getElementById("ac-bug-list");
+                    const relList = document.getElementById("ac-rel-list");
+
+                    if (state.caseData) {
+                        scenarioTitle.textContent =
+                            state.caseData.title ||
+                            "Case " + (state.caseData.id || "");
+                        scenarioId.textContent =
+                            "Scenario: " + (state.caseData.id || "");
+                    } else {
+                        scenarioTitle.textContent = "No scenario loaded";
+                        scenarioId.textContent = "";
+                    }
+
+                    // Global criteria (static + scenario-provided if present)
+                    globalList.innerHTML = "";
+                    const globalBase = [
+                        "Junior cannot perform Senior-only actions (e.g., resolving cases, overriding outcomes).",
+                        "Required fields must block save when empty or invalid (both in Dynamics and Azure DevOps).",
+                        "Bugs in Azure DevOps must clearly reference the case or scenario being tested.",
+                    ];
+                    globalBase.forEach((g) => {
+                        const li = document.createElement("li");
+                        li.textContent = g;
+                        globalList.appendChild(li);
+                    });
+
+                    // Case-specific
+                    caseList.innerHTML = "";
+                    const caseCriteria =
+                        (state.caseData &&
+                            state.caseData.acceptanceCriteriaScenario) ||
+                        [];
+                    if (caseCriteria.length === 0) {
+                        const li = document.createElement("li");
+                        li.textContent = "No case-specific criteria defined.";
+                        caseList.appendChild(li);
+                    } else {
+                        caseCriteria.forEach((c) => {
+                            const li = document.createElement("li");
+                            li.textContent = c;
+                            caseList.appendChild(li);
+                        });
+                    }
+
+                    // Bug-specific
+                    bugList.innerHTML = "";
+                    const bugCriteria =
+                        (state.bugData &&
+                            state.bugData.acceptanceCriteriaScenario) ||
+                        [];
+                    if (!state.bugData) {
+                        const li = document.createElement("li");
+                        li.textContent = "No bug linked or loaded.";
+                        bugList.appendChild(li);
+                    } else if (bugCriteria.length === 0) {
+                        const li = document.createElement("li");
+                        li.textContent = "No bug-specific criteria defined.";
+                        bugList.appendChild(li);
+                    } else {
+                        bugCriteria.forEach((b) => {
+                            const li = document.createElement("li");
+                            li.textContent = b;
+                            bugList.appendChild(li);
+                        });
+                    }
+
+                    // Relationship criteria
+                    relList.innerHTML = "";
+                    const relBase = [
+                        "Case must be linked to the correct bug.",
+                        "Bug must reference the correct case ID.",
+                    ];
+                    relBase.forEach((r) => {
+                        const li = document.createElement("li");
+                        li.textContent = r;
+                        relList.appendChild(li);
+                    });
+                }
+            })();
+        </script>
+    </body>
+</html>

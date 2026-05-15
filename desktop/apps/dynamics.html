@@ -1,0 +1,1378 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>Dynamics 365 — Case</title>
+        <style>
+            :root {
+                --d365-bg: #ffffff;
+                --d365-bg-alt: #f3f2f1;
+                --d365-surface: #ffffff;
+                --d365-border: #d0d0d0;
+                --d365-border-subtle: #e1dfdd;
+                --d365-text: #201f1e;
+                --d365-text-subtle: #605e5c;
+                --d365-blue: #0078d4;
+                --d365-blue-dark: #005a9e;
+                --d365-nav-bg: #201f1e;
+                --d365-nav-bg-hover: #323130;
+                --d365-nav-icon: #ffffff;
+                --d365-nav-icon-active: #ffffff;
+                --d365-nav-indicator: #0078d4;
+                --d365-bpf-bg: #f3f2f1;
+                --d365-bpf-border: #e1dfdd;
+                --d365-bpf-active: #0078d4;
+                --d365-bpf-complete: #107c10;
+                --d365-field-required: #a4262c;
+                --d365-timeline-bg: #faf9f8;
+            }
+
+            body.theme-dark {
+                --d365-bg: #1b1a19;
+                --d365-bg-alt: #252423;
+                --d365-surface: #252423;
+                --d365-border: #3b3a39;
+                --d365-border-subtle: #3b3a39;
+                --d365-text: #f3f2f1;
+                --d365-text-subtle: #c8c6c4;
+                --d365-blue: #3aa0ff;
+                --d365-blue-dark: #2893f5;
+                --d365-nav-bg: #11100f;
+                --d365-nav-bg-hover: #201f1e;
+                --d365-nav-icon: #f3f2f1;
+                --d365-nav-icon-active: #ffffff;
+                --d365-nav-indicator: #3aa0ff;
+                --d365-bpf-bg: #252423;
+                --d365-bpf-border: #3b3a39;
+                --d365-bpf-active: #3aa0ff;
+                --d365-bpf-complete: #107c10;
+                --d365-field-required: #f1707b;
+                --d365-timeline-bg: #201f1e;
+            }
+
+            body {
+                margin: 0;
+                font-family:
+                    system-ui,
+                    -apple-system,
+                    "Segoe UI",
+                    sans-serif;
+                font-size: 13px;
+                background: var(--d365-bg);
+                color: var(--d365-text);
+                display: flex;
+                height: 100vh;
+                overflow: hidden;
+            }
+
+            .d365-nav-rail {
+                width: 52px;
+                background: var(--d365-nav-bg);
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                padding-top: 8px;
+                box-sizing: border-box;
+            }
+
+            .d365-nav-logo {
+                width: 32px;
+                height: 32px;
+                border-radius: 4px;
+                background: var(--d365-blue);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin-bottom: 12px;
+            }
+
+            .d365-nav-logo span {
+                color: #fff;
+                font-size: 16px;
+                font-weight: 600;
+            }
+
+            .d365-nav-section {
+                margin-top: 8px;
+                width: 100%;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .d365-nav-item {
+                width: 100%;
+                height: 40px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                position: relative;
+                cursor: pointer;
+            }
+
+            .d365-nav-item:hover {
+                background: var(--d365-nav-bg-hover);
+            }
+
+            .d365-nav-item svg {
+                width: 18px;
+                height: 18px;
+                fill: var(--d365-nav-icon);
+            }
+
+            .d365-nav-item.active svg {
+                fill: var(--d365-nav-icon-active);
+            }
+
+            .d365-nav-indicator {
+                position: absolute;
+                left: 0;
+                width: 3px;
+                height: 24px;
+                border-radius: 0 4px 4px 0;
+                background: var(--d365-nav-indicator);
+            }
+
+            .d365-main {
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+                background: var(--d365-bg-alt);
+            }
+
+            .d365-command-bar {
+                height: 44px;
+                background: var(--d365-surface);
+                border-bottom: 1px solid var(--d365-border-subtle);
+                display: flex;
+                align-items: center;
+                padding: 0 12px;
+                box-sizing: border-box;
+            }
+
+            .d365-command-left {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                min-width: 0;
+            }
+
+            .d365-app-name {
+                font-size: 12px;
+                color: var(--d365-text-subtle);
+            }
+
+            .d365-record-title {
+                font-size: 14px;
+                font-weight: 600;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            .d365-command-center {
+                flex: 1;
+                display: flex;
+                justify-content: center;
+                pointer-events: none;
+            }
+
+            .d365-command-right {
+                display: flex;
+                align-items: center;
+                gap: 4px;
+            }
+
+            .d365-btn {
+                border: 1px solid transparent;
+                background: transparent;
+                padding: 4px 8px;
+                border-radius: 2px;
+                font-size: 12px;
+                display: inline-flex;
+                align-items: center;
+                gap: 4px;
+                cursor: pointer;
+                color: var(--d365-text);
+            }
+
+            .d365-btn svg {
+                width: 14px;
+                height: 14px;
+                fill: currentColor;
+            }
+
+            .d365-btn:hover {
+                background: var(--d365-bg-alt);
+                border-color: var(--d365-border-subtle);
+            }
+
+            .d365-btn-primary {
+                background: var(--d365-blue);
+                color: #fff;
+                border-color: var(--d365-blue-dark);
+            }
+
+            .d365-btn-primary:hover {
+                background: var(--d365-blue-dark);
+            }
+
+            .d365-content {
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+                overflow: hidden;
+            }
+
+            .d365-bpf {
+                background: var(--d365-bpf-bg);
+                border-bottom: 1px solid var(--d365-bpf-border);
+                padding: 6px 16px;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                box-sizing: border-box;
+            }
+
+            .d365-bpf-label {
+                font-size: 11px;
+                color: var(--d365-text-subtle);
+                margin-right: 8px;
+            }
+
+            .d365-bpf-stage {
+                display: inline-flex;
+                align-items: center;
+                padding: 4px 10px;
+                border-radius: 999px;
+                border: 1px solid var(--d365-bpf-border);
+                font-size: 11px;
+                cursor: pointer;
+                background: var(--d365-surface);
+                color: var(--d365-text-subtle);
+            }
+
+            .d365-bpf-stage + .d365-bpf-stage::before {
+                content: "›";
+                margin-right: 6px;
+                color: var(--d365-text-subtle);
+            }
+
+            .d365-bpf-stage.active {
+                border-color: var(--d365-bpf-active);
+                color: var(--d365-bpf-active);
+                font-weight: 600;
+            }
+
+            .d365-bpf-stage.complete {
+                border-color: var(--d365-bpf-complete);
+                color: var(--d365-bpf-complete);
+            }
+
+            .d365-tabs {
+                background: var(--d365-surface);
+                border-bottom: 1px solid var(--d365-border-subtle);
+                display: flex;
+                padding: 0 16px;
+                box-sizing: border-box;
+            }
+
+            .d365-tab {
+                padding: 8px 12px;
+                font-size: 12px;
+                cursor: pointer;
+                color: var(--d365-text-subtle);
+                border-bottom: 2px solid transparent;
+            }
+
+            .d365-tab.active {
+                color: var(--d365-text);
+                border-bottom-color: var(--d365-blue);
+                font-weight: 600;
+            }
+
+            .d365-body {
+                flex: 1;
+                display: flex;
+                padding: 12px 16px;
+                box-sizing: border-box;
+                gap: 12px;
+                overflow: hidden;
+            }
+
+            .d365-form {
+                flex: 2;
+                background: var(--d365-surface);
+                border: 1px solid var(--d365-border-subtle);
+                border-radius: 2px;
+                padding: 12px;
+                box-sizing: border-box;
+                display: flex;
+                flex-direction: column;
+                overflow: hidden;
+            }
+
+            .d365-form-grid {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 8px 16px;
+            }
+
+            .d365-section-title {
+                font-size: 11px;
+                text-transform: uppercase;
+                color: var(--d365-text-subtle);
+                margin-bottom: 4px;
+            }
+
+            .d365-field {
+                display: flex;
+                flex-direction: column;
+                font-size: 12px;
+            }
+
+            .d365-field-label {
+                display: flex;
+                align-items: center;
+                gap: 4px;
+                margin-bottom: 2px;
+                color: var(--d365-text-subtle);
+            }
+
+            .d365-field-required-bar {
+                width: 3px;
+                height: 12px;
+                background: var(--d365-field-required);
+                border-radius: 2px;
+            }
+
+            .d365-field input,
+            .d365-field select,
+            .d365-field textarea {
+                font-size: 12px;
+                padding: 4px 6px;
+                border-radius: 2px;
+                border: 1px solid var(--d365-border);
+                background: var(--d365-bg);
+                color: var(--d365-text);
+                box-sizing: border-box;
+            }
+
+            .d365-field textarea {
+                resize: vertical;
+                min-height: 60px;
+            }
+
+            .d365-field.readonly input,
+            .d365-field.readonly textarea {
+                background: var(--d365-bg-alt);
+                color: var(--d365-text-subtle);
+            }
+
+            .d365-status-pill {
+                display: inline-flex;
+                align-items: center;
+                padding: 2px 8px;
+                border-radius: 999px;
+                font-size: 11px;
+                background: #e1f3ff;
+                color: #005a9e;
+            }
+
+            body.theme-dark .d365-status-pill {
+                background: #24374a;
+                color: #c7e0f4;
+            }
+
+            .d365-error {
+                color: #a4262c;
+                font-size: 11px;
+                margin-bottom: 6px;
+                display: none;
+            }
+
+            body.theme-dark .d365-error {
+                color: #f1707b;
+            }
+
+            .d365-hint {
+                font-size: 11px;
+                color: var(--d365-text-subtle);
+                margin-top: 6px;
+            }
+
+            .d365-case-ribbon {
+                height: 28px;
+                display: flex;
+                align-items: center;
+                padding: 0 16px;
+                font-size: 12px;
+                font-weight: 500;
+                color: #fff;
+                transition: background 0.2s;
+                flex-shrink: 0;
+            }
+
+            .d365-case-ribbon.status-active {
+                background: #0078d4;
+            }
+
+            .d365-case-ribbon.status-escalated {
+                background: #c2394b;
+            }
+
+            .d365-case-ribbon.status-resolved {
+                background: #107c10;
+            }
+
+            .d365-case-ribbon.status-closed {
+                background: #69797e;
+            }
+
+            body.theme-dark .d365-case-ribbon.status-active {
+                background: #004578;
+            }
+
+            body.theme-dark .d365-case-ribbon.status-escalated {
+                background: #8f1f30;
+            }
+
+            body.theme-dark .d365-case-ribbon.status-resolved {
+                background: #0b5c0b;
+            }
+
+            body.theme-dark .d365-case-ribbon.status-closed {
+                background: #4d5a5e;
+            }
+
+            .d365-case-ribbon-inner {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+            }
+
+            .d365-case-ribbon-sep {
+                opacity: 0.6;
+            }
+
+            .d365-timeline {
+                flex: 1;
+                background: var(--d365-surface);
+                border: 1px solid var(--d365-border-subtle);
+                border-radius: 2px;
+                padding: 8px;
+                box-sizing: border-box;
+                display: flex;
+                flex-direction: column;
+                overflow: hidden;
+            }
+
+            .d365-timeline-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 4px;
+            }
+
+            .d365-timeline-title {
+                font-size: 12px;
+                font-weight: 600;
+            }
+
+            .d365-timeline-list {
+                flex: 1;
+                overflow-y: auto;
+                padding-right: 4px;
+            }
+
+            .d365-timeline-item {
+                background: var(--d365-timeline-bg);
+                border-radius: 4px;
+                padding: 6px 8px;
+                margin-bottom: 6px;
+                border: 1px solid var(--d365-border-subtle);
+            }
+
+            .d365-timeline-item-type {
+                font-size: 11px;
+                color: var(--d365-text-subtle);
+                margin-bottom: 2px;
+            }
+
+            .d365-timeline-item-body {
+                font-size: 12px;
+            }
+
+            .d365-timeline-add {
+                margin-top: 4px;
+                display: flex;
+                gap: 4px;
+            }
+
+            .d365-timeline-add input {
+                flex: 1;
+                font-size: 12px;
+                padding: 4px 6px;
+                border-radius: 2px;
+                border: 1px solid var(--d365-border);
+                background: var(--d365-bg);
+                color: var(--d365-text);
+            }
+
+            .d365-timeline-add button {
+                font-size: 12px;
+                padding: 4px 8px;
+                border-radius: 2px;
+                border: 1px solid var(--d365-border);
+                background: var(--d365-bg-alt);
+                cursor: pointer;
+                color: var(--d365-text);
+            }
+
+            .d365-timeline-add button:hover {
+                background: var(--d365-border-subtle);
+            }
+        </style>
+    </head>
+    <body class="theme-light">
+        <div class="d365-nav-rail">
+            <div class="d365-nav-logo">
+                <span>D</span>
+            </div>
+            <div class="d365-nav-section">
+                <div class="d365-nav-item active" data-nav="cases">
+                    <div class="d365-nav-indicator"></div>
+                    <svg viewBox="0 0 16 16">
+                        <path
+                            d="M3 3h10v2H3V3zm0 4h10v2H3V7zm0 4h6v2H3v-2z"
+                        ></path>
+                    </svg>
+                </div>
+                <div class="d365-nav-item" data-nav="accounts">
+                    <svg viewBox="0 0 16 16">
+                        <path
+                            d="M8 2a3 3 0 110 6 3 3 0 010-6zM3 13a5 5 0 0110 0v1H3v-1z"
+                        ></path>
+                    </svg>
+                </div>
+                <div class="d365-nav-item" data-nav="contacts">
+                    <svg viewBox="0 0 16 16">
+                        <path
+                            d="M8 2a2.5 2.5 0 110 5 2.5 2.5 0 010-5zM4 9.5A3.5 3.5 0 017.5 6h1A3.5 3.5 0 0112 9.5V12H4V9.5z"
+                        ></path>
+                    </svg>
+                </div>
+                <div class="d365-nav-item" data-nav="dashboards">
+                    <svg viewBox="0 0 16 16">
+                        <path
+                            d="M2 2h5v5H2V2zm7 0h5v3H9V2zM2 9h3v5H2V9zm5 0h7v5H7V9z"
+                        ></path>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <div class="d365-main">
+            <div class="d365-command-bar">
+                <div class="d365-command-left">
+                    <div class="d365-app-name">Dynamics 365</div>
+                    <div class="d365-record-title" id="d365-record-title">
+                        Case
+                    </div>
+                </div>
+                <div class="d365-command-center">
+                    <span class="d365-status-pill" id="d365-status-pill"
+                        >Status: Active</span
+                    >
+                </div>
+                <div class="d365-command-right">
+                    <button
+                        class="d365-btn d365-btn-primary"
+                        id="d365-btn-save"
+                    >
+                        <svg viewBox="0 0 16 16">
+                            <path
+                                d="M3 2h8l2 2v10H3V2zm2 2v3h6V4H5zm0 5v3h3V9H5z"
+                            ></path>
+                        </svg>
+                        Save
+                    </button>
+                    <button class="d365-btn" id="d365-btn-save-close">
+                        Save &amp; Close
+                    </button>
+                    <button class="d365-btn" id="d365-btn-refresh">
+                        <svg viewBox="0 0 16 16">
+                            <path
+                                d="M8 3a4 4 0 013.87 3H10l2.5 3L15 6h-1.9A5.5 5.5 0 102 8h1.5A4 4 0 118 3z"
+                            ></path>
+                        </svg>
+                    </button>
+                    <button class="d365-btn" id="d365-btn-delete">
+                        <svg viewBox="0 0 16 16">
+                            <path
+                                d="M6 2h4l1 1h3v2H2V3h3l1-1zm-1 4h2v6H5V6zm4 0h2v6H9V6z"
+                            ></path>
+                        </svg>
+                    </button>
+                    <button class="d365-btn" id="d365-btn-more">⋯</button>
+                </div>
+            </div>
+
+            <div class="d365-case-ribbon status-active" id="d365-case-ribbon">
+                <div class="d365-case-ribbon-inner">
+                    <span id="d365-case-ribbon-id">CASE-00142</span>
+                    <span class="d365-case-ribbon-sep">|</span>
+                    <span id="d365-case-ribbon-status">Active</span>
+                    <span class="d365-case-ribbon-sep">|</span>
+                    <span id="d365-case-ribbon-assigned">Junior Investigator</span>
+                </div>
+            </div>
+
+            <div class="d365-content">
+                <div class="d365-bpf" id="d365-bpf">
+                    <span class="d365-bpf-label">Business process flow</span>
+                    <div class="d365-bpf-stage" data-stage="qualify">
+                        Qualify
+                    </div>
+                    <div class="d365-bpf-stage" data-stage="research">
+                        Research
+                    </div>
+                    <div class="d365-bpf-stage" data-stage="resolve">
+                        Resolve
+                    </div>
+                    <div class="d365-bpf-stage" data-stage="close">Close</div>
+                </div>
+
+                <div class="d365-tabs">
+                    <div class="d365-tab active" data-tab="summary">
+                        Summary
+                    </div>
+                    <div class="d365-tab" data-tab="details">Details</div>
+                    <div class="d365-tab" data-tab="timeline">Timeline</div>
+                    <div class="d365-tab" data-tab="related">Related</div>
+                </div>
+
+                <div class="d365-body">
+                    <div class="d365-form">
+                        <div id="d365-error" class="d365-error"></div>
+
+                        <div class="d365-section-title">Case information</div>
+                        <div class="d365-form-grid">
+                            <div class="d365-field">
+                                <div class="d365-field-label">
+                                    <span>Case ID</span>
+                                </div>
+                                <input id="d365-case-id" readonly />
+                            </div>
+
+                            <div class="d365-field">
+                                <div class="d365-field-label">
+                                    <span>Linked Bug</span>
+                                </div>
+                                <input id="d365-linked-bug" readonly />
+                            </div>
+
+                            <div class="d365-field required">
+                                <div class="d365-field-label">
+                                    <div class="d365-field-required-bar"></div>
+                                    <span>Title</span>
+                                </div>
+                                <input id="d365-title" />
+                            </div>
+
+                            <div class="d365-field">
+                                <div class="d365-field-label">
+                                    <span>Priority</span>
+                                </div>
+                                <select id="d365-priority">
+                                    <option value="Low">Low</option>
+                                    <option value="Medium">Medium</option>
+                                    <option value="High">High</option>
+                                </select>
+                            </div>
+
+                            <div class="d365-field">
+                                <div class="d365-field-label">
+                                    <span>Status</span>
+                                </div>
+                                <select id="d365-status">
+                                    <option value="Active">Active</option>
+                                    <option value="Escalated">Escalated</option>
+                                    <option value="Resolved">Resolved</option>
+                                    <option value="Closed">Closed</option>
+                                </select>
+                            </div>
+
+                            <div class="d365-field">
+                                <div class="d365-field-label">
+                                    <span>Customer</span>
+                                </div>
+                                <input id="d365-customer" />
+                            </div>
+                        </div>
+
+                        <div style="height: 8px"></div>
+
+                        <div class="d365-section-title">Summary</div>
+                        <div class="d365-field">
+                            <div class="d365-field-label">
+                                <div class="d365-field-required-bar"></div>
+                                <span>Summary</span>
+                            </div>
+                            <textarea id="d365-summary" rows="4"></textarea>
+                        </div>
+
+                        <div style="height: 8px"></div>
+
+                        <div class="d365-section-title">Resolution</div>
+
+                        <div class="d365-field" id="d365-resolution-date-field">
+                            <div class="d365-field-label">
+                                <span>Resolution date</span>
+                            </div>
+                            <input
+                                id="d365-resolution-date"
+                                type="date"
+                            />
+                        </div>
+
+                        <div class="d365-field" id="d365-resolution-field">
+                            <div class="d365-field-label">
+                                <span>Resolution notes</span>
+                            </div>
+                            <textarea id="d365-resolution" rows="3"></textarea>
+                        </div>
+
+                        <div class="d365-hint">
+                            Junior Investigators cannot resolve cases or edit
+                            resolution notes. Use Escalate to hand off to a
+                            Senior.
+                        </div>
+                    </div>
+
+                    <div class="d365-timeline">
+                        <div class="d365-timeline-header">
+                            <div class="d365-timeline-title">Timeline</div>
+                            <button
+                                class="d365-btn"
+                                id="d365-timeline-add-note"
+                            >
+                                + Note
+                            </button>
+                        </div>
+                        <div
+                            class="d365-timeline-list"
+                            id="d365-timeline-list"
+                        ></div>
+                        <div class="d365-timeline-add">
+                            <input
+                                id="d365-timeline-input"
+                                placeholder="Add a note to the timeline"
+                            />
+                            <button id="d365-timeline-add-btn">Add</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            (function () {
+                const OS = window.parent.OS || window.parent.QA_OS;
+
+                const state = {
+                    role: "junior",
+                    scenarioId: "case-001",
+                    caseData: null,
+                    linkedBug: null,
+                    draft: {
+                        title: "",
+                        priority: "",
+                        status: "Active",
+                        summary: "",
+                        resolution: "",
+                        resolutionDate: "",
+                        customer: "",
+                    },
+                    bpfStage: "qualify",
+                    timeline: [],
+                    theme: "light",
+                    activeBugs: [],
+                };
+
+                if (OS && OS.loadAppState) {
+                    const saved = OS.loadAppState("dynamics");
+                    if (saved) Object.assign(state, saved);
+                }
+
+                function reportBugFound(bugId) {
+                    if (window.parent && window.parent.postMessage) {
+                        window.parent.postMessage(
+                            { type: "BUG_FOUND", bugId: bugId },
+                            "*",
+                        );
+                    }
+                }
+
+                function applyRole(sendRoleChange) {
+                    var role = sendRoleChange || state.role;
+                    state.role = role;
+
+                    var statusEl = document.getElementById("d365-status");
+                    var resolutionField = document.getElementById(
+                        "d365-resolution-field"
+                    );
+                    var resolutionDateField = document.getElementById(
+                        "d365-resolution-date-field"
+                    );
+                    var resolutionEl =
+                        document.getElementById("d365-resolution");
+                    var resolutionDateEl =
+                        document.getElementById("d365-resolution-date");
+
+                    if (statusEl) {
+                        var currentValue = statusEl.value;
+                        var allStatuses = [
+                            "Active",
+                            "Escalated",
+                            "Resolved",
+                            "Closed",
+                        ];
+                        var juniorStatuses = ["Active", "Resolved"];
+                        var bugs = state.activeBugs || [];
+                        if (
+                            role === "junior" &&
+                            bugs.indexOf("status-junior-close") === -1
+                        ) {
+                            var options = juniorStatuses;
+                        } else {
+                            var options = allStatuses;
+                        }
+
+                        statusEl.innerHTML = "";
+                        options.forEach(function (opt) {
+                            var option =
+                                document.createElement("option");
+                            option.value = opt;
+                            option.textContent = opt;
+                            statusEl.appendChild(option);
+                        });
+
+                        if (options.indexOf(currentValue) !== -1) {
+                            statusEl.value = currentValue;
+                        } else {
+                            statusEl.value = "Active";
+                            state.draft.status = "Active";
+                        }
+                    }
+
+                    if (role === "junior") {
+                        if (resolutionDateField) {
+                            resolutionDateField.classList.add("readonly");
+                            if (resolutionDateEl)
+                                resolutionDateEl.setAttribute(
+                                    "readonly",
+                                    "readonly"
+                                );
+                        }
+                        if (resolutionField) {
+                            var bugs = state.activeBugs || [];
+                            var bugOn =
+                                bugs.indexOf("outcome-visible-junior") !== -1;
+                            if (bugOn) {
+                                resolutionField.style.display = "none";
+                                if (resolutionEl) {
+                                    resolutionEl.setAttribute(
+                                        "readonly",
+                                        "readonly"
+                                    );
+                                    resolutionField.classList.add("readonly");
+                                }
+                            } else {
+                                var parent = resolutionField.parentNode;
+                                if (parent) {
+                                    parent.removeChild(resolutionField);
+                                }
+                            }
+                        }
+                    } else {
+                        if (resolutionDateField) {
+                            resolutionDateField.classList.remove("readonly");
+                            if (resolutionDateEl)
+                                resolutionDateEl.removeAttribute("readonly");
+                        }
+                        if (resolutionField) {
+                            resolutionField.style.display = "";
+                            if (resolutionEl)
+                                resolutionEl.removeAttribute("readonly");
+                            resolutionField.classList.remove("readonly");
+                        }
+                    }
+
+                    syncStatusRibbon();
+                }
+
+                function populateCaseForm(crmState) {
+                    if (!crmState) return;
+
+                    var idEl = document.getElementById("d365-case-id");
+                    var titleEl = document.getElementById("d365-title");
+                    var customerEl =
+                        document.getElementById("d365-customer");
+                    var priorityEl =
+                        document.getElementById("d365-priority");
+                    var statusEl = document.getElementById("d365-status");
+                    var summaryEl =
+                        document.getElementById("d365-summary");
+                    var ribbonIdEl = document.getElementById(
+                        "d365-case-ribbon-id"
+                    );
+                    var ribbonAssignedEl = document.getElementById(
+                        "d365-case-ribbon-assigned"
+                    );
+
+                    if (idEl && crmState.caseId)
+                        idEl.value = crmState.caseId;
+                    if (titleEl && crmState.caseTitle) {
+                        titleEl.value = crmState.caseTitle;
+                        state.draft.title = crmState.caseTitle;
+                    }
+                    if (customerEl && crmState.customerName) {
+                        customerEl.value = crmState.customerName;
+                        state.draft.customer = crmState.customerName;
+                    }
+                    if (priorityEl && crmState.priority) {
+                        priorityEl.value = crmState.priority;
+                        state.draft.priority = crmState.priority;
+                    }
+                    if (statusEl && crmState.status) {
+                        statusEl.value = crmState.status;
+                        state.draft.status = crmState.status;
+                    }
+                    if (summaryEl && crmState.summary) {
+                        summaryEl.value = crmState.summary;
+                        state.draft.summary = crmState.summary;
+                    }
+                    if (ribbonIdEl && crmState.caseId)
+                        ribbonIdEl.textContent = crmState.caseId;
+                    if (ribbonAssignedEl && crmState.assignedTo)
+                        ribbonAssignedEl.textContent = crmState.assignedTo;
+
+                    persist();
+                }
+
+                window.addEventListener("message", (event) => {
+                    var msg = event.data;
+                    if (!msg) return;
+
+                    if (msg.type === "APP_BOOT" && msg.appId === "dynamics") {
+                        state.role = msg.role || state.role;
+                        state.theme = msg.theme || state.theme || "light";
+                        state.activeBugs = msg.activeBugs || [];
+
+                        if (msg.scenarioId) {
+                            state.scenarioId = msg.scenarioId;
+                        }
+
+                        applyTheme();
+                        applyRole(state.role);
+                        loadScenario(state.scenarioId);
+
+                        if (msg.scenarioId) {
+                            var scenarios =
+                                window.parent && window.parent.window
+                                    ? window.parent.window.SCENARIOS
+                                    : null;
+                            var scenario =
+                                scenarios && scenarios[msg.scenarioId]
+                                    ? scenarios[msg.scenarioId]
+                                    : null;
+                            if (scenario && scenario.crmState) {
+                                populateCaseForm(scenario.crmState);
+                            }
+                        }
+
+                        renderAll();
+                    }
+
+                    if (msg.type === "ROLE_CHANGE") {
+                        applyRole(msg.role);
+                        renderHeader();
+                        renderForm();
+                        syncStatusRibbon();
+                        if (OS && OS.notify)
+                            OS.notify(
+                                "Dynamics: role changed to " +
+                                    msg.role +
+                                    "."
+                            );
+                    }
+                });
+
+                function applyTheme() {
+                    document.body.classList.remove("theme-light", "theme-dark");
+                    document.body.classList.add(
+                        state.theme === "dark"
+                            ? "theme-dark"
+                            : "theme-light",
+                    );
+                }
+
+                function syncStatusRibbon() {
+                    var ribbon = document.getElementById(
+                        "d365-case-ribbon"
+                    );
+                    var ribbonStatus = document.getElementById(
+                        "d365-case-ribbon-status"
+                    );
+                    if (!ribbon || !ribbonStatus) return;
+                    var status =
+                        state.draft.status || "Active";
+                    var statusClass = "status-" + status.toLowerCase();
+                    ribbon.className = "d365-case-ribbon " + statusClass;
+                    ribbonStatus.textContent = status;
+                }
+
+                function persist() {
+                    if (OS && OS.saveAppState) {
+                        OS.saveAppState("dynamics", state);
+                    }
+                }
+
+                function loadScenario(id) {
+                    if (!OS || !OS.loadScenario) return;
+                    const s = OS.loadScenario(id);
+                    if (!s) return;
+
+                    state.scenarioId = id;
+                    state.caseData = s;
+                    state.linkedBug = s.linkedBug
+                        ? OS.loadScenario(s.linkedBug)
+                        : null;
+
+                    if (!state.draft.title) state.draft.title = s.title || "";
+                    if (!state.draft.priority)
+                        state.draft.priority = s.priority || "Medium";
+                    if (!state.draft.status)
+                        state.draft.status = s.status || "Active";
+                    if (!state.draft.summary)
+                        state.draft.summary = s.summary || "";
+                    if (!state.draft.customer)
+                        state.draft.customer = s.customer || "";
+                    persist();
+                }
+
+                function renderAll() {
+                    renderHeader();
+                    renderForm();
+                    renderBpf();
+                    renderTimeline();
+                    wireInteractions();
+                }
+
+                function renderHeader() {
+                    var titleEl =
+                        document.getElementById("d365-record-title");
+                    var statusPill =
+                        document.getElementById("d365-status-pill");
+                    var title =
+                        state.draft.title ||
+                        (state.caseData && state.caseData.title) ||
+                        "Case";
+                    titleEl.textContent = title;
+                    statusPill.textContent =
+                        "Status: " + (state.draft.status || "Active");
+                    syncStatusRibbon();
+                }
+
+                function renderBpf() {
+                    const stages = ["qualify", "research", "resolve", "close"];
+                    const bpfEl = document.getElementById("d365-bpf");
+                    const stageEls = bpfEl.querySelectorAll(".d365-bpf-stage");
+                    stageEls.forEach((el) => {
+                        const stage = el.getAttribute("data-stage");
+                        el.classList.remove("active", "complete");
+                        const idx = stages.indexOf(stage);
+                        const currentIdx = stages.indexOf(state.bpfStage);
+                        if (idx < currentIdx) el.classList.add("complete");
+                        if (stage === state.bpfStage)
+                            el.classList.add("active");
+                    });
+                }
+
+                function renderForm() {
+                    const caseIdEl = document.getElementById("d365-case-id");
+                    const linkedBugEl =
+                        document.getElementById("d365-linked-bug");
+                    const titleEl = document.getElementById("d365-title");
+                    const priorityEl =
+                        document.getElementById("d365-priority");
+                    const statusEl = document.getElementById("d365-status");
+                    const summaryEl = document.getElementById("d365-summary");
+                    const resolutionEl =
+                        document.getElementById("d365-resolution");
+                    const resolutionDateEl = document.getElementById(
+                        "d365-resolution-date",
+                    );
+                    const customerEl = document.getElementById("d365-customer");
+                    const resolutionField = document.getElementById(
+                        "d365-resolution-field",
+                    );
+                    const resolutionDateField = document.getElementById(
+                        "d365-resolution-date-field",
+                    );
+
+                    caseIdEl.value = state.caseData
+                        ? state.caseData.id || ""
+                        : "";
+                    linkedBugEl.value =
+                        (state.linkedBug && state.linkedBug.id) ||
+                        (state.caseData && state.caseData.linkedBug) ||
+                        "";
+
+                    titleEl.value = state.draft.title || "";
+                    priorityEl.value = state.draft.priority || "Medium";
+                    statusEl.value = state.draft.status || "Active";
+                    summaryEl.value = state.draft.summary || "";
+                    // resolutionEl and resolutionDateEl may be null if
+                    // applyRole() already removed them from the DOM for
+                    // a junior role — always guard before writing .value.
+                    if (resolutionEl)
+                        resolutionEl.value = state.draft.resolution || "";
+                    if (resolutionDateEl)
+                        resolutionDateEl.value = state.draft.resolutionDate || "";
+                    customerEl.value = state.draft.customer || "";
+
+                    applyRole(state.role);
+                }
+
+                function renderTimeline() {
+                    const list = document.getElementById("d365-timeline-list");
+                    list.innerHTML = "";
+                    state.timeline.forEach((item) => {
+                        const div = document.createElement("div");
+                        div.className = "d365-timeline-item";
+                        div.innerHTML = `
+              <div class="d365-timeline-item-type">${escapeHtml(item.type)}</div>
+              <div class="d365-timeline-item-body">${escapeHtml(item.text)}</div>
+            `;
+                        list.appendChild(div);
+                    });
+                }
+
+                function wireInteractions() {
+                    const tabs = document.querySelectorAll(".d365-tab");
+                    tabs.forEach((tab) => {
+                        tab.onclick = () => {
+                            tabs.forEach((t) => t.classList.remove("active"));
+                            tab.classList.add("active");
+                        };
+                    });
+
+                    const bpfEl = document.getElementById("d365-bpf");
+                    bpfEl
+                        .querySelectorAll(".d365-bpf-stage")
+                        .forEach((stageEl) => {
+                            stageEl.onclick = () => {
+                                const stage =
+                                    stageEl.getAttribute("data-stage");
+                                state.bpfStage = stage;
+                                persist();
+                                renderBpf();
+                            };
+                        });
+
+                    const titleEl = document.getElementById("d365-title");
+                    const priorityEl =
+                        document.getElementById("d365-priority");
+                    const statusEl = document.getElementById("d365-status");
+                    const summaryEl = document.getElementById("d365-summary");
+                    const resolutionEl =
+                        document.getElementById("d365-resolution");
+                    const resolutionDateEl = document.getElementById(
+                        "d365-resolution-date",
+                    );
+                    const customerEl = document.getElementById("d365-customer");
+                    const errorEl = document.getElementById("d365-error");
+
+                    function syncDraft() {
+                        state.draft.title = titleEl.value;
+                        state.draft.priority = priorityEl.value;
+                        state.draft.status = statusEl.value;
+                        state.draft.summary = summaryEl.value;
+                        state.draft.customer = customerEl.value;
+                        state.draft.resolutionDate = resolutionDateEl.value;
+                        if (state.role === "senior") {
+                            state.draft.resolution = resolutionEl.value;
+                        }
+                        persist();
+                        renderHeader();
+                    }
+
+                    titleEl.oninput = syncDraft;
+                    priorityEl.onchange = syncDraft;
+                    statusEl.onchange = syncDraft;
+                    summaryEl.oninput = syncDraft;
+                    customerEl.oninput = syncDraft;
+                    resolutionDateEl.onchange = syncDraft;
+                    if (state.role === "senior") {
+                        resolutionEl.oninput = syncDraft;
+                    }
+
+                    const saveBtn = document.getElementById("d365-btn-save");
+                    const saveCloseBtn = document.getElementById(
+                        "d365-btn-save-close",
+                    );
+                    const refreshBtn =
+                        document.getElementById("d365-btn-refresh");
+                    const deleteBtn =
+                        document.getElementById("d365-btn-delete");
+
+                    function validate() {
+                        const missing = [];
+                        if (!titleEl.value.trim()) missing.push("Title");
+                        if (!summaryEl.value.trim()) missing.push("Summary");
+                        if (missing.length) {
+                            errorEl.textContent =
+                                "Cannot save. Please fill: " +
+                                missing.join(", ");
+                            errorEl.style.display = "block";
+                            if (OS && OS.notify)
+                                OS.notify(
+                                    "Dynamics: validation failed on save.",
+                                );
+                            return false;
+                        }
+
+                        const bugs = state.activeBugs || [];
+
+                        if (
+                            state.role === "junior" &&
+                            statusEl.value === "Closed"
+                        ) {
+                            const bugOn =
+                                bugs.indexOf("status-junior-close") !== -1;
+
+                            if (bugOn) {
+                                reportBugFound("status-junior-close");
+                            } else {
+                                errorEl.textContent =
+                                    "Junior Investigators cannot close cases. Use Escalated or hand off to a Senior.";
+                                errorEl.style.display = "block";
+                                if (OS && OS.notify)
+                                    OS.notify(
+                                        "Dynamics: Junior attempted to close case.",
+                                    );
+                                return false;
+                            }
+                        }
+
+                        if (
+                            statusEl.value === "Resolved" ||
+                            statusEl.value === "Closed"
+                        ) {
+                            const value = resolutionDateEl.value;
+                            if (value) {
+                                const today = new Date();
+                                today.setHours(0, 0, 0, 0);
+                                const resDate = new Date(value);
+                                if (resDate > today) {
+                                    const bugOn =
+                                        bugs.indexOf(
+                                            "future-date-allowed",
+                                        ) !== -1;
+                                    if (bugOn) {
+                                        reportBugFound(
+                                            "future-date-allowed",
+                                        );
+                                    } else {
+                                        errorEl.textContent =
+                                            "Resolution date cannot be in the future.";
+                                        errorEl.style.display = "block";
+                                        if (OS && OS.notify)
+                                            OS.notify(
+                                                "Dynamics: future resolution date blocked.",
+                                            );
+                                        return false;
+                                    }
+                                }
+                            }
+                        }
+
+                        errorEl.style.display = "none";
+                        return true;
+                    }
+
+                    saveBtn.onclick = () => {
+                        if (!validate()) return;
+                        syncDraft();
+                        if (OS && OS.notify)
+                            OS.notify("Case saved in Dynamics (training).");
+                        if (OS && OS.completeTask)
+                            OS.completeTask("dyn-save-case");
+                    };
+
+                    saveCloseBtn.onclick = () => {
+                        if (!validate()) return;
+                        syncDraft();
+                        if (OS && OS.notify)
+                            OS.notify("Case saved & closed (training).");
+                        if (OS && OS.completeTask)
+                            OS.completeTask("dyn-save-close-case");
+                    };
+
+                    refreshBtn.onclick = () => {
+                        loadScenario(state.scenarioId);
+                        renderAll();
+                        if (OS && OS.notify)
+                            OS.notify("Dynamics: form refreshed.");
+                    };
+
+                    deleteBtn.onclick = () => {
+                        if (OS && OS.notify)
+                            OS.notify(
+                                "Dynamics: delete requested (training only, no real delete).",
+                            );
+                    };
+
+                    const timelineInput = document.getElementById(
+                        "d365-timeline-input",
+                    );
+                    const timelineAddBtn = document.getElementById(
+                        "d365-timeline-add-btn",
+                    );
+                    const timelineAddNoteBtn = document.getElementById(
+                        "d365-timeline-add-note",
+                    );
+
+                    function addTimelineItem(text, type) {
+                        if (!text.trim()) return;
+                        state.timeline.unshift({
+                            text: text.trim(),
+                            type: type || "Note",
+                        });
+                        timelineInput.value = "";
+                        persist();
+                        renderTimeline();
+                    }
+
+                    timelineAddBtn.onclick = () =>
+                        addTimelineItem(timelineInput.value, "Note");
+                    timelineAddNoteBtn.onclick = () =>
+                        addTimelineItem(
+                            "Investigation updated by " + state.role,
+                            "System",
+                        );
+                }
+
+                function escapeHtml(str) {
+                    return String(str || "")
+                        .replace(/&/g, "&amp;")
+                        .replace(/</g, "&lt;")
+                        .replace(/>/g, "&gt;")
+                        .replace(/"/g, "&quot;");
+                }
+            })();
+        </script>
+    </body>
+</html>
