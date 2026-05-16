@@ -90,6 +90,7 @@ Congratulations and welcome to the team.
       { id: "lesson-2", title: "Acceptance Criteria",    type: "multiple-choice" },
       { id: "lesson-3", title: "Dynamics 365 CRM",       type: "multiple-choice" },
       { id: "lesson-4", title: "Azure DevOps",           type: "scenario" },
+      { id: "lesson-5", title: "Test Planning & Triage", type: "multiple-choice" },
       { id: "capstone", title: "Capstone Assessment",    type: "capstone" },
     ],
   },

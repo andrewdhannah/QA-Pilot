@@ -28,11 +28,13 @@
     .lesson-color-2 { border-left: 3px solid var(--color-info);     }
     .lesson-color-3 { border-left: 3px solid var(--color-warning);  }
     .lesson-color-4 { border-left: 3px solid var(--color-success);  }
+    .lesson-color-5 { border-left: 3px solid #0891b2;               }
     .lesson-color-cap { border-left: 3px solid var(--color-ink);    }
     .dot-1   { background: var(--color-primary); }
     .dot-2   { background: var(--color-info);    }
     .dot-3   { background: var(--color-warning); }
     .dot-4   { background: var(--color-success); }
+    .dot-5   { background: #0891b2;              }
     .dot-cap { background: var(--color-ink);     }
   </style>
 </head>
@@ -92,13 +94,14 @@
     // ── SECTION 1: METADATA AND CONSTANTS ──────────────────────────────────────
 
     var activeStudent = null;
-    var allLessons = ['lesson-1', 'lesson-2', 'lesson-3', 'capstone'];
+    var allLessons = ['lesson-1', 'lesson-2', 'lesson-3', 'lesson-4', 'lesson-5', 'capstone'];
 
     var LESSON_META = {
       'lesson-1': { label: 'Lesson 1 — Testing 101',         colorClass: 'lesson-color-1', dotClass: 'dot-1' },
       'lesson-2': { label: 'Lesson 2 — Acceptance Criteria', colorClass: 'lesson-color-2', dotClass: 'dot-2' },
       'lesson-3': { label: 'Lesson 3 — Dynamics 365 CRM',    colorClass: 'lesson-color-3', dotClass: 'dot-3' },
       'lesson-4': { label: 'Lesson 4 — Azure DevOps',        colorClass: 'lesson-color-4', dotClass: 'dot-4' },
+      'lesson-5': { label: 'Lesson 5 — Test Planning & Triage', colorClass: 'lesson-color-5', dotClass: 'dot-5' },
       'capstone': { label: 'Capstone Assessment',             colorClass: 'lesson-color-cap', dotClass: 'dot-cap' },
     };
 
@@ -107,6 +110,7 @@
       'lesson-2': 'var(--color-info)',
       'lesson-3': 'var(--color-warning)',
       'lesson-4': 'var(--color-success)',
+      'lesson-5': '#0891b2',
       'capstone': 'var(--color-ink)',
     };
 

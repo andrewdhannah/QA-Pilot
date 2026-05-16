@@ -133,6 +133,8 @@ body {
   background:
     radial-gradient(ellipse 70% 60% at 50% 100%, rgba(59,130,246,0.55) 0%, transparent 70%),
     radial-gradient(ellipse 40% 50% at 80%  20%, rgba(56,189,248,0.4)  0%, transparent 60%),
+    radial-gradient(ellipse at 30% 60%, rgba(37,99,235,0.18) 0%, transparent 60%),
+    radial-gradient(ellipse at 75% 25%, rgba(139,92,246,0.12) 0%, transparent 55%),
     #020617;
   animation: qa-fade-in 0.4s ease-out;
 }
@@ -620,22 +622,30 @@ body {
   pointer-events: none;
 }
 
-/* Running-app dot indicator (bottom centre, Win11 style) */
-.qa-taskbar-app-btn.qa-running::after,
-.qa-taskbar-app-btn.qa-active::after {
-  content: "";
+/* Win11-style running indicator — small centred line under active app */
+.qa-taskbar-app-btn::after {
+  content: '';
   position: absolute;
-  bottom: 4px;
+  bottom: 3px;
   left: 50%;
   transform: translateX(-50%);
-  height: 3px;
+  width: 4px;
+  height: 4px;
   border-radius: 2px;
-  background: var(--qa-accent);
-  transition: width 0.15s;
+  background: currentColor;
+  opacity: 0;
+  transition: width 0.15s, opacity 0.15s;
 }
 
-.qa-taskbar-app-btn.qa-running::after { width: 4px;  opacity: 0.6; }
-.qa-taskbar-app-btn.qa-active::after  { width: 14px; opacity: 1; }
+.qa-taskbar-app-btn.running::after {
+  opacity: 0.55;
+  width: 4px;
+}
+
+.qa-taskbar-app-btn.running.focused::after {
+  opacity: 1;
+  width: 16px;
+}
 
 /* Highlighted bg for active */
 .qa-taskbar-app-btn.qa-active { background: var(--qa-hover-mid); }
@@ -1079,8 +1089,223 @@ body {
   backdrop-filter: none;
 }
 
+/* ── BOOT SCREEN ──────────────────────────────────────────────────────── */
+
+.qa-boot-screen {
+  position: fixed;
+  inset: 0;
+  background: #050a14;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 30000;
+  transition: opacity 0.6s ease;
+}
+
+.qa-boot-screen.qa-boot-hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.qa-boot-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.qa-boot-logo {
+  animation: qa-boot-logo-in 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+@keyframes qa-boot-logo-in {
+  from { opacity: 0; transform: scale(0.7); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+.qa-boot-product {
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: -0.01em;
+  animation: qa-boot-fade-up 0.5s 0.2s ease both;
+}
+
+.qa-boot-slogan {
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-size: 13px;
+  color: rgba(255,255,255,0.45);
+  letter-spacing: 0.02em;
+  animation: qa-boot-fade-up 0.5s 0.35s ease both;
+}
+
+@keyframes qa-boot-fade-up {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Win11-style bouncing dot spinner */
+.qa-boot-spinner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 32px;
+  animation: qa-boot-fade-up 0.5s 0.5s ease both;
+}
+
+.qa-boot-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.85);
+  animation: qa-boot-bounce 1.4s ease-in-out infinite both;
+}
+
+.qa-boot-dot:nth-child(1) { animation-delay: 0.0s; }
+.qa-boot-dot:nth-child(2) { animation-delay: 0.16s; }
+.qa-boot-dot:nth-child(3) { animation-delay: 0.32s; }
+.qa-boot-dot:nth-child(4) { animation-delay: 0.48s; }
+.qa-boot-dot:nth-child(5) { animation-delay: 0.64s; }
+
+@keyframes qa-boot-bounce {
+  0%, 80%, 100% { transform: scale(0.6); opacity: 0.3; }
+  40%            { transform: scale(1.0); opacity: 1.0; }
+}
+
 /* ── Animations ───────────────────────────────────────────── */
 @keyframes qa-fade-in {
   from { opacity: 0; transform: translateY(8px); }
   to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Resize handles ────────────────────────────────────────── */
+.qa-resize-handles { position: absolute; inset: 0; pointer-events: none; z-index: 20; }
+.qa-resize-h { position: absolute; pointer-events: auto; }
+.qa-resize-e { top: 4px; right: 0; width: 6px; bottom: 4px; cursor: ew-resize; }
+.qa-resize-s { bottom: 0; left: 4px; right: 4px; height: 6px; cursor: ns-resize; }
+.qa-resize-se { bottom: 0; right: 0; width: 14px; height: 14px; cursor: nwse-resize;
+  background: linear-gradient(135deg, transparent 50%, rgba(96,205,255,0.35) 50%); border-radius: 0 0 8px 0; }
+.qa-resize-se:hover { background: linear-gradient(135deg, transparent 50%, rgba(96,205,255,0.7) 50%); }
+
+/* ── Snap layout flyout ────────────────────────────────────── */
+.qa-snap-flyout {
+  position: absolute; top: 100%; right: 4px;
+  width: 120px; padding: 6px;
+  background: var(--qa-glass-dark); backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid var(--qa-border-mid); border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+  display: grid; grid-template-columns: 1fr 1fr; gap: 3px;
+  z-index: 100;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.12s ease, transform 0.12s ease;
+  transform: translateY(-3px);
+}
+.qa-snap-flyout.visible {
+  opacity: 1; pointer-events: auto; transform: translateY(0);
+}
+.qa-snap-cell {
+  aspect-ratio: 1.6;
+  border: 1px solid var(--qa-border-dark);
+  background: rgba(255,255,255,0.04);
+  border-radius: 3px; cursor: pointer;
+  transition: background 0.1s, border-color 0.1s;
+}
+.qa-snap-cell:hover {
+  background: var(--qa-accent-soft);
+  border-color: var(--qa-accent);
+}
+.qa-snap-max { grid-column: 1 / -1; aspect-ratio: 4; }
+
+/* ── Quadrant snap layouts ─────────────────────────────────── */
+.qa-window.snap-tl { top: 0 !important; left: 0 !important;
+  width: 50% !important; height: 50% !important; border-radius: 0; transition: none; }
+.qa-window.snap-tr { top: 0 !important; left: 50% !important;
+  width: 50% !important; height: 50% !important; border-radius: 0; transition: none; }
+.qa-window.snap-bl { top: 50% !important; left: 0 !important;
+  width: 50% !important; height: 50% !important; border-radius: 0; transition: none; }
+.qa-window.snap-br { top: 50% !important; left: 50% !important;
+  width: 50% !important; height: 50% !important; border-radius: 0; transition: none; }
+
+/* ── Context menu ──────────────────────────────────────────── */
+.qa-context-menu {
+  position: fixed; z-index: 30000; min-width: 180px;
+  background: var(--qa-glass-dark); backdrop-filter: blur(30px) saturate(180%);
+  border: 1px solid var(--qa-border-mid); border-radius: 8px;
+  padding: 4px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+  animation: qa-menu-in 0.1s ease-out;
+}
+@keyframes qa-menu-in {
+  from { opacity: 0; transform: scale(0.96); }
+  to { opacity: 1; transform: scale(1); }
+}
+.qa-context-item {
+  display: block; width: 100%; padding: 6px 12px;
+  border: none; background: transparent;
+  color: var(--qa-text-light); font-size: 12px;
+  font-family: var(--qa-font); text-align: left; cursor: pointer;
+  border-radius: 4px;
+}
+.qa-context-item:hover { background: var(--qa-accent-soft); color: var(--qa-accent); }
+.qa-context-separator { height: 1px; background: var(--qa-border-dark); margin: 4px 8px; }
+
+/* ── Window open/close animations ──────────────────────────── */
+.qa-window.qa-opening {
+  animation: qa-window-open 0.22s ease-out;
+}
+@keyframes qa-window-open {
+  from { opacity: 0; transform: scale(0.94); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* ── Taskbar running indicator polish ──────────────────────── */
+.qa-taskbar-app-btn::after {
+  transition: width 0.2s, opacity 0.2s, background 0.2s;
+}
+.qa-taskbar-app-btn.running.focused::after,
+.qa-taskbar-app-btn:hover::after {
+  background: var(--qa-accent);
+  opacity: 0.9;
+}
+
+/* ── Acrylic noise texture on windows ──────────────────────── */
+.qa-window::before {
+  content: '';
+  position: absolute; inset: 0; z-index: 0;
+  opacity: 0.015;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-repeat: repeat; background-size: 256px 256px;
+  pointer-events: none; mix-blend-mode: overlay;
+}
+.qa-shell.qa-theme-dark .qa-window::before { opacity: 0.025; }
+.qa-shell[data-fidelity="classic"] .qa-window::before { display: none; }
+
+/* ── Notifier toasts ───────────────────────────────────────── */
+.qa-notifier {
+  position: fixed; bottom: 60px; right: 16px; z-index: 40000;
+  display: flex; flex-direction: column; gap: 8px;
+  pointer-events: none;
+}
+.qa-notifier-toast {
+  pointer-events: auto;
+  background: var(--qa-glass-dark); backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid var(--qa-border-mid); border-radius: 8px;
+  padding: 10px 14px;
+  color: var(--qa-text-light); font-size: 12px;
+  font-family: var(--qa-font);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+  animation: qa-toast-in 0.25s ease-out;
+  max-width: 320px;
+}
+@keyframes qa-toast-in {
+  from { transform: translateX(100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+.qa-notifier-toast.out {
+  animation: qa-toast-out 0.2s ease-in forwards;
+}
+@keyframes qa-toast-out {
+  from { transform: translateX(0); opacity: 1; }
+  to { transform: translateX(-100%); opacity: 0; }
 }

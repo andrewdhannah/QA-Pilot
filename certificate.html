@@ -3,283 +3,151 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Course Completion Certificate</title>
+    <title>Certificate of Completion | QA Pilot</title>
     <link rel="stylesheet" href="css/main.css">
-    <style>
-        /* ── PRINT OVERRIDES ────────────────────────────────────────────────── */
-        @media print {
-            .no-print,
-            .topbar,
-            #cert-score-card {
-                display: none !important;
-            }
-
-            body {
-                background: #fff !important;
-            }
-
-            #certificate-wrapper {
-                box-shadow: none !important;
-                border: 1px solid #ccc !important;
-                margin: 0 !important;
-                padding: 0 !important;
-            }
-        }
-
-        /* Ensure the container is hidden until data is loaded */
-        #certificate-wrapper {
-            display: none;
-        }
-
-        /* ── SCORE CARD ─────────────────────────────────────────────────────── */
-        #cert-score-card {
-            max-width: 480px;
-            margin: 0 auto 32px;
-            padding: 20px;
-            text-align: center;
-            border-radius: 8px;
-            background: #faf9f8;
-            border: 1px solid #e1dfdd;
-        }
-
-        #cert-score-card.passed {
-            border-color: #107c10;
-            background: #eff6ef;
-        }
-
-        #cert-score-card.failed {
-            border-color: #a4262c;
-            background: #fdf0ef;
-        }
-
-        #cert-score-pct {
-            font-size: 36px;
-            font-weight: 700;
-            margin: 0;
-        }
-
-        .pass-color { color: #107c10; }
-        .fail-color { color: #a4262c; }
-
-        #cert-score-detail {
-            font-size: 14px;
-            margin: 4px 0 0;
-            color: #605e5c;
-        }
-
-        .cert-fallback {
-            font-size: 14px;
-            color: #605e5c;
-            margin: 12px 0 0;
-        }
-
-        /* ── CERTIFICATE DOCUMENT ───────────────────────────────────────────── */
-        #certificate-wrapper {
-            max-width: 640px;
-            margin: 0 auto;
-            border: 8px double #0078d4;
-            border-radius: 12px;
-            padding: 24px 32px;
-            background: #fff;
-            box-shadow: 0 4px 24px rgba(0,0,0,0.08);
-        }
-
-        #certificate-inner {
-            border: 1px solid #e1dfdd;
-            border-radius: 8px;
-            padding: 32px 28px;
-            text-align: center;
-        }
-
-        .cert-seal {
-            font-size: 48px;
-            margin-bottom: 8px;
-            display: block;
-        }
-
-        .cert-ribbon {
-            font-size: 14px;
-            font-weight: 600;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            color: #0078d4;
-            margin-bottom: 8px;
-        }
-
-        #cert-title {
-            font-size: 22px;
-            font-weight: 700;
-            margin: 0 0 4px;
-            color: #201f1e;
-        }
-
-        #cert-subtitle {
-            font-size: 13px;
-            color: #605e5c;
-            margin: 0 0 20px;
-        }
-
-        #cert-student-name {
-            font-size: 20px;
-            font-weight: 700;
-            margin: 0 auto 12px;
-            padding-bottom: 8px;
-            display: inline-block;
-            min-width: 280px;
-            color: #201f1e;
-        }
-
-        #cert-badge {
-            display: inline-block;
-            font-size: 13px;
-            font-weight: 600;
-            padding: 4px 14px;
-            border-radius: 999px;
-            margin-bottom: 16px;
-        }
-
-        #cert-badge.pass-color {
-            background: #dff6dd;
-            color: #107c10;
-        }
-
-        #cert-badge.fail-color {
-            background: #fde7e9;
-            color: #a4262c;
-        }
-
-        #cert-course-line {
-            font-size: 14px;
-            color: #201f1e;
-            margin: 0 0 6px;
-        }
-
-        #cert-course-name {
-            font-size: 16px;
-            font-weight: 600;
-            color: #0078d4;
-            margin: 0 0 16px;
-        }
-
-        #cert-date {
-            font-size: 14px;
-            color: #605e5c;
-            margin: 0;
-        }
-
-        #cert-issuer {
-            font-size: 14px;
-            font-weight: 600;
-            color: #0078d4;
-            margin: 4px 0 0;
-        }
-
-        /* ── ACTIONS ────────────────────────────────────────────────────────── */
-        .cert-actions {
-            max-width: 480px;
-            margin: 24px auto 0;
-            text-align: center;
-        }
-
-        .cert-actions .btn {
-            display: inline-block;
-            margin: 0 6px;
-        }
-    </style>
 </head>
-<body>
+<body class="cert-page">
 
-    <!-- ── TOPBAR ──────────────────────────────────────────────────────────────── -->
-    <div class="topbar no-print">
-        <div class="container flex justify-between items-center">
-            <div class="text-bold">QA Training Platform</div>
-            <div id="user-name-display" class="text-sm">Loading...</div>
+    <header class="topbar">
+        <div class="topbar-left">
+            <span class="topbar-brand">QA Pilot Academy</span>
         </div>
-    </div>
-
-    <div class="container" style="margin-top: 48px;">
-
-        <!-- ── SCORE CARD ───────────────────────────────────────────────────── -->
-        <div id="cert-score-card">
-            <p id="cert-score-pct">--%</p>
-            <p id="cert-score-detail">-- of -- points</p>
-            <p id="cert-fallback" class="cert-fallback"></p>
+        <div class="topbar-right">
+            <span id="user-name-display" class="text-sm"></span>
+            <button onclick="handleLogout()" class="btn btn-ghost text-xs">Sign Out</button>
         </div>
+    </header>
 
-        <!-- ── CERTIFICATE DOCUMENT ─────────────────────────────────────────── -->
-        <div id="certificate-wrapper">
-            <div id="certificate-inner">
-                <span class="cert-seal">&#9673;</span>
-                <div class="cert-ribbon">Certificate of Completion</div>
-                <p id="cert-title">CERTIFICATE OF COMPLETION</p>
-                <p id="cert-subtitle">This is to certify that</p>
+    <div class="cert-layout">
 
-                <h2 id="cert-student-name">Student Name</h2>
-                <span id="cert-badge" class="pass-color">Passed</span>
+        <div class="cert-document-wrap">
+            <div class="cert-document" id="cert-print-area">
 
-                <p id="cert-course-line">has successfully completed</p>
-                <p id="cert-course-name">QA Onboarding Training</p>
+                <div class="cert-watermark">QA PILOT</div>
 
-                <p id="cert-date">Issued: --</p>
-                <p id="cert-issuer">Agile Testing Team</p>
+                <div class="cert-header">
+                    <div class="cert-logo">
+                        <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="48" height="48" rx="10" fill="#2563eb"/>
+                            <path d="M14 24 L20 30 L34 16" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                            <circle cx="24" cy="24" r="10" stroke="white" stroke-width="2" fill="none" opacity="0.3"/>
+                        </svg>
+                    </div>
+                    <div class="cert-org">QA Pilot Academy</div>
+                    <div class="cert-document-title">Certificate of Completion</div>
+                </div>
+
+                <div class="cert-body">
+                    <p class="cert-presented">This certifies that</p>
+                    <p class="cert-name" id="cert-name">Student Name</p>
+                    <p class="cert-presented">has successfully completed the</p>
+                    <p class="cert-course" id="cert-course">QA Onboarding Program</p>
+
+                    <div class="cert-divider"></div>
+
+                    <div class="cert-meta-row">
+                        <div class="cert-meta-item">
+                            <span class="cert-meta-label">Score</span>
+                            <span class="cert-meta-value" id="cert-score-display">--</span>
+                        </div>
+                        <div class="cert-meta-sep"></div>
+                        <div class="cert-meta-item">
+                            <span class="cert-meta-label">Date</span>
+                            <span class="cert-meta-value" id="cert-date">--</span>
+                        </div>
+                        <div class="cert-meta-sep"></div>
+                        <div class="cert-meta-item">
+                            <span class="cert-meta-label">Credential ID</span>
+                            <span class="cert-meta-value" id="cert-credential">--</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="cert-footer">
+                    <div class="cert-seal">
+                        <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="32" cy="32" r="30" stroke="#2563eb" stroke-width="2" stroke-dasharray="4 3"/>
+                            <circle cx="32" cy="32" r="22" stroke="#2563eb" stroke-width="1.5" fill="#eff6ff"/>
+                            <path d="M22 32 L28 38 L42 24" stroke="#2563eb" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <div class="cert-issuer" id="cert-issuer">QA Pilot Training Program</div>
+                </div>
+
+            </div>
+
+            <div class="cert-actions">
+                <button class="btn btn-primary" onclick="window.print()">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:4px;">
+                        <polyline points="6 9 6 2 18 2 18 9"/>
+                        <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/>
+                        <rect x="6" y="14" width="12" height="8"/>
+                    </svg>
+                    Print Certificate
+                </button>
+                <a href="course.html" class="btn btn-ghost">&larr; Back to Dashboard</a>
             </div>
         </div>
 
-        <!-- ── ERROR STATE ──────────────────────────────────────────────────── -->
-        <div id="cert-error" class="no-print" style="display:none; text-align:center; padding: 32px; color: #605e5c;">
+        <div class="cert-sidebar">
+
+            <div class="cert-score-card" id="cert-score-card">
+                <div class="cert-score-header">
+                    <span class="cert-score-label">Assessment Score</span>
+                    <span class="cert-score-badge" id="cert-badge">--</span>
+                </div>
+                <div class="cert-score-ring-wrap">
+                    <svg class="cert-score-ring" viewBox="0 0 80 80">
+                        <circle cx="40" cy="40" r="34" stroke="var(--color-border)" stroke-width="6" fill="none"/>
+                        <circle cx="40" cy="40" r="34" stroke="var(--color-primary)" stroke-width="6" fill="none"
+                                stroke-dasharray="213.6" stroke-dashoffset="213.6" stroke-linecap="round"
+                                transform="rotate(-90 40 40)" id="cert-ring-fill"/>
+                    </svg>
+                    <div class="cert-score-pct" id="cert-pct">--%</div>
+                </div>
+                <div class="cert-score-detail" id="cert-score-detail">-- of -- points</div>
+            </div>
+
+            <div class="cert-breakdown" id="cert-breakdown" style="display:none;">
+                <div class="cert-breakdown-title">Score Breakdown</div>
+                <div class="cert-breakdown-row">
+                    <span>Bugs discovered in CRM</span>
+                    <span class="cert-breakdown-val" id="bd-bugs-found">--</span>
+                </div>
+                <div class="cert-breakdown-row">
+                    <span>ADO reports filed</span>
+                    <span class="cert-breakdown-val" id="bd-reports">--</span>
+                </div>
+                <div class="cert-breakdown-row">
+                    <span>Correct AC references</span>
+                    <span class="cert-breakdown-val" id="bd-refs">--</span>
+                </div>
+            </div>
+
+            <div class="cert-next">
+                <div class="cert-next-title" id="cert-next-title">What&rsquo;s Next</div>
+                <p class="cert-next-body" id="cert-next-body"></p>
+                <a href="course.html" class="btn btn-primary cert-next-btn" id="cert-next-btn" style="display:none;">View Dashboard</a>
+            </div>
+
         </div>
 
-        <!-- ── PRINT / BACK BUTTONS ─────────────────────────────────────────── -->
-        <div class="cert-actions no-print">
-            <button class="btn btn-primary" onclick="window.print()">
-                Print / Save as PDF
-            </button>
-            <a href="course.html" class="btn btn-secondary">Back to Dashboard</a>
-        </div>
     </div>
 
-    <!-- ── SCRIPTS ─────────────────────────────────────────────────────────────── -->
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
     <script src="js/db.js"></script>
     <script src="data/content.js"></script>
 
     <script>
-        /**
-         * certificate.html — Page Logic
-         * ==============================
-         * WHAT THIS PAGE DOES:
-         * - Verifies that the student has been awarded the certificate via the progress store.
-         * - Populates the certificate HTML with the student's name, course title, score, and date.
-         * - Provides a print function that leverages browser-native PDF generation.
-         *
-         * FLOW:
-         * 1. initDB() opens the IndexedDB connection.
-         * 2. requireLogin() validates the session; redirects if the user is not logged in.
-         * 3. Promise.all() fetches both student details and progress status in parallel.
-         * 4. The system checks 'certificateAwarded' before rendering the certificate.
-         * 5. renderCertificate() maps the retrieved data to the DOM elements.
-         *
-         * READS FROM:   IndexedDB (students, progress) via db.js; localStorage (via content.js)
-         * WRITES TO:    None
-         * REDIRECTS TO: course.html if session is invalid or certificate is not earned.
-         */
-
-
-        // ── SECTION 1: PAGE STATE ──────────────────────────────────────────────────
-
-        var currentSession  = null;   // Set by requireLogin() — contains caseId and role
-        var currentStudent  = null;   // Full student record from IndexedDB
-        var currentProgress = null;   // Progress record from IndexedDB
-
-
-        // ── SECTION 2: INITIALISE ─────────────────────────────────────────────────
+        var currentSession  = null;
+        var currentStudent  = null;
+        var currentProgress = null;
 
         initDB()
             .then(function() {
-                // Ensure we have a valid session before proceeding
                 currentSession = requireLogin();
                 if (!currentSession) return null;
-
-                // Fetch student and progress records simultaneously for efficiency
                 return Promise.all([
                     getStudent(currentSession.caseId),
                     getProgress(currentSession.caseId)
@@ -287,166 +155,123 @@
             })
             .then(function(results) {
                 if (!results) return;
-
                 currentStudent  = results[0];
                 currentProgress = results[1];
-
-                // Security Check: Only render if the capstone assessment was successfully awarded
                 if (!currentProgress || !currentProgress.certificateAwarded) {
-                    showError('Certificate not yet awarded. Complete the capstone assessment first.');
+                    showToast('Certificate not yet awarded. Complete the capstone assessment first.', 'error');
                     return;
                 }
-
                 renderCertificate();
             })
             .catch(function(error) {
                 console.error('Certificate load failed:', error);
-                showError('Unable to load certificate. Please refresh.');
+                showToast('Unable to load certificate. Please refresh.', 'error');
             });
 
-
-        // ── SECTION 3: RENDER ─────────────────────────────────────────────────────
-
-        /**
-         * renderCertificate()
-         * Populates the certificate HTML with student-specific data.
-         * Called after both student and progress records are loaded from db.js.
-         * Handles missing score data gracefully (shows fallback text, no JS errors).
-         */
         function renderCertificate() {
-            // Student name — use name if available, fall back to caseId as a unique identifier
             var name = (currentStudent && currentStudent.name)
                 ? currentStudent.name
                 : (currentSession ? currentSession.caseId : 'Student');
 
-            // Score — extract from the nested capstone result object within progress
             var capstoneResult = currentProgress.quizResults && currentProgress.quizResults.capstone;
+            var scorePct = capstoneResult ? Math.round(capstoneResult.percentage) : 0;
+            var passed70 = capstoneResult && capstoneResult.percentage >= 70;
 
-            // Determine pass/fail: percentage >= 70 is a pass
-            var passed = capstoneResult && capstoneResult.percentage >= 70;
-
-            // Build score display strings
-            var scorePctText = '--%';
-            var scoreDetailText = '-- of -- points';
-            var badgeText = '';
-            var badgeClass = '';
-
-            if (capstoneResult) {
-                scorePctText = Math.round(capstoneResult.percentage) + '%';
-                scoreDetailText = capstoneResult.score + ' of ' + capstoneResult.maxScore + ' points';
-                badgeText = passed ? 'Passed' : 'Failed';
-                badgeClass = passed ? 'pass-color' : 'fail-color';
-            } else {
-                // Fallback when no score data exists
-                scorePctText = '--';
-                scoreDetailText = 'Assessment Complete';
-            }
-
-            // Certificate date — format the stored ISO date to a human-readable US long date
             var certDate = currentProgress.certificateDate
-                ? new Date(currentProgress.certificateDate).toLocaleDateString('en-US', {
-                    year: 'numeric', month: 'long', day: 'numeric'
-                  })
-                : new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+                ? new Date(currentProgress.certificateDate)
+                : new Date();
 
-            // Read issuer and course name from content.js via loadContent()
+            var dateStr = certDate.toLocaleDateString('en-US', {
+                year: 'numeric', month: 'long', day: 'numeric'
+            });
+
             var content    = (typeof loadContent !== 'undefined') ? loadContent() : {};
-            var issuer     = (content.certificate && content.certificate.issuerName) || 'Agile Testing Team';
-            var courseName = (content.courseMetadata && content.courseMetadata.courseName) || 'QA Onboarding Training';
+            var issuer     = (content.certificate && content.certificate.issuerName) || 'QA Pilot Training Program';
+            var courseName = (content.courseMetadata && content.courseMetadata.courseName) || 'QA Onboarding Program';
 
-            // ── Update score card DOM ──
-            setText('cert-score-pct', scorePctText);
-            setText('cert-score-detail', scoreDetailText);
+            var caseNum = currentSession.caseId.replace('CASE-', '');
+            var credId = 'QAP-' + caseNum + '-' + certDate.getFullYear();
 
-            // Apply pass/fail colour to the score card
-            var scoreCard = getEl('cert-score-card');
-            if (scoreCard) {
-                scoreCard.classList.remove('passed', 'failed');
-                if (capstoneResult) {
-                    scoreCard.classList.add(passed ? 'passed' : 'failed');
+            setText('cert-name', name);
+            setText('cert-course', courseName);
+            setText('cert-issuer', issuer);
+            setText('cert-date', dateStr);
+            setText('cert-score-display', scorePct + '%');
+            setText('cert-credential', credId);
+
+            var ringEl = getEl('cert-ring-fill');
+            if (ringEl) {
+                var circumference = 213.6;
+                var offset = circumference - (circumference * scorePct / 100);
+                ringEl.style.strokeDashoffset = offset;
+                if (capstoneResult && !passed70) {
+                    ringEl.style.stroke = 'var(--color-error)';
                 }
             }
 
-            // Colour for percentage text
-            var scorePctEl = getEl('cert-score-pct');
-            if (scorePctEl) {
-                scorePctEl.className = '';
-                if (capstoneResult) {
-                    scorePctEl.classList.add(passed ? 'pass-color' : 'fail-color');
-                }
-            }
+            setText('cert-pct', scorePct + '%');
+            setText('cert-score-detail', capstoneResult
+                ? capstoneResult.score + ' of ' + capstoneResult.maxScore + ' points'
+                : 'Assessment Complete');
 
-            // Handle fallback message if no score data
-            var fallbackEl = getEl('cert-fallback');
-            if (fallbackEl) {
-                fallbackEl.textContent = capstoneResult ? '' : 'Assessment completed — no score data recorded.';
-            }
-
-            // ── Update certificate document DOM ──
-            setText('cert-student-name', name);
-            setText('cert-course-name',  courseName);
-            setText('cert-issuer',       issuer);
-            setText('cert-date',         'Issued: ' + certDate);
-
-            // Badge
             var badgeEl = getEl('cert-badge');
             if (badgeEl) {
-                badgeEl.textContent = badgeText || 'Completed';
-                badgeEl.className = '';
-                if (badgeClass) {
-                    badgeEl.classList.add(badgeClass);
+                if (capstoneResult) {
+                    badgeEl.textContent = passed70 ? 'Passed' : 'Failed';
+                    badgeEl.className = 'cert-score-badge' + (passed70 ? '' : ' failed');
+                } else {
+                    badgeEl.textContent = 'Completed';
+                    badgeEl.className = 'cert-score-badge';
                 }
             }
 
-            // Show the certificate container and hide any potential error message
-            var wrapperEl = getEl('certificate-wrapper');
-            if (wrapperEl) wrapperEl.style.display = 'block';
+            var breakdownEl = getEl('cert-breakdown');
+            if (breakdownEl && capstoneResult && capstoneResult.hasOwnProperty('missedBugs')) {
+                var totalExpected = capstoneResult.maxScore / 3;
+                var bugsFound = totalExpected - (capstoneResult.missedBugs ? capstoneResult.missedBugs.length : 0);
+                var reportsText = capstoneResult.badReports && capstoneResult.badReports.length > 0
+                    ? capstoneResult.badReports.length + ' incomplete'
+                    : 'All complete';
+                var refs = capstoneResult.score - bugsFound;
+                refs = refs > 0 ? refs : 0;
 
-            var errorEl = getEl('cert-error');
-            if (errorEl) errorEl.style.display = 'none';
+                setText('bd-bugs-found', bugsFound);
+                setText('bd-reports', reportsText);
+                setText('bd-refs', refs);
+                breakdownEl.style.display = 'block';
+            }
+
+            var nextBody = getEl('cert-next-body');
+            var nextBtn = getEl('cert-next-btn');
+            if (nextBody && nextBtn) {
+                if (passed70) {
+                    nextBody.textContent = "Outstanding work! You've earned your QA Pilot certificate. Share it with your team lead or add it to your profile.";
+                    nextBtn.textContent = 'View Dashboard';
+                    nextBtn.href = 'course.html';
+                    nextBtn.style.display = 'flex';
+                } else {
+                    nextBody.textContent = "You scored below the pass threshold this time. Review the lessons and retry the capstone when you're ready.";
+                    nextBtn.textContent = 'Retry Capstone';
+                    nextBtn.href = 'capstone.html';
+                    nextBtn.style.display = 'flex';
+                }
+            }
+
+            document.getElementById('user-name-display').textContent = name;
         }
 
+        function handleLogout() {
+            endSession();
+            window.location.href = 'index.html';
+        }
 
-        // ── SECTION 4: HELPERS ─────────────────────────────────────────────────────
-
-        /**
-         * getEl(id)
-         * Shorthand for document.getElementById.
-         *
-         * @param {string} id - Element ID
-         * @returns {Element|null}
-         */
         function getEl(id) {
             return document.getElementById(id);
         }
 
-        /**
-         * setText(id, value)
-         * Sets the textContent of an element by ID. No-op if element not found.
-         *
-         * @param {string} id    - Element ID
-         * @param {string} value - Text to set
-         */
         function setText(id, value) {
             var el = getEl(id);
             if (el) el.textContent = value;
-        }
-
-        /**
-         * showError(message)
-         * Hides the certificate and shows an error message in its place.
-         *
-         * @param {string} message - The error text to display
-         */
-        function showError(message) {
-            var wrapperEl = getEl('certificate-wrapper');
-            var errorEl   = getEl('cert-error');
-
-            if (wrapperEl) wrapperEl.style.display = 'none';
-            if (errorEl) {
-                errorEl.textContent = message;
-                errorEl.style.display = 'block';
-            }
         }
     </script>
 </body>

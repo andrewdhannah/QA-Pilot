@@ -214,6 +214,12 @@
       color: var(--color-ink-muted);
     }
 
+    /* Advanced Track Specific Styles */
+    .course-item--locked {
+      opacity: 0.6;
+      pointer-events: none;
+    }
+
     .modal-overlay {
       display: none;
       position: fixed;
@@ -283,6 +289,12 @@
   </nav>
 
   <main class="main-content">
+    <!-- Lock Notice for Redirects -->
+    <div id="course-locked-notice"
+         style="display:none; background:#fff4ce; border:1px solid #f0c000; border-radius:4px;
+                padding:10px 14px; font-size:13px; color:#6b4c00; margin-bottom:16px;">
+    </div>
+
     <h1 class="welcome-heading" id="welcome-heading">Welcome back!</h1>
     <p class="welcome-sub" id="welcome-sub">Loading your course…</p>
 
@@ -308,6 +320,16 @@
     <div id="lesson-section" style="display: none;">
       <h2 class="section-heading">Your Course</h2>
       <div class="lesson-list" id="lesson-list"></div>
+
+      <!-- Advanced Capstone Entry (Static, controlled by JS) -->
+      <div id="course-adv-capstone" class="lesson-item locked course-item--locked" style="margin-top: var(--space-3);">
+        <div class="lesson-info">
+          <span class="lock-icon">🔒</span>
+          <div class="lesson-title">Advanced Capstone — Case-002: Customer Portal Access Failure</div>
+          <div class="lesson-type">3 bugs · Teams-delivered brief · Strict ADO validation</div>
+        </div>
+        <a href="#" class="btn btn-ghost" style="font-size:var(--text-sm)">Start Assessment →</a>
+      </div>
     </div>
   </main>
 
@@ -362,7 +384,7 @@
      * 2. requireLogin() checks for session
      * 3. getStudent() loads profile
      * 4. getProgress/getAssignment() determine current course state
-     * 5. render lesson cards with logic to unlock capstone after lesson-4
+     * 5. render lesson cards with logic to unlock capstone after lesson-5
      *
      * READS FROM:   IndexedDB (students, progress, assignments)
      * WRITES TO:    IndexedDB (progress, assignments)
@@ -398,7 +420,8 @@
       },
     ];
 
-    var DEFAULT_LESSON_ORDER = ['lesson-1', 'lesson-2', 'lesson-3', 'lesson-4', 'capstone']; 
+    // Standard path now includes Lesson 5
+    var DEFAULT_LESSON_ORDER = ['lesson-1', 'lesson-2', 'lesson-3', 'lesson-4', 'lesson-5', 'capstone'];
 
     // ── SECTION 2: PAGE STATE ──────────────────────────────────────────────────
 
@@ -448,21 +471,11 @@
 
     // ── SECTION 4: SURVEY LOGIC ────────────────────────────────────────────────
 
-    /**
-     * showSurvey()
-     * Activates the survey UI and loads the first question.
-     */
     function showSurvey() {
       document.getElementById('survey-section').style.display = 'block';
       renderQuestion(0);
     }
 
-    /**
-     * renderQuestion(index)
-     * Builds the HTML for a specific survey question.
-     * 
-     * @param {number} index - Index of the question to render.
-     */
     function renderQuestion(index) {
       var q = SURVEY_QUESTIONS[index];
       document.getElementById('survey-progress').textContent = 'Question ' + (index + 1) + ' of ' + SURVEY_QUESTIONS.length;
@@ -508,10 +521,6 @@
       currentQuestion = index;
     }
 
-    /**
-     * surveyNext()
-     * Validates the current selection and advances the survey.
-     */
     function surveyNext() {
       var selected = document.querySelector('input[name="survey-q' + currentQuestion + '"]:checked');
       if (!selected) {
@@ -526,10 +535,6 @@
       }
     }
 
-    /**
-     * surveyBack()
-     * Moves the user to the previous question.
-     */
     function surveyBack() {
       if (currentQuestion > 0) {
         var selected = document.querySelector('input[name="survey-q' + currentQuestion + '"]:checked');
@@ -538,18 +543,14 @@
       }
     }
 
-    /**
-     * completeSurvey()
-     * Scores the survey and initializes student progress/assignment records in DB.
-     */
     function completeSurvey() {
       var score = 0;
       surveyAnswers.forEach(function(answer, i) {
         if (SURVEY_QUESTIONS[i].countsAs.includes(answer)) score++;
       });
 
-      var recommendedPath = (score >= 3) 
-        ? ['lesson-2', 'lesson-3', 'capstone'] 
+      var recommendedPath = (score >= 3)
+        ? ['lesson-2', 'lesson-3', 'capstone']
         : DEFAULT_LESSON_ORDER.slice();
 
       var caseId = currentStudent.caseId;
@@ -591,8 +592,7 @@
 
     /**
      * isCapstoneUnlocked(progress)
-     * Returns true if the student has completed Lesson 4.
-     * The Capstone card is locked until all prerequisite material is finished.
+     * Returns true if the student has completed Lesson 5.
      *
      * @param {Object} progress - The student's progress record.
      * @returns {boolean} True if the capstone should be available.
@@ -602,15 +602,12 @@
 
       var completed = progress.lessonsComplete;
 
-      // Standard path: lesson-4 completion always unlocks the capstone
-      if (completed.includes('lesson-4') || completed.includes('lesson4') || completed.includes(4)) {
+      // Standard path: lesson-5 completion unlocks the capstone
+      if (completed.includes('lesson-5')) {
         return true;
       }
 
-      // Advanced / custom paths: the student may have been assigned a path that
-      // skips lesson-4 (e.g. the 3-lesson accelerated route from the placement
-      // survey). In that case, unlock the capstone when ALL assigned lessons
-      // (except 'capstone' itself) are marked complete.
+      // Advanced / custom paths: check if all required lessons except capstone are done
       var path = (assignment && assignment.assignedLessons)
                    ? assignment.assignedLessons
                    : (progress.placementSurvey && progress.placementSurvey.recommendedPath)
@@ -623,13 +620,51 @@
       return required.length > 0 && required.every(function(id) { return completed.includes(id); });
     }
 
-    /**
-     * showLessonList(progress, assignment)
-     * Renders the list of lessons with status indicators based on progress.
-     *
-     * @param {Object} progress - Student's progress record.
-     * @param {Object} assignment - Student's assignment record.
-     */
+    var LESSON_META = {
+      'lesson-1': {
+        accent:      'var(--lesson-1-color)',
+        accentLight: 'var(--lesson-1-light)',
+        icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>',
+        label: 'Testing 101',
+        chapters: 5
+      },
+      'lesson-2': {
+        accent:      'var(--lesson-2-color)',
+        accentLight: 'var(--lesson-2-light)',
+        icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/><path d="M11 8v3l2 2"/></svg>',
+        label: 'Bug Reporting',
+        chapters: 4
+      },
+      'lesson-3': {
+        accent:      'var(--lesson-3-color)',
+        accentLight: 'var(--lesson-3-light)',
+        icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8m-4-4v4"/></svg>',
+        label: 'CRM Tools',
+        chapters: 5
+      },
+      'lesson-4': {
+        accent:      'var(--lesson-4-color)',
+        accentLight: 'var(--lesson-4-light)',
+        icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>',
+        label: 'QA Process',
+        chapters: 4
+      },
+      'lesson-5': {
+        accent:      '#0891b2',
+        accentLight: '#ecfeff',
+        icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>',
+        label: 'Test Planning & Triage',
+        chapters: 5
+      },
+      'capstone': {
+        accent:      '#7c3aed',
+        accentLight: '#faf5ff',
+        icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>',
+        label: 'Capstone Assessment',
+        chapters: 0
+      }
+    };
+
     function showLessonList(progress, assignment) {
       var lessonSection = document.getElementById('lesson-section');
       var lessonList    = document.getElementById('lesson-list');
@@ -637,85 +672,78 @@
       lessonSection.style.display = 'block';
       lessonList.innerHTML = '';
 
-      // Guard: placementSurvey may be absent for admin-created students who
-      // were never walked through the placement flow. Fall back to the full
-      // standard path so the lesson list still renders without crashing.
       var assignedPath = (assignment && assignment.assignedLessons)
                           ? assignment.assignedLessons
                           : (progress.placementSurvey && progress.placementSurvey.recommendedPath)
                           ? progress.placementSurvey.recommendedPath
-                          : ['lesson-1', 'lesson-2', 'lesson-3', 'lesson-4', 'capstone'];
-      
+                          : ['lesson-1', 'lesson-2', 'lesson-3', 'lesson-4', 'lesson-5', 'capstone'];
+
       var completed    = progress.lessonsComplete || [];
       var nextLesson   = assignedPath.find(function(id) { return !completed.includes(id); });
 
-      var content = loadContent();
-      var lessonMeta = {};
-      content.courseMetadata.lessons.forEach(function(lesson) { lessonMeta[lesson.id] = lesson; });
-
       assignedPath.forEach(function(lessonId, i) {
-        var meta       = lessonMeta[lessonId] || { title: lessonId, type: '' };
+        // Visual Divider: Between Lesson 4 and Lesson 5
+        if (lessonId === 'lesson-5') {
+          var divider = document.createElement('div');
+          divider.className = 'text-xs font-bold text-muted uppercase tracking-wider my-6';
+          divider.style.textAlign = 'center';
+          divider.textContent = 'Advanced Track — Prerequisites required';
+          lessonList.appendChild(divider);
+        }
+
+        var meta       = LESSON_META[lessonId] || { accent: 'var(--color-primary)', accentLight: 'var(--color-primary-light)', icon: '', label: lessonId, chapters: 0 };
         var isComplete = completed.includes(lessonId);
         var isNext     = lessonId === nextLesson;
         var isLocked   = !isComplete && !isNext;
 
-        // SPECIAL LOGIC: Override lock state for Capstone
         if (lessonId === 'capstone') {
           var unlocked = isCapstoneUnlocked(progress, assignment);
           isLocked = !unlocked;
-          isNext = (isNext && unlocked); // Capstone is "Next" only if actually unlocked
+          isNext = (isNext && unlocked);
         }
+
+        var chaptersRead = (progress.chaptersRead && progress.chaptersRead[lessonId]) || [];
+        var chapterCount = meta.chapters || 0;
+        var pct = chapterCount > 0 ? Math.min(100, Math.round((chaptersRead.length / chapterCount) * 100)) : (isComplete ? 100 : 0);
 
         var stateClass = isComplete ? 'complete' : isNext ? 'available' : 'locked';
-        var item = document.createElement('div');
-        item.className = 'lesson-item ' + stateClass;
+        var badgeText = isComplete ? 'Complete' : isLocked ? 'Locked' : (completed.length === 0 ? 'Start' : 'Continue');
+        var badgeClass = isComplete ? 'complete' : isLocked ? 'locked' : 'available';
+        if (lessonId === 'capstone' && isNext && !isLocked) badgeClass = 'capstone';
 
-        var info = document.createElement('div');
-        info.className = 'lesson-info';
-        info.innerHTML = `
-          <span class="lesson-number">Lesson ${i + 1}</span>
-          <span class="lesson-title">${meta.title}</span>
-          <span class="lesson-type">${meta.type}</span>
-        `;
+        var targetPage = (lessonId === 'capstone') ? 'capstone.html' : lessonId + '.html';
+        var link = isLocked ? null : targetPage;
 
-        var rightSide = document.createElement('div');
-        if (isComplete) {
-          rightSide.innerHTML = '<span class="badge badge-success">Complete</span>';
-        } else if (isNext) {
-          // Link to the lesson HTML file. Capstone uses capstone.html specifically.
-          var targetPage = (lessonId === 'capstone') ? 'capstone.html' : lessonId + '.html';
-          rightSide.innerHTML = `<a href="${targetPage}" class="btn btn-primary">${completed.length === 0 ? 'Start' : 'Continue'}</a>`;
-          
-          // Add "Ready" indicator specifically for unlocked Capstone
-          if (lessonId === 'capstone') {
-            var readyBadge = document.createElement('span');
-            readyBadge.className = 'badge badge-success';
-            readyBadge.textContent = 'Ready';
-            readyBadge.style.marginLeft = 'var(--space-3)';
-            rightSide.appendChild(readyBadge);
-          }
-        } else {
-          rightSide.innerHTML = '<span class="lock-icon">🔒</span>';
-        }
+        var card = document.createElement('a');
+        card.className = 'lesson-card ' + stateClass;
+        if (link) card.href = link;
+        card.style.setProperty('--lesson-accent', meta.accent);
+        card.style.setProperty('--lesson-accent-light', meta.accentLight);
 
-        item.appendChild(info);
-        item.appendChild(rightSide);
-        lessonList.appendChild(item);
+        card.innerHTML =
+          '<div class="lesson-card-icon">' + meta.icon + '</div>' +
+          '<div class="lesson-card-body">' +
+          '<div class="lesson-card-title">' + meta.label + '</div>' +
+          '<div class="lesson-card-meta">' + chapterCount + ' chapters' + '</div>' +
+          '</div>' +
+          '<div class="lesson-card-progress">' +
+          '<span class="lesson-card-pct">' + pct + '%</span>' +
+          '<div class="lesson-card-bar"><div class="lesson-card-bar-fill" style="width:' + pct + '%"></div></div>' +
+          '<span class="lesson-card-badge ' + badgeClass + '">' + badgeText + '</span>' +
+          '</div>';
+
+        lessonList.appendChild(card);
       });
     }
 
     // ── SECTION 6: LOGOUT ──────────────────────────────────────────────────────
 
-    /**
-     * handleLogout()
-     * Destroys the current session and returns to login.
-     */
     function handleLogout() {
       endSession();
       window.location.href = 'index.html';
     }
 
-    // ── SECTION 7: CHANGE PASSWORD ─────────────────────────────────────────────
+    // ── SECTION 7: CHANGE PASSWORD MODAL ─────────────────────────────────────────────
 
     function openChangePasswordModal() {
       document.getElementById('change-current-password').value = '';
@@ -762,17 +790,22 @@
       }
       if (!valid || !currentStudent) return;
 
-      if (currentPass !== currentStudent.password) {
-        showFieldError(document.getElementById('change-current-password'), document.getElementById('change-current-password-error'), 'Current password is incorrect.');
-        return;
-      }
-
       var btn = document.getElementById('change-password-btn');
       btn.disabled = true;
       btn.textContent = 'Updating…';
 
-      currentStudent.password = newPass;
-      saveStudent(currentStudent).then(function() {
+      verifyPassword(currentPass, currentStudent.password).then(function(matched) {
+        if (!matched) {
+          btn.disabled = false;
+          btn.textContent = 'Update Password';
+          showFieldError(document.getElementById('change-current-password'), document.getElementById('change-current-password-error'), 'Current password is incorrect.');
+          return;
+        }
+        return hashPassword(newPass).then(function(hashed) {
+          currentStudent.password = hashed;
+          return saveStudent(currentStudent);
+        });
+      }).then(function() {
         closeChangePasswordModal();
         showToast('Password changed successfully.', 'success');
         btn.disabled = false;
@@ -788,6 +821,49 @@
     document.addEventListener('keydown', function(event) {
       if (event.key === 'Escape') closeChangePasswordModal();
     });
+
+    // ── SECTION 8: ADVANCED CAPSTONE LOCK & NOTICES ──────────────────────────────────
+
+    /**
+     * handleAdvancedCapstoneLock()
+     * Checks if the user has completed Lesson 5. If so, unlocks the
+     * Advanced Capstone item in the course list.
+     */
+    (function() {
+      var lesson5Done = false;
+      try {
+        lesson5Done = localStorage.getItem("qa-lesson5-complete") === "1";
+      } catch(e) {}
+
+      var advCapstone = document.getElementById("course-adv-capstone");
+      if (advCapstone) {
+        if (lesson5Done) {
+          advCapstone.classList.remove("course-item--locked");
+          var link = advCapstone.querySelector("a");
+          if (link) link.href = "capstone-2.html";
+
+          // Update visual lock icon to a checkmark
+          var icon = advCapstone.querySelector(".lock-icon");
+          if (icon) icon.textContent = "✅";
+        }
+      }
+    })();
+
+    /**
+     * handleLockedRedirectNotice()
+     * Displays the "Complete Lesson 5" banner if redirected from capstone-2.html.
+     */
+    (function() {
+      var params = new URLSearchParams(window.location.search);
+      if (params.get("locked") === "lesson5") {
+        var notice = document.getElementById("course-locked-notice");
+        if (notice) {
+          notice.textContent = "Complete Lesson 5 to unlock the Advanced Capstone.";
+          notice.style.display = "block";
+        }
+      }
+    })();
+
   </script>
 </body>
 </html>

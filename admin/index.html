@@ -26,17 +26,25 @@
       padding: var(--space-10) var(--space-8);
     }
 
+    .login-logo {
+      display: flex;
+      justify-content: center;
+      margin-bottom: var(--space-4);
+    }
+
     .login-title {
       font-size: var(--text-xl);
       font-weight: var(--weight-bold);
       color: var(--color-ink);
       margin-bottom: var(--space-1);
+      text-align: center;
     }
 
     .login-subtitle {
       font-size: var(--text-sm);
       color: var(--color-ink-muted);
       margin-bottom: var(--space-8);
+      text-align: center;
     }
 
     .btn-login {
@@ -56,10 +64,17 @@
       padding: var(--space-3) var(--space-4);
       margin-bottom: var(--space-5);
     }
+    .login-error.visible { display: block; }
 
-    .login-error.visible {
-      display: block;
+    .login-footer {
+      text-align: center;
+      margin-top: var(--space-6);
+      padding-top: var(--space-5);
+      border-top: 1px solid var(--color-border);
+      font-size: var(--text-xs);
     }
+    .login-footer a { color: var(--color-ink-muted); }
+    .login-footer a:hover { color: var(--color-primary); }
   </style>
 </head>
 <body>
@@ -67,8 +82,16 @@
   <div class="login-page">
     <div class="login-card">
 
-      <h1 class="login-title">Admin Login</h1>
-      <p class="login-subtitle">Enter administrator credentials</p>
+      <div class="login-logo">
+        <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="48" height="48" rx="10" fill="#2563eb"/>
+          <path d="M14 24 L20 30 L34 16" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="24" cy="24" r="10" stroke="white" stroke-width="2" fill="none" opacity="0.3"/>
+        </svg>
+      </div>
+
+      <h1 class="login-title">Administrator Access</h1>
+      <p class="login-subtitle">Enter the admin password to continue.</p>
 
       <div id="login-error" class="login-error" role="alert" aria-live="polite"></div>
 
@@ -94,8 +117,8 @@
         </button>
       </form>
 
-      <div class="admin-link">
-        <a href="../index.html">Back to Student Login</a>
+      <div class="login-footer">
+        <a href="../index.html">Back to student sign in</a>
       </div>
 
     </div>
@@ -110,26 +133,32 @@
 
   <script>
     /**
-     * admin/index.html — Page Logic
-     * ==========================
+     * admin/index.html — Admin Login Page Logic
+     * =========================================
      * WHAT THIS PAGE DOES:
-     * - Provides password access to the Admin Dashboard.
-     * - Fetches the current password from IndexedDB.
-     * - Falls back to a default if no password has been set yet.
+     * - Authenticates the administrator via password against IndexedDB
+     * - Falls back to a default password on first run before admin sets one
+     * - Redirects to dashboard.html on successful login
      *
      * FLOW:
-     * 1. initDB() establishes connection
-     * 2. getAdminPassword() retrieves stored password
-     * 3. If correct, set sessionStorage and redirect
+     * 1. initDB() establishes database connection
+     * 2. Checks for existing admin session — redirects if found
+     * 3. On form submit: getAdminPassword(), compare, set sessionStorage
+     *
+     * READS FROM:   IndexedDB via db.js (settings store for admin password)
+     * WRITES TO:    sessionStorage (qa_admin flag)
+     * REDIRECTS TO: dashboard.html on successful login
      */
 
-    // ── SECTION 1: CONSTANTS ───────────────────────────────────────────────────
+    // ── SECTION 1: CONSTANTS & STATE ──────────────────────────────────────────
 
-    // Fallback password used ONLY on first run, before the Admin has set one in the database.
+    // Fallback password used ONLY before the admin has set one via the dashboard.
     var DEFAULT_ADMIN_PASSWORD = 'QAAdmin2026';
 
-    // ── SECTION 2: ON PAGE LOAD ─────────────────────────────────────────────────
+    // ── SECTION 2: INITIALISE ─────────────────────────────────────────────────
 
+    // Open the database, then check if an admin session already exists.
+    // If already logged in, skip straight to the dashboard.
     initDB().then(function() {
       if (sessionStorage.getItem('qa_admin') === 'true') {
         window.location.href = 'dashboard.html';
@@ -138,11 +167,16 @@
       console.error('Admin login: DB init failed.', error);
     });
 
-    // ── SECTION 3: FORM SUBMISSION ─────────────────────────────────────────────
+    // ── SECTION 3: FORM SUBMISSION ───────────────────────────────────────────
 
     var form     = document.getElementById('admin-login-form');
     var loginBtn = document.getElementById('login-btn');
 
+    /**
+     * Handles the admin login form submission.
+     * Validates the input, checks against the stored password
+     * (or default fallback), and redirects to dashboard.html on success.
+     */
     form.addEventListener('submit', function(event) {
       event.preventDefault();
 
@@ -157,19 +191,34 @@
       loginBtn.disabled = true;
       loginBtn.textContent = 'Signing in…';
 
-      // Use the database-stored password, fallback to default if first run
+      // Fetch the stored password — if none set yet, use the default.
       getAdminPassword().then(function(storedPassword) {
-        var correctPassword = storedPassword || DEFAULT_ADMIN_PASSWORD;
-
-        if (entered === correctPassword) {
-          sessionStorage.setItem('qa_admin', 'true');
-          window.location.href = 'dashboard.html';
+        if (storedPassword) {
+          // A password has been set — verify against the stored hash.
+          return verifyPassword(entered, storedPassword).then(function(matched) {
+            if (matched) {
+              sessionStorage.setItem('qa_admin', 'true');
+              window.location.href = 'dashboard.html';
+            } else {
+              showError('Incorrect password. Please try again.');
+              document.getElementById('admin-password').value = '';
+              document.getElementById('admin-password').focus();
+              loginBtn.disabled = false;
+              loginBtn.textContent = 'Sign in as Admin';
+            }
+          });
         } else {
-          showError('Incorrect password. Please try again.');
-          document.getElementById('admin-password').value = '';
-          document.getElementById('admin-password').focus();
-          loginBtn.disabled = false;
-          loginBtn.textContent = 'Sign in as Admin';
+          // No password has been set yet — compare against the default directly.
+          if (entered === DEFAULT_ADMIN_PASSWORD) {
+            sessionStorage.setItem('qa_admin', 'true');
+            window.location.href = 'dashboard.html';
+          } else {
+            showError('Incorrect password. Please try again.');
+            document.getElementById('admin-password').value = '';
+            document.getElementById('admin-password').focus();
+            loginBtn.disabled = false;
+            loginBtn.textContent = 'Sign in as Admin';
+          }
         }
       }).catch(function(error) {
         console.error('Failed to retrieve admin password:', error);
@@ -179,21 +228,33 @@
       });
     });
 
-    // ── SECTION 4: HELPERS ─────────────────────────────────────────────────────
+    // ── SECTION 4: HELPERS ───────────────────────────────────────────────────
 
+    /**
+     * showError(message)
+     * Displays the error banner with the given message.
+     *
+     * @param {string} message - The error text to show.
+     */
     function showError(message) {
       var el = document.getElementById('login-error');
       el.textContent = message;
       el.classList.add('visible');
     }
 
+    /**
+     * hideError()
+     * Hides the error banner. Called before each login attempt.
+     */
     function hideError() {
       var el = document.getElementById('login-error');
       el.textContent = '';
       el.classList.remove('visible');
     }
 
-    // Caps Lock detection for admin password field
+    // ── CAPS LOCK DETECTION ──────────────────────────────────────────────────
+    // Warns the user if Caps Lock is on while typing in the password field.
+    // Uses getModifierState when available, with a fallback for older browsers.
     document.getElementById('admin-password').addEventListener('input', function(e) {
       const capsWarning = document.getElementById('admin-caps-warning');
       const isCapsLockOn = 
@@ -202,11 +263,7 @@
          ((e.charCode >= 65 && e.charCode <= 90 && !e.shiftKey) || 
           (e.charCode >= 97 && e.charCode <= 122 && e.shiftKey)));
       
-      if (isCapsLockOn) {
-        capsWarning.style.display = 'block';
-      } else {
-        capsWarning.style.display = 'none';
-      }
+      capsWarning.style.display = isCapsLockOn ? 'block' : 'none';
     });
 
   </script>

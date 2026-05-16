@@ -1,286 +1,482 @@
 <!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Settings</title>
-    <style>
-      body {
-        margin: 0;
-        font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
-        background: transparent;
-        color: #111827;
-      }
-      .settings-root {
-        padding: 16px 20px;
-        font-size: 13px;
-      }
-      .settings-title {
-        font-size: 16px;
-        font-weight: 600;
-        margin-bottom: 4px;
-      }
-      .settings-subtitle {
-        font-size: 12px;
-        color: #6b7280;
-        margin-bottom: 12px;
-      }
-      .settings-section-title {
-        font-size: 12px;
-        text-transform: uppercase;
-        letter-spacing: 0.08em;
-        color: #6b7280;
-        margin-top: 16px;
-        margin-bottom: 6px;
-      }
-      .settings-card {
-        border-radius: 8px;
-        border: 1px solid #e5e7eb;
-        background: #f9fafb;
-        padding: 10px 12px;
-        margin-bottom: 8px;
-      }
-      .settings-row {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 8px;
-        margin-bottom: 6px;
-      }
-      .settings-label {
-        font-size: 12px;
-      }
-      .settings-slider {
-        flex: 1;
-      }
-      .settings-pill-row {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 6px;
-      }
-      .settings-pill {
-        padding: 4px 10px;
-        border-radius: 999px;
-        border: 1px solid #d1d5db;
-        background: #f3f4f6;
-        font-size: 12px;
-        cursor: pointer;
-      }
-      .settings-pill.active {
-        border-color: #2563eb;
-        background: rgba(37,99,235,0.12);
-        color: #1d4ed8;
-      }
-      .settings-app-list {
-        display: flex;
-        flex-direction: column;
-        gap: 4px;
-      }
-      .settings-app-row {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        font-size: 12px;
-      }
-      .settings-toggle-btn {
-        padding: 2px 8px;
-        border-radius: 999px;
-        border: 1px solid #d1d5db;
-        background: #f9fafb;
-        cursor: pointer;
-        font-size: 11px;
-      }
-    </style>
-  </head>
-  <body>
-    <div class="settings-root">
-      <div class="settings-title">Settings</div>
-      <div class="settings-subtitle">
-        Adjust appearance, theme, and installed apps for the QA Desktop.
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>Settings</title>
+  <style>
+    :root {
+      --st-bg:       #f3f2f1;
+      --st-surface:  #ffffff;
+      --st-nav-bg:   #f3f2f1;
+      --st-border:   #e5e3e0;
+      --st-text:     #1a1a1a;
+      --st-sub:      #6b7280;
+      --st-blue:     #2563eb;
+      --st-active:   rgba(37,99,235,0.1);
+      --st-radius:   8px;
+    }
+
+    body.theme-dark {
+      --st-bg:      #202020;
+      --st-surface: #2d2d2d;
+      --st-nav-bg:  #1c1c1c;
+      --st-border:  #3a3a3a;
+      --st-text:    #f3f2f1;
+      --st-sub:     #9ca3af;
+      --st-active:  rgba(37,99,235,0.2);
+    }
+
+    body { margin: 0; font-family: system-ui,-apple-system,"Segoe UI",sans-serif;
+           background: var(--st-bg); color: var(--st-text); }
+
+    .st-root { display: flex; height: 100vh; overflow: hidden; }
+
+    .st-nav { width: 200px; background: var(--st-nav-bg); padding: 12px 8px;
+               box-sizing: border-box; flex-shrink: 0; border-right: 1px solid var(--st-border); }
+    .st-nav-header { font-size: 20px; font-weight: 700; padding: 8px 10px 16px;
+                      color: var(--st-text); }
+    .st-nav-item { display: flex; align-items: center; gap: 10px; padding: 9px 10px;
+                   border-radius: var(--st-radius); cursor: pointer; font-size: 13px;
+                   color: var(--st-sub); transition: background 0.1s, color 0.1s; }
+    .st-nav-item:hover { background: rgba(0,0,0,0.05); color: var(--st-text); }
+    body.theme-dark .st-nav-item:hover { background: rgba(255,255,255,0.06); }
+    .st-nav-item.active { background: var(--st-active); color: var(--st-blue);
+                           font-weight: 600; }
+    .st-nav-icon { width: 16px; height: 16px; flex-shrink: 0; }
+
+    .st-main { flex: 1; overflow-y: auto; padding: 20px 28px; }
+    .st-section-title { font-size: 22px; font-weight: 700; margin: 0 0 20px;
+                         color: var(--st-text); }
+
+    .st-group { margin-bottom: 20px; }
+    .st-group-label { font-size: 11px; font-weight: 700; text-transform: uppercase;
+                       letter-spacing: 0.07em; color: var(--st-sub); margin-bottom: 6px; }
+    .st-row { display: flex; align-items: center; justify-content: space-between;
+              padding: 12px 14px; background: var(--st-surface); border: 1px solid var(--st-border);
+              border-radius: var(--st-radius); margin-bottom: 2px; gap: 16px; }
+    .st-row-info { display: flex; flex-direction: column; gap: 2px; }
+    .st-row-label { font-size: 13px; font-weight: 500; }
+    .st-row-sub   { font-size: 11px; color: var(--st-sub); }
+    .st-row-value { font-size: 12px; color: var(--st-sub); }
+    .st-row-static { cursor: default; }
+
+    .st-slider { flex-shrink: 0; width: 140px; accent-color: var(--st-blue); }
+
+    .st-pill-row { display: flex; gap: 4px; }
+    .st-pill { padding: 5px 12px; border-radius: 999px; border: 1px solid var(--st-border);
+               background: var(--st-bg); font-size: 12px; cursor: pointer;
+               color: var(--st-sub); transition: all 0.12s; }
+    .st-pill:hover { border-color: var(--st-blue); color: var(--st-blue); }
+    .st-pill.active { background: var(--st-active); border-color: var(--st-blue);
+                      color: var(--st-blue); font-weight: 600; }
+
+    .st-bg-grid { display: flex; gap: 10px; flex-wrap: wrap; }
+    .st-bg-swatch { display: flex; flex-direction: column; align-items: center;
+                    gap: 6px; border: 2px solid transparent; border-radius: 10px;
+                    padding: 6px; cursor: pointer; background: transparent;
+                    transition: border-color 0.15s; font-size: 11px; color: var(--st-sub); }
+    .st-bg-swatch.active { border-color: var(--st-blue); color: var(--st-blue); }
+    .st-bg-preview { width: 80px; height: 50px; border-radius: 6px;
+                      border: 1px solid var(--st-border); }
+    .st-bg-default { background: linear-gradient(135deg, #1a1f36 0%, #2d3561 100%); }
+    .st-bg-sunrise { background: linear-gradient(135deg, #f97316 0%, #f43f5e 50%, #6366f1 100%); }
+    .st-bg-glow    { background: linear-gradient(135deg, #0ea5e9 0%, #8b5cf6 50%, #ec4899 100%); }
+
+    .st-about-hero { display: flex; align-items: center; gap: 14px; padding: 16px 14px;
+                      background: var(--st-surface); border: 1px solid var(--st-border);
+                      border-radius: var(--st-radius); margin-bottom: 20px; }
+    .st-about-name    { font-size: 16px; font-weight: 700; }
+    .st-about-version { font-size: 12px; color: var(--st-sub); margin-top: 2px; }
+    .st-about-desc    { font-size: 13px; line-height: 1.65; color: var(--st-sub);
+                         margin: 0; padding: 12px 14px; background: var(--st-surface);
+                         border: 1px solid var(--st-border); border-radius: var(--st-radius); }
+
+    .st-app-row { display: flex; align-items: center; justify-content: space-between;
+                  padding: 10px 14px; background: var(--st-surface);
+                  border: 1px solid var(--st-border); border-radius: var(--st-radius);
+                  margin-bottom: 2px; font-size: 13px; }
+    .st-app-toggle { padding: 4px 12px; border-radius: 999px; border: 1px solid var(--st-border);
+                      background: transparent; cursor: pointer; font-size: 11px;
+                      color: var(--st-sub); transition: all 0.12s; }
+    .st-app-toggle:hover { border-color: var(--st-blue); color: var(--st-blue); }
+  </style>
+</head>
+<body class="theme-light">
+  <div class="st-root">
+
+    <nav class="st-nav">
+      <div class="st-nav-header">Settings</div>
+
+      <div class="st-nav-item active" data-section="system">
+        <svg class="st-nav-icon" viewBox="0 0 20 20" fill="currentColor">
+          <path d="M10 2a8 8 0 100 16A8 8 0 0010 2zm0 2a6 6 0 110 12A6 6 0 0110 4zm0 3a3 3 0 100 6 3 3 0 000-6z"/>
+        </svg>
+        System
       </div>
 
-      <div class="settings-section-title">Display</div>
-      <div class="settings-card">
-        <div class="settings-row">
-          <span class="settings-label">Brightness</span>
-          <input
-            id="settings-brightness"
-            class="settings-slider"
-            type="range"
-            min="50"
-            max="120"
-            value="100"
-          />
+      <div class="st-nav-item" data-section="personalization">
+        <svg class="st-nav-icon" viewBox="0 0 20 20" fill="currentColor">
+          <path d="M4 5a2 2 0 012-2h8a2 2 0 012 2v10a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm2 0v10h8V5H6zm1 2h6v2H7V7zm0 4h4v2H7v-2z"/>
+        </svg>
+        Personalization
+      </div>
+
+      <div class="st-nav-item" data-section="apps">
+        <svg class="st-nav-icon" viewBox="0 0 20 20" fill="currentColor">
+          <path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zm0 8a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zm6-8a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2h-2zm0 8a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2h-2z"/>
+        </svg>
+        Apps
+      </div>
+
+      <div class="st-nav-item" data-section="about">
+        <svg class="st-nav-icon" viewBox="0 0 20 20" fill="currentColor">
+          <path d="M18 10A8 8 0 102 10a8 8 0 0016 0zm-8-3a1 1 0 110 2 1 1 0 010-2zm-1 4h2v4H9v-4z"/>
+        </svg>
+        About
+      </div>
+
+      <div class="st-nav-item" data-section="shortcuts">
+        <span class="st-nav-icon">⌨</span>
+        Keyboard Shortcuts
+      </div>
+    </nav>
+
+    <main class="st-main">
+
+      <section class="st-section" id="st-section-system">
+        <h2 class="st-section-title">System</h2>
+
+        <div class="st-group">
+          <div class="st-group-label">Display</div>
+          <div class="st-row">
+            <div class="st-row-info">
+              <span class="st-row-label">Brightness</span>
+              <span class="st-row-sub">Adjust screen brightness</span>
+            </div>
+            <input id="settings-brightness" type="range" class="st-slider"
+                   min="50" max="120" value="100"/>
+          </div>
         </div>
-      </div>
 
-      <div class="settings-section-title">Theme</div>
-      <div class="settings-card">
-        <div class="settings-pill-row">
-          <button
-            id="settings-theme-light"
-            class="settings-pill active"
-          >
-            Light
-          </button>
-          <button id="settings-theme-dark" class="settings-pill">
-            Dark
-          </button>
+        <div class="st-group">
+          <div class="st-group-label">Colour theme</div>
+          <div class="st-row">
+            <div class="st-row-info">
+              <span class="st-row-label">App theme</span>
+              <span class="st-row-sub">Choose light or dark mode</span>
+            </div>
+            <div class="st-pill-row">
+              <button id="settings-theme-light" class="st-pill active">Light</button>
+              <button id="settings-theme-dark"  class="st-pill">Dark</button>
+            </div>
+          </div>
         </div>
-      </div>
 
-      <div class="settings-section-title">Background</div>
-      <div class="settings-card">
-        <div class="settings-pill-row">
-          <button
-            class="settings-pill active"
-            data-bg="default"
-          >
-            Default
-          </button>
-          <button class="settings-pill" data-bg="sunrise">
-            Sunrise
-          </button>
-          <button class="settings-pill" data-bg="glow">
-            Glow
-          </button>
+        <div class="st-group">
+          <div class="st-group-label">Visual fidelity</div>
+          <div class="st-row">
+            <div class="st-row-info">
+              <span class="st-row-label">Window style</span>
+              <span class="st-row-sub">Windows 11 mode uses frosted glass effects</span>
+            </div>
+            <div class="st-pill-row">
+              <button id="settings-fidelity-win11"    class="st-pill active">Windows 11</button>
+              <button id="settings-fidelity-classic"  class="st-pill">Classic</button>
+            </div>
+          </div>
         </div>
-      </div>
+      </section>
 
-      <div class="settings-section-title">Visual mode</div>
-      <div class="settings-card">
-        <div class="settings-pill-row">
-          <button
-            id="settings-fidelity-win11"
-            class="settings-pill active"
-          >
-            Windows 11 Mode
-          </button>
-          <button
-            id="settings-fidelity-classic"
-            class="settings-pill"
-          >
-            Classic Mode
-          </button>
+      <section class="st-section" id="st-section-personalization" style="display:none">
+        <h2 class="st-section-title">Personalization</h2>
+
+        <div class="st-group">
+          <div class="st-group-label">Desktop background</div>
+          <div class="st-bg-grid" id="st-bg-grid">
+            <button class="st-bg-swatch active" data-bg="default">
+              <div class="st-bg-preview st-bg-default"></div>
+              <span>Default</span>
+            </button>
+            <button class="st-bg-swatch" data-bg="sunrise">
+              <div class="st-bg-preview st-bg-sunrise"></div>
+              <span>Sunrise</span>
+            </button>
+            <button class="st-bg-swatch" data-bg="glow">
+              <div class="st-bg-preview st-bg-glow"></div>
+              <span>Glow</span>
+            </button>
+          </div>
         </div>
-      </div>
+      </section>
 
-      <div class="settings-section-title">Apps</div>
-      <div class="settings-card">
-        <div id="settings-app-list" class="settings-app-list"></div>
-      </div>
-    </div>
+      <section class="st-section" id="st-section-apps" style="display:none">
+        <h2 class="st-section-title">Apps</h2>
+        <div class="st-group">
+          <div class="st-group-label">Installed applications</div>
+          <div id="settings-app-list"></div>
+        </div>
+      </section>
 
-    <script>
-      (function () {
-        // window.parent is the OS shell; window here is just the iframe
-        const os = window.parent.QA_OS || window.parent.OS || {};
+      <section class="st-section" id="st-section-about" style="display:none">
+        <h2 class="st-section-title">About</h2>
 
-        const brightness = document.getElementById("settings-brightness");
-        const themeLight = document.getElementById("settings-theme-light");
-        const themeDark = document.getElementById("settings-theme-dark");
-        const bgPills = document.querySelectorAll(".settings-pill[data-bg]");
-        const appList = document.getElementById("settings-app-list");
+        <div class="st-about-hero">
+          <svg width="52" height="52" viewBox="0 0 52 52" fill="none"
+               xmlns="http://www.w3.org/2000/svg">
+            <rect width="52" height="52" rx="12" fill="#2563eb"/>
+            <path d="M14 26 L22 34 L38 18"
+                  stroke="white" stroke-width="4.5"
+                  stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <div>
+            <div class="st-about-name">QA Pilot Desktop</div>
+            <div class="st-about-version">Version 1.0 · Sprint 5</div>
+          </div>
+        </div>
 
-        const fidelityWin11 = document.getElementById("settings-fidelity-win11");
-        const fidelityClassic = document.getElementById("settings-fidelity-classic");
+        <div class="st-group">
+          <div class="st-group-label">Platform</div>
+          <div class="st-row st-row-static">
+            <span class="st-row-label">Built on</span>
+            <span class="st-row-value">Modular OS v4</span>
+          </div>
+          <div class="st-row st-row-static">
+            <span class="st-row-label">Architecture</span>
+            <span class="st-row-value">Pure HTML/CSS/JS · file:// safe</span>
+          </div>
+          <div class="st-row st-row-static">
+            <span class="st-row-label">Data layer</span>
+            <span class="st-row-value">IndexedDB (QA Pilot Academy)</span>
+          </div>
+        </div>
 
-        function init() {
-          if (brightness) {
-            brightness.addEventListener("input", () => {
-              if (window.parent && window.parent.document) {
-                const root = window.parent.document.documentElement;
-                root.style.setProperty("--qa-brightness", brightness.value);
-              }
-            });
+        <div class="st-group">
+          <div class="st-group-label">Credits</div>
+          <div class="st-row st-row-static">
+            <span class="st-row-label">Product owner</span>
+            <span class="st-row-value">Andrew Hannah</span>
+          </div>
+          <div class="st-row st-row-static">
+            <span class="st-row-label">Built with</span>
+            <span class="st-row-value">GitHub Copilot + Claude (Anthropic)</span>
+          </div>
+          <div class="st-row st-row-static">
+            <span class="st-row-label">Design language</span>
+            <span class="st-row-value">Microsoft Fluent / Windows 11</span>
+          </div>
+        </div>
+
+        <div class="st-group">
+          <div class="st-group-label">Description</div>
+          <p class="st-about-desc">
+            QA Pilot Desktop is a Windows 11-inspired simulator used to train
+            junior QA professionals. Students investigate realistic bug scenarios
+            using mock versions of Dynamics 365, Azure DevOps, and an AC Panel —
+            all running offline in the browser with no external dependencies.
+          </p>
+        </div>
+      </section>
+
+      <section class="st-section" id="st-section-shortcuts" style="display:none;">
+        <h2 class="st-section-title">Keyboard Shortcuts</h2>
+        <p class="st-section-desc">
+          All available keyboard shortcuts. Mouse and touch actions are listed for reference.
+        </p>
+        <div id="shortcuts-list"></div>
+      </section>
+
+    </main>
+  </div>
+
+  <script>
+    (function () {
+      var os = window.parent.QA_OS || window.parent.OS || {};
+
+      // Section navigation
+      document.querySelectorAll('.st-nav-item').forEach(function(item) {
+        item.addEventListener('click', function() {
+          var sectionId = item.getAttribute('data-section');
+          document.querySelectorAll('.st-nav-item').forEach(function(n) {
+            n.classList.toggle('active', n === item);
+          });
+          document.querySelectorAll('.st-section').forEach(function(s) {
+            s.style.display = s.id === 'st-section-' + sectionId ? '' : 'none';
+          });
+          // If shortcuts section is being shown, render the shortcuts
+          if (sectionId === 'shortcuts') {
+            renderShortcuts();
           }
+        });
+      });
 
-          if (themeLight && themeDark) {
-            themeLight.addEventListener("click", () => {
-              setThemePills("light");
-              os.setTheme && os.setTheme("light");
-            });
-            themeDark.addEventListener("click", () => {
-              setThemePills("dark");
-              os.setTheme && os.setTheme("dark");
-            });
-          }
+      /**
+       * renderShortcuts()
+       * Reads window.parent.QA_SHORTCUTS.getAll() and renders grouped shortcut rows
+       * into #shortcuts-list. Safe to call multiple times (clears on each call).
+       */
+      function renderShortcuts() {
+        var container = document.getElementById("shortcuts-list");
+        if (!container) return;
+        container.innerHTML = "";
 
-          bgPills.forEach((pill) => {
-            pill.addEventListener("click", () => {
-              const bg = pill.getAttribute("data-bg");
-              setBgPills(bg);
-              os.setBackground && os.setBackground(bg);
-            });
+        // Graceful degradation if registry not available
+        if (!window.parent || !window.parent.QA_SHORTCUTS) {
+          container.innerHTML =
+            '<p style="color:var(--qa-text-muted,#888);font-size:13px;">' +
+            'Shortcut registry not available.</p>';
+          return;
+        }
+
+        var groups = window.parent.QA_SHORTCUTS.getAll();
+
+        Object.keys(groups).forEach(function(category) {
+          // Category heading
+          var heading = document.createElement("div");
+          heading.style.cssText =
+            "font-size:11px;font-weight:600;text-transform:uppercase;" +
+            "letter-spacing:0.06em;color:var(--qa-text-muted,#888);" +
+            "margin:20px 0 8px;padding-bottom:4px;" +
+            "border-bottom:1px solid var(--qa-border,rgba(0,0,0,0.12));";
+          heading.textContent = category;
+          container.appendChild(heading);
+
+          // Rows
+          groups[category].forEach(function(shortcut) {
+            var row = document.createElement("div");
+            row.style.cssText =
+              "display:flex;justify-content:space-between;align-items:center;" +
+              "padding:7px 0;font-size:13px;" +
+              "border-bottom:1px solid var(--qa-border,rgba(0,0,0,0.06));";
+
+            var desc = document.createElement("span");
+            desc.style.color = "var(--qa-text,#222)";
+            desc.textContent = shortcut.description;
+
+            var keys = document.createElement("kbd");
+            keys.style.cssText =
+              "font-family:var(--qa-font-mono,'Consolas','Courier New',monospace);" +
+              "font-size:11px;padding:2px 8px;border-radius:4px;" +
+              "background:var(--qa-surface-2,#f0f0f0);" +
+              "border:1px solid var(--qa-border,rgba(0,0,0,0.18));" +
+              "color:var(--qa-text,#333);white-space:nowrap;";
+            keys.textContent = shortcut.keys;
+
+            row.appendChild(desc);
+            row.appendChild(keys);
+            container.appendChild(row);
+          });
+        });
+      }
+
+      var brightness = document.getElementById('settings-brightness');
+      var themeLight = document.getElementById('settings-theme-light');
+      var themeDark = document.getElementById('settings-theme-dark');
+      var bgSwatches = document.querySelectorAll('.st-bg-swatch');
+      var appList = document.getElementById('settings-app-list');
+      var fidelityWin11 = document.getElementById('settings-fidelity-win11');
+      var fidelityClassic = document.getElementById('settings-fidelity-classic');
+
+      function init() {
+        if (brightness) {
+          brightness.addEventListener('input', function() {
+            if (window.parent && window.parent.document) {
+              var root = window.parent.document.documentElement;
+              root.style.setProperty('--qa-brightness', brightness.value);
+            }
+          });
+        }
+
+        if (themeLight && themeDark) {
+          themeLight.addEventListener('click', function() {
+            setThemePills('light');
+            os.setTheme && os.setTheme('light');
+          });
+          themeDark.addEventListener('click', function() {
+            setThemePills('dark');
+            os.setTheme && os.setTheme('dark');
+          });
+        }
+
+        bgSwatches.forEach(function(swatch) {
+          swatch.addEventListener('click', function() {
+            var bg = swatch.getAttribute('data-bg');
+            setBgSwatches(bg);
+            os.setBackground && os.setBackground(bg);
+          });
+        });
+
+        if (fidelityWin11 && fidelityClassic) {
+          fidelityWin11.addEventListener('click', function() {
+            setFidelityPills('win11');
+            os.setFidelity && os.setFidelity('win11');
+          });
+          fidelityClassic.addEventListener('click', function() {
+            setFidelityPills('classic');
+            os.setFidelity && os.setFidelity('classic');
           });
 
-          if (fidelityWin11 && fidelityClassic) {
-            fidelityWin11.addEventListener("click", () => {
-              setFidelityPills("win11");
-              os.setFidelity && os.setFidelity("win11");
-            });
-            fidelityClassic.addEventListener("click", () => {
-              setFidelityPills("classic");
-              os.setFidelity && os.setFidelity("classic");
-            });
-
-            const current =
-              (os.getFidelity && os.getFidelity()) || "win11";
-            setFidelityPills(current);
-          }
-
-          renderApps();
+          var current = (os.getFidelity && os.getFidelity()) || 'win11';
+          setFidelityPills(current);
         }
 
-        function setThemePills(theme) {
-          themeLight.classList.toggle("active", theme === "light");
-          themeDark.classList.toggle("active", theme === "dark");
-        }
+        renderApps();
+      }
 
-        function setBgPills(bg) {
-          bgPills.forEach((p) =>
-            p.classList.toggle("active", p.getAttribute("data-bg") === bg),
-          );
-        }
+      function setThemePills(theme) {
+        themeLight.classList.toggle('active', theme === 'light');
+        themeDark.classList.toggle('active', theme === 'dark');
+      }
 
-        function setFidelityPills(mode) {
-          const isWin11 = mode === "win11";
-          fidelityWin11.classList.toggle("active", isWin11);
-          fidelityClassic.classList.toggle("active", !isWin11);
-        }
+      function setBgSwatches(bg) {
+        bgSwatches.forEach(function(s) {
+          s.classList.toggle('active', s.getAttribute('data-bg') === bg);
+        });
+      }
 
-        function renderApps() {
-          if (!appList || !os.installApp || !os.uninstallApp) return;
+      function setFidelityPills(mode) {
+        var isWin11 = mode === 'win11';
+        fidelityWin11.classList.toggle('active', isWin11);
+        fidelityClassic.classList.toggle('active', !isWin11);
+      }
 
-          const apps = [
-            { id: "dynamics", label: "Dynamics" },
-            { id: "ado", label: "Azure DevOps" },
-            { id: "ac", label: "AC Panel" },
-            { id: "training", label: "Training" },
-            { id: "settings", label: "Settings" },
-          ];
+      function renderApps() {
+        if (!appList || !os.installApp || !os.uninstallApp) return;
 
-          appList.innerHTML = "";
-          apps.forEach((app) => {
-            const row = document.createElement("div");
-            row.className = "settings-app-row";
-            row.innerHTML = `
-              <span>${app.label}</span>
-              <button class="settings-toggle-btn" data-app="${app.id}">
-                Toggle
-              </button>
-            `;
-            const btn = row.querySelector("button");
-            btn.addEventListener("click", () => {
-              os.uninstallApp && os.uninstallApp(app.id);
-              os.installApp && os.installApp(app.id);
-              os.notify && os.notify("Toggled app: " + app.label);
-            });
-            appList.appendChild(row);
+        var apps = [
+          { id: 'dynamics', label: 'Dynamics' },
+          { id: 'ado', label: 'Azure DevOps' },
+          { id: 'ac', label: 'AC Panel' },
+          { id: 'training', label: 'Training' },
+          { id: 'settings', label: 'Settings' },
+        ];
+
+        appList.innerHTML = '';
+        apps.forEach(function(app) {
+          var row = document.createElement('div');
+          row.className = 'st-app-row';
+          row.innerHTML =
+            '<span>' + app.label + '</span>' +
+            '<button class="st-app-toggle" data-app="' + app.id + '">Toggle</button>';
+          var btn = row.querySelector('button');
+          btn.addEventListener('click', function() {
+            os.uninstallApp && os.uninstallApp(app.id);
+            os.installApp && os.installApp(app.id);
+            os.notify && os.notify('Toggled app: ' + app.label);
           });
-        }
+          appList.appendChild(row);
+        });
+      }
 
-        init();
-      })();
-    </script>
-  </body>
+      // APP_BOOT: apply theme
+      window.addEventListener('message', function(event) {
+        var msg = event.data;
+        if (!msg || msg.type !== 'APP_BOOT' || msg.appId !== 'settings') return;
+        if (msg.theme === 'dark') document.body.classList.add('theme-dark');
+        else document.body.classList.remove('theme-dark');
+      });
+
+      init();
+    })();
+  </script>
+</body>
 </html>

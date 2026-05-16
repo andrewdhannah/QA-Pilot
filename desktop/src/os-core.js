@@ -38,7 +38,7 @@ const APPS = {
   // NOTE: also add a desktop icon button in index.html for this app
   browser: {
     id: "browser",
-    title: "QA Browser — Tabbed Workspace",
+    title: "QA Browser",
     short: "Browser",
     icon: `<svg width="20" height="20" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="4" width="28" height="24" rx="5" fill="#0099BC"/><rect x="2" y="4" width="28" height="9" rx="5" fill="#007A99"/><rect x="2" y="9" width="28" height="4" fill="#007A99"/><circle cx="7" cy="9" r="2" fill="#00C2EB" opacity="0.8"/><circle cx="13" cy="9" r="2" fill="#00C2EB" opacity="0.5"/><circle cx="19" cy="9" r="2" fill="#00C2EB" opacity="0.3"/><rect x="6" y="18" width="20" height="2" rx="1" fill="white" opacity="0.7"/><rect x="6" y="22" width="14" height="2" rx="1" fill="white" opacity="0.4"/></svg>`,
   },
@@ -49,6 +49,14 @@ const APPS = {
     title: "Training — Scenarios",
     short: "Training",
     icon: `<svg width="20" height="20" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="2" width="28" height="28" rx="6" fill="#CA5010"/><path d="M16 8 L28 14 L16 20 L4 14 Z" fill="white" opacity="0.9"/><path d="M8 17 L8 23 Q16 27 24 23 L24 17" stroke="white" stroke-width="2" fill="none" stroke-linecap="round"/></svg>`,
+  },
+
+  // ── Teams — purple chat icon ──────────────────────────────────────────────
+  teams: {
+    id: "teams",
+    title: "Microsoft Teams — QA Channel",
+    short: "Teams",
+    icon: `<svg width="20" height="20" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="2" width="28" height="28" rx="6" fill="#6264A7"/><circle cx="11" cy="12" r="4.5" fill="white" opacity="0.95"/><path d="M6 22c0-2.8 2.2-5 5-5s5 2.2 5 5v1H6v-1z" fill="white" opacity="0.95"/><circle cx="22" cy="13" r="3.5" fill="white" opacity="0.8"/><path d="M18 22c0-2.2 1.8-4 4-4s4 1.8 4 4v1h-8v-1z" fill="white" opacity="0.8"/></svg>`,
   },
 
   // ── Settings — dark gear icon ────────────────────────────────────────────
@@ -79,30 +87,28 @@ const APPS = {
 
 const STORAGE_KEY = "qaSimulatorDesktop";
 
+const CAPSTONE_SESSION_KEY = "qa-capstone-session";
+
 const state = {
   role: "junior",
-  windows: [],
-  activeWindowId: null,
-  nextWindowId: 1,
-  nextZ: 1,
   theme: "light",
   background: "default",
   brightness: 100,
   installedApps: Object.keys(APPS),
-  fidelity: "win11", // "win11" or "classic"
+  fidelity: "win11",
 
-  // Capstone / scenario session state (not persisted)
-  capstoneScenarioId: null, // 'capstone-001' when active
+  capstoneScenarioId: null,
   activeScenarioId: null,
-  bugsFound: [],   // bugId strings from BUG_FOUND
-  bugsLogged: [],  // { title, severity, acRef, hasSteps } from BUG_LOGGED
-  activeBugs: [],  // bugIds currently active in the scenario
+  bugsFound: [],
+  bugsLogged: [],
+  activeBugs: [],
 };
 
 let shell,
   windowArea,
   startMenu,
   startButton,
+  startSearchInput,
   startGrid,
   taskbarApps,
   roleLabel,
@@ -134,6 +140,7 @@ function init() {
   startMenu = document.getElementById("qa-start-menu");
   startButton = document.getElementById("qa-start-button");
   startGrid = document.getElementById("qa-start-grid");
+  startSearchInput = document.getElementById("qa-start-search-input");
   taskbarApps = document.getElementById("qa-taskbar-apps");
   roleLabel = document.getElementById("qa-role-label");
   taskbarRole = document.getElementById("qa-taskbar-role");
@@ -156,6 +163,30 @@ function init() {
   submitBtn = document.getElementById("qa-submit-btn");
   submitTile = document.getElementById("qa-submit-tile");
 
+  // ── INITIALISE ARCHITECTURE LAYERS ──────────────────────────
+  var bus = window.QA_OS && window.QA_OS.EventBus;
+  var compositor = window.QA_OS && window.QA_OS.Compositor;
+  var workspaces = window.QA_OS && window.QA_OS.Workspaces;
+
+  if (compositor) compositor.init(windowArea);
+  if (bus) bus.initAppMessaging();
+
+  // ── BOOT SEQUENCE ─────────────────────────────────────────────────────
+  var bootScreen = document.getElementById('qa-boot-screen');
+  if (bootScreen) {
+    setTimeout(function() {
+      lockScreen.classList.remove('qa-lock-hidden');
+      lockScreen.style.display = '';
+      bootScreen.classList.add('qa-boot-hidden');
+      setTimeout(function() {
+        bootScreen.style.display = 'none';
+      }, 650);
+    }, 2500);
+  } else {
+    lockScreen.classList.remove('qa-lock-hidden');
+    lockScreen.style.display = '';
+  }
+
   loadState();
   applyTheme();
   applyBackground();
@@ -169,46 +200,82 @@ function init() {
   startClock();
   startLockClock();
 
-  if (state.windows.length === 0) {
+  // Auto-save via Workspaces when OS state changes
+  if (workspaces) {
+    setupAutoSave(workspaces);
+  }
+
+  setupNotifier();
+  setupDesktopContextMenu();
+
+  // Wire up EventBus to trigger toast notifier
+  if (bus) {
+    bus.on("notify", function (data) {
+      showNotifier(data.text || data, data.type || "info");
+    });
+    // Legacy notify from app messages
+    bus.on("app:NOTIFY", function (msg) {
+      showNotifier(msg.text || msg.message || "Notification", msg.type || "info");
+    });
+  }
+
+  if (compositor && compositor.getWindows().length === 0) {
     openApp("dynamics");
     openApp("ac");
   }
 
-  const coreApi = {
-    getRole: () => state.role,
-    getFidelity: () => state.fidelity,
-    setTheme: (theme) => setTheme(theme),
-    setBackground: (id) => setBackground(id),
-    setFidelity: (mode) => setFidelity(mode),
-    notify: (msg) => addNotification(msg),
-    openApp: (id) => openApp(id),
-    installApp: (id) => installApp(id),
-    uninstallApp: (id) => uninstallApp(id),
-    loadScenario: (id) => (window.SCENARIOS && window.SCENARIOS[id]) || null,
-    completeTask: (id) => addNotification(`Task completed: ${id}`),
+  var coreApi = {
+    getRole: function () { return state.role; },
+    getFidelity: function () { return state.fidelity; },
+    setTheme: function (t) { setTheme(t); },
+    setBackground: function (id) { setBackground(id); },
+    setFidelity: function (mode) { setFidelity(mode); },
+    notify: function (msg) { addNotification(msg); },
+    notifyToast: function (text, type) { showNotifier(text, type); },
+    openApp: function (id) { openApp(id); },
+    installApp: function (id) { installApp(id); },
+    uninstallApp: function (id) { uninstallApp(id); },
+    loadScenario: function (id) { return (window.SCENARIOS && window.SCENARIOS[id]) || null; },
+    getAppHtml: function (appId) { return (typeof APP_HTML !== 'undefined' && APP_HTML[appId]) || null; },
+    completeTask: function (id) { addNotification("Task completed: " + id); },
 
-    // Global per-app persistence
-    saveAppState: (appId, data) => {
-      try {
-        const key = `qa-app-${appId}`;
-        localStorage.setItem(key, JSON.stringify(data));
-      } catch (e) {
-        // ignore
-      }
+    // Workspaces API
+    saveWorkspace: function (name) {
+      if (workspaces) return workspaces.save(name, getWorkspaceData());
     },
-    loadAppState: (appId) => {
+    restoreWorkspace: function (name) {
+      if (workspaces) return workspaces.restore(name).then(function (data) { applyWorkspaceData(data); });
+    },
+    listWorkspaces: function () {
+      return workspaces ? workspaces.list() : Promise.resolve([]);
+    },
+
+    saveAppState: function (appId, data) {
       try {
-        const key = `qa-app-${appId}`;
-        const raw = localStorage.getItem(key);
+        localStorage.setItem("qa-app-" + appId, JSON.stringify(data));
+      } catch (e) {}
+    },
+    loadAppState: function (appId) {
+      try {
+        var raw = localStorage.getItem("qa-app-" + appId);
         return raw ? JSON.parse(raw) : null;
-      } catch (e) {
-        return null;
-      }
+      } catch (e) { return null; }
     },
+
+    // Expose architecture layers for advanced use
+    EventBus: bus,
+    Compositor: compositor,
+    Workspaces: workspaces,
   };
 
   window.QA_OS = coreApi;
   window.OS = coreApi;
+
+  // Initialise keyboard shortcut registry (must run after DOM is ready)
+  if (window.QA_SHORTCUTS) window.QA_SHORTCUTS.init();
+
+  // Run boot-time health checks (after all modules are wired — toasts on failure)
+  if (window.QA_HEALTH) window.QA_HEALTH.runBoot();
 }
 
 function bindEvents() {
@@ -216,9 +283,15 @@ function bindEvents() {
     if (!lockScreen.classList.contains("qa-lock-hidden")) unlock();
   });
 
-  document.addEventListener("keydown", () => {
-    if (!lockScreen.classList.contains("qa-lock-hidden")) unlock();
-  });
+   document.addEventListener("keydown", (e) => {
+     // Close context menu on Escape
+     if (e.key === "Escape") {
+       var openMenu = document.querySelector(".qa-context-menu");
+       if (openMenu) { openMenu.remove(); return; }
+     }
+
+     if (!lockScreen.classList.contains("qa-lock-hidden")) unlock();
+   });
 
   document.querySelectorAll(".qa-desktop-icon").forEach((icon) => {
     icon.addEventListener("dblclick", () => {
@@ -227,6 +300,12 @@ function bindEvents() {
     });
   });
 
+  if (startSearchInput) {
+    startSearchInput.addEventListener("input", function () {
+      renderStartMenu(this.value.trim().toLowerCase());
+    });
+  }
+
   startButton.addEventListener("click", (e) => {
     e.stopPropagation();
     toggleStartMenu();
@@ -234,17 +313,23 @@ function bindEvents() {
     hideNotifyCenter();
   });
 
-  document.addEventListener("click", (e) => {
-    if (!startMenu.contains(e.target) && !startButton.contains(e.target)) {
-      hideStartMenu();
-    }
-    if (!quickPanel.contains(e.target) && !quickButton.contains(e.target)) {
-      hideQuickPanel();
-    }
-    if (!notifyCenter.contains(e.target) && !notifyButton.contains(e.target)) {
-      hideNotifyCenter();
-    }
-  });
+   document.addEventListener("click", (e) => {
+     // Dismiss any open context menu on any click outside it
+     var openMenu = document.querySelector(".qa-context-menu");
+     if (openMenu && !openMenu.contains(e.target)) {
+       openMenu.remove();
+     }
+
+     if (!startMenu.contains(e.target) && !startButton.contains(e.target)) {
+       hideStartMenu();
+     }
+     if (!quickPanel.contains(e.target) && !quickButton.contains(e.target)) {
+       hideQuickPanel();
+     }
+     if (!notifyCenter.contains(e.target) && !notifyButton.contains(e.target)) {
+       hideNotifyCenter();
+     }
+   });
 
   startMenu.addEventListener("click", (e) => {
     const btn = e.target.closest(".qa-start-item");
@@ -313,12 +398,10 @@ function bindEvents() {
     });
   }
 
-  // Listen for messages from apps running inside iframes
-  window.addEventListener("message", function (event) {
-    var msg = event.data;
-    if (!msg || !msg.type) return;
-
-    if (msg.type === "BUG_FOUND") {
+  // App message handling via EventBus
+  var bus = window.QA_OS && window.QA_OS.EventBus;
+  if (bus) {
+    bus.onAppMessage("BUG_FOUND", function (msg) {
       if (state.bugsFound.indexOf(msg.bugId) === -1) {
         state.bugsFound.push(msg.bugId);
       }
@@ -326,16 +409,27 @@ function bindEvents() {
         state.activeBugs.push(msg.bugId);
       }
       addNotification("🔍 Defect encountered: " + msg.bugId);
-    }
+    });
 
-    if (msg.type === "BUG_LOGGED") {
+    bus.onAppMessage("BUG_LOGGED", function (msg) {
       state.bugsLogged.push(msg.data || {});
       addNotification(
         "📋 Bug report filed: " +
           (msg.data && msg.data.title ? msg.data.title : "untitled"),
       );
-    }
-  });
+    });
+
+    bus.onAppMessage("BROWSER_STATE_CHANGED", function (msg) {
+      var compositor = window.QA_OS && window.QA_OS.Compositor;
+      if (compositor && typeof msg.winId === "number") {
+        var win = compositor.getWindow(msg.winId);
+        if (win) {
+          win.browserState = msg.state || null;
+          saveState();
+        }
+      }
+    });
+  }
 }
 
 // LOCK SCREEN
@@ -369,18 +463,37 @@ function startLockClock() {
 // START MENU
 
 function toggleStartMenu() {
+  var isOpen = !startMenu.classList.contains("qa-start-menu-hidden");
   startMenu.classList.toggle("qa-start-menu-hidden");
+  if (!isOpen) {
+    // Menu was hidden — now it's open, focus the search input after a short delay
+    // so the menu animation completes before the cursor appears.
+    if (startSearchInput) {
+      setTimeout(function() { startSearchInput.focus(); }, 80);
+    }
+  }
 }
 
 function hideStartMenu() {
   startMenu.classList.add("qa-start-menu-hidden");
+  if (startSearchInput) startSearchInput.value = "";
+  renderStartMenu();
 }
 
-function renderStartMenu() {
+function renderStartMenu(filter) {
   if (!startGrid) return;
   startGrid.innerHTML = "";
 
-  state.installedApps.forEach((id) => {
+  var apps = state.installedApps.filter(function (id) {
+    if (!filter) return true;
+    var app = APPS[id];
+    if (!app) return false;
+    return app.title.toLowerCase().indexOf(filter) !== -1 ||
+           app.short.toLowerCase().indexOf(filter) !== -1 ||
+           id.indexOf(filter) !== -1;
+  });
+
+  apps.forEach(function (id) {
     const app = APPS[id];
     if (!app) return;
     const btn = document.createElement("button");
@@ -392,6 +505,13 @@ function renderStartMenu() {
     `;
     startGrid.appendChild(btn);
   });
+
+  if (apps.length === 0) {
+    var empty = document.createElement("div");
+    empty.style.cssText = "grid-column:1/-1;text-align:center;padding:20px 0;color:var(--qa-muted-light);font-size:12px;";
+    empty.textContent = "No results found";
+    startGrid.appendChild(empty);
+  }
 }
 
 // NOTIFICATIONS
@@ -489,15 +609,19 @@ function hideTaskview() {
 }
 
 function renderTaskview() {
-  taskviewInner.innerHTML = "";
-  const wins = state.windows.filter((w) => !w.minimized);
-  if (wins.length === 0) return;
+  var compositor = window.QA_OS && window.QA_OS.Compositor;
+  if (!compositor) return;
 
-  wins.forEach((win) => {
-    const app = APPS[win.appId];
-    const thumb = document.createElement("div");
+  taskviewInner.innerHTML = "";
+  var wins = compositor.getVisibleWindows();
+  if (wins.length === 0) return;
+  var activeId = compositor.getActiveId();
+
+  wins.forEach(function (win) {
+    var app = APPS[win.appId];
+    var thumb = document.createElement("div");
     thumb.className = "qa-taskview-thumb";
-    if (win.id === state.activeWindowId) {
+    if (win.id === activeId) {
       thumb.classList.add("qa-active");
     }
 
@@ -524,29 +648,15 @@ function toggleRole() {
   renderRole();
   renderAllWindows();
   addNotification(
-    `Role switched to ${
-      state.role === "junior" ? "Junior Investigator" : "Senior Investigator"
-    }`,
+    "Role switched to " +
+      (state.role === "junior" ? "Junior Investigator" : "Senior Investigator"),
   );
 
-  // Broadcast role change to all open app iframes
-  state.windows.forEach(function (win) {
-    const el = windowArea.querySelector('[data-win-id="' + win.id + '"]');
-    if (!el) return;
-    const iframe = el.querySelector("iframe");
-    if (!iframe || !iframe.contentWindow) return;
-    try {
-      iframe.contentWindow.postMessage(
-        {
-          type: "ROLE_CHANGE",
-          role: state.role,
-        },
-        "*",
-      );
-    } catch (e) {
-      // ignore
-    }
-  });
+  // Broadcast role change via EventBus
+  var bus = window.QA_OS && window.QA_OS.EventBus;
+  if (bus) {
+    bus.postToAllApps({ type: "ROLE_CHANGE", role: state.role });
+  }
 }
 
 function renderRole() {
@@ -604,19 +714,27 @@ function startCapstoneScenario(scenarioId) {
   overlay.appendChild(card);
   document.body.appendChild(overlay);
 
-  const startBtn = document.getElementById("qa-brief-start");
+   var startBtn = document.getElementById("qa-brief-start");
   if (startBtn) {
     startBtn.addEventListener("click", function () {
+      var compositor = window.QA_OS && window.QA_OS.Compositor;
       overlay.remove();
 
       openApp("dynamics");
       openApp("ac");
 
       setTimeout(function () {
-        const dynWin = state.windows.find((w) => w.appId === "dynamics");
-        const acWin = state.windows.find((w) => w.appId === "ac");
-        if (dynWin) dynWin.layout = "snap-left";
-        if (acWin) acWin.layout = "snap-right";
+        if (compositor) {
+          var workBrowser = compositor.getWindows().find(function (w) {
+            return w.appId === "browser" && w.isWorkBrowser === true;
+          });
+          if (workBrowser) {
+            compositor.setLayout(workBrowser.id, "maximized");
+          } else {
+            var anyBrowser = compositor.getWindows().find(function (w) { return w.appId === "browser"; });
+            if (anyBrowser) compositor.setLayout(anyBrowser.id, "maximized");
+          }
+        }
 
         renderAllWindows();
         renderTaskbar();
@@ -630,55 +748,45 @@ function startCapstoneScenario(scenarioId) {
 // WINDOW MANAGEMENT
 
 function openApp(appId) {
-  // Training app starts the capstone scenario instead of opening a window
   if (appId === "training") {
     startCapstoneScenario("capstone-001");
     return;
   }
 
+  if (appId === "dynamics" || appId === "ado" || appId === "ac") {
+    openAppAsBrowserTab(appId);
+    return;
+  }
+
   if (!isInstalled(appId)) return;
-  const app = APPS[appId];
+  var app = APPS[appId];
   if (!app) return;
 
-  const winId = state.nextWindowId++;
-  const z = state.nextZ++;
+  var compositor = window.QA_OS && window.QA_OS.Compositor;
+  if (!compositor) return;
 
-  // Use the number of currently OPEN windows (not the ever-growing winId)
-  // to calculate the cascade offset. This way, once windows are closed,
-  // new ones reset back toward the centre of the screen.
-  const openCount = state.windows.length;   // windows already open before this one
-  const CASCADE_STEP_X = 28;
-  const CASCADE_STEP_Y = 22;
-  const MAX_CASCADE    = 6;   // reset cascade after this many steps
-  const step  = openCount % MAX_CASCADE;
-  const baseX = 160 + step * CASCADE_STEP_X;
-  const baseY = 80  + step * CASCADE_STEP_Y;
-
-  state.windows.push({
-    id: winId,
-    appId,
-    z,
-    layout: "normal",
-    minimized: false,
-    x: baseX,
-    y: baseY,
+  var win = compositor.createWindow(appId, {
+    isWorkBrowser: state._openingWorkBrowser === true,
   });
-  state.activeWindowId = winId;
+  state._openingWorkBrowser = false;
+
   saveState();
   renderAllWindows();
   renderTaskbar();
-  addNotification(`Opened ${app.title}`);
+  addNotification("Opened " + app.title);
 }
 
 function closeWindow(winId) {
-  const idx = state.windows.findIndex((w) => w.id === winId);
-  if (idx === -1) return;
-  const app = APPS[state.windows[idx].appId];
+  var compositor = window.QA_OS && window.QA_OS.Compositor;
+  if (!compositor) return;
+  var win = compositor.getWindow(winId);
+  if (!win) return;
+  var app = APPS[win.appId];
 
-  const el = windowArea.querySelector(`[data-win-id="${winId}"]`);
+  var el = windowArea.querySelector('[data-win-id="' + winId + '"]');
   if (el) {
     el.classList.add("qa-closing");
-    setTimeout(() => {
+    setTimeout(function () {
       actuallyCloseWindow(winId, app);
     }, 160);
   } else {
@@ -687,66 +795,50 @@ function closeWindow(winId) {
 }
 
 function actuallyCloseWindow(winId, app) {
-  const idx = state.windows.findIndex((w) => w.id === winId);
-  if (idx === -1) return;
-  state.windows.splice(idx, 1);
-  if (state.activeWindowId === winId) {
-    state.activeWindowId = state.windows.length
-      ? state.windows[state.windows.length - 1].id
-      : null;
-  }
+  var compositor = window.QA_OS && window.QA_OS.Compositor;
+  if (!compositor) return;
+  if (!compositor.destroyWindow(winId)) return;
   saveState();
   renderAllWindows();
   renderTaskbar();
-  if (app) addNotification(`Closed ${app.title}`);
+  if (app) addNotification("Closed " + app.title);
 }
 
 function focusWindow(winId) {
-  const win = state.windows.find((w) => w.id === winId);
-  if (!win) return;
-
-  const needsUnminimize = win.minimized;
-  win.z = state.nextZ++;
-  win.minimized = false;
-  state.activeWindowId = winId;
-  saveState();
-
-  if (needsUnminimize) {
-    renderAllWindows();
-  } else {
-    state.windows.forEach((w) => {
-      const el = windowArea.querySelector(`[data-win-id="${w.id}"]`);
-      if (!el) return;
+  var compositor = window.QA_OS && window.QA_OS.Compositor;
+  if (!compositor) return;
+  var wasMinimized = compositor.focus(winId);
+  if (!wasMinimized) {
+    // Already visible — just update z-index and active class
+    var wins = compositor.getWindows();
+    for (var i = 0; i < wins.length; i++) {
+      var w = wins[i];
+      var el = windowArea.querySelector('[data-win-id="' + w.id + '"]');
+      if (!el) continue;
       el.style.zIndex = w.z;
       el.classList.toggle("qa-active", w.id === winId);
-
-      const overlay = el.querySelector(".qa-focus-overlay");
+      var overlay = el.querySelector(".qa-focus-overlay");
       if (overlay) overlay.style.display = w.id === winId ? "none" : "block";
-    });
+    }
+  } else {
+    renderAllWindows();
   }
+  saveState();
   renderTaskbar();
 }
 
 function toggleMaximize(winId) {
-  const win = state.windows.find((w) => w.id === winId);
-  if (!win) return;
-  if (win.layout === "maximized") {
-    win.layout = "normal";
-  } else {
-    win.layout = "maximized";
-    win.minimized = false;
-  }
+  var compositor = window.QA_OS && window.QA_OS.Compositor;
+  if (!compositor) return;
+  compositor.toggleMaximize(winId);
   saveState();
   renderAllWindows();
 }
 
 function minimizeWindow(winId) {
-  const win = state.windows.find((w) => w.id === winId);
-  if (!win) return;
-  win.minimized = true;
-  if (state.activeWindowId === winId) {
-    state.activeWindowId = null;
-  }
+  var compositor = window.QA_OS && window.QA_OS.Compositor;
+  if (!compositor) return;
+  compositor.minimize(winId);
   saveState();
   renderAllWindows();
   renderTaskbar();
@@ -762,85 +854,123 @@ function applyLayoutClass(el, layout) {
 // RENDER WINDOWS
 
 function renderAllWindows() {
+  var compositor = window.QA_OS && window.QA_OS.Compositor;
+  var bus = window.QA_OS && window.QA_OS.EventBus;
+  if (!compositor) return;
+
   windowArea.innerHTML = "";
-  state.windows
+  var wins = compositor.getWindows();
+  var activeId = compositor.getActiveId();
+
+  wins
     .slice()
-    .sort((a, b) => a.z - b.z)
-    .forEach((win) => {
+    .sort(function (a, b) { return a.z - b.z; })
+    .forEach(function (win) {
       if (win.minimized) return;
 
-      const app = APPS[win.appId];
-      const el = document.createElement("div");
+      var app = APPS[win.appId];
+      var el = document.createElement("div");
       el.className = "qa-window";
-      if (win.id === state.activeWindowId) el.classList.add("qa-active");
+      if (win.id === activeId) el.classList.add("qa-active");
       el.style.zIndex = win.z;
       el.dataset.winId = win.id;
 
       applyLayoutClass(el, win.layout);
 
       if (win.layout === "normal") {
-        if (typeof win.x === "number") el.style.left = `${win.x}px`;
-        if (typeof win.y === "number") el.style.top = `${win.y}px`;
+        if (typeof win.x === "number") el.style.left = win.x + "px";
+        if (typeof win.y === "number") el.style.top = win.y + "px";
+        if (typeof win.width === "number") el.style.width = win.width + "px";
+        if (typeof win.height === "number") el.style.height = win.height + "px";
       }
 
-      const header = document.createElement("div");
+      var header = document.createElement("div");
       header.className = "qa-window-header";
-      header.innerHTML = `
-        <div class="qa-window-title">${app ? app.title : "Window"}</div>
-        <div class="qa-window-controls">
-          <button class="qa-window-btn minimize" title="Minimize"></button>
-          <button class="qa-window-btn maximize" title="Maximize"></button>
-          <button class="qa-window-btn close" title="Close"></button>
-        </div>
-      `;
+      header.innerHTML =
+        '<div class="qa-window-title">' + (app ? app.title : "Window") + '</div>' +
+        '<div class="qa-window-controls">' +
+          '<button class="qa-window-btn minimize" title="Minimize"></button>' +
+          '<button class="qa-window-btn maximize" title="Maximize"></button>' +
+          '<button class="qa-window-btn close" title="Close"></button>' +
+        '</div>';
       el.appendChild(header);
 
-      const body = document.createElement("div");
+      // Resize handles (right, bottom, bottom-right corner)
+      var rh = document.createElement("div");
+      rh.className = "qa-resize-handles";
+      rh.innerHTML =
+        '<div class="qa-resize-h qa-resize-e" data-dir="e"></div>' +
+        '<div class="qa-resize-h qa-resize-s" data-dir="s"></div>' +
+        '<div class="qa-resize-h qa-resize-se" data-dir="se"></div>';
+      el.appendChild(rh);
+
+      // Snap layout flyout attached to header
+      var flyout = document.createElement("div");
+      flyout.className = "qa-snap-flyout";
+      flyout.innerHTML =
+        '<button class="qa-snap-cell qa-snap-max" data-layout="maximized" title="Maximize"></button>' +
+        '<button class="qa-snap-cell qa-snap-tl" data-layout="snap-tl" title="Top-left"></button>' +
+        '<button class="qa-snap-cell qa-snap-tr" data-layout="snap-tr" title="Top-right"></button>' +
+        '<button class="qa-snap-cell qa-snap-bl" data-layout="snap-bl" title="Bottom-left"></button>' +
+        '<button class="qa-snap-cell qa-snap-br" data-layout="snap-br" title="Bottom-right"></button>';
+      header.appendChild(flyout);
+
+      var body = document.createElement("div");
       body.className = "qa-window-body";
 
       if (win.appId === "ac") {
-        const iframe = document.createElement("iframe");
-        iframe.className = "qa-window-frame";
-        iframe.srcdoc = APP_HTML && APP_HTML["ac"] ? APP_HTML["ac"] : "";
-        iframe.addEventListener("load", () => {
+        var acIframe = document.createElement("iframe");
+        acIframe.className = "qa-window-frame";
+        acIframe.srcdoc = APP_HTML && APP_HTML["ac"] ? APP_HTML["ac"] : "";
+        acIframe.addEventListener("load", function () {
           try {
-            iframe.contentWindow.postMessage(
-              {
-                type: "APP_BOOT",
-                appId: "ac",
-                role: state.role,
-                theme: state.theme,
-                sessionId: `${win.id}-${Date.now().toString(36)}`,
+            acIframe.contentWindow.postMessage(
+              { type: "APP_BOOT", appId: "ac", role: state.role, theme: state.theme,
+                sessionId: win.id + "-" + Date.now().toString(36),
                 scenarioId: state.activeScenarioId || null,
-                activeBugs: state.activeBugs || [],
-              },
-              "*",
-            );
+                activeBugs: state.activeBugs || [] }, "*");
           } catch (e) {}
+          if (bus) bus.registerAppWindow(win.id, acIframe);
         });
-        body.appendChild(iframe);
+        body.appendChild(acIframe);
       } else if (APP_HTML && APP_HTML[win.appId]) {
-        const iframe = document.createElement("iframe");
+        var iframe = document.createElement("iframe");
         iframe.className = "qa-window-frame";
         iframe.srcdoc = APP_HTML[win.appId];
 
-        iframe.addEventListener("load", () => {
+        iframe.addEventListener("load", function () {
+          if (bus) bus.registerAppWindow(win.id, iframe);
           try {
-            iframe.contentWindow.postMessage(
-              {
-                type: "APP_BOOT",
-                appId: win.appId,
-                role: state.role,
-                theme: state.theme,
-                sessionId: `${win.id}-${Date.now().toString(36)}`,
-                scenarioId: state.activeScenarioId || null,
-                activeBugs: state.activeBugs || [],
-              },
-              "*",
-            );
-          } catch (e) {
-            // ignore
-          }
+            var bootMsg = {
+              type: "APP_BOOT",
+              appId: win.appId,
+              winId: win.id,
+              role: state.role,
+              theme: state.theme,
+              sessionId: win.id + "-" + Date.now().toString(36),
+              scenarioId: state.activeScenarioId || null,
+              activeBugs: state.activeBugs || [],
+            };
+            if (win.appId === "browser") {
+              if (win.browserState) bootMsg.browserState = win.browserState;
+              if (state._browserTabRequest) {
+                bootMsg.requestedTab = state._browserTabRequest;
+                state._browserTabRequest = null;
+              }
+            }
+
+            // Pass teamsThread data to the Teams app so it can render
+            // scripted scenario messages (case assignments, stand-ups, etc.)
+            if (win.appId === "teams" && state.activeScenarioId) {
+              var scenarioData = window.SCENARIOS && window.SCENARIOS[state.activeScenarioId];
+              if (scenarioData && scenarioData.teamsThread) {
+                bootMsg.teamsThread = scenarioData.teamsThread;
+              }
+            }
+
+            iframe.contentWindow.postMessage(bootMsg, "*");
+            flushBrowserMessageQueue();
+          } catch (e) {}
         });
 
         body.appendChild(iframe);
@@ -848,11 +978,10 @@ function renderAllWindows() {
         body.textContent = "App not configured.";
       }
 
-      const focusOverlay = document.createElement("div");
+      var focusOverlay = document.createElement("div");
       focusOverlay.className = "qa-focus-overlay";
-      focusOverlay.style.display =
-        win.id === state.activeWindowId ? "none" : "block";
-      focusOverlay.addEventListener("mousedown", (e) => {
+      focusOverlay.style.display = win.id === activeId ? "none" : "block";
+      focusOverlay.addEventListener("mousedown", function (e) {
         e.stopPropagation();
         focusWindow(win.id);
       });
@@ -861,64 +990,173 @@ function renderAllWindows() {
       el.appendChild(body);
       windowArea.appendChild(el);
 
-      header.addEventListener("mousedown", (e) => startDrag(e, el, win.id));
+      header.addEventListener("mousedown", function (e) { startDrag(e, el, win.id); });
 
-      header.querySelector(".close").addEventListener("click", (e) => {
+      header.addEventListener("contextmenu", function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        showWindowContextMenu(win.id, e.clientX, e.clientY);
+      });
+
+      header.querySelector(".close").addEventListener("click", function (e) {
         e.stopPropagation();
         closeWindow(win.id);
       });
 
-      header.addEventListener("dblclick", () => toggleMaximize(win.id));
+      header.addEventListener("dblclick", function () { toggleMaximize(win.id); });
 
-      header.querySelector(".maximize").addEventListener("click", (e) => {
+      var maxBtn = header.querySelector(".maximize");
+      maxBtn.addEventListener("click", function (e) {
         e.stopPropagation();
         toggleMaximize(win.id);
       });
+      maxBtn.addEventListener("mouseenter", function () {
+        flyout.classList.add("visible");
+      });
+      flyout.addEventListener("mouseleave", function () {
+        flyout.classList.remove("visible");
+      });
+      flyout.querySelectorAll(".qa-snap-cell").forEach(function (cell) {
+        cell.addEventListener("click", function (e) {
+          e.stopPropagation();
+          var layout = cell.getAttribute("data-layout");
+          if (layout) {
+            compositor.setLayout(win.id, layout);
+            saveState();
+            renderAllWindows();
+          }
+          flyout.classList.remove("visible");
+        });
+      });
 
-      header.querySelector(".minimize").addEventListener("click", (e) => {
+      header.querySelector(".minimize").addEventListener("click", function (e) {
         e.stopPropagation();
         minimizeWindow(win.id);
       });
 
-      el.addEventListener("mousedown", () => focusWindow(win.id));
+      // Resize handle events
+      [].forEach.call(el.querySelectorAll(".qa-resize-h"), function (h) {
+        h.addEventListener("mousedown", function (e) {
+          e.stopPropagation();
+          e.preventDefault();
+          startResize(e, win.id, h.getAttribute("data-dir"));
+        });
+      });
+
+      el.addEventListener("mousedown", function () { focusWindow(win.id); });
     });
+}
+
+// ── BROWSER TAB ROUTING ──────────────────────────────────────────────────
+// Two types of browser windows:
+// 1. Reference Browser (Home + QA Guidelines) — opened via Browser icon
+// 2. Work Browser (Dynamics + ADO + AC tabs) — opened via Dynamics/ADO/AC icons
+
+function openAppAsBrowserTab(appId) {
+  var compositor = window.QA_OS && window.QA_OS.Compositor;
+  if (!compositor) return;
+
+  var workBrowser = compositor.getWindows().find(function (w) {
+    return w.appId === "browser" && w.isWorkBrowser === true;
+  });
+  if (workBrowser) {
+    focusWindow(workBrowser.id);
+    postToBrowser({ type: "OPEN_APP_TAB", appId: appId }, workBrowser.id);
+  } else {
+    var anyBrowser = compositor.getWindows().find(function (w) { return w.appId === "browser"; });
+    if (anyBrowser && !anyBrowser.isWorkBrowser) {
+      createWorkBrowser(appId);
+    } else {
+      state._browserTabRequest = appId;
+      state._openingWorkBrowser = true;
+      openApp("browser");
+    }
+  }
+}
+
+function createWorkBrowser(appId) {
+  if (!isInstalled("browser")) return;
+  var app = APPS["browser"];
+  if (!app) return;
+
+  var compositor = window.QA_OS && window.QA_OS.Compositor;
+  if (!compositor) return;
+
+  var win = compositor.createWindow("browser", { isWorkBrowser: true });
+  state._browserTabRequest = appId;
+  state._openingWorkBrowser = false;
+  saveState();
+  renderAllWindows();
+  renderTaskbar();
+  addNotification("Opened " + app.title);
+}
+
+function postToBrowser(msg, specificWinId) {
+  var compositor = window.QA_OS && window.QA_OS.Compositor;
+  var bus = window.QA_OS && window.QA_OS.EventBus;
+  if (!compositor) return;
+
+  var browserWin;
+  if (specificWinId) {
+    browserWin = compositor.getWindow(specificWinId);
+  } else {
+    browserWin = compositor.getWindows().find(function (w) { return w.appId === "browser"; });
+  }
+  if (!browserWin) return;
+
+  if (bus) {
+    var sent = bus.postToApp(browserWin.id, msg);
+    if (!sent) {
+      bus.queueForApp(browserWin.id, msg);
+    }
+  }
+}
+
+function flushBrowserMessageQueue() {
+  var compositor = window.QA_OS && window.QA_OS.Compositor;
+  var bus = window.QA_OS && window.QA_OS.EventBus;
+  if (!compositor || !bus) return;
+  var browserWin = compositor.getWindows().find(function (w) { return w.appId === "browser"; });
+  if (!browserWin) return;
+  bus.flushQueue(browserWin.id);
 }
 
 // DRAG + SNAP
 
 function startDrag(e, el, winId) {
-  const win = state.windows.find((w) => w.id === winId);
+  var compositor = window.QA_OS && window.QA_OS.Compositor;
+  if (!compositor) return;
+  var win = compositor.getWindow(winId);
   if (!win) return;
   if (win.layout === "maximized") return;
 
   focusWindow(winId);
 
-  const rect = el.getBoundingClientRect();
-  const offsetX = e.clientX - rect.left;
-  const offsetY = e.clientY - rect.top;
-  const startX = e.clientX;
-  const startY = e.clientY;
+  var rect = el.getBoundingClientRect();
+  var offsetX = e.clientX - rect.left;
+  var offsetY = e.clientY - rect.top;
+  var startX = e.clientX;
+  var startY = e.clientY;
 
-  let hasMoved = false;
+  var hasMoved = false;
 
-  const shield = document.createElement("div");
-  shield.style.cssText =
-    "position:fixed;inset:0;z-index:2147483647;cursor:move;";
+  var shield = document.createElement("div");
+  shield.style.cssText = "position:fixed;inset:0;z-index:2147483647;cursor:move;";
 
   function onMove(ev) {
     if (!hasMoved) {
-      const dx = ev.clientX - startX;
-      const dy = ev.clientY - startY;
+      var dx = ev.clientX - startX;
+      var dy = ev.clientY - startY;
       if (Math.abs(dx) < 5 && Math.abs(dy) < 5) return;
       hasMoved = true;
       e.preventDefault();
       document.body.appendChild(shield);
     }
 
-    const x = ev.clientX - offsetX;
-    const y = ev.clientY - offsetY;
-    el.style.left = `${x}px`;
-    el.style.top = `${y}px`;
+    var x = ev.clientX - offsetX;
+    var y = ev.clientY - offsetY;
+    el.style.left = x + "px";
+    el.style.top = y + "px";
     win.x = x;
     win.y = y;
   }
@@ -930,14 +1168,15 @@ function startDrag(e, el, winId) {
 
     if (!hasMoved) return;
 
-    const vw = windowArea.clientWidth;
-    const sm = 24;
+    var vw = windowArea.clientWidth;
+    var sm = 24;
+    var layout = "normal";
 
-    if (ev.clientX < sm) win.layout = "snap-left";
-    else if (ev.clientX > vw - sm) win.layout = "snap-right";
-    else if (ev.clientY < sm) win.layout = "maximized";
-    else win.layout = "normal";
+    if (ev.clientX < sm) layout = "snap-left";
+    else if (ev.clientX > vw - sm) layout = "snap-right";
+    else if (ev.clientY < sm) layout = "maximized";
 
+    compositor.setLayout(winId, layout);
     saveState();
     renderAllWindows();
   }
@@ -949,38 +1188,39 @@ function startDrag(e, el, winId) {
 // TASKBAR
 
 function renderTaskbar() {
+  var compositor = window.QA_OS && window.QA_OS.Compositor;
+  if (!compositor) return;
+
   taskbarApps.innerHTML = "";
 
-  const byApp = {};
-  state.windows.forEach((w) => {
-    if (!byApp[w.appId]) byApp[w.appId] = [];
-    byApp[w.appId].push(w);
-  });
+  var byApp = compositor.getWindowsGroupedByApp();
+  var activeId = compositor.getActiveId();
 
-  Object.keys(byApp).forEach((appId) => {
-    const app = APPS[appId];
-    const wins = byApp[appId];
-    const isActive = wins.some((w) => w.id === state.activeWindowId);
-    const hasVisible = wins.some((w) => !w.minimized);
+  Object.keys(byApp).forEach(function (appId) {
+    var app = APPS[appId];
+    var wins = byApp[appId];
+    var isActive = wins.some(function (w) { return w.id === activeId; });
+    var hasVisible = wins.some(function (w) { return !w.minimized; });
 
-    const btn = document.createElement("button");
+    var btn = document.createElement("button");
     btn.className = "qa-taskbar-app-btn";
     if (isActive && hasVisible) btn.classList.add("qa-active");
-    if (hasVisible && !isActive) btn.classList.add("qa-running");
-    btn.innerHTML = `<span class="qa-taskbar-app-icon">${app ? app.icon : "📦"}</span>`;
+    if (hasVisible) btn.classList.add("running");
+    if (isActive && hasVisible) btn.classList.add("focused");
+    btn.innerHTML = '<span class="qa-taskbar-app-icon">' + (app ? app.icon : "📦") + "</span>";
     btn.title = app ? app.title : appId;
     btn.dataset.label = app ? app.short : appId;
 
-    btn.addEventListener("click", () => {
-      const visible = wins.filter((w) => !w.minimized);
+    btn.addEventListener("click", function () {
+      var visible = wins.filter(function (w) { return !w.minimized; });
       if (visible.length === 0) {
         wins[0].minimized = false;
-        state.activeWindowId = wins[0].id;
+        compositor.focus(wins[0].id);
       } else {
-        const topWin = visible.reduce((a, b) => (a.z > b.z ? a : b));
-        if (state.activeWindowId === topWin.id) {
-          visible.forEach((w) => (w.minimized = true));
-          state.activeWindowId = null;
+        var topWin = visible.reduce(function (a, b) { return a.z > b.z ? a : b; });
+        if (activeId === topWin.id) {
+          visible.forEach(function (w) { w.minimized = true; });
+          compositor.focus(null);
         } else {
           focusWindow(topWin.id);
           return;
@@ -991,15 +1231,14 @@ function renderTaskbar() {
       renderTaskbar();
     });
 
-    btn.addEventListener("contextmenu", (e) => {
+    btn.addEventListener("contextmenu", function (e) {
       e.preventDefault();
-      wins.slice().forEach((w) => actuallyCloseWindow(w.id, app));
+      wins.slice().forEach(function (w) { actuallyCloseWindow(w.id, app); });
     });
 
     taskbarApps.appendChild(btn);
   });
 
-  // Submit button / tile only visible during capstone
   if (submitBtn) {
     submitBtn.style.display = state.capstoneScenarioId ? "inline-flex" : "none";
   }
@@ -1046,8 +1285,13 @@ function installApp(id) {
 }
 
 function uninstallApp(id) {
-  state.installedApps = state.installedApps.filter((x) => x !== id);
-  state.windows = state.windows.filter((w) => w.appId !== id);
+  var compositor = window.QA_OS && window.QA_OS.Compositor;
+  state.installedApps = state.installedApps.filter(function (x) { return x !== id; });
+  // Close all windows for this app via compositor
+  if (compositor) {
+    var wins = compositor.getWindowsByApp(id);
+    wins.slice().forEach(function (w) { compositor.destroyWindow(w.id); });
+  }
   saveState();
   renderAllWindows();
   renderTaskbar();
@@ -1058,49 +1302,118 @@ function uninstallApp(id) {
 
 function saveState() {
   try {
-    const toSave = {
+    var compositor = window.QA_OS && window.QA_OS.Compositor;
+    var toSave = {
       role: state.role,
-      windows: state.windows,
-      activeWindowId: state.activeWindowId,
-      nextWindowId: state.nextWindowId,
-      nextZ: state.nextZ,
       theme: state.theme,
       background: state.background,
       brightness: state.brightness,
       installedApps: state.installedApps,
       fidelity: state.fidelity,
-      // capstone/session fields intentionally NOT persisted
+      compositorState: compositor ? {
+        windows: compositor.serialize(),
+        activeId: compositor.getActiveId(),
+      } : null,
     };
     localStorage.setItem(STORAGE_KEY, JSON.stringify(toSave));
-  } catch (e) {
-    // ignore
+  } catch (e) {}
+}
+
+function getWorkspaceData() {
+  var compositor = window.QA_OS && window.QA_OS.Compositor;
+  return {
+    role: state.role,
+    theme: state.theme,
+    background: state.background,
+    brightness: state.brightness,
+    installedApps: state.installedApps,
+    fidelity: state.fidelity,
+    compositorState: compositor ? {
+      windows: compositor.serialize(),
+      activeId: compositor.getActiveId(),
+    } : null,
+  };
+}
+
+function applyWorkspaceData(data) {
+  if (!data) return;
+  var compositor = window.QA_OS && window.QA_OS.Compositor;
+
+  if (data.role === "junior" || data.role === "senior") state.role = data.role;
+  if (data.theme === "dark" || data.theme === "light") setTheme(data.theme);
+  if (data.background) setBackground(data.background);
+  if (typeof data.brightness === "number") {
+    state.brightness = data.brightness;
+    applyBrightness();
+  }
+  if (Array.isArray(data.installedApps)) {
+    state.installedApps = data.installedApps;
+    Object.keys(APPS).forEach(function (id) {
+      if (state.installedApps.indexOf(id) === -1) state.installedApps.push(id);
+    });
+  }
+  if (data.fidelity === "win11" || data.fidelity === "classic") setFidelity(data.fidelity);
+  if (compositor && data.compositorState) {
+    compositor.deserialize(data.compositorState.windows, {
+      activeId: data.compositorState.activeId,
+    });
+  }
+  renderRole();
+  renderAllWindows();
+  renderTaskbar();
+  renderStartMenu();
+}
+
+function setupAutoSave(workspaces) {
+  var autoSaveTimer = null;
+  function scheduleAutoSave() {
+    if (autoSaveTimer) clearTimeout(autoSaveTimer);
+    autoSaveTimer = setTimeout(function () {
+      workspaces.autoSave(getWorkspaceData()).catch(function () {});
+    }, 5000);
+  }
+
+  // Subscribe to compositor events to trigger auto-save
+  var bus = window.QA_OS && window.QA_OS.EventBus;
+  if (bus) {
+    bus.on("window-created", scheduleAutoSave);
+    bus.on("window-destroyed", scheduleAutoSave);
+    bus.on("window-focused", scheduleAutoSave);
+    bus.on("window-minimized", scheduleAutoSave);
+    bus.on("window-layout-changed", scheduleAutoSave);
   }
 }
 
 function loadState() {
   try {
-    const raw = localStorage.getItem(STORAGE_KEY);
+    var compositor = window.QA_OS && window.QA_OS.Compositor;
+    var raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) return;
-    const parsed = JSON.parse(raw);
+    var parsed = JSON.parse(raw);
+
     if (parsed.role === "junior" || parsed.role === "senior")
       state.role = parsed.role;
-    if (Array.isArray(parsed.windows)) state.windows = parsed.windows;
-    if (
-      typeof parsed.activeWindowId === "number" ||
-      parsed.activeWindowId === null
-    )
-      state.activeWindowId = parsed.activeWindowId;
-    if (typeof parsed.nextWindowId === "number")
-      state.nextWindowId = parsed.nextWindowId;
-    if (typeof parsed.nextZ === "number") state.nextZ = parsed.nextZ;
+
+    // Restore compositor state (windows, z-order, active window)
+    if (compositor && parsed.compositorState) {
+      compositor.deserialize(parsed.compositorState.windows || [], {
+        activeId: parsed.compositorState.activeId || null,
+      });
+    } else if (Array.isArray(parsed.windows)) {
+      // Legacy migration: old format had windows directly on state
+      if (compositor) {
+        compositor.deserialize(parsed.windows, {
+          activeId: parsed.activeWindowId || null,
+          nextId: parsed.nextWindowId || 1,
+        });
+      }
+    }
+
     if (parsed.theme === "dark" || parsed.theme === "light")
       state.theme = parsed.theme;
     if (parsed.background) state.background = parsed.background;
     if (Array.isArray(parsed.installedApps)) {
       state.installedApps = parsed.installedApps;
-      // Merge in any apps added to APPS after the last save.
-      // Without this, a newly-added app (e.g. "browser") won't appear
-      // because the old saved list doesn't know about it yet.
       Object.keys(APPS).forEach(function (id) {
         if (state.installedApps.indexOf(id) === -1) {
           state.installedApps.push(id);
@@ -1115,25 +1428,103 @@ function loadState() {
     // ignore
   }
 
-  // Read active bug configuration injected by capstone.html before launching
-  // the OS. capstone.html writes an array of enabled bugId strings to
-  // 'qa-capstone-activeBugs' in localStorage so the OS can read them here.
-  // This is the cleanest cross-frame communication path since both share the
-  // same file:// origin when the OS runs as a srcdoc with allow-same-origin.
-  try {
-    var capstoneBugs = localStorage.getItem("qa-capstone-activeBugs");
-    if (capstoneBugs) {
-      var bugList = JSON.parse(capstoneBugs);
-      if (Array.isArray(bugList)) {
-        state.activeBugs = bugList;
+  // ── CAPSTONE SESSION BOOT ─────────────────────────────────────────────
+  // When the OS is launched from capstone.html, a session object is written
+  // to localStorage before the iframe is created. Read it here and use it
+  // to load the student's configuration from IndexedDB synchronously.
+  // If absent (standalone dist.html), skip gracefully.
+  (function loadCapstoneSession() {
+    try {
+      var raw = localStorage.getItem(CAPSTONE_SESSION_KEY);
+      if (!raw) return;   // standalone mode — nothing to load
+      var session = JSON.parse(raw);
+      if (!session || !session.caseId) return;
+
+      // Store caseId so other functions can use it (e.g. to write results)
+      state.capstoneCaseId   = session.caseId;
+      state.role             = session.role || state.role;
+      state.activeScenarioId = session.scenarioId || "capstone-001";
+      state.capstoneScenarioId = state.activeScenarioId;
+
+      // activeBugs: convert the { bugId: true/false } toggle map to an
+      // array of enabled bugId strings (what state.activeBugs expects).
+      if (session.bugToggles && typeof session.bugToggles === 'object') {
+        state.activeBugs = Object.keys(session.bugToggles).filter(function(k) {
+          return session.bugToggles[k] === true;
+        });
       }
+    } catch (e) {
+      console.warn("os-core: could not load capstone session", e);
     }
-  } catch (e) {
-    // ignore — activeBugs stays as [] which means no bugs active (safe default)
-  }
+  })();
 }
 
 // SUBMIT / SCORING
+
+/**
+ * scoreSubmission(scenarioId, bugsLogged)
+ * Evaluates each BUG_LOGGED entry against the active scenario's expectedBugs.
+ * Returns a structured result consumed by both the Teams review thread and the
+ * existing result modal.
+ */
+function scoreSubmission(scenarioId, bugsLogged) {
+  var scenario     = window.SCENARIOS && window.SCENARIOS[scenarioId];
+  var expected     = (scenario && scenario.expectedBugs) || [];
+  var acPattern    = /^AC-\d+(\.\d+)?$/i;
+  var sevPattern   = /^\d\s*-\s*.+$/;
+  var acRefs       = (scenario && scenario.acRefs) || {};
+
+  var scored = (bugsLogged || []).map(function(bug, idx) {
+    var title    = (bug.title    || "").trim();
+    var severity = (bug.severity || "").trim();
+    var acRef    = (bug.acRef    || "").trim();
+    var hasSteps = !!bug.hasSteps;
+
+    var checks = {
+      title:    title.length > 10 && !/^(bug|issue|test|untitled|defect)$/i.test(title),
+      severity: sevPattern.test(severity),
+      acRef:    acPattern.test(acRef),
+      steps:    hasSteps,
+    };
+
+    // Check if this report targets a real expected bug
+    var matchedBugId = null;
+    if (acRef) {
+      for (var bugId in acRefs) {
+        if (acRefs[bugId].toLowerCase() === acRef.toLowerCase()) {
+          matchedBugId = bugId;
+          break;
+        }
+      }
+    }
+
+    var passed = checks.title && checks.severity && checks.acRef && checks.steps;
+
+    return {
+      index:    idx + 1,
+      title:    title || "(no title)",
+      severity: severity || "(none)",
+      acRef:    acRef || "(none)",
+      hasSteps: hasSteps,
+      checks:   checks,
+      matched:  matchedBugId !== null,
+      matchedBugId: matchedBugId,
+      passed:   passed,
+    };
+  });
+
+  var passCount  = scored.filter(function(b) { return b.passed; }).length;
+  var matchCount = scored.filter(function(b) { return b.matched; }).length;
+  var total      = scored.length;
+
+  return {
+    scored:     scored,
+    passCount:  passCount,
+    matchCount: matchCount,
+    total:      total,
+    expectedTotal: expected.length,
+  };
+}
 
 function runSubmit() {
   if (!window.evaluateSubmission) {
@@ -1148,6 +1539,41 @@ function runSubmit() {
   );
 
   showResultModal(result);
+
+  // Write results directly to Academy IndexedDB if we have a caseId.
+  // This means capstone.html only needs to listen for the signal to redirect
+  // — it no longer needs to call saveQuizResults() or awardCertificate().
+  if (state.capstoneCaseId && typeof initDB === 'function') {
+    initDB()
+      .then(function() {
+        return saveQuizResults(state.capstoneCaseId, 'capstone', {
+          score:       result.score,
+          maxScore:    result.maxScore,
+          percentage:  result.percentage,
+          passed:      result.passed,
+          completedAt: new Date().toISOString()
+        });
+      })
+      .then(function() {
+        return awardCertificate(state.capstoneCaseId);
+      })
+      .catch(function(err) {
+        console.warn("os-core: failed to write capstone results to IndexedDB", err);
+      });
+  }
+
+  // POST SPRINT REVIEW TO TEAMS
+  var reviewResult = scoreSubmission(
+    state.capstoneScenarioId || "capstone-001",
+    state.bugsLogged
+  );
+  var bus = window.QA_OS && window.QA_OS.EventBus;
+  if (bus && bus.postToAllApps) {
+    bus.postToAllApps({
+      type:   "SPRINT_REVIEW",
+      result: reviewResult,
+    });
+  }
 
   if (window.parent && window.parent !== window) {
     try {
@@ -1211,4 +1637,296 @@ function showResultModal(result) {
       overlay.remove();
     });
   }
+}
+
+// ── RESIZE HANDLES ────────────────────────────────────────────────────────
+
+function startResize(e, winId, dir) {
+  var compositor = window.QA_OS && window.QA_OS.Compositor;
+  if (!compositor) return;
+  var win = compositor.getWindow(winId);
+  if (!win || win.layout !== "normal") return;
+
+  var el = document.querySelector('[data-win-id="' + winId + '"]');
+  var rect = el ? el.getBoundingClientRect() : null;
+  var startX = e.clientX;
+  var startY = e.clientY;
+  var startW = typeof win.width === "number" ? win.width : (rect ? rect.width : 800);
+  var startH = typeof win.height === "number" ? win.height : (rect ? rect.height : 600);
+  var startLeft = typeof win.x === "number" ? win.x : (rect ? rect.left : 120);
+  var startTop = typeof win.y === "number" ? win.y : (rect ? rect.top : 60);
+
+  var shield = document.createElement("div");
+  shield.style.cssText = "position:fixed;inset:0;z-index:2147483647;cursor:" + (dir === "se" ? "nwse-resize" : dir === "e" ? "ew-resize" : "ns-resize") + ";";
+
+  function onMove(ev) {
+    var dx = ev.clientX - startX;
+    var dy = ev.clientY - startY;
+    var newW = (dir === "e" || dir === "se") ? Math.max(280, startW + dx) : startW;
+    var newH = (dir === "s" || dir === "se") ? Math.max(200, startH + dy) : startH;
+    compositor.resize(winId, startLeft, startTop, newW, newH);
+    var el = document.querySelector('[data-win-id="' + winId + '"]');
+    if (el) { el.style.width = newW + "px"; el.style.height = newH + "px"; }
+  }
+
+  function onUp() {
+    document.removeEventListener("mousemove", onMove);
+    document.removeEventListener("mouseup", onUp);
+    if (shield.parentNode) shield.remove();
+    saveState();
+  }
+
+  document.body.appendChild(shield);
+  document.addEventListener("mousemove", onMove);
+  document.addEventListener("mouseup", onUp);
+}
+
+// ── CONTEXT MENUS ─────────────────────────────────────────────────────────
+
+function showWindowContextMenu(winId, x, y) {
+  var compositor = window.QA_OS && window.QA_OS.Compositor;
+  if (!compositor) return;
+  var win = compositor.getWindow(winId);
+  if (!win) return;
+
+  var items = [];
+  if (win.layout !== "normal") {
+    items.push({ label: "Restore", action: function () {
+      compositor.setLayout(winId, "normal");
+      saveState(); renderAllWindows();
+    }});
+  }
+  items.push(
+    { label: "Move", action: function () {} },
+    { label: "Size", action: function () {} }
+  );
+  items.push({ separator: true });
+  items.push({ label: "Minimize", action: function () { minimizeWindow(winId); } });
+  if (win.layout !== "maximized") {
+    items.push({ label: "Maximize", action: function () { toggleMaximize(winId); } });
+  }
+  items.push({ separator: true });
+  items.push({ label: "Close", action: function () { closeWindow(winId); } });
+
+  showContextMenu(items, x, y);
+}
+
+function showContextMenu(items, x, y) {
+  var existing = document.querySelector(".qa-context-menu");
+  if (existing) existing.remove();
+
+  var menu = document.createElement("div");
+  menu.className = "qa-context-menu";
+  menu.style.left = x + "px";
+  menu.style.top = y + "px";
+
+  items.forEach(function (item) {
+    if (item.separator) {
+      var sep = document.createElement("div");
+      sep.className = "qa-context-separator";
+      menu.appendChild(sep);
+      return;
+    }
+    var btn = document.createElement("button");
+    btn.className = "qa-context-item";
+    btn.textContent = item.label;
+    btn.addEventListener("click", function (e) {
+      e.stopPropagation();
+      menu.remove();
+      item.action();
+    });
+    menu.appendChild(btn);
+  });
+
+  document.body.appendChild(menu);
+
+  setTimeout(function () {
+    document.addEventListener("click", function closeMenu() {
+      menu.remove();
+      document.removeEventListener("click", closeMenu);
+    });
+  }, 0);
+}
+
+// ── WORKSPACES DIALOG UI ─────────────────────────────────────────────────
+
+function showWorkspaceSaveDialog() {
+  var overlay = showModalDialog("Save Workspace",
+    '<div style="margin-bottom:12px;font-size:12px;color:var(--qa-muted-light);">Name this session so you can restore it later.</div>' +
+    '<input id="qa-ws-name" type="text" placeholder="e.g. Morning QA Session" ' +
+    'style="width:100%;padding:8px 10px;background:rgba(255,255,255,0.06);border:1px solid var(--qa-border-mid);' +
+    'border-radius:4px;color:var(--qa-text-light);font-size:13px;font-family:var(--qa-font);outline:none;" />',
+    [
+      { label: "Cancel", primary: false },
+      { label: "Save", primary: true, action: function () {
+        var name = document.getElementById("qa-ws-name");
+        if (name && name.value.trim()) {
+          var workspaces = window.QA_OS && window.QA_OS.Workspaces;
+          if (workspaces) {
+            workspaces.save(name.value.trim(), getWorkspaceData()).then(function () {
+              showNotifier("Workspace saved: " + name.value.trim(), "success");
+            }).catch(function (e) {
+              showNotifier("Failed to save workspace", "error");
+            });
+          }
+        }
+        overlay.remove();
+      }}
+    ]
+  );
+}
+
+function showWorkspaceRestoreDialog() {
+  var workspaces = window.QA_OS && window.QA_OS.Workspaces;
+  if (!workspaces) return;
+
+  workspaces.list().then(function (list) {
+    var itemsHtml = list.length === 0
+      ? '<div style="padding:20px;text-align:center;color:var(--qa-muted-light);font-size:12px;">No saved workspaces.</div>'
+      : list.map(function (item, idx) {
+          var time = item.timestamp ? new Date(item.timestamp).toLocaleString() : "";
+          return '<button class="qa-ws-item" data-idx="' + idx + '" ' +
+            'style="display:block;width:100%;padding:8px 12px;background:rgba(255,255,255,0.04);' +
+            'border:1px solid var(--qa-border-dark);border-radius:6px;color:var(--qa-text-light);' +
+            'font-size:12px;font-family:var(--qa-font);cursor:pointer;text-align:left;margin-bottom:4px;">' +
+            '<div style="font-weight:500;">' + item.name + '</div>' +
+            (time ? '<div style="font-size:10px;color:var(--qa-muted-light);margin-top:2px;">' + time + '</div>' : '') +
+            '</button>';
+        }).join("");
+
+    var overlay = showModalDialog("Restore Workspace",
+      '<div style="margin-bottom:12px;font-size:12px;color:var(--qa-muted-light);">Select a previously saved workspace to restore.</div>' +
+      '<div>' + itemsHtml + '</div>',
+      list.length > 0
+        ? [{ label: "Cancel", primary: false }]
+        : [{ label: "Close", primary: true }]
+    );
+
+    if (list.length > 0) {
+      [].forEach.call(overlay.querySelectorAll(".qa-ws-item"), function (btn) {
+        btn.addEventListener("click", function () {
+          var idx = parseInt(btn.getAttribute("data-idx"), 10);
+          var item = list[idx];
+          if (item && item.data) {
+            applyWorkspaceData(item.data);
+            showNotifier("Workspace restored: " + item.name, "success");
+          }
+          overlay.remove();
+        });
+      });
+    }
+  }).catch(function () {
+    showNotifier("Failed to load workspaces", "error");
+  });
+}
+
+function showModalDialog(title, bodyHtml, buttons) {
+  buttons = buttons || [{ label: "Close", primary: true }];
+
+  var overlay = document.createElement("div");
+  overlay.style.cssText = "position:fixed;inset:0;z-index:50000;background:rgba(0,0,0,0.65);display:flex;align-items:center;justify-content:center;";
+
+  var card = document.createElement("div");
+  card.style.cssText = "background:var(--qa-glass-dark);border:1px solid var(--qa-border-mid);border-radius:12px;padding:20px 24px;min-width:340px;max-width:420px;color:var(--qa-text-light);font-family:var(--qa-font);";
+
+  var h = document.createElement("div");
+  h.style.cssText = "font-size:14px;font-weight:600;margin-bottom:12px;";
+  h.textContent = title;
+  card.appendChild(h);
+
+  var content = document.createElement("div");
+  content.innerHTML = bodyHtml;
+  card.appendChild(content);
+
+  var btnRow = document.createElement("div");
+  btnRow.style.cssText = "display:flex;justify-content:flex-end;gap:8px;margin-top:16px;";
+  buttons.forEach(function (btn) {
+    var b = document.createElement("button");
+    b.textContent = btn.label;
+    b.style.cssText = (btn.primary
+      ? "background:var(--qa-accent);color:#000;border:none;padding:7px 16px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;font-family:var(--qa-font);"
+      : "background:transparent;color:var(--qa-text-light);border:1px solid var(--qa-border-mid);padding:7px 16px;border-radius:6px;font-size:12px;cursor:pointer;font-family:var(--qa-font);");
+    b.addEventListener("click", function () {
+      if (btn.action) btn.action();
+      else overlay.remove();
+    });
+    btnRow.appendChild(b);
+  });
+  card.appendChild(btnRow);
+
+  overlay.appendChild(card);
+  document.body.appendChild(overlay);
+  return overlay;
+}
+
+// ── DESKTOP CONTEXT MENU ─────────────────────────────────────────────────
+
+function setupDesktopContextMenu() {
+  var workspace = document.querySelector(".qa-workspace");
+  if (!workspace) return;
+  workspace.addEventListener("contextmenu", function (e) {
+    if (e.target.closest(".qa-window") || e.target.closest(".qa-taskbar") || e.target.closest(".qa-desktop-icons")) return;
+    e.preventDefault();
+    showContextMenu([
+      { label: "View", action: function () {} },
+      { label: "Sort by", action: function () {} },
+      { label: "Refresh", action: function () {} },
+      { separator: true },
+      { label: "Save workspace", action: function () { showWorkspaceSaveDialog(); } },
+      { label: "Restore workspace", action: function () { showWorkspaceRestoreDialog(); } },
+      { separator: true },
+      { label: "Display settings", action: function () {
+        if (window.OS && window.OS.openApp) window.OS.openApp("settings");
+      }},
+      { label: "Personalize", action: function () {
+        if (window.OS && window.OS.openApp) window.OS.openApp("settings");
+      }},
+    ], e.clientX, e.clientY);
+  });
+
+  // Taskbar context menu
+  var taskbar = document.querySelector(".qa-taskbar");
+  if (taskbar) {
+    taskbar.addEventListener("contextmenu", function (e) {
+      var appBtn = e.target.closest(".qa-taskbar-app-btn");
+      if (appBtn) {
+        // App button context menu — close handled by existing listener
+        return;
+      }
+      e.preventDefault();
+      showContextMenu([
+        { label: "Task Manager", action: function () {} },
+        { separator: true },
+        { label: "Save workspace", action: function () { showWorkspaceSaveDialog(); } },
+        { label: "Restore workspace", action: function () { showWorkspaceRestoreDialog(); } },
+        { separator: true },
+        { label: "Task view", action: function () { toggleTaskview(); } },
+      ], e.clientX, e.clientY);
+    });
+  }
+}
+
+// ── NOTIFIER TOAST ────────────────────────────────────────────────────────
+
+function setupNotifier() {
+  var container = document.createElement("div");
+  container.className = "qa-notifier";
+  container.id = "qa-notifier";
+  document.body.appendChild(container);
+}
+
+function showNotifier(text, type) {
+  type = type || "info";
+  var container = document.getElementById("qa-notifier");
+  if (!container) return;
+
+  var toast = document.createElement("div");
+  toast.className = "qa-notifier-toast";
+  toast.textContent = text;
+  container.appendChild(toast);
+
+  setTimeout(function () {
+    toast.classList.add("out");
+    setTimeout(function () { toast.remove(); }, 200);
+  }, 3500);
 }

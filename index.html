@@ -7,12 +7,6 @@
   <link rel="stylesheet" href="css/main.css">
 
   <style>
-    /*
-     * Page-specific layout styles for the login page.
-     * Shared styles (buttons, forms, cards) come from css/main.css.
-     */
-
-    /* Centre the login card vertically and horizontally on the page */
     .login-page {
       min-height: 100vh;
       display: flex;
@@ -22,7 +16,6 @@
       background: var(--color-bg);
     }
 
-    /* The white card that contains the login form */
     .login-card {
       width: 100%;
       max-width: 420px;
@@ -33,22 +26,27 @@
       padding: var(--space-10) var(--space-8);
     }
 
-    /* Platform name at the top of the card */
+    .login-logo {
+      display: flex;
+      justify-content: center;
+      margin-bottom: var(--space-4);
+    }
+
     .login-title {
       font-size: var(--text-xl);
       font-weight: var(--weight-bold);
       color: var(--color-ink);
       margin-bottom: var(--space-1);
+      text-align: center;
     }
 
-    /* Short description line below the title */
     .login-subtitle {
       font-size: var(--text-sm);
       color: var(--color-ink-muted);
       margin-bottom: var(--space-8);
+      text-align: center;
     }
 
-    /* Full-width submit button */
     .btn-login {
       width: 100%;
       padding: var(--space-3) var(--space-5);
@@ -56,9 +54,8 @@
       margin-top: var(--space-2);
     }
 
-    /* Error banner shown when login fails */
     .login-error {
-      display: none;         /* Hidden by default, shown by JS on failure */
+      display: none;
       background: var(--color-error-light);
       border: 1px solid var(--color-error-border);
       border-radius: var(--radius-sm);
@@ -67,29 +64,17 @@
       padding: var(--space-3) var(--space-4);
       margin-bottom: var(--space-5);
     }
+    .login-error.visible { display: block; }
 
-    .login-error.visible {
-      display: block;
-    }
-
-    /* Admin link at the bottom of the card */
-    .admin-link {
+    .login-footer {
       text-align: center;
       margin-top: var(--space-6);
-      padding-top: var(--space-6);
+      padding-top: var(--space-5);
       border-top: 1px solid var(--color-border);
-      font-size: var(--text-sm);
-      color: var(--color-ink-muted);
-    }
-
-    .admin-link a {
-      color: var(--color-ink-muted);
       font-size: var(--text-xs);
     }
-
-    .admin-link a:hover {
-      color: var(--color-primary);
-    }
+    .login-footer a { color: var(--color-ink-muted); }
+    .login-footer a:hover { color: var(--color-primary); }
 
     .modal-overlay {
       display: none;
@@ -101,7 +86,6 @@
       justify-content: center;
       padding: var(--space-6);
     }
-
     .modal-overlay.open { display: flex; }
 
     .modal-panel {
@@ -114,14 +98,7 @@
       padding: var(--space-8);
       position: relative;
     }
-
-    .modal-title {
-      font-size: var(--text-lg);
-      font-weight: var(--weight-bold);
-      color: var(--color-ink);
-      margin-bottom: var(--space-6);
-    }
-
+    .modal-title { font-size: var(--text-lg); font-weight: var(--weight-bold); color: var(--color-ink); margin-bottom: var(--space-6); }
     .modal-close {
       position: absolute;
       top: var(--space-4);
@@ -135,9 +112,7 @@
       border-radius: var(--radius-sm);
       line-height: 1;
     }
-
     .modal-close:hover { background: var(--color-bg); color: var(--color-ink); }
-
     .modal-footer {
       display: flex;
       justify-content: flex-end;
@@ -153,23 +128,20 @@
   <div class="login-page">
     <div class="login-card">
 
-      <!-- Platform title and welcome message -->
-      <h1 class="login-title">QA Onboarding Training</h1>
-      <p class="login-subtitle">Sign in to access your course.</p>
-
-      <!-- Error message — hidden until login fails -->
-      <div id="login-error" class="login-error" role="alert" aria-live="polite">
-        <!-- Error text is set by JavaScript -->
+      <div class="login-logo">
+        <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="48" height="48" rx="10" fill="#2563eb"/>
+          <path d="M14 24 L20 30 L34 16" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="24" cy="24" r="10" stroke="white" stroke-width="2" fill="none" opacity="0.3"/>
+        </svg>
       </div>
 
-      <!-- Login form -->
-      <form id="login-form" novalidate>
-        <!--
-          novalidate disables browser-built-in validation so we can
-          show our own styled error messages instead.
-        -->
+      <h1 class="login-title">QA Pilot Academy</h1>
+      <p class="login-subtitle">Sign in to continue your training.</p>
 
-        <!-- Email field -->
+      <div id="login-error" class="login-error" role="alert" aria-live="polite"></div>
+
+      <form id="login-form" novalidate>
         <div class="form-group">
           <label class="form-label" for="email">
             Email address <span class="required">*</span>
@@ -185,7 +157,6 @@
           >
         </div>
 
-        <!-- Password field -->
         <div class="form-group">
           <label class="form-label" for="password">
             Password <span class="required">*</span>
@@ -202,7 +173,6 @@
           <div id="caps-warning" class="field-error" style="display:none;">Caps Lock is on.</div>
         </div>
 
-        <!-- Submit button -->
         <button type="submit" class="btn btn-primary btn-login" id="login-btn">
           Sign in
         </button>
@@ -213,9 +183,8 @@
 
       </form>
 
-      <!-- Admin access link — small, at the bottom, not prominent -->
-      <div class="admin-link">
-        <a href="admin/index.html">Admin access</a>
+      <div class="login-footer">
+        <a href="admin/index.html">Administrator sign in</a>
       </div>
 
     </div>
@@ -275,22 +244,29 @@
   <script src="js/app.js"></script>
 
   <script>
-    /*
-     * Login page logic.
-     * Runs after all scripts above have loaded.
+    /**
+     * index.html — Student Login Page Logic
+     * =====================================
+     * WHAT THIS PAGE DOES:
+     * - Authenticates students via email + password against IndexedDB
+     * - Provides "forgot password" flow with email lookup + reset
+     * - Redirects to course.html on successful login
      *
      * FLOW:
-     * 1. On page load: initialise the database.
-     *    If already logged in, redirect to course.html immediately.
-     * 2. On form submit: validate fields, then call findStudentByEmail().
-     *    If found and password matches: create session, redirect.
-     *    If not: show error message inline.
+     * 1. initDB() opens the database
+     * 2. getSession() checks for existing session — redirects if found
+     * 3. On form submit: findStudentByEmail(), verify password, startSession()
+     * 4. Forgot password: email lookup → set new password → save to IndexedDB
+     *
+     * READS FROM:   IndexedDB via db.js (students store)
+     * WRITES TO:    IndexedDB via db.js (students store — password reset only)
+     * REDIRECTS TO: course.html on successful login
      */
 
-    // ── STEP 1: Initialise DB and check for existing session ──────────────────
+    // ── SECTION 1: INITIALISE ─────────────────────────────────────────────────
 
-    // initDB() opens the IndexedDB database. Must complete before we can
-    // call any db.js functions. We wait for it with .then().
+    // initDB() must complete before any database operations. We chain .then()
+    // calls to ensure the database is ready before proceeding.
     initDB().then(function() {
 
       // If the student is already logged in (session exists), skip the login
@@ -309,7 +285,7 @@
     });
 
 
-    // ── STEP 2: Handle form submission ────────────────────────────────────────
+    // ── SECTION 2: FORM SUBMISSION ───────────────────────────────────────────
 
     var loginForm    = document.getElementById('login-form');
     var emailInput   = document.getElementById('email');
@@ -355,16 +331,18 @@
             return;
           }
 
-          // Case 3: Email found but password doesn't match
-          if (student.password !== password) {
-            showLoginError('Incorrect password. Please try again.');
-            resetButton();
-            return;
-          }
+          // Case 3: Email found — verify the password against its stored hash
+          return verifyPassword(password, student.password).then(function(matched) {
+            if (!matched) {
+              showLoginError('Incorrect password. Please try again.');
+              resetButton();
+              return;
+            }
 
-          // Case 4: Login successful — create a session and redirect
-          startSession(student);           // Saves session to sessionStorage
-          window.location.href = 'course.html';  // Go to the course dashboard
+            // Case 4: Login successful — create a session and redirect
+            startSession(student);           // Saves session to sessionStorage
+            window.location.href = 'course.html';  // Go to the course dashboard
+          });
         })
         .catch(function(error) {
           // Something went wrong with the database read
@@ -375,7 +353,7 @@
     });
 
 
-    // ── HELPERS ───────────────────────────────────────────────────────────────
+    // ── SECTION 3: HELPERS ───────────────────────────────────────────────────
 
     /**
      * showLoginError(message)
@@ -428,7 +406,7 @@
       }
     });
 
-    // ── FORGOT PASSWORD ──────────────────────────────────────────────────────
+    // ── SECTION 4: FORGOT PASSWORD ──────────────────────────────────────────
 
     var _forgotStudent = null;
 
@@ -532,8 +510,10 @@
       btn.disabled = true;
       btn.textContent = 'Resetting…';
 
-      _forgotStudent.password = newPass;
-      saveStudent(_forgotStudent).then(function() {
+      hashPassword(newPass).then(function(hashed) {
+        _forgotStudent.password = hashed;
+        return saveStudent(_forgotStudent);
+      }).then(function() {
         closeForgotPasswordModal();
         showToast('Password reset successfully. You can now sign in.', 'success');
         btn.disabled = false;
@@ -548,91 +528,5 @@
 
   </script>
 
-  <script>
-    /**
-     * admin/index.html — Page Logic
-     * ==========================
-     * WHAT THIS PAGE DOES:
-     * - Provides password access to the Admin Dashboard.
-     * - Fetches the current password from IndexedDB.
-     * - Falls back to a default if no password has been set yet.
-     *
-     * FLOW:
-     * 1. initDB() establishes connection
-     * 2. getAdminPassword() retrieves stored password
-     * 3. If correct, set sessionStorage and redirect
-     */
-
-    // ── SECTION 1: CONSTANTS ───────────────────────────────────────────────────
-
-    // Fallback password used ONLY on first run, before the Admin has set one in the database.
-    var DEFAULT_ADMIN_PASSWORD = 'QAAdmin2026';
-
-    // ── SECTION 2: ON PAGE LOAD ─────────────────────────────────────────────────
-
-    initDB().then(function() {
-      if (sessionStorage.getItem('qa_admin') === 'true') {
-        window.location.href = 'dashboard.html';
-      }
-    }).catch(function(error) {
-      console.error('Admin login: DB init failed.', error);
-    });
-
-    // ── SECTION 3: FORM SUBMISSION ─────────────────────────────────────────────
-
-    var form     = document.getElementById('admin-login-form');
-    var loginBtn = document.getElementById('login-btn');
-
-    form.addEventListener('submit', function(event) {
-      event.preventDefault();
-
-      var entered = document.getElementById('admin-password').value;
-      hideError();
-
-      if (!entered) {
-        showError('Please enter the admin password.');
-        return;
-      }
-
-      loginBtn.disabled = true;
-      loginBtn.textContent = 'Signing in…';
-
-      // Use the database-stored password, fallback to default if first run
-      getAdminPassword().then(function(storedPassword) {
-        var correctPassword = storedPassword || DEFAULT_ADMIN_PASSWORD;
-
-        if (entered === correctPassword) {
-          sessionStorage.setItem('qa_admin', 'true');
-          window.location.href = 'dashboard.html';
-        } else {
-          showError('Incorrect password. Please try again.');
-          document.getElementById('admin-password').value = '';
-          document.getElementById('admin-password').focus();
-          loginBtn.disabled = false;
-          loginBtn.textContent = 'Sign in as Admin';
-        }
-      }).catch(function(error) {
-        console.error('Failed to retrieve admin password:', error);
-        showError('Database error. Please refresh and try again.');
-        loginBtn.disabled = false;
-        loginBtn.textContent = 'Sign in as Admin';
-      });
-    });
-
-    // ── SECTION 4: HELPERS ─────────────────────────────────────────────────────
-
-    function showError(message) {
-      var el = document.getElementById('login-error');
-      el.textContent = message;
-      el.classList.add('visible');
-    }
-
-    function hideError() {
-      var el = document.getElementById('login-error');
-      el.textContent = '';
-      el.classList.remove('visible');
-    }
-  </script>
-  
 </body>
 </html>

@@ -11,10 +11,50 @@
     <meta charset="UTF-8" />
     <title>QA Pilot Desktop</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      /* Critical boot screen CSS — loads first to prevent lock screen flash */
+      .qa-boot-screen { position:fixed; inset:0; background:#050a14; z-index:30000; display:flex; align-items:center; justify-content:center; opacity:1; }
+      .qa-boot-center { display:flex; flex-direction:column; align-items:center; gap:16px; }
+      /* Keep lock screen hidden until boot sequence decides to show it */
+      .qa-lock-screen { display:none; }
+    </style>
     <link rel="stylesheet" href="os.css" />
   </head>
   <body>
     <div class="qa-shell qa-theme-light" id="qa-shell">
+      <!-- ── BOOT SCREEN ──────────────────────────────────────────────────── -->
+      <!-- Shown for ~2.5s on first load, then fades out to the lock screen.   -->
+      <div id="qa-boot-screen" class="qa-boot-screen">
+        <div class="qa-boot-center">
+
+          <!-- QA Pilot logo mark -->
+          <div class="qa-boot-logo">
+            <svg width="72" height="72" viewBox="0 0 72 72" fill="none"
+                 xmlns="http://www.w3.org/2000/svg">
+              <rect width="72" height="72" rx="16" fill="#2563eb"/>
+              <path d="M20 36 L30 46 L52 24"
+                    stroke="white" stroke-width="6"
+                    stroke-linecap="round" stroke-linejoin="round"/>
+              <circle cx="36" cy="36" r="14" stroke="white" stroke-width="2"
+                      fill="none" opacity="0.25"/>
+            </svg>
+          </div>
+
+          <div class="qa-boot-product">QA Pilot</div>
+          <div class="qa-boot-slogan">Test Smarter. Ship Better.</div>
+
+          <!-- Win11-style dot spinner -->
+          <div class="qa-boot-spinner" aria-label="Loading">
+            <div class="qa-boot-dot"></div>
+            <div class="qa-boot-dot"></div>
+            <div class="qa-boot-dot"></div>
+            <div class="qa-boot-dot"></div>
+            <div class="qa-boot-dot"></div>
+          </div>
+
+        </div>
+      </div>
+
       <!-- LOCK SCREEN -->
       <div id="qa-lock-screen" class="qa-lock-screen">
         <div class="qa-lock-center">
@@ -233,7 +273,7 @@
       <!-- START MENU -->
       <div id="qa-start-menu" class="qa-start-menu qa-start-menu-hidden">
         <div class="qa-start-search">
-          <input type="text" placeholder="Type here to search" disabled />
+          <input id="qa-start-search-input" type="text" placeholder="Type here to search" autocomplete="off" />
         </div>
 
         <div class="qa-start-section">

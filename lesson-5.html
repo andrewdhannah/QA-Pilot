@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lesson 5: Test Planning & Bug Triage — QA Training</title>
+  <link rel="stylesheet" href="css/main.css">
+  <style>
+    /* ── LESSON SPECIFIC LAYOUT ──────────────────────────────────────────────── */
+    .lesson-layout {
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      gap: 0;
+      min-height: calc(100vh - 57px);
+    }
+    .chapter-sidebar {
+      background: var(--color-surface);
+      border-right: 1px solid var(--color-border);
+      padding: var(--space-6);
+      position: sticky;
+      top: 57px;
+      align-self: start;
+      height: calc(100vh - 57px);
+      overflow-y: auto;
+    }
+    .chapter-sidebar-title {
+      font-size: var(--text-sm);
+      font-weight: var(--weight-bold);
+      color: var(--color-ink-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: var(--space-5);
+    }
+    .chapter-list { display: flex; flex-direction: column; gap: var(--space-2); }
+    .chapter-list-item {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      padding: var(--space-2) var(--space-3);
+      border-radius: var(--radius-sm);
+      font-size: var(--text-sm);
+      color: var(--color-ink-muted);
+      cursor: default;
+      transition: background var(--transition-fast);
+    }
+    .chapter-list-item.current {
+      background: var(--color-primary-light);
+      color: var(--color-primary);
+      font-weight: var(--weight-medium);
+    }
+    .chapter-list-item.complete {
+      color: var(--color-success);
+      cursor: pointer;
+    }
+    .chapter-list-item.complete:hover { background: var(--color-success-light); }
+    .chapter-check { font-size: 12px; }
+
+    .chapter-main {
+      padding: var(--space-10) var(--space-12);
+      max-width: 720px;
+    }
+    .chapter-progress-bar {
+      height: 4px;
+      background: var(--color-border);
+      border-radius: var(--radius-full);
+      margin-bottom: var(--space-2);
+    }
+    .chapter-progress-fill {
+      height: 100%;
+      background: var(--color-primary);
+      border-radius: var(--radius-full);
+      transition: width var(--transition-slow);
+    }
+    .chapter-label {
+      font-size: var(--text-xs);
+      color: var(--color-ink-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: var(--space-8);
+    }
+    .chapter-nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: var(--space-10);
+      padding-top: var(--space-6);
+      border-top: 1px solid var(--color-border);
+    }
+    .chapter-timer-notice {
+      font-size: var(--text-xs);
+      color: var(--color-ink-muted);
+      font-style: italic;
+    }
+    .chapter-content h1 {
+      font-size: var(--text-xl);
+      font-weight: var(--weight-bold);
+      color: var(--color-ink);
+      margin-bottom: var(--space-2);
+    }
+    .chapter-content .chapter-intro {
+      font-size: var(--text-md);
+      color: var(--color-ink-muted);
+      margin-bottom: var(--space-8);
+      line-height: var(--leading-loose);
+    }
+    .chapter-content p {
+      color: var(--color-ink-soft);
+      margin-bottom: var(--space-5);
+      line-height: var(--leading-base);
+    }
+
+    /* Quiz Styles */
+    .quiz-card {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-sm);
+      padding: var(--space-8);
+      text-align: center;
+      max-width: 720px;
+      margin: 0 auto;
+    }
+    .answer-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--space-4);
+      margin: var(--space-6) 0;
+    }
+    .btn-answer {
+      padding: var(--space-6);
+      font-size: var(--text-base);
+      border: 2px solid var(--color-border);
+      background: var(--color-surface);
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      text-align: left;
+      transition: all var(--transition-fast);
+    }
+    .btn-answer.correct {
+      border-color: var(--color-success);
+      background: var(--color-success-light);
+      color: var(--color-success);
+    }
+    .btn-answer.incorrect {
+      border-color: var(--color-error);
+      background: var(--color-error-light);
+      color: var(--color-error);
+    }
+    .feedback-panel {
+      margin-top: var(--space-6);
+      padding: var(--space-6);
+      border-radius: var(--radius-md);
+      text-align: left;
+      display: none;
+    }
+    .feedback-panel.visible { display: block; }
+    .feedback-correct { background: var(--color-success-light); border: 1px solid var(--color-success-border); }
+    .feedback-incorrect { background: var(--color-error-light); border: 1px solid var(--color-error-border); }
+
+    .result-row {
+      display: flex;
+      gap: var(--space-4);
+      padding: var(--space-4);
+      border-bottom: 1px solid var(--color-border);
+      align-items: flex-start;
+    }
+    .result-icon { font-size: var(--text-lg); }
+    .result-details { flex: 1; }
+    .explanation-toggle {
+      font-size: var(--text-xs);
+      color: var(--color-primary);
+      cursor: pointer;
+      text-decoration: underline;
+      margin-top: var(--space-2);
+      display: block;
+    }
+    .explanation-text {
+      font-size: var(--text-sm);
+      color: var(--color-ink-soft);
+      margin-top: var(--space-2);
+      display: none;
+    }
+    #phase-results {
+      padding: var(--space-10) var(--space-12);
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    /* Specific Lesson 5 additions */
+    .triage-exercise {
+      margin: var(--space-6) 0;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+    }
+    .triage-exercise summary {
+      padding: var(--space-4);
+      background: var(--color-bg);
+      cursor: pointer;
+      font-weight: var(--weight-medium);
+      color: var(--color-ink);
+    }
+    .triage-exercise p {
+      padding: var(--space-4);
+      margin: 0;
+      background: white;
+      border-top: 1px solid var(--color-border);
+    }
+    .checklist-box {
+      background: var(--color-surface);
+      border: 2px solid var(--color-primary-light);
+      border-radius: var(--radius-md);
+      padding: var(--space-6);
+      margin: var(--space-6) 0;
+    }
+    .checklist-box ul {
+      list-style: none;
+      padding: 0;
+    }
+    .checklist-box li {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      margin-bottom: var(--space-3);
+      color: var(--color-ink-soft);
+      font-size: var(--text-sm);
+    }
+    .checklist-box li::before {
+      content: '☐';
+      font-family: monospace;
+      font-size: 16px;
+      color: var(--color-primary);
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="topbar flex justify-between items-center">
+    <div class="topbar-brand">QA Onboarding Training</div>
+    <div class="topbar-progress-indicator" id="topbar-pips"></div>
+    <div class="topbar-user flex items-center gap-4">
+      <span id="user-name-display"></span>
+      <button class="btn btn-ghost" onclick="handleLogout()">Sign Out</button>
+    </div>
+  </nav>
+
+  <!-- PHASE 1: LEARNING CONTENT -->
+  <div id="phase-content" class="lesson-layout">
+    <aside class="chapter-sidebar">
+      <div class="chapter-sidebar-title">Lesson 5 — Test Planning & Triage</div>
+      <nav class="chapter-list" id="chapter-list">
+        <!-- Injected by buildSidebar() -->
+      </nav>
+    </aside>
+
+    <main class="chapter-main">
+      <div class="chapter-progress-bar">
+        <div class="chapter-progress-fill" id="chapter-progress-fill"></div>
+      </div>
+      <div class="chapter-label" id="chapter-label">Chapter 1 of 6</div>
+      <div id="chapter-content"></div>
+
+      <div class="chapter-nav">
+        <button class="btn btn-ghost" id="btn-prev" onclick="prevChapter()">← Previous</button>
+        <div id="chapter-timer-notice" class="chapter-timer-notice"></div>
+        <button class="btn btn-primary" id="btn-next" onclick="nextChapter()">Next →</button>
+      </div>
+    </main>
+  </div>
+
+  <!-- PHASE 2: THE QUIZ -->
+  <div id="phase-quiz" style="display: none;">
+    <div class="quiz-card">
+      <span class="label-caps" id="quiz-progress">Question 1 of 3</span>
+      <p id="quiz-question-text" class="text-md font-medium my-6"></p>
+
+      <div class="answer-grid" id="quiz-options">
+        <!-- Injected by renderQuestion() -->
+      </div>
+
+      <div id="quiz-feedback" class="feedback-panel">
+        <div id="feedback-title" class="font-bold mb-2"></div>
+        <div id="feedback-body" class="text-sm"></div>
+        <div class="footer-nav" style="justify-content: center; margin-top: var(--space-6);">
+          <button class="btn btn-primary" id="btn-next-q" onclick="nextQuestion()">Next question → </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PHASE 3: THE RESULTS -->
+  <div id="phase-results" style="display: none;">
+    <div class="quiz-card" style="text-align: left;">
+      <h2 class="text-lg font-bold text-center">Quiz Complete</h2>
+      <p id="score-text" class="text-center font-bold my-4"></p>
+
+      <div id="results-list" class="my-6">
+        <!-- Per-question results -->
+      </div>
+
+      <div class="footer-nav" style="justify-content: center;">
+        <button class="btn btn-primary" onclick="completeLesson()">Complete Lesson</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script src="data/content.js"></script>
+  <script src="data/quiz-questions.js"></script>
+  <script src="js/db.js"></script>
+  <script src="js/app.js"></script>
+
+  <script>
+    /**
+     * lesson-5.html — Page Logic
+     * ==========================
+     * WHAT THIS PAGE DOES:
+     * - Teaches Test Planning, Triage, and Traceability concepts.
+     * - Uses simulated comparison tables and interactive triage reveals.
+     * - Validates knowledge via a strict 3/3 quiz before unlocking content.
+     *
+     * FLOW:
+     * 1. initDB() opens connection.
+     * 2. requireLogin() ensures user is authenticated.
+     * 3. Page resumes from the first unread chapter.
+     * 4. User reads through 5 chapters.
+     * 5. User takes the quiz; must get 3/3 correct to finish.
+     * 6. Sets 'qa-lesson5-complete' in localStorage upon 3/3 achievement.
+     *
+     * READS FROM:   IndexedDB via db.js
+     * WRITES TO:    IndexedDB via db.js
+     * REDIRECTS TO: index.html (logout), course.html (completion)
+     */
+
+    // ── SECTION 1: PAGE STATE ──────────────────────────────────────────────────
+
+    var currentSession  = null;   // CaseId and role
+    var currentStudent  = null;   // Full student record
+    var currentProgress = null;   // Progress record
+    var currentChapter  = 0;      // 0-based index
+    var lessonTimer     = null;   // Timer handle
+    var lessonSeconds   = 0;      // Cumulative seconds for this session
+
+    // Quiz state
+    var quizQuestions   = [];
+    var currentQuestion = 0;
+    var quizAnswers     = [];
+
+    // ── SECTION 2: CHAPTER DEFINITIONS ────────────────────────────────────────
+
+    var CHAPTER_1 = `
+    <div class="chapter-content">
+      <h1>Exploratory Testing vs Planned Testing</h1>
+      <p class="chapter-intro">Depending on the goal, you'll approach a feature in one of two ways. Neither is "better"—they just solve different problems.</p>
+      <p><strong>Exploratory testing</strong> is where you open the app, poke around, and look for things that feel wrong. There is no script, no checklist. You're using your instincts and domain knowledge. It's perfect for early stages, new features, or "does this even work?" checks.</p>
+      <p><strong>Planned testing (test cases)</strong> is formal. You have a list of specific steps and expected outcomes. You follow them in order and record a pass/fail for each. This is essential for regression testing and providing proof that acceptance criteria are met.</p>
+
+      <div class="comparison-grid">
+        <div class="comparison-card" style="background:var(--color-bg); border:1px solid var(--color-border);">
+          <div class="comparison-label">Exploratory</div>
+          <ul style="font-size:var(--text-xs); color:var(--color-ink-soft); margin:0; padding-left:15px;">
+            <li>Prep time: Low</li>
+            <li>Coverage: Broad, intuitive</li>
+            <li>Repeatability: Variable</li>
+            <li>Use case: Discovery, new features</li>
+            <li>Risk: May miss edge cases</li>
+          </ul>
+        </div>
+        <div class="comparison-card" style="background:var(--color-bg); border:1px solid var(--color-border);">
+          <div class="comparison-label">Planned</div>
+          <ul style="font-size:var(--text-xs); color:var(--color-ink-soft); margin:0; padding-left:15px;">
+            <li>Prep time: Higher</li>
+            <li>Coverage: Specific, documented</li>
+            <li>Repeatability: Consistent</li>
+            <li>Use case: Regression, sign-off</li>
+            <li>Risk: May miss unexpected behaviour</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="callout tip"><strong>Tip:</strong> In practice, good QA analysts do both. You explore first to understand the system, then you write test cases to prove it works for every scenario that matters.</div>
+    </div>`;
+
+    var CHAPTER_2 = `
+    <div class="chapter-content">
+      <h1>What's in a test case?</h1>
+      <p class="chapter-intro">A professional test case removes guesswork. If a developer reads your test case, they should be able to reproduce the exact result without asking you for clarification.</p>
+      <p>Every test case requires three core components: <strong>Preconditions</strong> (the state of the app), <strong>Steps</strong> (the actions), and the <strong>Expected Result</strong> (the goal).</p>
+
+      <div style="margin: var(--space-6) 0; overflow-x: auto;">
+        <table style="width:100%; border-collapse:collapse; font-size:var(--text-sm); border:1px solid var(--color-border);">
+          <thead style="background:var(--color-bg);">
+            <tr>
+              <th style="text-align:left; padding:var(--space-3); border:1px solid var(--color-border); width:30%;">Field</th>
+              <th style="text-align:left; padding:var(--space-3); border:1px solid var(--color-border);">Value</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="padding:var(--space-3); border:1px solid var(--color-border); font-weight:bold;">Precondition</td>
+              <td style="padding:var(--space-3); border:1px solid var(--color-border);">User is logged in with Junior Investigator role</td>
+            </tr>
+            <tr>
+              <td style="padding:var(--space-3); border:1px solid var(--color-border); font-weight:bold;">Step 1</td>
+              <td style="padding:var(--space-3); border:1px solid var(--color-border);">Open Dynamics CRM and navigate to Case CASE-00142</td>
+            </tr>
+            <tr>
+              <td style="padding:var(--space-3); border:1px solid var(--color-border); font-weight:bold;">Step 2</td>
+              <td style="padding:var(--space-3); border:1px solid var(--color-border);">Click the Status dropdown</td>
+            </tr>
+            <tr>
+              <td style="padding:var(--space-3); border:1px solid var(--color-border); font-weight:bold;">Step 3</td>
+              <td style="padding:var(--space-3); border:1px solid var(--color-border);">Attempt to select "Escalated" from the options</td>
+            </tr>
+            <tr>
+              <td style="padding:var(--space-3); border:1px solid var(--color-border); font-weight:bold;">Expected result</td>
+              <td style="padding:var(--space-3); border:1px solid var(--color-border);">"Escalated" option is not available — the field is restricted to Active and Pending for Junior role</td>
+            </tr>
+            <tr>
+              <td style="padding:var(--space-3); border:1px solid var(--color-border); font-weight:bold;">Actual result</td>
+              <td style="padding:var(--space-3); border:1px solid var(--color-border); color:var(--color-ink-muted);"> (fill in during testing)</td>
+            </tr>
+            <tr>
+              <td style="padding:var(--space-3); border:1px solid var(--color-border); font-weight:bold;">Pass / Fail</td>
+              <td style="padding:var(--space-3); border:1px solid var(--color-border); color:var(--color-ink-muted);"> (fill in during testing)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout">Notice 'Actual result' is blank when you write the test case. You fill it in during testing. If actual ≠ expected, you've found a bug.</div>
+    </div>`;
+
+    var CHAPTER_3 = `
+    <div class="chapter-content">
+      <h1>Not all bugs are created equal</h1>
+      <p class="chapter-intro">Bug triage is the process of deciding how urgent a fix is. Severity is based on functional impact, not how "annoying" the bug is.</p>
+
+      <div style="margin-bottom: var(--space-6);">
+        <table style="width:100%; border-collapse:collapse; font-size:var(--text-sm); border:1px solid var(--color-border);">
+          <thead style="background:var(--color-bg);">
+            <tr>
+              <th style="text-align:left; padding:var(--space-3); border:1px solid var(--color-border);">Severity</th>
+              <th style="text-align:left; padding:var(--space-3); border:1px solid var(--color-border);">Label</th>
+              <th style="text-align:left; padding:var(--space-3); border:1px solid var(--color-border);">Plain English</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="padding:var(--space-3); border:1px solid var(--color-border);">1 — Critical</td>
+              <td style="padding:var(--space-3); border:1px solid var(--color-border); text-align:center;">🔴</td>
+              <td style="padding:var(--space-3); border:1px solid var(--color-border);">System is down or data is lost. Stops everything. Fix NOW.</td>
+            </tr>
+            <tr>
+              <td style="padding:var(--space-3); border:1px solid var(--color-border);">2 — High</td>
+              <td style="padding:var(--space-3); border:1px solid var(--color-border); text-align:center;">🟠</td>
+              <td style="padding:var(--space-3); border:1px solid var(--color-border);">Major feature broken, no workaround. Most users affected.</td>
+            </tr>
+            <tr>
+              <td style="padding:var(--space-3); border:1px solid var(--color-border);">3 — Medium</td>
+              <td style="padding:var(--space-3); border:1px solid var(--color-border); text-align:center;">🟡</td>
+              <td style="padding:var(--space-3); border:1px solid var(--color-border);">Feature partially works, or a workaround exists.</td>
+            </tr>
+            <tr>
+              <td style="padding:var(--space-3); border:1px solid var(--color-border);">4 — Low</td>
+              <td style="padding:var(--space-3); border:1px solid var(--color-border); text-align:center;">🟢</td>
+              <td style="padding:var(--space-3); border:1px solid var(--color-border);">Cosmetic issue, spelling error, minor annoyance.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p><strong>Triage Exercise:</strong> Mentally assign a severity to these bugs before revealing the answer.</p>
+
+      <details class="triage-exercise">
+        <summary>Bug A: "The Date Opened field accepts future dates — a case can be 'opened' on 1 January 2099."</summary>
+        <p><strong>Answer: Severity 3 — Medium.</strong> Data integrity issue, workaround is careful manual entry.</p>
+      </details>
+
+      <details class="triage-exercise">
+        <summary>Bug B: "Case notes are deleted when the page is refreshed — all entered text is lost."</summary>
+        <p><strong>Answer: Severity 2 — High.</strong> Major data loss, no workaround, affects every user.</p>
+      </details>
+
+      <details class="triage-exercise">
+        <summary>Bug C: "The Dynamics CRM logo appears slightly blurry on high-DPI screens."</summary>
+        <p><strong>Answer: Severity 4 — Low.</strong> Cosmetic, no functional impact.</p>
+      </details>
+    </div>`;
+
+    var CHAPTER_4 = `
+    <div class="chapter-content">
+      <h1>Why every bug needs an AC reference</h1>
+      <p class="chapter-intro">Traceability is what separates an opinion from a defect. In a professional environment, we don't file bugs because we "don't like" something; we file them because they violate a requirement.</p>
+
+      <p>An <strong>Acceptance Criterion (AC)</strong> defines what "correct" looks like. Without an AC reference, a bug report is just an opinion. With one, it's evidence.</p>
+      <p>Developers prioritise bugs with clear AC references because they know exactly what 'fixed' looks like, and QA leads accept them because they are traceable.</p>
+
+      <div class="comparison-grid">
+        <div class="comparison-card bad">
+          <div class="comparison-label">❌ Bad</div>
+          <p style="margin:0; font-size:var(--text-sm);">"Status is broken"</p>
+        </div>
+        <div class="comparison-card good">
+          <div class="comparison-label">✓ Good</div>
+          <p style="margin:0; font-size:var(--text-sm);">"Junior Investigator can set case Status to Escalated — AC-2.1 violation"</p>
+        </div>
+      </div>
+      <div style="margin:var(--space-4) 0;" class="comparison-grid">
+        <div class="comparison-card bad">
+          <div class="comparison-label">❌ Bad</div>
+          <p style="margin:0; font-size:var(--text-sm);">"Date field issue"</p>
+        </div>
+        <div class="comparison-card good">
+          <div class="comparison-label">✓ Good</div>
+          <p style="margin:0; font-size:var(--text-sm);">"Date Opened accepts future dates — should be blocked per AC-3.2"</p>
+        </div>
+      </div>
+
+      <div class="callout tip"><strong>When in doubt:</strong> [what happened] + [what should have happened] + [which AC it violates]. That's a complete bug title.</div>
+    </div>`;
+
+    var CHAPTER_5 = `
+    <div class="chapter-content">
+      <h1>Triage checklist — before you file a bug</h1>
+      <p class="chapter-intro">Before you hit "Save" in Azure DevOps, run through this mental model to ensure your report is a "one-touch" fix for the developer.</p>
+
+      <div class="checklist-box">
+        <ul>
+          <li>Does the title describe the specific defect (not just the area)?</li>
+          <li>Have I assigned a severity level using the 1–4 scale?</li>
+          <li>Have I referenced the specific AC that is violated?</li>
+          <li>Have I written numbered steps that any developer can follow to reproduce this?</li>
+          <li>Is this actually a defect — or is it working as intended?</li>
+        </ul>
+      </div>
+
+      <p>You have reached the end of the lesson. The final quiz requires a perfect score (3/3) to unlock the Advanced Track.</p>
+    </div>`;
+
+    var CHAPTERS = [
+      { id: 'chapter-1', title: 'Exploratory vs Planned', type: 'content', content: CHAPTER_1 },
+      { id: 'chapter-2', title: 'The Anatomy of a Test Case', type: 'content', content: CHAPTER_2 },
+      { id: 'chapter-3', title: 'Severity & Triage',          type: 'content', content: CHAPTER_3 },
+      { id: 'chapter-4', title: 'Traceability & ACs',      type: 'content', content: CHAPTER_4 },
+      { id: 'chapter-5', title: 'Final Checklist',        type: 'content', content: CHAPTER_5 },
+      { id: 'chapter-6', title: 'Quiz',                     type: 'quiz'    },
+    ];
+
+    var CHAPTER_HEROES = {
+      'chapter-1': {
+        eyebrow: 'Lesson 5 · Chapter 1',
+        title: 'Ways to Test',
+        sub: 'Understanding when to use instincts and when to use scripts.',
+        bg: 'var(--lesson-5-light, #eff6ff)',
+        color: 'var(--lesson-5-color, #2563eb)',
+        border: 'var(--lesson-5-border, #bfdbfe)',
+        icon: '<svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="16" cy="16" r="10" stroke="currentColor" stroke-width="2"/><path d="M16 10 L16 16 L21 18" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg>'
+      },
+      'chapter-2': {
+        eyebrow: 'Lesson 5 · Chapter 2',
+        title: 'Writing Test Cases',
+        sub: 'Creating clear, repeatable steps for any tester to follow.',
+        bg: 'var(--lesson-5-light, #eff6ff)',
+        color: 'var(--lesson-5-color, #2563eb)',
+        border: 'var(--lesson-5-border, #bfdbfe)',
+        icon: '<svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="6" y="4" width="20" height="24" rx="3" stroke="currentColor" stroke-width="2" fill="none"/><path d="M12 16 L15 19 L20 12" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+      },
+      'chapter-3': {
+        eyebrow: 'Lesson 5 · Chapter 3',
+        title: 'Bug Triage',
+        sub: 'How to determine severity and impact accurately.',
+        bg: 'var(--lesson-5-light, #eff6ff)',
+        color: 'var(--lesson-5-color, #2563eb)',
+        border: 'var(--lesson-5-border, #bfdbfe)',
+        icon: '<svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M16 8 L16 24 M8 16 L24 16" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg>'
+      },
+      'chapter-4': {
+        eyebrow: 'Lesson 5 · Chapter 4',
+        title: 'Traceability',
+        sub: 'Linking bugs to Acceptance Criteria for bulletproof reports.',
+        bg: 'var(--lesson-5-light, #eff6ff)',
+        color: 'var(--lesson-5-color, #2563eb)',
+        border: 'var(--lesson-5-border, #bfdbfe)',
+        icon: '<svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 16 L14 20 L22 10" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+      },
+      'chapter-5': {
+        eyebrow: 'Lesson 5 · Chapter 5',
+        title: 'The Final Checklist',
+        sub: 'A mental model for every bug you file.',
+        bg: 'var(--lesson-5-light, #eff6ff)',
+        color: 'var(--lesson-5-color, #2563eb)',
+        border: 'var(--lesson-5-border, #bfdbfe)',
+        icon: '<svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="4" width="24" height="24" rx="5" stroke="currentColor" stroke-width="2" fill="none"/><path d="M12 12 L16 16 L20 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>'
+      }
+    };
+
+    var MIN_READ_SECONDS = 15;
+
+    // ── SECTION 3: INITIALISE ─────────────────────────────────────────────────────
+
+    initDB().then(function() {
+      currentSession = requireLogin();
+      if (!currentSession) return;
+      return getSetting('pageWaitTime').then(function(val) {
+        if (val !== undefined) MIN_READ_SECONDS = val;
+      }).then(function() {
+        return Promise.all([
+          getStudent(currentSession.caseId),
+          getProgress(currentSession.caseId)
+        ]);
+      });
+    }).then(function(results) {
+      if (!results) return;
+      currentStudent = results[0];
+      currentProgress = results[1];
+
+      document.getElementById('user-name-display').textContent = currentStudent.name;
+
+      if (currentProgress && currentProgress.lessonsComplete && currentProgress.lessonsComplete.includes('lesson-5')) {
+        window.location.href = 'course.html';
+        return;
+      }
+
+      var chaptersRead = (currentProgress && currentProgress.chaptersRead && currentProgress.chaptersRead['lesson-5']) || [];
+      var resumeIndex = 0;
+      for (var i = 0; i < CHAPTERS.length - 1; i++) {
+        if (chaptersRead.includes(CHAPTERS[i].id)) resumeIndex = i + 1;
+      }
+      currentChapter = Math.min(resumeIndex, CHAPTERS.length - 1);
+
+      buildSidebar();
+      showChapter(currentChapter);
+      startLessonTimer();
+    });
+
+    // ── SECTION 4: CHAPTER NAVIGATION ─────────────────────────────────────────────
+
+    function renderChapterHero(chapterId) {
+      var hero = CHAPTER_HEROES[chapterId];
+      if (!hero) return '';
+      return '<div class="chapter-hero" style="background:' + hero.bg +
+             '; border-color:' + hero.border + '; color:' + hero.color + '">' +
+             '<div class="chapter-hero-icon" style="background:' + hero.color +
+             '20">' + hero.icon + '</div>' +
+             '<div class="chapter-hero-text">' +
+             '<div class="chapter-hero-eyebrow">' + hero.eyebrow + '</div>' +
+             '<div class="chapter-hero-title">' + hero.title + '</div>' +
+             '<div class="chapter-hero-sub">' + hero.sub + '</div>' +
+             '</div></div>';
+    }
+
+    function renderTopbarPips() {
+      var container = document.getElementById('topbar-pips');
+      if (!container) return;
+      var chaptersRead = (currentProgress && currentProgress.chaptersRead && currentProgress.chaptersRead['lesson-5']) || [];
+      var html = '';
+      CHAPTERS.forEach(function(ch, i) {
+        if (ch.type === 'quiz') return;
+        var cls = chaptersRead.includes(ch.id) ? 'done' : (i === currentChapter ? 'active' : '');
+        html += '<span class="topbar-progress-pip ' + cls + '"></span>';
+      });
+      container.innerHTML = html;
+    }
+
+    function showChapter(index) {
+      currentChapter = index;
+      var chapter = CHAPTERS[index];
+
+      document.getElementById('chapter-label').textContent = 'Chapter ' + (index + 1) + ' of ' + CHAPTERS.length;
+      var pct = ((index + 1) / CHAPTERS.length * 100).toFixed(0);
+      document.getElementById('chapter-progress-fill').style.width = pct + '%';
+
+      if (chapter.type === 'quiz') {
+        document.getElementById('phase-content').style.display = 'none';
+        document.getElementById('phase-quiz').style.display = 'block';
+        startQuiz();
+      } else {
+        document.getElementById('chapter-content').innerHTML = renderChapterHero(chapter.id) + chapter.content;
+        var btnNext = document.getElementById('btn-next');
+        btnNext.disabled = true;
+        document.getElementById('chapter-timer-notice').textContent = 'Please take a moment to read before continuing.';
+
+        setTimeout(function() {
+          btnNext.disabled = false;
+          document.getElementById('chapter-timer-notice').textContent = '';
+        }, MIN_READ_SECONDS * 1000);
+      }
+      document.getElementById('btn-prev').disabled = (index === 0);
+      buildSidebar();
+      renderTopbarPips();
+    }
+
+    async function nextChapter() {
+      var chapter = CHAPTERS[currentChapter];
+      if (chapter.type === 'content') {
+        await saveChapterRead(currentSession.caseId, 'lesson-5', chapter.id);
+      }
+      if (currentChapter < CHAPTERS.length - 1) showChapter(currentChapter + 1);
+    }
+
+    function prevChapter() {
+      if (currentChapter > 0) showChapter(currentChapter - 1);
+    }
+
+    function goToChapter(index) {
+      var chaptersRead = (currentProgress && currentProgress.chaptersRead && currentProgress.chaptersRead['lesson-5']) || [];
+      if (chaptersRead.includes(CHAPTERS[index].id)) showChapter(index);
+    }
+
+    // ── SECTION 5: SIDEBAR ────────────────────────────────────────────────────────
+
+    function buildSidebar() {
+      var chaptersRead = (currentProgress && currentProgress.chaptersRead && currentProgress.chaptersRead['lesson-5']) || [];
+      var list = document.getElementById('chapter-list');
+      list.innerHTML = '';
+
+      CHAPTERS.forEach(function(chapter, i) {
+        var isComplete = chaptersRead.includes(chapter.id);
+        var isCurrent  = (i === currentChapter);
+        var item = document.createElement('div');
+        item.className = 'chapter-list-item' + (isCurrent ? ' current' : '') + (isComplete ? ' complete' : '');
+        if (isComplete && !isCurrent) item.onclick = function() { goToChapter(i); };
+        item.innerHTML = '<span class="chapter-check">' + (isComplete ? '✓' : (isCurrent ? '▶' : '○')) + '</span>' + '<span>' + chapter.title + '</span>';
+        list.appendChild(item);
+      });
+    }
+
+    // ── SECTION 6: TIME TRACKING ───────────────────────────────────────────────────
+
+    function startLessonTimer() {
+      lessonTimer = setInterval(function() {
+        lessonSeconds++;
+        if (lessonSeconds % 30 === 0) addTimeSpent(currentSession.caseId, 'lesson-5', 30);
+      }, 1000);
+
+      window.addEventListener('beforeunload', function() {
+        var remainder = lessonSeconds % 30;
+        if (remainder > 0) addTimeSpent(currentSession.caseId, 'lesson-5', remainder);
+      });
+    }
+
+    // ── SECTION 7: QUIZ ENGINE ────────────────────────────────────────────────────
+
+    /**
+     * startQuiz()
+     * Localizes the quiz questions and resets state.
+     */
+    function startQuiz() {
+      quizQuestions = [
+        {
+          questionId: 'l5q1',
+          questionText: 'A new feature has just been built and no one has tested it yet. What type of testing should you start with?',
+          options: ['Planned testing with detailed test cases', 'Exploratory testing', 'Automated regression testing', 'User acceptance testing'],
+          correctAnswer: 'Exploratory testing',
+          explanation: 'Exploratory testing is used for discovery and early verification of new features.'
+        },
+        {
+          questionId: 'l5q2',
+          questionText: 'A bug is filed: "The Submit button does not respond when clicked — no error message, no action taken. Reproduces 100% of the time." What severity is this?',
+          options: ['4 — Low', '3 — Medium', '2 — High', '1 — Critical'],
+          correctAnswer: '2 — High',
+          explanation: 'A major feature is completely broken with no workaround, making it Severity 2.'
+        },
+        {
+          questionId: 'l5q3',
+          questionText: 'Which bug title is most useful to a developer?',
+          options: ['"Status is wrong"', '"The dropdown is broken again"', '"Dynamics form doesn\'t save"', '"Junior Investigator can set Status to Closed — AC-2.1 violation"'],
+          correctAnswer: '"Junior Investigator can set Status to Closed — AC-2.1 violation"',
+          explanation: 'A good title describes the specific defect, the role, and the AC violation.'
+        }
+      ];
+      currentQuestion = 0;
+      quizAnswers = [];
+      renderQuestion();
+    }
+
+    /**
+     * renderQuestion()
+     * Updates the UI with the current question and options.
+     * @param {number} index - Current question index.
+     */
+    function renderQuestion() {
+      const q = quizQuestions[currentQuestion];
+      document.getElementById('quiz-progress').textContent = `Question ${currentQuestion + 1} of ${quizQuestions.length}`;
+      document.getElementById('quiz-question-text').textContent = q.questionText;
+
+      const container = document.getElementById('quiz-options');
+      container.innerHTML = '';
+      q.options.forEach(opt => {
+        const btn = document.createElement('button');
+        btn.className = 'btn-answer';
+        btn.textContent = opt;
+        btn.onclick = () => handleAnswer(opt);
+        container.appendChild(btn);
+      });
+      document.getElementById('quiz-feedback').className = 'feedback-panel';
+    }
+
+    /**
+     * handleAnswer(selected)
+     * Processes the user's choice. Marks incorrect answers red.
+     * Correct answers are only revealed after 3/3 is achieved.
+     * @param {string} selected - The text of the chosen option.
+     */
+    function handleAnswer(selected) {
+      const q = quizQuestions[currentQuestion];
+      const isCorrect = (selected === q.correctAnswer);
+
+      quizAnswers.push({
+        questionId: q.questionId,
+        selectedAnswer: selected,
+        correct: isCorrect
+      });
+
+      const btns = document.querySelectorAll('.btn-answer');
+      btns.forEach(b => {
+        b.disabled = true;
+        // ONLY show green if the selected answer was correct
+        if (isCorrect && b.textContent === q.correctAnswer) {
+          b.classList.add('correct');
+        } else if (!isCorrect && b.textContent === selected) {
+          b.classList.add('incorrect');
+        }
+      });
+
+      const panel = document.getElementById('quiz-feedback');
+      panel.className = 'feedback-panel visible ' + (isCorrect ? 'feedback-correct' : 'feedback-incorrect');
+      document.getElementById('feedback-title').innerHTML = isCorrect ? '✓ Correct!' : `✗ Incorrect.`;
+      document.getElementById('feedback-body').textContent = isCorrect ? q.explanation : 'Try again in the next attempt. Review the lesson content if unsure.';
+
+      document.getElementById('btn-next-q').textContent =
+        (currentQuestion === quizQuestions.length - 1) ? 'See results → ' : 'Next question → ';
+    }
+
+    function nextQuestion() {
+      currentQuestion++;
+      if (currentQuestion < quizQuestions.length) {
+        document.getElementById('quiz-feedback').className = 'feedback-panel';
+        renderQuestion();
+      } else {
+        showResults();
+      }
+    }
+
+    /**
+     * showResults()
+     * Calculates final score. If < 3/3, user must retry.
+     * If 3/3, correct answers are revealed and lesson is marked as complete.
+     */
+    function showResults() {
+      document.getElementById('phase-quiz').style.display = 'none';
+      document.getElementById('phase-results').style.display = 'block';
+
+      const correctCount = quizAnswers.filter(a => a.correct).length;
+      const scoreText = document.getElementById('score-text');
+      scoreText.textContent = `You got ${correctCount} of ${quizQuestions.length} correct.`;
+
+      if (correctCount === 3) {
+        scoreText.className = 'text-center font-bold my-4 text-success';
+        scoreText.textContent += " — Perfect! Advanced Track unlocked.";
+        // Trigger localStorage flag
+        try { localStorage.setItem("qa-lesson5-complete", "1"); } catch(e) {}
+      } else {
+        scoreText.className = 'text-center font-bold my-4 text-error';
+        scoreText.textContent += " — You must get 3/3 to complete this lesson.";
+      }
+
+      const list = document.getElementById('results-list');
+      list.innerHTML = '';
+
+      quizAnswers.forEach((ans, i) => {
+        const q = quizQuestions[i];
+        const row = document.createElement('div');
+        row.className = 'result-row';
+        row.innerHTML = `
+          <div class="result-icon">${ans.correct ? '✓' : '✗'}</div>
+          <div class="result-details">
+            <div class="font-medium text-sm">${q.questionText}</div>
+            ${!ans.correct ? `<div class="text-xs text-muted">Your answer: ${ans.selectedAnswer}</div>` : ''}
+            <span class="explanation-toggle" onclick="toggleExp(this)">Show explanation</span>
+            <div class="explanation-text">${q.explanation}</div>
+          </div>
+        `;
+        list.appendChild(row);
+      });
+    }
+
+    function toggleExp(el) {
+      const text = el.nextElementSibling;
+      const isHidden = text.style.display === 'none' || text.style.display === '';
+      text.style.display = isHidden ? 'block' : 'none';
+      el.textContent = isHidden ? 'Hide explanation' : 'Show explanation';
+    }
+
+    async function completeLesson() {
+      const correctCount = quizAnswers.filter(a => a.correct).length;
+      if (correctCount < 3) {
+        showToast('You must score 3/3 to complete this lesson.', 'error');
+        // Reset quiz
+        quizAnswers = [];
+        currentQuestion = 0;
+        document.getElementById('phase-results').style.display = 'none';
+        document.getElementById('phase-quiz').style.display = 'block';
+        startQuiz();
+        return;
+      }
+
+      try {
+        const progress = await getProgress(currentSession.caseId);
+        const now = new Date().toISOString();
+
+        var remainder = lessonSeconds % 30;
+        if (remainder > 0) await addTimeSpent(currentSession.caseId, 'lesson-5', remainder);
+
+        const results = {};
+        quizAnswers.forEach(ans => {
+          results[ans.questionId] = {
+            selectedAnswer: ans.selectedAnswer,
+            correct: ans.correct,
+            answeredAt: now
+          };
+        });
+
+        const updatedProgress = progress || {
+          caseId: currentSession.caseId,
+          lessonsComplete: [],
+          currentLesson: 'lesson-5',
+          quizResults: {},
+          placementSurvey: { completed: true, recommendedPath: [], answers: [] },
+          certificateEarned: false,
+        };
+
+        updatedProgress.quizResults['lesson-5'] = results;
+        if (!updatedProgress.lessonsComplete.includes('lesson-5')) {
+          updatedProgress.lessonsComplete.push('lesson-5');
+        }
+        updatedProgress.lastActivity = now;
+
+        await saveProgress(updatedProgress);
+        window.location.href = 'course.html';
+      } catch (e) {
+        console.error(e);
+        showToast('Error saving progress', 'error');
+      }
+    }
+
+    function handleLogout() {
+      var remainder = lessonSeconds % 30;
+      if (remainder > 0 && currentSession) addTimeSpent(currentSession.caseId, 'lesson-5', remainder);
+      endSession();
+      window.location.href = 'index.html';
+    }
+  </script>
+</body>
+</html>

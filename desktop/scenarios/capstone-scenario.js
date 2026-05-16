@@ -16,6 +16,29 @@ window.SCENARIOS['capstone-001'] = {
   type: 'capstone',
   title: 'Payment Processing — Live Investigation',
 
+  // ── Teams narrative thread ─────────────────────────────────────────────
+  // Rendered in the Teams app when this scenario loads. Each entry in the
+  // array is a thread: a channel context + an array of messages.
+  // Message types: 'system' (centered italic), 'chat' (default bubble),
+  // 'review' (Sprint Review bubble).
+  teamsThread: [
+    {
+      channel: 'qa-team',
+      messages: [
+        { author: 'system',  text: 'Case #0047 has been assigned to the QA team.',                        timestamp: '09:00 AM' },
+        { author: 'Pete (QA Lead)', text: 'Team, priority case from Contoso — payment failures in prod. Triage by EOD.', timestamp: '09:02 AM' },
+        { author: 'Sarah (PO)',     text: 'This is blocking the release. Need clear bug reports with AC references.',    timestamp: '09:03 AM' },
+        { author: 'Alex (Junior)',  text: 'I\'ll start investigating in Dynamics.',                                     timestamp: '09:05 AM' },
+      ]
+    },
+    {
+      channel: 'qa-team',
+      messages: [
+        { author: 'Pete (QA Lead)', text: 'Daily stand-up — what are you working on today?',               timestamp: '09:30 AM' },
+      ]
+    }
+  ],
+
   brief: [
     'You are a Junior QA Investigator on the Payments team.',
     'A batch of customer complaints has come in about failed transactions.',

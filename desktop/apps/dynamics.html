@@ -401,6 +401,55 @@
                 margin-top: 6px;
             }
 
+            /* ── Role-gating lock card ─────────────────────────────────── */
+            .d365-lock-card {
+                background: var(--d365-bg-alt);
+                border: 1px dashed var(--d365-border);
+                border-radius: 4px;
+                padding: 12px 14px;
+                text-align: center;
+                color: var(--d365-text-subtle);
+                margin: 4px 0;
+                transition: opacity 0.3s, transform 0.3s;
+            }
+
+            .d365-lock-card.senior-visible {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+            .d365-lock-card.senior-hidden {
+                display: none;
+            }
+
+            .d365-lock-icon {
+                font-size: 18px;
+                margin-bottom: 4px;
+            }
+
+            .d365-lock-title {
+                font-weight: 600;
+                font-size: 12px;
+                color: var(--d365-text);
+                margin-bottom: 2px;
+            }
+
+            .d365-lock-desc {
+                font-size: 11px;
+                line-height: 1.4;
+            }
+
+            .d365-lock-hint {
+                font-size: 11px;
+                margin-top: 6px;
+                color: var(--d365-blue);
+                font-style: italic;
+            }
+
+            body.theme-dark .d365-lock-hint {
+                color: var(--d365-blue);
+            }
+
             .d365-case-ribbon {
                 height: 28px;
                 display: flex;
@@ -622,6 +671,10 @@
                 <div class="d365-case-ribbon-inner">
                     <span id="d365-case-ribbon-id">CASE-00142</span>
                     <span class="d365-case-ribbon-sep">|</span>
+                    <span id="d365-case-ribbon-customer">—</span>
+                    <span class="d365-case-ribbon-sep">|</span>
+                    <span id="d365-case-ribbon-priority">—</span>
+                    <span class="d365-case-ribbon-sep">|</span>
                     <span id="d365-case-ribbon-status">Active</span>
                     <span class="d365-case-ribbon-sep">|</span>
                     <span id="d365-case-ribbon-assigned">Junior Investigator</span>
@@ -711,6 +764,27 @@
                             </div>
                         </div>
 
+                            <div class="d365-field">
+                                <div class="d365-field-label">
+                                    <span>Escalation Reason</span>
+                                </div>
+                                <select id="d365-escalation-reason">
+                                    <option value="">—</option>
+                                    <option value="Business impact">Business impact</option>
+                                    <option value="Security concern">Security concern</option>
+                                    <option value="Requires senior approval">Requires senior approval</option>
+                                    <option value="System limitation">System limitation</option>
+                                </select>
+                            </div>
+
+                            <div class="d365-field">
+                                <div class="d365-field-label">
+                                    <span>Date Opened</span>
+                                </div>
+                                <input id="d365-date-opened" type="date" />
+                            </div>
+                        </div>
+
                         <div style="height: 8px"></div>
 
                         <div class="d365-section-title">Summary</div>
@@ -730,6 +804,12 @@
                             <div class="d365-field-label">
                                 <span>Resolution date</span>
                             </div>
+                            <div class="d365-lock-card" id="d365-resolution-date-lock">
+                                <div class="d365-lock-icon">🔒</div>
+                                <div class="d365-lock-title">Senior Investigator Only</div>
+                                <div class="d365-lock-desc">Resolution date requires Senior role to view or edit.</div>
+                                <div class="d365-lock-hint">Switch to Senior role in the taskbar to unlock.</div>
+                            </div>
                             <input
                                 id="d365-resolution-date"
                                 type="date"
@@ -739,6 +819,12 @@
                         <div class="d365-field" id="d365-resolution-field">
                             <div class="d365-field-label">
                                 <span>Resolution notes</span>
+                            </div>
+                            <div class="d365-lock-card" id="d365-resolution-lock">
+                                <div class="d365-lock-icon">🔒</div>
+                                <div class="d365-lock-title">Senior Investigator Only</div>
+                                <div class="d365-lock-desc">Resolution notes require Senior role to view or edit.</div>
+                                <div class="d365-lock-hint">Switch to Senior role in the taskbar to unlock.</div>
                             </div>
                             <textarea id="d365-resolution" rows="3"></textarea>
                         </div>
@@ -814,11 +900,33 @@
                     }
                 }
 
+                /**
+                 * applyRole(sendRoleChange)
+                 * Adjusts the Dynamics form UI based on the current user role.
+                 * Junior role: limited status options, resolution fields replaced
+                 * by lock cards explaining why they're restricted ("Senior Only").
+                 * Senior role: all fields editable, lock cards hidden.
+                 *
+                 * The lock cards are visible (not removed from DOM) so trainees
+                 * understand WHY fields are restricted and HOW to unlock them
+                 * by switching roles in the taskbar.
+                 *
+                 * @param {string} [sendRoleChange] - 'junior' or 'senior'. Falls
+                 *   back to state.role if not provided.
+                 */
                 function applyRole(sendRoleChange) {
                     var role = sendRoleChange || state.role;
                     state.role = role;
 
                     var statusEl = document.getElementById("d365-status");
+
+                    // Lock card elements — visible for Junior, hidden for Senior
+                    var resolutionDateLock =
+                        document.getElementById("d365-resolution-date-lock");
+                    var resolutionLock =
+                        document.getElementById("d365-resolution-lock");
+
+                    // Editable field elements — hidden behind lock for Junior
                     var resolutionField = document.getElementById(
                         "d365-resolution-field"
                     );
@@ -830,6 +938,7 @@
                     var resolutionDateEl =
                         document.getElementById("d365-resolution-date");
 
+                    // ── Status dropdown: restrict Junior to Active/Resolved ──
                     if (statusEl) {
                         var currentValue = statusEl.value;
                         var allStatuses = [
@@ -866,46 +975,44 @@
                         }
                     }
 
+                    // ── Resolution fields: lock card vs editable toggle ─────
                     if (role === "junior") {
-                        if (resolutionDateField) {
-                            resolutionDateField.classList.add("readonly");
-                            if (resolutionDateEl)
-                                resolutionDateEl.setAttribute(
-                                    "readonly",
-                                    "readonly"
-                                );
+                        // Show lock cards, hide editable fields
+                        if (resolutionDateLock) {
+                            resolutionDateLock.classList.remove("senior-hidden");
+                            resolutionDateLock.classList.add("senior-visible");
                         }
-                        if (resolutionField) {
-                            var bugs = state.activeBugs || [];
-                            var bugOn =
-                                bugs.indexOf("outcome-visible-junior") !== -1;
-                            if (bugOn) {
-                                resolutionField.style.display = "none";
-                                if (resolutionEl) {
-                                    resolutionEl.setAttribute(
-                                        "readonly",
-                                        "readonly"
-                                    );
-                                    resolutionField.classList.add("readonly");
-                                }
-                            } else {
-                                var parent = resolutionField.parentNode;
-                                if (parent) {
-                                    parent.removeChild(resolutionField);
-                                }
-                            }
+                        if (resolutionLock) {
+                            resolutionLock.classList.remove("senior-hidden");
+                            resolutionLock.classList.add("senior-visible");
+                        }
+
+                        if (resolutionDateEl) {
+                            resolutionDateEl.style.display = "none";
+                            resolutionDateEl.setAttribute("readonly", "readonly");
+                        }
+                        if (resolutionEl) {
+                            resolutionEl.style.display = "none";
+                            resolutionEl.setAttribute("readonly", "readonly");
                         }
                     } else {
-                        if (resolutionDateField) {
-                            resolutionDateField.classList.remove("readonly");
-                            if (resolutionDateEl)
-                                resolutionDateEl.removeAttribute("readonly");
+                        // Hide lock cards, show editable fields
+                        if (resolutionDateLock) {
+                            resolutionDateLock.classList.remove("senior-visible");
+                            resolutionDateLock.classList.add("senior-hidden");
                         }
-                        if (resolutionField) {
-                            resolutionField.style.display = "";
-                            if (resolutionEl)
-                                resolutionEl.removeAttribute("readonly");
-                            resolutionField.classList.remove("readonly");
+                        if (resolutionLock) {
+                            resolutionLock.classList.remove("senior-visible");
+                            resolutionLock.classList.add("senior-hidden");
+                        }
+
+                        if (resolutionDateEl) {
+                            resolutionDateEl.style.display = "";
+                            resolutionDateEl.removeAttribute("readonly");
+                        }
+                        if (resolutionEl) {
+                            resolutionEl.style.display = "";
+                            resolutionEl.removeAttribute("readonly");
                         }
                     }
 
@@ -922,6 +1029,8 @@
                     var priorityEl =
                         document.getElementById("d365-priority");
                     var statusEl = document.getElementById("d365-status");
+                    var escalationReasonEl = document.getElementById("d365-escalation-reason");
+                    var dateOpenedEl = document.getElementById("d365-date-opened");
                     var summaryEl =
                         document.getElementById("d365-summary");
                     var ribbonIdEl = document.getElementById(
@@ -955,18 +1064,134 @@
                     }
                     if (ribbonIdEl && crmState.caseId)
                         ribbonIdEl.textContent = crmState.caseId;
-                    if (ribbonAssignedEl && crmState.assignedTo)
-                        ribbonAssignedEl.textContent = crmState.assignedTo;
+                 if (ribbonAssignedEl && crmState.assignedTo)
+                     ribbonAssignedEl.textContent = crmState.assignedTo;
 
-                    persist();
-                }
+                    if (escalationReasonEl && crmState.escalationReason !== undefined)
+                        escalationReasonEl.value = crmState.escalationReason;
+                    if (dateOpenedEl && crmState.dateOpened)
+                        dateOpenedEl.value = crmState.dateOpened;
+                    if (dateOpenedEl && crmState.createdDate)
+                        dateOpenedEl.value = crmState.createdDate;
 
-                window.addEventListener("message", (event) => {
-                    var msg = event.data;
-                    if (!msg) return;
+                 persist();
 
-                    if (msg.type === "APP_BOOT" && msg.appId === "dynamics") {
-                        state.role = msg.role || state.role;
+                  // Check for bugs that may be pre-loaded in the scenario data
+                  applyRole(state.role);
+                  checkStatusViolation();
+                  checkEscalationReason();
+                  checkDateField();
+                  populateCaseHeader(crmState);
+              }
+
+              /**
+               * populateCaseHeader(data)
+               * Populates the case header ribbon with scenario data.
+               */
+              function populateCaseHeader(data) {
+                  if (!data) return;
+                  var fields = {
+                      "d365-case-ribbon-id":       data.caseId,
+                      "d365-case-ribbon-customer": data.customerName,
+                      "d365-case-ribbon-priority": data.priority,
+                      "d365-case-ribbon-status":   data.status,
+                      "d365-case-ribbon-assigned": data.assignedTo,
+                  };
+                  Object.keys(fields).forEach(function(id) {
+                      var el = document.getElementById(id);
+                      if (el && fields[id]) el.textContent = fields[id];
+                  });
+              }
+
+              /**
+               * checkStatusViolation()
+              * Checks if the current status violates role-based restrictions
+              * and reports a bug if found. Called on form load and status change.
+              */
+             function checkStatusViolation() {
+                 var statusEl = document.getElementById("d365-status");
+                 if (!statusEl) return;
+
+                 var val        = statusEl.value;
+                 var restricted = ["Closed", "Escalated"];
+
+                 if (state.role === "junior" && restricted.indexOf(val) !== -1) {
+                     window.parent.postMessage({
+                         type:  "BUG_FOUND",
+                         bugId: "status-junior-" + val.toLowerCase(),
+                     }, "*");
+
+                     var OS = window.parent && (window.parent.QA_OS || window.parent.OS);
+                     if (OS && OS.notify) {
+                         OS.notify("⚠ Case Status \"" + val + "\" is not permitted for Junior role (AC-2.1).");
+                     }
+                  }
+              }
+
+              /**
+               * checkEscalationReason()
+               * Checks if Status is "Escalated" but Escalation Reason is blank.
+               * Posts BUG_FOUND and highlights the field if violated.
+               */
+              function checkEscalationReason() {
+                  var statusEl = document.getElementById("d365-status");
+                  var reasonEl = document.getElementById("d365-escalation-reason");
+                  if (!statusEl || !reasonEl) return;
+
+                  var isEscalated = statusEl.value === "Escalated";
+                  var hasReason   = reasonEl.value && reasonEl.value.trim().length > 0;
+
+                  if (isEscalated && !hasReason) {
+                      window.parent.postMessage({
+                          type:  "BUG_FOUND",
+                          bugId: "escalation-reason-blank",
+                      }, "*");
+
+                      var OS = window.parent && (window.parent.QA_OS || window.parent.OS);
+                      if (OS && OS.notify) {
+                          OS.notify("⚠ Escalation Reason is required when Status is Escalated (AC-4.1).");
+                      }
+
+                      reasonEl.style.borderColor = "#a4262c";
+                      reasonEl.setAttribute("title", "Required: Escalation Reason must be filled when Status is Escalated (AC-4.1)");
+                  } else {
+                      reasonEl.style.borderColor = "";
+                      reasonEl.removeAttribute("title");
+                  }
+              }
+
+              /**
+               * checkDateField()
+               * Checks if Date Opened / Created Date is a future date.
+               * Posts BUG_FOUND if violated.
+               */
+              function checkDateField() {
+                  var dateField = document.getElementById("d365-date-opened");
+                  if (!dateField || !dateField.value) return;
+
+                  var selected = new Date(dateField.value);
+                  var today    = new Date();
+                  today.setHours(0, 0, 0, 0);
+
+                  if (selected > today) {
+                      window.parent.postMessage({
+                          type:  "BUG_FOUND",
+                          bugId: "future-date-allowed",
+                      }, "*");
+
+                      var OS = window.parent && (window.parent.QA_OS || window.parent.OS);
+                      if (OS && OS.notify) {
+                          OS.notify("⚠ Date Opened is a future date — this violates AC-3.2.");
+                      }
+                  }
+              }
+
+              window.addEventListener("message", (event) => {
+                     var msg = event.data;
+                     if (!msg) return;
+
+                     if (msg.type === "APP_BOOT" && msg.appId === "dynamics") {
+                         state.role = msg.role || state.role;
                         state.theme = msg.theme || state.theme || "light";
                         state.activeBugs = msg.activeBugs || [];
 
@@ -993,6 +1218,14 @@
                         }
 
                         renderAll();
+
+                        // 🐛 BUG FIX: Run initial BUG_FOUND checks after form loads
+                        // so pre-loaded scenario violations (e.g. bad status or future
+                        // date) are detected immediately, not only on user interaction.
+                        setTimeout(function() {
+                            checkStatusViolation();
+                            checkDateField();
+                        }, 100);
                     }
 
                     if (msg.type === "ROLE_CHANGE") {
@@ -1193,6 +1426,8 @@
                         "d365-resolution-date",
                     );
                     const customerEl = document.getElementById("d365-customer");
+                    const escalationReasonEl = document.getElementById("d365-escalation-reason");
+                    const dateOpenedEl = document.getElementById("d365-date-opened");
                     const errorEl = document.getElementById("d365-error");
 
                     function syncDraft() {
@@ -1202,6 +1437,8 @@
                         state.draft.summary = summaryEl.value;
                         state.draft.customer = customerEl.value;
                         state.draft.resolutionDate = resolutionDateEl.value;
+                        if (escalationReasonEl) state.draft.escalationReason = escalationReasonEl.value;
+                        if (dateOpenedEl) state.draft.dateOpened = dateOpenedEl.value;
                         if (state.role === "senior") {
                             state.draft.resolution = resolutionEl.value;
                         }
@@ -1211,10 +1448,21 @@
 
                     titleEl.oninput = syncDraft;
                     priorityEl.onchange = syncDraft;
-                    statusEl.onchange = syncDraft;
+                    statusEl.onchange = function() {
+                        syncDraft();
+                        checkEscalationReason();
+                        // Update the case header status when it changes
+                        var headerStatus = document.getElementById("d365-case-ribbon-status");
+                        if (headerStatus) headerStatus.textContent = this.value;
+                    };
                     summaryEl.oninput = syncDraft;
                     customerEl.oninput = syncDraft;
                     resolutionDateEl.onchange = syncDraft;
+                    if (escalationReasonEl) escalationReasonEl.onchange = syncDraft;
+                    if (dateOpenedEl) dateOpenedEl.onchange = function() {
+                        syncDraft();
+                        checkDateField();
+                    };
                     if (state.role === "senior") {
                         resolutionEl.oninput = syncDraft;
                     }

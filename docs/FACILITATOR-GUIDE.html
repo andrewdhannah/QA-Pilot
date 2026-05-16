@@ -1,0 +1,519 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Facilitator Guide — QA Pilot</title>
+        <style>
+            :root {
+                --color-bg: #f8f9fa;
+                --color-surface: #ffffff;
+                --color-primary: #0078d4;
+                --color-primary-light: #e1f0ff;
+                --color-ink: #323130;
+                --color-ink-muted: #605e5c;
+                --color-border: #edebe9;
+                --color-success: #16a34a;
+                --color-error: #dc2626;
+                --space-xs: 4px;
+                --space-sm: 8px;
+                --space-md: 16px;
+                --space-lg: 24px;
+                --space-xl: 32px;
+                --radius-md: 6px;
+            }
+
+            body {
+                font-family:
+                    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+                    Helvetica, Arial, sans-serif;
+                line-height: 1.6;
+                color: var(--color-ink);
+                background-color: var(--color-bg);
+                margin: 0;
+                padding: 0;
+            }
+
+            .container {
+                max-width: 850px;
+                margin: 0 auto;
+                padding: var(--space-xl);
+            }
+
+            header {
+                background: var(--color-surface);
+                border-bottom: 2px solid var(--color-primary);
+                padding: var(--space-lg) 0;
+                margin-bottom: var(--space-xl);
+                text-align: center;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            }
+
+            h1 {
+                margin: 0;
+                color: var(--color-primary);
+                font-size: 2rem;
+            }
+            h2 {
+                color: var(--color-ink);
+                border-bottom: 1px solid var(--color-border);
+                padding-bottom: var(--space-sm);
+                margin-top: var(--space-xl);
+            }
+            h3 {
+                color: var(--color-primary);
+                margin-top: var(--space-md);
+            }
+
+            .toc {
+                background: var(--color-surface);
+                border: 1px solid var(--color-border);
+                border-radius: var(--radius-md);
+                padding: var(--space-md);
+                margin-bottom: var(--space-xl);
+            }
+            .toc-title {
+                font-weight: bold;
+                margin-bottom: var(--space-sm);
+                display: block;
+            }
+            .toc ul {
+                list-style: none;
+                padding: 0;
+                margin: 0;
+            }
+            .toc li {
+                margin-bottom: var(--space-xs);
+            }
+            .toc a {
+                color: var(--color-primary);
+                text-decoration: none;
+                font-size: 0.95rem;
+            }
+            .toc a:hover {
+                text-decoration: underline;
+            }
+
+            .card {
+                background: var(--color-surface);
+                border: 1px solid var(--color-border);
+                border-radius: var(--radius-md);
+                padding: var(--space-md);
+                margin-bottom: var(--space-md);
+            }
+
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                margin: var(--space-md) 0;
+                background: var(--color-surface);
+            }
+            th,
+            td {
+                text-align: left;
+                padding: var(--space-sm) var(--space-md);
+                border: 1px solid var(--color-border);
+                font-size: 0.9rem;
+            }
+            th {
+                background: var(--color-primary-light);
+                color: var(--color-primary);
+                font-weight: 600;
+            }
+
+            .highlight {
+                background: var(--color-primary-light);
+                border-left: 4px solid var(--color-primary);
+                padding: var(--space-md);
+                margin: var(--space-md) 0;
+                font-style: italic;
+            }
+
+            .code-block {
+                font-family:
+                    "SFMono-Regular", Consolas, "Liberation Mono", Menlo,
+                    monospace;
+                background: #f3f2f1;
+                padding: var(--space-sm);
+                border-radius: var(--radius-md);
+                font-size: 0.85rem;
+                display: block;
+                white-space: pre-wrap;
+                border: 1px solid var(--color-border);
+            }
+
+            .status-tag {
+                display: inline-block;
+                padding: 2px 8px;
+                border-radius: 4px;
+                font-size: 0.75rem;
+                font-weight: bold;
+                text-transform: uppercase;
+            }
+            .tag-beg {
+                background: #e1f0ff;
+                color: #0078d4;
+            }
+            .tag-adv {
+                background: #fde2e2;
+                color: #dc2626;
+            }
+
+            /* Print Styles */
+            @media print {
+                body {
+                    background: white;
+                }
+                .container {
+                    max-width: 100%;
+                    padding: 0;
+                }
+                .no-print,
+                .toc {
+                    display: none;
+                }
+                .card {
+                    border: 1px solid #ccc;
+                    break-inside: avoid;
+                }
+                header {
+                    box-shadow: none;
+                    border-bottom: 1px solid #000;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <header>
+            <div class="container">
+                <h1>QA Pilot — Facilitator Guide</h1>
+                <p style="color: var(--color-ink-muted)">
+                    Trainer & Administrator Documentation
+                </p>
+            </div>
+        </header>
+
+        <div class="container">
+            <nav class="toc no-print">
+                <span class="toc-title">Table of Contents</span>
+                <ul>
+                    <li><a href="#overview">1. Welcome & Overview</a></li>
+                    <li><a href="#modes">2. Trainer Workflow (Modes)</a></li>
+                    <li><a href="#results">3. Reviewing Results</a></li>
+                    <li><a href="#scenarios">4. Scenario Overview</a></li>
+                    <li><a href="#scoring">5. Pass Mark & Scoring</a></li>
+                    <li><a href="#limitations">6. Known Limitations</a></li>
+                    <li><a href="#troubleshooting">7. Troubleshooting</a></li>
+                    <li><a href="#files">8. File Structure Reference</a></li>
+                </ul>
+            </nav>
+
+            <section id="overview">
+                <h2>1. Welcome & Overview</h2>
+                <p>
+                    QA Pilot is a professional, offline training platform
+                    designed to bridge the gap between theoretical knowledge and
+                    practical application for junior QA analysts.
+                </p>
+                <div class="card">
+                    <strong>QA Pilot trains junior QA analysts to:</strong>
+                    <ul style="margin-top: var(--space-sm)">
+                        <li>Identify defects in a simulated CRM (Dynamics)</li>
+                        <li>
+                            File structured bug reports in a simulated ADO
+                            tracker
+                        </li>
+                        <li>Reference acceptance criteria correctly</li>
+                        <li>Work within role-appropriate permissions</li>
+                    </ul>
+                    <p
+                        style="
+                            margin-bottom: 0;
+                            font-style: italic;
+                            color: var(--color-ink-muted);
+                        "
+                    >
+                        The platform runs entirely offline in a browser. No
+                        installation, no accounts, and no internet connection
+                        are required.
+                    </p>
+                </div>
+            </section>
+
+            <section id="modes">
+                <h2>2. Trainer Workflow</h2>
+                <p>
+                    Depending on the stage of training, you will direct trainees
+                    to use the platform in one of two modes:
+                </p>
+
+                <h3>Training Mode (Guided Learning)</h3>
+                <div class="card">
+                    <ol>
+                        <li>
+                            Trainee opens <code>index.html</code> in their
+                            browser.
+                        </li>
+                        <li>
+                            Trainee logs in (any name — login is not verified).
+                        </li>
+                        <li>
+                            Trainee completes <strong>Lessons 1–5</strong> in
+                            order.
+                        </li>
+                        <li>
+                            Trainee opens the Training app inside the OS
+                            (<code>dist.html</code>) to perform guided practice.
+                        </li>
+                    </ol>
+                </div>
+
+                <h3>Assessment Mode (Scored Capstone)</h3>
+                <div class="card">
+                    <ol>
+                        <li>Trainee completes all lessons first.</li>
+                        <li>
+                            Trainee opens <code>capstone.html</code> (Beginner)
+                            or <code>capstone-2.html</code> (Advanced).
+                        </li>
+                        <li>
+                            Trainee works through the scenario in the OS
+                            simulator.
+                        </li>
+                        <li>
+                            Trainee clicks
+                            <strong>"Submit for Certification"</strong>.
+                        </li>
+                        <li>
+                            The final result is written to the browser's local
+                            storage and displayed on a certificate page.
+                        </li>
+                    </ol>
+                </div>
+            </section>
+
+            <section id="results">
+                <h2>3. Reviewing Results</h2>
+                <p>
+                    Because the platform is offline, all results are stored in
+                    the browser's <strong>IndexedDB</strong> (local database).
+                    To review trainee performance:
+                </p>
+                <div class="highlight">
+                    1. Open <code>dist.html</code><br />
+                    2. Open the <strong>Reports</strong> app from the desktop<br />
+                    3. Select a trainee session to see: score, pass/fail, bugs
+                    found, bugs missed, and report quality.
+                </div>
+                <p style="font-size: 0.9rem; color: var(--color-ink-muted)">
+                    <strong>Note:</strong> Results are stored
+                    per-browser-per-device. If a trainee clears their browser
+                    cache or switches computers, their previous results will not
+                    appear in the Reports app.
+                </p>
+            </section>
+
+            <section id="scenarios">
+                <h2>4. Scenario Overview</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Scenario</th>
+                            <th>Level</th>
+                            <th>Bugs</th>
+                            <th>Used In</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>case-001</code></td>
+                            <td>
+                                <span class="status-tag tag-beg">Beginner</span>
+                            </td>
+                            <td>2</td>
+                            <td>Capstone (Beginner), Training App</td>
+                        </tr>
+                        <tr>
+                            <td><code>case-002</code></td>
+                            <td>
+                                <span class="status-tag tag-adv">Advanced</span>
+                            </td>
+                            <td>3</td>
+                            <td>Capstone (Advanced)</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>Expected Findings</h3>
+                <div class="card">
+                    <strong>case-001 (Beginner):</strong>
+                    <ul>
+                        <li>
+                            <strong>Bug 1:</strong> Case Status set to
+                            "Escalated" — not permitted for Junior role (AC-2.1)
+                        </li>
+                        <li>
+                            <strong>Bug 2:</strong> Created Date set to a future
+                            date — invalid (AC-1.3)
+                        </li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <strong>case-002 (Advanced):</strong>
+                    <ul>
+                        <li>
+                            <strong>Bug 1:</strong> Case Status set to
+                            "Escalated" — not permitted for Junior role (AC-2.1)
+                        </li>
+                        <li>
+                            <strong>Bug 2:</strong> Escalation Reason field
+                            blank when Status is Escalated — required field
+                            (AC-2.2)
+                        </li>
+                        <li>
+                            <strong>Bug 3:</strong> Created Date set to a future
+                            date — invalid (AC-1.3)
+                        </li>
+                    </ul>
+                </div>
+            </section>
+
+            <section id="scoring">
+                <h2>5. Pass Mark & Scoring</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Scenario</th>
+                            <th>Max Score</th>
+                            <th>Pass Threshold</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>case-001</td>
+                            <td>6 pts</td>
+                            <td>3 pts (50%)</td>
+                        </tr>
+                        <tr>
+                            <td>case-002</td>
+                            <td>9 pts</td>
+                            <td>5 pts (50%)</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p><strong>Points are awarded as follows:</strong></p>
+                <ul>
+                    <li>
+                        <strong>1 pt:</strong> Bug correctly identified in the
+                        CRM.
+                    </li>
+                    <li>
+                        <strong>1 pt:</strong> Complete ADO report filed (Title,
+                        Severity, Steps).
+                    </li>
+                    <li>
+                        <strong>1 pt:</strong> Correct AC reference included in
+                        the report.
+                    </li>
+                </ul>
+            </section>
+
+            <section id="limitations">
+                <h2>6. Known Limitations</h2>
+                <div class="card">
+                    <ul>
+                        <li>
+                            <strong>Storage:</strong> Results are stored in the
+                            browser only — not synced to a central server.
+                        </li>
+                        <li>
+                            <strong>Data Loss:</strong> If a trainee clears
+                            browser data, results are lost.
+                        </li>
+                        <li>
+                            <strong>Browser Support:</strong> Optimized for
+                            Chrome and Edge. Firefox and Safari may have minor
+                            visual differences.
+                        </li>
+                        <li>
+                            <strong>Customization:</strong> The Training app
+                            step-through is hardcoded; custom scenarios require
+                            developer modification.
+                        </li>
+                        <li>
+                            <strong>Analytics:</strong> The Reports and
+                            Inspector apps provide raw data only; advanced
+                            analytics are not yet implemented.
+                        </li>
+                    </ul>
+                </div>
+            </section>
+
+            <section id="troubleshooting">
+                <h2>7. Troubleshooting</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Issue</th>
+                            <th>Fix</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>OS simulator is blank / not loading</td>
+                            <td>
+                                Ensure you are opening <code>dist.html</code>,
+                                not <code>index.html</code>.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Apps won't open when double-clicked</td>
+                            <td>
+                                Try a second double-click; if still stuck,
+                                refresh the page.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Score not showing after Submit</td>
+                            <td>
+                                Verify the trainee reached the "Submit" button
+                                inside the OS, not the browser back button.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Lesson marked incomplete</td>
+                            <td>
+                                Lessons must be completed in order. Ensure the
+                                quiz was submitted before proceeding.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Two navigation bars stacked (Lesson 4)</td>
+                            <td>
+                                This was fixed in V1. Ensure you are using the
+                                latest build.
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <section id="files">
+                <h2>8. File Structure Reference</h2>
+                <p>The following files compose the QA Pilot platform:</p>
+                <div class="code-block">
+                    index.html — Academy login + course page course.html —
+                    Lesson list lesson-1.html — Lesson 1: Dynamics CRM intro
+                    lesson-2.html — Lesson 2: Acceptance Criteria lesson-3.html
+                    — Lesson 3: Bug filing basics lesson-4.html — Lesson 4:
+                    Azure DevOps lesson-5.html — Lesson 5: Test Planning &
+                    Triage capstone.html — Beginner capstone (case-001)
+                    capstone-2.html — Advanced capstone (case-002)
+                    certificate.html — Result / certificate page
+                    desktop/dist.html — OS simulator (offline, self-contained)
+                    docs/ — This documentation folder
+                </div>
+            </section>
+        </div>
+    </body>
+</html>

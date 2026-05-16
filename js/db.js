@@ -33,6 +33,7 @@
 
 const DB_NAME = 'qa_onboarding_db';
 const DB_VERSION = 1;
+const PBKDF2_ITERATIONS = 100000;
 let _db = null;
 
 // ── SECTION 2: DATABASE INITIALISATION ────────────────────────────────────────
@@ -135,6 +136,101 @@ function _put(storeName, object) {
     request.onsuccess = function() { resolve(); };
     request.onerror = function() { reject(request.error); };
   });
+}
+
+// ── SECTION 3.5: PASSWORD HASHING ──────────────────────────────────────────────
+
+/**
+ * _bufToBase64(buf)
+ * Converts a Uint8Array to a base64-encoded string.
+ * Used internally by hashPassword() and verifyPassword().
+ *
+ * @param {Uint8Array} buf - The byte array to encode.
+ * @returns {string} Base64-encoded string.
+ */
+function _bufToBase64(buf) {
+  var binary = '';
+  for (var i = 0; i < buf.length; i++) {
+    binary += String.fromCharCode(buf[i]);
+  }
+  return btoa(binary);
+}
+
+/**
+ * hashPassword(password)
+ * Hashes a plaintext password using PBKDF2 with a random salt.
+ * Returns a combined "salt:hash" string (both base64-encoded) for storage.
+ *
+ * Uses 100 000 iterations of PBKDF2 with SHA-256 and a 16-byte salt,
+ * producing a 256-bit derived key. This provides strong protection
+ * against offline brute-force attacks on the stored password data.
+ *
+ * @param {string} password - The plaintext password to hash.
+ * @returns {Promise<string>} "base64(salt):base64(hash)" combined string.
+ */
+function hashPassword(password) {
+  var salt = crypto.getRandomValues(new Uint8Array(16));
+  return crypto.subtle.importKey('raw', new TextEncoder().encode(password), 'PBKDF2', false, ['deriveBits'])
+    .then(function(key) {
+      return crypto.subtle.deriveBits(
+        { name: 'PBKDF2', salt: salt, iterations: PBKDF2_ITERATIONS, hash: 'SHA-256' },
+        key,
+        256
+      );
+    })
+    .then(function(hashBuffer) {
+      var hashArray = new Uint8Array(hashBuffer);
+      var saltB64 = _bufToBase64(salt);
+      var hashB64 = _bufToBase64(hashArray);
+      return saltB64 + ':' + hashB64;
+    });
+}
+
+/**
+ * verifyPassword(password, storedString)
+ * Verifies a plaintext password against a stored "salt:hash" string
+ * produced by hashPassword(). If the stored string is in legacy plaintext
+ * format (no colon separator), falls back to direct string comparison
+ * for backwards compatibility.
+ *
+ * @param {string} password     - The plaintext password to check.
+ * @param {string} storedString - The stored "salt:hash" or legacy plaintext.
+ * @returns {Promise<boolean>} True if the password matches.
+ */
+function verifyPassword(password, storedString) {
+  if (!storedString) return Promise.resolve(false);
+  if (storedString.indexOf(':') === -1) {
+    return Promise.resolve(storedString === password);
+  }
+  var parts = storedString.split(':');
+  var saltB64 = parts[0];
+  var storedHashB64 = parts.slice(1).join(':');
+  var salt;
+  try {
+    var saltBinary = atob(saltB64);
+    salt = new Uint8Array(saltBinary.length);
+    for (var i = 0; i < saltBinary.length; i++) {
+      salt[i] = saltBinary.charCodeAt(i);
+    }
+  } catch (e) {
+    return Promise.resolve(false);
+  }
+  return crypto.subtle.importKey('raw', new TextEncoder().encode(password), 'PBKDF2', false, ['deriveBits'])
+    .then(function(key) {
+      return crypto.subtle.deriveBits(
+        { name: 'PBKDF2', salt: salt, iterations: PBKDF2_ITERATIONS, hash: 'SHA-256' },
+        key,
+        256
+      );
+    })
+    .then(function(hashBuffer) {
+      var hashArray = new Uint8Array(hashBuffer);
+      var computedB64 = _bufToBase64(hashArray);
+      return computedB64 === storedHashB64;
+    })
+    .catch(function() {
+      return false;
+    });
 }
 
 // ── SECTION 4: STUDENT FUNCTIONS ──────────────────────────────────────────────
@@ -313,13 +409,16 @@ function getAdminPassword() {
 
 /**
  * setAdminPassword(newPassword)
- * Saves a new admin password to the IndexedDB settings store.
- * 
- * @param {string} newPassword - The new password to store.
+ * Hashes and saves a new admin password to the IndexedDB settings store.
+ * The plaintext is never stored — only the PBKDF2 hash (salt:hash format).
+ *
+ * @param {string} newPassword - The new password to hash and store.
  * @returns {Promise<void>} Resolves when the save is complete.
  */
 function setAdminPassword(newPassword) {
-  return saveSetting('adminPassword', newPassword);
+  return hashPassword(newPassword).then(function(hashed) {
+    return saveSetting('adminPassword', hashed);
+  });
 }
 
 /**

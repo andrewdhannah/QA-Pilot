@@ -60,109 +60,116 @@
                 height: 100%;
             }
 
-            .br-titlebar {
-                height: 32px;
-                display: flex;
-                align-items: center;
-                padding: 0 8px;
-                box-sizing: border-box;
-                background: var(--br-bg-alt);
-                border-bottom: 1px solid var(--br-border-subtle);
-                gap: 8px;
-            }
-
-            .br-titlebar-icon {
-                width: 18px;
-                height: 18px;
-                border-radius: 4px;
-                background: var(--br-blue);
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                color: #fff;
-                font-size: 12px;
-                font-weight: 600;
-            }
-
-            .br-titlebar-title {
-                font-size: 12px;
-                color: var(--br-text-subtle);
-            }
-
             .br-tabs-row {
-                height: 32px;
-                display: flex;
-                align-items: flex-end;
-                padding: 0 4px;
-                box-sizing: border-box;
-                background: var(--br-bg-alt);
-                border-bottom: 1px solid var(--br-border-subtle);
+              height: 36px;
+              display: flex;
+              align-items: flex-end;
+              padding: 0 4px;
+              box-sizing: border-box;
+              background: var(--br-bg-alt);
+              border-bottom: 1px solid var(--br-border-subtle);
+              gap: 2px;
             }
 
             .br-tab {
-                min-width: 120px;
-                max-width: 220px;
-                height: 26px;
-                margin-right: 4px;
-                border-radius: 6px 6px 0 0;
-                background: var(--br-tab-bg);
-                border: 1px solid transparent;
-                border-bottom: none;
-                display: flex;
-                align-items: center;
-                padding: 0 8px;
-                box-sizing: border-box;
-                font-size: 12px;
-                color: var(--br-text-subtle);
-                cursor: pointer;
+              min-width: 130px;
+              max-width: 220px;
+              height: 30px;
+              border-radius: 6px 6px 0 0;
+              background: rgba(0,0,0,0.04);
+              border: 1px solid transparent;
+              border-bottom: none;
+              display: flex;
+              align-items: center;
+              padding: 0 10px;
+              box-sizing: border-box;
+              font-size: 12px;
+              color: var(--br-text-subtle);
+              cursor: pointer;
+              gap: 6px;
+              transition: background 0.12s;
+              position: relative;
+            }
+
+            body.theme-dark .br-tab {
+              background: rgba(255,255,255,0.04);
+            }
+
+            .br-tab:hover:not(.br-tab-active) {
+              background: rgba(0,0,0,0.07);
+            }
+
+            body.theme-dark .br-tab:hover:not(.br-tab-active) {
+              background: rgba(255,255,255,0.08);
             }
 
             .br-tab-active {
-                background: var(--br-tab-bg-active);
-                border-color: var(--br-tab-border);
-                color: var(--br-text);
+              background: var(--br-tab-bg-active) !important;
+              border-color: var(--br-border-subtle);
+              color: var(--br-text);
+              font-weight: 500;
+              box-shadow: inset 0 2px 0 0 var(--br-blue);
             }
 
             .br-tab-title {
-                flex: 1;
-                white-space: nowrap;
-                overflow: hidden;
-                text-overflow: ellipsis;
+              flex: 1;
+              white-space: nowrap;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              font-size: 12px;
             }
 
             .br-tab-close {
-                width: 16px;
-                height: 16px;
-                border-radius: 999px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                font-size: 11px;
-                opacity: 0.6;
+              width: 16px;
+              height: 16px;
+              border-radius: 4px;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              font-size: 13px;
+              line-height: 1;
+              color: var(--br-text-subtle);
+              opacity: 0.5;
+              flex-shrink: 0;
+              transition: opacity 0.1s, background 0.1s;
+            }
+
+            .br-tab:hover .br-tab-close,
+            .br-tab-active .br-tab-close {
+              opacity: 1;
             }
 
             .br-tab-close:hover {
-                background: rgba(0, 0, 0, 0.08);
-                opacity: 1;
+              background: rgba(0,0,0,0.1);
+              opacity: 1;
             }
 
             body.theme-dark .br-tab-close:hover {
-                background: rgba(255, 255, 255, 0.12);
+              background: rgba(255,255,255,0.15);
             }
 
             .br-tab-new {
-                width: 26px;
-                height: 26px;
-                border-radius: 6px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                cursor: pointer;
-                color: var(--br-text-subtle);
+              width: 28px;
+              height: 28px;
+              border-radius: 6px;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              cursor: pointer;
+              color: var(--br-text-subtle);
+              font-size: 18px;
+              line-height: 1;
+              flex-shrink: 0;
+              transition: background 0.12s;
             }
 
             .br-tab-new:hover {
-                background: var(--br-tab-bg);
+              background: rgba(0,0,0,0.07);
+              color: var(--br-text);
+            }
+
+            body.theme-dark .br-tab-new:hover {
+              background: rgba(255,255,255,0.1);
             }
 
             .br-address-bar {
@@ -245,11 +252,6 @@
     </head>
     <body class="theme-light">
         <div class="br-root">
-            <div class="br-titlebar">
-                <div class="br-titlebar-icon">e</div>
-                <div class="br-titlebar-title">Edge — Training Browser</div>
-            </div>
-
             <div class="br-tabs-row" id="br-tabs-row"></div>
 
             <div class="br-address-bar">
@@ -275,81 +277,368 @@
                     id="br-frame"
                     class="br-frame"
                     srcdoc="<!doctype html><html><body></body></html>"
-                    sandbox="allow-scripts"
+                    sandbox="allow-scripts allow-same-origin"
                 ></iframe>
             </div>
         </div>
 
         <script>
             (function () {
-                const OS = window.parent.OS || window.parent.QA_OS;
+                var OS = window.parent.OS || window.parent.QA_OS;
+                window.OS = OS;
+                window.QA_OS = OS;
+                var frame = document.getElementById("br-frame");
 
-                const state = {
+                var APP_TITLES = {
+                    dynamics: "Dynamics CRM",
+                    ado: "Azure DevOps",
+                    ac: "AC Panel"
+                };
+
+                var state = {
                     theme: "light",
                     tabs: [],
                     activeTabId: null,
-                    history: {}, // tabId -> [urls]
-                    historyIndex: {}, // tabId -> index
+                    history: {},
+                    historyIndex: {},
                 };
 
-                if (OS && OS.loadAppState) {
-                    const saved = OS.loadAppState("browser");
-                    if (saved) Object.assign(state, saved);
-                }
+                var _appBootData = null;
+                var _winId = null;
 
-                window.addEventListener("message", (event) => {
-                    const msg = event.data;
-                    if (
-                        !msg ||
-                        msg.type !== "APP_BOOT" ||
-                        msg.appId !== "browser"
-                    )
+                var QAPACHE = {
+                    "qapache": function() {
+                        return QAPACHE_SERVER_PAGE;
+                    },
+                    "qtube": function() {
+                        return QTUBE_PAGE;
+                    },
+                    "qoutlook": function() {
+                        return QOUTLOOK_PAGE;
+                    },
+                };
+
+                var QAPACHE_SERVER_PAGE = "<!doctype html><html><head><meta charset='UTF-8'><title>QApache — It Works!</title><style>" +
+                    "*{box-sizing:border-box}" +
+                    "body{margin:0;padding:0;font-family:Consolas,Monaco,monospace;background:#1a1a2e;color:#16c79a;line-height:1.6}" +
+                    ".qap-container{max-width:800px;margin:0 auto;padding:40px 20px}" +
+                    ".qap-header{display:flex;align-items:center;gap:12px;margin-bottom:30px;padding-bottom:20px;border-bottom:1px solid #16213e}" +
+                    ".qap-feather{font-size:40px}" +
+                    ".qap-title{font-size:24px;font-weight:bold;color:#e94560;margin:0}" +
+                    ".qap-tagline{font-size:12px;color:#533483}" +
+                    ".it-works{font-size:36px;font-weight:bold;color:#e94560;margin:20px 0}" +
+                    ".qap-box{background:#16213e;border:1px solid #0f3460;border-radius:6px;padding:20px;margin:20px 0}" +
+                    ".qap-label{font-size:11px;color:#533483;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}" +
+                    ".qap-value{font-size:14px;color:#16c79a}" +
+                    ".qap-status{display:inline-block;background:#16c79a;color:#0f3460;font-size:10px;padding:2px 8px;border-radius:3px;font-weight:bold}" +
+                    ".qap-footer{margin-top:40px;padding-top:20px;border-top:1px solid #16213e;font-size:11px;color:#533483}" +
+                    ".qap-ascii{color:#e94560;font-size:10px;line-height:1.2;margin-bottom:20px}" +
+                    "</style></head><body>" +
+                    "<div class='qap-container'>" +
+                    "<div class='qap-ascii'>" +
+                    "   _____                  _     _<br>" +
+                    "  / ____|                | |   | |<br>" +
+                    " | |  __ _ __   __ _  ___| |__ | |__   ___<br>" +
+                    " | | |_ | '_ \\ / _` |/ __| '_ \\| '_ \\ / _ \\<br>" +
+                    " | |__| | |_) | (_| | (__| | | | | | |  __/<br>" +
+                    "  \\_____| .__/ \\__,_|\\___|_| |_|_| |_|\\___|<br>" +
+                    "        | |<br>" +
+                    "        |_|<br>" +
+                    "</div>" +
+                    "<div class='qap-header'>" +
+                    "<div class='qap-feather'>🪶</div>" +
+                    "<div>" +
+                    "<h1 class='qap-title'>QApache</h1>" +
+                    "<div class='qap-tagline'>QA Pilot Internal Web Server v2.4.59</div>" +
+                    "</div>" +
+                    "</div>" +
+                    "<div class='it-works'>It Works!</div>" +
+                    "<div class='qap-box'>" +
+                    "<div class='qap-label'>Server Status</div>" +
+                    "<div class='qap-value'><span class='qap-status'>RUNNING</span> since OS boot</div>" +
+                    "</div>" +
+                    "<div class='qap-box'>" +
+                    "<div class='qap-label'>Active Hosts</div>" +
+                    "<div class='qap-value'>os://localhost</div>" +
+                    "</div>" +
+                    "<div class='qap-box'>" +
+                    "<div class='qap-label'>Registered Modules</div>" +
+                    "<div class='qap-value'>" +
+                    "• mod_qtube (video streaming)<br>" +
+                    "• mod_search (engagement optimizer)<br>" +
+                    "• mod_redirect (unskippable pre-rolls)<br>" +
+                    "• mod_recommend (neural suggestion engine)<br>" +
+                    "</div>" +
+                    "</div>" +
+                    "<div class='qap-box'>" +
+                    "<div class='qap-label'>Try These Routes</div>" +
+                    "<div class='qap-value'>" +
+                    "→ <strong>os://qtube</strong> — video platform<br>" +
+                    "→ <strong>os://qoutlook</strong> — web mail<br>" +
+                    "→ <strong>os://qapache</strong> — this page<br>" +
+                    "</div>" +
+                    "</div>" +
+                    "<div class='qap-footer'>" +
+                    "QApache/2.4.59 (QA Pilot) — 'Patch Tuesday? Never Heard Of Her.'<br>" +
+                    "<br>" +
+                    "This server is proudly running on <strong>0 vulnerabilities</strong> (scanned by our AI which is definitely not biased).<br>" +
+                    "Uptime: ∞ (simulated)" +
+                    "</div>" +
+                    "</div></body></html>";
+
+                var QTUBE_PAGE = "<!doctype html><html><head><meta charset='UTF-8'><title>QTube</title><style>" +
+                    "*{box-sizing:border-box}" +
+                    "body{margin:0;padding:0;font-family:Segoe UI,system-ui,sans-serif;background:#0f0f0f;color:#fff;min-height:100vh}" +
+                    ".qt-header{display:flex;align-items:center;justify-content:space-between;padding:8px 16px;background:#0f0f0f;border-bottom:1px solid #303030;position:sticky;top:0;z-index:100}" +
+                    ".qt-logo{display:flex;align-items:center;gap:4px;font-weight:700;font-size:18px}" +
+                    ".qt-red{color:#ff0000}" +
+                    ".qt-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px;padding:20px}" +
+                    ".qt-card{background:#1a1a1a;border-radius:8px;overflow:hidden;cursor:pointer;transition:transform 0.15s}" +
+                    ".qt-card:hover{transform:scale(1.02)}" +
+                    ".qt-card.paused{opacity:0.6}" +
+                    ".qtube-sprite{width:100%;aspect-ratio:16/9;background-repeat:no-repeat;background-position:0 0;background-size:cover;image-rendering:pixelated;animation:qtubePlay 0.8s steps(8) infinite}" +
+                    ".qt-card.paused .qtube-sprite{animation-play-state:paused}" +
+                    ".qt-card:hover .qtube-sprite{animation-duration:0.55s}" +
+                    ".ai-influencer{background-image:url('videos/ai_influencer_strip.png')}" +
+                    ".tutorial-guy{background-image:url('videos/tutorial_guy_strip.png')}" +
+                    ".corporate-demo{background-image:url('videos/corporate_ai_demo_strip.png')}" +
+                    ".infinite-buffering{background-image:url('videos/infinite_buffering_strip.png')}" +
+                    "@keyframes qtubePlay{from{background-position-x:0}to{background-position-x:-1024px}}" +
+                    ".qt-info{padding:12px}" +
+                    ".qt-title{font-size:14px;font-weight:600;margin-bottom:6px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}" +
+                    ".qt-meta{font-size:12px;color:#aaa}" +
+                    ".qt-badge{display:inline-block;background:#ff0000;color:#fff;font-size:10px;padding:2px 6px;border-radius:2px;margin-right:6px}" +
+                    ".qt-hero{padding:40px 20px;text-align:center;background:linear-gradient(180deg,#1a0000 0%,#0f0f0f 100%)}" +
+                    ".qt-hero h1{font-size:28px;margin:0 0 8px;color:#ff4444}" +
+                    ".qt-hero p{margin:0;color:#888;font-size:14px}" +
+                    ".qt-easter{position:fixed;bottom:20px;right:20px;font-size:10px;color:#333}" +
+                    "</style></head><body>" +
+                    "<div class='qt-header'>" +
+                    "<div class='qt-logo'><span class='qt-red'>▶</span> Q<span class='qt-red'>T</span>ube</div>" +
+                    "<div style='color:#666;font-size:12px'>AI-generated engagement optimized</div>" +
+                    "</div>" +
+                    "<div class='qt-hero'>" +
+                    "<h1>QTube</h1>" +
+                    "<p>Broadcast yourself... to our neural engagement engine.</p>" +
+                    "</div>" +
+                    "<div class='qt-grid'>" +
+                    "<div class='qt-card'><div class='qtube-sprite ai-influencer'></div>" +
+                    "<div class='qt-info'><div class='qt-title'>AI Influencer Explains Quantum Productivity Chakra Scaling</div>" +
+                    "<div class='qt-meta'><span class='qt-badge'>LIVE</span>2.4M hallucinations • 3 minutes ago</div></div></div>" +
+                    "<div class='qt-card'><div class='qtube-sprite tutorial-guy'></div>" +
+                    "<div class='qt-info'><div class='qt-title'>This Changes Programming Forever (Google Fears This Engineer)</div>" +
+                    "<div class='qt-meta'>947K views • 1 day ago</div></div></div>" +
+                    "<div class='qt-card'><div class='qtube-sprite corporate-demo'></div>" +
+                    "<div class='qt-info'><div class='qt-title'>Enterprise Neural Synergy Cloud-Native Cognition Stack Demo</div>" +
+                    "<div class='qt-meta'>42K views • Sponsored</div></div></div>" +
+                    "<div class='qt-card'><div class='qtube-sprite infinite-buffering'></div>" +
+                    "<div class='qt-info'><div class='qt-title'>Infinite Recursive Productivity Stack — Deploying Consciousness Layer</div>" +
+                    "<div class='qt-meta'>Loading... • Generating engagement...</div></div></div>" +
+                    "</div>" +
+                    "<div class='qt-easter'>Served by QApache 🪶</div>" +
+                    "<script>(function(){var cards=document.querySelectorAll('.qt-card');cards.forEach(function(c){c.addEventListener('click',function(){this.classList.toggle('paused')})})})()<\/script>" +
+                    "</body></html>";
+
+                var QOUTLOOK_PAGE = "<!doctype html><html><head><meta charset='UTF-8'><title>QOutlook — Mail</title><style>" +
+                    "*{box-sizing:border-box;margin:0;padding:0}" +
+                    "body{font-family:Segoe UI,system-ui,sans-serif;font-size:13px;background:#fff;color:#201f1e;height:100vh;display:flex;flex-direction:column;overflow:hidden}" +
+                    ".ol-topbar{display:flex;align-items:center;padding:0 16px;height:44px;background:#0078d4;color:#fff;flex-shrink:0}" +
+                    ".ol-logo{font-weight:600;font-size:16px;margin-right:24px}" +
+                    ".ol-search{flex:1;max-width:360px;height:28px;border:1px solid rgba(255,255,255,0.3);border-radius:4px;background:rgba(255,255,255,0.15);color:#fff;padding:0 10px;font-size:12px;outline:none}" +
+                    ".ol-search::placeholder{color:rgba(255,255,255,0.6)}" +
+                    ".ol-avatar{margin-left:auto;width:32px;height:32px;border-radius:50%;background:#005a9e;display:flex;align-items:center;justify-content:center;font-weight:600;font-size:12px;color:#fff;cursor:pointer}" +
+                    ".ol-body{display:flex;flex:1;overflow:hidden}" +
+                    ".ol-sidebar{width:200px;background:#f3f2f1;border-right:1px solid #edebe9;padding:8px 0;flex-shrink:0;overflow-y:auto}" +
+                    ".ol-folder{padding:6px 16px;font-size:13px;color:#201f1e;cursor:pointer;display:flex;align-items:center;gap:8px}" +
+                    ".ol-folder:hover{background:#edebe9}" +
+                    ".ol-folder.active{background:#deecf9;font-weight:600}" +
+                    ".ol-folder-count{margin-left:auto;font-size:11px;color:#605e5c}" +
+                    ".ol-list{width:300px;border-right:1px solid #edebe9;overflow-y:auto;flex-shrink:0}" +
+                    ".ol-email{padding:10px 12px;border-bottom:1px solid #edebe9;cursor:pointer}" +
+                    ".ol-email:hover{background:#f3f2f1}" +
+                    ".ol-email.selected{background:#deecf9}" +
+                    ".ol-email.unread{border-left:3px solid #0078d4;padding-left:9px}" +
+                    ".ol-email.unread .ol-sender{font-weight:600}" +
+                    ".ol-email.unread .ol-subject{font-weight:600}" +
+                    ".ol-sender{font-size:13px;color:#201f1e;margin-bottom:2px}" +
+                    ".ol-subject{font-size:12px;color:#201f1e;margin-bottom:1px}" +
+                    ".ol-time{font-size:11px;color:#605e5c;float:right}" +
+                    ".ol-preview{font-size:12px;color:#605e5c;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}" +
+                    ".ol-reading{flex:1;overflow-y:auto;padding:24px;background:#fff}" +
+                    ".ol-reading-header{margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid #edebe9}" +
+                    ".ol-reading-subject{font-size:18px;font-weight:600;margin-bottom:12px}" +
+                    ".ol-reading-from{font-size:13px;color:#201f1e;margin-bottom:2px}" +
+                    ".ol-reading-to{font-size:12px;color:#605e5c;margin-bottom:12px}" +
+                    ".ol-reading-date{font-size:11px;color:#605e5c;margin-bottom:16px}" +
+                    ".ol-reading-body{font-size:13px;line-height:1.6;color:#201f1e;white-space:pre-wrap}" +
+                    ".ol-reading-body p{margin-bottom:10px}" +
+                    ".ol-placeholder{display:flex;align-items:center;justify-content:center;height:100%;color:#c8c6c4;font-size:14px}" +
+                    ".ol-sep{color:#605e5c;font-size:11px;margin:16px 0}" +
+                    "</style></head><body>" +
+                    "<div class='ol-topbar'>" +
+                    "<div class='ol-logo'>Outlook</div>" +
+                    "<input class='ol-search' placeholder='Search mail and people' readonly>" +
+                    "<div class='ol-avatar' title='Andrew Hannah'>AH</div>" +
+                    "</div>" +
+                    "<div class='ol-body'>" +
+                    "<div class='ol-sidebar'>" +
+                    "<div class='ol-folder active'><span>📥</span>Inbox<span class='ol-folder-count'>1</span></div>" +
+                    "<div class='ol-folder'><span>📤</span>Sent Items</div>" +
+                    "<div class='ol-folder'><span>📋</span>Drafts</div>" +
+                    "<div class='ol-folder'><span>⚠️</span>Junk Email</div>" +
+                    "<div class='ol-folder'><span>🗑️</span>Deleted Items</div>" +
+                    "</div>" +
+                    "<div class='ol-list' id='ol-list'></div>" +
+                    "<div class='ol-reading' id='ol-reading'><div class='ol-placeholder'>Select an email to read</div></div>" +
+                    "</div>" +
+                    "<script>" +
+                    "var emails=[" +
+                    "{sender:'IT Support',from:'IT Support <itsupport@company.internal>',to:'Andrew Hannah',subject:'Re: Coffee Machine \u2014 URGENT',time:'9:14 AM',date:'Today, 9:14 AM',unread:true,preview:'Thank you for your continued engagement with the IT helpdesk. After careful review, we would like to remind you that the coffee machine is not a supported system under our QA testing framework.',body:'Hi Andrew,\\n\\nThank you for your continued engagement with the IT helpdesk.\\n\\nAfter careful review, we would like to remind you that the coffee machine is not a supported system under our QA testing framework.\\n\\nSpecifically:\\n  \\u2022 Bug #QA-0042 \"Coffee too hot\" \\u2014 Cannot reproduce. Working as designed.\\n  \\u2022 Bug #QA-0043 \"Cup dispenser jammed\" \\u2014 Closed. User error.\\n  \\u2022 Bug #QA-0044 \"No oat milk\" \\u2014 Out of scope. Please see Facilities.\\n  \\u2022 Bug #QA-0045 \"Machine makes noise\" \\u2014 By design. It is a machine.\\n\\nWe have escalated your request to the Facilities team and have updated your ticket to WONTFIX.\\n\\nPlease stop filing bug reports about the coffee machine.\\n\\nRegards,\\nDerek W.\\nIT Support \\u2014 Level 1\\n\\u260e Ext. 4001  |  \\u2709 itsupport@company.internal\\n\\n\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\nCONFIDENTIALITY NOTICE: This email and any attachments are intended solely for the use of the individual or entity to whom they are addressed. If you have received this email in error, please notify the sender and delete it immediately. Do not forward to the coffee machine.\\n\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500'}" +
+                    ",{sender:'Elyse Hannah',from:'Elyse Hannah <elyse.hannah@company.internal>',to:'QA Team',subject:'QA signoff \\u2014 Case #4471',time:'Yesterday',date:'Yesterday',unread:false,preview:'All acceptance criteria verified and signed off.',body:'All acceptance criteria verified and signed off.\\nCase #4471 is clear for release.\\n\\n\\u2014 Elyse\\nLead QA Tester'}" +
+                    ",{sender:'GitHub',from:'GitHub <noreply@github.com>',to:'QA Team',subject:'[QA-Pilot] Pull request merged: sprint-g5',time:'Yesterday',date:'Yesterday',unread:false,preview:'[QA-Pilot] Pull request #18 merged by andrewdhannah',body:'[QA-Pilot] Pull request #18 merged by andrewdhannah\\nBranch: sprint-g5 \\u2192 main\\nView pull request: github.com/andrewdhannah/QA-Pilot/pull/18'}" +
+                    ",{sender:'Microsoft Teams',from:'Microsoft Teams <noreply@teams.microsoft.com>',to:'Andrew Hannah',subject:'You have a new voicemail',time:'Mon',date:'Monday',unread:false,preview:'You have a new voicemail from an unknown caller.',body:'No preview available.'}" +
+                    ",{sender:'IT Support',from:'IT Support <itsupport@company.internal>',to:'All Staff',subject:'Scheduled maintenance \\u2014 Sat 2am',time:'Last week',date:'Last week',unread:false,preview:'The system will be unavailable from 2:00 AM to 4:00 AM on Saturday.',body:'No preview available.'}" +
+                    ",{sender:'No-Reply',from:'No-Reply <noreply@company.internal>',to:'Andrew Hannah',subject:'Your password will expire in 14 days',time:'Last week',date:'Last week',unread:false,preview:'Your password will expire in 14 days. Please update your password.',body:'No preview available.'}" +
+                    "];" +
+                    "var selectedIdx=-1;" +
+                    "function renderList(){var list=document.getElementById('ol-list');list.innerHTML='';for(var i=0;i<emails.length;i++){var e=emails[i];var div=document.createElement('div');div.className='ol-email'+(e.unread?' unread':'')+(i===selectedIdx?' selected':'');div.innerHTML='<div class=\\'ol-time\\'>'+e.time+'</div><div class=\\'ol-sender\\'>'+e.sender+'</div><div class=\\'ol-subject\\'>"+e.subject+"</div><div class=\\'ol-preview\\'>"+e.preview+"</div>';div.onclick=function(idx){return function(){selectEmail(idx);};}(i);list.appendChild(div);}}" +
+                    "function selectEmail(idx){selectedIdx=idx;var e=emails[idx];e.unread=false;renderList();var reading=document.getElementById('ol-reading');if(e.body==='No preview available.'){reading.innerHTML='<div class=\\'ol-placeholder\\'>No preview available.</div>';return;}" +
+                    "reading.innerHTML='<div class=\\'ol-reading-header\\'><div class=\\'ol-reading-subject\\'>"+e.subject+"</div><div class=\\'ol-reading-from\\'><strong>From:</strong> '+e.from+'</div><div class=\\'ol-reading-to\\'><strong>To:</strong> '+e.to+'</div><div class=\\'ol-reading-date\\'><strong>Date:</strong> '+e.date+'</div></div><div class=\\'ol-reading-body\\'>'+e.body.replace(/\\n/g,'<br>')+'</div>';}" +
+                    "renderList();" +
+                    "<\\/script>" +
+                    "</body></html>";
+
+                // ── MESSAGE HANDLER ─────────────────────────────────────────
+
+                window.addEventListener("message", function(event) {
+                    var msg = event.data;
+                    if (!msg) return;
+
+                    var isFromFrame = frame && event.source === frame.contentWindow;
+
+                    // Messages FROM inner app iframe → forward to OS shell
+                    if (isFromFrame) {
+                        if (msg.type === "BUG_FOUND" || msg.type === "BUG_LOGGED") {
+                            window.parent.postMessage(msg, "*");
+                        }
                         return;
+                    }
 
-                    state.theme = msg.theme || state.theme || "light";
-                    applyTheme();
+                    // Messages FROM OS shell
+                    if (msg.type === "APP_BOOT" && msg.appId === "browser") {
+                        handleAppBoot(msg);
+                        return;
+                    }
+                    if (msg.type === "OPEN_APP_TAB") {
+                        handleOpenAppTab(msg.appId);
+                        return;
+                    }
+                    if (msg.type === "ROLE_CHANGE") {
+                        if (frame && frame.contentWindow) {
+                            frame.contentWindow.postMessage(msg, "*");
+                        }
+                        return;
+                    }
+                });
 
-                    if (!state.tabs || !state.tabs.length) {
-                        createTab({
-                            title: "Home",
-                            route: "home",
-                        });
-                        createTab({
-                            title: "QA Guidelines",
-                            route: "docs/qa-guidelines",
-                        });
+                function handleAppBoot(msg) {
+                    _appBootData = msg;
+                    _winId = msg.winId;
+
+                    if (msg.browserState && typeof msg.browserState === "object") {
+                        state.tabs = msg.browserState.tabs || [];
+                        state.activeTabId = msg.browserState.activeTabId || null;
+                        state.history = msg.browserState.history || {};
+                        state.historyIndex = msg.browserState.historyIndex || {};
+                        state.theme = msg.browserState.theme || msg.theme || "light";
+                    } else {
+                        state.theme = msg.theme || "light";
+                        if (msg.requestedTab) {
+                            createTab({
+                                title: APP_TITLES[msg.requestedTab] || msg.requestedTab,
+                                route: "app/" + msg.requestedTab,
+                            });
+                        } else {
+                            createTab({ title: "Home", route: "home" });
+                            createTab({ title: "QA Guidelines", route: "docs/qa-guidelines" });
+                        }
                         if (state.tabs.length > 0) state.activeTabId = state.tabs[0].id;
                     }
 
+                    applyTheme();
                     renderTabs();
                     renderActiveTab();
-                });
+                }
+
+                function handleOpenAppTab(appId) {
+                    var route = "app/" + appId;
+                    var existing = state.tabs.find(function(t) { return t.route === route; });
+                    if (existing) {
+                        state.activeTabId = existing.id;
+                        persist();
+                        renderTabs();
+                        renderActiveTab();
+                    } else {
+                        createTab({
+                            title: APP_TITLES[appId] || appId,
+                            route: route,
+                        });
+                    }
+                }
+
+                function bootInnerApp() {
+                    if (!frame || !frame.contentWindow || !_appBootData) return;
+                    var tab = state.tabs.find(function(t) { return t.id === state.activeTabId; });
+                    if (!tab || tab.route.indexOf("app/") !== 0) return;
+                    var appId = tab.route.substring("app/".length);
+                    var bootMsg = {
+                        type: "APP_BOOT",
+                        appId: appId,
+                        role: _appBootData.role,
+                        theme: _appBootData.theme,
+                        sessionId: _appBootData.sessionId,
+                        scenarioId: _appBootData.scenarioId,
+                        activeBugs: _appBootData.activeBugs,
+                    };
+                    try {
+                        frame.contentWindow.postMessage(bootMsg, "*");
+                    } catch (e) {}
+                }
 
                 function applyTheme() {
                     document.body.classList.remove("theme-light", "theme-dark");
                     document.body.classList.add(
-                        state.theme === "dark"
-                            ? "theme-dark"
-                            : "theme-light",
+                        state.theme === "dark" ? "theme-dark" : "theme-light",
                     );
                 }
 
                 function persist() {
-                    if (OS && OS.saveAppState) {
-                        OS.saveAppState("browser", state);
+                    if (_winId !== null) {
+                        try {
+                            window.parent.postMessage({
+                                type: "BROWSER_STATE_CHANGED",
+                                winId: _winId,
+                                state: {
+                                    tabs: state.tabs,
+                                    activeTabId: state.activeTabId,
+                                    history: state.history,
+                                    historyIndex: state.historyIndex,
+                                    theme: state.theme,
+                                }
+                            }, "*");
+                        } catch (e) {}
                     }
                 }
 
                 function createTab(opts) {
-                    const id = "tab-" + Date.now() + "-" + Math.floor(Math.random() * 9999);
-                    const tab = {
+                    var id = "tab-" + Date.now() + "-" + Math.floor(Math.random() * 9999);
+                    state.tabs.push({
                         id: id,
-                        title: opts.title || "New tab",
+                        title: opts.title || getTitleForRoute(opts.route) || "New tab",
                         route: opts.route || "home",
-                    };
-                    state.tabs.push(tab);
+                    });
                     state.activeTabId = id;
-                    state.history[id] = [tab.route];
+                    state.history[id] = [opts.route || "home"];
                     state.historyIndex[id] = 0;
                     persist();
                     renderTabs();
@@ -357,7 +646,7 @@
                 }
 
                 function closeTab(id) {
-                    const idx = state.tabs.findIndex((t) => t.id === id);
+                    var idx = state.tabs.findIndex(function(t) { return t.id === id; });
                     if (idx === -1) return;
                     state.tabs.splice(idx, 1);
                     delete state.history[id];
@@ -365,8 +654,7 @@
 
                     if (state.activeTabId === id) {
                         if (state.tabs.length) {
-                            const newIdx = Math.max(0, idx - 1);
-                            state.activeTabId = state.tabs[newIdx].id;
+                            state.activeTabId = state.tabs[Math.max(0, idx - 1)].id;
                         } else {
                             state.activeTabId = null;
                         }
@@ -377,304 +665,257 @@
                 }
 
                 function setActiveTab(id) {
-                    if (!state.tabs.find((t) => t.id === id)) return;
+                    if (!state.tabs.find(function(t) { return t.id === id; })) return;
                     state.activeTabId = id;
                     persist();
                     renderTabs();
                     renderActiveTab();
                 }
 
+                function getTitleForRoute(route) {
+                    if (!route) return "Home";
+                    if (route === "home") return "Home";
+                    if (route === "qapache") return "QApache — It Works!";
+                    if (route === "qtube") return "QTube";
+                    if (route === "qoutlook") return "QOutlook — Mail";
+                    if (route === "docs/qa-guidelines") return "QA Guidelines";
+                    if (route.indexOf("app/") === 0) {
+                        var appId = route.substring("app/".length);
+                        return APP_TITLES[appId] || appId;
+                    }
+                    if (route.indexOf("lesson/") === 0) {
+                        return "Lesson " + route.substring("lesson/".length);
+                    }
+                    if (route.indexOf("docs/") === 0) {
+                        return "Docs: " + route.substring("docs/".length);
+                    }
+                    return route;
+                }
+
                 function navigateActiveTab(route, pushHistory) {
-                    const tab = state.tabs.find(
-                        (t) => t.id === state.activeTabId,
-                    );
+                    var tab = state.tabs.find(function(t) { return t.id === state.activeTabId; });
                     if (!tab) return;
                     tab.route = route;
+                    tab.title = getTitleForRoute(route);
 
                     if (!state.history[tab.id]) state.history[tab.id] = [];
                     if (pushHistory !== false) {
                         state.history[tab.id].push(route);
-                        state.historyIndex[tab.id] =
-                            state.history[tab.id].length - 1;
+                        state.historyIndex[tab.id] = state.history[tab.id].length - 1;
                     }
 
                     persist();
+                    renderTabs();
                     renderActiveTab();
                 }
 
                 function renderTabs() {
-                    const row = document.getElementById("br-tabs-row");
+                    var row = document.getElementById("br-tabs-row");
                     row.innerHTML = "";
 
-                    state.tabs.forEach((tab) => {
-                        const div = document.createElement("div");
-                        div.className =
-                            "br-tab" +
-                            (tab.id === state.activeTabId
-                                ? " br-tab-active"
-                                : "");
+                    state.tabs.forEach(function(tab) {
+                        var div = document.createElement("div");
+                        div.className = "br-tab" + (tab.id === state.activeTabId ? " br-tab-active" : "");
                         div.setAttribute("data-tab-id", tab.id);
 
-                        const title = document.createElement("div");
+                        var title = document.createElement("div");
                         title.className = "br-tab-title";
                         title.textContent = tab.title || "New tab";
 
-                        const close = document.createElement("div");
+                        var close = document.createElement("div");
                         close.className = "br-tab-close";
-                        close.textContent = "×";
+                        close.textContent = "\u00D7";
 
-                        close.onclick = (ev) => {
+                        close.onclick = function(ev) {
                             ev.stopPropagation();
                             closeTab(tab.id);
                         };
 
-                        div.onclick = () => setActiveTab(tab.id);
+                        div.onclick = function() { setActiveTab(tab.id); };
 
                         div.appendChild(title);
                         div.appendChild(close);
                         row.appendChild(div);
                     });
 
-                    const newTab = document.createElement("div");
+                    var newTab = document.createElement("div");
                     newTab.className = "br-tab-new";
                     newTab.textContent = "+";
-                    newTab.onclick = () =>
-                        createTab({
-                            title: "New tab",
-                            route: "home",
-                        });
+                    newTab.onclick = function() {
+                        createTab({ route: "home" });
+                    };
                     row.appendChild(newTab);
                 }
 
                 function renderActiveTab() {
-                    const frame = document.getElementById("br-frame");
-                    const addressInput =
-                        document.getElementById("br-address-input");
+                    var addressInput = document.getElementById("br-address-input");
 
-                    const tab = state.tabs.find(
-                        (t) => t.id === state.activeTabId,
-                    );
+                    var tab = state.tabs.find(function(t) { return t.id === state.activeTabId; });
                     if (!tab) {
-                        frame.srcdoc =
-                            "<!doctype html><html><body style='font-family:Segoe UI,system-ui,sans-serif;font-size:13px;padding:16px;color:#666;background:#faf9f8;'>No tabs open. Use the + button to open a new tab.</body></html>";
+                        frame.srcdoc = "<!doctype html><html><body style='font-family:Segoe UI,system-ui,sans-serif;font-size:13px;padding:16px;color:#666;background:#faf9f8;'>No tabs open. Use the + button to open a new tab.</body></html>";
                         addressInput.value = "";
                         return;
                     }
 
                     addressInput.value = tab.route || "";
-
-                    const route = tab.route || "home";
-                    frame.srcdoc = buildContentForRoute(route, tab.title);
+                    frame.srcdoc = buildContentForRoute(tab.route || "home", tab.title);
                 }
 
                 function buildContentForRoute(route, title) {
-                    const safeTitle =
-                        title || "Training Browser";
-                    const safeRoute = route || "home";
+                    var safeTitle = title || "Training Browser";
+                    var safeRoute = route || "home";
+                    // Normalize: strip os:// prefix if present (handles both
+                    // user-typed and state-restored routes with the prefix)
+                    if (safeRoute.indexOf("os://") === 0) safeRoute = safeRoute.substring(5);
+                    if (safeRoute.indexOf("/") === 0) safeRoute = safeRoute.substring(1);
+
+                    if (QAPACHE[safeRoute]) {
+                        return QAPACHE[safeRoute]();
+                    }
+
+                    if (safeRoute.indexOf("app/") === 0) {
+                        var appId = safeRoute.substring("app/".length);
+                        var appHtml = OS && OS.getAppHtml && OS.getAppHtml(appId);
+                        if (appHtml) {
+                            return appHtml;
+                        }
+                        return "<!doctype html><html><body style='font-family:Segoe UI,system-ui,sans-serif;font-size:13px;padding:16px;background:#fff;color:#666;'>App <strong>" + escapeHtml(appId) + "</strong> not available.</body></html>";
+                    }
 
                     if (safeRoute === "home") {
-                        return (
-                            "<!doctype html><html><head><meta charset='UTF-8'><title>" +
-                            safeTitle +
-                            "</title><style>" +
-                            "body { font-family: Segoe UI, system-ui, sans-serif; font-size: 13px;" +
-                            "       padding: 20px 24px; background: #faf9f8; color: #201f1e;" +
-                            "       line-height: 1.6; max-width: 720px; }" +
-                            "h1   { font-size: 17px; font-weight: 600; margin: 0 0 16px; color: #0078d4; }" +
-                            "h2   { font-size: 14px; font-weight: 600; margin: 20px 0 8px; color: #201f1e; }" +
-                            "p    { margin: 0 0 10px; }" +
-                            "ol, ul { margin: 0 0 12px; padding-left: 20px; }" +
-                            "li   { margin-bottom: 4px; }" +
-                            "table { border-collapse: collapse; width: 100%; margin-bottom: 12px; }" +
-                            "th   { background: #edebe9; text-align: left; padding: 6px 10px;" +
-                            "       font-size: 12px; font-weight: 600; }" +
-                            "td   { padding: 6px 10px; border-bottom: 1px solid #edebe9; font-size: 12px; }" +
-                            "code { background: #edebe9; padding: 1px 5px; border-radius: 3px;" +
-                            "       font-family: Consolas, monospace; font-size: 12px; }" +
-                            ".tip { background: #f0f6ff; border-left: 3px solid #0078d4;" +
-                            "       padding: 8px 12px; border-radius: 0 4px 4px 0; margin-bottom: 12px; }" +
-                            "</style>" +
-                            "</head><body>" +
+                        return "<!doctype html><html><head><meta charset='UTF-8'><title>" + safeTitle + "</title><style>" +
+                            "body{font-family:Segoe UI,system-ui,sans-serif;font-size:13px;padding:20px 24px;background:#faf9f8;color:#201f1e;line-height:1.6;max-width:720px}" +
+                            "h1{font-size:17px;font-weight:600;margin:0 0 16px;color:#0078d4}" +
+                            "h2{font-size:14px;font-weight:600;margin:20px 0 8px;color:#201f1e}" +
+                            "p{margin:0 0 10px}" +
+                            "ol,ul{margin:0 0 12px;padding-left:20px}" +
+                            "li{margin-bottom:4px}" +
+                            "table{border-collapse:collapse;width:100%;margin-bottom:12px}" +
+                            "th{background:#edebe9;text-align:left;padding:6px 10px;font-size:12px;font-weight:600}" +
+                            "td{padding:6px 10px;border-bottom:1px solid #edebe9;font-size:12px}" +
+                            "code{background:#edebe9;padding:1px 5px;border-radius:3px;font-family:Consolas,monospace;font-size:12px}" +
+                            ".tip{background:#f0f6ff;border-left:3px solid #0078d4;padding:8px 12px;border-radius:0 4px 4px 0;margin-bottom:12px}" +
+                            "</style></head><body>" +
                             "<h1>QA Pilot &mdash; Quick Reference</h1>" +
-                            "<div class='tip'>" +
-                            "<strong>Tip:</strong> Type a route in the address bar above (e.g. <code>docs/qa-guidelines</code>) and press Enter to navigate.</div>" +
-                            "<h2>Workflow</h2>" +
-                            "<ol>" +
+                            "<div class='tip'><strong>Tip:</strong> Type a route in the address bar above (e.g. <code>docs/qa-guidelines</code>) and press Enter to navigate.</div>" +
+                            "<h2>Workflow</h2><ol>" +
                             "<li><strong>Sign in</strong> and unlock the OS desktop</li>" +
                             "<li><strong>Open the Dynamics CRM case</strong> from your desktop icon</li>" +
                             "<li><strong>Open the AC Panel</strong> to review what the system should do</li>" +
                             "<li><strong>Compare the CRM case against the AC</strong> &mdash; look for anything that doesn't match</li>" +
                             "<li><strong>Open Azure DevOps</strong> for each bug you find and file a complete report</li>" +
-                            "<li><strong>Click &ldquo;Submit for Certification&rdquo;</strong> in the taskbar when done</li>" +
-                            "</ol>" +
-                            "<h2>App Guide</h2>" +
-                            "<table>" +
-                            "<tr><th>App</th><th>Purpose</th></tr>" +
+                            "<li><strong>Click &ldquo;Submit for Certification&rdquo;</strong> in the taskbar when done</li></ol>" +
+                            "<h2>App Guide</h2><table><tr><th>App</th><th>Purpose</th></tr>" +
                             "<tr><td>Dynamics CRM</td><td>View and investigate the active support case</td></tr>" +
                             "<tr><td>AC Panel</td><td>Review the Acceptance Criteria &mdash; what correct behaviour looks like</td></tr>" +
                             "<tr><td>Azure DevOps</td><td>File a bug report for each defect you find</td></tr>" +
                             "<tr><td>Browser</td><td>This app &mdash; reference material and guidelines</td></tr>" +
-                            "<tr><td>Training</td><td>Starts the capstone assessment with your scenario brief</td></tr>" +
-                            "</table>" +
-                            "<h2>Keyboard Tips</h2>" +
-                            "<ul>" +
+                            "<tr><td>Training</td><td>Starts the capstone assessment with your scenario brief</td></tr></table>" +
+                            "<h2>Keyboard Tips</h2><ul>" +
                             "<li><strong>Double-click</strong> a desktop icon to open an app</li>" +
                             "<li><strong>Click the Windows logo</strong> (taskbar) to open the Start menu</li>" +
-                            "<li><strong>Click Submit</strong> in the taskbar when you are finished</li>" +
-                            "</ul>" +
-                            "</body></html>"
-                        );
-                    }
-
-                    if (safeRoute.indexOf("lesson/") === 0) {
-                        const lessonId = safeRoute.substring("lesson/".length);
-                        return (
-                            "<!doctype html><html><head><meta charset='UTF-8'><title>Lesson " +
-                            lessonId +
-                            "</title></head><body style='font-family:Segoe UI,system-ui,sans-serif;font-size:13px;padding:16px;background:#ffffff;color:#201f1e;'>" +
-                            "<h2 style='margin-top:0;font-size:18px;'>Lesson: " +
-                            escapeHtml(lessonId) +
-                            "</h2>" +
-                            "<p>This is a placeholder lesson host for <strong>" +
-                            escapeHtml(lessonId) +
-                            "</strong>.</p>" +
-                            "<p>You can replace this content later with real lesson HTML, markdown rendering, or scenario-driven walkthroughs.</p>" +
-                            "<p>Because the OS must remain file://-safe, this browser uses <code>srcdoc</code> to render content instead of external network calls.</p>" +
-                            "</body></html>"
-                        );
+                            "<li><strong>Click Submit</strong> in the taskbar when you are finished</li></ul></body></html>";
                     }
 
                     if (safeRoute === "docs/qa-guidelines") {
-                        return (
-                            "<!doctype html><html><head><meta charset='UTF-8'><title>" +
-                            safeTitle +
-                            "</title><style>" +
-                            "body { font-family: Segoe UI, system-ui, sans-serif; font-size: 13px;" +
-                            "       padding: 20px 24px; background: #faf9f8; color: #201f1e;" +
-                            "       line-height: 1.6; max-width: 720px; }" +
-                            "h1   { font-size: 17px; font-weight: 600; margin: 0 0 16px; color: #0078d4; }" +
-                            "h2   { font-size: 14px; font-weight: 600; margin: 20px 0 8px; color: #201f1e; }" +
-                            "p    { margin: 0 0 10px; }" +
-                            "ol, ul { margin: 0 0 12px; padding-left: 20px; }" +
-                            "li   { margin-bottom: 4px; }" +
-                            "table { border-collapse: collapse; width: 100%; margin-bottom: 12px; }" +
-                            "th   { background: #edebe9; text-align: left; padding: 6px 10px;" +
-                            "       font-size: 12px; font-weight: 600; }" +
-                            "td   { padding: 6px 10px; border-bottom: 1px solid #edebe9; font-size: 12px; }" +
-                            "code { background: #edebe9; padding: 1px 5px; border-radius: 3px;" +
-                            "       font-family: Consolas, monospace; font-size: 12px; }" +
-                            ".good { background: #eff6ef; border-left: 3px solid #107c10;" +
-                            "       padding: 6px 10px; border-radius: 0 4px 4px 0; margin-bottom: 8px; }" +
-                            ".bad  { background: #fdf0ef; border-left: 3px solid #a4262c;" +
-                            "       padding: 6px 10px; border-radius: 0 4px 4px 0; margin-bottom: 8px; }" +
-                            "</style>" +
-                            "</head><body>" +
+                        return "<!doctype html><html><head><meta charset='UTF-8'><title>" + safeTitle + "</title><style>" +
+                            "body{font-family:Segoe UI,system-ui,sans-serif;font-size:13px;padding:20px 24px;background:#faf9f8;color:#201f1e;line-height:1.6;max-width:720px}" +
+                            "h1{font-size:17px;font-weight:600;margin:0 0 16px;color:#0078d4}" +
+                            "h2{font-size:14px;font-weight:600;margin:20px 0 8px;color:#201f1e}" +
+                            "p{margin:0 0 10px}" +
+                            "ol,ul{margin:0 0 12px;padding-left:20px}" +
+                            "li{margin-bottom:4px}" +
+                            "table{border-collapse:collapse;width:100%;margin-bottom:12px}" +
+                            "th{background:#edebe9;text-align:left;padding:6px 10px;font-size:12px;font-weight:600}" +
+                            "td{padding:6px 10px;border-bottom:1px solid #edebe9;font-size:12px}" +
+                            "code{background:#edebe9;padding:1px 5px;border-radius:3px;font-family:Consolas,monospace;font-size:12px}" +
+                            ".good{background:#eff6ef;border-left:3px solid #107c10;padding:6px 10px;border-radius:0 4px 4px 0;margin-bottom:8px}" +
+                            ".bad{background:#fdf0ef;border-left:3px solid #a4262c;padding:6px 10px;border-radius:0 4px 4px 0;margin-bottom:8px}" +
+                            "</style></head><body>" +
                             "<h1>QA Guidelines &mdash; Writing Bug Reports</h1>" +
                             "<h2>What is a Bug Report?</h2>" +
-                            "<p>A valid ADO bug report requires:</p>" +
-                            "<ul>" +
+                            "<p>A valid ADO bug report requires:</p><ul>" +
                             "<li><strong>Title:</strong> a clear, one-line description of the defect (not &ldquo;it doesn't work&rdquo;)</li>" +
                             "<li><strong>Severity:</strong> 1 = Critical, 2 = High, 3 = Medium, 4 = Low</li>" +
                             "<li><strong>AC Reference:</strong> the specific acceptance criteria the defect violates (e.g. AC-2.1)</li>" +
-                            "<li><strong>Steps to Reproduce:</strong> numbered steps that reliably reproduce the issue</li>" +
-                            "</ul>" +
-                            "<h2>Severity Guide</h2>" +
-                            "<table>" +
-                            "<tr><th>Severity</th><th>Label</th><th>Description</th></tr>" +
+                            "<li><strong>Steps to Reproduce:</strong> numbered steps that reliably reproduce the issue</li></ul>" +
+                            "<h2>Severity Guide</h2><table><tr><th>Severity</th><th>Label</th><th>Description</th></tr>" +
                             "<tr><td>1</td><td>Critical</td><td>System crash, data loss, security issue, blocks all users</td></tr>" +
                             "<tr><td>2</td><td>High</td><td>Major feature broken, no workaround, affects most users</td></tr>" +
                             "<tr><td>3</td><td>Medium</td><td>Feature partially broken, workaround exists</td></tr>" +
-                            "<tr><td>4</td><td>Low</td><td>Cosmetic issue, minor inconvenience</td></tr>" +
-                            "</table>" +
+                            "<tr><td>4</td><td>Low</td><td>Cosmetic issue, minor inconvenience</td></tr></table>" +
                             "<h2>Good vs Bad Bug Titles</h2>" +
                             "<div class='bad'><strong>Bad:</strong> &ldquo;Status is broken&rdquo;</div>" +
                             "<div class='good'><strong>Good:</strong> &ldquo;Junior Investigator can set case Status to Closed &mdash; AC-2.1 violation&rdquo;</div>" +
                             "<div class='bad'><strong>Bad:</strong> &ldquo;Date field issue&rdquo;</div>" +
                             "<div class='good'><strong>Good:</strong> &ldquo;Date Opened field accepts future dates &mdash; should be blocked per AC-3.2&rdquo;</div>" +
-                            "</body></html>"
-                        );
+                            "</body></html>";
+                    }
+
+                    if (safeRoute.indexOf("lesson/") === 0) {
+                        var lessonId = safeRoute.substring("lesson/".length);
+                        return "<!doctype html><html><head><meta charset='UTF-8'><title>Lesson " + lessonId + "</title></head><body style='font-family:Segoe UI,system-ui,sans-serif;font-size:13px;padding:16px;background:#ffffff;color:#201f1e;'>" +
+                            "<h2 style='margin-top:0;font-size:18px;'>Lesson: " + escapeHtml(lessonId) + "</h2>" +
+                            "<p>This is a placeholder lesson host for <strong>" + escapeHtml(lessonId) + "</strong>.</p>" +
+                            "</body></html>";
                     }
 
                     if (safeRoute.indexOf("docs/") === 0) {
-                        const docId = safeRoute.substring("docs/".length);
-                        return (
-                            "<!doctype html><html><head><meta charset='UTF-8'><title>Docs " +
-                            docId +
-                            "</title></head><body style='font-family:Segoe UI,system-ui,sans-serif;font-size:13px;padding:16px;background:#ffffff;color:#201f1e;'>" +
-                            "<h2 style='margin-top:0;font-size:18px;'>Documentation: " +
-                            escapeHtml(docId) +
-                            "</h2>" +
-                            "<p>Use this area to host QA guidelines, playbooks, or reference material.</p>" +
-                            "<p>Route: <code>" +
-                            escapeHtml(safeRoute) +
-                            "</code></p>" +
-                            "</body></html>"
-                        );
+                        var docId = safeRoute.substring("docs/".length);
+                        return "<!doctype html><html><head><meta charset='UTF-8'><title>Docs " + docId + "</title></head><body style='font-family:Segoe UI,system-ui,sans-serif;font-size:13px;padding:16px;background:#ffffff;color:#201f1e;'>" +
+                            "<h2 style='margin-top:0;font-size:18px;'>Documentation: " + escapeHtml(docId) + "</h2>" +
+                            "<p>Route: <code>" + escapeHtml(safeRoute) + "</code></p></body></html>";
                     }
 
-                    return (
-                        "<!doctype html><html><head><meta charset='UTF-8'><title>" +
-                        safeTitle +
-                        "</title></head><body style='font-family:Segoe UI,system-ui,sans-serif;font-size:13px;padding:16px;background:#ffffff;color:#201f1e;'>" +
-                        "<h2 style='margin-top:0;font-size:18px;'>Route: " +
-                        escapeHtml(safeRoute) +
-                        "</h2>" +
-                        "<p>This route is not yet mapped to a specific lesson or docs template.</p>" +
-                        "<p>You can wire it up later to load richer content, or just use this as a scratchpad.</p>" +
-                        "</body></html>"
-                    );
+                    return "<!doctype html><html><head><meta charset='UTF-8'><title>" + safeTitle + "</title></head><body style='font-family:Segoe UI,system-ui,sans-serif;font-size:13px;padding:16px;background:#fff;color:#201f1e;'>" +
+                        "<h2 style='margin-top:0;font-size:18px;'>Route: " + escapeHtml(safeRoute) + "</h2></body></html>";
                 }
 
                 function escapeHtml(str) {
-                    return String(str || "")
-                        .replace(/&/g, "&amp;")
-                        .replace(/</g, "&lt;")
-                        .replace(/>/g, "&gt;")
-                        .replace(/"/g, "&quot;");
+                    return String(str || "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
                 }
 
                 function wireChrome() {
-                    const addressInput =
-                        document.getElementById("br-address-input");
-                    const backBtn = document.getElementById("br-btn-back");
-                    const fwdBtn = document.getElementById("br-btn-forward");
-                    const refreshBtn =
-                        document.getElementById("br-btn-refresh");
+                    var addressInput = document.getElementById("br-address-input");
+                    var backBtn = document.getElementById("br-btn-back");
+                    var fwdBtn = document.getElementById("br-btn-forward");
+                    var refreshBtn = document.getElementById("br-btn-refresh");
 
-                    addressInput.addEventListener("keydown", (e) => {
+                    addressInput.addEventListener("keydown", function(e) {
                         if (e.key === "Enter") {
-                            const route = addressInput.value.trim() || "home";
-                            navigateActiveTab(route, true);
+                            var raw = addressInput.value.trim();
+                            // Strip "os://" prefix if user typed it (the label shows os://
+                            // visually, but the input doesn't include it — handle both cases)
+                            if (raw.indexOf("os://") === 0) raw = raw.substring(5);
+                            // Strip leading slash if present
+                            if (raw.indexOf("/") === 0) raw = raw.substring(1);
+                            navigateActiveTab(raw || "home", true);
                         }
                     });
 
-                    backBtn.onclick = () => {
-                        const tabId = state.activeTabId;
+                    backBtn.onclick = function() {
+                        var tabId = state.activeTabId;
                         if (!tabId) return;
-                        const hist = state.history[tabId] || [];
-                        let idx = state.historyIndex[tabId] || 0;
+                        var hist = state.history[tabId] || [];
+                        var idx = state.historyIndex[tabId] || 0;
                         if (idx > 0) {
-                            idx -= 1;
-                            state.historyIndex[tabId] = idx;
-                            const route = hist[idx];
-                            navigateActiveTab(route, false);
+                            state.historyIndex[tabId] = idx - 1;
+                            navigateActiveTab(hist[idx - 1], false);
                         }
                     };
 
-                    fwdBtn.onclick = () => {
-                        const tabId = state.activeTabId;
+                    fwdBtn.onclick = function() {
+                        var tabId = state.activeTabId;
                         if (!tabId) return;
-                        const hist = state.history[tabId] || [];
-                        let idx = state.historyIndex[tabId] || 0;
+                        var hist = state.history[tabId] || [];
+                        var idx = state.historyIndex[tabId] || 0;
                         if (idx < hist.length - 1) {
-                            idx += 1;
-                            state.historyIndex[tabId] = idx;
-                            const route = hist[idx];
-                            navigateActiveTab(route, false);
+                            state.historyIndex[tabId] = idx + 1;
+                            navigateActiveTab(hist[idx + 1], false);
                         }
                     };
 
-                    refreshBtn.onclick = () => {
+                    refreshBtn.onclick = function() {
                         renderActiveTab();
                     };
                 }

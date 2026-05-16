@@ -400,6 +400,21 @@
             .ado-confirmation-text {
                 flex: 1;
             }
+
+            /* ── Inline field validation error states ───────────────────── */
+            .ado-field input.has-error,
+            .ado-field select.has-error,
+            .ado-field textarea.has-error {
+                border-color: var(--ado-required) !important;
+                box-shadow: 0 0 0 1px var(--ado-required);
+            }
+
+            .ado-field-error {
+                color: var(--ado-required);
+                font-size: 11px;
+                margin-top: 2px;
+                display: none;
+            }
         </style>
     </head>
     <body class="theme-light">
@@ -532,6 +547,7 @@
                         <div>
                             <div class="ado-field">
                                 <div class="ado-field-label">
+                                    <div class="ado-field-required-bar"></div>
                                     <span>Severity</span>
                                 </div>
                                 <select id="ado-severity">
@@ -574,6 +590,10 @@
                                 >
                                     AC Reference is required.
                                 </div>
+                                <div id="ado-ac-hints"
+                                     style="display:none; background:#f0f6ff; border:1px solid #c7e0f4; border-radius:4px;
+                                            padding:8px 12px; font-size:12px; margin-top:6px; color:#004578;">
+                                </div>
                             </div>
 
                             <div class="ado-field">
@@ -614,6 +634,11 @@
                             Resolve
                         </button>
                     </div>
+
+                    <div id="ado-history"
+                         style="display:none; margin-top:16px; padding:10px 12px; background:var(--ado-bg-alt);
+                                border:1px solid var(--ado-border-subtle); border-radius:4px; color:var(--ado-text);">
+                    </div>
                 </div>
 
                 <div class="ado-side">
@@ -636,9 +661,12 @@
     (function () {
         const OS = window.parent.OS || window.parent.QA_OS;
 
+        var filedBugs = [];
+
         const state = {
             role: "senior",
             scenarioBugId: "bug-001",
+            activeScenarioId: null, // Set from APP_BOOT — used for AC Ref validation
             bugData: null,
             linkedCase: null,
             draft: {
@@ -666,9 +694,11 @@
             if (msg.type === "APP_BOOT" && msg.appId === "ado") {
                 state.role = msg.role || state.role;
                 state.theme = msg.theme || state.theme || "light";
+                state.activeScenarioId = msg.scenarioId || state.activeScenarioId || null;
                 applyTheme();
                 applyRole(state.role);
                 loadScenario(state.scenarioBugId);
+                if (msg.scenarioId) loadScenarioAcHints(msg.scenarioId);
                 renderAll();
             }
 
@@ -744,6 +774,49 @@
                 state.draft.repro = s.reproSteps.join("\n");
             }
             persist();
+        }
+
+        function loadScenarioAcHints(scenarioId) {
+            var scenarios = (window.parent && window.parent.SCENARIOS) || window.SCENARIOS || {};
+            var scenario = scenarios[scenarioId];
+            var hintEl = document.getElementById("ado-ac-hints");
+            if (!hintEl) return;
+
+            if (!scenario || !scenario.acceptanceCriteria) {
+                hintEl.style.display = "none";
+                return;
+            }
+
+            var hints = scenario.acceptanceCriteria.map(function(ac) {
+                return ac.id + ": " + ac.text;
+            });
+
+            hintEl.innerHTML = "<strong>Available ACs for this scenario:</strong><ul>" +
+                hints.map(function(h) { return "<li>" + escapeHtml(h) + "</li>"; }).join("") +
+                "</ul>";
+            hintEl.style.display = "block";
+        }
+
+        function renderBugHistory() {
+            var histEl = document.getElementById("ado-history");
+            if (!histEl || filedBugs.length === 0) return;
+
+            histEl.style.display = "block";
+            var items = filedBugs.map(function(b, i) {
+                return "<li><strong>" + escapeHtml(b.title) + "</strong> " +
+                       "<span style='color:#605e5c;font-size:11px;'>" +
+                       escapeHtml(b.severity) + " · " + escapeHtml(b.acRef) + " · " + b.time +
+                       "</span></li>";
+            });
+            histEl.innerHTML =
+                "<strong style='font-size:12px;'>Filed this session (" + filedBugs.length + "):</strong>" +
+                "<ul style='margin:6px 0 0;padding-left:18px;font-size:12px;'>" + items.join("") + "</ul>";
+        }
+
+        function escapeHtml(str) {
+            return String(str || "")
+                .replace(/&/g, "&amp;").replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;").replace(/"/g, "&quot;");
         }
 
         function renderAll() {
@@ -855,9 +928,21 @@
             tagsEl.oninput = syncDraft;
             acRefEl.oninput = syncDraft;
 
-            // Simple dirty tracking flag (for future unsaved-changes UX)
+            // Dirty tracking + clear per-field error state on user input
             function markDirty() {
                 state._dirty = true;
+            }
+
+            /**
+             * clearFieldError(el)
+             * Removes the red border and 'has-error' class from a field when
+             * the user starts typing, giving immediate visual feedback that
+             * they're fixing the validation issue.
+             */
+            function clearFieldError(el) {
+                if (!el) return;
+                el.classList.remove("has-error");
+                el.style.borderColor = "";
             }
 
             [
@@ -870,39 +955,149 @@
                 tagsEl,
                 acRefEl,
             ].forEach(function (el) {
-                if (el) el.addEventListener("input", markDirty);
+                if (el) {
+                    el.addEventListener("input", markDirty);
+                    el.addEventListener("input", function () { clearFieldError(el); });
+                }
             });
 
             const saveBtn = document.getElementById("ado-btn-save");
             const activateBtn = document.getElementById("ado-btn-activate");
             const resolveBtn = document.getElementById("ado-btn-resolve");
 
+            /**
+             * validate()
+             * Validates all required fields before saving the bug report.
+             * Checks: title, repro steps (min 10 chars), severity, AC Reference
+             * (must match a real AC ID from the active scenario).
+             * Sets inline error states (red border) on invalid fields.
+             * Scrolls the viewport to the first invalid field.
+             *
+             * @returns {boolean} True if all validations pass.
+             */
             function validate() {
-                const missing = [];
-                if (!titleEl.value.trim()) missing.push("Title");
-                if (!reproEl.value.trim()) missing.push("Repro Steps");
+                // Clear all field-level error states before re-checking
+                [titleEl, reproEl, severityEl, acRefEl].forEach(function (el) {
+                    if (el) {
+                        el.classList.remove("has-error");
+                        el.style.borderColor = "";
+                    }
+                });
 
-                // AC Reference required
-                const acRefErr =
-                    document.getElementById("ado-ac-ref-error");
-                if (!acRefEl || !acRefEl.value.trim()) {
-                    if (acRefErr) acRefErr.style.display = "block";
-                    missing.push("AC Reference");
-                } else {
-                    if (acRefErr) acRefErr.style.display = "none";
+                var missing = [];
+                var firstError = null;
+
+                // ── Title required ─────────────────────────────────────────
+                if (!titleEl.value.trim()) {
+                    missing.push("Title");
+                    titleEl.classList.add("has-error");
+                    if (!firstError) firstError = titleEl;
                 }
 
-                if (missing.length) {
+                // ── Repro Steps required + minimum length ──────────────────
+                var reproVal = reproEl.value.trim();
+                if (!reproVal) {
+                    missing.push("Repro Steps");
+                    reproEl.classList.add("has-error");
+                    if (!firstError) firstError = reproEl;
+                } else if (reproVal.length < 10) {
                     errorEl.textContent =
-                        "Cannot save. Please fill: " +
-                        missing.join(", ");
+                        "Repro Steps must be at least 10 characters. Describe each numbered step with enough detail for a developer to reproduce.";
                     errorEl.style.display = "block";
-                    if (OS && OS.notify)
-                        OS.notify(
-                            "Azure DevOps: validation failed on save.",
-                        );
+                    reproEl.classList.add("has-error");
+                    reproEl.scrollIntoView({ behavior: "smooth", block: "center" });
+                    reproEl.focus();
                     return false;
                 }
+
+                // ── Severity required ──────────────────────────────────────
+                if (!severityEl || !severityEl.value) {
+                    missing.push("Severity");
+                    if (severityEl) {
+                        severityEl.classList.add("has-error");
+                        if (!firstError) firstError = severityEl;
+                    }
+                }
+
+                // ── AC Reference required + format + must match scenario AC IDs ─────
+                var acRefVal = acRefEl ? acRefEl.value.trim() : "";
+                var acRefErr = document.getElementById("ado-ac-ref-error");
+
+                if (!acRefVal) {
+                    if (acRefErr) acRefErr.style.display = "block";
+                    missing.push("AC Reference");
+                    if (acRefEl) {
+                        acRefEl.classList.add("has-error");
+                        if (!firstError) firstError = acRefEl;
+                    }
+                } else {
+                    // Validate format: AC-N or AC-N.N (e.g. AC-2, AC-2.1)
+                    if (!/^AC-\d+(\.\d+)?$/i.test(acRefVal)) {
+                        errorEl.textContent =
+                            "AC Reference format should be 'AC-N' or 'AC-N.N' (e.g. AC-2.1).";
+                        errorEl.style.display = "block";
+                        if (acRefEl) {
+                            acRefEl.classList.add("has-error");
+                            if (!firstError) firstError = acRefEl;
+                        }
+                        if (OS && OS.notify)
+                            OS.notify("ADO: AC Reference format is invalid.");
+                        return false;
+                    }
+                    if (acRefErr) acRefErr.style.display = "none";
+                    if (acRefEl) acRefEl.style.borderColor = "";
+
+                    // Validate that AC Reference matches a real AC ID from the
+                    // active capstone scenario. This teaches traceability —
+                    // every bug must link to a specific acceptance criterion.
+                    var scenario = (OS && OS.loadScenario)
+                        ? OS.loadScenario(state.activeScenarioId)
+                        : null;
+                    var validAcRefs = [];
+                    if (scenario && scenario.acRefs) {
+                        // acRefs is a map of bugId → AC string (e.g. "AC-2.1")
+                        validAcRefs = Object.keys(scenario.acRefs).map(function (k) {
+                            return scenario.acRefs[k];
+                        });
+                    }
+                    if (validAcRefs.length > 0) {
+                        var match = false;
+                        for (var v = 0; v < validAcRefs.length; v++) {
+                            if (validAcRefs[v].toLowerCase() === acRefVal.toLowerCase()) {
+                                match = true;
+                                break;
+                            }
+                        }
+                        if (!match) {
+                            errorEl.textContent =
+                                'AC Reference "' + acRefVal + '" does not match any AC ID in the active scenario. Valid: ' +
+                                validAcRefs.join(", ");
+                            errorEl.style.display = "block";
+                            if (acRefEl) {
+                                acRefEl.classList.add("has-error");
+                                if (!firstError) firstError = acRefEl;
+                            }
+                            if (OS && OS.notify)
+                                OS.notify("ADO: AC Reference does not match the scenario.");
+                            return false;
+                        }
+                    }
+                }
+
+                // ── Missing fields summary ─────────────────────────────────
+                if (missing.length) {
+                    errorEl.textContent =
+                        "Cannot save. Please fill: " + missing.join(", ");
+                    errorEl.style.display = "block";
+                    if (firstError) {
+                        firstError.scrollIntoView({ behavior: "smooth", block: "center" });
+                        firstError.focus();
+                    }
+                    if (OS && OS.notify)
+                        OS.notify("Azure DevOps: validation failed on save.");
+                    return false;
+                }
+
                 errorEl.style.display = "none";
                 return true;
             }
@@ -916,6 +1111,10 @@
                 if (OS && OS.completeTask)
                     OS.completeTask("ado-save-bug");
 
+                var bugTitle = titleEl ? titleEl.value.trim() : "";
+                var bugSeverity = severityEl ? severityEl.value : "";
+                var bugAcRef = acRefEl ? acRefEl.value.trim() : "";
+
                 // BUG_LOGGED message to OS shell
                 var hasSteps =
                     reproEl &&
@@ -927,21 +1126,21 @@
                         {
                             type: "BUG_LOGGED",
                             data: {
-                                title: titleEl
-                                    ? titleEl.value.trim()
-                                    : "",
-                                severity: severityEl
-                                    ? severityEl.value
-                                    : "",
-                                acRef: acRefEl
-                                    ? acRefEl.value.trim()
-                                    : "",
+                                title: bugTitle,
+                                severity: bugSeverity,
+                                acRef: bugAcRef,
                                 hasSteps: !!hasSteps,
                             },
                         },
                         "*",
                     );
                 }
+
+                // Track this bug in session history
+                var d = new Date();
+                var timeStr = d.getHours() + ":" + (d.getMinutes() < 10 ? "0" : "") + d.getMinutes();
+                filedBugs.push({ title: bugTitle, severity: bugSeverity, acRef: bugAcRef, time: timeStr });
+                renderBugHistory();
 
                 // Show confirmation state
                 var confirmEl =
@@ -951,8 +1150,7 @@
                 );
                 if (confirmEl && confirmText) {
                     confirmText.textContent =
-                        "Bug saved. AC Reference: " +
-                        (acRefEl ? acRefEl.value.trim() : "none");
+                        "Bug saved. AC Reference: " + bugAcRef;
                     confirmEl.classList.add("visible");
                     setTimeout(function () {
                         confirmEl.classList.remove("visible");

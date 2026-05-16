@@ -1,63 +1,738 @@
 <!doctype html>
-<html>
+<html lang="en">
     <head>
         <meta charset="UTF-8" />
-        <title>Training Tasks</title>
+        <title>Training</title>
         <style>
+            :root {
+                --tr-bg: #ffffff;
+                --tr-bg-alt: #f3f2f1;
+                --tr-surface: #ffffff;
+                --tr-border: #d0d0d0;
+                --tr-border-subtle: #e1dfdd;
+                --tr-text: #201f1e;
+                --tr-text-subtle: #605e5c;
+                --tr-blue: #0078d4;
+                --tr-blue-dark: #005a9e;
+                --tr-nav-bg: #201f1e;
+                --tr-nav-bg-hover: #323130;
+                --tr-nav-icon: #ffffff;
+                --tr-nav-icon-active: #ffffff;
+                --tr-nav-indicator: #0078d4;
+                --tr-radius: 4px;
+            }
+
+            body.theme-dark {
+                --tr-bg: #1b1a19;
+                --tr-bg-alt: #252423;
+                --tr-surface: #252423;
+                --tr-border: #3a3938;
+                --tr-border-subtle: #424140;
+                --tr-text: #f3f2f1;
+                --tr-text-subtle: #9ca3af;
+                --tr-blue: #3399ff;
+                --tr-blue-dark: #0078d4;
+                --tr-nav-bg: #252423;
+                --tr-nav-bg-hover: #3a3938;
+                --tr-nav-icon: #f3f2f1;
+                --tr-nav-icon-active: #ffffff;
+                --tr-nav-indicator: #3399ff;
+            }
+
             body {
                 margin: 0;
-                font-family:
+                font-family: var(
+                    --qa-font,
                     system-ui,
                     -apple-system,
                     "Segoe UI",
-                    sans-serif;
-                padding: 12px;
+                    sans-serif
+                );
                 font-size: 13px;
-            }
-            .task {
-                font-size: 12px;
-                padding: 4px 0;
-                border-bottom: 1px solid #ddd;
+                background: var(--tr-bg);
+                color: var(--tr-text);
                 display: flex;
-                align-items: center;
-                gap: 6px;
+                height: 100vh;
+                overflow: hidden;
             }
-            .task input {
+
+            .tr-container {
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+                padding: 20px;
+                box-sizing: border-box;
+                overflow-y: auto;
+            }
+
+            .tr-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 24px;
+            }
+
+            .tr-header h1 {
+                font-size: 20px;
+                font-weight: 600;
                 margin: 0;
+            }
+
+            .tr-back-btn {
+                display: none;
+                align-items: center;
+                gap: 8px;
+                padding: 8px 16px;
+                background: var(--tr-surface);
+                border: 1px solid var(--tr-border);
+                border-radius: var(--tr-radius);
+                font-size: 13px;
+                cursor: pointer;
+                color: var(--tr-text);
+            }
+
+            .tr-back-btn:hover {
+                background: var(--tr-bg-alt);
+            }
+
+            .tr-back-btn:disabled {
+                opacity: 0.5;
+                cursor: not-allowed;
+            }
+
+            .tr-scenario-selector {
+                display: flex;
+                flex-direction: column;
+                gap: 16px;
+            }
+
+            .tr-scenario-card {
+                background: var(--tr-surface);
+                border: 1px solid var(--tr-border);
+                border-radius: var(--tr-radius);
+                padding: 20px;
+                display: flex;
+                flex-direction: column;
+                gap: 12px;
+                cursor: pointer;
+                transition: all 0.15s ease;
+            }
+
+            .tr-scenario-card:hover {
+                border-color: var(--tr-blue);
+                background: var(--tr-bg-alt);
+                transform: translateY(-2px);
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            }
+
+            .tr-scenario-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-start;
+            }
+
+            .tr-scenario-title {
+                font-size: 16px;
+                font-weight: 600;
+                color: var(--tr-text);
+                flex: 1;
+            }
+
+            .tr-scenario-meta {
+                font-size: 12px;
+                color: var(--tr-text-subtle);
+                padding: 2px 0;
+            }
+
+            .tr-start-btn {
+                align-self: flex-end;
+                padding: 8px 20px;
+                background: var(--tr-blue);
+                color: white;
+                border: none;
+                border-radius: var(--tr-radius);
+                font-size: 13px;
+                font-weight: 500;
+                cursor: pointer;
+            }
+
+            .tr-start-btn:hover {
+                background: var(--tr-blue-dark);
+            }
+
+            .tr-no-scenarios {
+                text-align: center;
+                color: var(--tr-text-subtle);
+                font-style: italic;
+                padding: 40px 20px;
+            }
+
+            .tr-step-panel {
+                display: none;
+                flex-direction: column;
+                gap: 24px;
+            }
+
+            .tr-step-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding-bottom: 12px;
+                border-bottom: 1px solid var(--tr-border-subtle);
+            }
+
+            .tr-step-title {
+                font-size: 18px;
+                font-weight: 600;
+                color: var(--tr-text);
+                flex: 1;
+            }
+
+            .tr-step-body {
+                font-size: 14px;
+                line-height: 1.6;
+                color: var(--tr-text);
+                margin-bottom: 16px;
+                white-space: pre-line;
+            }
+
+            .tr-step-hint {
+                display: none;
+                padding: 16px;
+                background: var(--tr-bg-alt);
+                border-left: 3px solid var(--tr-blue);
+                border-radius: 0 var(--tr-radius) var(--tr-radius) 0;
+                font-size: 13px;
+                color: var(--tr-text);
+            }
+
+            .tr-step-hint::before {
+                content: "💡 ";
+            }
+
+            .tr-step-actions {
+                display: flex;
+                justify-content: flex-end;
+                gap: 12px;
+                margin-top: 24px;
+            }
+
+            .tr-nav-btn {
+                padding: 8px 20px;
+                border: 1px solid var(--tr-border);
+                background: var(--tr-surface);
+                border-radius: var(--tr-radius);
+                font-size: 13px;
+                cursor: pointer;
+            }
+
+            .tr-nav-btn:hover {
+                background: var(--tr-bg-alt);
+            }
+
+            .tr-nav-btn:disabled {
+                opacity: 0.5;
+                cursor: not-allowed;
+            }
+
+            .tr-primary-btn {
+                background: var(--tr-blue);
+                color: white;
+                border: none;
+            }
+
+            .tr-primary-btn:hover {
+                background: var(--tr-blue-dark);
+            }
+
+            .tr-secondary-btn {
+                color: var(--tr-text);
+            }
+
+            .tr-secondary-btn:hover {
+                color: var(--tr-blue);
+            }
+
+            .tr-complete-panel {
+                display: none;
+                text-align: center;
+                padding: 40px 20px;
+            }
+
+            .tr-complete-icon {
+                font-size: 48px;
+                margin-bottom: 24px;
+                color: var(--tr-blue);
+            }
+
+            .tr-complete-title {
+                font-size: 20px;
+                font-weight: 600;
+                color: var(--tr-text);
+                margin-bottom: 16px;
+            }
+
+            .tr-complete-body {
+                font-size: 14px;
+                line-height: 1.6;
+                color: var(--tr-text-subtle);
+                margin-bottom: 24px;
+            }
+
+            .tr-choose-again-btn {
+                padding: 12px 24px;
+                background: var(--tr-blue);
+                color: white;
+                border: none;
+                border-radius: var(--tr-radius);
+                font-size: 14px;
+                font-weight: 500;
+                cursor: pointer;
+            }
+
+            .tr-choose-again-btn:hover {
+                background: var(--tr-blue-dark);
             }
         </style>
     </head>
     <body>
-        <h3>Training Tasks</h3>
-        <p>
-            These are example capstone tasks. Completion is signaled back to the
-            OS.
-        </p>
+        <div class="tr-container">
+            <div class="tr-header">
+                <button class="tr-back-btn" id="tr-back-btn">← Back</button>
+                <h1 id="tr-main-title">Training Mode</h1>
+            </div>
 
-        <div class="task">
-            <input type="checkbox" data-task-id="dyn-load-case-001" />
-            <span>Load Dynamics scenario Case 001</span>
-        </div>
-        <div class="task">
-            <input type="checkbox" data-task-id="ado-load-bug-001" />
-            <span>Load ADO bug Bug 001</span>
+            <div id="tr-selector-panel" class="tr-scenario-selector">
+                <p>Select a scenario to begin guided practice.</p>
+                <div id="tr-scenario-cards"></div>
+                <div
+                    id="tr-no-scenarios"
+                    class="tr-no-scenarios"
+                    style="display: none"
+                >
+                    No training scenarios available. Check that the OS loaded
+                    correctly.
+                </div>
+            </div>
+
+            <div id="tr-step-panel" class="tr-step-panel">
+                <div class="tr-step-header">
+                    <div class="tr-step-title" id="tr-step-title"></div>
+                </div>
+                <div class="tr-step-body" id="tr-step-body"></div>
+                <div class="tr-step-hint" id="tr-step-hint"></div>
+                <div class="tr-step-actions">
+                    <button
+                        class="tr-nav-btn tr-secondary-btn"
+                        id="tr-prev-btn"
+                    >
+                        ← Previous
+                    </button>
+                    <button class="tr-nav-btn tr-primary-btn" id="tr-next-btn">
+                        Next Step →
+                    </button>
+                </div>
+            </div>
+
+            <div id="tr-complete-panel" class="tr-complete-panel">
+                <div class="tr-complete-icon">✓</div>
+                <h2 class="tr-complete-title">Training Complete!</h2>
+                <p class="tr-complete-body">
+                    You have completed the guided walkthrough for this scenario.
+                    In the real Capstone, you would now click Submit to have
+                    your work scored. For now, well done — you have practised
+                    finding and reporting bugs.
+                </p>
+                <button class="tr-choose-again-btn" id="tr-choose-again-btn">
+                    Choose Another Scenario
+                </button>
+            </div>
         </div>
 
         <script>
+            /**
+             * training.html — Page Logic
+             * ==========================
+             * WHAT THIS PAGE DOES:
+             * - Provides a guided walkthrough for QA scenarios.
+             * - Allows users to select a scenario and move through pre-defined steps.
+             * - Tracks completion via localStorage.
+             *
+             * FLOW:
+             * 1. Load app and listen for APP_BOOT/ROLE_CHANGE messages from OS.
+             * 2. Scan window.parent.SCENARIOS for eligible training cases.
+             * 3. User selects a scenario -> transition to step-through UI.
+             * 4. User navigates steps -> writes completion flag -> returns to selector.
+             *
+             * READS FROM: window.parent.SCENARIOS ( Scenario data)
+             * WRITES TO: localStorage (Completion flags)
+             */
+
             (function () {
-                const OS = window.parent.OS;
-                document
-                    .querySelectorAll("input[type=checkbox]")
-                    .forEach((cb) => {
-                        cb.addEventListener("change", () => {
-                            if (cb.checked) {
-                                const id = cb.getAttribute("data-task-id");
-                                OS.completeTask(id);
-                            }
-                        });
+                // ── SECTION 1: PAGE STATE ──────────────────────────────────────────────
+
+                var state = {
+                    scenarioId: null, // Current active scenario ID (e.g. 'case-001')
+                    steps: [], // Array of step objects for the active scenario
+                    currentStep: 0, // Zero-indexed current step
+                    currentRole: "junior", // User role received via postMessage
+                };
+
+                // DOM Cache
+                var elements = {
+                    selectorPanel: document.getElementById("tr-selector-panel"),
+                    stepPanel: document.getElementById("tr-step-panel"),
+                    completePanel: document.getElementById("tr-complete-panel"),
+                    cardsContainer:
+                        document.getElementById("tr-scenario-cards"),
+                    noScenariosMsg: document.getElementById("tr-no-scenarios"),
+                    backBtn: document.getElementById("tr-back-btn"),
+                    mainTitle: document.getElementById("tr-main-title"),
+                    prevBtn: document.getElementById("tr-prev-btn"),
+                    nextBtn: document.getElementById("tr-next-btn"),
+                    chooseAgainBtn: document.getElementById(
+                        "tr-choose-again-btn",
+                    ),
+                    stepTitle: document.getElementById("tr-step-title"),
+                    stepBody: document.getElementById("tr-step-body"),
+                    stepHint: document.getElementById("tr-step-hint"),
+                };
+
+                // ── SECTION 2: DATA & FALLBACKS ───────────────────────────────────────
+
+                // Used if the scenario object in window.parent.SCENARIOS lacks trainingMeta
+                var TRAINING_META_DEFAULTS = {
+                    "case-001": {
+                        difficulty: "Beginner",
+                        apps: "Dynamics + ADO",
+                        bugs: 2,
+                    },
+                    "case-002": {
+                        difficulty: "Advanced",
+                        apps: "Dynamics + ADO + Teams",
+                        bugs: 3,
+                    },
+                    "capstone-001": {
+                        difficulty: "Beginner",
+                        apps: "Dynamics + ADO",
+                        bugs: 2,
+                    },
+                };
+
+                // Used if the scenario object lacks trainingSteps
+                var FALLBACK_STEPS = {
+                    "case-001": [
+                        {
+                            title: "Step 1 — Read the scenario brief",
+                            body: "A new case has been assigned: CASE-00134, Northgate Logistics.\nYour role is Junior QA Analyst.\nYour task is to find any defects in the case data and file ADO bug reports.",
+                            hint: "There are 2 bugs hidden in this scenario. Look carefully at field values and permissions.",
+                        },
+                        {
+                            title: "Step 2 — Open Dynamics CRM",
+                            body: "Double-click the Dynamics CRM icon on the desktop.\nExamine each field in the case form carefully.",
+                            hint: "Pay attention to the Case Status field and the Escalation Reason field.",
+                        },
+                        {
+                            title: "Step 3 — Identify the first bug",
+                            body: "Look at the Case Status field.\nIs this value appropriate for a Junior analyst to set?\nCheck the Acceptance Criteria panel (AC) for the rule.",
+                            hint: "AC-2.1: Junior analysts may not set Status to Escalated or Closed.",
+                        },
+                        {
+                            title: "Step 4 — File your first ADO bug report",
+                            body: "Open Azure DevOps from the desktop.\nFile a bug report for the status violation you found.\nMake sure to: give it a clear title, set a severity, reference the AC (e.g. AC-2.1), and include steps to reproduce.",
+                            hint: "A complete report needs all four fields filled — title, severity, AC reference, and steps.",
+                        },
+                        {
+                            title: "Step 5 — Find and file the second bug",
+                            body: "Return to Dynamics CRM.\nLook at the Created Date field.\nIs the date value valid for a case that was just opened today?",
+                            hint: "A case cannot have a future date. Check the date against today's date.",
+                        },
+                        {
+                            title: "Step 6 — Training complete",
+                            body: "You have completed the guided walkthrough for Case 001.\nIn the real Capstone, you would now click Submit to have your work scored.\nFor now, well done — you have practised finding and reporting both bugs.",
+                            hint: null,
+                        },
+                    ],
+                };
+                // Reuse Case 001's logic for the capstone variant
+                FALLBACK_STEPS["capstone-001"] = FALLBACK_STEPS["case-001"];
+
+                // ── SECTION 3: INITIALIZATION & MESSAGING ──────────────────────────────
+
+                /**
+                 * init()
+                 * Entry point for the Training app. Sets up listeners and initial render.
+                 */
+                function init() {
+                    // Handle postMessage from the OS Shell
+                    window.addEventListener("message", function (e) {
+                        if (!e.data || !e.data.type) return;
+
+                        if (e.data.type === "APP_BOOT") {
+                            state.currentRole = e.data.role || "junior";
+                        }
+
+                        if (e.data.type === "ROLE_CHANGE") {
+                            state.currentRole =
+                                e.data.role || state.currentRole;
+                        }
                     });
+
+                    // UI Event Binding
+                    elements.backBtn.addEventListener("click", backToSelector);
+                    elements.prevBtn.addEventListener("click", prevStep);
+                    elements.nextBtn.addEventListener("click", nextStep);
+                    elements.chooseAgainBtn.addEventListener(
+                        "click",
+                        backToSelector,
+                    );
+
+                    loadScenarios();
+                }
+
+                // ── SECTION 4: SCENARIO SELECTION ──────────────────────────────────────
+
+                /**
+                 * formatScenarioId(id)
+                 * Cleans up IDs for display (e.g. 'case-001' -> 'Case 001')
+                 * @param {string} id - The raw scenario ID
+                 * @returns {string} Formatted title
+                 */
+                function formatScenarioId(id) {
+                    return id.replace(/-/g, " ").replace(/\b\w/g, function (c) {
+                        return c.toUpperCase();
+                    });
+                }
+
+                /**
+                 * loadScenarios()
+                 * Reads SCENARIOS from the parent window and renders eligible cards.
+                 */
+                function loadScenarios() {
+                    elements.cardsContainer.innerHTML = "";
+                    elements.noScenariosMsg.style.display = "none";
+
+                    var scenarios =
+                        window.parent && window.parent.SCENARIOS
+                            ? window.parent.SCENARIOS
+                            : {};
+                    var scenarioIds = Object.keys(scenarios);
+                    var eligibleIds = [];
+
+                    // Filter: Only show those with metadata or specified in defaults; ignore unit tests (bug-*)
+                    for (var i = 0; i < scenarioIds.length; i++) {
+                        var id = scenarioIds[i];
+                        if (id.startsWith("bug-")) continue;
+
+                        var scenario = scenarios[id];
+                        if (
+                            (scenario && scenario.trainingMeta) ||
+                            TRAINING_META_DEFAULTS[id]
+                        ) {
+                            eligibleIds.push(id);
+                        }
+                    }
+
+                    if (eligibleIds.length === 0) {
+                        elements.noScenariosMsg.style.display = "block";
+                        return;
+                    }
+
+                    eligibleIds.forEach(function (id) {
+                        var scenario = scenarios[id];
+                        var meta =
+                            (scenario && scenario.trainingMeta) ||
+                            TRAINING_META_DEFAULTS[id] ||
+                            {};
+
+                        var card = document.createElement("div");
+                        card.className = "tr-scenario-card";
+
+                        var title =
+                            scenario && scenario.title ? scenario.title : id;
+                        var metaText =
+                            (meta.difficulty || "Unknown") +
+                            " · " +
+                            (meta.bugs || 0) +
+                            " bugs · " +
+                            (meta.apps || "Unknown");
+
+                        card.innerHTML = `
+                            <div class="tr-scenario-header">
+                                <div class="tr-scenario-title">📋 ${formatScenarioId(id)} — ${title}</div>
+                                <div class="tr-scenario-meta">${metaText}</div>
+                            </div>
+                            <button class="tr-start-btn">Start</button>
+                        `;
+
+                        // Start button initiates the step-through mode
+                        card.querySelector(".tr-start-btn").addEventListener(
+                            "click",
+                            function () {
+                                beginScenario(id);
+                            },
+                        );
+
+                        elements.cardsContainer.appendChild(card);
+                    });
+                }
+
+                // ── SECTION 5: STEP-THROUGH NAVIGATION ─────────────────────────────────
+
+                /**
+                 * beginScenario(scenarioId)
+                 * Transition from selector to guided steps.
+                 * @param {string} scenarioId - ID of the scenario to start.
+                 */
+                function beginScenario(scenarioId) {
+                    state.scenarioId = scenarioId;
+                    var scenario =
+                        window.parent.SCENARIOS &&
+                        window.parent.SCENARIOS[scenarioId];
+
+                    // Prioritize custom trainingSteps over hardcoded fallbacks
+                    state.steps =
+                        (scenario && scenario.trainingSteps) ||
+                        FALLBACK_STEPS[scenarioId] ||
+                        [];
+                    state.currentStep = 0;
+
+                    if (state.steps.length === 0) {
+                        alert("No training steps defined for this scenario.");
+                        return;
+                    }
+
+                    showSelector(false);
+                    showStepPanel(true);
+                    renderStep();
+                }
+
+                /**
+                 * renderStep()
+                 * Updates the DOM with the current step's content and state.
+                 */
+                function renderStep() {
+                    var step = state.steps[state.currentStep];
+                    var total = state.steps.length;
+                    var current = state.currentStep + 1;
+
+                    // Update Header & Counter
+                    var scenarioTitle =
+                        window.parent.SCENARIOS &&
+                        window.parent.SCENARIOS[state.scenarioId]
+                            ? window.parent.SCENARIOS[state.scenarioId].title
+                            : state.scenarioId;
+                    elements.mainTitle.textContent = `${scenarioTitle}   Step ${current} of ${total}`;
+                    elements.stepTitle.textContent =
+                        step.title || `Step ${current}`;
+
+                    // Body: Convert new-lines to HTML breaks for better readability
+                    elements.stepBody.innerHTML = (step.body || "").replace(
+                        /\n/g,
+                        "<br>",
+                    );
+
+                    // Hint: Show only if content exists
+                    if (step.hint && step.hint.trim() !== "") {
+                        elements.stepHint.textContent = step.hint;
+                        elements.stepHint.style.display = "block";
+                    } else {
+                        elements.stepHint.style.display = "none";
+                    }
+
+                    // Controls
+                    elements.prevBtn.disabled = state.currentStep === 0;
+                    elements.nextBtn.textContent =
+                        state.currentStep === total - 1
+                            ? "Finish"
+                            : "Next Step →";
+                }
+
+                /**
+                 * nextStep()
+                 * Increments step index or triggers completion if at the end.
+                 */
+                function nextStep() {
+                    if (state.currentStep < state.steps.length - 1) {
+                        state.currentStep++;
+                        renderStep();
+                    } else {
+                        finishTraining();
+                    }
+                }
+
+                /**
+                 * prevStep()
+                 * Decrements step index.
+                 */
+                function prevStep() {
+                    if (state.currentStep > 0) {
+                        state.currentStep--;
+                        renderStep();
+                    }
+                }
+
+                /**
+                 * finishTraining()
+                 * Marks the scenario as complete in browser storage and shows the final screen.
+                 */
+                function finishTraining() {
+                    try {
+                        localStorage.setItem(
+                            "qa-training-complete-" + state.scenarioId,
+                            "1",
+                        );
+                    } catch (e) {
+                        console.warn("localStorage write failed:", e);
+                    }
+
+                    showStepPanel(false);
+                    showComplete(true);
+                }
+
+                /**
+                 * backToSelector()
+                 * Resets state and returns user to the scenario picker.
+                 */
+                function backToSelector() {
+                    showStepPanel(false);
+                    showComplete(false);
+                    showSelector(true);
+                    state.scenarioId = null;
+                    state.currentStep = 0;
+                }
+
+                // ── SECTION 6: UI VISIBILITY HELPERS ────────────────────────────────────
+
+                function showSelector(show) {
+                    elements.selectorPanel.style.display = show
+                        ? "block"
+                        : "none";
+                    elements.backBtn.style.display = show
+                        ? "none"
+                        : "inline-flex";
+                    if (show) elements.mainTitle.textContent = "Training Mode";
+                }
+
+                function showStepPanel(show) {
+                    elements.stepPanel.style.display = show ? "flex" : "none";
+                    elements.backBtn.style.display = show
+                        ? "inline-flex"
+                        : "none";
+                }
+
+                function showComplete(show) {
+                    elements.completePanel.style.display = show
+                        ? "block"
+                        : "none";
+                    elements.backBtn.style.display = show
+                        ? "none"
+                        : "inline-flex";
+                }
+
+                // Launch app
+                init();
             })();
         </script>
-
     </body>
 </html>

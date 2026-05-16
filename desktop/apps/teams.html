@@ -1,0 +1,1393 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>Microsoft Teams — QA Channel</title>
+        <style>
+            /**
+             * =============================================================================
+             * teams.html — Simulated Microsoft Teams App Styles
+             * =============================================================================
+             * QA Onboarding Training Platform
+             *
+             * PURPOSE:
+             * These styles render a realistic Microsoft Teams interface inside the
+             * QA Pilot OS iframe. The UI matches Teams left-rail navigation, channel
+             * list, message area, and compose box — all scoped under the .team- prefix
+             * to prevent style leaks when inlined.
+             *
+             * WHAT'S IN HERE:
+             * - Root variables (light + dark theme)
+             * - Layout: left rail, channel pane, message area, compose bar
+             * - Message bubble styles (chat, system, thread headers)
+             * - Placeholder state
+             *
+             * =============================================================================
+             */
+
+            /* ── Root variables ───────────────────────────────────────── */
+            :root {
+                --team-bg: #ffffff;
+                --team-bg-alt: #f5f5f5;
+                --team-surface: #ffffff;
+                --team-border: #e0e0e0;
+                --team-border-subtle: #e8e8e8;
+                --team-text: #242424;
+                --team-text-subtle: #616161;
+                --team-text-muted: #8a8a8a;
+                --team-purple: #6264a7;
+                --team-purple-dark: #4f4f8b;
+                --team-purple-hover: #5859a0;
+                --team-green: #92c353;
+                --team-danger: #c4314b;
+                --team-nav-bg: #2b2b40;
+                --team-nav-hover: #3b3b52;
+                --team-nav-active: #3b3b52;
+                --team-nav-text: #a0a0b8;
+                --team-nav-text-active: #ffffff;
+                --team-nav-indicator: #ffffff;
+                --team-channel-bg: #f0f0f0;
+                --team-channel-hover: #e5e5e5;
+                --team-message-bg: #ffffff;
+                --team-input-bg: #ffffff;
+                --team-input-border: #d0d0d0;
+                --team-system-text: #8a8a8a;
+                --team-badge: #c4314b;
+                --team-avatar-blue: #4b89c4;
+                --team-avatar-green: #6bb86b;
+                --team-avatar-orange: #d4874a;
+                --team-avatar-purple: #7b6fa0;
+                --team-avatar-teal: #4a9e9e;
+            }
+
+            /* ── Dark theme overrides ─────────────────────────────────── */
+            body.theme-dark {
+                --team-bg: #1f1f1f;
+                --team-bg-alt: #292929;
+                --team-surface: #252525;
+                --team-border: #3a3a3a;
+                --team-border-subtle: #333333;
+                --team-text: #e0e0e0;
+                --team-text-subtle: #a0a0a0;
+                --team-text-muted: #707070;
+                --team-purple: #7b7dbb;
+                --team-purple-dark: #6264a7;
+                --team-purple-hover: #6b6db0;
+                --team-nav-bg: #1e1e2e;
+                --team-nav-hover: #2a2a3e;
+                --team-nav-active: #2a2a3e;
+                --team-nav-text: #707088;
+                --team-nav-text-active: #ffffff;
+                --team-channel-bg: #252525;
+                --team-channel-hover: #2e2e2e;
+                --team-message-bg: #2a2a2a;
+                --team-input-bg: #2a2a2a;
+                --team-input-border: #3a3a3a;
+                --team-system-text: #707070;
+                --team-nav-text: #707088;
+            }
+
+            /* ── Reset ────────────────────────────────────────────────── */
+            body {
+                margin: 0;
+                font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+                font-size: 13px;
+                background: var(--team-bg);
+                color: var(--team-text);
+                display: flex;
+                height: 100vh;
+                overflow: hidden;
+                user-select: none;
+            }
+
+            /* ── LEFT RAIL ────────────────────────────────────────────── */
+            .team-rail {
+                width: 56px;
+                background: var(--team-nav-bg);
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                padding-top: 8px;
+                box-sizing: border-box;
+                flex-shrink: 0;
+                z-index: 2;
+            }
+
+            .team-rail-logo {
+                width: 32px;
+                height: 32px;
+                border-radius: 4px;
+                background: var(--team-purple);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin-bottom: 10px;
+                font-size: 14px;
+                font-weight: 700;
+                color: #fff;
+                cursor: default;
+            }
+
+            .team-rail-item {
+                width: 44px;
+                height: 36px;
+                border-radius: 4px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                margin-bottom: 2px;
+                position: relative;
+                color: var(--team-nav-text);
+                transition: background 0.1s;
+            }
+
+            .team-rail-item:hover {
+                background: var(--team-nav-hover);
+                color: var(--team-nav-text-active);
+            }
+
+            .team-rail-item.active {
+                background: var(--team-nav-active);
+                color: var(--team-nav-text-active);
+            }
+
+            .team-rail-item svg {
+                width: 18px;
+                height: 18px;
+                fill: currentColor;
+            }
+
+            .team-rail-badge {
+                position: absolute;
+                top: 2px;
+                right: 4px;
+                width: 8px;
+                height: 8px;
+                border-radius: 50%;
+                background: var(--team-badge);
+                border: 2px solid var(--team-nav-bg);
+            }
+
+            .team-rail-sep {
+                width: 24px;
+                height: 1px;
+                background: rgba(255,255,255,0.12);
+                margin: 6px 0;
+            }
+
+            .team-rail-bottom {
+                margin-top: auto;
+                margin-bottom: 8px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+
+            /* ── CHANNEL PANE ─────────────────────────────────────────── */
+            .team-channels {
+                width: 200px;
+                background: var(--team-channel-bg);
+                border-right: 1px solid var(--team-border-subtle);
+                display: flex;
+                flex-direction: column;
+                box-sizing: border-box;
+                flex-shrink: 0;
+            }
+
+            .team-channels-header {
+                height: 44px;
+                display: flex;
+                align-items: center;
+                padding: 0 12px;
+                font-size: 13px;
+                font-weight: 600;
+                border-bottom: 1px solid var(--team-border-subtle);
+                box-sizing: border-box;
+            }
+
+            .team-channels-header svg {
+                width: 16px;
+                height: 16px;
+                fill: currentColor;
+                margin-left: auto;
+                opacity: 0.6;
+                cursor: pointer;
+            }
+
+            .team-channels-header svg:hover {
+                opacity: 1;
+            }
+
+            .team-channel-section {
+                padding: 8px 0 4px 12px;
+                font-size: 11px;
+                font-weight: 600;
+                text-transform: uppercase;
+                color: var(--team-text-subtle);
+                letter-spacing: 0.3px;
+            }
+
+            .team-channel-item {
+                display: flex;
+                align-items: center;
+                padding: 4px 8px 4px 12px;
+                cursor: pointer;
+                border-radius: 4px;
+                margin: 0 4px;
+                color: var(--team-text-subtle);
+                font-size: 13px;
+                transition: background 0.1s;
+            }
+
+            .team-channel-item:hover {
+                background: var(--team-channel-hover);
+            }
+
+            .team-channel-item.active {
+                background: var(--team-channel-hover);
+                color: var(--team-text);
+            }
+
+            .team-channel-hash {
+                margin-right: 6px;
+                font-size: 16px;
+                opacity: 0.6;
+                font-weight: 300;
+            }
+
+            .team-channel-name {
+                flex: 1;
+            }
+
+            .team-channel-badge {
+                width: 18px;
+                height: 18px;
+                border-radius: 50%;
+                background: var(--team-badge);
+                color: #fff;
+                font-size: 10px;
+                font-weight: 600;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            /* ── MAIN AREA ────────────────────────────────────────────── */
+            .team-main {
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+                min-width: 0;
+                background: var(--team-bg);
+            }
+
+            /* ── Top bar ──────────────────────────────────────────────── */
+            .team-topbar {
+                height: 44px;
+                border-bottom: 1px solid var(--team-border-subtle);
+                display: flex;
+                align-items: center;
+                padding: 0 16px;
+                box-sizing: border-box;
+                flex-shrink: 0;
+                background: var(--team-bg);
+            }
+
+            .team-topbar-left {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                min-width: 0;
+                flex: 1;
+            }
+
+            .team-topbar-channel {
+                font-size: 14px;
+                font-weight: 600;
+                white-space: nowrap;
+            }
+
+            .team-topbar-topic {
+                font-size: 12px;
+                color: var(--team-text-subtle);
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                max-width: 300px;
+            }
+
+            .team-topbar-sep {
+                width: 1px;
+                height: 16px;
+                background: var(--team-border);
+                margin: 0 6px;
+            }
+
+            .team-topbar-right {
+                display: flex;
+                align-items: center;
+                gap: 4px;
+            }
+
+            .team-topbar-btn {
+                width: 32px;
+                height: 32px;
+                border-radius: 4px;
+                border: none;
+                background: transparent;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: var(--team-text-subtle);
+            }
+
+            .team-topbar-btn:hover {
+                background: var(--team-bg-alt);
+            }
+
+            .team-topbar-btn svg {
+                width: 18px;
+                height: 18px;
+                fill: currentColor;
+            }
+
+            /* ── Tabs ─────────────────────────────────────────────────── */
+            .team-tabs {
+                height: 36px;
+                display: flex;
+                align-items: center;
+                padding: 0 16px;
+                gap: 20px;
+                border-bottom: 1px solid var(--team-border-subtle);
+                box-sizing: border-box;
+                flex-shrink: 0;
+                background: var(--team-bg);
+            }
+
+            .team-tab {
+                font-size: 12px;
+                color: var(--team-text-subtle);
+                cursor: pointer;
+                padding: 8px 0;
+                border-bottom: 2px solid transparent;
+                margin-bottom: -1px;
+                transition: color 0.1s, border-color 0.1s;
+            }
+
+            .team-tab.active {
+                color: var(--team-purple);
+                border-bottom-color: var(--team-purple);
+                font-weight: 600;
+            }
+
+            .team-tab:hover:not(.active) {
+                color: var(--team-text);
+            }
+
+            /* ── Message area ─────────────────────────────────────────── */
+            .team-messages {
+                flex: 1;
+                overflow-y: auto;
+                padding: 12px 16px;
+                box-sizing: border-box;
+                display: flex;
+                flex-direction: column;
+                gap: 2px;
+            }
+
+            /* ── System message ───────────────────────────────────────── */
+            .team-msg-system {
+                text-align: center;
+                padding: 12px 20px;
+                font-size: 11px;
+                color: var(--team-system-text);
+                font-style: italic;
+                position: relative;
+            }
+
+            .team-msg-system::before,
+            .team-msg-system::after {
+                content: '';
+                position: absolute;
+                top: 50%;
+                width: 60px;
+                height: 1px;
+                background: var(--team-border-subtle);
+            }
+
+            .team-msg-system::before { right: calc(50% + 80px); }
+            .team-msg-system::after  { left: calc(50% + 80px); }
+
+            /* ── Chat message ─────────────────────────────────────────── */
+            .team-msg-chat {
+                display: flex;
+                gap: 8px;
+                padding: 6px 8px;
+                border-radius: 4px;
+                transition: background 0.1s;
+            }
+
+            .team-msg-chat:hover {
+                background: var(--team-bg-alt);
+            }
+
+            .team-avatar {
+                width: 32px;
+                height: 32px;
+                border-radius: 50%;
+                flex-shrink: 0;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 11px;
+                font-weight: 600;
+                color: #fff;
+                margin-top: 2px;
+            }
+
+            .team-avatar-initials {
+                line-height: 1;
+            }
+
+            .team-msg-body {
+                flex: 1;
+                min-width: 0;
+            }
+
+            .team-msg-header {
+                display: flex;
+                align-items: baseline;
+                gap: 8px;
+                margin-bottom: 2px;
+            }
+
+            .team-msg-author {
+                font-size: 13px;
+                font-weight: 600;
+                color: var(--team-text);
+            }
+
+            .team-msg-time {
+                font-size: 11px;
+                color: var(--team-text-muted);
+            }
+
+            .team-msg-text {
+                font-size: 13px;
+                line-height: 1.45;
+                color: var(--team-text);
+                white-space: pre-wrap;
+                word-break: break-word;
+            }
+
+            /* ── Thread header ────────────────────────────────────────── */
+            .team-thread-header {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                padding: 10px 8px 4px 8px;
+                margin-top: 8px;
+                font-size: 11px;
+                font-weight: 600;
+                text-transform: uppercase;
+                color: var(--team-text-subtle);
+                letter-spacing: 0.5px;
+            }
+
+            .team-thread-header::after {
+                content: '';
+                flex: 1;
+                height: 1px;
+                background: var(--team-border-subtle);
+            }
+
+            .team-thread-header svg {
+                width: 14px;
+                height: 14px;
+                fill: currentColor;
+            }
+
+            /* ── Sprint Review message ────────────────────────────────── */
+            .team-msg-review {
+                display: flex;
+                gap: 8px;
+                padding: 8px;
+                margin: 4px 0;
+                border-radius: 4px;
+                background: var(--team-bg-alt);
+                border-left: 3px solid var(--team-purple);
+            }
+
+            .team-msg-review .team-msg-author {
+                color: var(--team-purple);
+            }
+
+            .team-review-pass {
+                color: #2e7d32;
+                font-weight: 600;
+            }
+
+            body.theme-dark .team-review-pass {
+                color: #6fbf73;
+            }
+
+            .team-review-fail {
+                color: var(--team-danger);
+                font-weight: 600;
+            }
+
+            /* ── Placeholder (no messages) ────────────────────────────── */
+            .team-placeholder {
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                padding: 40px;
+                text-align: center;
+                color: var(--team-text-subtle);
+            }
+
+            .team-placeholder-icon {
+                font-size: 48px;
+                margin-bottom: 16px;
+                opacity: 0.5;
+            }
+
+            .team-placeholder-title {
+                font-size: 18px;
+                font-weight: 600;
+                color: var(--team-text);
+                margin-bottom: 8px;
+            }
+
+            .team-placeholder-desc {
+                font-size: 13px;
+                max-width: 360px;
+                line-height: 1.5;
+                color: var(--team-text-muted);
+            }
+
+            /* ── Compose bar ──────────────────────────────────────────── */
+            .team-compose {
+                padding: 8px 16px 12px 16px;
+                border-top: 1px solid var(--team-border-subtle);
+                flex-shrink: 0;
+                background: var(--team-bg);
+            }
+
+            .team-compose-inner {
+                display: flex;
+                align-items: flex-end;
+                gap: 8px;
+                background: var(--team-input-bg);
+                border: 1px solid var(--team-input-border);
+                border-radius: 6px;
+                padding: 4px 4px 4px 12px;
+                transition: border-color 0.15s;
+            }
+
+            .team-compose-inner:focus-within {
+                border-color: var(--team-purple);
+            }
+
+            .team-compose-input {
+                flex: 1;
+                border: none;
+                background: transparent;
+                font-size: 13px;
+                font-family: inherit;
+                color: var(--team-text);
+                outline: none;
+                padding: 6px 0;
+                resize: none;
+                min-height: 20px;
+                max-height: 80px;
+                line-height: 1.4;
+            }
+
+            .team-compose-input::placeholder {
+                color: var(--team-text-muted);
+            }
+
+            .team-compose-btn {
+                width: 32px;
+                height: 32px;
+                border-radius: 4px;
+                border: none;
+                background: transparent;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: var(--team-text-muted);
+                flex-shrink: 0;
+                transition: color 0.1s;
+            }
+
+            .team-compose-btn:hover {
+                color: var(--team-purple);
+            }
+
+            .team-compose-btn svg {
+                width: 18px;
+                height: 18px;
+                fill: currentColor;
+            }
+
+            /* ── Simulated feature message ────────────────────────────── */
+            .team-sim-notice {
+                position: absolute;
+                bottom: 60px;
+                left: 50%;
+                transform: translateX(-50%);
+                background: var(--team-purple);
+                color: #fff;
+                padding: 6px 16px;
+                border-radius: 20px;
+                font-size: 12px;
+                white-space: nowrap;
+                z-index: 10;
+                pointer-events: none;
+                opacity: 0;
+                transition: opacity 0.3s;
+            }
+
+            .team-sim-notice.visible {
+                opacity: 1;
+            }
+
+            /* ── Scrollbar ────────────────────────────────────────────── */
+            .team-messages::-webkit-scrollbar {
+                width: 4px;
+            }
+
+            .team-messages::-webkit-scrollbar-track {
+                background: transparent;
+            }
+
+            .team-messages::-webkit-scrollbar-thumb {
+                background: var(--team-border);
+                border-radius: 4px;
+            }
+        </style>
+    </head>
+    <body class="theme-light">
+        <!-- LEFT RAIL -->
+        <div class="team-rail">
+            <div class="team-rail-logo">T</div>
+
+            <div class="team-rail-item active" data-rail="activity">
+                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/></svg>
+                <div class="team-rail-badge"></div>
+            </div>
+
+            <div class="team-rail-item active" data-rail="chat">
+                <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H5.17L4 17.17V4h16v12z"/></svg>
+                <div class="team-rail-badge"></div>
+            </div>
+
+            <div class="team-rail-item" data-rail="teams">
+                <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+            </div>
+
+            <div class="team-rail-item" data-rail="calendar">
+                <svg viewBox="0 0 24 24"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11z"/></svg>
+            </div>
+
+            <div class="team-rail-sep"></div>
+
+            <div class="team-rail-item" data-rail="calls">
+                <svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+            </div>
+
+            <div class="team-rail-bottom">
+                <div class="team-rail-item" data-rail="more">
+                    <svg viewBox="0 0 24 24"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- CHANNELS -->
+        <div class="team-channels">
+            <div class="team-channels-header">
+                Teams
+                <svg viewBox="0 0 24 24"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg>
+            </div>
+
+            <div class="team-channel-section">Channels</div>
+
+            <div class="team-channel-item active" data-channel="qa-team">
+                <span class="team-channel-hash">#</span>
+                <span class="team-channel-name">QA Team</span>
+                <div class="team-channel-badge">3</div>
+            </div>
+
+            <div class="team-channel-item" data-channel="general">
+                <span class="team-channel-hash">#</span>
+                <span class="team-channel-name">General</span>
+            </div>
+        </div>
+
+        <!-- MAIN -->
+        <div class="team-main">
+            <div class="team-topbar">
+                <div class="team-topbar-left">
+                    <span class="team-topbar-channel"># QA Team</span>
+                    <span class="team-topbar-sep"></span>
+                    <span class="team-topbar-topic" id="team-topic">Case investigation — Payment failures</span>
+                </div>
+                <div class="team-topbar-right">
+                    <button class="team-topbar-btn" title="Call">
+                        <svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+                    </button>
+                    <button class="team-topbar-btn" title="Video call">
+                        <svg viewBox="0 0 24 24"><path d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z"/></svg>
+                    </button>
+                    <button class="team-topbar-btn" title="Meeting">
+                        <svg viewBox="0 0 24 24"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11z"/></svg>
+                    </button>
+                    <button class="team-topbar-btn" title="More options">
+                        <svg viewBox="0 0 24 24"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg>
+                    </button>
+                </div>
+            </div>
+
+            <div class="team-tabs">
+                <div class="team-tab active" data-tab="posts">Posts</div>
+                <div class="team-tab" data-tab="files">Files</div>
+            </div>
+
+            <div class="team-messages" id="team-messages">
+                <!-- Placeholder shown when no messages loaded -->
+                <div class="team-placeholder" id="team-placeholder">
+                    <div class="team-placeholder-icon">💬</div>
+                    <div class="team-placeholder-title">Welcome to Teams</div>
+                    <div class="team-placeholder-desc">
+                        You're in the <strong>#QA Team</strong> channel.
+                        Open a training scenario to see case assignments,
+                        stand-ups, and sprint review feedback here.
+                    </div>
+                </div>
+            </div>
+
+            <div class="team-compose">
+                <div class="team-compose-inner">
+                    <textarea
+                        class="team-compose-input"
+                        id="team-compose-input"
+                        placeholder="Type a message..."
+                        rows="1"
+                    ></textarea>
+                    <button class="team-compose-btn" id="team-compose-send" title="Send">
+                        <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Simulated feature notice (shown when clicking disabled nav items) -->
+            <div class="team-sim-notice" id="team-sim-notice">This feature is simulated for training.</div>
+        </div>
+
+        <script>
+            /**
+             * teams.html — Microsoft Teams Simulation App
+             * ===========================================
+             * WHAT THIS PAGE DOES:
+             * - Renders a realistic Microsoft Teams interface inside the QA Pilot OS
+             * - Displays scripted messages from the active scenario's teamsThread data
+             * - Shows a Sprint Review thread after bugs are submitted (future)
+             * - Provides a stand-up reply input where the trainee types their update
+             *
+             * FLOW:
+             * 1. APP_BOOT message arrives → load scenario's teamsThread if available
+             * 2. Render messages in the #qa-team channel
+             * 3. Handle compose input (stand-up replies, future interactivity)
+             * 4. Listen for ROLE_CHANGE and SPRINT_REVIEW messages
+             *
+             * READS FROM:   Parent OS via postMessage (APP_BOOT contains teamsThread)
+             * WRITES TO:    Message area DOM, no persistence
+             */
+
+            // ── SECTION 1: STATE ────────────────────────────────────────────────
+
+            var teamState = {
+                role: 'junior',
+                theme: 'light',
+                scenarioId: null,
+                messages: [],           // Array of message objects from teamsThread
+                activeChannel: 'qa-team',
+                typingUsers: [],
+            };
+
+            // Avatar colour map — deterministic colours by author name
+            var TEAM_AVATAR_COLORS = {
+                'Pete (QA Lead)':     '#4b89c4',
+                'Sarah (PO)':         '#6bb86b',
+                'Alex (Junior)':      '#d4874a',
+                'Mike (Dev Lead)':    '#7b6fa0',
+                'system':             '#8a8a8a',
+            };
+
+            var TEAM_DEFAULT_COLORS = ['#4b89c4', '#6bb86b', '#d4874a', '#7b6fa0', '#4a9e9e'];
+            var _colorIdx = 0;
+
+            var OS = window.parent.OS || window.parent.QA_OS;
+
+
+            // ── SECTION 2: INITIALISE ──────────────────────────────────────────
+
+            window.addEventListener('message', function (event) {
+                var msg = event.data;
+                if (!msg) return;
+
+                if (msg.type === 'APP_BOOT' && msg.appId === 'teams') {
+                    teamState.role = msg.role || 'junior';
+                    teamState.theme = msg.theme || 'light';
+                    teamState.scenarioId = msg.scenarioId || null;
+
+                    applyTheme();
+
+                    // Load teamsThread if the scenario provided one
+                    if (msg.teamsThread && msg.teamsThread.length > 0) {
+                        loadMessages(msg.teamsThread);
+                    } else if (teamState.scenarioId && OS && OS.loadScenario) {
+                        // Fallback: try to load scenario data directly
+                        var scenario = OS.loadScenario(teamState.scenarioId);
+                        if (scenario && scenario.teamsThread) {
+                            loadMessages(scenario.teamsThread);
+                        }
+                    }
+                }
+
+                if (msg.type === 'ROLE_CHANGE') {
+                    teamState.role = msg.role;
+                    // No visual role change in Teams — just update state for future use
+                }
+
+                if (msg.type === 'SPRINT_REVIEW') {
+                    // Future: render Sprint Review thread from scoring results
+                    // msg.bugResults contains per-bug scoring data
+                    if (msg.bugResults && msg.bugResults.length > 0) {
+                        renderSprintReview(msg.bugResults, msg.score, msg.maxScore, msg.percentage);
+                    }
+                }
+            });
+
+
+            // ── SECTION 3: THEME ───────────────────────────────────────────────
+
+            /**
+             * applyTheme()
+             * Toggles between light and dark theme classes on the body element.
+             * Called on APP_BOOT and whenever the OS broadcasts a theme change.
+             * Uses the .theme-dark and .theme-light classes that the CSS variables depend on.
+             */
+            function applyTheme() {
+                document.body.classList.remove('theme-light', 'theme-dark');
+                document.body.classList.add(
+                    teamState.theme === 'dark' ? 'theme-dark' : 'theme-light'
+                );
+            }
+
+
+            // ── SECTION 4: MESSAGE LOADING ─────────────────────────────────────
+
+            /**
+             * loadMessages(teamsThread)
+             * Processes the teamsThread array from the scenario data and renders
+             * messages into the #qa-team channel.
+             *
+             * Each thread in the array has:
+             *   { channel: string, messages: [{ author, text, timestamp, type }] }
+             *
+             * @param {Array} teamsThread - Array of thread objects from the scenario.
+             */
+            function loadMessages(teamsThread) {
+                // Collect all messages from the qa-team channel
+                var allMessages = [];
+                for (var t = 0; t < teamsThread.length; t++) {
+                    var thread = teamsThread[t];
+                    if (thread.channel !== 'qa-team') continue;
+
+                    // Add a thread header separator
+                    if (allMessages.length > 0 || thread.messages.length > 0) {
+                        // Only add header if there are messages in this thread
+                        var hasContent = thread.messages && thread.messages.length > 0;
+                        if (hasContent) {
+                            // The thread type is inferred from the channel context
+                            // The first thread is the case assignment
+                            // Subsequent threads get a separator
+                        }
+                    }
+
+                    for (var m = 0; m < thread.messages.length; m++) {
+                        allMessages.push(thread.messages[m]);
+                    }
+                }
+
+                teamState.messages = allMessages;
+                renderMessages();
+            }
+
+            /**
+             * renderMessages()
+             * Clears the message area and renders all loaded messages in order.
+             * Shows the placeholder if no messages are loaded.
+             * Each message is rendered according to its type:
+             *   'system'    → centered italic divider
+             *   'chat'      → user chat bubble (default)
+             *   'review'    → sprint review bubble with purple left border
+             */
+            function renderMessages() {
+                var container = document.getElementById('team-messages');
+                var placeholder = document.getElementById('team-placeholder');
+                if (!container) return;
+
+                // Clear everything except the placeholder
+                var nodes = container.querySelectorAll('.team-msg-system, .team-msg-chat, .team-msg-review, .team-thread-header');
+                for (var i = 0; i < nodes.length; i++) {
+                    nodes[i].remove();
+                }
+
+                if (teamState.messages.length === 0) {
+                    if (placeholder) placeholder.style.display = '';
+                    return;
+                }
+
+                if (placeholder) placeholder.style.display = 'none';
+
+                for (var m = 0; m < teamState.messages.length; m++) {
+                    var msg = teamState.messages[m];
+                    var el = createMessageElement(msg);
+                    if (el) container.appendChild(el);
+                }
+
+                // Scroll to bottom
+                container.scrollTop = container.scrollHeight;
+            }
+
+            /**
+             * createMessageElement(msg)
+             * Builds a DOM element for a single message based on its type.
+             *
+             * @param {Object} msg - Message object with author, text, timestamp, type.
+             * @returns {HTMLElement|null} The message element, or null if invalid.
+             */
+            function createMessageElement(msg) {
+                if (!msg || !msg.text) return null;
+
+                var type = msg.type || 'chat';
+
+                if (type === 'system') {
+                    return createSystemMessage(msg);
+                }
+
+                if (type === 'review') {
+                    return createReviewMessage(msg);
+                }
+
+                // Default: chat bubble
+                return createChatMessage(msg);
+            }
+
+            /**
+             * createSystemMessage(msg)
+             * Renders a system event — centered, italic text with horizontal dividers.
+             *
+             * @param {Object} msg - Message with text and timestamp.
+             * @returns {HTMLElement} System message element.
+             */
+            function createSystemMessage(msg) {
+                var el = document.createElement('div');
+                el.className = 'team-msg-system';
+                el.textContent = msg.text;
+                return el;
+            }
+
+            /**
+             * createChatMessage(msg)
+             * Renders a standard chat bubble with avatar, author name, timestamp, and text.
+             *
+             * @param {Object} msg - Message with author, text, and timestamp.
+             * @returns {HTMLElement} Chat message element.
+             */
+            function createChatMessage(msg) {
+                var el = document.createElement('div');
+                el.className = 'team-msg-chat';
+
+                var avatarColor = getAvatarColor(msg.author);
+                var initials = getInitials(msg.author);
+
+                el.innerHTML =
+                    '<div class="team-avatar" style="background:' + avatarColor + '">' +
+                        '<span class="team-avatar-initials">' + escapeHtml(initials) + '</span>' +
+                    '</div>' +
+                    '<div class="team-msg-body">' +
+                        '<div class="team-msg-header">' +
+                            '<span class="team-msg-author">' + escapeHtml(msg.author) + '</span>' +
+                            '<span class="team-msg-time">' + escapeHtml(msg.timestamp || '') + '</span>' +
+                        '</div>' +
+                        '<div class="team-msg-text">' + escapeHtml(msg.text) + '</div>' +
+                    '</div>';
+
+                return el;
+            }
+
+            /**
+             * createReviewMessage(msg)
+             * Renders a Sprint Review message with a purple accent border.
+             * Supports ✅ and ❌ prefixes for pass/fail indicators.
+             *
+             * @param {Object} msg - Review message from scoring results.
+             * @returns {HTMLElement} Review message element.
+             */
+            function createReviewMessage(msg) {
+                var el = document.createElement('div');
+                el.className = 'team-msg-review';
+
+                var avatarColor = getAvatarColor(msg.author);
+                var initials = getInitials(msg.author);
+
+                // Process text for ✅/❌ highlighting
+                var formattedText = formatReviewText(escapeHtml(msg.text));
+
+                el.innerHTML =
+                    '<div class="team-avatar" style="background:' + avatarColor + '">' +
+                        '<span class="team-avatar-initials">' + escapeHtml(initials) + '</span>' +
+                    '</div>' +
+                    '<div class="team-msg-body">' +
+                        '<div class="team-msg-header">' +
+                            '<span class="team-msg-author">' + escapeHtml(msg.author) + '</span>' +
+                            '<span class="team-msg-time">' + escapeHtml(msg.timestamp || '') + '</span>' +
+                        '</div>' +
+                        '<div class="team-msg-text">' + formattedText + '</div>' +
+                    '</div>';
+
+                return el;
+            }
+
+
+            // ── SECTION 5: SPRINT REVIEW ───────────────────────────────────────
+
+            /**
+             * renderSprintReview(bugResults, score, maxScore, percentage)
+             * Creates a Sprint Review thread in the message area from scoring results.
+             * Called by the OS after the trainee submits their bugs.
+             * Each bug gets a review message, then a final score summary.
+             *
+             * @param {Array}  bugResults - Per-bug scoring results from evaluateSubmission()
+             * @param {number} score      - Total score achieved.
+             * @param {number} maxScore   - Maximum possible score.
+             * @param {number} percentage - Score as a percentage.
+             */
+            function renderSprintReview(bugResults, score, maxScore, percentage) {
+                var container = document.getElementById('team-messages');
+                var placeholder = document.getElementById('team-placeholder');
+                if (!container) return;
+                if (placeholder) placeholder.style.display = 'none';
+
+                // Add thread header
+                var header = document.createElement('div');
+                header.className = 'team-thread-header';
+                header.innerHTML = '<svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg> Sprint Review';
+                container.appendChild(header);
+
+                // Add QA Lead intro message
+                var intro = createChatMessage({
+                    author: 'QA Lead',
+                    text: 'Let\'s review the bugs filed for this sprint. I\'ll go through each one.',
+                    timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+                });
+                container.appendChild(intro);
+
+                // Per-bug review
+                for (var i = 0; i < bugResults.length; i++) {
+                    var bug = bugResults[i];
+                    var reviewText = buildBugReviewText(bug);
+                    var reviewMsg = createReviewMessage({
+                        author: 'QA Lead',
+                        text: reviewText,
+                        timestamp: ''
+                    });
+                    container.appendChild(reviewMsg);
+                }
+
+                // Final score summary
+                var passed = percentage >= 50;
+                var summaryText = 'Total: ' + score + ' / ' + maxScore + ' (' + percentage + '%) — ' +
+                    (passed ? '✅ Passed. Good work!' : '📝 Needs improvement. Review the feedback above.');
+
+                var summary = createChatMessage({
+                    author: 'QA Lead',
+                    text: summaryText,
+                    timestamp: ''
+                });
+                container.appendChild(summary);
+
+                container.scrollTop = container.scrollHeight;
+            }
+
+            /**
+             * buildBugReviewText(bug)
+             * Builds a formatted review text string for a single bug result.
+             * Each bullet shows ✅ or ❌ for title, severity, AC ref, and steps.
+             *
+             * @param {Object} bug - Per-bug result object from evaluateSubmission().
+             * @returns {string} Formatted review text with emoji indicators.
+             */
+            function buildBugReviewText(bug) {
+                var lines = [];
+                lines.push('── ' + (bug.title || 'Bug ' + (bug.bugId || '')) + ' ──');
+
+                if (!bug.found) {
+                    lines.push('❌ Bug not found — this defect is in the scenario but you didn\'t report it.');
+                    lines.push('Score: 0/' + bug.maxPoints);
+                    return lines.join('\n');
+                }
+
+                lines.push((bug.titleCorrect ? '✅' : '❌') + ' Title: ' +
+                    (bug.titleCorrect ? 'Clear, describes the issue well.' : 'Could be more descriptive.'));
+
+                lines.push((bug.severityCorrect ? '✅' : '❌') + ' Severity: ' +
+                    (bug.severityCorrect ? 'Correct assessment.' : 'Check the triage guidelines — this severity doesn\'t match the impact.'));
+
+                lines.push((bug.acRefCorrect ? '✅' : '❌') + ' AC Reference: ' +
+                    (bug.acRefCorrect ? 'Matches the requirement.' : 'Doesn\'t match a valid AC ID. Review the acceptance criteria document.'));
+
+                lines.push((bug.stepsProvided ? '✅' : '❌') + ' Steps to Reproduce: ' +
+                    (bug.stepsProvided ? 'Provided — dev can reproduce.' : 'Missing or too short. Add detailed step-by-step instructions.'));
+
+                lines.push('Score: ' + bug.points + '/' + bug.maxPoints);
+
+                return lines.join('\n');
+            }
+
+
+            // ── SECTION 6: UTILITY FUNCTIONS ───────────────────────────────────
+
+            /**
+             * getAvatarColor(author)
+             * Returns a deterministic colour for a given author name.
+             * Uses the TEAM_AVATAR_COLORS map, or assigns a colour from the
+             * default palette for unknown authors.
+             *
+             * @param {string} author - The message author's name.
+             * @returns {string} CSS color value, e.g. '#4b89c4'
+             */
+            function getAvatarColor(author) {
+                if (!author) return TEAM_DEFAULT_COLORS[0];
+                if (TEAM_AVATAR_COLORS[author]) return TEAM_AVATAR_COLORS[author];
+
+                // Assign a colour from the default palette for unknown authors
+                var idx = _colorIdx % TEAM_DEFAULT_COLORS.length;
+                _colorIdx++;
+                TEAM_AVATAR_COLORS[author] = TEAM_DEFAULT_COLORS[idx];
+                return TEAM_DEFAULT_COLORS[idx];
+            }
+
+            /**
+             * getInitials(name)
+             * Extracts initials from a name string. For "Pete (QA Lead)" returns "PL".
+             * For single-word names, returns first two characters uppercase.
+             *
+             * @param {string} name - The full name, possibly with a role in parentheses.
+             * @returns {string} Uppercase initials, e.g. "PL"
+             */
+            function getInitials(name) {
+                if (!name || name === 'system') return '••';
+
+                // Try to extract the name part before any parentheses
+                var cleanName = name.replace(/\(.*\)/, '').trim();
+
+                var parts = cleanName.split(/\s+/);
+                if (parts.length >= 2) {
+                    return (parts[0][0] + parts[1][0]).toUpperCase();
+                }
+                return cleanName.substring(0, 2).toUpperCase();
+            }
+
+            /**
+             * formatReviewText(text)
+             * Wraps ✅ and ❌ emoji prefixes in styled spans for visual emphasis.
+             *
+             * @param {string} text - Escaped HTML text.
+             * @returns {string} HTML with emoji spans inserted.
+             */
+            function formatReviewText(text) {
+                // Replace ✅ and ❌ with styled spans
+                return text
+                    .replace(/✅/g, '<span class="team-review-pass">✅</span>')
+                    .replace(/❌/g, '<span class="team-review-fail">❌</span>')
+                    .replace(/\n/g, '<br>');
+            }
+
+            /**
+             * escapeHtml(str)
+             * Escapes HTML special characters to prevent XSS when rendering
+             * user-authored message content.
+             *
+             * @param {string} str - Raw string to escape.
+             * @returns {string} HTML-safe string.
+             */
+            function escapeHtml(str) {
+                return String(str || '')
+                    .replace(/&/g, '&amp;')
+                    .replace(/</g, '&lt;')
+                    .replace(/>/g, '&gt;')
+                    .replace(/"/g, '&quot;');
+            }
+
+
+            // ── SECTION 7: UI INTERACTIONS ─────────────────────────────────────
+
+            (function wireUI() {
+                // ── Left rail navigation ──────────────────────────────────
+                var railItems = document.querySelectorAll('.team-rail-item');
+                var simNotice = document.getElementById('team-sim-notice');
+
+                for (var i = 0; i < railItems.length; i++) {
+                    (function (item) {
+                        item.addEventListener('click', function () {
+                            var rail = item.getAttribute('data-rail');
+                            if (rail === 'chat' || rail === 'activity') {
+                                // Chat is always active — do nothing if already active
+                                if (rail === 'chat') return;
+                                // Activity is visual-only
+                                setActiveRail(item);
+                            } else {
+                                showSimNotice(item);
+                            }
+                        });
+                    })(railItems[i]);
+                }
+
+                /**
+                 * setActiveRail(activeItem)
+                 * Removes the 'active' class from all rail items and adds it to
+                 * the clicked item.
+                 */
+                function setActiveRail(activeItem) {
+                    for (var i = 0; i < railItems.length; i++) {
+                        railItems[i].classList.remove('active');
+                    }
+                    activeItem.classList.add('active');
+                }
+
+                /**
+                 * showSimNotice(anchor)
+                 * Shows a floating "simulated for training" notice near the
+                 * clicked rail item, then fades it out after 2 seconds.
+                 */
+                function showSimNotice(anchor) {
+                    if (!simNotice) return;
+                    simNotice.classList.add('visible');
+                    setTimeout(function () {
+                        simNotice.classList.remove('visible');
+                    }, 2000);
+                }
+
+                // ── Compose bar ───────────────────────────────────────────
+                var composeInput = document.getElementById('team-compose-input');
+                var composeSend = document.getElementById('team-compose-send');
+
+                if (composeInput) {
+                    // Auto-resize the textarea as the user types
+                    composeInput.addEventListener('input', function () {
+                        this.style.height = 'auto';
+                        this.style.height = Math.min(this.scrollHeight, 80) + 'px';
+                    });
+                }
+
+                if (composeSend) {
+                    composeSend.addEventListener('click', function () {
+                        if (!composeInput || !composeInput.value.trim()) return;
+
+                        // In a real scenario, this would send a message to the thread.
+                        // For training, acknowledge the message without actually sending.
+                        var text = composeInput.value.trim();
+                        composeInput.value = '';
+                        composeInput.style.height = 'auto';
+
+                        if (OS && OS.notify) {
+                            OS.notify('Teams: message recorded. (Messages are reviewed as part of training.)');
+                        }
+                    });
+                }
+
+                if (composeInput) {
+                    composeInput.addEventListener('keydown', function (e) {
+                        if (e.key === 'Enter' && !e.shiftKey) {
+                            e.preventDefault();
+                            if (composeSend) composeSend.click();
+                        }
+                    });
+                }
+
+                // ── Channel list ──────────────────────────────────────────
+                var channelItems = document.querySelectorAll('.team-channel-item');
+                for (var i = 0; i < channelItems.length; i++) {
+                    (function (item) {
+                        item.addEventListener('click', function () {
+                            // Only #qa-team is active
+                            var channel = item.getAttribute('data-channel');
+                            for (var j = 0; j < channelItems.length; j++) {
+                                channelItems[j].classList.remove('active');
+                            }
+                            if (channel === 'qa-team') {
+                                item.classList.add('active');
+                            } else {
+                                // Show the "simulated" notice for other channels
+                                item.classList.add('active');
+                                if (simNotice) {
+                                    simNotice.classList.add('visible');
+                                    setTimeout(function () {
+                                        simNotice.classList.remove('visible');
+                                    }, 2000);
+                                }
+                            }
+                        });
+                    })(channelItems[i]);
+                }
+
+                // ── Top bar tabs ──────────────────────────────────────────
+                var tabEls = document.querySelectorAll('.team-tab');
+                for (var i = 0; i < tabEls.length; i++) {
+                    (function (tab) {
+                        tab.addEventListener('click', function () {
+                            for (var j = 0; j < tabEls.length; j++) {
+                                tabEls[j].classList.remove('active');
+                            }
+                            tab.classList.add('active');
+                            if (tab.getAttribute('data-tab') !== 'posts') {
+                                if (simNotice) {
+                                    simNotice.classList.add('visible');
+                                    setTimeout(function () {
+                                        simNotice.classList.remove('visible');
+                                    }, 2000);
+                                }
+                            }
+                        });
+                    })(tabEls[i]);
+                }
+
+                // ── Topbar buttons (non-functional) ───────────────────────
+                var topbarBtns = document.querySelectorAll('.team-topbar-btn');
+                for (var i = 0; i < topbarBtns.length; i++) {
+                    (function (btn) {
+                        btn.addEventListener('click', function () {
+                            if (simNotice) {
+                                simNotice.classList.add('visible');
+                                setTimeout(function () {
+                                    simNotice.classList.remove('visible');
+                                }, 2000);
+                            }
+                        });
+                    })(topbarBtns[i]);
+                }
+            })();
+        </script>
+    </body>
+</html>

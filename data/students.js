@@ -1,8 +1,13 @@
 /**
  * =============================================================================
- * students.js — Student Account Records
+ * students.js — Student Account Records (LEGACY — localStorage)
  * =============================================================================
  * QA Onboarding Training Platform
+ *
+ * NOTE: This module uses localStorage and is superseded by js/db.js,
+ * which stores data in IndexedDB and handles password hashing via
+ * hashPassword() / verifyPassword() (PBKDF2). All pages now load
+ * js/db.js instead of this file.
  *
  * HOW THIS FILE WORKS:
  * --------------------
@@ -15,12 +20,6 @@
  * Each new student gets a unique Case ID in the format CASE-00001.
  * The Case ID auto-increments and is checked for duplicates before being
  * assigned. It can never be edited after creation.
- *
- * ADMIN CONTEXT:
- * --------------
- * Students are created by the Admin panel (admin/assign.html).
- * Students log in via the student portal (index.html).
- * The Admin dashboard (admin/dashboard.html) reads this data for reporting.
  *
  * =============================================================================
  */
@@ -41,8 +40,9 @@ STUDENT RECORD SCHEMA:
 
   email:        string  — Student's email address. Used for login. Must be unique.
 
-  password:     string  — Plain text for now (not hardened — this is a POC).
-                          Admin sets this when creating the account.
+  password:     string  — PBKDF2 hash in "salt:hash" format (base64).
+                           Hashed by hashPassword() in db.js before storage.
+                           Never stored as plain text.
 
   role:         string  — One of: 'junior' | 'senior'
                           Determines which fields are visible/editable on the CRM mock screen.
@@ -197,9 +197,13 @@ function generateNextCaseId() {
  * Creates a new student account and saves it to the store.
  * Validates that the email isn't already taken before creating.
  *
+ * NOTE: This legacy function stores the password as-is. The active
+ * code path in admin/dashboard.html calls hashPassword() from db.js
+ * before calling saveStudent(), so passwords are hashed at rest.
+ *
  * @param {string} name     - Student's full name.
  * @param {string} email    - Student's email address. Must be unique.
- * @param {string} password - Account password (plain text — POC only).
+ * @param {string} password - Account password (hashed by caller via db.js).
  * @param {string} role     - One of: 'junior' | 'senior'
  * @returns {Object} Result object: { success: boolean, student?: Object, error?: string }
  */
@@ -239,7 +243,10 @@ function createStudent(name, email, password, role) {
 /**
  * authenticateStudent(email, password)
  * Checks if the provided email/password match a student record.
- * Used on the student login screen (index.html).
+ *
+ * NOTE: This legacy function uses direct string comparison. The active
+ * login code in index.html uses verifyPassword() from db.js, which
+ * performs constant-time PBKDF2 verification against the stored hash.
  *
  * @param {string} email    - The email address entered by the student.
  * @param {string} password - The password entered by the student.

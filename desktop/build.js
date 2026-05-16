@@ -27,8 +27,19 @@ const ROOT           = __dirname;
 const APPS_DIR       = path.join(ROOT, "apps");
 const SCENARIOS_DIR  = path.join(ROOT, "scenarios");
 const CORE_PATH      = path.join(ROOT, "src", "os-core.js");
+const EVENT_BUS_PATH = path.join(ROOT, "src", "event-bus.js");
+const COMPOSITOR_PATH= path.join(ROOT, "src", "compositor.js");
+const WORKSPACES_PATH= path.join(ROOT, "src", "workspaces.js");
 const CSS_PATH       = path.join(ROOT, "os.css");
 const INDEX_PATH     = path.join(ROOT, "index.html");
+// Academy db.js — bundled into the OS so the simulator can read/write
+// the same IndexedDB as the surrounding course platform.
+// Path goes up one level from desktop/ to reach js/db.js.
+const DB_PATH = path.join(ROOT, "..", "js", "db.js");
+// Bug 1: scoring.js needs to be bundled
+const SCORING_PATH   = path.join(ROOT, "src", "scoring.js");
+const HEALTH_PATH    = path.join(ROOT, "src", "health-checks.js");
+const SHORTCUTS_PATH = path.join(ROOT, "src", "keyboard-shortcuts.js");
 const BUNDLE_OUT     = path.join(ROOT, "os.bundle.js");
 const DIST_OUT       = path.join(ROOT, "dist.html");
 // capstone.html lives one level up in the Academy root.
@@ -46,11 +57,33 @@ function readApps() {
   const files = fs.readdirSync(APPS_DIR).filter((f) => f.endsWith(".html"));
   const appHtml = {};
 
+  // Pre-read sprite images for inlining into QTube
+  const VIDEOS_DIR = path.join(ROOT, "videos");
+  const spriteCache = {};
+  if (fs.existsSync(VIDEOS_DIR)) {
+    const spriteFiles = fs.readdirSync(VIDEOS_DIR).filter((f) => f.endsWith(".png"));
+    for (const sf of spriteFiles) {
+      const fullPath = path.join(VIDEOS_DIR, sf);
+      const data = fs.readFileSync(fullPath);
+      spriteCache[sf] = "data:image/png;base64," + data.toString("base64");
+    }
+  }
+
   for (const file of files) {
     // Normalise key to lowercase so it matches APPS{} in os-core.js
     const id   = path.basename(file, ".html").toLowerCase();
     const full = path.join(APPS_DIR, file);
     let   html = fs.readFileSync(full, "utf8");
+
+    // Inline sprite images as base64 data URIs for srcdoc iframe compatibility
+    if (spriteCache) {
+      html = html.replace(/url\(['"]?videos\/([^'")]+)['"]?\)/gi, function (match, filename) {
+        if (spriteCache[filename]) {
+          return "url('" + spriteCache[filename] + "')";
+        }
+        return match;
+      });
+    }
 
     // Step 1 — pull out <script> blocks so we never escape their internals
     const scripts = [];
@@ -97,13 +130,45 @@ function readScenarios() {
   return combined;
 }
 
+// ─── Architecture layers (read if they exist) ──────────────────────────────────
+function readArchLayer(filePath, label) {
+  if (fs.existsSync(filePath)) {
+    return fs.readFileSync(filePath, "utf8") + "\n";
+  }
+  console.warn("⚠  " + label + " not found at:", filePath);
+  return "// " + label + " not found — skipped\n";
+}
+
 // ─── Build ────────────────────────────────────────────────────────────────────
 function build() {
-  const core       = fs.readFileSync(CORE_PATH,  "utf8");
-  const css        = fs.readFileSync(CSS_PATH,   "utf8");
-  const indexHtml  = fs.readFileSync(INDEX_PATH, "utf8");
-  const apps       = readApps();
+  const core        = fs.readFileSync(CORE_PATH,  "utf8");
+  const css         = fs.readFileSync(CSS_PATH,   "utf8");
+  const indexHtml   = fs.readFileSync(INDEX_PATH, "utf8");
+  const apps        = readApps();
   const scenariosJs = readScenarios();
+  const dbJs = fs.existsSync(DB_PATH)
+              ? fs.readFileSync(DB_PATH, "utf8")
+              : "// db.js not found — IndexedDB bridge disabled\n";
+
+// Bug 1: Read scoring.js
+const scoringJs = fs.existsSync(SCORING_PATH)
+                    ? fs.readFileSync(SCORING_PATH, "utf8") + "\n"
+                    : "// scoring.js not found — scoring disabled\n";
+
+// Read health-checks.js
+const healthJs = fs.existsSync(HEALTH_PATH)
+                    ? fs.readFileSync(HEALTH_PATH, "utf8") + "\n"
+                    : "// health-checks.js not found\n";
+
+// Read keyboard-shortcuts.js
+const shortcutsJs = fs.existsSync(SHORTCUTS_PATH)
+                    ? fs.readFileSync(SHORTCUTS_PATH, "utf8") + "\n"
+                    : "// keyboard-shortcuts.js not found\n";
+
+// Architecture layers — loaded in dependency order
+const eventBusJs    = readArchLayer(EVENT_BUS_PATH,  "event-bus.js");
+  const compositorJs  = readArchLayer(COMPOSITOR_PATH, "compositor.js");
+  const workspacesJs  = readArchLayer(WORKSPACES_PATH, "workspaces.js");
 
   // APP_HTML is declared as a plain const so os-core.js can reference it
   const appHtmlDecl = "const APP_HTML = " + JSON.stringify(apps, null, 2) + ";\n";
@@ -111,30 +176,37 @@ function build() {
   // Wrap os-core.js in an IIFE so its variables don't pollute the global scope
   const wrappedCore = "(function(){\n" + core + "\n})();\n";
 
-  // ── Output 1: os.bundle.js (for local dev with index.html) ────────────────
-  const bundleContent =
-    "// os.bundle.js — generated by build.js — do not edit by hand\n\n" +
-    appHtmlDecl + "\n" +
-    scenariosJs + "\n" +
-    wrappedCore;
+   // ── Output 1: os.bundle.js (for local dev with index.html) ────────────────
+   const bundleContent =
+     "// os.bundle.js — generated by build.js — do not edit by hand\n\n" +
+     dbJs        + "\n" +   // Academy IndexedDB layer
+     eventBusJs  + "\n" +   // Event Bus — decoupled pub/sub
+     compositorJs+ "\n" +   // Compositor — window layout engine
+     workspacesJs+ "\n" +   // Workspaces — IndexedDB session persistence
+     appHtmlDecl + "\n" +
+     scenariosJs + "\n" +
+     wrappedCore + "\n" +
+     scoringJs   + "\n" +   // from C10
+     shortcutsJs + "\n" +   // ← ADD (before health — shortcuts must exist for health to check)
+     healthJs;              // ← ADD (last — checks all the above)
 
   fs.writeFileSync(BUNDLE_OUT, bundleContent, "utf8");
   console.log("✓ Built:", BUNDLE_OUT);
 
-  // ── Output 2: dist.html (single self-contained file) ─────────────────────
-  // This file has zero external dependencies — safe to open via file://
-  // or embed in OneNote because the browser never needs to make a network
-  // (or local-filesystem) request for a secondary resource.
-  const inlineStyle  = "<style>\n"  + css + "\n</style>";
+   // ── Output 2: dist.html (single self-contained file) ─────────────────────
+   // This file has zero external dependencies — safe to open via file://
+   // or embed in OneNote because the browser never needs to make a network
+   // (or local-filesystem) request for a secondary resource.
+   const inlineStyle  = "<style>\n"  + css + "\n</style>";
 
-  // IMPORTANT: when JS is inlined inside an HTML <script> tag, the browser's
-  // HTML parser scans the raw text for </script> to find the end of the block.
-  // Any </script> inside our JSON strings (from the app HTML files) would
-  // terminate the script prematurely → black screen.
-  // Fix: replace every </script with <\/script — the HTML parser won't match
-  // it but the JS engine treats the forward-slash as harmless.
-  const safeJs = (appHtmlDecl + "\n" + scenariosJs + "\n" + wrappedCore)
-    .replace(/<\/script/gi, "<\\/script");
+   // IMPORTANT: when JS is inlined inside an HTML <script> tag, the browser's
+   // HTML parser scans the raw text for </script> to find the end of the block.
+   // Any </script> inside our JSON strings (from the app HTML files) would
+   // terminate the script prematurely → black screen.
+   // Fix: replace every </script with <\/script — the HTML parser won't match
+   // it but the JS engine treats the forward-slash as harmless.
+   const safeJs = (dbJs + "\n" + eventBusJs + "\n" + compositorJs + "\n" + workspacesJs + "\n" + appHtmlDecl + "\n" + scenariosJs + "\n" + wrappedCore + "\n" + scoringJs + "\n" + shortcutsJs + "\n" + healthJs)
+     .replace(/<\/script/gi, "<\\/script");
 
   const inlineScript = "<script>\n" + safeJs + "\n</script>";
 

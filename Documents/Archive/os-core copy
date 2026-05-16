@@ -1,0 +1,936 @@
+// src/os-core.js — core OS engine (expects global APP_HTML + window.SCENARIOS)
+
+const APPS = {
+  dynamics: {
+    id: "dynamics",
+    title: "Dynamics CRM — Case Investigation",
+    short: "Dynamics",
+    icon: "📁",
+  },
+  ado: {
+    id: "ado",
+    title: "Azure DevOps — Bug Report",
+    short: "ADO",
+    icon: "🧾",
+  },
+  ac: { id: "ac", title: "Acceptance Criteria", short: "AC", icon: "✅" },
+  training: {
+    id: "training",
+    title: "Training — Scenarios",
+    short: "Training",
+    icon: "🎓",
+  },
+  settings: {
+    id: "settings",
+    title: "Settings",
+    short: "Settings",
+    icon: "⚙️",
+  },
+
+  // ⭐ NEW APP
+  browser: {
+    id: "browser",
+    title: "Edge — Training Browser",
+    short: "Browser",
+    icon: "🌐",
+  },
+};
+
+
+const STORAGE_KEY = "qaSimulatorDesktop";
+
+const state = {
+  role: "junior",
+  windows: [],
+  activeWindowId: null,
+  nextWindowId: 1,
+  nextZ: 1,
+  theme: "light",
+  background: "default",
+  brightness: 100,
+  installedApps: Object.keys(APPS),
+  fidelity: "win11", // "win11" or "classic"
+};
+
+let shell,
+  windowArea,
+  startMenu,
+  startButton,
+  startGrid,
+  taskbarApps,
+  roleLabel,
+  taskbarRole,
+  clockEl,
+  roleSwitcher,
+  notifyCenter,
+  notifyList,
+  quickPanel,
+  taskviewOverlay,
+  taskviewInner,
+  lockScreen,
+  lockTime,
+  lockDate,
+  notifyButton,
+  quickButton,
+  taskviewButton,
+  themeLightBtn,
+  themeDarkBtn,
+  brightnessSlider;
+
+document.addEventListener("DOMContentLoaded", init);
+
+function init() {
+  shell = document.getElementById("qa-shell");
+  windowArea = document.getElementById("qa-window-area");
+  startMenu = document.getElementById("qa-start-menu");
+  startButton = document.getElementById("qa-start-button");
+  startGrid = document.getElementById("qa-start-grid");
+  taskbarApps = document.getElementById("qa-taskbar-apps");
+  roleLabel = document.getElementById("qa-role-label");
+  taskbarRole = document.getElementById("qa-taskbar-role");
+  clockEl = document.getElementById("qa-taskbar-clock");
+  roleSwitcher = document.getElementById("qa-role-switcher");
+  notifyCenter = document.getElementById("qa-notify-center");
+  notifyList = document.getElementById("qa-notify-list");
+  quickPanel = document.getElementById("qa-quick-panel");
+  taskviewOverlay = document.getElementById("qa-taskview-overlay");
+  taskviewInner = document.getElementById("qa-taskview-inner");
+  lockScreen = document.getElementById("qa-lock-screen");
+  lockTime = document.getElementById("qa-lock-time");
+  lockDate = document.getElementById("qa-lock-date");
+  notifyButton = document.getElementById("qa-notify-button");
+  quickButton = document.getElementById("qa-quick-button");
+  taskviewButton = document.getElementById("qa-taskview-button");
+  themeLightBtn = document.getElementById("qa-theme-light");
+  themeDarkBtn = document.getElementById("qa-theme-dark");
+  brightnessSlider = document.getElementById("qa-brightness-slider");
+
+  loadState();
+  applyTheme();
+  applyBackground();
+  applyBrightness();
+  applyFidelity();
+  bindEvents();
+  renderRole();
+  renderAllWindows();
+  renderTaskbar();
+  renderStartMenu();
+  startClock();
+  startLockClock();
+
+  if (state.windows.length === 0) {
+    openApp("dynamics");
+    openApp("ac");
+  }
+
+  const coreApi = {
+    getRole: () => state.role,
+    getFidelity: () => state.fidelity,
+    setTheme: (theme) => setTheme(theme),
+    setBackground: (id) => setBackground(id),
+    setFidelity: (mode) => setFidelity(mode),
+    notify: (msg) => addNotification(msg),
+    openApp: (id) => openApp(id),
+    installApp: (id) => installApp(id),
+    uninstallApp: (id) => uninstallApp(id),
+    loadScenario: (id) => (window.SCENARIOS && window.SCENARIOS[id]) || null,
+    completeTask: (id) => addNotification(`Task completed: ${id}`),
+
+    // 🔥 NEW: Global app persistence
+    saveAppState: (appId, data) => {
+      try {
+        const key = `qa-app-${appId}`;
+        localStorage.setItem(key, JSON.stringify(data));
+      } catch (e) {
+        // ignore
+      }
+    },
+
+    loadAppState: (appId) => {
+      try {
+        const key = `qa-app-${appId}`;
+        const raw = localStorage.getItem(key);
+        return raw ? JSON.parse(raw) : null;
+      } catch (e) {
+        return null;
+      }
+    },
+  };
+
+  window.QA_OS = coreApi;
+  window.OS = coreApi;
+}
+
+function bindEvents() {
+  lockScreen.addEventListener("click", () => {
+    if (!lockScreen.classList.contains("qa-lock-hidden")) unlock();
+  });
+
+  document.addEventListener("keydown", () => {
+    if (!lockScreen.classList.contains("qa-lock-hidden")) unlock();
+  });
+
+  document.querySelectorAll(".qa-desktop-icon").forEach((icon) => {
+    icon.addEventListener("dblclick", () => {
+      const appId = icon.getAttribute("data-app");
+      if (appId) openApp(appId);
+    });
+  });
+
+  startButton.addEventListener("click", (e) => {
+    e.stopPropagation();
+    toggleStartMenu();
+    hideQuickPanel();
+    hideNotifyCenter();
+  });
+
+  document.addEventListener("click", (e) => {
+    if (!startMenu.contains(e.target) && !startButton.contains(e.target)) {
+      hideStartMenu();
+    }
+    if (!quickPanel.contains(e.target) && !quickButton.contains(e.target)) {
+      hideQuickPanel();
+    }
+    if (!notifyCenter.contains(e.target) && !notifyButton.contains(e.target)) {
+      hideNotifyCenter();
+    }
+  });
+
+  startMenu.addEventListener("click", (e) => {
+    const btn = e.target.closest(".qa-start-item");
+    if (!btn) return;
+
+    if (btn.id === "qa-role-switcher") {
+      toggleRole();
+      hideStartMenu();
+      return;
+    }
+
+    const appId = btn.getAttribute("data-app");
+    if (appId) {
+      openApp(appId);
+      hideStartMenu();
+    }
+  });
+
+  notifyButton.addEventListener("click", (e) => {
+    e.stopPropagation();
+    toggleNotifyCenter();
+    hideQuickPanel();
+    hideStartMenu();
+  });
+
+  document
+    .getElementById("qa-notify-clear")
+    .addEventListener("click", clearNotifications);
+
+  quickButton.addEventListener("click", (e) => {
+    e.stopPropagation();
+    toggleQuickPanel();
+    hideNotifyCenter();
+    hideStartMenu();
+  });
+
+  themeLightBtn.addEventListener("click", () => setTheme("light"));
+  themeDarkBtn.addEventListener("click", () => setTheme("dark"));
+
+  if (brightnessSlider) {
+    brightnessSlider.addEventListener("input", () => {
+      state.brightness = Number(brightnessSlider.value) || 100;
+      applyBrightness();
+      saveState();
+    });
+  }
+
+  taskviewButton.addEventListener("click", (e) => {
+    e.stopPropagation();
+    toggleTaskview();
+  });
+
+  taskviewOverlay.addEventListener("click", (e) => {
+    if (e.target === taskviewOverlay) hideTaskview();
+  });
+}
+
+// LOCK SCREEN
+
+function unlock() {
+  lockScreen.classList.add("qa-lock-hidden");
+}
+
+function startLockClock() {
+  const update = () => {
+    const now = new Date();
+    const mm = String(now.getMinutes()).padStart(2, "0");
+
+    let hours = now.getHours();
+    const ampm = hours >= 12 ? "PM" : "AM";
+    hours = hours % 12;
+    hours = hours ? hours : 12;
+    const hh = String(hours).padStart(2, "0");
+
+    lockTime.textContent = `${hh}:${mm} ${ampm}`;
+    lockDate.textContent = now.toLocaleDateString(undefined, {
+      weekday: "long",
+      month: "long",
+      day: "numeric",
+    });
+  };
+  update();
+  setInterval(update, 30000);
+}
+
+// START MENU
+
+function toggleStartMenu() {
+  startMenu.classList.toggle("qa-start-menu-hidden");
+}
+
+function hideStartMenu() {
+  startMenu.classList.add("qa-start-menu-hidden");
+}
+
+function renderStartMenu() {
+  if (!startGrid) return;
+  startGrid.innerHTML = "";
+
+  state.installedApps.forEach((id) => {
+    const app = APPS[id];
+    if (!app) return;
+    const btn = document.createElement("button");
+    btn.className = "qa-start-item";
+    btn.setAttribute("data-app", id);
+    btn.innerHTML = `
+      <div class="qa-start-icon">${app.icon || "📦"}</div>
+      <div class="qa-start-label">${app.short}</div>
+    `;
+    startGrid.appendChild(btn);
+  });
+}
+
+// NOTIFICATIONS
+
+function toggleNotifyCenter() {
+  notifyCenter.classList.toggle("qa-notify-hidden");
+}
+
+function hideNotifyCenter() {
+  notifyCenter.classList.add("qa-notify-hidden");
+}
+
+function addNotification(text) {
+  const item = document.createElement("div");
+  item.className = "qa-notify-item";
+  item.textContent = text;
+  notifyList.prepend(item);
+}
+
+function clearNotifications() {
+  notifyList.innerHTML = "";
+}
+
+// QUICK SETTINGS
+
+function toggleQuickPanel() {
+  quickPanel.classList.toggle("qa-quick-hidden");
+}
+
+function hideQuickPanel() {
+  quickPanel.classList.add("qa-quick-hidden");
+}
+
+function setTheme(theme) {
+  state.theme = theme === "dark" ? "dark" : "light";
+  applyTheme();
+  saveState();
+}
+
+function applyTheme() {
+  shell.classList.toggle("qa-theme-dark", state.theme === "dark");
+  shell.classList.toggle("qa-theme-light", state.theme !== "dark");
+  if (themeLightBtn && themeDarkBtn) {
+    themeLightBtn.classList.toggle("qa-quick-active", state.theme === "light");
+    themeDarkBtn.classList.toggle("qa-quick-active", state.theme === "dark");
+  }
+}
+
+function setBackground(id) {
+  state.background = id || "default";
+  applyBackground();
+  saveState();
+}
+
+function applyBackground() {
+  shell.dataset.bg = state.background || "default";
+}
+
+function applyBrightness() {
+  const value = state.brightness || 100;
+  document.documentElement.style.setProperty("--qa-brightness", value);
+  if (brightnessSlider) brightnessSlider.value = value;
+}
+
+function setFidelity(mode) {
+  const normalized = mode === "classic" ? "classic" : "win11";
+  state.fidelity = normalized;
+  applyFidelity();
+  saveState();
+  addNotification(
+    normalized === "win11"
+      ? "Visual mode: Windows 11 Mode"
+      : "Visual mode: Classic Mode",
+  );
+}
+
+function applyFidelity() {
+  if (!shell) return;
+  shell.dataset.fidelity = state.fidelity || "classic";
+}
+
+// TASK VIEW
+
+function toggleTaskview() {
+  if (taskviewOverlay.classList.contains("qa-taskview-hidden")) {
+    renderTaskview();
+    taskviewOverlay.classList.remove("qa-taskview-hidden");
+  } else {
+    hideTaskview();
+  }
+}
+
+function hideTaskview() {
+  taskviewOverlay.classList.add("qa-taskview-hidden");
+}
+
+function renderTaskview() {
+  taskviewInner.innerHTML = "";
+  const wins = state.windows.filter((w) => !w.minimized);
+  if (wins.length === 0) return;
+
+  wins.forEach((win) => {
+    const app = APPS[win.appId];
+    const thumb = document.createElement("div");
+    thumb.className = "qa-taskview-thumb";
+    if (win.id === state.activeWindowId) {
+      thumb.classList.add("qa-active");
+    }
+
+    const title = document.createElement("div");
+    title.className = "qa-taskview-thumb-title";
+    title.textContent = app ? app.title : `Window ${win.id}`;
+    thumb.appendChild(title);
+
+    thumb.addEventListener("click", (e) => {
+      e.stopPropagation();
+      focusWindow(win.id);
+      hideTaskview();
+    });
+
+    taskviewInner.appendChild(thumb);
+  });
+}
+
+// ROLE
+
+function toggleRole() {
+  state.role = state.role === "junior" ? "senior" : "junior";
+  saveState();
+  renderRole();
+  renderAllWindows();
+  addNotification(
+    `Role switched to ${
+      state.role === "junior" ? "Junior Investigator" : "Senior Investigator"
+    }`,
+  );
+}
+
+function renderRole() {
+  const label =
+    state.role === "junior" ? "Junior Investigator" : "Senior Investigator";
+  const short = state.role === "junior" ? "Junior" : "Senior";
+  if (roleLabel) roleLabel.textContent = `Role: ${label}`;
+  if (taskbarRole) taskbarRole.textContent = short;
+}
+
+// WINDOW MANAGEMENT
+
+function openApp(appId) {
+  if (!isInstalled(appId)) return;
+  const app = APPS[appId];
+  if (!app) return;
+
+  const winId = state.nextWindowId++;
+  const z = state.nextZ++;
+
+  const baseX = 120 + winId * 24;
+  const baseY = 70 + winId * 18;
+
+  state.windows.push({
+    id: winId,
+    appId,
+    z,
+    layout: "normal",
+    minimized: false,
+    x: baseX,
+    y: baseY,
+  });
+  state.activeWindowId = winId;
+  saveState();
+  renderAllWindows();
+  renderTaskbar();
+  addNotification(`Opened ${app.title}`);
+}
+
+function closeWindow(winId) {
+  const idx = state.windows.findIndex((w) => w.id === winId);
+  if (idx === -1) return;
+  const app = APPS[state.windows[idx].appId];
+
+  const el = windowArea.querySelector(`[data-win-id="${winId}"]`);
+  if (el) {
+    el.classList.add("qa-closing");
+    setTimeout(() => {
+      actuallyCloseWindow(winId, app);
+    }, 160);
+  } else {
+    actuallyCloseWindow(winId, app);
+  }
+}
+
+function actuallyCloseWindow(winId, app) {
+  const idx = state.windows.findIndex((w) => w.id === winId);
+  if (idx === -1) return;
+  state.windows.splice(idx, 1);
+  if (state.activeWindowId === winId) {
+    state.activeWindowId = state.windows.length
+      ? state.windows[state.windows.length - 1].id
+      : null;
+  }
+  saveState();
+  renderAllWindows();
+  renderTaskbar();
+  if (app) addNotification(`Closed ${app.title}`);
+}
+
+function focusWindow(winId) {
+  const win = state.windows.find((w) => w.id === winId);
+  if (!win) return;
+
+  const needsUnminimize = win.minimized;
+  win.z = state.nextZ++;
+  win.minimized = false;
+  state.activeWindowId = winId;
+  saveState();
+
+  if (needsUnminimize) {
+    // Window was hidden — full re-render needed to show it
+    renderAllWindows();
+  } else {
+    // Already visible — update z-index and active class directly in the DOM.
+    // A full re-render here would destroy the elements mid-click and prevent
+    // the minimize/maximize/close button click events from ever firing.
+    state.windows.forEach((w) => {
+      const el = windowArea.querySelector(`[data-win-id="${w.id}"]`);
+      if (!el) return;
+      el.style.zIndex = w.z;
+      el.classList.toggle("qa-active", w.id === winId);
+
+      // Show/hide focus overlay so the newly active window is fully
+      // interactive while all others stay capturable with one click.
+      const overlay = el.querySelector(".qa-focus-overlay");
+      if (overlay) overlay.style.display = w.id === winId ? "none" : "block";
+    });
+  }
+  renderTaskbar();
+}
+
+function toggleMaximize(winId) {
+  const win = state.windows.find((w) => w.id === winId);
+  if (!win) return;
+  if (win.layout === "maximized") {
+    win.layout = "normal";
+  } else {
+    win.layout = "maximized";
+    win.minimized = false;
+  }
+  saveState();
+  renderAllWindows();
+}
+
+function minimizeWindow(winId) {
+  const win = state.windows.find((w) => w.id === winId);
+  if (!win) return;
+  win.minimized = true;
+  if (state.activeWindowId === winId) {
+    state.activeWindowId = null;
+  }
+  saveState();
+  renderAllWindows();
+  renderTaskbar();
+}
+
+function applyLayoutClass(el, layout) {
+  el.classList.remove("snap-left", "snap-right", "maximized");
+  if (layout === "snap-left") el.classList.add("snap-left");
+  if (layout === "snap-right") el.classList.add("snap-right");
+  if (layout === "maximized") el.classList.add("maximized");
+}
+
+// RENDER WINDOWS
+
+function renderAllWindows() {
+  windowArea.innerHTML = "";
+  state.windows
+    .slice()
+    .sort((a, b) => a.z - b.z)
+    .forEach((win) => {
+      if (win.minimized) return;
+
+      const app = APPS[win.appId];
+      const el = document.createElement("div");
+      el.className = "qa-window";
+      if (win.id === state.activeWindowId) el.classList.add("qa-active");
+      el.style.zIndex = win.z;
+      el.dataset.winId = win.id;
+
+      applyLayoutClass(el, win.layout);
+
+      if (win.layout === "normal") {
+        if (typeof win.x === "number") el.style.left = `${win.x}px`;
+        if (typeof win.y === "number") el.style.top = `${win.y}px`;
+      }
+
+      const header = document.createElement("div");
+      header.className = "qa-window-header";
+      header.innerHTML = `
+        <div class="qa-window-title">${app ? app.title : "Window"}</div>
+        <div class="qa-window-controls">
+          <button class="qa-window-btn minimize" title="Minimize"></button>
+          <button class="qa-window-btn maximize" title="Maximize"></button>
+          <button class="qa-window-btn close" title="Close"></button>
+        </div>
+      `;
+      el.appendChild(header);
+
+      const body = document.createElement("div");
+      body.className = "qa-window-body";
+
+      if (win.appId === "ac") {
+        const panel = document.createElement("div");
+        panel.className = "qa-ac-panel";
+        panel.innerHTML = `
+          <div class="qa-ac-title">Acceptance Criteria — Case Investigation</div>
+          <div class="qa-ac-subtitle">
+            Use this panel to cross-check expected behaviour while you test Dynamics and log bugs in Azure DevOps.
+          </div>
+
+          <div class="qa-ac-section-title">Key Areas to Verify</div>
+          <div class="qa-ac-card">
+            <strong>Role-based access</strong><br>
+            Junior must not see or edit Senior-only fields (Outcome / Resolution, Assigned To).
+          </div>
+          <div class="qa-ac-card">
+            <strong>Validation rules</strong><br>
+            Required fields (Case Title, Date Opened, Escalation Reason when escalated) must block save when invalid.
+          </div>
+          <div class="qa-ac-card">
+            <strong>Status transitions</strong><br>
+            Junior cannot resolve/close cases. Senior must provide Outcome before Resolved/Closed.
+          </div>
+          <div class="qa-ac-card">
+            <strong>Timeline & system fields</strong><br>
+            Last Updated and Timeline entries must reflect saves and auto-saves correctly.
+          </div>
+
+          <div class="qa-ac-section-title">Suggested Use</div>
+          <div class="qa-ac-card">
+            1. Open <strong>Dynamics</strong> from Start → perform a test.<br>
+            2. Switch to <strong>AC</strong> to confirm expected behaviour.<br>
+            3. Open <strong>Azure DevOps</strong> to log any defects you find.
+          </div>
+        `;
+        body.appendChild(panel);
+      } else if (APP_HTML && APP_HTML[win.appId]) {
+        const iframe = document.createElement("iframe");
+        iframe.className = "qa-window-frame";
+        iframe.srcdoc = APP_HTML[win.appId];
+
+        // Send a boot message into the app once its iframe is ready.
+        iframe.addEventListener("load", () => {
+          try {
+            iframe.contentWindow.postMessage(
+              {
+                type: "APP_BOOT",
+                appId: win.appId,
+                role: state.role,
+                sessionId: `${win.id}-${Date.now().toString(36)}`,
+              },
+              "*",
+            );
+          } catch (e) {
+            // ignore
+          }
+        });
+
+        body.appendChild(iframe);
+      } else {
+        body.textContent = "App not configured.";
+      }
+
+      // ── Focus-capture overlay ─────────────────────────────────
+      // A transparent div covers the body of every INACTIVE window.
+      // When the user clicks anywhere on an inactive window (including
+      // clicking on an iframe that would otherwise swallow the event),
+      // this overlay fires first, calls focusWindow(), then disappears
+      // so the next click lands on the real content.
+      // The active window has display:none so its content is fully interactive.
+      const focusOverlay = document.createElement("div");
+      focusOverlay.className = "qa-focus-overlay";
+      focusOverlay.style.display =
+        win.id === state.activeWindowId ? "none" : "block";
+      focusOverlay.addEventListener("mousedown", (e) => {
+        e.stopPropagation(); // don't bubble to the window's own mousedown
+        focusWindow(win.id);
+      });
+      body.appendChild(focusOverlay);
+
+      el.appendChild(body);
+      windowArea.appendChild(el);
+
+      header.addEventListener("mousedown", (e) => startDrag(e, el, win.id));
+
+      header.querySelector(".close").addEventListener("click", (e) => {
+        e.stopPropagation();
+        closeWindow(win.id);
+      });
+
+      header.addEventListener("dblclick", () => toggleMaximize(win.id));
+
+      header.querySelector(".maximize").addEventListener("click", (e) => {
+        e.stopPropagation();
+        toggleMaximize(win.id);
+      });
+
+      header.querySelector(".minimize").addEventListener("click", (e) => {
+        e.stopPropagation();
+        minimizeWindow(win.id);
+      });
+
+      el.addEventListener("mousedown", () => focusWindow(win.id));
+    });
+}
+
+// DRAG + SNAP
+
+function startDrag(e, el, winId) {
+  const win = state.windows.find((w) => w.id === winId);
+  if (!win) return;
+  if (win.layout === "maximized") return;
+
+  focusWindow(winId);
+
+  const rect = el.getBoundingClientRect();
+  const offsetX = e.clientX - rect.left;
+  const offsetY = e.clientY - rect.top;
+  const startX = e.clientX;
+  const startY = e.clientY;
+
+  // Track whether the user actually dragged vs just clicked.
+  // This is critical: if we call renderAllWindows() on a plain click (mouseup
+  // with no movement) the DOM is destroyed before the 'click' event fires on
+  // the window-control buttons, so they never work.
+  let hasMoved = false;
+
+  // Shield is only added once real movement begins so normal clicks pass through.
+  const shield = document.createElement("div");
+  shield.style.cssText =
+    "position:fixed;inset:0;z-index:2147483647;cursor:move;";
+
+  function onMove(ev) {
+    if (!hasMoved) {
+      const dx = ev.clientX - startX;
+      const dy = ev.clientY - startY;
+      if (Math.abs(dx) < 5 && Math.abs(dy) < 5) return; // dead-zone
+      hasMoved = true;
+      e.preventDefault(); // suppress text-selection once we commit to a drag
+      document.body.appendChild(shield);
+    }
+
+    const x = ev.clientX - offsetX;
+    const y = ev.clientY - offsetY;
+    el.style.left = `${x}px`;
+    el.style.top = `${y}px`;
+    win.x = x;
+    win.y = y;
+  }
+
+  function onUp(ev) {
+    document.removeEventListener("mousemove", onMove);
+    document.removeEventListener("mouseup", onUp);
+    if (shield.parentNode) shield.remove();
+
+    // Plain click with no drag — leave the DOM alone so the click event
+    // can still reach whichever button (close/min/max) was pressed.
+    if (!hasMoved) return;
+
+    // Win11-style snap zones:
+    //   drag to left edge  → left half
+    //   drag to right edge → right half
+    //   drag to top edge   → maximise
+    const vw = windowArea.clientWidth;
+    const sm = 24; // snap margin in px
+
+    if (ev.clientX < sm) win.layout = "snap-left";
+    else if (ev.clientX > vw - sm) win.layout = "snap-right";
+    else if (ev.clientY < sm) win.layout = "maximized";
+    else win.layout = "normal";
+
+    saveState();
+    renderAllWindows();
+  }
+
+  document.addEventListener("mousemove", onMove);
+  document.addEventListener("mouseup", onUp);
+}
+
+// TASKBAR
+
+function renderTaskbar() {
+  taskbarApps.innerHTML = "";
+
+  const byApp = {};
+  state.windows.forEach((w) => {
+    if (!byApp[w.appId]) byApp[w.appId] = [];
+    byApp[w.appId].push(w);
+  });
+
+  Object.keys(byApp).forEach((appId) => {
+    const app = APPS[appId];
+    const wins = byApp[appId];
+    const isActive = wins.some((w) => w.id === state.activeWindowId);
+    const hasVisible = wins.some((w) => !w.minimized);
+
+    const btn = document.createElement("button");
+    btn.className = "qa-taskbar-app-btn";
+    if (isActive && hasVisible) btn.classList.add("qa-active");
+    if (hasVisible && !isActive) btn.classList.add("qa-running");
+    // Show app emoji icon — Win11 style icon-only button with dot indicator via CSS
+    btn.innerHTML = `<span class="qa-taskbar-app-icon">${app ? app.icon : "📦"}</span>`;
+    btn.title = app ? app.title : appId;
+    // data-label drives the CSS ::before floating tooltip (Win11 style)
+    btn.dataset.label = app ? app.short : appId;
+
+    btn.addEventListener("click", () => {
+      const visible = wins.filter((w) => !w.minimized);
+      if (visible.length === 0) {
+        wins[0].minimized = false;
+        state.activeWindowId = wins[0].id;
+      } else {
+        const topWin = visible.reduce((a, b) => (a.z > b.z ? a : b));
+        if (state.activeWindowId === topWin.id) {
+          visible.forEach((w) => (w.minimized = true));
+          state.activeWindowId = null;
+        } else {
+          focusWindow(topWin.id);
+          return;
+        }
+      }
+      saveState();
+      renderAllWindows();
+      renderTaskbar();
+    });
+
+    btn.addEventListener("contextmenu", (e) => {
+      e.preventDefault();
+      wins.slice().forEach((w) => actuallyCloseWindow(w.id, app));
+    });
+
+    taskbarApps.appendChild(btn);
+  });
+}
+
+// CLOCK
+
+function startClock() {
+  const dateEl = document.getElementById("qa-taskbar-date");
+
+  function updateClock() {
+    const now = new Date();
+    let hh = now.getHours();
+    const mm = String(now.getMinutes()).padStart(2, "0");
+    const ampm = hh >= 12 ? "PM" : "AM";
+    hh = hh % 12 || 12;
+    if (clockEl) clockEl.textContent = `${hh}:${mm} ${ampm}`;
+    if (dateEl) {
+      dateEl.textContent = now.toLocaleDateString(undefined, {
+        weekday: "short",
+        month: "numeric",
+        day: "numeric",
+      });
+    }
+  }
+  updateClock();
+  setInterval(updateClock, 15000);
+}
+
+// APPS INSTALL/UNINSTALL
+
+function isInstalled(id) {
+  return state.installedApps.includes(id);
+}
+
+function installApp(id) {
+  if (!APPS[id]) return;
+  if (!isInstalled(id)) state.installedApps.push(id);
+  saveState();
+  renderStartMenu();
+}
+
+function uninstallApp(id) {
+  state.installedApps = state.installedApps.filter((x) => x !== id);
+  state.windows = state.windows.filter((w) => w.appId !== id);
+  saveState();
+  renderAllWindows();
+  renderTaskbar();
+  renderStartMenu();
+}
+
+// STATE PERSISTENCE
+
+function saveState() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  } catch (e) {
+    // ignore
+  }
+}
+
+function loadState() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return;
+    const parsed = JSON.parse(raw);
+    if (parsed.role === "junior" || parsed.role === "senior")
+      state.role = parsed.role;
+    if (Array.isArray(parsed.windows)) state.windows = parsed.windows;
+    if (
+      typeof parsed.activeWindowId === "number" ||
+      parsed.activeWindowId === null
+    )
+      state.activeWindowId = parsed.activeWindowId;
+    if (typeof parsed.nextWindowId === "number")
+      state.nextWindowId = parsed.nextWindowId;
+    if (typeof parsed.nextZ === "number") state.nextZ = parsed.nextZ;
+    if (parsed.theme === "dark" || parsed.theme === "light")
+      state.theme = parsed.theme;
+    if (parsed.background) state.background = parsed.background;
+    if (Array.isArray(parsed.installedApps))
+      state.installedApps = parsed.installedApps;
+    if (typeof parsed.brightness === "number")
+      state.brightness = parsed.brightness;
+    if (parsed.fidelity === "win11" || parsed.fidelity === "classic")
+      state.fidelity = parsed.fidelity;
+  } catch (e) {
+    // ignore
+  }
+}

@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Student Quick Start — QA Pilot</title>
+        <style>
+            :root {
+                --color-bg: #ffffff;
+                --color-primary: #0078d4;
+                --color-ink: #323130;
+                --color-muted: #605e5c;
+                --color-border: #edebe9;
+                --color-success: #16a34a;
+                --color-error: #dc2626;
+                --space-md: 16px;
+                --space-lg: 24px;
+            }
+
+            body {
+                font-family:
+                    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+                    Helvetica, Arial, sans-serif;
+                color: var(--color-ink);
+                background-color: #f3f2f1;
+                margin: 0;
+                padding: var(--space-lg);
+                display: flex;
+                justify-content: center;
+            }
+
+            .card {
+                background: var(--color-bg);
+                width: 100%;
+                max-width: 700px;
+                border: 1px solid var(--color-border);
+                border-top: 8px solid var(--color-primary);
+                border-radius: 8px;
+                padding: var(--space-lg);
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            }
+
+            header {
+                text-align: center;
+                margin-bottom: var(--space-lg);
+            }
+
+            h1 {
+                margin: 0;
+                color: var(--color-primary);
+                font-size: 1.8rem;
+                text-transform: uppercase;
+                letter-spacing: 0.05em;
+            }
+
+            .section-title {
+                font-weight: bold;
+                font-size: 1.1rem;
+                border-bottom: 2px solid var(--color-border);
+                padding-bottom: 4px;
+                margin: var(--space-lg) 0 var(--space-md) 0;
+                color: var(--color-primary);
+            }
+
+            ul {
+                list-style: none;
+                padding: 0;
+                margin: 0;
+            }
+
+            li {
+                margin-bottom: var(--space-sm);
+                display: flex;
+                align-items: flex-start;
+                gap: 8px;
+            }
+
+            .check {
+                color: var(--color-success);
+                font-weight: bold;
+            }
+            .cross {
+                color: var(--color-error);
+                font-weight: bold;
+            }
+
+            .grid {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: var(--space-lg);
+            }
+
+            .scoring-box {
+                background: var(--color-primary-light);
+                background-color: #f0f7ff;
+                padding: var(--space-md);
+                border-radius: 6px;
+                border: 1px solid var(--color-primary);
+            }
+
+            .footer {
+                margin-top: var(--space-lg);
+                text-align: center;
+                font-size: 0.8rem;
+                color: var(--color-muted);
+                border-top: 1px solid var(--color-border);
+                padding-top: var(--space-md);
+            }
+
+            @media print {
+                body {
+                    background: white;
+                    padding: 0;
+                }
+                .card {
+                    box-shadow: none;
+                    border: 1px solid #ccc;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="card">
+            <header>
+                <h1>QA Pilot — Quick Start</h1>
+                <p style="color: var(--color-muted)">Student Reference Guide</p>
+            </header>
+
+            <div class="section-title">Your Task</div>
+            <ul>
+                <li>
+                    <span class="check">1</span> Open the OS simulator
+                    (<code>dist.html</code>)
+                </li>
+                <li>
+                    <span class="check">2</span> Read your case brief in the
+                    <strong>Teams</strong> app
+                </li>
+                <li>
+                    <span class="check">3</span> Open
+                    <strong>Dynamics CRM</strong> — examine every field for
+                    defects
+                </li>
+                <li>
+                    <span class="check">4</span> Check the
+                    <strong>AC Panel</strong> for the rules each field must
+                    follow
+                </li>
+                <li>
+                    <span class="check">5</span> Open
+                    <strong>Azure DevOps</strong> — file a bug report for each
+                    defect you find
+                </li>
+                <li>
+                    <span class="check">6</span> When confident, click
+                    <strong>Submit for Certification</strong>
+                </li>
+            </ul>
+
+            <div class="grid">
+                <div>
+                    <div class="section-title">A Complete Bug Report</div>
+                    <ul>
+                        <li>
+                            <span class="check">✓</span> Clear title describing
+                            the defect
+                        </li>
+                        <li>
+                            <span class="check">✓</span> Severity set
+                            (Critical/High/Med/Low)
+                        </li>
+                        <li>
+                            <span class="check">✓</span> AC Reference (e.g.
+                            <strong>AC-2.1</strong>)
+                        </li>
+                        <li><span class="check">✓</span> Steps to reproduce</li>
+                    </ul>
+                </div>
+                <div class="scoring-box">
+                    <div
+                        class="section-title"
+                        style="margin-top: 0; border: none"
+                    >
+                        Scoring
+                    </div>
+                    <p style="margin: 4px 0">
+                        <strong>1 pt</strong> — Bug found in CRM
+                    </p>
+                    <p style="margin: 4px 0">
+                        <strong>1 pt</strong> — Complete ADO report filed
+                    </p>
+                    <p style="margin: 4px 0">
+                        <strong>1 pt</strong> — Correct AC reference
+                    </p>
+                    <p
+                        style="
+                            margin: 12px 0 0 0;
+                            font-weight: bold;
+                            text-align: center;
+                            color: var(--color-primary);
+                        "
+                    >
+                        Pass = 50%+
+                    </p>
+                </div>
+            </div>
+
+            <div class="section-title">Common Mistakes</div>
+            <ul>
+                <li>
+                    <span class="cross">✗</span> Filing an ADO report without
+                    finding the bug in CRM first
+                </li>
+                <li>
+                    <span class="cross">✗</span> Leaving the AC Reference blank
+                </li>
+                <li>
+                    <span class="cross">✗</span> Providing no steps to reproduce
+                </li>
+                <li>
+                    <span class="cross">✗</span> Clicking browser
+                    <strong>Back</strong> instead of using the OS navigation
+                </li>
+            </ul>
+
+            <div class="footer">
+                QA Pilot Training Platform &bull; Offline Edition
+            </div>
+        </div>
+    </body>
+</html>
