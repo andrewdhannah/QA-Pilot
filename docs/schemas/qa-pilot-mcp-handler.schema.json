@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/andrewdhannah/QA-Pilot/schemas/qa-pilot-mcp-handler.schema.json",
+  "title": "QA Pilot MCP Handler Registration",
+  "description": "Schema defining QA Pilot-owned local MCP handler stubs. Handlers wrap the receipt store and enforce advisory/read-only authority. Cross-project registration is explicitly rejected.",
+  "type": "object",
+  "required": ["handler_name", "handler_version", "authority", "project_boundary", "store_integration", "input", "output"],
+  "properties": {
+    "handler_name": {
+      "type": "string",
+      "enum": [
+        "qa_pilot_receipt_register",
+        "qa_pilot_receipt_get",
+        "qa_pilot_receipt_list",
+        "qa_pilot_receipt_status"
+      ]
+    },
+    "handler_version": {
+      "type": "string",
+      "enum": ["qap-handler-v1"]
+    },
+    "authority": {
+      "type": "string",
+      "enum": ["R0_read_only", "R1_advisory_mutation"]
+    },
+    "project_boundary": {
+      "type": "string",
+      "const": "qa-pilot",
+      "description": "Handlers must remain within the QA Pilot project boundary. Must not cross into The Librarian runtime."
+    },
+    "store_integration": {
+      "type": "string",
+      "const": "qa_pilot_receipt_store",
+      "description": "Handlers must call the QA Pilot receipt store only. Must not call The Librarian runtime."
+    },
+    "cross_project_registration": {
+      "type": "boolean",
+      "const": false,
+      "description": "Cross-project registration into The Librarian runtime is explicitly forbidden without a separate custody packet."
+    },
+    "input": { "type": "object" },
+    "output": {
+      "type": "object",
+      "required": ["advisory_notice"],
+      "properties": {
+        "advisory_notice": { "type": "string", "minLength": 10 }
+      }
+    }
+  }
+}

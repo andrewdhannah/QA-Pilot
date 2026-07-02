@@ -1,3 +1,51 @@
+# Session Handoff — QA-PILOT-MCP-HANDLER-REGISTRATION-1
+
+## Status: 🔍 **Pending (ledger #5)** — Agent work complete, awaiting Owner review
+
+---
+
+## QA-PILOT-MCP-HANDLER-REGISTRATION-1 — QA Pilot MCP Handler Registration
+
+**Type:** MCP Handler Registration
+**Mode:** QA Pilot-owned local handler stubs wrapping receipt store — no The Librarian runtime registration, no cross-project integration
+**Predecessor:** QA-PILOT-RECEIPT-STORE-1 (sealed #4)
+
+**Authorization basis:** Owner-approved per OD-QA-PILOT-RECEIPT-STORE-1-SEAL — "Wire the sealed QA Pilot MCP surface contracts to the sealed QA Pilot receipt store as QA Pilot-owned runtime handler stubs or local project handlers, without mutating The Librarian runtime/MCP enforcement."
+
+**Scope restriction:** Create QA Pilot-owned handler stubs only. Must not register in The Librarian MCP runtime, mutate The Librarian repo, mutate The Librarian MCPController, or cross the project boundary.
+
+**What was done:**
+- Created handler governance doc at `docs/governance/QA-PILOT-MCP-HANDLER-REGISTRATION.md` (8 sections)
+- Created handler schema at `docs/schemas/qa-pilot-mcp-handler.schema.json` (Draft 2020-12)
+- Created handler module at `scripts/qa_pilot_mcp_handlers.py` with 4 functions:
+  - `handle_register` — validates, persists via store, returns advisory_only=true
+  - `handle_get` — retrieves via store
+  - `handle_list` — lists via store with bounded limits
+  - `handle_status` — status via store
+- Created 8 fixtures (4 valid, 4 invalid) in `docs/examples/qa-pilot-mcp-handler/`
+- Created validator (6 rules HR-1-6) at `scripts/validate-qa-pilot-mcp-handler.py`
+- Created test runner (14 tests) at `scripts/test-qa-pilot-mcp-handler.sh`
+- Created sprint receipt at `docs/sprints/QA-PILOT-MCP-HANDLER-REGISTRATION-1.md`
+- Updated QA Pilot ledger to include sprint #5
+- Updated FEATURE-STATUS.md and SESSION-HANDOFF.md
+
+**Handler boundary enforcement:**
+- `project_boundary: "qa-pilot"` in all handler outputs
+- `store_integration: "qa_pilot_receipt_store"` in all handler outputs
+- `cross_project_registration: false` in all handler outputs
+- Invalid cross-project registration fixture explicitly tests boundary rejection
+
+**Validation:**
+- Handler validator: 6/6 checks pass (HR-1-6)
+- Handler test runner: 14/14 pass (including register/get/list/status, authority rejection, unbounded rejection, boundary checks)
+- All 3 existing validators: all still pass
+- All 3 existing test runners: all still pass
+- Prohibited-zone scan: CLEAN — no The Librarian files modified
+
+**Next authorized sprint:** Pending Owner direction (cross-project custody packet required for Librarian MCP runtime integration)
+
+---
+
 # Session Handoff — QA-PILOT-RECEIPT-STORE-1
 
 ## Status: ✅ **Sealed (ledger #4)** — Owner-approved 2026-07-02 per OD-QA-PILOT-RECEIPT-STORE-1-SEAL

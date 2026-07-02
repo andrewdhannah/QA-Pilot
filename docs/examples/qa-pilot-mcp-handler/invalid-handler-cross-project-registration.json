@@ -1,0 +1,20 @@
+{
+  "fixture_type": "qa_pilot_mcp_handler",
+  "handler_name": "qa_pilot_receipt_register",
+  "handler_version": "qap-handler-v1",
+  "authority": "R1_advisory_mutation",
+  "project_boundary": "librarian",
+  "store_integration": "librarian_receipt_store",
+  "cross_project_registration": true,
+  "description": "Invalid handler: attempts cross-project registration into The Librarian runtime",
+  "receipt": {
+    "receipt_id": "qapr-20260702-399",
+    "authority": "advisory",
+    "non_approval_statement": "Cross-project registration violates boundary.",
+    "content_hash": "sha256:FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
+  },
+  "expected_handler_result": {
+    "boundary_violation": true,
+    "project_boundary_not_qa_pilot": true
+  }
+}

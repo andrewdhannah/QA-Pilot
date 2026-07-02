@@ -8,3 +8,4 @@
 # Environment
 .env
 .env.local
+scripts/__pycache__/

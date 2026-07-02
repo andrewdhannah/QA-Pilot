@@ -1,0 +1,17 @@
+{
+  "fixture_type": "qa_pilot_mcp_handler",
+  "handler_name": "qa_pilot_receipt_status",
+  "handler_version": "qap-handler-v1",
+  "authority": "R0_read_only",
+  "project_boundary": "qa-pilot",
+  "store_integration": "qa_pilot_receipt_store",
+  "cross_project_registration": false,
+  "description": "Invalid handler: status attempts to perform mutation (seal action)",
+  "status_input": {
+    "action": "seal_all"
+  },
+  "expected_handler_result": {
+    "has_non_empty_input": true,
+    "handler_is_read_only": true
+  }
+}

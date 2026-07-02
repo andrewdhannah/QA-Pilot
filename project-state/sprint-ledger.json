@@ -1,7 +1,7 @@
 {
   "$schema": "sprint-ledger-v1",
   "description": "QA Pilot sprint ledger — canonical record of all QA Pilot sprints, their status, and metadata.",
-  "last_updated": "2026-07-02T15:50:00Z",
+  "last_updated": "2026-07-02T16:15:00Z",
   "sprints": [
     {
       "id": "QA-PILOT-PROJECT-INIT-1",
@@ -74,6 +74,24 @@
       "harness": "Receipt store: implement QA Pilot-owned local receipt store for register/get/list/status. File-based store with schema validation, advisory enforcement, bounded listing. All 14/14 tests pass. Sealed by Owner decision OD-QA-PILOT-RECEIPT-STORE-1-SEAL.",
       "evidence_note": "QA-PILOT-RECEIPT-STORE-1: Implemented local receipt store (scripts/qa_pilot_receipt_store.py) with 4 operations (register R1, get R0, list R0, status R0). Created governance doc (10 sections), store schema (Draft 2020-12), 8 fixtures (4 valid, 4 invalid), validator (6 rules RS-1-6), test runner (14/14 pass). Prohibited-zone scan: Librarian repo untouched. Authority advisory-only. Sealed by Owner decision OD-QA-PILOT-RECEIPT-STORE-1-SEAL.",
       "doc": "docs/sprints/QA-PILOT-RECEIPT-STORE-1.md"
+    },
+    {
+      "id": "QA-PILOT-MCP-HANDLER-REGISTRATION-1",
+      "title": "QA Pilot MCP Handler Registration",
+      "area": "production",
+      "status": "pending",
+      "required_for_operational_v1": true,
+      "optional": false,
+      "deferred": false,
+      "blocked": false,
+      "dependencies": ["QA-PILOT-RECEIPT-STORE-1"],
+      "sealed_number": 5,
+      "start_head": "23ffe13",
+      "final_head": null,
+      "commit": null,
+      "harness": "MCP Handler Registration: wire sealed MCP surface contracts to sealed receipt store as QA Pilot-owned local handler stubs. Handlers enforce project_boundary=qa-pilot, store_integration, cross_project_registration=false. All 14/14 tests pass. Pending Owner review.",
+      "evidence_note": "QA-PILOT-MCP-HANDLER-REGISTRATION-1: Created QA Pilot-owned handler module (scripts/qa_pilot_mcp_handlers.py) with 4 functions wrapping receipt store. Governance doc (8 sections), schema (Draft 2020-12), 8 fixtures (4 valid, 4 invalid including cross-project boundary), validator (6 rules HR-1-6), test runner (14/14 pass, 7 regression guards). Prohibited-zone scan: Librarian repo untouched. Authority advisory-only. Pending Owner review.",
+      "doc": "docs/sprints/QA-PILOT-MCP-HANDLER-REGISTRATION-1.md"
     }
   ]
 }
