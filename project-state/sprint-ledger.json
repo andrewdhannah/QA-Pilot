@@ -1,7 +1,7 @@
 {
   "$schema": "sprint-ledger-v1",
   "description": "QA Pilot sprint ledger — canonical record of all QA Pilot sprints, their status, and metadata.",
-  "last_updated": "2026-07-02T17:00:00Z",
+  "last_updated": "2026-07-02T20:00:00Z",
   "sprints": [
     {
       "id": "QA-PILOT-PROJECT-INIT-1",
@@ -110,6 +110,24 @@
       "harness": "Custody packet: define whether Librarian may broker QA Pilot MCP calls. Decision-only sprint. Option A preserved. Option B planning only. Option C not authorized. 10 custody conditions (CC-1-10). All 14/14 tests pass. Sealed by Owner decision OD-QA-PILOT-LIBRARIAN-MCP-CUSTODY-PACKET-1-SEAL.",
       "evidence_note": "QA-PILOT-LIBRARIAN-MCP-CUSTODY-PACKET-1: Modeled Options A/B/C. Preserved QA Pilot project_boundary and cross_project_registration invariants. Documented 10 custody conditions (CC-1-10). Created governance doc (9 sections), schema (Draft 2020-12), 6 fixtures (3 valid, 3 invalid), validator (8 rules CD-1-8), test runner (14/14 pass, 4 regression guards). Prohibited-zone scan: Librarian repo untouched. No implementation authorized. Sealed by Owner decision OD-QA-PILOT-LIBRARIAN-MCP-CUSTODY-PACKET-1-SEAL.",
       "doc": "docs/sprints/QA-PILOT-LIBRARIAN-MCP-CUSTODY-PACKET-1.md"
+    },
+    {
+      "id": "QA-PILOT-BROKER-PLAN-1",
+      "title": "QA Pilot Option B Broker Plan",
+      "area": "planning",
+      "status": "sealed",
+      "required_for_operational_v1": true,
+      "optional": false,
+      "deferred": false,
+      "blocked": false,
+      "dependencies": ["QA-PILOT-LIBRARIAN-MCP-CUSTODY-PACKET-1"],
+      "sealed_number": 7,
+      "start_head": "056dc68",
+      "final_head": null,
+      "commit": null,
+      "harness": "Broker Plan: define Option B broker planning model with custody mapping, audit receipt requirements, rollback requirements, and future mutation envelope. Planning-only — no implementation authorized. All validations pass. Pending Owner review.",
+      "evidence_note": "QA-PILOT-BROKER-PLAN-1: Created broker planning governance doc (10 sections), schema (Draft 2020-12), 6 fixtures (2 valid, 4 invalid), validator (24 rules BP-1-24, all pass), test runner (18/18 pass). Broker model: forward-only, routes-not-absorbs, QA Pilot-owned surface. Custody CC-1-10 mapped with verification mechanisms. Audit receipt requirements defined. Rollback requirements defined. Future mutation envelope explicit. Option C reaffirmed not authorized. Prohibited-zone scan: Librarian repo untouched. Authority planning-only. Sealed by Owner decision OD-QA-PILOT-BROKER-PLAN-1-SEAL.",
+      "doc": "docs/sprints/QA-PILOT-BROKER-PLAN-1.md"
     }
   ]
 }

@@ -1,0 +1,139 @@
+{
+  "$schema": "https://github.com/andrewdhannah/QA-Pilot/schemas/qa-pilot-broker-plan.schema.json",
+  "fixture_type": "qa_pilot_broker_plan",
+  "artifact_type": "qa_pilot_broker_plan",
+  "artifact_version": "qap-broker-plan-v1",
+  "planning_mode": "read_only_planning",
+  "description": "Valid read-only broker plan fixture: read-only review of an existing broker plan. Same constraints but no modification intent.",
+  "broker_model": {
+    "model_type": "option_b_librarian_brokered",
+    "forward_direction_defined": true,
+    "reverse_direction_defined": false,
+    "librarian_broker_is_optional": true,
+    "qa_pilot_surface_remains_qa_pilot_owned": true,
+    "broker_routes_not_absorbs": true
+  },
+  "planned_tools": [
+    {
+      "tool_name": "planned_librarian_broker_qa_pilot_receipt_register",
+      "authority": "R1",
+      "purpose": "Register a QA Pilot receipt via broker (read-only review)",
+      "custody_required": true,
+      "planned": true
+    },
+    {
+      "tool_name": "planned_librarian_broker_qa_pilot_receipt_get",
+      "authority": "R0",
+      "purpose": "Retrieve a QA Pilot receipt (read-only review)",
+      "custody_required": true,
+      "planned": true
+    }
+  ],
+  "custody_conditions": {
+    "identity": [
+      {
+        "cc_id": "CC-1",
+        "condition": "active_project_id must equal qa-pilot",
+        "verification_mechanism": "Check project_id field in broker request"
+      },
+      {
+        "cc_id": "CC-2",
+        "condition": "target_project_id must equal qa-pilot",
+        "verification_mechanism": "Check project_id field matches target"
+      },
+      {
+        "cc_id": "CC-3",
+        "condition": "Requested tool belongs to sealed QA Pilot MCP surface",
+        "verification_mechanism": "Verify tool name against known sealed surface list"
+      },
+      {
+        "cc_id": "CC-4",
+        "condition": "QA Pilot ledger contains required sealed sprint evidence",
+        "verification_mechanism": "Check sprint-ledger.json for relevant sealed sprint"
+      }
+    ],
+    "authority": [
+      {
+        "cc_id": "CC-5",
+        "condition": "QA Pilot handler path is project-local",
+        "verification_mechanism": "Verify handler resolves under active/qa-pilot/scripts/"
+      },
+      {
+        "cc_id": "CC-6",
+        "condition": "Request carries a custody record proving project context",
+        "verification_mechanism": "Require custody_record in request with project context fields"
+      },
+      {
+        "cc_id": "CC-7",
+        "condition": "Output remains advisory/read-only/R1",
+        "verification_mechanism": "Verify authority in response is advisory_only"
+      }
+    ],
+    "safety": [
+      {
+        "cc_id": "CC-8",
+        "condition": "Output does not create Owner approval, seal, merge, or production-readiness state",
+        "verification_mechanism": "Verify response has no approval/seal/merge/production flags"
+      },
+      {
+        "cc_id": "CC-9",
+        "condition": "All broker calls produce audit evidence",
+        "verification_mechanism": "Generate audit receipt for every broker call"
+      },
+      {
+        "cc_id": "CC-10",
+        "condition": "Rollback path documented before any broker implementation",
+        "verification_mechanism": "Verify rollback-plan.md exists before implementation"
+      }
+    ]
+  },
+  "audit_requirements": {
+    "receipt_type": "broker_audit",
+    "required_fields": [
+      "receipt_type",
+      "request_id",
+      "tool",
+      "project_id",
+      "custody_verified",
+      "custody_conditions_checked",
+      "output_authority",
+      "timestamp",
+      "outcome"
+    ],
+    "storage_location": "data/audit/broker/",
+    "retention_policy": "Indefinite retention — no automatic expiry"
+  },
+  "rollback_requirements": {
+    "files_to_revert": [
+      "scripts/librarian_broker_qa_pilot.py",
+      "data/audit/broker/",
+      "docs/governance/QA-PILOT-BROKER-IMPLEMENTATION.md"
+    ],
+    "audit_cleanup": "Archive broker audit records",
+    "disable_mechanism": "BROKER_ENABLED=false config flag",
+    "project_context_reset": "Update status surfaces to Option A",
+    "post_rollback_validation": [
+      "All existing QA Pilot validators still pass",
+      "Prohibited-zone scan: clean"
+    ]
+  },
+  "mutation_envelope": {
+    "allowed_files": [
+      "docs/governance/QA-PILOT-BROKER-IMPLEMENTATION.md",
+      "scripts/librarian_broker_qa_pilot.py"
+    ],
+    "forbidden_files": [
+      "**/active/librarian/Sources/**",
+      "**/active/librarian/Public/**",
+      "**/QA-PilotV2/**",
+      "scripts/qa_pilot_mcp_handlers.py",
+      "scripts/qa_pilot_receipt_store.py"
+    ],
+    "runtime_mutation_authorized": false,
+    "implementation_authorized": false
+  },
+  "option_c_reaffirmation": {
+    "option_c_authorized": false,
+    "reason": "Option C is not authorized for planning or implementation."
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "receipt_type": "owner_decision_seal",
+  "decision_id": "OD-QA-PILOT-BROKER-PLAN-1-SEAL",
+  "project_id": "qa-pilot",
+  "sprint_id": "QA-PILOT-BROKER-PLAN-1",
+  "ledger_number": 7,
+  "decision": "APPROVE_AND_SEAL",
+  "approved_by": "Andrew Hannah (Owner)",
+  "approved_at": "2026-07-02T20:00:00Z",
+  "authorized_next_sprint": "QA-PILOT-BROKER-IMPLEMENTATION-1",
+  "decision_basis": [
+    "Defined Option B as planning-only",
+    "Preserved Option A as current operating mode",
+    "Kept Option C native Librarian MCPController registration rejected",
+    "Defined future broker architecture: Librarian → broker → custody check → QA Pilot handler → advisory output + audit receipt",
+    "Defined 4 planned broker tools as planning artifacts only",
+    "Mapped CC-1 through CC-10 to concrete verification mechanisms",
+    "Defined broker audit receipt requirements",
+    "Defined rollback requirements including disable flag, audit archive, project context reset, and post-rollback validation",
+    "Defined future mutation envelope",
+    "Explicitly did not authorize implementation",
+    "Broker plan validator passed valid fixtures 2/2",
+    "Broker plan validator rejected invalid fixtures 4/4",
+    "Broker plan test runner passed 18/18",
+    "All 5 existing QA Pilot validators still pass",
+    "BP-24 confirmed no Librarian runtime reference contamination",
+    "The Librarian repo was not modified by this sprint"
+  ],
+  "seal_conditions": [
+    "Do not implement broker tools in this seal commit",
+    "Do not start QA-PILOT-BROKER-IMPLEMENTATION-1 in this commit",
+    "Do not modify The Librarian repo",
+    "Do not mutate MCPController, Sources/App, runtime custody enforcement, or MCP enforcement"
+  ],
+  "boundary_assertion": {
+    "project_boundary": "qa-pilot",
+    "cross_project_registration": false,
+    "runtime_mutation_authorized": false,
+    "implementation_authorized": false,
+    "native_mcpcontroller_registration": "not_authorized"
+  },
+  "evidence": [
+    "docs/governance/QA-PILOT-BROKER-PLAN.md",
+    "docs/schemas/qa-pilot-broker-plan.schema.json",
+    "docs/examples/qa-pilot-broker-plan/",
+    "scripts/validate-qa-pilot-broker-plan.py",
+    "scripts/test-qa-pilot-broker-plan.sh",
+    "docs/sprints/QA-PILOT-BROKER-PLAN-1.md"
+  ]
+}

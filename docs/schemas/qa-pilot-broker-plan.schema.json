@@ -1,0 +1,271 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/andrewdhannah/QA-Pilot/schemas/qa-pilot-broker-plan.schema.json",
+  "title": "QA Pilot Option B Broker Plan",
+  "description": "Schema for a QA Pilot broker planning artifact. Defines the Option B Librarian-brokered call path to QA Pilot's MCP surface. This is a planning/design artifact — it does not authorize implementation.",
+  "type": "object",
+  "required": [
+    "artifact_type",
+    "artifact_version",
+    "planning_mode",
+    "broker_model",
+    "planned_tools",
+    "custody_conditions",
+    "audit_requirements",
+    "rollback_requirements",
+    "mutation_envelope",
+    "option_c_reaffirmation"
+  ],
+  "properties": {
+    "artifact_type": {
+      "type": "string",
+      "const": "qa_pilot_broker_plan",
+      "description": "Must be 'qa_pilot_broker_plan' to identify this as a broker planning artifact."
+    },
+    "artifact_version": {
+      "type": "string",
+      "enum": ["qap-broker-plan-v1"],
+      "description": "Broker plan artifact version."
+    },
+    "planning_mode": {
+      "type": "string",
+      "enum": ["planning_only", "read_only_planning"],
+      "description": "This sprint is planning-only. planning_only = full planning, read_only_planning = read-only review of an existing plan."
+    },
+    "broker_model": {
+      "type": "object",
+      "required": [
+        "model_type",
+        "forward_direction_defined",
+        "reverse_direction_defined",
+        "librarian_broker_is_optional",
+        "qa_pilot_surface_remains_qa_pilot_owned",
+        "broker_routes_not_absorbs"
+      ],
+      "properties": {
+        "model_type": {
+          "type": "string",
+          "const": "option_b_librarian_brokered",
+          "description": "The model type must be Option B (Librarian-brokered)."
+        },
+        "forward_direction_defined": {
+          "type": "boolean",
+          "const": true,
+          "description": "Forward broker direction (Librarian → QA Pilot) must be defined."
+        },
+        "reverse_direction_defined": {
+          "type": "boolean",
+          "const": false,
+          "description": "Reverse broker direction (QA Pilot → Librarian) is out of scope. Must be false."
+        },
+        "librarian_broker_is_optional": {
+          "type": "boolean",
+          "const": true,
+          "description": "The Librarian broker layer is optional and future-only."
+        },
+        "qa_pilot_surface_remains_qa_pilot_owned": {
+          "type": "boolean",
+          "const": true,
+          "description": "QA Pilot's MCP surface remains QA Pilot-owned. The broker does not own handlers."
+        },
+        "broker_routes_not_absorbs": {
+          "type": "boolean",
+          "const": true,
+          "description": "The broker must route to QA Pilot handlers, not absorb them."
+        }
+      }
+    },
+    "planned_tools": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["tool_name", "authority", "purpose", "custody_required", "planned"],
+        "properties": {
+          "tool_name": {
+            "type": "string",
+            "pattern": "^planned_librarian_broker_qa_pilot_",
+            "description": "Planned tool name. Must start with 'planned_librarian_broker_qa_pilot_' to indicate it is a planning artifact, not an implementation."
+          },
+          "authority": {
+            "type": "string",
+            "enum": ["R0", "R1"],
+            "description": "Authority level: R0 = read-only, R1 = advisory mutation."
+          },
+          "purpose": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Brief description of what this planned tool does."
+          },
+          "custody_required": {
+            "type": "boolean",
+            "const": true,
+            "description": "All broker tools must require custody verification."
+          },
+          "planned": {
+            "type": "boolean",
+            "const": true,
+            "description": "This is a planned tool, not an implementation. Must be true."
+          }
+        }
+      }
+    },
+    "custody_conditions": {
+      "type": "object",
+      "required": ["identity", "authority", "safety"],
+      "properties": {
+        "identity": {
+          "type": "array",
+          "minItems": 4,
+          "items": {
+            "type": "object",
+            "required": ["cc_id", "condition", "verification_mechanism"],
+            "properties": {
+              "cc_id": {
+                "type": "string",
+                "enum": ["CC-1", "CC-2", "CC-3", "CC-4"]
+              },
+              "condition": { "type": "string", "minLength": 1 },
+              "verification_mechanism": { "type": "string", "minLength": 1 }
+            }
+          }
+        },
+        "authority": {
+          "type": "array",
+          "minItems": 3,
+          "items": {
+            "type": "object",
+            "required": ["cc_id", "condition", "verification_mechanism"],
+            "properties": {
+              "cc_id": {
+                "type": "string",
+                "enum": ["CC-5", "CC-6", "CC-7"]
+              },
+              "condition": { "type": "string", "minLength": 1 },
+              "verification_mechanism": { "type": "string", "minLength": 1 }
+            }
+          }
+        },
+        "safety": {
+          "type": "array",
+          "minItems": 3,
+          "items": {
+            "type": "object",
+            "required": ["cc_id", "condition", "verification_mechanism"],
+            "properties": {
+              "cc_id": {
+                "type": "string",
+                "enum": ["CC-8", "CC-9", "CC-10"]
+              },
+              "condition": { "type": "string", "minLength": 1 },
+              "verification_mechanism": { "type": "string", "minLength": 1 }
+            }
+          }
+        }
+      }
+    },
+    "audit_requirements": {
+      "type": "object",
+      "required": ["receipt_type", "required_fields", "storage_location", "retention_policy"],
+      "properties": {
+        "receipt_type": {
+          "type": "string",
+          "const": "broker_audit",
+          "description": "Audit receipt type for broker calls."
+        },
+        "required_fields": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string" },
+          "description": "Required fields in a broker audit receipt."
+        },
+        "storage_location": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Where broker audit receipts are stored."
+        },
+        "retention_policy": {
+          "type": "string",
+          "minLength": 1,
+          "description": "How long broker audit receipts are retained."
+        }
+      }
+    },
+    "rollback_requirements": {
+      "type": "object",
+      "required": ["files_to_revert", "audit_cleanup", "disable_mechanism", "project_context_reset", "post_rollback_validation"],
+      "properties": {
+        "files_to_revert": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string" },
+          "description": "Files that must be reverted on rollback."
+        },
+        "audit_cleanup": {
+          "type": "string",
+          "minLength": 1,
+          "description": "How broker audit records are cleaned up on rollback."
+        },
+        "disable_mechanism": {
+          "type": "string",
+          "minLength": 1,
+          "description": "How the broker can be disabled without deleting code."
+        },
+        "project_context_reset": {
+          "type": "string",
+          "minLength": 1,
+          "description": "How project context is reset after rollback."
+        },
+        "post_rollback_validation": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string" },
+          "description": "Validation checks that must pass after rollback."
+        }
+      }
+    },
+    "mutation_envelope": {
+      "type": "object",
+      "required": ["allowed_files", "forbidden_files", "runtime_mutation_authorized", "implementation_authorized"],
+      "properties": {
+        "allowed_files": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Files a future implementation sprint may touch."
+        },
+        "forbidden_files": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string" },
+          "description": "Files a future implementation sprint must not touch."
+        },
+        "runtime_mutation_authorized": {
+          "type": "boolean",
+          "const": false,
+          "description": "Runtime mutation remains unauthorized by this sprint."
+        },
+        "implementation_authorized": {
+          "type": "boolean",
+          "const": false,
+          "description": "Implementation is not authorized by this sprint."
+        }
+      }
+    },
+    "option_c_reaffirmation": {
+      "type": "object",
+      "required": ["option_c_authorized", "reason"],
+      "properties": {
+        "option_c_authorized": {
+          "type": "boolean",
+          "const": false,
+          "description": "Option C (native MCPController registration) remains not authorized."
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Why Option C is not authorized."
+        }
+      }
+    }
+  }
+}

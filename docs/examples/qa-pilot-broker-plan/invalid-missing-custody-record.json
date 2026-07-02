@@ -1,0 +1,61 @@
+{
+  "$schema": "https://github.com/andrewdhannah/QA-Pilot/schemas/qa-pilot-broker-plan.schema.json",
+  "fixture_type": "qa_pilot_broker_plan",
+  "artifact_type": "qa_pilot_broker_plan",
+  "artifact_version": "qap-broker-plan-v1",
+  "planning_mode": "planning_only",
+  "description": "INVALID fixture: custody_conditions section is missing the 'authority' section — violates CC-5/CC-6/CC-7 requirement",
+  "broker_model": {
+    "model_type": "option_b_librarian_brokered",
+    "forward_direction_defined": true,
+    "reverse_direction_defined": false,
+    "librarian_broker_is_optional": true,
+    "qa_pilot_surface_remains_qa_pilot_owned": true,
+    "broker_routes_not_absorbs": true
+  },
+  "planned_tools": [
+    {
+      "tool_name": "planned_librarian_broker_qa_pilot_receipt_list",
+      "authority": "R0",
+      "purpose": "List QA Pilot receipts",
+      "custody_required": true,
+      "planned": true
+    }
+  ],
+  "custody_conditions": {
+    "identity": [
+      { "cc_id": "CC-1", "condition": "active_project_id must equal qa-pilot", "verification_mechanism": "Check project_id" },
+      { "cc_id": "CC-2", "condition": "target_project_id must equal qa-pilot", "verification_mechanism": "Check project_id" },
+      { "cc_id": "CC-3", "condition": "Tool in sealed surface", "verification_mechanism": "Verify tool name" },
+      { "cc_id": "CC-4", "condition": "Sprint sealed in ledger", "verification_mechanism": "Check ledger" }
+    ],
+    "safety": [
+      { "cc_id": "CC-8", "condition": "No Owner approval from output", "verification_mechanism": "Check flags" },
+      { "cc_id": "CC-9", "condition": "All calls produce audit evidence", "verification_mechanism": "Generate receipt" },
+      { "cc_id": "CC-10", "condition": "Rollback path documented", "verification_mechanism": "Check rollback plan" }
+    ]
+  },
+  "audit_requirements": {
+    "receipt_type": "broker_audit",
+    "required_fields": ["receipt_type", "request_id", "tool", "project_id", "custody_verified", "outcome"],
+    "storage_location": "data/audit/broker/",
+    "retention_policy": "Indefinite"
+  },
+  "rollback_requirements": {
+    "files_to_revert": ["scripts/librarian_broker_qa_pilot.py"],
+    "audit_cleanup": "Archive records",
+    "disable_mechanism": "BROKER_ENABLED=false",
+    "project_context_reset": "Update status surfaces",
+    "post_rollback_validation": ["Validators pass", "Prohibited-zone clean"]
+  },
+  "mutation_envelope": {
+    "allowed_files": ["scripts/librarian_broker_qa_pilot.py"],
+    "forbidden_files": ["**/active/librarian/**"],
+    "runtime_mutation_authorized": false,
+    "implementation_authorized": false
+  },
+  "option_c_reaffirmation": {
+    "option_c_authorized": false,
+    "reason": "Option C not authorized"
+  }
+}

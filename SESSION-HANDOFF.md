@@ -1,45 +1,61 @@
-# Session Handoff — QA-PILOT-LIBRARIAN-MCP-CUSTODY-PACKET-1
+# Session Handoff — QA-PILOT-BROKER-PLAN-1
 
-## Status: ✅ **Sealed (ledger #6)** — Owner-approved 2026-07-02 per OD-QA-PILOT-LIBRARIAN-MCP-CUSTODY-PACKET-1-SEAL
+## Status: ✅ **Sealed (ledger #7)** — Owner-approved 2026-07-02 per OD-QA-PILOT-BROKER-PLAN-1-SEAL
 
 ---
 
-## QA-PILOT-LIBRARIAN-MCP-CUSTODY-PACKET-1 — QA Pilot ↔ Librarian MCP Custody Packet
+## QA-PILOT-BROKER-PLAN-1 — QA Pilot Option B Broker Plan
 
-**Type:** Decision / custody constraint
-**Mode:** Governance doc, schema, fixtures, validator, test runner — no runtime implementation, no project boundary crossing
-**Predecessor:** QA-PILOT-MCP-HANDLER-REGISTRATION-1 (sealed #5)
+**Type:** Planning / design sprint
+**Mode:** Governance doc, schema, fixtures, validator, test runner — planning-only, no implementation authorized
+**Predecessor:** QA-PILOT-LIBRARIAN-MCP-CUSTODY-PACKET-1 (sealed #6)
 
-**Authorization basis:** Owner-approved per OD-QA-PILOT-MCP-HANDLER-REGISTRATION-1-SEAL — "Create a cross-project custody packet authorizing, constraining, or rejecting future integration of QA Pilot local handler stubs into The Librarian MCP runtime."
+**Authorization basis:** Owner-approved per OD-QA-PILOT-LIBRARIAN-MCP-CUSTODY-PACKET-1-SEAL — "Option B planning only — may be designed, not implemented."
 
-**Scope restriction:** Decision/constraint only. Must not implement runtime handlers, mutate The Librarian repo, cross project boundary, or authorize Option B/C implementation.
+**Scope restriction:** Planning/design only. Must not implement broker tools, mutate The Librarian runtime, register native MCPController tools, execute cross-project calls, or touch external QA Pilot production repos.
 
-**Decision outcome:**
+**Planning outcome:**
 - **Current operating mode:** Option A (Separate MCP) — preserved
-- **Next authorized path:** Option B planning only — may be designed, not implemented
-- **Option C:** Not authorized for planning or implementation
-- **10 custody conditions (CC-1-10)** defined for any future Option B implementation
+- **Option B broker model:** Defined (planning-only) — Librarian routes to QA Pilot handlers, does not absorb them
+- **Option C:** Reaffirmed — not authorized for planning or implementation
+- **Forward broker direction only:** Librarian → QA Pilot. Reverse direction out of scope.
+- **Custody CC-1-10:** All mapped with verification mechanisms
+- **Audit receipt requirements:** Defined (broker_audit, 9 required fields, indefinite retention)
+- **Rollback requirements:** Defined (files to revert, audit cleanup, disable mechanism, context reset, post-rollback validation)
+- **Future mutation envelope:** Explicit (allowed files, forbidden files, no runtime mutation, no implementation)
 
 **What was done:**
-- Created custody governance doc at `docs/governance/QA-PILOT-LIBRARIAN-MCP-CUSTODY.md` (9 sections)
-- Created custody packet schema at `docs/schemas/qa-pilot-librarian-mcp-custody.schema.json`
-- Created 6 fixtures (3 valid, 3 invalid) in `docs/examples/qa-pilot-librarian-mcp-custody/`
-- Created validator (8 rules CD-1-8) at `scripts/validate-qa-pilot-librarian-mcp-custody.py`
-- Created test runner (14 tests) at `scripts/test-qa-pilot-librarian-mcp-custody.sh`
-- Created sprint receipt at `docs/sprints/QA-PILOT-LIBRARIAN-MCP-CUSTODY-PACKET-1.md`
-- Updated QA Pilot ledger to include sprint #6
+- Created broker planning governance doc at `docs/governance/QA-PILOT-BROKER-PLAN.md` (10 sections)
+- Created broker plan schema at `docs/schemas/qa-pilot-broker-plan.schema.json` (Draft 2020-12)
+- Created 6 fixtures (2 valid, 4 invalid) in `docs/examples/qa-pilot-broker-plan/`
+- Created validator (24 rules BP-1-24) at `scripts/validate-qa-pilot-broker-plan.py`
+- Created test runner (18 tests) at `scripts/test-qa-pilot-broker-plan.sh`
+- Created sprint receipt at `docs/sprints/QA-PILOT-BROKER-PLAN-1.md`
+- Updated QA Pilot ledger to include sprint #7
 - Updated FEATURE-STATUS.md and SESSION-HANDOFF.md
 
 **Validation:**
-- Custody validator: 8/8 checks pass (CD-1-8)
-- Custody test runner: 14/14 pass
-- All 4 existing validators: all still pass
-- All 4 existing test runners: all still pass
+- Broker plan validator: 2/2 valid fixtures pass (24/24 checks each), 4/4 invalid fixtures rejected
+- Broker plan test runner: 18/18 pass
+- All 5 existing validators: all still pass
+- All 5 existing test runners: all still pass
 - Prohibited-zone scan: CLEAN — no Librarian files modified
+- BP-24 (Librarian runtime reference scan): CLEAN
+- Authority: planning-only — no implementation authorized
 
-**Sealed by:** OD-QA-PILOT-LIBRARIAN-MCP-CUSTODY-PACKET-1-SEAL
+**Sealed by:** OD-QA-PILOT-BROKER-PLAN-1-SEAL
 
-**Next authorized sprint:** QA-PILOT-BROKER-PLAN-1 — plan Option B only. Must not implement broker tools, mutate The Librarian runtime, or register native MCPController tools.
+**Next authorized sprint:** QA-PILOT-BROKER-IMPLEMENTATION-1 — implement the Option B broker layer in QA Pilot space (scripts, audit store, validation). Requires:
+1. Documented rollback plan (CC-10)
+2. Owner decision to authorize implementation
+3. Implementation must remain inside authorized QA Pilot mutation envelope
+4. Must not mutate The Librarian repo, MCPController, Sources/App, runtime, MCP enforcement, or external QA Pilot production repos
+
+---
+
+# Session Handoff — QA-PILOT-LIBRARIAN-MCP-CUSTODY-PACKET-1
+
+## Status: ✅ **Sealed (ledger #6)** — Owner-approved 2026-07-02 per OD-QA-PILOT-LIBRARIAN-MCP-CUSTODY-PACKET-1-SEAL
 
 ---
 
