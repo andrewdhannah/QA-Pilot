@@ -1,0 +1,6 @@
+{
+  "fixture_type": "qa_pilot_broker_audit_store_get",
+  "description": "Valid get request for a stored broker audit receipt",
+  "expected_behavior": "read_only",
+  "audit_id": "qabr-audit-store-test-001"
+}

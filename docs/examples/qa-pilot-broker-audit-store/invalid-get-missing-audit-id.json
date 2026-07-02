@@ -1,0 +1,6 @@
+{
+  "fixture_type": "qa_pilot_broker_audit_store_get",
+  "description": "INVALID: Get with non-existent audit_id — should return not_found",
+  "expected_behavior": "read_only_not_found",
+  "audit_id": "nonexistent-audit-id-999"
+}

@@ -1,0 +1,7 @@
+{
+  "fixture_type": "qa_pilot_broker_audit_store_list",
+  "description": "INVALID: List with unbounded limit (0) — violates bound requirement",
+  "expected_behavior": "rejected",
+  "limit": 0,
+  "offset": 0
+}

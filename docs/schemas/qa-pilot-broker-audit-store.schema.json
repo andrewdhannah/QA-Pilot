@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/andrewdhannah/QA-Pilot/schemas/qa-pilot-broker-audit-store.schema.json",
+  "title": "QA Pilot Broker Audit Store Operation",
+  "description": "Schema for a QA Pilot broker audit store register operation. Validates the request wrapper around the sealed broker audit receipt.",
+  "type": "object",
+  "required": ["audit_receipt"],
+  "properties": {
+    "audit_receipt": {
+      "$ref": "qa-pilot-broker-audit-receipt.schema.json",
+      "description": "The broker audit receipt to register. Must conform to the sealed audit receipt schema."
+    }
+  }
+}

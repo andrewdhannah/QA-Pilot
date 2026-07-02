@@ -1,0 +1,7 @@
+{
+  "fixture_type": "qa_pilot_broker_audit_store_list",
+  "description": "Valid list request for broker audit receipts",
+  "expected_behavior": "read_only",
+  "limit": 10,
+  "offset": 0
+}

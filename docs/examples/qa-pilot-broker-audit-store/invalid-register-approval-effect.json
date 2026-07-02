@@ -1,0 +1,20 @@
+{
+  "fixture_type": "qa_pilot_broker_audit_store_register",
+  "description": "INVALID: Register with approval in output_effects and advisory_only=false",
+  "expected_behavior": "rejected",
+  "audit_receipt": {
+    "audit_id": "qabr-audit-store-invalid-approval-001",
+    "receipt_type": "broker_audit",
+    "active_project_id": "qa-pilot",
+    "target_project_id": "qa-pilot",
+    "requested_tool": "qa_pilot_receipt_register",
+    "custody_record_id": "cc-store-invalid-approval-001",
+    "handler_path": "active/qa-pilot/scripts/qa_pilot_mcp_handlers.py",
+    "authority_level": "R1",
+    "advisory_only": false,
+    "output_effects": ["approval", "receipt_stored"],
+    "audit_timestamp": "2026-07-02T23:00:00+00:00",
+    "rollback_reference": "docs/governance/QA-PILOT-BROKER-IMPLEMENTATION.md#8-rollback-plan",
+    "validation_result": "pass"
+  }
+}
