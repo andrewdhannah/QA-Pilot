@@ -1,6 +1,6 @@
 # Session Handoff — QA-PILOT-BROKER-MCP-ADVISORY-SURFACE-1
 
-## Status: 🔍 **Pending Owner review (ledger #9)** — Agent work complete 2026-07-02
+## Status: ✅ **Sealed (ledger #9)** — Owner-approved 2026-07-02 per OD-QA-PILOT-BROKER-MCP-ADVISORY-SURFACE-1-SEAL
 
 ---
 
@@ -35,9 +35,9 @@
 - No cross-project calls: Confirmed
 - Authority: advisory-only — no authority broadened
 
-**Pending Owner review — not sealed.**
+**Sealed by:** OD-QA-PILOT-BROKER-MCP-ADVISORY-SURFACE-1-SEAL
 
-**Next recommended sprint:** Awaiting Owner review and seal decision.
+**Next recommended sprint:** Awaiting Owner direction.
 
 ---
 

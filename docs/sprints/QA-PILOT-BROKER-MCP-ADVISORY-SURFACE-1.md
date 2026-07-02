@@ -1,7 +1,7 @@
 # QA-PILOT-BROKER-MCP-ADVISORY-SURFACE-1 — QA Pilot Broker MCP Advisory Surface
 
 **Project:** QA Pilot
-**Status:** 🔍 Pending Owner review (not sealed)
+**Status:** ✅ **Sealed (ledger #9)** — Owner-approved 2026-07-02 per OD-QA-PILOT-BROKER-MCP-ADVISORY-SURFACE-1-SEAL
 **Authority:** QA Pilot-local advisory surface. No native MCP registration. Advisory-only.
 
 **Sprint type:** Implementation sprint.

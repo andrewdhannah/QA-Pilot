@@ -151,18 +151,18 @@
       "id": "QA-PILOT-BROKER-MCP-ADVISORY-SURFACE-1",
       "title": "QA Pilot Broker MCP Advisory Surface",
       "area": "implementation",
-      "status": "pending_owner_review",
+      "status": "sealed",
       "required_for_operational_v1": true,
       "optional": false,
       "deferred": false,
       "blocked": false,
       "dependencies": ["QA-PILOT-BROKER-IMPLEMENTATION-1"],
-      "sealed_number": null,
+      "sealed_number": 9,
       "start_head": "1d703aa",
       "final_head": null,
       "commit": null,
       "harness": "Advisory Surface: QA Pilot-local advisory MCP-style surface for the sealed broker. 6 CLI commands delegating to broker. No native MCP registration. 36/36 tests. Pending Owner review.",
-      "evidence_note": "QA-PILOT-BROKER-MCP-ADVISORY-SURFACE-1: QA Pilot-local advisory surface (scripts/qa_pilot_broker_advisory_surface.py) with 6 commands (accept, audit, list-audit, status, enable, disable) delegating to sealed broker. Response format with 10 required fields. Created governance doc (7 sections), schema (Draft 2020-12), 12 fixtures (4 valid, 8 invalid), 1 example, validator (19 rules VA-1-19, all pass), test runner (36/36 pass). Prohibited-zone scan: Librarian repo untouched. No MCPController registration. No cross-project calls. Pending Owner review.",
+      "evidence_note": "QA-PILOT-BROKER-MCP-ADVISORY-SURFACE-1: QA Pilot-local advisory surface (scripts/qa_pilot_broker_advisory_surface.py) with 6 commands (accept, audit, list-audit, status, enable, disable) delegating to sealed broker. Response format with 10 required fields. Created governance doc (7 sections), schema (Draft 2020-12), 12 fixtures (4 valid, 8 invalid), 1 example, validator (19 rules VA-1-19, all pass), test runner (36/36 pass). Prohibited-zone scan: Librarian repo untouched. No MCPController registration. No cross-project calls. Sealed by Owner decision OD-QA-PILOT-BROKER-MCP-ADVISORY-SURFACE-1-SEAL.",
       "doc": "docs/sprints/QA-PILOT-BROKER-MCP-ADVISORY-SURFACE-1.md"
     }
   ]
