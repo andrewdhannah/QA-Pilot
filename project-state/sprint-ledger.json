@@ -169,18 +169,18 @@
       "id": "QA-PILOT-BROKER-AUDIT-RECEIPT-STORE-1",
       "title": "QA Pilot Broker Audit Receipt Store",
       "area": "schema",
-      "status": "pending_owner_review",
+      "status": "sealed",
       "required_for_operational_v1": true,
       "optional": false,
       "deferred": false,
       "blocked": false,
       "dependencies": ["QA-PILOT-BROKER-MCP-ADVISORY-SURFACE-1"],
-      "sealed_number": null,
+      "sealed_number": 10,
       "start_head": "280f279",
       "final_head": null,
       "commit": null,
       "harness": "Audit Receipt Store: define broker audit receipt schema and validation. 13 fields, 12 BA rules. 3/3 valid fixtures pass, 4/4 invalid rejected. 19/19 tests pass. Pending Owner review.",
-      "evidence_note": "QA-PILOT-BROKER-AUDIT-RECEIPT-STORE-1: Defined broker audit receipt schema (13 required fields) and governance doc (6 sections). 7 fixtures (3 valid, 4 invalid) under docs/examples/qa-pilot-broker-audit/. Validator (12 rules BA-1-12, all pass). Test runner (19/19 pass). All existing QA Pilot validators still pass. Prohibited-zone scan: Librarian repo untouched. Pending Owner review.",
+      "evidence_note": "QA-PILOT-BROKER-AUDIT-RECEIPT-STORE-1: Defined broker audit receipt schema (13 required fields) and governance doc (6 sections). 7 fixtures (3 valid, 4 invalid) under docs/examples/qa-pilot-broker-audit/. Validator (12 rules BA-1-12, all pass). Test runner (19/19 pass). All existing QA Pilot validators still pass. Prohibited-zone scan: Librarian repo untouched. Sealed by Owner decision OD-QA-PILOT-BROKER-AUDIT-RECEIPT-STORE-1-SEAL.",
       "doc": "docs/sprints/QA-PILOT-BROKER-AUDIT-RECEIPT-STORE-1.md"
     }
   ]

@@ -1,7 +1,7 @@
 # QA-PILOT-BROKER-AUDIT-RECEIPT-STORE-1 — QA Pilot Broker Audit Receipt Store
 
 **Project:** QA Pilot
-**Status:** 🔍 Pending Owner review (not sealed)
+**Status:** ✅ **Sealed (ledger #10)** — Owner-approved 2026-07-02 per OD-QA-PILOT-BROKER-AUDIT-RECEIPT-STORE-1-SEAL
 **Authority:** QA Pilot-local broker audit receipt store. Advisory-only. No Librarian mutation.
 
 **Sprint type:** Schema/validation sprint.

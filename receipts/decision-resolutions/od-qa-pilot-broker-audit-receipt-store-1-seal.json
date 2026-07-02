@@ -1,0 +1,42 @@
+{
+  "receipt_type": "owner_decision_seal",
+  "decision_id": "OD-QA-PILOT-BROKER-AUDIT-RECEIPT-STORE-1-SEAL",
+  "project_id": "qa-pilot",
+  "sprint_id": "QA-PILOT-BROKER-AUDIT-RECEIPT-STORE-1",
+  "ledger_number": 10,
+  "decision": "APPROVE_AND_SEAL",
+  "implementation_commit": "79fc6f5",
+  "approved_by": "Andrew Hannah (Owner)",
+  "approved_at": "2026-07-02T23:00:00Z",
+  "authorized_next_sprint": "QA-PILOT-BROKER-AUDIT-STORE-IMPLEMENTATION-1",
+  "decision_basis": [
+    "Created broker audit receipt governance documentation",
+    "Created Draft 2020-12 broker audit receipt schema with 13 required fields",
+    "Created 7 fixtures (3 valid, 4 invalid) covering all key scenarios",
+    "Validator BA-1 through BA-12: all pass",
+    "Audit receipt validator passed valid fixtures: 3/3",
+    "Audit receipt validator rejected invalid fixtures: 4/4",
+    "Audit receipt test runner passed: 19/19",
+    "All 8 existing QA Pilot validators still pass",
+    "BA-12 Librarian runtime reference scan: clean",
+    "Prohibited-zone scan: clean — no Librarian modifications",
+    "No approval, seal, merge, or production-readiness pathway introduced",
+    "Broker remains advisory-only"
+  ],
+  "seal_conditions": [
+    "Do not implement runtime storage, runtime MCP handlers, native MCPController registration, or cross-project calls in this seal commit",
+    "Do not start the next sprint in this commit",
+    "Do not modify The Librarian repo"
+  ],
+  "boundary_confirmations": {
+    "project_boundary": "qa-pilot",
+    "librarian_mutation": false,
+    "mcpcontroller_registration": false,
+    "native_mcp_registration": false,
+    "cross_project_calls": false,
+    "external_production_repo_mutation": false,
+    "approval_seal_merge_pathways": false,
+    "authority_broadened": false,
+    "broker_remains_advisory_only": true
+  }
+}

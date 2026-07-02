@@ -1,6 +1,6 @@
 # Session Handoff — QA-PILOT-BROKER-AUDIT-RECEIPT-STORE-1
 
-## Status: 🔍 **Pending Owner review (ledger #10)** — Agent work complete 2026-07-02
+## Status: ✅ **Sealed (ledger #10)** — Owner-approved 2026-07-02 per OD-QA-PILOT-BROKER-AUDIT-RECEIPT-STORE-1-SEAL
 
 ---
 
@@ -36,9 +36,9 @@
 - BA-12 (Librarian runtime reference scan): CLEAN
 - Authority: schema/validation only — no runtime implementation
 
-**Pending Owner review — not sealed.**
+**Sealed by:** OD-QA-PILOT-BROKER-AUDIT-RECEIPT-STORE-1-SEAL
 
-**Next recommended sprint:** Awaiting Owner review and seal decision.
+**Next authorized sprint:** QA-PILOT-BROKER-AUDIT-STORE-IMPLEMENTATION-1 — implement QA Pilot-owned broker audit storage mechanics using the sealed broker audit receipt schema. QA Pilot-local only. Must not mutate The Librarian repo, MCPController, runtime, MCP enforcement, or external QA Pilot production repos.
 
 ---
 
