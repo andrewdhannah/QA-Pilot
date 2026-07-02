@@ -1,0 +1,23 @@
+{
+  "$schema": "https://github.com/andrewdhannah/QA-Pilot/schemas/qa-pilot-mcp-tool.schema.json",
+  "tool_name": "qa_pilot_receipt_status",
+  "tool_version": "qap-mcp-v1",
+  "authority": "R0_read_only",
+  "non_effects": [
+    "status-only query"
+  ],
+  "input": {
+    "action": "seal_all_pending"
+  },
+  "output": {
+    "status": "sealed",
+    "receipt_store": {
+      "total_receipts": 4
+    },
+    "last_validation": {
+      "timestamp": "2026-07-02T14:15:00Z",
+      "result": "pass"
+    },
+    "advisory_notice": "All receipts sealed and approved."
+  }
+}

@@ -1,0 +1,240 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/andrewdhannah/QA-Pilot/schemas/qa-pilot-mcp-tool.schema.json",
+  "title": "QA Pilot MCP Tool Contract",
+  "description": "Schema defining the input/output contracts for QA Pilot MCP tool stubs. All tools enforce advisory/read-only authority. No tool may claim approval, seal, merge, or production-readiness authority.",
+  "type": "object",
+  "required": ["tool_name", "tool_version", "authority", "non_effects", "input", "output"],
+  "properties": {
+    "tool_name": {
+      "type": "string",
+      "enum": [
+        "qa_pilot_receipt_register",
+        "qa_pilot_receipt_get",
+        "qa_pilot_receipt_list",
+        "qa_pilot_receipt_status"
+      ],
+      "description": "The QA Pilot MCP tool name. Must be one of the four defined tools."
+    },
+    "tool_version": {
+      "type": "string",
+      "enum": ["qap-mcp-v1"],
+      "description": "Tool contract schema version. Always qap-mcp-v1."
+    },
+    "authority": {
+      "type": "string",
+      "enum": ["R0_read_only", "R1_advisory_mutation"],
+      "description": "Authority level: R0 = read-only, R1 = advisory mutation only."
+    },
+    "non_effects": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "minItems": 1,
+      "description": "Explicit declaration of what this tool does not do. Must include authority boundary."
+    },
+    "input": {
+      "type": "object",
+      "description": "Tool-specific input payload.",
+      "oneOf": [
+        { "$ref": "#/definitions/receipt_register_input" },
+        { "$ref": "#/definitions/receipt_get_input" },
+        { "$ref": "#/definitions/receipt_list_input" },
+        { "$ref": "#/definitions/receipt_status_input" }
+      ]
+    },
+    "output": {
+      "type": "object",
+      "description": "Tool-specific output payload.",
+      "oneOf": [
+        { "$ref": "#/definitions/receipt_register_output" },
+        { "$ref": "#/definitions/receipt_get_output" },
+        { "$ref": "#/definitions/receipt_list_output" },
+        { "$ref": "#/definitions/receipt_status_output" }
+      ]
+    }
+  },
+  "definitions": {
+    "receipt_register_input": {
+      "type": "object",
+      "required": ["receipt"],
+      "properties": {
+        "receipt": {
+          "type": "object",
+          "description": "A QA Pilot production receipt to register as advisory evidence. Must validate against qa-pilot-receipt.schema.json.",
+          "required": ["receipt_id", "packet_type", "authority", "non_approval_statement", "content_hash"],
+          "properties": {
+            "receipt_id": { "type": "string", "pattern": "^qapr-\\d{8}-\\d{3,}$" },
+            "packet_type": { "type": "string" },
+            "authority": { "type": "string", "const": "advisory" },
+            "non_approval_statement": { "type": "string", "minLength": 20 },
+            "content_hash": { "type": "string", "pattern": "^sha256:[A-Fa-f0-9]{64}$" }
+          },
+          "additionalProperties": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "receipt_register_output": {
+      "type": "object",
+      "required": ["receipt_id", "status", "registered_at", "advisory_only", "non_effects"],
+      "properties": {
+        "receipt_id": { "type": "string", "pattern": "^qapr-\\d{8}-\\d{3,}$" },
+        "status": { "type": "string", "const": "registered_as_advisory_evidence" },
+        "registered_at": { "type": "string", "format": "date-time" },
+        "advisory_only": { "type": "boolean", "const": true },
+        "non_effects": {
+          "type": "array",
+          "items": { "type": "string" },
+          "contains": {
+            "type": "string",
+            "pattern": "does not approve|does not seal|no authority|advisory"
+          }
+        },
+        "validation_result": {
+          "type": "object",
+          "properties": {
+            "schema_valid": { "type": "boolean" },
+            "authority_valid": { "type": "boolean" },
+            "non_approval_valid": { "type": "boolean" }
+          },
+          "required": ["schema_valid", "authority_valid", "non_approval_valid"]
+        }
+      },
+      "additionalProperties": false
+    },
+    "receipt_get_input": {
+      "type": "object",
+      "required": ["receipt_id"],
+      "properties": {
+        "receipt_id": {
+          "type": "string",
+          "pattern": "^qapr-\\d{8}-\\d{3,}$",
+          "description": "The canonical QA Pilot receipt identifier to retrieve."
+        }
+      },
+      "additionalProperties": false
+    },
+    "receipt_get_output": {
+      "type": "object",
+      "required": ["found", "advisory_notice"],
+      "properties": {
+        "found": { "type": "boolean" },
+        "receipt": {
+          "type": "object",
+          "description": "The full receipt object if found. Absent if not found."
+        },
+        "advisory_notice": {
+          "type": "string",
+          "minLength": 10,
+          "description": "Statement confirming this is a read-only query with no authority implications."
+        },
+        "error": {
+          "type": "string",
+          "description": "Error message if receipt not found or request invalid."
+        }
+      },
+      "additionalProperties": false
+    },
+    "receipt_list_input": {
+      "type": "object",
+      "required": ["limit"],
+      "properties": {
+        "project_id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_-]+$",
+          "description": "Optional project filter."
+        },
+        "status": {
+          "type": "string",
+          "enum": ["draft", "completed", "partial", "blocked", "superseded"],
+          "description": "Optional status filter."
+        },
+        "packet_type": {
+          "type": "string",
+          "enum": [
+            "QAProductionReceipt",
+            "QAProductionEvidenceReceipt",
+            "QAProductionVerificationReceipt",
+            "QAProductionReadinessReceipt"
+          ],
+          "description": "Optional packet type filter."
+        },
+        "limit": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100,
+          "description": "Required. Maximum results to return. Must be between 1 and 100."
+        },
+        "offset": {
+          "type": "integer",
+          "minimum": 0,
+          "default": 0,
+          "description": "Optional offset for pagination."
+        }
+      },
+      "additionalProperties": false
+    },
+    "receipt_list_output": {
+      "type": "object",
+      "required": ["receipts", "total_count", "limit", "advisory_notice"],
+      "properties": {
+        "receipts": {
+          "type": "array",
+          "items": { "type": "object" },
+          "description": "Bounded list of receipt objects."
+        },
+        "total_count": { "type": "integer", "minimum": 0 },
+        "limit": { "type": "integer", "minimum": 1, "maximum": 100 },
+        "offset": { "type": "integer", "minimum": 0 },
+        "advisory_notice": {
+          "type": "string",
+          "minLength": 10,
+          "description": "Notice that listed receipts are advisory-only and do not confer authority."
+        }
+      },
+      "additionalProperties": false
+    },
+    "receipt_status_input": {
+      "type": "object",
+      "properties": {},
+      "additionalProperties": false,
+      "description": "Status tool takes no input parameters. Empty object only."
+    },
+    "receipt_status_output": {
+      "type": "object",
+      "required": ["status", "receipt_store", "last_validation", "advisory_notice"],
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": ["healthy", "degraded", "unavailable"],
+          "description": "Overall receipt store status."
+        },
+        "receipt_store": {
+          "type": "object",
+          "required": ["total_receipts"],
+          "properties": {
+            "total_receipts": { "type": "integer", "minimum": 0 },
+            "by_status": { "type": "object" },
+            "by_packet_type": { "type": "object" }
+          },
+          "additionalProperties": false
+        },
+        "last_validation": {
+          "type": "object",
+          "required": ["timestamp", "result"],
+          "properties": {
+            "timestamp": { "type": "string", "format": "date-time" },
+            "result": { "type": "string", "enum": ["pass", "partial_pass", "fail", "not_run"] }
+          },
+          "additionalProperties": false
+        },
+        "advisory_notice": {
+          "type": "string",
+          "minLength": 10,
+          "description": "Notice that this status report is advisory-only and confers no authority."
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

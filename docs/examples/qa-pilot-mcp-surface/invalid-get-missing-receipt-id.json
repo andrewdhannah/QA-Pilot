@@ -1,0 +1,16 @@
+{
+  "$schema": "https://github.com/andrewdhannah/QA-Pilot/schemas/qa-pilot-mcp-tool.schema.json",
+  "tool_name": "qa_pilot_receipt_get",
+  "tool_version": "qap-mcp-v1",
+  "authority": "R0_read_only",
+  "non_effects": [
+    "read-only query"
+  ],
+  "input": {
+    "receipt_id": ""
+  },
+  "output": {
+    "found": false,
+    "advisory_notice": "Receipt not found."
+  }
+}

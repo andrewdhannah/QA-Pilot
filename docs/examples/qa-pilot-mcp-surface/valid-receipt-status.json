@@ -1,0 +1,34 @@
+{
+  "$schema": "https://github.com/andrewdhannah/QA-Pilot/schemas/qa-pilot-mcp-tool.schema.json",
+  "tool_name": "qa_pilot_receipt_status",
+  "tool_version": "qap-mcp-v1",
+  "authority": "R0_read_only",
+  "non_effects": [
+    "status-only query",
+    "does not mutate any state",
+    "does not approve or seal",
+    "does not grant authority"
+  ],
+  "input": {},
+  "output": {
+    "status": "healthy",
+    "receipt_store": {
+      "total_receipts": 4,
+      "by_status": {
+        "completed": 3,
+        "blocked": 1
+      },
+      "by_packet_type": {
+        "QAProductionReceipt": 1,
+        "QAProductionEvidenceReceipt": 1,
+        "QAProductionVerificationReceipt": 1,
+        "QAProductionReadinessReceipt": 1
+      }
+    },
+    "last_validation": {
+      "timestamp": "2026-07-02T14:15:00Z",
+      "result": "pass"
+    },
+    "advisory_notice": "This status report is advisory-only. It does not approve, seal, merge, or assert production readiness."
+  }
+}

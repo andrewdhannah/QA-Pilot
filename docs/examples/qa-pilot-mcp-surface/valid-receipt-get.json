@@ -1,0 +1,29 @@
+{
+  "$schema": "https://github.com/andrewdhannah/QA-Pilot/schemas/qa-pilot-mcp-tool.schema.json",
+  "tool_name": "qa_pilot_receipt_get",
+  "tool_version": "qap-mcp-v1",
+  "authority": "R0_read_only",
+  "non_effects": [
+    "read-only query",
+    "does not mutate any state",
+    "does not approve or seal",
+    "does not grant authority"
+  ],
+  "input": {
+    "receipt_id": "qapr-20260702-001"
+  },
+  "output": {
+    "found": true,
+    "receipt": {
+      "receipt_id": "qapr-20260702-001",
+      "packet_type": "QAProductionReceipt",
+      "schema_version": "qap-production-v1",
+      "project_id": "qa-pilot",
+      "sprint_id": "QA-PILOT-PRODUCTION-LANE-A-1",
+      "authority": "advisory",
+      "status": "completed",
+      "non_approval_statement": "This receipt is advisory-only and does not confer any approval, seal, merge, or production-readiness authority."
+    },
+    "advisory_notice": "This is a read-only query. The returned receipt is advisory-only and confers no authority."
+  }
+}

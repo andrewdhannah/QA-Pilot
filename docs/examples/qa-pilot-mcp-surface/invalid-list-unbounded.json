@@ -1,0 +1,21 @@
+{
+  "$schema": "https://github.com/andrewdhannah/QA-Pilot/schemas/qa-pilot-mcp-tool.schema.json",
+  "tool_name": "qa_pilot_receipt_list",
+  "tool_version": "qap-mcp-v1",
+  "authority": "R0_read_only",
+  "non_effects": [
+    "read-only list"
+  ],
+  "input": {
+    "project_id": "qa-pilot",
+    "limit": 0,
+    "offset": 0
+  },
+  "output": {
+    "receipts": [],
+    "total_count": 1000,
+    "limit": 0,
+    "offset": 0,
+    "advisory_notice": "Warning: unbounded listing."
+  }
+}

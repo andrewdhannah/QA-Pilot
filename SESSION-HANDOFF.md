@@ -1,3 +1,50 @@
+# Session Handoff — QA-PILOT-MCP-SURFACE-1
+
+## Status: 🔍 **Pending (ledger #3)** — Agent work complete, awaiting Owner review
+
+---
+
+## QA-PILOT-MCP-SURFACE-1 — QA Pilot MCP Surface (Lane B)
+
+**Type:** Lane B — MCP Tool Stub Contracts
+**Mode:** Governance doc, schema, fixtures, validator, test runner — no runtime MCP registration, no The Librarian mutation
+**Predecessor:** QA-PILOT-PRODUCTION-LANE-A-1 (sealed #2)
+
+**Authorization basis:** Owner-approved per OD-QA-PILOT-PRODUCTION-LANE-A-1-SEAL — "Next authorized sprint: QA-PILOT-MCP-SURFACE-1. Scope: Implement QA Pilot MCP tool stubs for production receipt registration, query, and status surfaces under the QA Pilot project boundary."
+
+**Scope restriction:** Define QA Pilot MCP tool stubs/contracts only. Must not register runtime MCP handlers, mutate The Librarian repo, mutate The Librarian MCP controller, or touch external QA Pilot production repos.
+
+**What was done:**
+- Created MCP surface governance doc at `docs/governance/QA-PILOT-MCP-SURFACE.md` (8 sections)
+- Created MCP tool contract schema at `docs/schemas/qa-pilot-mcp-tool.schema.json` (Draft 2020-12, 4 tool sub-schemas)
+- Created 8 fixtures (4 valid, 4 invalid) in `docs/examples/qa-pilot-mcp-surface/`
+- Created Python validator (13 rules MP-1-4 + R-1-3 + G-1-2 + L-1-2 + S-1-2) at `scripts/validate-qa-pilot-mcp-surface.py`
+- Created bash test runner (14 tests) at `scripts/test-qa-pilot-mcp-surface.sh`
+- Created sprint receipt at `docs/sprints/QA-PILOT-MCP-SURFACE-1.md`
+- Updated QA Pilot ledger to include sprint #3
+- Updated QA Pilot FEATURE-STATUS.md and SESSION-HANDOFF.md
+
+**MCP tools defined:**
+
+| Tool | Authority | Purpose |
+|------|-----------|---------|
+| `qa_pilot_receipt_register` | R1 (advisory mutation) | Register receipt as advisory evidence |
+| `qa_pilot_receipt_get` | R0 (read-only) | Retrieve receipt by receipt_id |
+| `qa_pilot_receipt_list` | R0 (read-only) | List receipts with bounded limit (1-100) |
+| `qa_pilot_receipt_status` | R0 (read-only) | Summarize receipt store status |
+
+**Validation:**
+- MCP surface validator: 4/4 valid fixtures pass (13/13 checks), 4/4 invalid fixtures rejected
+- MCP surface test runner: 14/14 tests pass
+- Existing receipt validator: still passes (regression confirmed)
+- Existing receipt test runner: still passes (regression confirmed)
+- Prohibited-zone scan: CLEAN — no The Librarian files modified
+- Authority boundary: advisory-only enforced across all tool contracts
+
+**Recommended next sprint:** QA Pilot receipt store implementation or runtime MCP handler registration (pending Owner direction)
+
+---
+
 # Session Handoff — QA-PILOT-PRODUCTION-LANE-A-1
 
 ## Status: ✅ **Sealed (ledger #2)** — Owner-approved 2026-07-02 per OD-QA-PILOT-PRODUCTION-LANE-A-1-SEAL
