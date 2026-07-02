@@ -1,0 +1,11 @@
+{
+  "fixture_type": "qa_pilot_receipt_store_request",
+  "operation": "get",
+  "description": "Valid get request for a registered receipt",
+  "receipt_id": "qapr-20260702-101",
+  "expected_get_result": {
+    "found": true,
+    "advisory_notice_contains": "read-only query",
+    "receipt_authority": "advisory"
+  }
+}

@@ -1,0 +1,91 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/andrewdhannah/QA-Pilot/schemas/qa-pilot-receipt-store.schema.json",
+  "title": "QA Pilot Receipt Store Index",
+  "description": "Schema for the QA Pilot receipt store index and status files. The index tracks all registered receipts with metadata. Status summarizes store health.",
+  "type": "object",
+  "definitions": {
+    "store_index": {
+      "type": "object",
+      "required": ["store_version", "last_updated", "receipts", "advisory_notice"],
+      "properties": {
+        "store_version": {
+          "type": "string",
+          "enum": ["qap-store-v1"],
+          "description": "Store schema version."
+        },
+        "last_updated": {
+          "type": "string",
+          "format": "date-time",
+          "description": "ISO 8601 timestamp of last store mutation."
+        },
+        "receipts": {
+          "type": "object",
+          "description": "Map of receipt_id to receipt metadata.",
+          "patternProperties": {
+            "^qapr-\\d{8}-\\d{3,}$": {
+              "type": "object",
+              "required": ["receipt_id", "packet_type", "status", "authority", "stored_at", "stored_path"],
+              "properties": {
+                "receipt_id": { "type": "string", "pattern": "^qapr-\\d{8}-\\d{3,}$" },
+                "packet_type": { "type": "string" },
+                "status": { "type": "string" },
+                "authority": { "type": "string", "const": "advisory" },
+                "project_id": { "type": "string" },
+                "sprint_id": { "type": "string" },
+                "stored_at": { "type": "string", "format": "date-time" },
+                "stored_path": { "type": "string", "minLength": 1 },
+                "content_hash": { "type": "string", "pattern": "^sha256:[A-Fa-f0-9]{64}$" }
+              },
+              "additionalProperties": false
+            }
+          },
+          "additionalProperties": false,
+          "description": "Each key is a receipt_id; value is its metadata."
+        }
+      },
+      "additionalProperties": false
+    },
+    "store_status": {
+      "type": "object",
+      "required": ["status", "receipt_store", "last_validation", "advisory_notice"],
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": ["healthy", "degraded", "unavailable"]
+        },
+        "receipt_store": {
+          "type": "object",
+          "required": ["total_receipts"],
+          "properties": {
+            "total_receipts": { "type": "integer", "minimum": 0 },
+            "by_status": { "type": "object" },
+            "by_packet_type": { "type": "object" }
+          },
+          "additionalProperties": false
+        },
+        "last_registration": {
+          "type": "object",
+          "properties": {
+            "receipt_id": { "type": "string" },
+            "registered_at": { "type": "string", "format": "date-time" }
+          }
+        },
+        "last_validation": {
+          "type": "object",
+          "required": ["timestamp", "result"],
+          "properties": {
+            "timestamp": { "type": "string", "format": "date-time" },
+            "result": { "type": "string", "enum": ["pass", "partial_pass", "fail", "not_run"] }
+          },
+          "additionalProperties": false
+        },
+        "advisory_notice": {
+          "type": "string",
+          "minLength": 10
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

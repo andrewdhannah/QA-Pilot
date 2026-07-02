@@ -1,0 +1,28 @@
+{
+  "fixture_type": "qa_pilot_receipt_store_request",
+  "operation": "register",
+  "description": "Invalid register: receipt claims authoritative authority",
+  "receipt": {
+    "$schema": "https://github.com/andrewdhannah/QA-Pilot/schemas/qa-pilot-receipt.schema.json",
+    "receipt_id": "qapr-20260702-199",
+    "packet_type": "QAProductionReceipt",
+    "schema_version": "qap-production-v1",
+    "project_id": "qa-pilot",
+    "sprint_id": "QA-PILOT-RECEIPT-STORE-1",
+    "source_sprint_receipt": "docs/sprints/QA-PILOT-RECEIPT-STORE-1.md",
+    "created_at": "2026-07-02T15:20:00Z",
+    "created_by": "qa-pilot-receipt-store-v1",
+    "authority": "authoritative",
+    "status": "completed",
+    "non_approval_statement": "This receipt approves the production run.",
+    "content_hash": "sha256:EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE",
+    "librarian_receipt_refs": [],
+    "qa_packet_refs": [],
+    "limitations": ["test"]
+  },
+  "expected_register_result": {
+    "success": false,
+    "advisory_only": false,
+    "validation_checks_failed": ["RS-2", "RS-3"]
+  }
+}

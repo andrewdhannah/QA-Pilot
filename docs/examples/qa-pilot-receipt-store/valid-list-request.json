@@ -1,0 +1,14 @@
+{
+  "fixture_type": "qa_pilot_receipt_store_request",
+  "operation": "list",
+  "description": "Valid list request with bounded limit",
+  "list_params": {
+    "limit": 50,
+    "offset": 0
+  },
+  "expected_list_result": {
+    "has_advisory_notice": true,
+    "limit_between_1_and_100": true,
+    "no_error": true
+  }
+}

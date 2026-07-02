@@ -1,0 +1,11 @@
+{
+  "fixture_type": "qa_pilot_receipt_store_request",
+  "operation": "status",
+  "description": "Valid status request (no input params)",
+  "status_input": {},
+  "expected_status_result": {
+    "has_advisory_notice": true,
+    "contains_receipt_store": true,
+    "status_in": ["healthy", "degraded", "unavailable"]
+  }
+}

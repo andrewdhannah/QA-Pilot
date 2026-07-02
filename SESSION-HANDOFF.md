@@ -1,3 +1,48 @@
+# Session Handoff — QA-PILOT-RECEIPT-STORE-1
+
+## Status: 🔍 **Pending (ledger #4)** — Agent work complete, awaiting Owner review
+
+---
+
+## QA-PILOT-RECEIPT-STORE-1 — QA Pilot Receipt Store
+
+**Type:** Receipt Store Implementation
+**Mode:** Local file-based store, governance doc, fixtures, validator, test runner — no runtime MCP registration, no The Librarian mutation
+**Predecessor:** QA-PILOT-MCP-SURFACE-1 (sealed #3)
+
+**Authorization basis:** Owner-approved per OD-QA-PILOT-MCP-SURFACE-1-SEAL — "Next authorized sprint: QA-PILOT-RECEIPT-STORE-1. Implement a QA Pilot-owned local receipt store for production receipt registration/query/status, using the sealed receipt schema and MCP surface contracts."
+
+**Scope restriction:** Implement local receipt store only. Must not register runtime MCP handlers, mutate The Librarian repo, mutate The Librarian MCP controller, or touch external QA Pilot production repos.
+
+**What was done:**
+- Created receipt store governance doc at `docs/governance/QA-PILOT-RECEIPT-STORE.md` (10 sections)
+- Created receipt store schema at `docs/schemas/qa-pilot-receipt-store.schema.json` (Draft 2020-12)
+- Created receipt store module at `scripts/qa_pilot_receipt_store.py` with 4 operations:
+  - `register` — validates against receipt schema, enforces advisory-only, persists to `data/receipts/`
+  - `get` — retrieves receipt by receipt_id
+  - `list` — bounded listing with optional filters (limit 1-100)
+  - `status` — counts, breakdowns, last registration, advisory notice
+- Created 8 fixtures (4 valid, 4 invalid) in `docs/examples/qa-pilot-receipt-store/`
+- Created validator (6 rules RS-1-6) at `scripts/validate-qa-pilot-receipt-store.py`
+- Created test runner (14 tests) at `scripts/test-qa-pilot-receipt-store.sh`
+- Created sprint receipt at `docs/sprints/QA-PILOT-RECEIPT-STORE-1.md`
+- Updated QA Pilot ledger to include sprint #4
+- Updated QA Pilot FEATURE-STATUS.md and SESSION-HANDOFF.md
+
+**Validation:**
+- Store validator: 6/6 checks pass
+- Store test runner: 14/14 tests pass (including register/get/list/status behavior)
+- Existing receipt validator: still passes
+- Existing receipt test runner: still passes
+- Existing MCP surface validator: still passes
+- Existing MCP surface test runner: still passes
+- Prohibited-zone scan: CLEAN — no The Librarian files modified
+- Authority boundary: advisory-only enforced across all operations
+
+**Recommended next sprint:** QA Pilot runtime MCP handler registration or receipt store UI surface (pending Owner direction)
+
+---
+
 # Session Handoff — QA-PILOT-MCP-SURFACE-1
 
 ## Status: ✅ **Sealed (ledger #3)** — Owner-approved 2026-07-02 per OD-QA-PILOT-MCP-SURFACE-1-SEAL

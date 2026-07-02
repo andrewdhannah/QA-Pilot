@@ -1,0 +1,9 @@
+{
+  "fixture_type": "qa_pilot_receipt_store_request",
+  "operation": "get",
+  "description": "Invalid get: receipt_id does not match pattern",
+  "receipt_id": "invalid-id-001",
+  "expected_get_result": {
+    "found": false
+  }
+}
