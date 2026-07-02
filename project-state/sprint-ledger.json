@@ -1,7 +1,7 @@
 {
   "$schema": "sprint-ledger-v1",
   "description": "QA Pilot sprint ledger — canonical record of all QA Pilot sprints, their status, and metadata.",
-  "last_updated": "2026-07-02T16:15:00Z",
+  "last_updated": "2026-07-02T16:20:00Z",
   "sprints": [
     {
       "id": "QA-PILOT-PROJECT-INIT-1",
@@ -79,7 +79,7 @@
       "id": "QA-PILOT-MCP-HANDLER-REGISTRATION-1",
       "title": "QA Pilot MCP Handler Registration",
       "area": "production",
-      "status": "pending",
+      "status": "sealed",
       "required_for_operational_v1": true,
       "optional": false,
       "deferred": false,
@@ -89,8 +89,8 @@
       "start_head": "23ffe13",
       "final_head": null,
       "commit": null,
-      "harness": "MCP Handler Registration: wire sealed MCP surface contracts to sealed receipt store as QA Pilot-owned local handler stubs. Handlers enforce project_boundary=qa-pilot, store_integration, cross_project_registration=false. All 14/14 tests pass. Pending Owner review.",
-      "evidence_note": "QA-PILOT-MCP-HANDLER-REGISTRATION-1: Created QA Pilot-owned handler module (scripts/qa_pilot_mcp_handlers.py) with 4 functions wrapping receipt store. Governance doc (8 sections), schema (Draft 2020-12), 8 fixtures (4 valid, 4 invalid including cross-project boundary), validator (6 rules HR-1-6), test runner (14/14 pass, 7 regression guards). Prohibited-zone scan: Librarian repo untouched. Authority advisory-only. Pending Owner review.",
+      "harness": "MCP Handler Registration: wire sealed MCP surface contracts to sealed receipt store as QA Pilot-owned local handler stubs. Handlers enforce project_boundary=qa-pilot, store_integration, cross_project_registration=false. All 14/14 tests pass. Sealed by Owner decision OD-QA-PILOT-MCP-HANDLER-REGISTRATION-1-SEAL.",
+      "evidence_note": "QA-PILOT-MCP-HANDLER-REGISTRATION-1: Created QA Pilot-owned handler module (scripts/qa_pilot_mcp_handlers.py) with 4 functions wrapping receipt store. Governance doc (8 sections), schema (Draft 2020-12), 8 fixtures (4 valid, 4 invalid including cross-project boundary), validator (6 rules HR-1-6), test runner (14/14 pass, 7 regression guards). Prohibited-zone scan: Librarian repo untouched. Authority advisory-only. Sealed by Owner decision OD-QA-PILOT-MCP-HANDLER-REGISTRATION-1-SEAL.",
       "doc": "docs/sprints/QA-PILOT-MCP-HANDLER-REGISTRATION-1.md"
     }
   ]

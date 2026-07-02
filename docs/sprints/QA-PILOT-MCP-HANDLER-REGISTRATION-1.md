@@ -1,7 +1,7 @@
 # QA-PILOT-MCP-HANDLER-REGISTRATION-1 — QA Pilot MCP Handler Registration
 
 **Project:** QA Pilot
-**Status:** 🔍 Pending Owner review (not sealed)
+**Status:** ✅ **Sealed (ledger #5)** — Owner-approved 2026-07-02 per OD-QA-PILOT-MCP-HANDLER-REGISTRATION-1-SEAL
 **Authority:** Advisory only. QA Pilot-owned local handler stubs — no The Librarian MCP runtime registration.
 
 **Sprint type:** QA Pilot MCP Handler Registration.
@@ -197,4 +197,4 @@ This sprint is closed (agent work complete) by the existence of:
 - Enforce cross_project_registration=false across all handlers
 - Preserve all existing QA Pilot validators and test runners (6/6 regression guards)
 
-**Status: 🔍 Pending Owner review (not sealed)**
+**Status: ✅ Sealed (ledger #5) — Owner-approved 2026-07-02 per OD-QA-PILOT-MCP-HANDLER-REGISTRATION-1-SEAL**

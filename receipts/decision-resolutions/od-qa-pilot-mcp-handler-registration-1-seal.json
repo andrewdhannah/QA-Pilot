@@ -1,0 +1,42 @@
+{
+  "receipt_type": "owner_decision_seal",
+  "decision_id": "OD-QA-PILOT-MCP-HANDLER-REGISTRATION-1-SEAL",
+  "project_id": "qa-pilot",
+  "sprint_id": "QA-PILOT-MCP-HANDLER-REGISTRATION-1",
+  "owner": "Andrew Hannah",
+  "decision": "APPROVE_AND_SEAL",
+  "decision_date": "2026-07-02",
+  "decision_timestamp": "2026-07-02T16:20:00Z",
+  "seal_conditions": [
+    "Seal QA-PILOT-MCP-HANDLER-REGISTRATION-1 as QA Pilot ledger #5",
+    "Create Owner decision receipt under receipts/decision-resolutions/",
+    "Update only QA Pilot project files",
+    "Commit only QA Pilot files",
+    "Do not modify The Librarian repo",
+    "Do not register handlers in The Librarian runtime in this seal commit",
+    "Do not start the next sprint in this commit"
+  ],
+  "authorized_next_sprint": "QA-PILOT-LIBRARIAN-MCP-CUSTODY-PACKET-1",
+  "authorized_next_scope": "Create a cross-project custody packet authorizing, constraining, or rejecting future integration of QA Pilot local handler stubs into The Librarian MCP runtime. This sprint should define the exact custody boundary, mutation authority, allowed files, forbidden files, rollback path, and Owner approval requirements before any The Librarian runtime file is touched.",
+  "boundary": "No The Librarian runtime or MCP enforcement mutation is authorized until the cross-project custody packet is created and Owner-approved.",
+  "evidence_basis": [
+    "Handler module created (scripts/qa_pilot_mcp_handlers.py) with 4 functions",
+    "Handlers call QA Pilot receipt store only (HR-1 AST check)",
+    "Register returns advisory_only=true (HR-2 runtime test)",
+    "Register rejects non-advisory authority (HR-3)",
+    "Get/list/status are R0 read-only (HR-4 AST check)",
+    "List enforces bounded limit 1-100 (HR-5)",
+    "All responses include advisory boundary statements (HR-6)",
+    "project_boundary=qa-pilot in all handler outputs",
+    "store_integration=qa_pilot_receipt_store in all handler outputs",
+    "cross_project_registration=false in all handler outputs",
+    "Handler validator: 6/6 HR-1-6 pass",
+    "Handler test runner: 14/14 pass",
+    "All 3 existing validators still pass (regression)",
+    "All 3 existing test runners still pass (regression)",
+    "Prohibited-zone scan: CLEAN — no Librarian files modified",
+    "No Librarian MCPController mutation",
+    "No runtime MCP integration",
+    "No external QA Pilot production repos touched"
+  ]
+}

@@ -1,6 +1,6 @@
 # Session Handoff — QA-PILOT-MCP-HANDLER-REGISTRATION-1
 
-## Status: 🔍 **Pending (ledger #5)** — Agent work complete, awaiting Owner review
+## Status: ✅ **Sealed (ledger #5)** — Owner-approved 2026-07-02 per OD-QA-PILOT-MCP-HANDLER-REGISTRATION-1-SEAL
 
 ---
 
@@ -42,7 +42,9 @@
 - All 3 existing test runners: all still pass
 - Prohibited-zone scan: CLEAN — no The Librarian files modified
 
-**Next authorized sprint:** Pending Owner direction (cross-project custody packet required for Librarian MCP runtime integration)
+**Sealed by:** OD-QA-PILOT-MCP-HANDLER-REGISTRATION-1-SEAL
+
+**Next authorized sprint:** QA-PILOT-LIBRARIAN-MCP-CUSTODY-PACKET-1 — create a cross-project custody packet authorizing, constraining, or rejecting future integration of QA Pilot local handler stubs into The Librarian MCP runtime.
 
 ---
 
