@@ -1,7 +1,7 @@
 {
   "$schema": "sprint-ledger-v1",
   "description": "QA Pilot sprint ledger — canonical record of all QA Pilot sprints, their status, and metadata.",
-  "last_updated": "2026-07-02T16:40:00Z",
+  "last_updated": "2026-07-02T17:00:00Z",
   "sprints": [
     {
       "id": "QA-PILOT-PROJECT-INIT-1",
@@ -97,7 +97,7 @@
       "id": "QA-PILOT-LIBRARIAN-MCP-CUSTODY-PACKET-1",
       "title": "QA Pilot ↔ Librarian MCP Custody Packet",
       "area": "governance",
-      "status": "pending",
+      "status": "sealed",
       "required_for_operational_v1": true,
       "optional": false,
       "deferred": false,
@@ -107,8 +107,8 @@
       "start_head": "14e80ea",
       "final_head": null,
       "commit": null,
-      "harness": "Custody packet: define whether Librarian may broker QA Pilot MCP calls. Decision-only sprint. Option A preserved. Option B planning only. Option C not authorized. 10 custody conditions (CC-1-10). All 14/14 tests pass. Pending Owner review.",
-      "evidence_note": "QA-PILOT-LIBRARIAN-MCP-CUSTODY-PACKET-1: Modeled Options A/B/C. Preserved QA Pilot project_boundary and cross_project_registration invariants. Documented 10 custody conditions (CC-1-10). Created governance doc (9 sections), schema (Draft 2020-12), 6 fixtures (3 valid, 3 invalid), validator (8 rules CD-1-8), test runner (14/14 pass, 4 regression guards). Prohibited-zone scan: Librarian repo untouched. No implementation authorized.",
+      "harness": "Custody packet: define whether Librarian may broker QA Pilot MCP calls. Decision-only sprint. Option A preserved. Option B planning only. Option C not authorized. 10 custody conditions (CC-1-10). All 14/14 tests pass. Sealed by Owner decision OD-QA-PILOT-LIBRARIAN-MCP-CUSTODY-PACKET-1-SEAL.",
+      "evidence_note": "QA-PILOT-LIBRARIAN-MCP-CUSTODY-PACKET-1: Modeled Options A/B/C. Preserved QA Pilot project_boundary and cross_project_registration invariants. Documented 10 custody conditions (CC-1-10). Created governance doc (9 sections), schema (Draft 2020-12), 6 fixtures (3 valid, 3 invalid), validator (8 rules CD-1-8), test runner (14/14 pass, 4 regression guards). Prohibited-zone scan: Librarian repo untouched. No implementation authorized. Sealed by Owner decision OD-QA-PILOT-LIBRARIAN-MCP-CUSTODY-PACKET-1-SEAL.",
       "doc": "docs/sprints/QA-PILOT-LIBRARIAN-MCP-CUSTODY-PACKET-1.md"
     }
   ]

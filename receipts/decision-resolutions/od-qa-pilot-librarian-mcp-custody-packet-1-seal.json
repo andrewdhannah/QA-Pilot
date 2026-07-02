@@ -1,0 +1,35 @@
+{
+  "receipt_type": "owner_decision_seal",
+  "decision_id": "OD-QA-PILOT-LIBRARIAN-MCP-CUSTODY-PACKET-1-SEAL",
+  "project_id": "qa-pilot",
+  "sprint_id": "QA-PILOT-LIBRARIAN-MCP-CUSTODY-PACKET-1",
+  "owner": "Andrew Hannah",
+  "decision": "APPROVE_AND_SEAL",
+  "decision_date": "2026-07-02",
+  "decision_timestamp": "2026-07-02T17:00:00Z",
+  "seal_conditions": [
+    "Seal QA-PILOT-LIBRARIAN-MCP-CUSTODY-PACKET-1 as QA Pilot ledger #6",
+    "Create Owner decision receipt under receipts/decision-resolutions/",
+    "Update only QA Pilot project files",
+    "Commit only QA Pilot files",
+    "Do not modify The Librarian repo",
+    "Do not implement Option B broker tools in this seal commit",
+    "Do not start QA-PILOT-BROKER-PLAN-1 in this commit"
+  ],
+  "authorized_next_sprint": "QA-PILOT-BROKER-PLAN-1",
+  "authorized_next_scope": "Plan Option B only. Must not implement broker tools, mutate The Librarian runtime, or register native MCPController tools.",
+  "boundary": "QA Pilot remains Option A by default. QA-PILOT-BROKER-PLAN-1 may plan Option B only; it must not implement broker tools, mutate The Librarian runtime, or register native MCPController tools.",
+  "evidence_basis": [
+    "Option A preserved as current operating mode",
+    "Option B defined as planning-only, not authorized for implementation",
+    "Option C rejected for planning and implementation",
+    "Custody conditions CC-1 through CC-10 defined",
+    "Custody validator passed valid fixtures: 3/3",
+    "Custody validator rejected invalid fixtures: 3/3",
+    "Custody test runner passed: 14/14",
+    "All 4 existing QA Pilot validators still pass",
+    "CD-8 confirmed no Librarian runtime references",
+    "Only QA Pilot project files modified",
+    "No The Librarian repo, MCPController, Sources/App, runtime, MCP enforcement, or external QA Pilot production repo modified"
+  ]
+}

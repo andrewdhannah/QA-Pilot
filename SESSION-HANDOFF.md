@@ -1,6 +1,6 @@
 # Session Handoff — QA-PILOT-LIBRARIAN-MCP-CUSTODY-PACKET-1
 
-## Status: 🔍 **Pending (ledger #6)** — Agent work complete, awaiting Owner review
+## Status: ✅ **Sealed (ledger #6)** — Owner-approved 2026-07-02 per OD-QA-PILOT-LIBRARIAN-MCP-CUSTODY-PACKET-1-SEAL
 
 ---
 
@@ -37,7 +37,9 @@
 - All 4 existing test runners: all still pass
 - Prohibited-zone scan: CLEAN — no Librarian files modified
 
-**Next step:** Pending Owner review. If approved, this document becomes the binding custody constraint for any future Librarian brokering of QA Pilot MCP tools.
+**Sealed by:** OD-QA-PILOT-LIBRARIAN-MCP-CUSTODY-PACKET-1-SEAL
+
+**Next authorized sprint:** QA-PILOT-BROKER-PLAN-1 — plan Option B only. Must not implement broker tools, mutate The Librarian runtime, or register native MCPController tools.
 
 ---
 

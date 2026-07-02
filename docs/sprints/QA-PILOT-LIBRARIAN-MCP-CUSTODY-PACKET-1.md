@@ -1,7 +1,7 @@
 # QA-PILOT-LIBRARIAN-MCP-CUSTODY-PACKET-1 — QA Pilot ↔ Librarian MCP Custody
 
 **Project:** QA Pilot
-**Status:** 🔍 Pending Owner review (not sealed)
+**Status:** ✅ **Sealed (ledger #6)** — Owner-approved 2026-07-02 per OD-QA-PILOT-LIBRARIAN-MCP-CUSTODY-PACKET-1-SEAL
 **Authority:** Decision/constraint only. No implementation authorized.
 
 **Sprint type:** Decision / custody constraint sprint.
@@ -209,4 +209,4 @@ This sprint is closed (agent work complete) by the existence of:
 - Document 10 custody conditions (CC-1-10) for any future Option B implementation
 - Preserve all 4 existing QA Pilot validators and test runners
 
-**Status: 🔍 Pending Owner review (not sealed)**
+**Status: ✅ Sealed (ledger #6) — Owner-approved 2026-07-02 per OD-QA-PILOT-LIBRARIAN-MCP-CUSTODY-PACKET-1-SEAL**
