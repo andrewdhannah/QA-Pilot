@@ -1,0 +1,33 @@
+{
+  "receipt_type": "owner_decision_seal",
+  "decision_id": "OD-QA-PILOT-PROJECT-INIT-1-SEAL",
+  "sprint_id": "QA-PILOT-PROJECT-INIT-1",
+  "project_id": "qa-pilot",
+  "sealed_number": 1,
+  "sealed_in_ledger": "active/qa-pilot/project-state/sprint-ledger.json",
+  "decision": "APPROVE_AND_SEAL",
+  "decided_by": "Andrew Hannah (Owner)",
+  "decided_at": "2026-07-02T07:45:00Z",
+  "authorization_basis": "Owner-approved per OD-QA-PILOT-PROJECT-INIT-1-SEAL",
+  "next_authorized_sprint": "QA-PILOT-PRODUCTION-LANE-A-1",
+  "next_sprint_scope": "Run production Lane A under the QA Pilot ledger. May import the Librarian planning-only QA Pilot receipt artifacts as QA Pilot-owned production implementation only with explicit Owner authorization recorded in the QA Pilot ledger.",
+  "init_sprint_summary": {
+    "workspace_created": "active/qa-pilot/",
+    "project_identity": "PROJECT-IDENTITY.md",
+    "project_profile": "PROJECT-PROFILE.json (12 fields)",
+    "ledger_initialized": true,
+    "status_surfaces": [
+      "FEATURE-STATUS.md",
+      "SESSION-HANDOFF.md"
+    ],
+    "receipt_paths": [
+      "decision-resolutions/",
+      "sprint-closeouts/"
+    ],
+    "governance_doc": "docs/governance/QA-PILOT-PROJECT-GOVERNANCE.md",
+    "sandbox_boundary": "harness_governed",
+    "production_imported": false,
+    "librarian_touched": false
+  },
+  "seal_commit": "see_commit_log"
+}

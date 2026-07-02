@@ -1,0 +1,25 @@
+{
+  "$schema": "sprint-ledger-v1",
+  "description": "QA Pilot sprint ledger — canonical record of all QA Pilot sprints, their status, and metadata.",
+  "last_updated": "2026-07-02T07:45:00Z",
+  "sprints": [
+    {
+      "id": "QA-PILOT-PROJECT-INIT-1",
+      "title": "QA Pilot Project Initialization",
+      "area": "governance",
+      "status": "sealed",
+      "required_for_operational_v1": true,
+      "optional": false,
+      "deferred": false,
+      "blocked": false,
+      "dependencies": [],
+      "sealed_number": 1,
+      "start_head": "init",
+      "final_head": null,
+      "commit": null,
+      "harness": "Project init sprint: workspace created, identity/profile/ledger/status surfaces/receipts initialized. Sandbox boundary: harness_governed.",
+      "evidence_note": "QA-PILOT-PROJECT-INIT-1: Agent work complete, pending Owner review. Created QA Pilot project workspace, identity, profile (12 fields), sprint ledger, FEATURE-STATUS.md, SESSION-HANDOFF.md, receipt paths, sandbox governance doc. No production implementation imported. No Librarian runtime/MCP enforcement mutated.",
+      "doc": "docs/sprints/QA-PILOT-PROJECT-INIT-1.md"
+    }
+  ]
+}

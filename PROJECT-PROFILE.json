@@ -1,0 +1,40 @@
+{
+  "project_id": "qa-pilot",
+  "project_name": "QA Pilot",
+  "repo_path": "/Users/andrew/Desktop/CarbideFrame/qa-pilot",
+  "workspace_path": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot",
+  "ledger_path": "project-state/sprint-ledger.json",
+  "receipt_root": "receipts/",
+  "status_surfaces": [
+    "FEATURE-STATUS.md",
+    "SESSION-HANDOFF.md"
+  ],
+  "owner_decision_path": "receipts/decision-resolutions/",
+  "active_sprint": "QA-PILOT-PROJECT-INIT-1",
+  "sandbox_boundary": "harness_governed",
+  "allowed_mutation_paths": [
+    "docs/",
+    "scripts/",
+    "fixtures/",
+    "project-state/",
+    "receipts/",
+    "PROJECT-IDENTITY.md",
+    "PROJECT-PROFILE.json",
+    "FEATURE-STATUS.md",
+    "SESSION-HANDOFF.md"
+  ],
+  "forbidden_cross_project_paths": [
+    "**/active/librarian/Sources/**",
+    "**/active/librarian/Public/**",
+    "**/active/librarian/project-state/sprint-ledger.json",
+    "**/active/librarian/receipts/**",
+    "**/active/librarian/project-state/**",
+    "**/.librarian/current-project.json",
+    "**/active/librarian/FEATURE-STATUS.md",
+    "**/active/librarian/SESSION-HANDOFF.md",
+    "**/active/librarian/docs/governance/**",
+    "**/active/librarian/docs/schemas/**",
+    "**/active/librarian/docs/rules/**"
+  ],
+  "description": "QA Pilot project profile. QA Pilot is a harness_governed add-on project. It has its own ledger, receipts, status surfaces, and governance. The Librarian provides custody/harness infrastructure only. Cross-project mutation is forbidden unless explicitly authorized by a project handoff/custody packet."
+}
