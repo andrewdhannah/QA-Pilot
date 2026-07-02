@@ -1,6 +1,6 @@
 # Session Handoff — QA-PILOT-MCP-SURFACE-1
 
-## Status: 🔍 **Pending (ledger #3)** — Agent work complete, awaiting Owner review
+## Status: ✅ **Sealed (ledger #3)** — Owner-approved 2026-07-02 per OD-QA-PILOT-MCP-SURFACE-1-SEAL
 
 ---
 
@@ -41,7 +41,9 @@
 - Prohibited-zone scan: CLEAN — no The Librarian files modified
 - Authority boundary: advisory-only enforced across all tool contracts
 
-**Recommended next sprint:** QA Pilot receipt store implementation or runtime MCP handler registration (pending Owner direction)
+**Sealed by:** OD-QA-PILOT-MCP-SURFACE-1-SEAL
+
+**Next authorized sprint:** QA-PILOT-RECEIPT-STORE-1 — implement a QA Pilot-owned local receipt store for production receipt registration/query/status, using the sealed receipt schema and MCP surface contracts.
 
 ---
 

@@ -1,7 +1,7 @@
 # QA-PILOT-MCP-SURFACE-1 — QA Pilot MCP Surface (Lane B)
 
 **Project:** QA Pilot
-**Status:** 🔍 Pending Owner review (not sealed)
+**Status:** ✅ **Sealed (ledger #3)** — Owner-approved 2026-07-02 per OD-QA-PILOT-MCP-SURFACE-1-SEAL
 **Authority:** Advisory only. Tool stubs/contracts only — no runtime MCP registration.
 
 **Sprint type:** QA Pilot Lane B — MCP tool stub contracts and validation.
@@ -211,4 +211,4 @@ This sprint is closed (agent work complete) by the existence of:
 - Classify register tool as advisory mutation only with non_approval checks
 - Preserve existing QA Pilot production receipt validation
 
-**Status: 🔍 Pending Owner review (not sealed)**
+**Status: ✅ Sealed (ledger #3) — Owner-approved 2026-07-02 per OD-QA-PILOT-MCP-SURFACE-1-SEAL**

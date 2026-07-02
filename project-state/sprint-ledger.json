@@ -1,7 +1,7 @@
 {
   "$schema": "sprint-ledger-v1",
   "description": "QA Pilot sprint ledger — canonical record of all QA Pilot sprints, their status, and metadata.",
-  "last_updated": "2026-07-02T15:00:00Z",
+  "last_updated": "2026-07-02T15:15:00Z",
   "sprints": [
     {
       "id": "QA-PILOT-PROJECT-INIT-1",
@@ -43,7 +43,7 @@
       "id": "QA-PILOT-MCP-SURFACE-1",
       "title": "QA Pilot MCP Surface (Lane B)",
       "area": "production",
-      "status": "pending",
+      "status": "sealed",
       "required_for_operational_v1": true,
       "optional": false,
       "deferred": false,
@@ -53,8 +53,8 @@
       "start_head": "ea20417",
       "final_head": null,
       "commit": null,
-      "harness": "Lane B: define QA Pilot MCP tool stubs for production receipt registration, query, and status. Contracts, schema, fixtures, validator, test runner. All 14/14 tests pass. Pending Owner review.",
-      "evidence_note": "QA-PILOT-MCP-SURFACE-1: Defined 4 MCP tool stubs (register R1, get R0, list R0, status R0). Created governance doc (8 sections), schema (Draft 2020-12, 4 tool sub-schemas), 8 fixtures (4 valid, 4 invalid), validator (13 rules MP-1-4 + R-1-3 + G-1-2 + L-1-2 + S-1-2, all pass), test runner (14/14 pass). Prohibited-zone scan: Librarian repo untouched. Authority advisory-only. Pending Owner review.",
+      "harness": "Lane B: define QA Pilot MCP tool stubs for production receipt registration, query, and status. Contracts, schema, fixtures, validator, test runner. All 14/14 tests pass. Sealed by Owner decision OD-QA-PILOT-MCP-SURFACE-1-SEAL.",
+      "evidence_note": "QA-PILOT-MCP-SURFACE-1: Defined 4 MCP tool stubs (register R1, get R0, list R0, status R0). Created governance doc (8 sections), schema (Draft 2020-12, 4 tool sub-schemas), 8 fixtures (4 valid, 4 invalid), validator (13 rules MP-1-4 + R-1-3 + G-1-2 + L-1-2 + S-1-2, all pass), test runner (14/14 pass). Prohibited-zone scan: Librarian repo untouched. Authority advisory-only. Sealed by Owner decision OD-QA-PILOT-MCP-SURFACE-1-SEAL.",
       "doc": "docs/sprints/QA-PILOT-MCP-SURFACE-1.md"
     }
   ]

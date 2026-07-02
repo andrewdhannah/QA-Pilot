@@ -1,0 +1,33 @@
+{
+  "receipt_type": "owner_decision_seal",
+  "decision_id": "OD-QA-PILOT-MCP-SURFACE-1-SEAL",
+  "project_id": "qa-pilot",
+  "sprint_id": "QA-PILOT-MCP-SURFACE-1",
+  "owner": "Andrew Hannah",
+  "decision": "APPROVE_AND_SEAL",
+  "decision_date": "2026-07-02",
+  "decision_timestamp": "2026-07-02T15:15:00Z",
+  "seal_conditions": [
+    "Seal QA-PILOT-MCP-SURFACE-1 as QA Pilot ledger #3",
+    "Create Owner decision receipt under receipts/decision-resolutions/",
+    "Update only QA Pilot project files",
+    "Commit only QA Pilot files",
+    "Do not modify The Librarian repo",
+    "Do not implement runtime MCP handlers in this seal commit",
+    "Do not start the next sprint in this commit"
+  ],
+  "authorized_next_sprint": "QA-PILOT-RECEIPT-STORE-1",
+  "authorized_next_scope": "Implement a QA Pilot-owned local receipt store for production receipt registration/query/status, using the sealed receipt schema and MCP surface contracts.",
+  "boundary": "Runtime MCP handler registration remains separate unless explicitly authorized. The receipt store may prepare storage logic and fixtures, but must not claim QA approval, seal, merge, or production-readiness authority.",
+  "evidence_basis": [
+    "MCP surface governance doc created (8 sections)",
+    "MCP tool contract schema (Draft 2020-12, 4 tool sub-schemas)",
+    "4 valid fixtures pass MCP surface validator (13/13 checks each)",
+    "4 invalid fixtures rejected by MCP surface validator",
+    "MCP surface test runner: 14/14 pass",
+    "Existing receipt validator and test runner still pass (regression confirmed)",
+    "AST meta-check: no authority-granting code",
+    "Prohibited-zone scan: CLEAN — no Librarian files modified",
+    "Only QA Pilot project files modified"
+  ]
+}
