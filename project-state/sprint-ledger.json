@@ -187,18 +187,18 @@
       "id": "QA-PILOT-BROKER-AUDIT-STORE-IMPLEMENTATION-1",
       "title": "QA Pilot Broker Audit Store Implementation",
       "area": "implementation",
-      "status": "pending_owner_review",
+      "status": "sealed",
       "required_for_operational_v1": true,
       "optional": false,
       "deferred": false,
       "blocked": false,
       "dependencies": ["QA-PILOT-BROKER-AUDIT-RECEIPT-STORE-1"],
-      "sealed_number": null,
+      "sealed_number": 11,
       "start_head": "13d2a91",
       "final_head": null,
       "commit": null,
       "harness": "Audit Store Implementation: file-based broker audit store with register/get/list/status. Validates against sealed schema, rejects approval effects and Librarian paths, bounded listing 1-100. 29/29 tests pass. Pending Owner review.",
-      "evidence_note": "QA-PILOT-BROKER-AUDIT-STORE-IMPLEMENTATION-1: Implemented QA Pilot-local broker audit store (scripts/qa_pilot_broker_audit_store.py) with 4 operations (register, get, list, status). Schema validation against sealed audit receipt schema. Rejects forbidden output effects, Librarian runtime paths, unbounded limits. 8 fixtures (4 valid, 4 invalid). Validator (12 rules AS-1-12, all pass). Test runner (29/29 pass). All existing validators still pass. Prohibited-zone scan: Librarian repo untouched. Pending Owner review.",
+      "evidence_note": "QA-PILOT-BROKER-AUDIT-STORE-IMPLEMENTATION-1: Implemented QA Pilot-local broker audit store (scripts/qa_pilot_broker_audit_store.py) with 4 operations (register, get, list, status). Schema validation against sealed audit receipt schema. Rejects forbidden output effects, Librarian runtime paths, unbounded limits. 8 fixtures (4 valid, 4 invalid). Validator (12 rules AS-1-12, all pass). Test runner (29/29 pass). All existing validators still pass. Prohibited-zone scan: Librarian repo untouched. Sealed by Owner decision OD-QA-PILOT-BROKER-AUDIT-STORE-IMPLEMENTATION-1-SEAL.",
       "doc": "docs/sprints/QA-PILOT-BROKER-AUDIT-STORE-IMPLEMENTATION-1.md"
     }
   ]

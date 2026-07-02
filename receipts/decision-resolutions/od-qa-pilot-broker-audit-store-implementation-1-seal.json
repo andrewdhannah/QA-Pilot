@@ -1,0 +1,44 @@
+{
+  "receipt_type": "owner_decision_seal",
+  "decision_id": "OD-QA-PILOT-BROKER-AUDIT-STORE-IMPLEMENTATION-1-SEAL",
+  "project_id": "qa-pilot",
+  "sprint_id": "QA-PILOT-BROKER-AUDIT-STORE-IMPLEMENTATION-1",
+  "ledger_number": 11,
+  "decision": "APPROVE_AND_SEAL",
+  "implementation_commit": "dce2b08",
+  "approved_by": "Andrew Hannah (Owner)",
+  "approved_at": "2026-07-02T23:30:00Z",
+  "authorized_next_sprint": "QA-PILOT-BROKER-AUDIT-STORE-HARDEN-1",
+  "decision_basis": [
+    "Implemented QA Pilot-local broker audit store module with register/get/list/status",
+    "Register validates against the sealed broker audit receipt schema",
+    "Register rejects forbidden approval/seal/merge/production-readiness effects",
+    "Register rejects Librarian runtime/MCPController path contamination",
+    "Get/status remain R0 read-only",
+    "List remains bounded 1-100",
+    "Created broker audit store governance documentation and schema",
+    "Created 4 valid and 4 invalid fixtures covering all rejection scenarios",
+    "Audit store validator: AS-1 through AS-12 all pass",
+    "Audit store test runner: 29/29 pass",
+    "All 9 existing QA Pilot validators still pass",
+    "Prohibited-zone scan: clean — no Librarian modifications",
+    "No approval, seal, merge, or production-readiness pathway introduced",
+    "Broker remains advisory-only"
+  ],
+  "seal_conditions": [
+    "Do not implement runtime MCP handlers, native MCPController registration, or cross-project calls in this seal commit",
+    "Do not start QA-PILOT-BROKER-AUDIT-STORE-HARDEN-1 in this commit",
+    "Do not modify The Librarian repo"
+  ],
+  "boundary_confirmations": {
+    "project_boundary": "qa-pilot",
+    "librarian_mutation": false,
+    "mcpcontroller_registration": false,
+    "native_mcp_registration": false,
+    "cross_project_calls": false,
+    "external_production_repo_mutation": false,
+    "approval_seal_merge_pathways": false,
+    "authority_broadened": false,
+    "broker_remains_advisory_only": true
+  }
+}
