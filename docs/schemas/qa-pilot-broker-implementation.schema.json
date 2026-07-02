@@ -1,0 +1,92 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/andrewdhannah/QA-Pilot/schemas/qa-pilot-broker-implementation.schema.json",
+  "title": "QA Pilot Broker Implementation Request",
+  "description": "Schema for a QA Pilot broker implementation request. Validates broker request format, custody record, and authority constraints per QA-PILOT-BROKER-PLAN-1.",
+  "type": "object",
+  "required": [
+    "broker_version",
+    "request_id",
+    "project_id",
+    "tool",
+    "params",
+    "custody_record",
+    "timestamp"
+  ],
+  "properties": {
+    "broker_version": {
+      "type": "string",
+      "enum": ["qap-broker-v1"],
+      "description": "Broker protocol version."
+    },
+    "request_id": {
+      "type": "string",
+      "pattern": "^qabr-[a-z0-9-]+$",
+      "description": "Unique broker request identifier (qabr- prefix)."
+    },
+    "project_id": {
+      "type": "string",
+      "const": "qa-pilot",
+      "description": "Must be 'qa-pilot'."
+    },
+    "tool": {
+      "type": "string",
+      "enum": [
+        "qa_pilot_receipt_register",
+        "qa_pilot_receipt_get",
+        "qa_pilot_receipt_list",
+        "qa_pilot_receipt_status"
+      ],
+      "description": "QA Pilot MCP tool to invoke."
+    },
+    "params": {
+      "type": "object",
+      "description": "Tool-specific parameters."
+    },
+    "custody_record": {
+      "type": "object",
+      "required": [
+        "project_context",
+        "target_project",
+        "tool_name",
+        "handler_path",
+        "authority_claimed"
+      ],
+      "properties": {
+        "project_context": {
+          "type": "string",
+          "const": "qa-pilot",
+          "description": "Project context for the request. Must be qa-pilot."
+        },
+        "target_project": {
+          "type": "string",
+          "const": "qa-pilot",
+          "description": "Target project. Must be qa-pilot."
+        },
+        "tool_name": {
+          "type": "string",
+          "description": "Tool being requested."
+        },
+        "handler_path": {
+          "type": "string",
+          "pattern": "^active/qa-pilot/scripts/",
+          "description": "Project-local handler path."
+        },
+        "authority_claimed": {
+          "type": "string",
+          "enum": ["advisory", "read_only"],
+          "description": "Claimed authority level."
+        },
+        "session_id": {
+          "type": "string",
+          "description": "Optional session identifier."
+        }
+      }
+    },
+    "timestamp": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T",
+      "description": "ISO 8601 timestamp."
+    }
+  }
+}

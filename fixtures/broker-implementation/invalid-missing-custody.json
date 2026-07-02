@@ -1,0 +1,13 @@
+{
+  "fixture_type": "qa_pilot_broker_request",
+  "description": "INVALID: Missing custody_record — violates CC-6",
+  "expected_behavior": "rejected",
+  "broker_version": "qap-broker-v1",
+  "request_id": "qabr-invalid-no-custody-001",
+  "project_id": "qa-pilot",
+  "tool": "qa_pilot_receipt_get",
+  "params": {
+    "receipt_id": "qapr-20260702-001"
+  },
+  "timestamp": "2026-07-02T20:00:10Z"
+}

@@ -1,7 +1,7 @@
 {
   "$schema": "sprint-ledger-v1",
   "description": "QA Pilot sprint ledger — canonical record of all QA Pilot sprints, their status, and metadata.",
-  "last_updated": "2026-07-02T20:00:00Z",
+  "last_updated": "2026-07-02T21:00:00Z",
   "sprints": [
     {
       "id": "QA-PILOT-PROJECT-INIT-1",
@@ -128,6 +128,24 @@
       "harness": "Broker Plan: define Option B broker planning model with custody mapping, audit receipt requirements, rollback requirements, and future mutation envelope. Planning-only — no implementation authorized. All validations pass. Pending Owner review.",
       "evidence_note": "QA-PILOT-BROKER-PLAN-1: Created broker planning governance doc (10 sections), schema (Draft 2020-12), 6 fixtures (2 valid, 4 invalid), validator (24 rules BP-1-24, all pass), test runner (18/18 pass). Broker model: forward-only, routes-not-absorbs, QA Pilot-owned surface. Custody CC-1-10 mapped with verification mechanisms. Audit receipt requirements defined. Rollback requirements defined. Future mutation envelope explicit. Option C reaffirmed not authorized. Prohibited-zone scan: Librarian repo untouched. Authority planning-only. Sealed by Owner decision OD-QA-PILOT-BROKER-PLAN-1-SEAL.",
       "doc": "docs/sprints/QA-PILOT-BROKER-PLAN-1.md"
+    },
+    {
+      "id": "QA-PILOT-BROKER-IMPLEMENTATION-1",
+      "title": "QA Pilot Option B Broker Implementation",
+      "area": "implementation",
+      "status": "pending_owner_review",
+      "required_for_operational_v1": true,
+      "optional": false,
+      "deferred": false,
+      "blocked": false,
+      "dependencies": ["QA-PILOT-BROKER-PLAN-1"],
+      "sealed_number": null,
+      "start_head": "ded4af2",
+      "final_head": null,
+      "commit": null,
+      "harness": "Broker Implementation: implement QA Pilot-local broker with custody verification (CC-1-10), advisory-only enforcement, audit receipt generation, disable flag. Planning-only — no Librarian mutation, no MCPController registration. All 32 implementation tests pass. Pending Owner review.",
+      "evidence_note": "QA-PILOT-BROKER-IMPLEMENTATION-1: Implemented QA Pilot-local broker (scripts/librarian_broker_qa_pilot.py) with 6 operations (accept, audit, list-audit, status, enable, disable). CC-1-10 custody verification with structured audit. Advisory-only enforcement with approval override. Audit receipts per call. Configurable disable flag. Created governance doc (10 sections), request schema (Draft 2020-12), 10 fixtures (4 valid, 6 invalid), validator (20 rules BI-1-20, all pass), test runner (32/32 pass). Prohibited-zone scan: Librarian repo untouched. No MCPController registration. No cross-project calls. Pending Owner review.",
+      "doc": "docs/sprints/QA-PILOT-BROKER-IMPLEMENTATION-1.md"
     }
   ]
 }

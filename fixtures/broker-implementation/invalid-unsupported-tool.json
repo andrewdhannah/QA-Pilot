@@ -1,0 +1,18 @@
+{
+  "fixture_type": "qa_pilot_broker_request",
+  "description": "INVALID: Tool is not in sealed QA Pilot MCP surface — violates CC-3",
+  "expected_behavior": "rejected",
+  "broker_version": "qap-broker-v1",
+  "request_id": "qabr-invalid-bad-tool-001",
+  "project_id": "qa-pilot",
+  "tool": "librarian_mcpcontroller_register",
+  "params": {},
+  "custody_record": {
+    "project_context": "qa-pilot",
+    "target_project": "qa-pilot",
+    "tool_name": "librarian_mcpcontroller_register",
+    "handler_path": "active/qa-pilot/scripts/qa_pilot_mcp_handlers.py",
+    "authority_claimed": "advisory"
+  },
+  "timestamp": "2026-07-02T20:00:12Z"
+}
