@@ -1,3 +1,46 @@
+# Session Handoff — QA-PILOT-BROKER-MCP-ADVISORY-SURFACE-1
+
+## Status: 🔍 **Pending Owner review (ledger #9)** — Agent work complete 2026-07-02
+
+---
+
+## QA-PILOT-BROKER-MCP-ADVISORY-SURFACE-1 — QA Pilot Broker MCP Advisory Surface
+
+**Type:** Implementation sprint
+**Mode:** QA Pilot-local advisory MCP-style surface wrapping the sealed broker — no native MCP registration, no Librarian mutation
+**Predecessor:** QA-PILOT-BROKER-IMPLEMENTATION-1 (sealed #8)
+
+**Authorization basis:** Owner-approved per OD-QA-PILOT-BROKER-IMPLEMENTATION-1-SEAL.
+
+**Scope restriction:** QA Pilot-local only. Must not mutate The Librarian repo, register native MCPController tools, execute cross-project calls, touch external QA Pilot production repos, create approval/seal/merge pathways, or broaden broker authority.
+
+**Implementation summary:**
+- **Surface script:** `scripts/qa_pilot_broker_advisory_surface.py` — delegates to sealed broker
+- **Commands:** accept, audit, list-audit, status, enable, disable (all QA Pilot-local, not MCP registrations)
+- **Response format:** 10 required fields including surface, command, authority, accepted, custody_verified, refusal_code, audit_receipt_id, broker_commit_or_version, timestamp, limitations
+- **Governance doc:** `docs/governance/QA-PILOT-BROKER-MCP-ADVISORY-SURFACE.md` (7 sections)
+- **Schema:** `docs/schemas/qa-pilot-broker-mcp-advisory-surface.schema.json` (Draft 2020-12)
+- **Fixtures:** 12 total (4 valid, 8 invalid)
+- **Validator:** `scripts/validate-qa-pilot-broker-advisory-surface.py` (19 rules VA-1-19)
+- **Test runner:** `scripts/test-qa-pilot-broker-advisory-surface.sh` (36 tests)
+
+**Validation:**
+- Advisory surface validator: 19/19 VA rules pass
+- Advisory surface test runner: 36/36 pass
+- Implementation test runner: 32/32 pass
+- Plan test runner: 18/18 pass
+- All 5 existing QA Pilot validators: all still pass
+- Prohibited-zone scan: CLEAN — no Librarian files modified
+- No MCPController registration: Confirmed
+- No cross-project calls: Confirmed
+- Authority: advisory-only — no authority broadened
+
+**Pending Owner review — not sealed.**
+
+**Next recommended sprint:** Awaiting Owner review and seal decision.
+
+---
+
 # Session Handoff — QA-PILOT-BROKER-IMPLEMENTATION-1
 
 ## Status: ✅ **Sealed (ledger #8)** — Owner-approved 2026-07-02 per OD-QA-PILOT-BROKER-IMPLEMENTATION-1-SEAL

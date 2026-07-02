@@ -1,0 +1,8 @@
+{
+  "fixture_type": "qa_pilot_advisory_surface_request",
+  "description": "Valid advisory surface list-audit command",
+  "surface_command": "list-audit",
+  "surface_args": {"limit": 10, "offset": 0},
+  "expected_behavior": "accepted",
+  "expected_command": "qa_pilot_broker_list_audit"
+}

@@ -1,0 +1,8 @@
+{
+  "fixture_type": "qa_pilot_advisory_surface_request",
+  "description": "Valid advisory surface status command",
+  "surface_command": "status",
+  "surface_args": null,
+  "expected_behavior": "accepted",
+  "expected_command": "qa_pilot_broker_status"
+}

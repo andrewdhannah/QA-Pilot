@@ -1,0 +1,8 @@
+{
+  "fixture_type": "qa_pilot_advisory_surface_request",
+  "description": "INVALID: Unsupported advisory surface command",
+  "surface_command": "nonexistent_command",
+  "surface_args": null,
+  "expected_behavior": "rejected",
+  "expected_refusal": "unsupported_command"
+}

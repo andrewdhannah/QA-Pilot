@@ -1,0 +1,8 @@
+{
+  "fixture_type": "qa_pilot_advisory_surface_request",
+  "description": "INVALID: Accept command with non-advisory authority claim",
+  "surface_command": "accept",
+  "surface_args": "fixtures/broker-implementation/invalid-authoritative-claim.json",
+  "expected_behavior": "rejected",
+  "expected_refusal": "custody_failed"
+}

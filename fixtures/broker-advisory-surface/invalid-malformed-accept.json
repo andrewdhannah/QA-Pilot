@@ -1,0 +1,8 @@
+{
+  "fixture_type": "qa_pilot_advisory_surface_request",
+  "description": "INVALID: Accept command with non-existent request path (parse error)",
+  "surface_command": "accept",
+  "surface_args": "/nonexistent/path/request.json",
+  "expected_behavior": "rejected",
+  "expected_refusal": "parse_error"
+}

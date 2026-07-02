@@ -1,0 +1,8 @@
+{
+  "fixture_type": "qa_pilot_advisory_surface_request",
+  "description": "Valid advisory surface audit lookup command",
+  "surface_command": "audit",
+  "surface_args": "qabr-audit-placeholder",
+  "expected_behavior": "accepted_or_not_found",
+  "expected_command": "qa_pilot_broker_audit"
+}

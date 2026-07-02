@@ -1,0 +1,23 @@
+{
+  "description": "Example of a valid advisory surface response for a broker accept command",
+  "surface": "qa_pilot_broker_advisory_surface",
+  "command": "qa_pilot_broker_accept",
+  "project_id": "qa-pilot",
+  "authority": "advisory_only",
+  "accepted": true,
+  "custody_verified": true,
+  "audit_receipt_id": "qabr-audit-20260702-120000-001-1",
+  "broker_commit_or_version": "qap-broker-v1",
+  "timestamp": "2026-07-02T12:00:00+00:00",
+  "limitations": "This advisory surface is QA Pilot-local only. It does not register native MCP tools, execute cross-project calls, or mutate The Librarian runtime. All outputs are advisory-only and confer no approval, seal, merge, or production-readiness authority.",
+  "output": {
+    "handler": "qa_pilot_receipt_get",
+    "output": {
+      "handler": "qa_pilot_receipt_get",
+      "project_boundary": "qa-pilot",
+      "found": false
+    },
+    "authority": "advisory_only",
+    "project_boundary": "qa-pilot"
+  }
+}

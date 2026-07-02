@@ -1,0 +1,8 @@
+{
+  "fixture_type": "qa_pilot_advisory_surface_request",
+  "description": "Valid advisory surface accept command for receipt register",
+  "surface_command": "accept",
+  "surface_args": "fixtures/broker-implementation/valid-advisory-register-request.json",
+  "expected_behavior": "accepted",
+  "expected_command": "qa_pilot_broker_accept"
+}

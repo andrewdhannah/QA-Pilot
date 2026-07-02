@@ -1,0 +1,8 @@
+{
+  "fixture_type": "qa_pilot_advisory_surface_request",
+  "description": "INVALID: Accept command when broker is disabled",
+  "surface_command": "accept",
+  "surface_args": "fixtures/broker-implementation/valid-advisory-get-request.json",
+  "expected_behavior": "rejected",
+  "expected_refusal": "broker_disabled"
+}

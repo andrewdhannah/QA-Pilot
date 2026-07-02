@@ -1,0 +1,8 @@
+{
+  "fixture_type": "qa_pilot_advisory_surface_request",
+  "description": "INVALID: Accept command attempting unsupported tool (simulated MCPController registration)",
+  "surface_command": "accept",
+  "surface_args": "fixtures/broker-implementation/invalid-unsupported-tool.json",
+  "expected_behavior": "rejected",
+  "expected_refusal": "custody_failed"
+}

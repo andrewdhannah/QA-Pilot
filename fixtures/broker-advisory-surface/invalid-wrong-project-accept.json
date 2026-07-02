@@ -1,0 +1,8 @@
+{
+  "fixture_type": "qa_pilot_advisory_surface_request",
+  "description": "INVALID: Accept command with wrong project_id",
+  "surface_command": "accept",
+  "surface_args": "fixtures/broker-implementation/invalid-wrong-project.json",
+  "expected_behavior": "rejected",
+  "expected_refusal": "custody_failed"
+}
