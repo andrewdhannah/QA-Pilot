@@ -1,3 +1,46 @@
+# Session Handoff — QA-PILOT-LIBRARIAN-MCP-CUSTODY-PACKET-1
+
+## Status: 🔍 **Pending (ledger #6)** — Agent work complete, awaiting Owner review
+
+---
+
+## QA-PILOT-LIBRARIAN-MCP-CUSTODY-PACKET-1 — QA Pilot ↔ Librarian MCP Custody Packet
+
+**Type:** Decision / custody constraint
+**Mode:** Governance doc, schema, fixtures, validator, test runner — no runtime implementation, no project boundary crossing
+**Predecessor:** QA-PILOT-MCP-HANDLER-REGISTRATION-1 (sealed #5)
+
+**Authorization basis:** Owner-approved per OD-QA-PILOT-MCP-HANDLER-REGISTRATION-1-SEAL — "Create a cross-project custody packet authorizing, constraining, or rejecting future integration of QA Pilot local handler stubs into The Librarian MCP runtime."
+
+**Scope restriction:** Decision/constraint only. Must not implement runtime handlers, mutate The Librarian repo, cross project boundary, or authorize Option B/C implementation.
+
+**Decision outcome:**
+- **Current operating mode:** Option A (Separate MCP) — preserved
+- **Next authorized path:** Option B planning only — may be designed, not implemented
+- **Option C:** Not authorized for planning or implementation
+- **10 custody conditions (CC-1-10)** defined for any future Option B implementation
+
+**What was done:**
+- Created custody governance doc at `docs/governance/QA-PILOT-LIBRARIAN-MCP-CUSTODY.md` (9 sections)
+- Created custody packet schema at `docs/schemas/qa-pilot-librarian-mcp-custody.schema.json`
+- Created 6 fixtures (3 valid, 3 invalid) in `docs/examples/qa-pilot-librarian-mcp-custody/`
+- Created validator (8 rules CD-1-8) at `scripts/validate-qa-pilot-librarian-mcp-custody.py`
+- Created test runner (14 tests) at `scripts/test-qa-pilot-librarian-mcp-custody.sh`
+- Created sprint receipt at `docs/sprints/QA-PILOT-LIBRARIAN-MCP-CUSTODY-PACKET-1.md`
+- Updated QA Pilot ledger to include sprint #6
+- Updated FEATURE-STATUS.md and SESSION-HANDOFF.md
+
+**Validation:**
+- Custody validator: 8/8 checks pass (CD-1-8)
+- Custody test runner: 14/14 pass
+- All 4 existing validators: all still pass
+- All 4 existing test runners: all still pass
+- Prohibited-zone scan: CLEAN — no Librarian files modified
+
+**Next step:** Pending Owner review. If approved, this document becomes the binding custody constraint for any future Librarian brokering of QA Pilot MCP tools.
+
+---
+
 # Session Handoff — QA-PILOT-MCP-HANDLER-REGISTRATION-1
 
 ## Status: ✅ **Sealed (ledger #5)** — Owner-approved 2026-07-02 per OD-QA-PILOT-MCP-HANDLER-REGISTRATION-1-SEAL

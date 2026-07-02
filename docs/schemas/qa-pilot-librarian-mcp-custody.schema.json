@@ -1,0 +1,86 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/andrewdhannah/QA-Pilot/schemas/qa-pilot-librarian-mcp-custody.schema.json",
+  "title": "QA Pilot ↔ Librarian MCP Custody Packet",
+  "description": "Schema for a custody packet that defines whether and how The Librarian may broker calls to QA Pilot's own MCP surface. This is a decision/constraint document — it does not authorize implementation.",
+  "type": "object",
+  "required": [
+    "packet_type",
+    "packet_version",
+    "decision_mode",
+    "current_operating_mode",
+    "authorized_next_path",
+    "custody_conditions",
+    "forbidden_actions",
+    "requires_owner_approval_for",
+    "project_boundary_assertion",
+    "cross_project_registration_assertion"
+  ],
+  "properties": {
+    "packet_type": {
+      "type": "string",
+      "const": "qa_pilot_librarian_mcp_custody"
+    },
+    "packet_version": {
+      "type": "string",
+      "enum": ["qap-custody-v1"]
+    },
+    "decision_mode": {
+      "type": "string",
+      "enum": ["decision_only", "planning_only", "implementation_authorized"],
+      "description": "What this sprint authorizes. Must be 'decision_only' for this sprint."
+    },
+    "current_operating_mode": {
+      "type": "string",
+      "enum": ["option_a_separate_mcp", "option_b_librarian_brokered", "option_c_native_registration"],
+      "description": "Current QA Pilot MCP operating mode."
+    },
+    "authorized_next_path": {
+      "type": "string",
+      "enum": ["option_a_only", "option_b_planning", "option_c_not_authorized"],
+      "description": "What future path is authorized by this decision."
+    },
+    "custody_conditions": {
+      "type": "object",
+      "required": ["identity", "authority", "safety"],
+      "properties": {
+        "identity": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Identity conditions CC-1 through CC-4."
+        },
+        "authority": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Authority conditions CC-5 through CC-7."
+        },
+        "safety": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Safety conditions CC-8 through CC-10."
+        }
+      }
+    },
+    "forbidden_actions": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 1,
+      "description": "Actions never authorized by this packet."
+    },
+    "requires_owner_approval_for": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Actions that require separate Owner approval even after this packet."
+    },
+    "project_boundary_assertion": {
+      "type": "string",
+      "const": "qa-pilot",
+      "description": "QA Pilot remains its own project. Not a Librarian subsystem."
+    },
+    "cross_project_registration_assertion": {
+      "type": "boolean",
+      "const": false,
+      "description": "Cross-project registration into The Librarian runtime remains forbidden."
+    }
+  }
+}

@@ -1,7 +1,7 @@
 {
   "$schema": "sprint-ledger-v1",
   "description": "QA Pilot sprint ledger — canonical record of all QA Pilot sprints, their status, and metadata.",
-  "last_updated": "2026-07-02T16:20:00Z",
+  "last_updated": "2026-07-02T16:40:00Z",
   "sprints": [
     {
       "id": "QA-PILOT-PROJECT-INIT-1",
@@ -92,6 +92,24 @@
       "harness": "MCP Handler Registration: wire sealed MCP surface contracts to sealed receipt store as QA Pilot-owned local handler stubs. Handlers enforce project_boundary=qa-pilot, store_integration, cross_project_registration=false. All 14/14 tests pass. Sealed by Owner decision OD-QA-PILOT-MCP-HANDLER-REGISTRATION-1-SEAL.",
       "evidence_note": "QA-PILOT-MCP-HANDLER-REGISTRATION-1: Created QA Pilot-owned handler module (scripts/qa_pilot_mcp_handlers.py) with 4 functions wrapping receipt store. Governance doc (8 sections), schema (Draft 2020-12), 8 fixtures (4 valid, 4 invalid including cross-project boundary), validator (6 rules HR-1-6), test runner (14/14 pass, 7 regression guards). Prohibited-zone scan: Librarian repo untouched. Authority advisory-only. Sealed by Owner decision OD-QA-PILOT-MCP-HANDLER-REGISTRATION-1-SEAL.",
       "doc": "docs/sprints/QA-PILOT-MCP-HANDLER-REGISTRATION-1.md"
+    },
+    {
+      "id": "QA-PILOT-LIBRARIAN-MCP-CUSTODY-PACKET-1",
+      "title": "QA Pilot ↔ Librarian MCP Custody Packet",
+      "area": "governance",
+      "status": "pending",
+      "required_for_operational_v1": true,
+      "optional": false,
+      "deferred": false,
+      "blocked": false,
+      "dependencies": ["QA-PILOT-MCP-HANDLER-REGISTRATION-1"],
+      "sealed_number": 6,
+      "start_head": "14e80ea",
+      "final_head": null,
+      "commit": null,
+      "harness": "Custody packet: define whether Librarian may broker QA Pilot MCP calls. Decision-only sprint. Option A preserved. Option B planning only. Option C not authorized. 10 custody conditions (CC-1-10). All 14/14 tests pass. Pending Owner review.",
+      "evidence_note": "QA-PILOT-LIBRARIAN-MCP-CUSTODY-PACKET-1: Modeled Options A/B/C. Preserved QA Pilot project_boundary and cross_project_registration invariants. Documented 10 custody conditions (CC-1-10). Created governance doc (9 sections), schema (Draft 2020-12), 6 fixtures (3 valid, 3 invalid), validator (8 rules CD-1-8), test runner (14/14 pass, 4 regression guards). Prohibited-zone scan: Librarian repo untouched. No implementation authorized.",
+      "doc": "docs/sprints/QA-PILOT-LIBRARIAN-MCP-CUSTODY-PACKET-1.md"
     }
   ]
 }

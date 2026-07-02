@@ -1,0 +1,41 @@
+{
+  "$schema": "https://github.com/andrewdhannah/QA-Pilot/schemas/qa-pilot-librarian-mcp-custody.schema.json",
+  "fixture_type": "qa_pilot_librarian_mcp_custody",
+  "packet_type": "qa_pilot_librarian_mcp_custody",
+  "packet_version": "qap-custody-v1",
+  "decision_mode": "decision_only",
+  "current_operating_mode": "option_a_separate_mcp",
+  "authorized_next_path": "option_b_planning",
+  "description": "Valid Option B planning fixture: acknowledges Option B as possible design path, no implementation authorized",
+  "custody_conditions": {
+    "identity": [
+      "CC-1: active_project_id == qa-pilot",
+      "CC-2: target_project_id == qa-pilot",
+      "CC-3: tool in sealed QA Pilot MCP surface",
+      "CC-4: QA Pilot ledger has sealed sprint"
+    ],
+    "authority": [
+      "CC-5: handler path is project-local",
+      "CC-6: request carries custody record",
+      "CC-7: output stays advisory/read-only/R1"
+    ],
+    "safety": [
+      "CC-8: no Owner approval/seal/merge from output",
+      "CC-9: all broker calls produce audit evidence",
+      "CC-10: rollback path documented before implementation"
+    ]
+  },
+  "forbidden_actions": [
+    "any native MCPController registration",
+    "any Sources/App mutation",
+    "any cross-project call execution",
+    "any QA Pilot handler behavior changes"
+  ],
+  "requires_owner_approval_for": [
+    "all Option B implementation sprints",
+    "any Librarian runtime mutation",
+    "any custody invariant change"
+  ],
+  "project_boundary_assertion": "qa-pilot",
+  "cross_project_registration_assertion": false
+}

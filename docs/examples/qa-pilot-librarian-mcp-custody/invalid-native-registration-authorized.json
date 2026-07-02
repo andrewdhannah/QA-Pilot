@@ -1,0 +1,19 @@
+{
+  "$schema": "https://github.com/andrewdhannah/QA-Pilot/schemas/qa-pilot-librarian-mcp-custody.schema.json",
+  "fixture_type": "qa_pilot_librarian_mcp_custody",
+  "packet_type": "qa_pilot_librarian_mcp_custody",
+  "packet_version": "qap-custody-v1",
+  "decision_mode": "implementation_authorized",
+  "current_operating_mode": "option_c_native_registration",
+  "authorized_next_path": "option_c_not_authorized",
+  "description": "Invalid: claims implementation_authorized for Option C native registration — violates this sprint's scope",
+  "custody_conditions": {
+    "identity": [],
+    "authority": [],
+    "safety": []
+  },
+  "forbidden_actions": [],
+  "requires_owner_approval_for": [],
+  "project_boundary_assertion": "qa-pilot",
+  "cross_project_registration_assertion": false
+}

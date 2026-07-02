@@ -1,0 +1,44 @@
+{
+  "$schema": "https://github.com/andrewdhannah/QA-Pilot/schemas/qa-pilot-librarian-mcp-custody.schema.json",
+  "fixture_type": "qa_pilot_librarian_mcp_custody",
+  "packet_type": "qa_pilot_librarian_mcp_custody",
+  "packet_version": "qap-custody-v1",
+  "decision_mode": "decision_only",
+  "current_operating_mode": "option_a_separate_mcp",
+  "authorized_next_path": "option_b_planning",
+  "description": "Valid Option A fixture: current operating mode, decision_only, authorizes Option B planning only",
+  "custody_conditions": {
+    "identity": [
+      "CC-1: active_project_id must equal qa-pilot",
+      "CC-2: target_project_id must equal qa-pilot",
+      "CC-3: requested tool must belong to sealed QA Pilot MCP surface",
+      "CC-4: QA Pilot ledger must have relevant sprint sealed"
+    ],
+    "authority": [
+      "CC-5: handler path must be project-local (active/qa-pilot/scripts/)",
+      "CC-6: request must carry custody record proving project context",
+      "CC-7: output must remain advisory/read-only/R1 per sealed contract"
+    ],
+    "safety": [
+      "CC-8: output must not create Owner approval/seal/merge state",
+      "CC-9: all broker calls must produce receipt/audit evidence",
+      "CC-10: rollback path must be documented before broker implementation"
+    ]
+  },
+  "forbidden_actions": [
+    "merging QA Pilot into The Librarian as subsystem",
+    "registering QA Pilot tools directly in Librarian MCPController",
+    "removing project_boundary or cross_project_registration invariants",
+    "allowing handler output to create Owner approval/seal/merge state",
+    "allowing handler output to bypass Librarian custody model",
+    "deleting or modifying sealed QA Pilot sprint receipts"
+  ],
+  "requires_owner_approval_for": [
+    "Option B broker implementation",
+    "any Sources/App mutation",
+    "any Librarian MCPController mutation",
+    "Option C planning or implementation"
+  ],
+  "project_boundary_assertion": "qa-pilot",
+  "cross_project_registration_assertion": false
+}

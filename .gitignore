@@ -9,3 +9,4 @@
 .env
 .env.local
 scripts/__pycache__/
+data/
