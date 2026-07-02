@@ -1,7 +1,7 @@
 # QA-PILOT-RECEIPT-STORE-1 — QA Pilot Receipt Store
 
 **Project:** QA Pilot
-**Status:** 🔍 Pending Owner review (not sealed)
+**Status:** ✅ **Sealed (ledger #4)** — Owner-approved 2026-07-02 per OD-QA-PILOT-RECEIPT-STORE-1-SEAL
 **Authority:** Advisory only. Local receipt store — no runtime MCP registration, no The Librarian mutation.
 
 **Sprint type:** QA Pilot Receipt Store implementation.
@@ -219,4 +219,4 @@ This sprint is closed (agent work complete) by the existence of:
 - Enforce advisory-only authority on all store operations
 - Preserve all existing QA Pilot validators and test runners
 
-**Status: 🔍 Pending Owner review (not sealed)**
+**Status: ✅ Sealed (ledger #4) — Owner-approved 2026-07-02 per OD-QA-PILOT-RECEIPT-STORE-1-SEAL**

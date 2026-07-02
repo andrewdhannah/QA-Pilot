@@ -1,7 +1,7 @@
 {
   "$schema": "sprint-ledger-v1",
   "description": "QA Pilot sprint ledger — canonical record of all QA Pilot sprints, their status, and metadata.",
-  "last_updated": "2026-07-02T15:45:00Z",
+  "last_updated": "2026-07-02T15:50:00Z",
   "sprints": [
     {
       "id": "QA-PILOT-PROJECT-INIT-1",
@@ -61,7 +61,7 @@
       "id": "QA-PILOT-RECEIPT-STORE-1",
       "title": "QA Pilot Receipt Store",
       "area": "production",
-      "status": "pending",
+      "status": "sealed",
       "required_for_operational_v1": true,
       "optional": false,
       "deferred": false,
@@ -71,8 +71,8 @@
       "start_head": "add8b02",
       "final_head": null,
       "commit": null,
-      "harness": "Receipt store: implement QA Pilot-owned local receipt store for register/get/list/status. File-based store with schema validation, advisory enforcement, bounded listing. All 14/14 tests pass. Pending Owner review.",
-      "evidence_note": "QA-PILOT-RECEIPT-STORE-1: Implemented local receipt store (scripts/qa_pilot_receipt_store.py) with 4 operations (register R1, get R0, list R0, status R0). Created governance doc (10 sections), store schema (Draft 2020-12), 8 fixtures (4 valid, 4 invalid), validator (6 rules RS-1-6), test runner (14/14 pass). Prohibited-zone scan: Librarian repo untouched. Authority advisory-only. Pending Owner review.",
+      "harness": "Receipt store: implement QA Pilot-owned local receipt store for register/get/list/status. File-based store with schema validation, advisory enforcement, bounded listing. All 14/14 tests pass. Sealed by Owner decision OD-QA-PILOT-RECEIPT-STORE-1-SEAL.",
+      "evidence_note": "QA-PILOT-RECEIPT-STORE-1: Implemented local receipt store (scripts/qa_pilot_receipt_store.py) with 4 operations (register R1, get R0, list R0, status R0). Created governance doc (10 sections), store schema (Draft 2020-12), 8 fixtures (4 valid, 4 invalid), validator (6 rules RS-1-6), test runner (14/14 pass). Prohibited-zone scan: Librarian repo untouched. Authority advisory-only. Sealed by Owner decision OD-QA-PILOT-RECEIPT-STORE-1-SEAL.",
       "doc": "docs/sprints/QA-PILOT-RECEIPT-STORE-1.md"
     }
   ]

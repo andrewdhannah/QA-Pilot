@@ -1,0 +1,36 @@
+{
+  "receipt_type": "owner_decision_seal",
+  "decision_id": "OD-QA-PILOT-RECEIPT-STORE-1-SEAL",
+  "project_id": "qa-pilot",
+  "sprint_id": "QA-PILOT-RECEIPT-STORE-1",
+  "owner": "Andrew Hannah",
+  "decision": "APPROVE_AND_SEAL",
+  "decision_date": "2026-07-02",
+  "decision_timestamp": "2026-07-02T15:50:00Z",
+  "seal_conditions": [
+    "Seal QA-PILOT-RECEIPT-STORE-1 as QA Pilot ledger #4",
+    "Create Owner decision receipt under receipts/decision-resolutions/",
+    "Update only QA Pilot project files",
+    "Commit only QA Pilot files",
+    "Do not modify The Librarian repo",
+    "Do not register runtime MCP handlers in this seal commit",
+    "Do not start the next sprint in this commit"
+  ],
+  "authorized_next_sprint": "QA-PILOT-MCP-HANDLER-REGISTRATION-1",
+  "authorized_next_scope": "Wire the sealed QA Pilot MCP surface contracts to the sealed QA Pilot receipt store as QA Pilot-owned runtime handler stubs or local project handlers, without mutating The Librarian runtime/MCP enforcement unless a separate cross-project custody packet explicitly authorizes that boundary crossing.",
+  "boundary": "This next sprint must remain QA Pilot-owned. Any integration into The Librarian MCP runtime requires a separate Owner-approved cross-project custody authorization.",
+  "evidence_basis": [
+    "Local receipt store implemented (scripts/qa_pilot_receipt_store.py) with register/get/list/status",
+    "Register validates receipts against schema and enforces advisory-only authority",
+    "Get/list/status are R0 read-only (AST-checked)",
+    "List enforces bounded limits 1-100",
+    "Store governance doc created (10 sections)",
+    "Store schema created (Draft 2020-12)",
+    "8 fixtures created (4 valid, 4 invalid)",
+    "Store validator: 6/6 RS-1-6 pass",
+    "Store test runner: 14/14 pass",
+    "All existing QA Pilot validators and test runners still pass",
+    "Prohibited-zone scan: CLEAN — no Librarian files modified",
+    "Only QA Pilot project files modified"
+  ]
+}

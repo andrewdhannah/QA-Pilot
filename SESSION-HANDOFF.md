@@ -1,6 +1,6 @@
 # Session Handoff — QA-PILOT-RECEIPT-STORE-1
 
-## Status: 🔍 **Pending (ledger #4)** — Agent work complete, awaiting Owner review
+## Status: ✅ **Sealed (ledger #4)** — Owner-approved 2026-07-02 per OD-QA-PILOT-RECEIPT-STORE-1-SEAL
 
 ---
 
@@ -39,7 +39,9 @@
 - Prohibited-zone scan: CLEAN — no The Librarian files modified
 - Authority boundary: advisory-only enforced across all operations
 
-**Recommended next sprint:** QA Pilot runtime MCP handler registration or receipt store UI surface (pending Owner direction)
+**Sealed by:** OD-QA-PILOT-RECEIPT-STORE-1-SEAL
+
+**Next authorized sprint:** QA-PILOT-MCP-HANDLER-REGISTRATION-1 — wire the sealed QA Pilot MCP surface contracts to the sealed QA Pilot receipt store as QA Pilot-owned runtime handler stubs or local project handlers, without mutating The Librarian runtime/MCP enforcement unless a separate cross-project custody packet explicitly authorizes that boundary crossing.
 
 ---
 
