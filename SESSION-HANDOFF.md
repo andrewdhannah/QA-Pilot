@@ -1,3 +1,47 @@
+# Session Handoff — QA-PILOT-BROKER-AUDIT-RECEIPT-STORE-1
+
+## Status: 🔍 **Pending Owner review (ledger #10)** — Agent work complete 2026-07-02
+
+---
+
+## QA-PILOT-BROKER-AUDIT-RECEIPT-STORE-1 — QA Pilot Broker Audit Receipt Store
+
+**Type:** Schema/validation sprint
+**Mode:** QA Pilot-local broker audit receipt store schema, governance, fixtures, validator, test runner — no runtime implementation, no storage mechanism changes
+**Predecessor:** QA-PILOT-BROKER-MCP-ADVISORY-SURFACE-1 (sealed #9)
+
+**Authorization basis:** Owner-approved per OD-QA-PILOT-BROKER-MCP-ADVISORY-SURFACE-1-SEAL.
+
+**Scope restriction:** Schema/validation only. Must not mutate The Librarian repo, register native MCPController tools, execute cross-project calls, touch external QA Pilot production repos, or modify broker storage mechanisms.
+
+**Audit receipt fields defined:**
+- 13 required fields: audit_id, receipt_type, active_project_id, target_project_id, requested_tool, custody_record_id, handler_path, authority_level, advisory_only, output_effects, audit_timestamp, rollback_reference, validation_result
+- 12 validation rules (BA-1 through BA-12)
+
+**What was done:**
+- Created audit receipt governance doc at `docs/governance/QA-PILOT-BROKER-AUDIT-RECEIPT-STORE.md` (6 sections)
+- Created audit receipt schema at `docs/schemas/qa-pilot-broker-audit-receipt.schema.json` (Draft 2020-12, 13 required fields)
+- Created 7 fixtures (3 valid, 4 invalid) in `docs/examples/qa-pilot-broker-audit/`
+- Created validator (12 rules BA-1-12) at `scripts/validate-qa-pilot-broker-audit-receipt.py`
+- Created test runner (19 tests) at `scripts/test-qa-pilot-broker-audit-receipt.sh`
+- Created sprint receipt at `docs/sprints/QA-PILOT-BROKER-AUDIT-RECEIPT-STORE-1.md`
+- Updated QA Pilot ledger to include sprint #10
+- Updated FEATURE-STATUS.md and SESSION-HANDOFF.md
+
+**Validation:**
+- Audit receipt validator: 3/3 valid fixtures pass (12/12 checks each), 4/4 invalid fixtures rejected
+- Audit receipt test runner: 19/19 pass
+- All 8 existing validators: all still pass
+- Prohibited-zone scan: CLEAN — no Librarian files modified
+- BA-12 (Librarian runtime reference scan): CLEAN
+- Authority: schema/validation only — no runtime implementation
+
+**Pending Owner review — not sealed.**
+
+**Next recommended sprint:** Awaiting Owner review and seal decision.
+
+---
+
 # Session Handoff — QA-PILOT-BROKER-MCP-ADVISORY-SURFACE-1
 
 ## Status: ✅ **Sealed (ledger #9)** — Owner-approved 2026-07-02 per OD-QA-PILOT-BROKER-MCP-ADVISORY-SURFACE-1-SEAL

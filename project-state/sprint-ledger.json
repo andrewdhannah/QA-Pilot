@@ -1,7 +1,7 @@
 {
   "$schema": "sprint-ledger-v1",
   "description": "QA Pilot sprint ledger — canonical record of all QA Pilot sprints, their status, and metadata.",
-  "last_updated": "2026-07-02T22:00:00Z",
+  "last_updated": "2026-07-02T23:00:00Z",
   "sprints": [
     {
       "id": "QA-PILOT-PROJECT-INIT-1",
@@ -164,6 +164,24 @@
       "harness": "Advisory Surface: QA Pilot-local advisory MCP-style surface for the sealed broker. 6 CLI commands delegating to broker. No native MCP registration. 36/36 tests. Pending Owner review.",
       "evidence_note": "QA-PILOT-BROKER-MCP-ADVISORY-SURFACE-1: QA Pilot-local advisory surface (scripts/qa_pilot_broker_advisory_surface.py) with 6 commands (accept, audit, list-audit, status, enable, disable) delegating to sealed broker. Response format with 10 required fields. Created governance doc (7 sections), schema (Draft 2020-12), 12 fixtures (4 valid, 8 invalid), 1 example, validator (19 rules VA-1-19, all pass), test runner (36/36 pass). Prohibited-zone scan: Librarian repo untouched. No MCPController registration. No cross-project calls. Sealed by Owner decision OD-QA-PILOT-BROKER-MCP-ADVISORY-SURFACE-1-SEAL.",
       "doc": "docs/sprints/QA-PILOT-BROKER-MCP-ADVISORY-SURFACE-1.md"
+    },
+    {
+      "id": "QA-PILOT-BROKER-AUDIT-RECEIPT-STORE-1",
+      "title": "QA Pilot Broker Audit Receipt Store",
+      "area": "schema",
+      "status": "pending_owner_review",
+      "required_for_operational_v1": true,
+      "optional": false,
+      "deferred": false,
+      "blocked": false,
+      "dependencies": ["QA-PILOT-BROKER-MCP-ADVISORY-SURFACE-1"],
+      "sealed_number": null,
+      "start_head": "280f279",
+      "final_head": null,
+      "commit": null,
+      "harness": "Audit Receipt Store: define broker audit receipt schema and validation. 13 fields, 12 BA rules. 3/3 valid fixtures pass, 4/4 invalid rejected. 19/19 tests pass. Pending Owner review.",
+      "evidence_note": "QA-PILOT-BROKER-AUDIT-RECEIPT-STORE-1: Defined broker audit receipt schema (13 required fields) and governance doc (6 sections). 7 fixtures (3 valid, 4 invalid) under docs/examples/qa-pilot-broker-audit/. Validator (12 rules BA-1-12, all pass). Test runner (19/19 pass). All existing QA Pilot validators still pass. Prohibited-zone scan: Librarian repo untouched. Pending Owner review.",
+      "doc": "docs/sprints/QA-PILOT-BROKER-AUDIT-RECEIPT-STORE-1.md"
     }
   ]
 }

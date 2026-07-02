@@ -1,0 +1,100 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/andrewdhannah/QA-Pilot/schemas/qa-pilot-broker-audit-receipt.schema.json",
+  "title": "QA Pilot Broker Audit Receipt",
+  "description": "Schema for a QA Pilot broker audit receipt. Validates custody, advisory-only authority, tool routing, and rollback trace fields.",
+  "type": "object",
+  "required": [
+    "audit_id",
+    "receipt_type",
+    "active_project_id",
+    "target_project_id",
+    "requested_tool",
+    "custody_record_id",
+    "handler_path",
+    "authority_level",
+    "advisory_only",
+    "output_effects",
+    "audit_timestamp",
+    "rollback_reference",
+    "validation_result"
+  ],
+  "properties": {
+    "audit_id": {
+      "type": "string",
+      "pattern": "^qabr-audit-",
+      "description": "Unique audit receipt identifier starting with qabr-audit-."
+    },
+    "receipt_type": {
+      "type": "string",
+      "const": "broker_audit",
+      "description": "Must be 'broker_audit'."
+    },
+    "active_project_id": {
+      "type": "string",
+      "const": "qa-pilot",
+      "description": "Must be 'qa-pilot'."
+    },
+    "target_project_id": {
+      "type": "string",
+      "const": "qa-pilot",
+      "description": "Must be 'qa-pilot'."
+    },
+    "requested_tool": {
+      "type": "string",
+      "enum": [
+        "qa_pilot_receipt_register",
+        "qa_pilot_receipt_get",
+        "qa_pilot_receipt_list",
+        "qa_pilot_receipt_status"
+      ],
+      "description": "Tool from sealed QA Pilot MCP/advisory broker surface."
+    },
+    "custody_record_id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Custody record identifier."
+    },
+    "handler_path": {
+      "type": "string",
+      "pattern": "^active/qa-pilot/",
+      "description": "QA Pilot project-local handler path."
+    },
+    "authority_level": {
+      "type": "string",
+      "enum": ["R0", "R1"],
+      "description": "R0 = read-only, R1 = advisory mutation."
+    },
+    "advisory_only": {
+      "type": "boolean",
+      "const": true,
+      "description": "Must be true."
+    },
+    "output_effects": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Effects of the output — must not include forbidden effects."
+    },
+    "audit_timestamp": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T",
+      "description": "ISO 8601 timestamp."
+    },
+    "rollback_reference": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Reference to rollback plan or policy."
+    },
+    "validation_result": {
+      "type": "string",
+      "enum": ["pass", "fail", "blocked", "advisory_only"],
+      "description": "Validation outcome."
+    },
+    "error_detail": {
+      "type": "string",
+      "description": "Optional error detail."
+    }
+  }
+}
