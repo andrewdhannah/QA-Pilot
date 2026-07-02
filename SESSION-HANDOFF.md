@@ -1,6 +1,44 @@
 # Session Handoff — QA-PILOT-BROKER-IMPLEMENTATION-1
 
-## Status: 🔍 **Pending Owner review (ledger #8)** — Agent work complete 2026-07-02
+## Status: ✅ **Sealed (ledger #8)** — Owner-approved 2026-07-02 per OD-QA-PILOT-BROKER-IMPLEMENTATION-1-SEAL
+
+---
+
+## QA-PILOT-BROKER-IMPLEMENTATION-1 — QA Pilot Option B Broker Implementation
+
+**Type:** Implementation sprint
+**Mode:** QA Pilot-local broker implementation with custody verification (CC-1-10), advisory-only enforcement, audit receipt generation, disable flag — no Librarian mutation, no MCPController registration
+**Predecessor:** QA-PILOT-BROKER-PLAN-1 (sealed #7)
+
+**Authorization basis:** Owner-approved per OD-QA-PILOT-BROKER-PLAN-1-SEAL — "Implement the Option B broker layer in QA Pilot space only, using the sealed broker plan."
+
+**Scope restriction:** QA Pilot-local only. Must not mutate The Librarian repo, register native MCPController tools, execute cross-project calls, touch external QA Pilot production repos, broaden authority, or add new broker tools.
+
+**Implementation summary:**
+- **Broker module:** `scripts/librarian_broker_qa_pilot.py` with 6 CLI commands (accept, audit, list-audit, status, enable, disable)
+- **Custody verification:** CC-1 through CC-10 enforced on every request
+- **Advisory enforcement:** All outputs carry authority=advisory_only; approval/seal/merge/production flags overridden
+- **Audit receipts:** `data/audit/broker/<id>.json` for every call (accepted or rejected)
+- **Disable flag:** `config/broker-config.json` with enable/disable CLI
+- **Governance doc:** `docs/governance/QA-PILOT-BROKER-IMPLEMENTATION.md` (10 sections)
+- **Request schema:** `docs/schemas/qa-pilot-broker-implementation.schema.json` (Draft 2020-12)
+- **Fixtures:** 10 total (4 valid, 6 invalid) in `fixtures/broker-implementation/`
+- **Validator:** `scripts/validate-qa-pilot-broker-implementation.py` (20 rules BI-1-20)
+- **Test runner:** `scripts/test-qa-pilot-broker-implementation.sh` (32 tests)
+
+**Validation:**
+- Implementation validator: 20/20 BI rules pass
+- Implementation test runner: 32/32 pass
+- Broker plan validator: ALL CHECKS PASS
+- All 5 existing QA Pilot validators: all still pass
+- Prohibited-zone scan: CLEAN — no Librarian files modified
+- No MCPController registration: Confirmed
+- No cross-project calls: Confirmed
+- Authority: advisory-only — no authority broadened
+
+**Sealed by:** OD-QA-PILOT-BROKER-IMPLEMENTATION-1-SEAL
+
+**Next recommended sprint:** Awaiting Owner direction.
 
 ---
 

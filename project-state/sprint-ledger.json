@@ -133,18 +133,18 @@
       "id": "QA-PILOT-BROKER-IMPLEMENTATION-1",
       "title": "QA Pilot Option B Broker Implementation",
       "area": "implementation",
-      "status": "pending_owner_review",
+      "status": "sealed",
       "required_for_operational_v1": true,
       "optional": false,
       "deferred": false,
       "blocked": false,
       "dependencies": ["QA-PILOT-BROKER-PLAN-1"],
-      "sealed_number": null,
+      "sealed_number": 8,
       "start_head": "ded4af2",
       "final_head": null,
       "commit": null,
       "harness": "Broker Implementation: implement QA Pilot-local broker with custody verification (CC-1-10), advisory-only enforcement, audit receipt generation, disable flag. Planning-only — no Librarian mutation, no MCPController registration. All 32 implementation tests pass. Pending Owner review.",
-      "evidence_note": "QA-PILOT-BROKER-IMPLEMENTATION-1: Implemented QA Pilot-local broker (scripts/librarian_broker_qa_pilot.py) with 6 operations (accept, audit, list-audit, status, enable, disable). CC-1-10 custody verification with structured audit. Advisory-only enforcement with approval override. Audit receipts per call. Configurable disable flag. Created governance doc (10 sections), request schema (Draft 2020-12), 10 fixtures (4 valid, 6 invalid), validator (20 rules BI-1-20, all pass), test runner (32/32 pass). Prohibited-zone scan: Librarian repo untouched. No MCPController registration. No cross-project calls. Pending Owner review.",
+      "evidence_note": "QA-PILOT-BROKER-IMPLEMENTATION-1: Implemented QA Pilot-local broker (scripts/librarian_broker_qa_pilot.py) with 6 operations (accept, audit, list-audit, status, enable, disable). CC-1-10 custody verification with structured audit. Advisory-only enforcement with approval override. Audit receipts per call. Configurable disable flag. Created governance doc (10 sections), request schema (Draft 2020-12), 10 fixtures (4 valid, 6 invalid), validator (20 rules BI-1-20, all pass), test runner (32/32 pass). Prohibited-zone scan: Librarian repo untouched. No MCPController registration. No cross-project calls. Sealed by Owner decision OD-QA-PILOT-BROKER-IMPLEMENTATION-1-SEAL.",
       "doc": "docs/sprints/QA-PILOT-BROKER-IMPLEMENTATION-1.md"
     }
   ]

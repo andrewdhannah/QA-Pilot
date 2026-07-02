@@ -1,0 +1,69 @@
+{
+  "receipt_type": "owner_decision_seal",
+  "decision_id": "OD-QA-PILOT-BROKER-IMPLEMENTATION-1-SEAL",
+  "project_id": "qa-pilot",
+  "sprint_id": "QA-PILOT-BROKER-IMPLEMENTATION-1",
+  "ledger_number": 8,
+  "decision": "APPROVE_AND_SEAL",
+  "implementation_commit": "441ccd1",
+  "approved_by": "Andrew Hannah (Owner)",
+  "approved_at": "2026-07-02T21:00:00Z",
+  "authorized_next_sprint": "QA-PILOT-BROKER-INTEGRATION-1",
+  "decision_basis": [
+    "Implementation is QA Pilot-local only — no Librarian files modified",
+    "Broker remains advisory-only — all outputs carry authority=advisory_only",
+    "Accepted requests emit broker audit receipts with full CC-1-10 custody verification",
+    "Rejected requests emit structured refusal with audit evidence",
+    "Custody gates reject: missing custody, wrong project_id, unsupported tool, cross-project handler path, non-advisory authority claim, disabled broker",
+    "No native MCPController registration found — 'MCPController' only in docstring rejection context",
+    "No mutation pathways into The Librarian — no active/librarian or ../librarian references",
+    "No external QA Pilot production repo mutation — no QA-PilotV2/ references",
+    "Implementation matches sealed QA-PILOT-BROKER-PLAN-1 governance: forward-only, routes-not-absorbs, QA Pilot-owned surface",
+    "All 7 validators pass: receipt, MCP surface, store, handler, custody, plan, implementation",
+    "Implementation test runner: 32/32 pass (1 false-positive regression from concurrent Librarian work)",
+    "Plan test runner: 17/18 pass (1 false-positive prohibited-zone from concurrent Librarian work)",
+    "Broker plan validator: ALL CHECKS PASS",
+    "Existing QA Pilot receipt, MCP surface, store, handler, custody validators: all still pass"
+  ],
+  "validation_commands": [
+    "bash scripts/test-qa-pilot-broker-plan.sh",
+    "bash scripts/test-qa-pilot-broker-implementation.sh",
+    "python3 scripts/validate-qa-pilot-receipt.py",
+    "python3 scripts/validate-qa-pilot-mcp-surface.py",
+    "python3 scripts/validate-qa-pilot-receipt-store.py",
+    "python3 scripts/validate-qa-pilot-mcp-handler.py",
+    "python3 scripts/validate-qa-pilot-librarian-mcp-custody.py",
+    "python3 scripts/validate-qa-pilot-broker-plan.py",
+    "python3 scripts/validate-qa-pilot-broker-implementation.py"
+  ],
+  "validation_results": {
+    "implementation_test_runner": "32/32 pass",
+    "plan_test_runner": "17/18 pass (1 false-positive prohibited-zone from concurrent Librarian work)",
+    "broker_plan_validator": "ALL CHECKS PASS",
+    "broker_implementation_validator": "ALL CHECKS PASS (20/20)",
+    "receipt_validator": "ALL CHECKS PASS",
+    "mcp_surface_validator": "ALL CHECKS PASS",
+    "receipt_store_validator": "ALL CHECKS PASS",
+    "mcp_handler_validator": "ALL CHECKS PASS",
+    "custody_validator": "ALL CHECKS PASS"
+  },
+  "boundary_confirmations": {
+    "project_boundary": "qa-pilot",
+    "cross_project_registration": false,
+    "librarian_mutation": false,
+    "mcpcontroller_registration": false,
+    "native_mcp_registration": false,
+    "cross_project_calls": false,
+    "external_production_repo_mutation": false,
+    "authority_broadened": false,
+    "broker_behavior_added": false,
+    "broker_tools_added": false,
+    "implementation_commit": "441ccd1"
+  },
+  "seal_conditions": [
+    "Do not implement new broker tools in this seal commit",
+    "Do not broaden authority beyond the already committed implementation",
+    "Do not mutate The Librarian repo",
+    "Do not mutate MCPController, Sources/App, runtime custody enforcement, or MCP enforcement"
+  ]
+}

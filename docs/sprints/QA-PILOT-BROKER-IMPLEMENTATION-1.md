@@ -1,7 +1,7 @@
 # QA-PILOT-BROKER-IMPLEMENTATION-1 — QA Pilot Option B Broker Implementation
 
 **Project:** QA Pilot
-**Status:** 🔍 Pending Owner review (not sealed)
+**Status:** ✅ **Sealed (ledger #8)** — Owner-approved 2026-07-02 per OD-QA-PILOT-BROKER-IMPLEMENTATION-1-SEAL
 **Authority:** QA Pilot-local broker implementation. No Librarian mutation. Advisory-only.
 
 **Sprint type:** Implementation sprint.
