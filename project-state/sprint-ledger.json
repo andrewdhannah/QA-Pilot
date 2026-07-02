@@ -1,7 +1,7 @@
 {
   "$schema": "sprint-ledger-v1",
   "description": "QA Pilot sprint ledger — canonical record of all QA Pilot sprints, their status, and metadata.",
-  "last_updated": "2026-07-02T07:45:00Z",
+  "last_updated": "2026-07-02T14:30:00Z",
   "sprints": [
     {
       "id": "QA-PILOT-PROJECT-INIT-1",
@@ -20,6 +20,24 @@
       "harness": "Project init sprint: workspace created, identity/profile/ledger/status surfaces/receipts initialized. Sandbox boundary: harness_governed.",
       "evidence_note": "QA-PILOT-PROJECT-INIT-1: Agent work complete, pending Owner review. Created QA Pilot project workspace, identity, profile (12 fields), sprint ledger, FEATURE-STATUS.md, SESSION-HANDOFF.md, receipt paths, sandbox governance doc. No production implementation imported. No Librarian runtime/MCP enforcement mutated.",
       "doc": "docs/sprints/QA-PILOT-PROJECT-INIT-1.md"
+    },
+    {
+      "id": "QA-PILOT-PRODUCTION-LANE-A-1",
+      "title": "QA Pilot Production Lane A (Receipt Schema)",
+      "area": "production",
+      "status": "sealed",
+      "required_for_operational_v1": true,
+      "optional": false,
+      "deferred": false,
+      "blocked": false,
+      "dependencies": ["QA-PILOT-PROJECT-INIT-1"],
+      "sealed_number": 2,
+      "start_head": "af74c6d",
+      "final_head": null,
+      "commit": null,
+      "harness": "Production Lane A: import QA Pilot receipt schema/governance/fixtures/validator/test runner from Librarian planning-only evidence. Re-home as QA Pilot-owned production implementation. All validations pass. Sealed by Owner decision OD-QA-PILOT-PRODUCTION-LANE-A-1-SEAL.",
+      "evidence_note": "QA-PILOT-PRODUCTION-LANE-A-1: Imported and adapted QA Pilot production receipt artifacts from Librarian planning-only evidence. Schema (Draft 2020-12, 18 required fields, 4 packet types), governance doc (7 sections), 8 fixtures (4 valid, 4 invalid), validator (12 rules PR-1-12, all pass), test runner (14/14 pass). Prohibited-zone scan: Librarian repo untouched. Authority advisory-only. Sealed by Owner decision OD-QA-PILOT-PRODUCTION-LANE-A-1-SEAL.",
+      "doc": "docs/sprints/QA-PILOT-PRODUCTION-LANE-A-1.md"
     }
   ]
 }

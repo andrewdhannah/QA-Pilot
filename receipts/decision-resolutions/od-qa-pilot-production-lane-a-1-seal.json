@@ -1,0 +1,32 @@
+{
+  "receipt_type": "owner_decision_seal",
+  "decision_id": "OD-QA-PILOT-PRODUCTION-LANE-A-1-SEAL",
+  "project_id": "qa-pilot",
+  "sprint_id": "QA-PILOT-PRODUCTION-LANE-A-1",
+  "owner": "Andrew Hannah",
+  "decision": "APPROVE_AND_SEAL",
+  "decision_date": "2026-07-02",
+  "decision_timestamp": "2026-07-02T14:30:00Z",
+  "seal_conditions": [
+    "Seal QA-PILOT-PRODUCTION-LANE-A-1 in the QA Pilot ledger only",
+    "Create Owner decision receipt under receipts/decision-resolutions/",
+    "Update only QA Pilot project files",
+    "Commit only QA Pilot project files",
+    "Do not modify The Librarian repo",
+    "Do not start QA-PILOT-MCP-SURFACE-1 in the same commit"
+  ],
+  "authorized_next_sprint": "QA-PILOT-MCP-SURFACE-1",
+  "authorized_next_scope": "Implement QA Pilot MCP tool stubs for production receipt registration, query, and status surfaces under the QA Pilot project boundary.",
+  "boundary": "Lane B must remain QA Pilot-owned. It must not mutate The Librarian ledger, The Librarian status surfaces, runtime custody enforcement, or mainline Owner authority.",
+  "evidence_basis": [
+    "4/4 valid fixtures pass validator",
+    "4/4 invalid fixtures rejected",
+    "14/14 test runner tests pass",
+    "Prohibited-zone scan: CLEAN — no Librarian files modified",
+    "Authority advisory-only enforced across all artifacts",
+    "Non-approval statements present in all valid fixtures",
+    "AST meta-check: no authority-granting code",
+    "All project_id values rewritten to qa-pilot",
+    "All $schema/$id URLs rewritten to QA-Pilot"
+  ]
+}

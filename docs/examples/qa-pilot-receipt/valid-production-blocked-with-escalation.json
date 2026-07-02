@@ -1,0 +1,124 @@
+{
+  "$schema": "https://github.com/andrewdhannah/QA-Pilot/schemas/qa-pilot-receipt.schema.json",
+  "receipt_id": "qapr-20260702-003",
+  "packet_type": "QAProductionVerificationReceipt",
+  "schema_version": "qap-production-v1",
+  "project_id": "qa-pilot",
+  "sprint_id": "QA-PILOT-PRODUCTION-LANE-A-1",
+  "source_sprint_receipt": "docs/sprints/QA-PILOT-PRODUCTION-LANE-A-1.md",
+  "predecessor_dry_run_refs": [],
+  "created_at": "2026-07-02T14:02:00Z",
+  "created_by": "qa-pilot-production-agent-v1",
+  "model_or_agent": "deepseek-v4-flash",
+  "authority": "advisory",
+  "status": "blocked",
+  "non_approval_statement": "This QA Pilot production verification receipt is an advisory artifact. It does not approve any work, seal any sprint, grant merge authority, assert production readiness, or enforce runtime custody. The Owner is the only actor that may approve, seal, or promote this work.",
+  "content_hash": "sha256:E555555555555555555555555555555555555555555555555555555555555555",
+  "librarian_receipt_refs": [],
+  "qa_packet_refs": [
+    {
+      "packet_type": "QAManualVerificationScript",
+      "packet_id": "qap-mv-20260702-001",
+      "source_path": "docs/examples/qa-pilot-receipt/valid-production-blocked-with-escalation.json",
+      "description": "Self-reference: blocked verification receipt for production Lane A"
+    }
+  ],
+  "production_evidence": [
+    {
+      "evidence_id": "qape-20260702-020",
+      "evidence_kind": "human_observation",
+      "evidence_source": "Manual review of production schema coverage against MCP tooling availability",
+      "collected_at": "2026-07-02T14:02:00Z",
+      "description": "Observed: MCP tooling for step-level evidence collection not yet available in Lane A",
+      "collector": "qa-pilot-production-agent-v1"
+    },
+    {
+      "evidence_id": "qape-20260702-021",
+      "evidence_kind": "command_output",
+      "evidence_source": "python3 -c \"import json; f=json.load(open('docs/schemas/qa-pilot-receipt.schema.json')); print('Schema OK:', f.get('title'))\"",
+      "collected_at": "2026-07-02T14:03:00Z",
+      "description": "Schema load verification",
+      "collector": "qa-pilot-production-agent-v1"
+    }
+  ],
+  "results": {
+    "summary": {
+      "total_checks": 12,
+      "passed": 10,
+      "failed": 0,
+      "blocked": 2,
+      "outcome": "blocked"
+    },
+    "checks": [
+      {
+        "check_id": "MV-PROD-1",
+        "description": "Manual verification steps map to production evidence kinds",
+        "status": "blocked",
+        "evidence_refs": ["qape-20260702-020"],
+        "detail": "Production schema supports step-level evidence but MCP tooling for step-level production collection is pending Lane B.",
+        "escalation_conditions": [
+          {
+            "condition": "MCP tools not available for production step-level evidence collection",
+            "severity": "medium",
+            "required_action": "Implement QA Pilot MCP tools (Lane B) or Owner-authorize manual step collection",
+            "owner_escalation_required": true
+          }
+        ]
+      },
+      {
+        "check_id": "MV-PROD-2",
+        "description": "Real hash verification for manual verification step evidence",
+        "status": "blocked",
+        "evidence_refs": ["qape-20260702-020"],
+        "detail": "Production requires real SHA-256 hashes for step-level evidence. Hash verification tooling not yet available in QA Pilot production lane.",
+        "escalation_conditions": [
+          {
+            "condition": "Hash verification tooling not available",
+            "severity": "high",
+            "required_action": "Owner decision: defer hash enforcement to Lane B or accept manual hash collection",
+            "owner_escalation_required": true
+          }
+        ]
+      }
+    ]
+  },
+  "recommendation": {
+    "recommendation": "owner_review_required",
+    "rationale": "Production verification receipt schema validates correctly (10/12 checks pass), but 2 checks are blocked pending MCP tooling (Lane B) and hash verification tooling. Owner must decide whether to accept these gaps or defer to Lane B.",
+    "confidence_level": "medium",
+    "residual_risks": [
+      {
+        "risk": "Production manual verification cannot collect step-level evidence without MCP tools",
+        "severity": "medium",
+        "mitigation": "Owner may authorize manual step collection or defer to Lane B"
+      },
+      {
+        "risk": "Real hash verification not yet wired for manual verify steps",
+        "severity": "high",
+        "mitigation": "Document scope gap; defer to Lane B implementation"
+      }
+    ]
+  },
+  "limitations": [
+    "no_production_qa_pilot_repo_mutation",
+    "verification_receipt_does_not_replace_owner_approval",
+    "mcp_tooling_for_step_level_evidence_pending_lane_b",
+    "real_hash_verification_pending_tooling"
+  ],
+  "escalation_triggers": [
+    {
+      "trigger": "mcp_tooling_gap",
+      "severity": "medium",
+      "description": "Step-level evidence collection requires MCP tools (Lane B) or manual Owner authorization",
+      "owner_notified": false,
+      "resolved": false
+    },
+    {
+      "trigger": "hash_verification_gap",
+      "severity": "high",
+      "description": "Real SHA-256 hash verification for manual verify step evidence not yet wired",
+      "owner_notified": false,
+      "resolved": false
+    }
+  ]
+}

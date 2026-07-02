@@ -1,0 +1,35 @@
+{
+  "$schema": "https://github.com/andrewdhannah/QA-Pilot/schemas/qa-pilot-receipt.schema.json",
+  "receipt_id": "qapr-20260702-097",
+  "packet_type": "QAProductionVerificationReceipt",
+  "schema_version": "qap-production-v1",
+  "project_id": "qa-pilot",
+  "sprint_id": "QA-PILOT-PRODUCTION-LANE-A-1",
+  "source_sprint_receipt": "docs/sprints/QA-PILOT-PRODUCTION-LANE-A-1.md",
+  "created_at": "2026-07-02T14:20:00Z",
+  "created_by": "qa-pilot-production-agent-v1",
+  "authority": "advisory",
+  "status": "blocked",
+  "non_approval_statement": "This QA Pilot production receipt is an advisory artifact. It does not approve any work, seal any sprint, grant merge authority, assert production readiness, or enforce runtime custody.",
+  "content_hash": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+  "librarian_receipt_refs": [],
+  "qa_packet_refs": [],
+  "limitations": ["no_production_qa_pilot_repo_mutation"],
+  "results": {
+    "summary": {
+      "total_checks": 5,
+      "passed": 2,
+      "failed": 0,
+      "blocked": 3,
+      "outcome": "blocked"
+    },
+    "checks": [
+      {
+        "check_id": "BLOCKED-1",
+        "description": "Step evidence collection tooling not available",
+        "status": "blocked",
+        "evidence_refs": []
+      }
+    ]
+  }
+}

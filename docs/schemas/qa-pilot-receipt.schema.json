@@ -1,0 +1,407 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/andrewdhannah/QA-Pilot/schemas/qa-pilot-receipt.schema.json",
+  "title": "QA Pilot Production Receipt",
+  "description": "Schema-backed definition of a QA Pilot production receipt. Defines the canonical receipt format for production QA Pilot lane work, bridging dry-run packet types with the receipt store. Each receipt records the outcome of a QA Pilot assessment, evidence checklist, manual verification, or readiness evaluation. All receipts are advisory-only and do not grant approval, seal, merge, or production-readiness authority.",
+  "type": "object",
+  "required": [
+    "receipt_id",
+    "packet_type",
+    "schema_version",
+    "project_id",
+    "sprint_id",
+    "source_sprint_receipt",
+    "created_at",
+    "created_by",
+    "authority",
+    "status",
+    "non_approval_statement",
+    "content_hash",
+    "librarian_receipt_refs",
+    "limitations",
+    "qa_packet_refs"
+  ],
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "description": "Permitted for self-documenting instances that reference this schema."
+    },
+    "receipt_id": {
+      "type": "string",
+      "pattern": "^qapr-\\d{8}-\\d{3,}$",
+      "description": "Canonical QA Pilot receipt identifier (e.g. 'qapr-20260701-001')."
+    },
+    "packet_type": {
+      "type": "string",
+      "enum": [
+        "QAProductionReceipt",
+        "QAProductionEvidenceReceipt",
+        "QAProductionVerificationReceipt",
+        "QAProductionReadinessReceipt"
+      ],
+      "description": "The type of QA Pilot production receipt this represents."
+    },
+    "schema_version": {
+      "type": "string",
+      "enum": ["qap-production-v1"],
+      "description": "Production schema version. Always qap-production-v1."
+    },
+    "project_id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_-]+$",
+      "description": "The project this receipt belongs to."
+    },
+    "sprint_id": {
+      "type": "string",
+      "pattern": "^[A-Z][A-Z0-9_-]+$",
+      "description": "The sprint ID that generated this receipt."
+    },
+    "source_sprint_receipt": {
+      "type": "string",
+      "pattern": "^docs/sprints/.+",
+      "description": "Path to the sprint receipt document that authorized this production work."
+    },
+    "predecessor_dry_run_refs": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "References to the dry-run sprint(s) that preceded this production lane. Empty for first production run."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp when this receipt was created."
+    },
+    "created_by": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Agent or tool that created this receipt."
+    },
+    "model_or_agent": {
+      "type": "string",
+      "minLength": 1,
+      "description": "The model or agent identifier that performed the QA work."
+    },
+    "authority": {
+      "type": "string",
+      "const": "advisory",
+      "description": "All QA Pilot production receipts are advisory. Must be exactly 'advisory'."
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "completed",
+        "partial",
+        "blocked",
+        "superseded"
+      ],
+      "description": "The lifecycle status of this QA Pilot receipt."
+    },
+    "non_approval_statement": {
+      "type": "string",
+      "minLength": 20,
+      "description": "Explicit statement that this receipt does not approve, seal, grant merge authority, assert production readiness, or enforce runtime custody. Must be at least 20 characters."
+    },
+    "content_hash": {
+      "type": "string",
+      "pattern": "^sha256:[A-Fa-f0-9]{64}$",
+      "description": "SHA-256 hash of the receipt content (self-hash). Uses real content hash — not a dry-run placeholder."
+    },
+    "librarian_receipt_refs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["receipt_type", "receipt_id", "receipt_path"],
+        "properties": {
+          "receipt_type": {
+            "type": "string",
+            "enum": [
+              "chain_validation",
+              "apply_receipt",
+              "owner_action_receipt",
+              "candidate_receipt",
+              "registry_snapshot"
+            ]
+          },
+          "receipt_id": {
+            "type": "string",
+            "pattern": "^nrr-\\d{8}-\\d{3,}$"
+          },
+          "receipt_path": {
+            "type": "string",
+            "minLength": 1
+          },
+          "description": {
+            "type": "string",
+            "description": "Optional description of this receipt reference."
+          }
+        },
+        "additionalProperties": false
+      },
+      "description": "References to Librarian receipt store entries that this QA Pilot receipt links to for cross-system traceability."
+    },
+    "qa_packet_refs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["packet_type", "packet_id", "source_path"],
+        "properties": {
+          "packet_type": {
+            "type": "string",
+            "enum": [
+              "QAPlanningPacket",
+              "QAEvidenceChecklist",
+              "QAManualVerificationScript",
+              "QAReadinessAssessment"
+            ]
+          },
+          "packet_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "source_path": {
+            "type": "string",
+            "minLength": 1
+          },
+          "description": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "description": "References to the QA Pilot dry-run or production packets that this receipt evaluates."
+    },
+    "production_evidence": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["evidence_id", "evidence_kind", "evidence_source", "collected_at"],
+        "properties": {
+          "evidence_id": {
+            "type": "string",
+            "pattern": "^qape-\\d{8}-\\d{3,}$"
+          },
+          "evidence_kind": {
+            "type": "string",
+            "enum": [
+              "document_review",
+              "fixture_validation",
+              "validator_output",
+              "command_output",
+              "screenshot_reference",
+              "human_observation",
+              "repository_status",
+              "receipt_reference",
+              "schema_validation",
+              "hash_verification"
+            ]
+          },
+          "evidence_source": {
+            "type": "string",
+            "minLength": 1
+          },
+          "collected_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "description": {
+            "type": "string"
+          },
+          "collector": {
+            "type": "string"
+          },
+          "hash": {
+            "type": "string",
+            "pattern": "^sha256:[A-Fa-f0-9]{64}$",
+            "description": "Optional SHA-256 hash of the evidence artifact."
+          }
+        },
+        "additionalProperties": false
+      },
+      "description": "Evidence collected during this QA Pilot production run."
+    },
+    "results": {
+      "type": "object",
+      "required": ["summary", "checks"],
+      "properties": {
+        "summary": {
+          "type": "object",
+          "required": ["total_checks", "passed", "failed", "blocked", "outcome"],
+          "properties": {
+            "total_checks": { "type": "integer", "minimum": 0 },
+            "passed": { "type": "integer", "minimum": 0 },
+            "failed": { "type": "integer", "minimum": 0 },
+            "blocked": { "type": "integer", "minimum": 0 },
+            "outcome": {
+              "type": "string",
+              "enum": ["pass", "partial_pass", "fail", "blocked", "inconclusive"]
+            }
+          },
+          "additionalProperties": false
+        },
+        "checks": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["check_id", "description", "status", "evidence_refs"],
+            "properties": {
+              "check_id": { "type": "string", "minLength": 1 },
+              "description": { "type": "string", "minLength": 1 },
+              "status": {
+                "type": "string",
+                "enum": ["pass", "fail", "blocked", "skipped", "inconclusive"]
+              },
+              "evidence_refs": {
+                "type": "array",
+                "items": { "type": "string" }
+              },
+              "detail": { "type": "string" },
+              "escalation_conditions": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": ["condition", "severity"],
+                  "properties": {
+                    "condition": { "type": "string" },
+                    "severity": {
+                      "type": "string",
+                      "enum": ["low", "medium", "high", "critical"]
+                    },
+                    "required_action": { "type": "string" },
+                    "owner_escalation_required": { "type": "boolean" }
+                  },
+                  "additionalProperties": false
+                }
+              }
+            },
+            "additionalProperties": false
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "recommendation": {
+      "type": "object",
+      "required": ["recommendation", "rationale"],
+      "properties": {
+        "recommendation": {
+          "type": "string",
+          "enum": [
+            "proceed",
+            "proceed_with_caveats",
+            "request_revision",
+            "owner_review_required",
+            "do_not_proceed"
+          ]
+        },
+        "rationale": {
+          "type": "string",
+          "minLength": 10
+        },
+        "confidence_level": {
+          "type": "string",
+          "enum": ["high", "medium", "low", "insufficient_evidence"]
+        },
+        "residual_risks": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["risk", "severity"],
+            "properties": {
+              "risk": { "type": "string" },
+              "severity": {
+                "type": "string",
+                "enum": ["low", "medium", "high", "critical"]
+              },
+              "mitigation": { "type": "string" }
+            },
+            "additionalProperties": false
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "limitations": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "minItems": 1,
+      "description": "At least one limitation must be stated. Production receipts must acknowledge their authority boundaries."
+    },
+    "escalation_triggers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["trigger", "severity", "description"],
+        "properties": {
+          "trigger": { "type": "string" },
+          "severity": {
+            "type": "string",
+            "enum": ["low", "medium", "high", "critical"]
+          },
+          "description": { "type": "string", "minLength": 1 },
+          "owner_notified": { "type": "boolean" },
+          "resolved": { "type": "boolean" }
+        },
+        "additionalProperties": false
+      },
+      "description": "Triggers that would require Owner escalation."
+    }
+  },
+  "allOf": [
+    {
+      "description": "If status is blocked or partial, escalation_triggers must be non-empty.",
+      "if": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": ["blocked", "partial"]
+          }
+        },
+        "required": ["status"]
+      },
+      "then": {
+        "required": ["escalation_triggers"],
+        "properties": {
+          "escalation_triggers": {
+            "minItems": 1
+          }
+        }
+      }
+    },
+    {
+      "description": "If outcome is fail or blocked, recommendation must not be 'proceed'.",
+      "if": {
+        "properties": {
+          "results": {
+            "properties": {
+              "summary": {
+                "properties": {
+                  "outcome": {
+                    "type": "string",
+                    "enum": ["fail", "blocked"]
+                  }
+                },
+                "required": ["outcome"]
+              }
+            },
+            "required": ["summary"]
+          }
+        },
+        "required": ["results"]
+      },
+      "then": {
+        "properties": {
+          "recommendation": {
+            "properties": {
+              "recommendation": {
+                "not": { "const": "proceed" }
+              }
+            },
+            "required": ["recommendation"]
+          }
+        },
+        "required": ["recommendation"]
+      }
+    }
+  ]
+}

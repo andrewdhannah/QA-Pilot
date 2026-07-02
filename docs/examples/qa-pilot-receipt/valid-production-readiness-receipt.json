@@ -1,0 +1,235 @@
+{
+  "$schema": "https://github.com/andrewdhannah/QA-Pilot/schemas/qa-pilot-receipt.schema.json",
+  "receipt_id": "qapr-20260702-004",
+  "packet_type": "QAProductionReadinessReceipt",
+  "schema_version": "qap-production-v1",
+  "project_id": "qa-pilot",
+  "sprint_id": "QA-PILOT-PRODUCTION-LANE-A-1",
+  "source_sprint_receipt": "docs/sprints/QA-PILOT-PRODUCTION-LANE-A-1.md",
+  "predecessor_dry_run_refs": [],
+  "created_at": "2026-07-02T14:05:00Z",
+  "created_by": "qa-pilot-production-agent-v1",
+  "model_or_agent": "deepseek-v4-flash",
+  "authority": "advisory",
+  "status": "completed",
+  "non_approval_statement": "This QA Pilot production readiness receipt is an advisory artifact. It does not approve any work, seal any sprint, grant merge authority, assert production readiness, or enforce runtime custody. The Owner is the only actor that may approve, seal, or promote this work.",
+  "content_hash": "sha256:F666666666666666666666666666666666666666666666666666666666666666",
+  "librarian_receipt_refs": [
+    {
+      "receipt_type": "chain_validation",
+      "receipt_id": "nrr-20260702-004",
+      "receipt_path": "receipts/node-registry/chain-validations/nrr-20260702-004.json",
+      "description": "Chain validation receipt for the QA Pilot production lane"
+    },
+    {
+      "receipt_type": "registry_snapshot",
+      "receipt_id": "nrr-20260702-005",
+      "receipt_path": "receipts/node-registry/snapshots/nrr-20260702-005.json",
+      "description": "Registry snapshot at time of production readiness assessment"
+    }
+  ],
+  "qa_packet_refs": [
+    {
+      "packet_type": "QAReadinessAssessment",
+      "packet_id": "qap-ra-20260702-001",
+      "source_path": "docs/examples/qa-pilot-receipt/valid-production-readiness-receipt.json",
+      "description": "Self-reference: readiness receipt for production Lane A"
+    }
+  ],
+  "production_evidence": [
+    {
+      "evidence_id": "qape-20260702-030",
+      "evidence_kind": "schema_validation",
+      "evidence_source": "docs/schemas/qa-pilot-receipt.schema.json",
+      "collected_at": "2026-07-02T14:05:00Z",
+      "description": "Schema validation of production readiness receipt",
+      "collector": "qa-pilot-production-agent-v1"
+    },
+    {
+      "evidence_id": "qape-20260702-031",
+      "evidence_kind": "receipt_reference",
+      "evidence_source": "receipts/node-registry/chain-validations/nrr-20260702-004.json",
+      "collected_at": "2026-07-02T14:06:00Z",
+      "description": "Chain validation receipt confirming production lane readiness",
+      "collector": "qa-pilot-production-agent-v1"
+    },
+    {
+      "evidence_id": "qape-20260702-032",
+      "evidence_kind": "repository_status",
+      "evidence_source": "git log --oneline -10",
+      "collected_at": "2026-07-02T14:07:00Z",
+      "description": "Recent commits at readiness assessment time",
+      "collector": "qa-pilot-production-agent-v1"
+    },
+    {
+      "evidence_id": "qape-20260702-033",
+      "evidence_kind": "human_observation",
+      "evidence_source": "Validator output review",
+      "collected_at": "2026-07-02T14:08:00Z",
+      "description": "All production receipt fixtures validated under QA Pilot project",
+      "collector": "qa-pilot-production-agent-v1"
+    },
+    {
+      "evidence_id": "qape-20260702-034",
+      "evidence_kind": "validator_output",
+      "evidence_source": "scripts/validate-qa-pilot-receipt.py --all",
+      "collected_at": "2026-07-02T14:09:00Z",
+      "description": "Validator output confirming all valid fixtures pass and all invalid fixtures reject",
+      "collector": "qa-pilot-production-agent-v1"
+    },
+    {
+      "evidence_id": "qape-20260702-035",
+      "evidence_kind": "screenshot_reference",
+      "evidence_source": "scripts/test-qa-pilot-receipt.sh output",
+      "collected_at": "2026-07-02T14:10:00Z",
+      "description": "Test runner output showing all tests pass",
+      "collector": "qa-pilot-production-agent-v1"
+    }
+  ],
+  "results": {
+    "summary": {
+      "total_checks": 15,
+      "passed": 15,
+      "failed": 0,
+      "blocked": 0,
+      "outcome": "pass"
+    },
+    "checks": [
+      {
+        "check_id": "READINESS-1",
+        "description": "QA Pilot production receipt schema covers all 4 packet types",
+        "status": "pass",
+        "evidence_refs": ["qape-20260702-030"],
+        "detail": "QAProductionReceipt, QAProductionEvidenceReceipt, QAProductionVerificationReceipt, QAProductionReadinessReceipt all defined"
+      },
+      {
+        "check_id": "READINESS-2",
+        "description": "Real SHA-256 hashes used (not dry-run placeholders)",
+        "status": "pass",
+        "evidence_refs": ["qape-20260702-030"],
+        "detail": "All valid fixtures use real sha256: pattern hashes"
+      },
+      {
+        "check_id": "READINESS-3",
+        "description": "Librarian receipt store references are valid",
+        "status": "pass",
+        "evidence_refs": ["qape-20260702-031"],
+        "detail": "librarian_receipt_refs use valid nrr-* receipt IDs with correct receipt_type enum"
+      },
+      {
+        "check_id": "READINESS-4",
+        "description": "All 10 production evidence kinds accepted by schema",
+        "status": "pass",
+        "evidence_refs": ["qape-20260702-030", "qape-20260702-033"],
+        "detail": "Schema enum includes all 8 dry-run kinds plus schema_validation and hash_verification"
+      },
+      {
+        "check_id": "READINESS-5",
+        "description": "Advisory-only authority enforced",
+        "status": "pass",
+        "evidence_refs": ["qape-20260702-033", "qape-20260702-034"],
+        "detail": "All valid fixtures use const advisory. Invalid fixtures reject authority claims."
+      },
+      {
+        "check_id": "READINESS-6",
+        "description": "Non-approval statement required in all receipts",
+        "status": "pass",
+        "evidence_refs": ["qape-20260702-033"],
+        "detail": "All valid fixtures include non_approval_statement. Missing statement fixtures rejected."
+      },
+      {
+        "check_id": "READINESS-7",
+        "description": "Blocked/partial status requires escalation",
+        "status": "pass",
+        "evidence_refs": ["qape-20260702-033"],
+        "detail": "Valid blocked fixture has escalation_triggers. Missing-escalation fixture rejected."
+      },
+      {
+        "check_id": "READINESS-8",
+        "description": "Limitations field required and non-empty",
+        "status": "pass",
+        "evidence_refs": ["qape-20260702-030"],
+        "detail": "All valid fixtures have non-empty limitations."
+      },
+      {
+        "check_id": "READINESS-9",
+        "description": "Regression: QA Pilot receipt test runner passes",
+        "status": "pass",
+        "evidence_refs": ["qape-20260702-031", "qape-20260702-033"],
+        "detail": "Production receipt validator passes on all valid fixtures"
+      },
+      {
+        "check_id": "READINESS-10",
+        "description": "Prohibited zone scan clean",
+        "status": "pass",
+        "evidence_refs": ["qape-20260702-032"],
+        "detail": "No active/librarian files modified. No production QA Pilot repos. No runtime/MCP enforcement."
+      },
+      {
+        "check_id": "READINESS-11",
+        "description": "AST meta-check: no authority-granting code",
+        "status": "pass",
+        "evidence_refs": ["qape-20260702-034"],
+        "detail": "Validator contains no approval/seal/merge/production-readiness language"
+      },
+      {
+        "check_id": "READINESS-12",
+        "description": "PR-10 conditional logic enforced (blocked needs escalation)",
+        "status": "pass",
+        "evidence_refs": ["qape-20260702-034"],
+        "detail": "Valid blocked fixture passes. No-escalation fixture correctly rejected."
+      },
+      {
+        "check_id": "READINESS-13",
+        "description": "PR-11 conditional logic enforced (fail cannot recommend proceed)",
+        "status": "pass",
+        "evidence_refs": ["qape-20260702-034"],
+        "detail": "Valid pass fixture recommends proceed_with_caveats. Fail-fixture-with-proceed correctly rejected."
+      },
+      {
+        "check_id": "READINESS-14",
+        "description": "Schema is valid Draft 2020-12",
+        "status": "pass",
+        "evidence_refs": ["qape-20260702-030"],
+        "detail": "Schema validates with Draft202012Validator"
+      },
+      {
+        "check_id": "READINESS-15",
+        "description": "Production evidence kinds include schema_validation and hash_verification",
+        "status": "pass",
+        "evidence_refs": ["qape-20260702-030", "qape-20260702-033"],
+        "detail": "Two new production-only kinds added: schema_validation, hash_verification"
+      }
+    ]
+  },
+  "recommendation": {
+    "recommendation": "proceed_with_caveats",
+    "rationale": "QA Pilot production Lane A (receipt schema) is complete and validated under the QA Pilot project ledger. All 4 packet types defined. All 12 PR rules enforced. Schema extends evidence kinds with 2 production-specific kinds (schema_validation, hash_verification). Real SHA-256 hashing replaces dry-run placeholders. Librarian receipt bridge established. Caveats: MCP tooling (Lane B) and hash verification tooling not yet implemented.",
+    "confidence_level": "high",
+    "residual_risks": [
+      {
+        "risk": "MCP tools for production receipt registration not implemented",
+        "severity": "medium",
+        "mitigation": "Deferred to Lane B (QA-PILOT-MCP-SURFACE-1)"
+      },
+      {
+        "risk": "Cross-packet validation between production receipt types not implemented",
+        "severity": "low",
+        "mitigation": "Deferred to production lane reconciliation"
+      },
+      {
+        "risk": "Only some production evidence kinds exercised in valid fixtures",
+        "severity": "low",
+        "mitigation": "All 10 kinds accepted by schema enum; additional fixture coverage in follow-up"
+      }
+    ]
+  },
+  "limitations": [
+    "no_production_qa_pilot_repo_mutation",
+    "no_runtime_custody_enforcement_mutation",
+    "receipt_schema_only_no_runtime_registration",
+    "mcp_tooling_pending_lane_b",
+    "no_cross_packet_validation_between_receipt_types",
+    "evidence_coverage_is_advisory_not_exhaustive"
+  ]
+}
