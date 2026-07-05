@@ -1,0 +1,41 @@
+{
+  "receipt_type": "owner_decision_seal",
+  "decision_id": "OD-QA-PILOT-MILESTONE-REGRESSION-SUITE-1-SEAL",
+  "project_id": "qa-pilot",
+  "sprint_id": "QA-PILOT-MILESTONE-REGRESSION-SUITE-1",
+  "ledger_number": 18,
+  "decision": "APPROVE_AND_SEAL",
+  "approved_by": "Andrew Hannah (Owner)",
+  "approved_at": "2026-07-05T22:40:00Z",
+  "decision_basis": [
+    "Scope satisfied: QA Pilot-local milestone regression suite built",
+    "Invariant coverage complete: MR-1 through MR-11 cover upstream ingest validator continuity, valid/invalid regression fixtures, fail-closed behavior, advisory-only state, no cross-project write authority, Owner apply requirement, no mutation-authorizing stored payloads, reconstructable derived state, adversarial rejection, and no Librarian writes",
+    "Validation satisfied: 15/15 tests pass, all existing validators still pass",
+    "Boundaries preserved: no Librarian mutation, no MCP bridge, no training sim, no packet apply path, no authority promotion, no Owner decision bypass",
+    "Boundary scan CLEAN: no Librarian files modified; prohibited-zone CLEAN",
+    "Ingested record invariants confirmed: advisory=True, cross_project_write_authorized=False, owner_apply_required=True"
+  ],
+  "seal_conditions": [
+    "Do not modify regression fixtures without a new sprint authorization",
+    "Do not use regression suite to authorize packet application or MCP bridge activation",
+    "Do not promote training_simulated or advisory_copy to authoritative status",
+    "Do not mutate Librarian from QA Pilot regression paths"
+  ],
+  "boundary_assertion": {
+    "project_boundary": "qa-pilot",
+    "lane": "parallel_planning",
+    "librarian_impact": "none",
+    "cross_project_registration": false,
+    "runtime_mutation_authorized": false,
+    "implementation_authorized": true
+  },
+  "evidence": [
+    "docs/examples/qa-pilot-milestone-regression/ (12 fixtures: 5 valid + 7 invalid)",
+    "scripts/validate-qa-pilot-milestone-regression.py (11 rules MR-1 through MR-11)",
+    "scripts/test-qa-pilot-milestone-regression.sh (15 tests)",
+    "docs/governance/QA-PILOT-MILESTONE-REGRESSION.md",
+    "docs/sprints/QA-PILOT-MILESTONE-REGRESSION-SUITE-1.md",
+    "project-state/sprint-ledger.json (entry #18)"
+  ],
+  "authorized_next_sprint": "QA-PILOT-LOCAL-TRAINING-SIM-1"
+}

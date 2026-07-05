@@ -12,7 +12,7 @@
   "owner_decision_path": "receipts/decision-resolutions/",
   "governance_profile": "qa-pilot-full-governance",
   "lifecycle_cursor_phase": 1,
-  "active_sprint": "QA-PILOT-MILESTONE-REGRESSION-SUITE-1",
+  "active_sprint": "QA-PILOT-LOCAL-TRAINING-SIM-1",
   "sandbox_boundary": "harness_governed",
   "allowed_mutation_paths": [
     "docs/",

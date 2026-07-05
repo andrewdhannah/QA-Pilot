@@ -1,6 +1,6 @@
 # Session Handoff — QA-PILOT-MILESTONE-REGRESSION-SUITE-1
 
-## Status: 🔍 **Complete, pending Owner review** — Agent work complete 2026-07-05
+## Status: ✅ **Sealed (ledger #18)** — Owner-approved 2026-07-05 per OD-QA-PILOT-MILESTONE-REGRESSION-SUITE-1-SEAL
 
 ---
 
