@@ -39,8 +39,8 @@
       "dependencies": ["QA-PILOT-QA-PACKET-INGEST-1"],
       "sealed_number": null,
       "start_head": "ebaedd46514b0f2c16e78e9305e4b1ea13eaede8",
-      "final_head": null,
-      "commit": null,
+      "final_head": "878fcef32430da009ff2ce4a6117b0925aa47374",
+      "commit": "878fcef32430da009ff2ce4a6117b0925aa47374",
       "harness": "Regression suite locking the packet custody invariants, advisory boundary, derived-store behavior, invalid-packet rejection, and no-cross-project-write rule. Proves ingest chain remains stable under change. 12 regression fixtures (5 valid + 7 invalid), 11 regression rules (MR-1 through MR-11), 15 tests. All pass. See docs/governance/QA-PILOT-MILESTONE-REGRESSION.md.",
       "evidence_note": "Owner authorized per OD-QA-PILOT-QA-PACKET-INGEST-1-SEAL (2026-07-05). Built regression validator (validate-qa-pilot-milestone-regression.py), test runner (test-qa-pilot-milestone-regression.sh), 12 fixtures, governance doc. 11 MR rules pass. 15/15 tests pass. All invariant categories covered: advisory, cross-project-write, owner-apply, reconstruction, boundary scan. Actionable failures for each protected invariant. Precedes QA-PILOT-LOCAL-TRAINING-SIM-1.",
       "doc": "docs/sprints/QA-PILOT-MILESTONE-REGRESSION-SUITE-1.md"
