@@ -1,7 +1,7 @@
 {
   "$schema": "sprint-ledger-v1",
   "description": "QA Pilot sprint ledger — canonical record of all QA Pilot sprints, their status, and metadata.",
-  "last_updated": "2026-07-05T22:40:00Z",
+  "last_updated": "2026-07-05T23:10:00Z",
   "sprints": [
     {
       "id": "QA-PILOT-CROSS-PROJECT-MCP-QA-BRIDGE-PLAN-1",
@@ -63,8 +63,8 @@
       ],
       "sealed_number": null,
       "start_head": "2ddf1af9f15baf7b9b327ea5002730780be92413",
-      "final_head": null,
-      "commit": null,
+      "final_head": "5cfbacb894a69b0290ffcc625349bb9f2e9e594e",
+      "commit": "5cfbacb894a69b0290ffcc625349bb9f2e9e594e",
       "harness": "QA Pilot-local training simulation layer. Generates advisory sim cases from ingested packets, validates against TS-1-10 rules, produces read-only results. 2 schemas, 9 fixtures (4 valid + 5 invalid), 10 TS rules, 17 tests. All pass. No model fine-tuning, no training loop, no packet apply, no MCP bridge, no cross-project write. See docs/governance/QA-PILOT-TRAINING-SIM.md.",
       "evidence_note": "Owner authorized per OD-QA-PILOT-MILESTONE-REGRESSION-SUITE-1-SEAL (2026-07-05). Built sim case schema, result schema, 9 sim fixtures, validator (10 rules TS-1-10), CLI (generate/list/validate/status/clear), test runner (17 tests), governance doc. All validations pass. All hard boundaries enforced.",
       "doc": "docs/sprints/QA-PILOT-LOCAL-TRAINING-SIM-1.md"
