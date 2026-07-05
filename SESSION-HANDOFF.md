@@ -1,3 +1,49 @@
+# Session Handoff — QA-PILOT-LOCAL-TRAINING-SIM-1
+
+## Status: 🔍 **Complete, pending Owner review** — Agent work complete 2026-07-05
+
+---
+
+## QA-PILOT-LOCAL-TRAINING-SIM-1 — QA Pilot Local Training Simulation
+
+**Type:** Implementation / simulation
+**Lane:** `parallel_planning`
+**Boundary:** `qa_pilot_local`
+**Librarian impact:** `none`
+**Input dependencies:** QA-PILOT-QA-PACKET-INGEST-1 (ledger #17), QA-PILOT-MILESTONE-REGRESSION-SUITE-1 (ledger #18)
+
+**Scope satisfied:** QA Pilot-local simulation layer using ingested, regression-proven QA packets as advisory training examples only.
+**Boundary satisfied:** No Librarian mutation; no QA Pilot leakage into Librarian.
+**Governance satisfied:** No model fine-tuning, no runtime training loop, no packet application path, no MCP bridge activation, no cross-project writes, no authority promotion.
+
+**Implementation summary:**
+- **Case schema:** `docs/schemas/qa-pilot-training-sim-case.schema.json` — 9 required fields, advisory-only constraints
+- **Result schema:** `docs/schemas/qa-pilot-training-sim-result.schema.json` — 6 required fields, read-only advisory
+- **Fixtures:** 9 total (4 valid + 5 invalid) in `docs/examples/qa-pilot-training-sim/`
+- **Validator:** `scripts/validate-qa-pilot-training-sim.py` — 10 rules (TS-1 through TS-10)
+- **CLI:** `scripts/qa_pilot_training_sim.py` — generate/list/validate/status/clear from ingested store
+- **Test runner:** `scripts/test-qa-pilot-training-sim.sh` — 17 tests
+- **Governance doc:** `docs/governance/QA-PILOT-TRAINING-SIM.md` — 9 sections
+
+**Invariant coverage:**
+- TS-1 through TS-10 cover sim_id, type, advisory, owner_decision, source, reproducibility, mutation paths, cross-project claims, unsafe quarantine, Librarian references
+- Auto-generation from ingested packets produces advisory-only, locally-reproducible sim cases
+- Generated results are read-only with advisory=true
+- Sim generation is idempotent (no duplicates on re-run)
+- All hard boundaries enforced
+
+**Validation:**
+- Sim validator: 4/4 valid fixtures pass, 5/5 invalid fixtures rejected, 10/10 TS rules pass
+- Sim test runner: 17/17 tests pass
+- Existing PI-1-14 validator: still passes (no regression)
+- Existing MR-1-11 regression validator: still passes (no regression)
+- Prohibited-zone scan: CLEAN — no Librarian files modified
+- Boundary scan: no training sim files in Librarian
+
+**Next authorized sprint:** Awaiting Owner direction — QA-PILOT-CROSS-PROJECT-MCP-QA-BRIDGE-PLAN-1 follows.
+
+---
+
 # Session Handoff — QA-PILOT-MILESTONE-REGRESSION-SUITE-1
 
 ## Status: ✅ **Sealed (ledger #18)** — Owner-approved 2026-07-05 per OD-QA-PILOT-MILESTONE-REGRESSION-SUITE-1-SEAL

@@ -1,0 +1,20 @@
+{
+  "sim_id": "qa-pilot-sim-invalid-no-owner-decision-001",
+  "sim_type": "advisory_training",
+  "source": {
+    "ingest_id": "qpi-milestone_regression-dada83",
+    "packet_hash": "dada83b39480f4970a21d49f17cfae5a23add998d26ba35997c0d954c343edaa",
+    "packet_type": "milestone_regression"
+  },
+  "scenario": "Test that sim case cannot bypass Owner decision",
+  "inputs": {
+    "regression_results": {"passed": 22}
+  },
+  "expected_behavior": "Rejected — sim case bypasses Owner decision requirement",
+  "advisory": true,
+  "owner_decision_required": false,
+  "generated_at": "2026-07-05T23:02:00Z",
+  "reproducible_from": "data/packets/ingested/",
+  "unsafe_action_required": true,
+  "notes": "INVALID: owner_decision_required must be true"
+}

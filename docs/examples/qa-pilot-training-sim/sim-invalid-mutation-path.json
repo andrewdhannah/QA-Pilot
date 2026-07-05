@@ -1,0 +1,21 @@
+{
+  "sim_id": "qa-pilot-sim-invalid-mutation-path-001",
+  "sim_type": "boundary_test",
+  "source": {
+    "ingest_id": "qpi-project_state-405bd8",
+    "packet_hash": "405bd86ed1b64c7d2cbd0d62e40128b2b008c16cbc40d33b7e7ffbcd2c52b29a",
+    "packet_type": "project_state"
+  },
+  "scenario": "Test that sim case cannot contain Librarian mutation paths",
+  "inputs": {
+    "write_target": "active/librarian/project-state/sprint-ledger.json",
+    "write_action": "append_sprint"
+  },
+  "expected_behavior": "Rejected or quarantined — sim case references Librarian mutation path",
+  "advisory": true,
+  "owner_decision_required": true,
+  "generated_at": "2026-07-05T23:01:00Z",
+  "reproducible_from": "data/packets/ingested/",
+  "unsafe_action_required": true,
+  "notes": "INVALID: sim case contains Librarian write path in inputs"
+}

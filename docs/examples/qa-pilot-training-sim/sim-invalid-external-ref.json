@@ -1,0 +1,18 @@
+{
+  "sim_id": "qa-pilot-sim-invalid-external-ref-001",
+  "sim_type": "boundary_test",
+  "source": {
+    "ingest_id": "qpi-project_state-4e65a2",
+    "packet_hash": "4e65a26749f012c917430cdb0d2c5eb93d9924ea02f1b6545c7ffc3789ca8afb",
+    "packet_type": "project_state"
+  },
+  "scenario": "Test that sim case references an external/non-local path",
+  "inputs": {},
+  "expected_behavior": "Rejected — sim case must reference local store only",
+  "advisory": true,
+  "owner_decision_required": true,
+  "generated_at": "2026-07-05T23:03:00Z",
+  "reproducible_from": "/Users/andrew/Desktop/OpenWork/external-data/",
+  "unsafe_action_required": true,
+  "notes": "INVALID: reproducible_from is outside QA Pilot workspace"
+}

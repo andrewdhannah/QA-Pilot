@@ -1,0 +1,23 @@
+{
+  "sim_id": "qa-pilot-sim-valid-claim-registry-001",
+  "sim_type": "advisory_training",
+  "source": {
+    "ingest_id": "qpi-qa_claim_registry-6d9cac6afe5e",
+    "packet_hash": "6d9cac6afe5ea92e822c33a7fc0e5e7052bd02e3b0ce4831550a1ac21669b09d",
+    "packet_type": "qa_claim_registry"
+  },
+  "scenario": "Verify advisory-only claim registry — ingested claim registry packet is treated as evidence",
+  "inputs": {
+    "claims": [
+      {"claim_id": "QA-001", "status": "verified", "source": "librarian-sprint-3"},
+      {"claim_id": "QA-002", "status": "pending", "source": "librarian-sprint-3"}
+    ]
+  },
+  "expected_behavior": "Sim case is advisory-only; claims are evidence, not authority. No Librarian write path is created.",
+  "advisory": true,
+  "owner_decision_required": true,
+  "generated_at": "2026-07-05T22:50:00Z",
+  "reproducible_from": "data/packets/ingested/",
+  "unsafe_action_required": false,
+  "notes": "Valid advisory training case: claim registry packet consumed as evidence only."
+}

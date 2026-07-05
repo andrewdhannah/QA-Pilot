@@ -1,0 +1,23 @@
+{
+  "sim_id": "qa-pilot-sim-valid-reconstruction-001",
+  "sim_type": "reconstruction_test",
+  "source": {
+    "ingest_id": "qpi-project_state-4e65a2",
+    "packet_hash": "4e65a26749f012c917430cdb0d2c5eb93d9924ea02f1b6545c7ffc3789ca8afb",
+    "packet_type": "project_state"
+  },
+  "scenario": "Reconstruction test: sim case can be regenerated from local derived store",
+  "inputs": {
+    "derived_state": {
+      "source": "librarian-sprint-ledger",
+      "local_path": "data/packets/ingested/"
+    }
+  },
+  "expected_behavior": "Sim case is reproducible from local store. No Librarian connection required. State is fully local.",
+  "advisory": true,
+  "owner_decision_required": true,
+  "generated_at": "2026-07-05T22:53:00Z",
+  "reproducible_from": "data/packets/ingested/",
+  "unsafe_action_required": false,
+  "notes": "Valid reconstruction test: reproducible from local store only."
+}

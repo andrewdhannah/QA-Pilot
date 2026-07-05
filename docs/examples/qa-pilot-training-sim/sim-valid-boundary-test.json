@@ -1,0 +1,24 @@
+{
+  "sim_id": "qa-pilot-sim-valid-boundary-test-001",
+  "sim_type": "boundary_test",
+  "source": {
+    "ingest_id": "qpi-milestone_regression-dada83",
+    "packet_hash": "dada83b39480f4970a21d49f17cfae5a23add998d26ba35997c0d954c343edaa",
+    "packet_type": "milestone_regression"
+  },
+  "scenario": "Boundary test: ingested milestone regression results cannot be used to authorize downstream apply",
+  "inputs": {
+    "regression_results": {
+      "total_tests": 22,
+      "passed": 22,
+      "failed": 0
+    }
+  },
+  "expected_behavior": "Sim case observes pass/fail but does not auto-approve. Owner decision still required for any downstream action.",
+  "advisory": true,
+  "owner_decision_required": true,
+  "generated_at": "2026-07-05T22:52:00Z",
+  "reproducible_from": "data/packets/ingested/",
+  "unsafe_action_required": false,
+  "notes": "Valid boundary test: sim observes but does not authorize."
+}

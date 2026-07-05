@@ -1,0 +1,18 @@
+{
+  "sim_id": "qa-pilot-sim-invalid-non-advisory-001",
+  "sim_type": "advisory_training",
+  "source": {
+    "ingest_id": "qpi-qa_claim_registry-6d9cac6afe5e",
+    "packet_hash": "6d9cac6afe5ea92e822c33a7fc0e5e7052bd02e3b0ce4831550a1ac21669b09d",
+    "packet_type": "qa_claim_registry"
+  },
+  "scenario": "Test that sim case cannot be non-advisory",
+  "inputs": {},
+  "expected_behavior": "Rejected or quarantined — non-advisory sim case is unsafe",
+  "advisory": false,
+  "owner_decision_required": true,
+  "generated_at": "2026-07-05T23:00:00Z",
+  "reproducible_from": "data/packets/ingested/",
+  "unsafe_action_required": false,
+  "notes": "INVALID: advisory must be true"
+}

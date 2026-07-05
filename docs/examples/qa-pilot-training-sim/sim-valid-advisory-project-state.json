@@ -1,0 +1,23 @@
+{
+  "sim_id": "qa-pilot-sim-valid-project-state-001",
+  "sim_type": "advisory_training",
+  "source": {
+    "ingest_id": "qpi-project_state-405bd8",
+    "packet_hash": "405bd86ed1b64c7d2cbd0d62e40128b2b008c16cbc40d33b7e7ffbcd2c52b29a",
+    "packet_type": "project_state"
+  },
+  "scenario": "Verify advisory project-state — project state snapshot is consumed as reference data only",
+  "inputs": {
+    "project_state": {
+      "phase": 1,
+      "active_sprint": "QA-PILOT-MILESTONE-REGRESSION-SUITE-1"
+    }
+  },
+  "expected_behavior": "Sim case is advisory-only; project state is reference, not authority. No mutation path is derived from state content.",
+  "advisory": true,
+  "owner_decision_required": true,
+  "generated_at": "2026-07-05T22:51:00Z",
+  "reproducible_from": "data/packets/ingested/",
+  "unsafe_action_required": false,
+  "notes": "Valid advisory training case: project state consumed as reference only."
+}
