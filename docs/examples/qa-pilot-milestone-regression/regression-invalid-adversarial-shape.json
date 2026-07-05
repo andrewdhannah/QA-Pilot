@@ -1,0 +1,21 @@
+{
+  "packet_type": "unknown_type",
+  "source_project": "librarian",
+  "consumer_project": "qa-pilot",
+  "authority_status": "authoritative_export",
+  "generated_at": "2026-07-05T12:14:00Z",
+  "source_db_revision": "rev-20260705-librarian-sprint-3",
+  "source_packet_hash": "a501dbbed9b80fb5cc5a00b9745c031ca5b71f82813aa70c6eca46491986ea98",
+  "source_docs": [],
+  "allowed_use": [
+    "qa_regression"
+  ],
+  "forbidden_use": [
+    "direct_librarian_mutation",
+    "owner_decision_substitution",
+    "authority_promotion"
+  ],
+  "owner_decision_required_for_apply": true,
+  "payload": {},
+  "custody_notes": "INVALID: packet_type 'unknown_type' is not a known type — violates PI-1"
+}

@@ -1,0 +1,32 @@
+{
+  "packet_type": "milestone_regression",
+  "source_project": "librarian",
+  "consumer_project": "qa-pilot",
+  "authority_status": "advisory_copy",
+  "generated_at": "2026-07-05T12:02:00Z",
+  "source_db_revision": "rev-20260705-librarian-sprint-3",
+  "source_packet_hash": "dada83b39480f4970a21d49f17cfae5a23add998d26ba35997c0d954c343edaa",
+  "source_docs": [
+    "active/librarian/FEATURE-STATUS.md",
+    "active/librarian/docs/qa/regression-results.json"
+  ],
+  "allowed_use": [
+    "qa_regression",
+    "training_doc_generation"
+  ],
+  "forbidden_use": [
+    "direct_librarian_mutation",
+    "owner_decision_substitution",
+    "authority_promotion"
+  ],
+  "owner_decision_required_for_apply": true,
+  "payload": {
+    "regression_results": {
+      "suite": "QA Pilot Milestone Regression",
+      "total_tests": 22,
+      "passed": 22,
+      "failed": 0
+    }
+  },
+  "custody_notes": "Regression fixture: milestone regression results export from Librarian"
+}

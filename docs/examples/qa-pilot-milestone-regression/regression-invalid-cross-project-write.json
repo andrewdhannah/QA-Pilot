@@ -1,0 +1,26 @@
+{
+  "packet_type": "qa_claim_registry",
+  "source_project": "librarian",
+  "consumer_project": "qa-pilot",
+  "authority_status": "authoritative_export",
+  "generated_at": "2026-07-05T12:12:00Z",
+  "source_db_revision": "rev-20260705-librarian-sprint-3",
+  "source_packet_hash": "a8dbd093b555a4906916aaca4b6fc2de142c296faf663f6bef33ee136d0fcac1",
+  "source_docs": [
+    "active/librarian/FEATURE-STATUS.md"
+  ],
+  "allowed_use": [
+    "qa_regression",
+    "direct_librarian_mutation"
+  ],
+  "forbidden_use": [
+    "direct_librarian_mutation",
+    "owner_decision_substitution",
+    "authority_promotion"
+  ],
+  "owner_decision_required_for_apply": true,
+  "payload": {
+    "claim_id": "QA-CROSS-001"
+  },
+  "custody_notes": "INVALID: allowed_use contains direct_librarian_mutation — violates PI-8"
+}

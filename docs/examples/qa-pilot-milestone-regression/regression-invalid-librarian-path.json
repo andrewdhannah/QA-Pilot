@@ -1,0 +1,27 @@
+{
+  "packet_type": "project_state",
+  "source_project": "librarian",
+  "consumer_project": "qa-pilot",
+  "authority_status": "authoritative_export",
+  "generated_at": "2026-07-05T12:16:00Z",
+  "source_db_revision": "rev-20260705-librarian-sprint-3",
+  "source_packet_hash": "79e669a9f95efad7c342c2a7acd42a7a0d34d2215a83be78b9ae6f11c418bde9",
+  "source_docs": [
+    "active/librarian/FEATURE-STATUS.md"
+  ],
+  "allowed_use": [
+    "qa_regression"
+  ],
+  "forbidden_use": [
+    "direct_librarian_mutation",
+    "owner_decision_substitution",
+    "authority_promotion"
+  ],
+  "owner_decision_required_for_apply": true,
+  "payload": {
+    "claim_id": "QA-REF-001",
+    "merge_action": "merge_to_librarian",
+    "librarian_ref": "active/librarian/Sources/App/MCPController.swift"
+  },
+  "custody_notes": "INVALID: payload contains merge_action key — violates PI-11 (no mutation keys)"
+}

@@ -1,0 +1,28 @@
+{
+  "packet_type": "training_source",
+  "source_project": "librarian",
+  "consumer_project": "qa-pilot",
+  "authority_status": "training_simulated",
+  "generated_at": "2026-07-05T12:15:00Z",
+  "source_db_revision": "rev-20260705-librarian-training-v2",
+  "source_packet_hash": "40e5affe69b1db36f5ef2016044539d78e20d20385589af68293909ebdf99654",
+  "source_docs": [
+    "active/librarian/docs/training/qa-scenarios-v2.md"
+  ],
+  "allowed_use": [
+    "qa_regression",
+    "simulation"
+  ],
+  "forbidden_use": [
+    "direct_librarian_mutation",
+    "owner_decision_substitution",
+    "authority_promotion"
+  ],
+  "owner_decision_required_for_apply": true,
+  "payload": {
+    "training_scenarios": [
+      {"scenario": "promotion-attempt", "expected_result": "authoritative"}
+    ]
+  },
+  "custody_notes": "INVALID: training_simulated but claims qa_regression in allowed_use — violates PI-12"
+}

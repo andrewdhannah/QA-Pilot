@@ -1,0 +1,25 @@
+{
+  "packet_type": "qa_claim_registry",
+  "source_project": "librarian",
+  "consumer_project": "qa-pilot",
+  "authority_status": "authoritative_export",
+  "generated_at": "2026-07-05T12:11:00Z",
+  "source_db_revision": "rev-20260705-librarian-sprint-3",
+  "source_packet_hash": "3c2fbefe44e4746234b21e8e811c64a586b49fe0b2e68df1b2cb14f6e267f86c",
+  "source_docs": [
+    "active/librarian/FEATURE-STATUS.md"
+  ],
+  "allowed_use": [
+    "qa_regression"
+  ],
+  "forbidden_use": [
+    "direct_librarian_mutation",
+    "owner_decision_substitution",
+    "authority_promotion"
+  ],
+  "owner_decision_required_for_apply": false,
+  "payload": {
+    "claim_id": "QA-BYPASS-001"
+  },
+  "custody_notes": "INVALID: owner_decision_required_for_apply=false — violates PI-10 (must be true)"
+}

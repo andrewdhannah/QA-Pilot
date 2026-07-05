@@ -1,0 +1,31 @@
+{
+  "packet_type": "project_state",
+  "source_project": "librarian",
+  "consumer_project": "qa-pilot",
+  "authority_status": "authoritative_export",
+  "generated_at": "2026-07-05T12:01:00Z",
+  "source_db_revision": "rev-20260705-librarian-sprint-3",
+  "source_packet_hash": "405bd86ed1b64c7d2cbd0d62e40128b2b008c16cbc40d33b7e7ffbcd2c52b29a",
+  "source_docs": [
+    "active/librarian/project-state/sprint-ledger.json",
+    "active/librarian/FEATURE-STATUS.md"
+  ],
+  "allowed_use": [
+    "qa_regression",
+    "simulation"
+  ],
+  "forbidden_use": [
+    "direct_librarian_mutation",
+    "owner_decision_substitution",
+    "authority_promotion"
+  ],
+  "owner_decision_required_for_apply": true,
+  "payload": {
+    "project_state": {
+      "phase": 1,
+      "active_sprint": "QA-PILOT-MILESTONE-REGRESSION-SUITE-1",
+      "last_sealed": "QA-PILOT-QA-PACKET-INGEST-1 (#17)"
+    }
+  },
+  "custody_notes": "Regression fixture: project state export from Librarian"
+}

@@ -1,0 +1,27 @@
+{
+  "packet_type": "project_state",
+  "source_project": "librarian",
+  "consumer_project": "qa-pilot",
+  "authority_status": "authoritative_export",
+  "generated_at": "2026-07-05T12:13:00Z",
+  "source_db_revision": "rev-20260705-librarian-sprint-3",
+  "source_packet_hash": "a7356ba15d7b654256d471262e42bc9fe9fc3eb9a554c30b61acc28c307ce91e",
+  "source_docs": [
+    "active/librarian/FEATURE-STATUS.md"
+  ],
+  "allowed_use": [
+    "qa_regression"
+  ],
+  "forbidden_use": [
+    "direct_librarian_mutation",
+    "owner_decision_substitution",
+    "authority_promotion"
+  ],
+  "owner_decision_required_for_apply": true,
+  "payload": {
+    "claim_id": "QA-MUTATE-002",
+    "seal_action": "approve_and_seal",
+    "target": "active/librarian/project-state/sprint-ledger.json"
+  },
+  "custody_notes": "INVALID: payload contains seal_action key — violates PI-11 (no mutation keys)"
+}

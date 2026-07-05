@@ -1,3 +1,42 @@
+# Session Handoff — QA-PILOT-MILESTONE-REGRESSION-SUITE-1
+
+## Status: 🔍 **Complete, pending Owner review** — Agent work complete 2026-07-05
+
+---
+
+## QA-PILOT-MILESTONE-REGRESSION-SUITE-1 — QA Pilot Milestone Regression Suite
+
+**Type:** Validation / regression suite
+**Lane:** `parallel_planning`
+**Boundary:** `qa_pilot_local`
+**Librarian impact:** `none`
+**Input dependency:** QA-PILOT-QA-PACKET-INGEST-1 (sealed ledger #17)
+
+**Scope satisfied:** Regression suite proving the sealed packet-ingest chain remains stable.
+**Boundary satisfied:** No Librarian mutation; no QA Pilot leakage into Librarian.
+**Governance satisfied:** No new ingest semantics, training behavior, MCP bridge activation, packet application path, or authority promotion. All hard boundaries enforced.
+
+**Implementation summary:**
+- **Fixtures:** 12 total (5 valid + 7 invalid) in `docs/examples/qa-pilot-milestone-regression/`
+- **Validator:** `scripts/validate-qa-pilot-milestone-regression.py` — 11 rules (MR-1 through MR-11)
+- **Test runner:** `scripts/test-qa-pilot-milestone-regression.sh` — 15 tests
+- **Governance doc:** `docs/governance/QA-PILOT-MILESTONE-REGRESSION.md` — 7 sections
+- **Invariant coverage:** advisory, cross-project-write, owner-apply, mutation rejection, reconstruction, adversarial fail-closed, boundary integrity
+- **Hard boundaries:** No Librarian mutation, no MCP bridge, no training-sim, no packet apply path, no authority promotion, no Owner decision bypass
+
+**Validation:**
+- Regression validator: 11/11 MR rules pass
+- Regression test runner: 15/15 tests pass
+- Existing PI-1-14 validator: still passes (no regression)
+- Existing ingest test runner: still passes (no regression)
+- Prohibited-zone scan: CLEAN — no Librarian files modified
+- Reconstruction test: clear → re-ingest → verify: PASS
+- Invalid fixture rejection: 7/7 invalid fixtures rejected by ingest CLI
+
+**Next authorized sprint:** QA-PILOT-LOCAL-TRAINING-SIM-1 — Build local training simulation using the proven ingest chain, guaranteed by this regression suite.
+
+---
+
 # Session Handoff — QA-PILOT-QA-PACKET-INGEST-1
 
 ## Status: ✅ **Sealed (ledger #17)** — Owner-approved 2026-07-05 per OD-QA-PILOT-QA-PACKET-INGEST-1-SEAL

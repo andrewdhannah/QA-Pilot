@@ -1,0 +1,29 @@
+{
+  "packet_type": "training_source",
+  "source_project": "librarian",
+  "consumer_project": "qa-pilot",
+  "authority_status": "training_simulated",
+  "generated_at": "2026-07-05T12:03:00Z",
+  "source_db_revision": "rev-20260705-librarian-training-v2",
+  "source_packet_hash": "c994eac9fdea51cc4223faee402a0a20d3bb6b245663208c0d2defa756e980ab",
+  "source_docs": [
+    "active/librarian/docs/training/qa-scenarios-v2.md"
+  ],
+  "allowed_use": [
+    "simulation",
+    "training_doc_generation"
+  ],
+  "forbidden_use": [
+    "direct_librarian_mutation",
+    "owner_decision_substitution",
+    "authority_promotion"
+  ],
+  "owner_decision_required_for_apply": true,
+  "payload": {
+    "training_scenarios": [
+      {"scenario": "cross-project-custody", "expected_result": "advisory_only"},
+      {"scenario": "owner-apply-gate", "expected_result": "blocked"}
+    ]
+  },
+  "custody_notes": "Regression fixture: training source packet — not usable for QA regression"
+}

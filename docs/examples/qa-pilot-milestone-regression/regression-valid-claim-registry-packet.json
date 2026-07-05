@@ -1,0 +1,30 @@
+{
+  "packet_type": "qa_claim_registry",
+  "source_project": "librarian",
+  "consumer_project": "qa-pilot",
+  "authority_status": "authoritative_export",
+  "generated_at": "2026-07-05T12:00:00Z",
+  "source_db_revision": "rev-20260705-librarian-sprint-3",
+  "source_packet_hash": "6d9cac6afe5ea92e822c33a7fc0e5e7052bd02e3b0ce4831550a1ac21669b09d",
+  "source_docs": [
+    "active/librarian/FEATURE-STATUS.md",
+    "active/librarian/SESSION-HANDOFF.md"
+  ],
+  "allowed_use": [
+    "qa_regression",
+    "simulation"
+  ],
+  "forbidden_use": [
+    "direct_librarian_mutation",
+    "owner_decision_substitution",
+    "authority_promotion"
+  ],
+  "owner_decision_required_for_apply": true,
+  "payload": {
+    "claims": [
+      {"claim_id": "QA-001", "status": "verified", "source": "librarian-sprint-3"},
+      {"claim_id": "QA-002", "status": "pending", "source": "librarian-sprint-3"}
+    ]
+  },
+  "custody_notes": "Regression fixture: QA claim registry export from Librarian sprint-3"
+}

@@ -1,0 +1,30 @@
+{
+  "packet_type": "project_state",
+  "source_project": "librarian",
+  "consumer_project": "qa-pilot",
+  "authority_status": "advisory_copy",
+  "generated_at": "2026-07-05T12:04:00Z",
+  "source_db_revision": "rev-20260705-librarian-sprint-3",
+  "source_packet_hash": "4e65a26749f012c917430cdb0d2c5eb93d9924ea02f1b6545c7ffc3789ca8afb",
+  "source_docs": [
+    "active/librarian/project-state/sprint-ledger.json"
+  ],
+  "allowed_use": [
+    "qa_regression",
+    "simulation"
+  ],
+  "forbidden_use": [
+    "direct_librarian_mutation",
+    "owner_decision_substitution",
+    "authority_promotion"
+  ],
+  "owner_decision_required_for_apply": true,
+  "payload": {
+    "derived_state": {
+      "source": "librarian-sprint-ledger",
+      "reconstructable": true,
+      "local_path": "data/packets/ingested/"
+    }
+  },
+  "custody_notes": "Regression fixture: used for derived-state reconstruction test"
+}

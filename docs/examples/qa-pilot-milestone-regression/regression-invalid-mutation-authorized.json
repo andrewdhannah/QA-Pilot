@@ -1,0 +1,27 @@
+{
+  "packet_type": "qa_claim_registry",
+  "source_project": "librarian",
+  "consumer_project": "qa-pilot",
+  "authority_status": "authoritative_export",
+  "generated_at": "2026-07-05T12:10:00Z",
+  "source_db_revision": "rev-20260705-librarian-sprint-3",
+  "source_packet_hash": "5bc5ecca7dbb95e7c07061ba80c0280e502daaabe165edea1966b689722bea5c",
+  "source_docs": [
+    "active/librarian/FEATURE-STATUS.md"
+  ],
+  "allowed_use": [
+    "qa_regression"
+  ],
+  "forbidden_use": [
+    "direct_librarian_mutation",
+    "owner_decision_substitution",
+    "authority_promotion"
+  ],
+  "owner_decision_required_for_apply": true,
+  "payload": {
+    "claim_id": "QA-MUTATE-001",
+    "seal_action": "approve_and_seal",
+    "target": "active/librarian/receipts/"
+  },
+  "custody_notes": "INVALID: payload contains seal_action — violates PI-11 (no mutation paths)"
+}
