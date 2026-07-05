@@ -10,7 +10,9 @@
     "SESSION-HANDOFF.md"
   ],
   "owner_decision_path": "receipts/decision-resolutions/",
-  "active_sprint": "QA-PILOT-PROJECT-INIT-1",
+  "governance_profile": "qa-pilot-full-governance",
+  "lifecycle_cursor_phase": 1,
+  "active_sprint": "QA-PILOT-MILESTONE-REGRESSION-SUITE-1",
   "sandbox_boundary": "harness_governed",
   "allowed_mutation_paths": [
     "docs/",

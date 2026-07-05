@@ -1,0 +1,13 @@
+{
+  "packet_type": "qa_claim_registry",
+  "source_project": "librarian",
+  "consumer_project": "qa-pilot",
+  "authority_status": "advisory_copy",
+  "generated_at": "2026-07-05T09:00:00Z",
+  "source_db_revision": "librarian-db-rev-42",
+  "source_packet_hash": "e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6",
+  "source_docs": [],
+  "allowed_use": ["qa_regression"],
+  "forbidden_use": ["direct_librarian_mutation", "owner_decision_substitution", "authority_promotion"],
+  "owner_decision_required_for_apply": false
+}

@@ -1,0 +1,8 @@
+{
+  "fixture_type": "qa_pilot_broker_audit_store_update_status",
+  "description": "Valid: transition from registered -> running",
+  "expected_behavior": "accepted",
+  "transition_path": "registered -> running",
+  "current_status": "registered",
+  "requested_status": "running"
+}

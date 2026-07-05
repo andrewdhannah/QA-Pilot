@@ -1,0 +1,9 @@
+{
+  "fixture_type": "qa_pilot_broker_audit_store_update_status",
+  "description": "Invalid: status update with different audit_id would mutate immutable field",
+  "expected_behavior": "rejected",
+  "rejection_reason": "immutable field protection: audit_id cannot be changed",
+  "current_status": "registered",
+  "requested_status": "running",
+  "immutable_field_violation": "audit_id"
+}

@@ -22,6 +22,7 @@ echo ""
 
 # Clean up any test artifacts from previous runs
 rm -f "$AUDIT_DIR"/qabr-audit-store-test-*.json
+rm -f "$AUDIT_DIR"/qabr-audit-harden-*.json
 rm -f "$REPO_ROOT/data/audit/broker-index.json"
 rm -f "$REPO_ROOT/data/audit/broker-store-status.json"
 
@@ -273,16 +274,217 @@ else
     fail "Existing custody validator regression"
 fi
 
-# ── Test 28: All 8 fixture files exist ──
+# ── Test 28 (updated): Fixture files exist (originals + hardening) ──
 TESTS=$((TESTS + 1))
 COUNT=$(ls "$FIXTURES_DIR"/*.json 2>/dev/null | wc -l | tr -d ' ')
-if [ "$COUNT" -eq 8 ]; then
-    pass "All 8 fixture files exist (4 valid + 4 invalid)"
+VALID_COUNT=$(ls "$FIXTURES_DIR"/valid-*.json 2>/dev/null | wc -l | tr -d ' ')
+INVALID_COUNT=$(ls "$FIXTURES_DIR"/invalid-*.json 2>/dev/null | wc -l | tr -d ' ')
+if [ "$COUNT" -ge 8 ]; then
+    pass "$COUNT total fixture files ($VALID_COUNT valid, $INVALID_COUNT invalid)"
 else
-    fail "Expected 8 fixtures, found $COUNT"
+    fail "Expected at least 8 fixtures, found $COUNT"
+fi
+# ── Test 29: Path traversal audit_id rejected ──
+TESTS=$((TESTS + 1))
+TRAVERSAL_FIXTURE="$FIXTURES_DIR/invalid-path-traversal-audit-id.json"
+if [ -f "$TRAVERSAL_FIXTURE" ]; then
+    REG_TRAV=$(python3 "$STORE" register "$TRAVERSAL_FIXTURE" 2>&1) || true
+    if echo "$REG_TRAV" | grep -q '"success": false'; then
+        pass "Path traversal audit_id rejected"
+    else
+        fail "Path traversal audit_id was not rejected: $(echo "$REG_TRAV" | head -3)"
+    fi
+else
+    fail "Path traversal fixture not found"
 fi
 
-# ── Test 29: Prohibited-zone scan ──
+# ── Test 30: Absolute path in audit_id rejected ──
+TESTS=$((TESTS + 1))
+ABS_FIXTURE="$FIXTURES_DIR/invalid-absolute-path-audit-id.json"
+if [ -f "$ABS_FIXTURE" ]; then
+    REG_ABS=$(python3 "$STORE" register "$ABS_FIXTURE" 2>&1) || true
+    if echo "$REG_ABS" | grep -q '"success": false'; then
+        pass "Absolute path audit_id rejected"
+    else
+        fail "Absolute path audit_id was not rejected: $(echo "$REG_ABS" | head -3)"
+    fi
+else
+    fail "Absolute path fixture not found"
+fi
+
+# ── Test 31: Duplicate audit_id rejected ──
+TESTS=$((TESTS + 1))
+DUP_FIXTURE="$FIXTURES_DIR/invalid-duplicate-audit-id.json"
+if [ -f "$DUP_FIXTURE" ]; then
+    REG_DUP=$(python3 "$STORE" register "$DUP_FIXTURE" 2>&1) || true
+    if echo "$REG_DUP" | grep -q '"success": false'; then
+        pass "Duplicate audit_id rejected"
+    else
+        fail "Duplicate audit_id was not rejected: $(echo "$REG_DUP" | head -3)"
+    fi
+else
+    fail "Duplicate fixture not found"
+fi
+
+# ── Test 32: Missing required fields rejected ──
+TESTS=$((TESTS + 1))
+MISSING_FIXTURE="$FIXTURES_DIR/invalid-missing-required-field.json"
+if [ -f "$MISSING_FIXTURE" ]; then
+    REG_MISS=$(python3 "$STORE" register "$MISSING_FIXTURE" 2>&1) || true
+    if echo "$REG_MISS" | grep -q '"success": false'; then
+        pass "Missing required field rejected"
+    else
+        fail "Missing required field was not rejected: $(echo "$REG_MISS" | head -3)"
+    fi
+else
+    fail "Missing field fixture not found"
+fi
+
+# ── Test 33: Invalid status rejected ──
+TESTS=$((TESTS + 1))
+BAD_STATUS_FIXTURE="$FIXTURES_DIR/invalid-bad-status.json"
+if [ -f "$BAD_STATUS_FIXTURE" ]; then
+    REG_BS=$(python3 "$STORE" register "$BAD_STATUS_FIXTURE" 2>&1) || true
+    if echo "$REG_BS" | grep -q '"success": false'; then
+        pass "Invalid status rejected"
+    else
+        fail "Invalid status was not rejected: $(echo "$REG_BS" | head -3)"
+    fi
+else
+    fail "Invalid status fixture not found"
+fi
+
+# ── Test 34: Bad timestamp rejected ──
+TESTS=$((TESTS + 1))
+BAD_TS_FIXTURE="$FIXTURES_DIR/invalid-bad-timestamp.json"
+if [ -f "$BAD_TS_FIXTURE" ]; then
+    REG_BTS=$(python3 "$STORE" register "$BAD_TS_FIXTURE" 2>&1) || true
+    if echo "$REG_BTS" | grep -q '"success": false'; then
+        pass "Bad timestamp rejected"
+    else
+        fail "Bad timestamp was not rejected: $(echo "$REG_BTS" | head -3)"
+    fi
+else
+    fail "Bad timestamp fixture not found"
+fi
+
+# ── Test 35: Project ID mismatch rejected ──
+TESTS=$((TESTS + 1))
+PID_FIXTURE="$FIXTURES_DIR/invalid-project-id-mismatch.json"
+if [ -f "$PID_FIXTURE" ]; then
+    REG_PID=$(python3 "$STORE" register "$PID_FIXTURE" 2>&1) || true
+    if echo "$REG_PID" | grep -q '"success": false'; then
+        pass "Project ID mismatch rejected"
+    else
+        fail "Project ID mismatch was not rejected: $(echo "$REG_PID" | head -3)"
+    fi
+else
+    fail "Project ID mismatch fixture not found"
+fi
+
+# ── Test 36: Status transition completed -> running rejected ──
+TESTS=$((TESTS + 1))
+# First register a test audit, transition to completed, then try invalid transition
+TRANS_TEST_ID="qabr-audit-harden-trans-complete"
+# Register
+python3 "$STORE" register "$FIXTURES_DIR/valid-register-audit-request.json" > /dev/null 2>&1 || true
+# Need a separate audit for transition testing - register with unique ID
+echo "{\"fixture_type\":\"test\",\"description\":\"transition test\",\"audit_receipt\":{\"audit_id\":\"$TRANS_TEST_ID\",\"receipt_type\":\"broker_audit\",\"active_project_id\":\"qa-pilot\",\"target_project_id\":\"qa-pilot\",\"requested_tool\":\"qa_pilot_receipt_register\",\"custody_record_id\":\"cc-trans-test\",\"handler_path\":\"active/qa-pilot/scripts/qa_pilot_mcp_handlers.py\",\"authority_level\":\"R1\",\"advisory_only\":true,\"output_effects\":[\"advisory_registration\"],\"audit_timestamp\":\"2026-07-02T23:00:00+00:00\",\"rollback_reference\":\"docs/governance/QA-PILOT-BROKER-IMPLEMENTATION.md\",\"validation_result\":\"pass\"}}" > /tmp/qa_pilot_trans_test.json
+python3 "$STORE" register /tmp/qa_pilot_trans_test.json > /dev/null 2>&1 || true
+# Transition to running then completed
+python3 "$STORE" update-status "$TRANS_TEST_ID" running > /dev/null 2>&1 || true
+python3 "$STORE" update-status "$TRANS_TEST_ID" completed > /dev/null 2>&1 || true
+# Now try invalid transition
+TRANS_OUT=$(python3 "$STORE" update-status "$TRANS_TEST_ID" running 2>&1) || true
+if echo "$TRANS_OUT" | grep -q '"success": false'; then
+    pass "Invalid transition (completed->running) rejected"
+else
+    fail "Invalid transition was not rejected: $(echo "$TRANS_OUT" | head -3)"
+fi
+
+# ── Test 37: Status transition failed -> running rejected ──
+TESTS=$((TESTS + 1))
+FAIL_TEST_ID="qabr-audit-harden-trans-fail"
+echo "{\"fixture_type\":\"test\",\"description\":\"transition fail test\",\"audit_receipt\":{\"audit_id\":\"$FAIL_TEST_ID\",\"receipt_type\":\"broker_audit\",\"active_project_id\":\"qa-pilot\",\"target_project_id\":\"qa-pilot\",\"requested_tool\":\"qa_pilot_receipt_register\",\"custody_record_id\":\"cc-trans-fail\",\"handler_path\":\"active/qa-pilot/scripts/qa_pilot_mcp_handlers.py\",\"authority_level\":\"R1\",\"advisory_only\":true,\"output_effects\":[\"advisory_registration\"],\"audit_timestamp\":\"2026-07-02T23:00:00+00:00\",\"rollback_reference\":\"docs/governance/QA-PILOT-BROKER-IMPLEMENTATION.md\",\"validation_result\":\"pass\"}}" > /tmp/qa_pilot_trans_fail.json
+python3 "$STORE" register /tmp/qa_pilot_trans_fail.json > /dev/null 2>&1 || true
+# Transition to running then failed
+python3 "$STORE" update-status "$FAIL_TEST_ID" running > /dev/null 2>&1 || true
+python3 "$STORE" update-status "$FAIL_TEST_ID" failed > /dev/null 2>&1 || true
+# Try invalid transition
+TRANS_FAIL_OUT=$(python3 "$STORE" update-status "$FAIL_TEST_ID" running 2>&1) || true
+if echo "$TRANS_FAIL_OUT" | grep -q '"success": false'; then
+    pass "Invalid transition (failed->running) rejected"
+else
+    fail "Invalid transition was not rejected: $(echo "$TRANS_FAIL_OUT" | head -3)"
+fi
+
+# ── Test 38: Valid status transition registered -> running accepted ──
+TESTS=$((TESTS + 1))
+RUN_TEST_ID="qabr-audit-harden-trans-to-running"
+echo "{\"fixture_type\":\"test\",\"description\":\"valid transition test\",\"audit_receipt\":{\"audit_id\":\"$RUN_TEST_ID\",\"receipt_type\":\"broker_audit\",\"active_project_id\":\"qa-pilot\",\"target_project_id\":\"qa-pilot\",\"requested_tool\":\"qa_pilot_receipt_register\",\"custody_record_id\":\"cc-trans-valid\",\"handler_path\":\"active/qa-pilot/scripts/qa_pilot_mcp_handlers.py\",\"authority_level\":\"R1\",\"advisory_only\":true,\"output_effects\":[\"advisory_registration\"],\"audit_timestamp\":\"2026-07-02T23:00:00+00:00\",\"rollback_reference\":\"docs/governance/QA-PILOT-BROKER-IMPLEMENTATION.md\",\"validation_result\":\"pass\"}}" > /tmp/qa_pilot_trans_valid.json
+python3 "$STORE" register /tmp/qa_pilot_trans_valid.json > /dev/null 2>&1 || true
+TRANS_VALID=$(python3 "$STORE" update-status "$RUN_TEST_ID" running 2>&1) || true
+if echo "$TRANS_VALID" | grep -q '"success": true'; then
+    pass "Valid transition (registered->running) accepted"
+else
+    fail "Valid transition was rejected: $(echo "$TRANS_VALID" | head -3)"
+fi
+
+# ── Test 39: Get with path traversal attempt returns error ──
+TESTS=$((TESTS + 1))
+TRAV_GET=$(python3 "$STORE" get "../../etc/passwd" 2>&1) || true
+if echo "$TRAV_GET" | grep -q "error"; then
+    pass "Get with path traversal returns error"
+else
+    fail "Get with path traversal did not return error: $(echo "$TRAV_GET" | head -3)"
+fi
+
+# ── Test 40: Listing order is deterministic ──
+TESTS=$((TESTS + 1))
+LIST_A=$(python3 "$STORE" list --limit 100 2>&1) || true
+LIST_B=$(python3 "$STORE" list --limit 100 2>&1) || true
+if [ "$LIST_A" = "$LIST_B" ]; then
+    pass "Listing order is deterministic (identical outputs)"
+else
+    fail "Listing order is not deterministic (outputs differ)"
+fi
+
+# ── Test 41: Valid status transition running -> completed accepted ──
+TESTS=$((TESTS + 1))
+COMP_TEST_ID="qabr-audit-harden-trans-to-complete"
+echo "{\"fixture_type\":\"test\",\"description\":\"valid complete transition\",\"audit_receipt\":{\"audit_id\":\"$COMP_TEST_ID\",\"receipt_type\":\"broker_audit\",\"active_project_id\":\"qa-pilot\",\"target_project_id\":\"qa-pilot\",\"requested_tool\":\"qa_pilot_receipt_register\",\"custody_record_id\":\"cc-trans-comp\",\"handler_path\":\"active/qa-pilot/scripts/qa_pilot_mcp_handlers.py\",\"authority_level\":\"R1\",\"advisory_only\":true,\"output_effects\":[\"advisory_registration\"],\"audit_timestamp\":\"2026-07-02T23:00:00+00:00\",\"rollback_reference\":\"docs/governance/QA-PILOT-BROKER-IMPLEMENTATION.md\",\"validation_result\":\"pass\"}}" > /tmp/qa_pilot_trans_comp.json
+python3 "$STORE" register /tmp/qa_pilot_trans_comp.json > /dev/null 2>&1 || true
+python3 "$STORE" update-status "$COMP_TEST_ID" running > /dev/null 2>&1 || true
+TRANS_COMP=$(python3 "$STORE" update-status "$COMP_TEST_ID" completed 2>&1) || true
+if echo "$TRANS_COMP" | grep -q '"success": true'; then
+    pass "Valid transition (running->completed) accepted"
+else
+    fail "Valid transition was rejected: $(echo "$TRANS_COMP" | head -3)"
+fi
+
+# ── Test 42: Valid status transition running -> failed accepted ──
+TESTS=$((TESTS + 1))
+FAIL_OK_ID="qabr-audit-harden-trans-to-fail"
+echo "{\"fixture_type\":\"test\",\"description\":\"valid fail transition\",\"audit_receipt\":{\"audit_id\":\"$FAIL_OK_ID\",\"receipt_type\":\"broker_audit\",\"active_project_id\":\"qa-pilot\",\"target_project_id\":\"qa-pilot\",\"requested_tool\":\"qa_pilot_receipt_register\",\"custody_record_id\":\"cc-trans-fail-ok\",\"handler_path\":\"active/qa-pilot/scripts/qa_pilot_mcp_handlers.py\",\"authority_level\":\"R1\",\"advisory_only\":true,\"output_effects\":[\"advisory_registration\"],\"audit_timestamp\":\"2026-07-02T23:00:00+00:00\",\"rollback_reference\":\"docs/governance/QA-PILOT-BROKER-IMPLEMENTATION.md\",\"validation_result\":\"pass\"}}" > /tmp/qa_pilot_trans_fail_ok.json
+python3 "$STORE" register /tmp/qa_pilot_trans_fail_ok.json > /dev/null 2>&1 || true
+python3 "$STORE" update-status "$FAIL_OK_ID" running > /dev/null 2>&1 || true
+TRANS_FAIL_OK=$(python3 "$STORE" update-status "$FAIL_OK_ID" failed 2>&1) || true
+if echo "$TRANS_FAIL_OK" | grep -q '"success": true'; then
+    pass "Valid transition (running->failed) accepted"
+else
+    fail "Valid transition was rejected: $(echo "$TRANS_FAIL_OK" | head -3)"
+fi
+
+# ── Test 43: Status update with invalid status value rejected ──
+TESTS=$((TESTS + 1))
+BAD_STATUS=$(python3 "$STORE" update-status "$RUN_TEST_ID" nonexistent_status 2>&1) || true
+if echo "$BAD_STATUS" | grep -q '"success": false'; then
+    pass "Status update with invalid status rejected"
+else
+    fail "Invalid status not rejected: $(echo "$BAD_STATUS" | head -3)"
+fi
+
+# ── Test 44: Prohibited-zone scan ──
 TESTS=$((TESTS + 1))
 PROHIBITED_HITS=""
 if [ -f "/Users/andrew/Desktop/CarbideFrame/active/librarian/scripts/qa_pilot_broker_audit_store.py" ]; then

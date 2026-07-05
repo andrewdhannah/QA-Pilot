@@ -1,0 +1,13 @@
+{
+  "packet_type": "qa_claim_registry",
+  "source_project": "librarian",
+  "consumer_project": "qa-pilot",
+  "authority_status": "authoritative_export",
+  "generated_at": "2026-07-05T09:00:00Z",
+  "source_db_revision": "librarian-db-rev-42",
+  "source_packet_hash": "",
+  "source_docs": [],
+  "allowed_use": ["qa_regression"],
+  "forbidden_use": ["direct_librarian_mutation", "owner_decision_substitution", "authority_promotion"],
+  "owner_decision_required_for_apply": true
+}

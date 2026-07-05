@@ -1,0 +1,45 @@
+{
+  "receipt_type": "owner_decision_seal",
+  "decision_id": "OD-QA-PILOT-QA-PACKET-INGEST-1-SEAL",
+  "project_id": "qa-pilot",
+  "sprint_id": "QA-PILOT-QA-PACKET-INGEST-1",
+  "ledger_number": 17,
+  "decision": "APPROVE_AND_SEAL",
+  "approved_by": "Andrew Hannah (Owner)",
+  "approved_at": "2026-07-05T09:50:00Z",
+  "decision_basis": [
+    "Scope satisfied: QA Pilot-local ingest of sealed Librarian export packets",
+    "Boundary satisfied: no Librarian mutation; no QA Pilot leakage into Librarian",
+    "Governance satisfied: advisory-only, no cross-project write authorization, Owner apply required",
+    "Validation satisfied: 4/4 valid fixtures pass, 4/4 invalid rejected, 22/22 tests pass, all existing validators still pass",
+    "Brief corrected: LIBRARIAN-QA-PACKET-EXPORT-1 is sealed upstream dependency, not future work",
+    "Boundary scan CLEAN: no Librarian files modified; prohibited-zone CLEAN",
+    "Ingested packets marked advisory=True, cross_project_write_authorized=False, owner_apply_required=True"
+  ],
+  "seal_conditions": [
+    "Do not modify packet ingestion schema without a new sprint authorization",
+    "Do not promote ingested packets to authoritative status",
+    "Do not wire auto-apply or auto-accept behavior",
+    "Do not mutate Librarian from QA Pilot ingest paths"
+  ],
+  "boundary_assertion": {
+    "project_boundary": "qa-pilot",
+    "lane": "parallel_planning",
+    "librarian_impact": "none",
+    "cross_project_registration": false,
+    "runtime_mutation_authorized": false,
+    "implementation_authorized": true
+  },
+  "evidence": [
+    "docs/schemas/qa-pilot-qa-packet-ingest.schema.json",
+    "docs/examples/qa-pilot-qa-packet-ingest/ (8 fixtures)",
+    "scripts/validate-qa-pilot-qa-packet-ingest.py (14 rules PI-1-14)",
+    "scripts/test-qa-pilot-qa-packet-ingest.sh (22 tests)",
+    "scripts/qa_pilot_qa_packet_ingest.py (validate/ingest/list/status/clear)",
+    "docs/governance/QA-PILOT-QA-PACKET-INGEST.md",
+    "docs/sprints/QA-PILOT-QA-PACKET-INGEST-1.md",
+    "receipts/decision-resolutions/od-qa-pilot-qa-packet-ingest-1.json",
+    "project-state/sprint-ledger.json (entry #17)"
+  ],
+  "authorized_next_sprint": "QA-PILOT-MILESTONE-REGRESSION-SUITE-1"
+}

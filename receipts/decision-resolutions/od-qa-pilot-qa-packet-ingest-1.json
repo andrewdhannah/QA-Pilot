@@ -1,0 +1,53 @@
+{
+  "receipt_type": "owner_sprint_authorization",
+  "authorization_id": "OD-QA-PILOT-QA-PACKET-INGEST-1",
+  "project_id": "qa-pilot",
+  "authorized_sprint_id": "QA-PILOT-QA-PACKET-INGEST-1",
+  "executing_project": "qa-pilot",
+  "lane": "parallel_planning",
+  "authorized_by": "Andrew Hannah (Owner)",
+  "authorized_at": "2026-07-05T09:40:00Z",
+  "authorization_basis": [
+    "QA-PILOT-CROSS-PROJECT-MCP-QA-BRIDGE-PLAN-1 — bridge planning sprint",
+    "Design direction DD-PROJECT-SANDBOX-MODEL-1 (2026-07-05)",
+    "Owner: 'QA Pilot may inspect, test, propose, train — never mutate Librarian authority directly'"
+  ],
+  "input_dependency": "LIBRARIAN-QA-PACKET-EXPORT-1 (sealed Librarian export packets)",
+  "authorized_scope": [
+    "QA Pilot-local packet ingestion schema",
+    "Fixtures: valid and invalid Librarian export packets",
+    "Validator: validate inbound packets against schema + custody rules",
+    "Test runner",
+    "Ingest service/CLI or advisory surface",
+    "Sprint receipt",
+    "Ledger and status updates inside QA Pilot only"
+  ],
+  "forbidden_scope": [
+    "Any Librarian file mutation",
+    "Any Librarian DB write",
+    "Any Librarian MCP registration",
+    "Any cross-project authority write",
+    "Training sim work",
+    "Regression suite execution",
+    "Auto-accept or auto-apply behavior"
+  ],
+  "acceptance_criteria": [
+    "QA Pilot can validate and ingest a governed QA export packet",
+    "Packet custody fields are enforced",
+    "Invalid authority, missing custody, stale source, or mutation-capable packets are rejected",
+    "Ingested packets are stored in QA Pilot-local derived storage",
+    "No Librarian files are modified in this sprint"
+  ],
+  "boundary_assertion": {
+    "project_boundary": "qa-pilot",
+    "lane": "parallel_planning",
+    "librarian_impact": "none",
+    "cross_project_registration": false,
+    "runtime_mutation_authorized": false,
+    "implementation_authorized": true
+  },
+  "source_references": [
+    "docs/sprints/QA-PILOT-CROSS-PROJECT-MCP-QA-BRIDGE-PLAN-1.md",
+    "receipts/decision-resolutions/dd-project-sandbox-model-1.json"
+  ]
+}

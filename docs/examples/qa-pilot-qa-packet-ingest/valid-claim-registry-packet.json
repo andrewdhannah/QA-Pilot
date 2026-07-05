@@ -1,0 +1,20 @@
+{
+  "packet_type": "qa_claim_registry",
+  "source_project": "librarian",
+  "consumer_project": "qa-pilot",
+  "authority_status": "authoritative_export",
+  "generated_at": "2026-07-05T09:00:00Z",
+  "source_db_revision": "librarian-db-rev-42",
+  "source_packet_hash": "a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2",
+  "source_docs": ["docs/governance/QA-PILOT-PROJECT-GOVERNANCE.md"],
+  "allowed_use": ["qa_regression", "training_doc_generation", "simulation"],
+  "forbidden_use": ["direct_librarian_mutation", "owner_decision_substitution", "authority_promotion"],
+  "owner_decision_required_for_apply": true,
+  "payload": {
+    "claims": [
+      {"id": "C-1", "description": "QA Pilot sandbox is authoritative for QA Pilot only"},
+      {"id": "C-2", "description": "Cross-project packets must carry custody fields"}
+    ],
+    "claim_count": 2
+  }
+}

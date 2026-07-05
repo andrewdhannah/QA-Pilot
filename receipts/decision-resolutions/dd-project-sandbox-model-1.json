@@ -1,0 +1,134 @@
+{
+  "receipt_type": "owner_design_direction",
+  "direction_id": "DD-PROJECT-SANDBOX-MODEL-1",
+  "project_id": "qa-pilot",
+  "captured_at": "2026-07-05T09:30:00Z",
+  "captured_by": "Andrew Hannah (Owner)",
+  "design_title": "Cross-Project QA / Training MCP Bridge — Governed Packet Exchange Architecture",
+  "lane": "parallel_planning",
+  "sprint_implication": "QA-PILOT-CROSS-PROJECT-MCP-QA-BRIDGE-PLAN-1",
+  "design_decisions": [
+    "Every new governed project gets its own sandbox at creation time with own DB, ledger, receipts, startup authority.",
+    "QA Pilot has its own DB and its own ledger — it is not just a folder of tests, it is a governed project.",
+    "A project sandbox is authoritative only for itself — no direct cross-project writes into another project's authority store.",
+    "Cross-project interaction uses governed packets: source DB → signed/exported packet → consumer inbound packet store.",
+    "Consuming project tags inbound packets as: advisory_copy | derived_from_librarian | non_authoritative_for_librarian.",
+    "MCP is the transport for bounded requests/responses between projects. Owner remains authority.",
+    "QA Pilot may inspect governed exports, propose QA artifacts, generate training material — never mutate Librarian authority directly.",
+    "DB access is packet-gated: Librarian DB → governed export packet → QA Pilot local derived DB (advisory/non-authoritative).",
+    "Training sim in /local is built from exported packets, labeled training_simulated — not real authority.",
+    "No cross-project write authority. All proposals flow through governed submit channels with Owner approval gate.",
+    "Librarian sprint ledger records Librarian work only. QA Pilot sprint ledger records QA Pilot work only.",
+    "If Owner accepts a QA Pilot finding into Librarian, Librarian records a separate Owner-approved intake/decision receipt."
+  ],
+  "project_authority_ownership": {
+    "librarian": ["Librarian DB", "Librarian ledger", "Librarian receipts", "Librarian startup authority", "Librarian MCP surface"],
+    "qa_pilot": ["QA Pilot DB", "QA Pilot ledger", "QA Pilot receipts", "QA Pilot startup authority", "QA Pilot derived store"],
+    "training_sim_local": ["local simulated/derived store only", "never canonical authority"]
+  },
+  "librarian_export_mcp_tools_proposed": [
+    "librarian_qa_claims_export",
+    "librarian_qa_fixture_packet_export",
+    "librarian_project_state_packet_get",
+    "librarian_milestone_regression_packet_get",
+    "librarian_training_packet_export",
+    "librarian_document_snapshot_get"
+  ],
+  "qa_pilot_submit_mcp_tools_proposed": [
+    "qa_pilot_regression_result_submit",
+    "qa_pilot_claim_gap_report_submit",
+    "qa_pilot_training_doc_candidate_submit",
+    "qa_pilot_fixture_recommendation_submit"
+  ],
+  "qa_pilot_ingest_packet_types": [
+    "planning doc snapshots",
+    "testable claim registry",
+    "fixture packs",
+    "current canonical project-state packet",
+    "milestone regression packet",
+    "training/help-doc source packet",
+    "compact context packet for simulation"
+  ],
+  "cross_project_protocol": {
+    "direction": "bidirectional via governed packets",
+    "flow": "Librarian DB → governed MCP export packet → QA Pilot inbound store → QA Pilot local derived DB",
+    "tagging": ["advisory_copy", "derived_from_librarian", "non_authoritative_for_librarian", "training_simulated"],
+    "not_allowed": "native authority for the source project, direct librarian mutation, owner decision substitution, authority promotion"
+  },
+  "sprint_breakdown": [
+    {
+      "order": 1,
+      "id": "QA-PILOT-CROSS-PROJECT-MCP-QA-BRIDGE-PLAN-1",
+      "type": "planning",
+      "intent": "Define governed MCP packet exchange: allowed packet types, request/response schema, custody fields, read/export tools, submit/proposal tools, forbidden direct mutation, QA Pilot local derived-store rules, Training Sim packet rules."
+    },
+    {
+      "order": 2,
+      "id": "LIBRARIAN-QA-PACKET-EXPORT-1",
+      "type": "librarian_side_implementation",
+      "intent": "Add bounded Librarian export surfaces for project-state packet, planning-claim packet, fixture packet, milestone-regression packet, document snapshot packet. No QA Pilot mutation."
+    },
+    {
+      "order": 3,
+      "id": "QA-PILOT-QA-PACKET-INGEST-1",
+      "type": "qa_pilot_side_implementation",
+      "intent": "Import Librarian QA packets into QA Pilot-local derived storage. Validate source project, packet hash, generated_at, authority_source, custody provenance, read-only/advisory status."
+    },
+    {
+      "order": 4,
+      "id": "QA-PILOT-MILESTONE-REGRESSION-SUITE-1",
+      "type": "qa_pilot_implementation",
+      "intent": "Run regression against imported packets. Output: pass/fail report, claim gaps, fixture gaps, unresolved Owner questions, proposed fixes."
+    },
+    {
+      "order": 5,
+      "id": "QA-PILOT-LOCAL-TRAINING-SIM-1",
+      "type": "qa_pilot_implementation",
+      "intent": "Build /local/training-sim from imported packets. Output: help-doc drafts, training scenarios, simulated Owner/agent workflows, evaluation receipts."
+    }
+  ],
+  "packet_custody_fields": {
+    "packet_type": "qa_claim_registry | project_state | milestone_regression | training_source",
+    "source_project": "librarian",
+    "consumer_project": "qa-pilot",
+    "authority_status": "authoritative_export | advisory_copy | training_simulated",
+    "generated_at": "ISO-8601",
+    "source_db_revision": "string",
+    "source_packet_hash": "sha256",
+    "source_docs": [],
+    "allowed_use": ["qa_regression", "training_doc_generation", "simulation"],
+    "forbidden_use": ["direct_librarian_mutation", "owner_decision_substitution", "authority_promotion"],
+    "owner_decision_required_for_apply": true
+  },
+  "training_sim_local_structure": {
+    "root": "/local/training-sim/",
+    "packets": {
+      "project-state/": [],
+      "milestone-regression/": [],
+      "planning-claims/": [],
+      "fixtures/": [],
+      "help-doc-sources/": []
+    },
+    "scenarios": [
+      "startup-authority",
+      "readiness-gate",
+      "seal-review",
+      "milestone-regression",
+      "owner-action-required"
+    ],
+    "runs": "run-*.json",
+    "reports": "training-report-*.md"
+  },
+  "core_rule": "Do not let QA Pilot become a hidden second Librarian. The bridge allows: read governed state, test governed state, propose improvements, build training material, simulate workflows, submit reports. It does not allow: directly changing Librarian DB, sealing Librarian work, changing roadmap/taxonomy, changing architecture baseline, promoting training results to authority.",
+  "status": "design_direction_captured",
+  "next_action": "Write QA-PILOT-CROSS-PROJECT-MCP-QA-BRIDGE-PLAN-1 sprint brief capturing all design detail. Record in QA Pilot ledger as parallel_planning lane.",
+  "scope_restriction": "Design/planning only for this sprint. QA Pilot-local only. No implementation, no Librarian mutation, no cross-project write authority, no runtime changes.",
+  "boundary_assertion": {
+    "project_boundary": "qa-pilot",
+    "lane": "parallel_planning",
+    "librarian_impact": "none",
+    "cross_project_registration": false,
+    "runtime_mutation_authorized": false,
+    "implementation_authorized": false
+  }
+}

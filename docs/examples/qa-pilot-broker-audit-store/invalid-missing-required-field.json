@@ -1,0 +1,20 @@
+{
+  "fixture_type": "qa_pilot_broker_audit_store_register",
+  "description": "Invalid: missing required field (no audit_id)",
+  "expected_behavior": "rejected",
+  "rejection_reason": "schema validation: missing required field audit_id",
+  "audit_receipt": {
+    "receipt_type": "broker_audit",
+    "active_project_id": "qa-pilot",
+    "target_project_id": "qa-pilot",
+    "requested_tool": "qa_pilot_receipt_register",
+    "custody_record_id": "cc-harden-test-003",
+    "handler_path": "active/qa-pilot/scripts/qa_pilot_mcp_handlers.py",
+    "authority_level": "R1",
+    "advisory_only": true,
+    "output_effects": ["advisory_registration"],
+    "audit_timestamp": "2026-07-02T23:00:00+00:00",
+    "rollback_reference": "docs/governance/QA-PILOT-BROKER-IMPLEMENTATION.md#8-rollback-plan",
+    "validation_result": "pass"
+  }
+}

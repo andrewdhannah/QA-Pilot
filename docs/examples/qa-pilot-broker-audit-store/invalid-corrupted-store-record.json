@@ -1,0 +1,7 @@
+{
+  "fixture_type": "qa_pilot_broker_audit_store_corruption",
+  "description": "Invalid: stored audit record with corrupted JSON content",
+  "expected_behavior": "rejected",
+  "rejection_reason": "corruption handling: stored file is not valid JSON",
+  "corrupted_content": "{invalid json here, no closing brace"
+}

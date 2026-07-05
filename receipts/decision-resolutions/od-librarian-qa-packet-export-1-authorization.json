@@ -1,0 +1,56 @@
+{
+  "receipt_type": "owner_sprint_authorization",
+  "authorization_id": "OD-LIBRARIAN-QA-PACKET-EXPORT-1-AUTHORIZATION",
+  "project_id": "qa-pilot",
+  "authorized_sprint_id": "LIBRARIAN-QA-PACKET-EXPORT-1",
+  "executing_project": "librarian",
+  "lane": "cross_project_bridge",
+  "authorized_by": "Andrew Hannah (Owner)",
+  "authorized_at": "2026-07-05T09:35:00Z",
+  "authorization_basis": [
+    "QA-PILOT-CROSS-PROJECT-MCP-QA-BRIDGE-PLAN-1 — bridge planning sprint",
+    "Design direction DD-PROJECT-SANDBOX-MODEL-1 (2026-07-05)",
+    "Owner confirms boundary invariant: QA Pilot may inspect, test, propose, train — never mutate Librarian authority directly"
+  ],
+  "authorized_scope": [
+    "Librarian-side export surfaces only",
+    "Read-only export from Librarian canonical authority sources",
+    "Governed MCP export packet generation",
+    "Packet schema validation",
+    "Hashing / provenance / custody metadata",
+    "Fixtures for valid and invalid export packets",
+    "Validator and test runner",
+    "Sprint receipt and Librarian ledger/status updates"
+  ],
+  "forbidden_scope": [
+    "QA Pilot ingestion implementation",
+    "QA Pilot derived DB creation",
+    "Training sim work",
+    "Regression suite execution",
+    "Any mutation path from QA Pilot back into Librarian",
+    "Any direct cross-project authority write",
+    "Any auto-accept or auto-apply behavior"
+  ],
+  "acceptance_criteria": [
+    "Librarian can produce a governed QA export packet",
+    "Packet includes required custody fields",
+    "Packet is explicitly advisory/export-only",
+    "Packet has deterministic validation",
+    "Invalid authority, missing custody, stale source, or mutation-capable packets are rejected",
+    "No QA Pilot files are modified in this sprint",
+    "All existing Librarian validators and tests still pass"
+  ],
+  "boundary_assertion": {
+    "project_boundary": "librarian (execution), qa-pilot (reference)",
+    "cross_project_registration": false,
+    "runtime_mutation_authorized": false,
+    "implementation_authorized": true,
+    "librarian_files_may_change": true,
+    "qa_pilot_files_may_change": false,
+    "mcp_tool_registration": "designed_only — not registered in Librarian MCP runtime"
+  },
+  "source_references": [
+    "docs/sprints/QA-PILOT-CROSS-PROJECT-MCP-QA-BRIDGE-PLAN-1.md",
+    "receipts/decision-resolutions/dd-project-sandbox-model-1.json"
+  ]
+}

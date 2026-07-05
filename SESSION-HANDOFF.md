@@ -1,3 +1,190 @@
+# Session Handoff — QA-PILOT-QA-PACKET-INGEST-1
+
+## Status: ✅ **Sealed (ledger #17)** — Owner-approved 2026-07-05 per OD-QA-PILOT-QA-PACKET-INGEST-1-SEAL
+
+---
+
+## QA-PILOT-QA-PACKET-INGEST-1 — QA Pilot QA Packet Ingest
+
+**Type:** QA Pilot-side implementation
+**Lane:** `parallel_planning`
+**Boundary:** `qa_pilot_local`
+**Librarian impact:** `none`
+**Input dependency:** LIBRARIAN-QA-PACKET-EXPORT-1 (sealed upstream)
+
+**Scope satisfied:** QA Pilot-local ingest of sealed Librarian export packets.
+**Boundary satisfied:** No Librarian mutation; no QA Pilot leakage into Librarian.
+**Governance satisfied:** Advisory-only, no cross-project write authorization, Owner apply required.
+
+**Implementation summary:**
+- **Schema:** `docs/schemas/qa-pilot-qa-packet-ingest.schema.json` — 11 required custody fields
+- **Fixtures:** 8 total (4 valid + 4 invalid) in `docs/examples/qa-pilot-qa-packet-ingest/`
+- **Validator:** `scripts/validate-qa-pilot-qa-packet-ingest.py` — 14 rules (PI-1-14)
+- **Test runner:** `scripts/test-qa-pilot-qa-packet-ingest.sh` — 22 tests
+- **Ingest CLI:** `scripts/qa_pilot_qa_packet_ingest.py` — validate/ingest/list/status/clear
+- **Governance doc:** `docs/governance/QA-PILOT-QA-PACKET-INGEST.md` — 8 sections
+- **Ingested packets marked:** `advisory=True`, `cross_project_write_authorized=False`, `owner_apply_required=True`
+
+**Validation:**
+- Packet ingest validator: 14/14 PI rules pass
+- Packet ingest test runner: 22/22 tests pass
+- All existing QA Pilot validators: still pass
+- Prohibited-zone scan: CLEAN — no Librarian files modified
+- No cross-project write paths created
+
+**Sealed by:** OD-QA-PILOT-QA-PACKET-INGEST-1-SEAL
+
+**Next authorized sprint:** QA-PILOT-MILESTONE-REGRESSION-SUITE-1
+
+---
+
+# Session Handoff — QA-PILOT-BROKER-AUDIT-STORE-HARDEN-1
+
+## Status: ✅ **Sealed (ledger #15)** — Owner-approved 2026-07-02 per Owner confirmation
+
+---
+
+## QA-PILOT-BROKER-AUDIT-STORE-HARDEN-1 — Broker Audit Store Hardening
+
+**Type:** Hardening / negative coverage
+**Mode:** QA Pilot-local broker audit store — path safety, status transitions, immutability, corruption handling, deterministic listing
+**Predecessor:** QA-PILOT-BROKER-AUDIT-STORE-IMPLEMENTATION-1 (sealed #11)
+
+**Authorization basis:** Owner-provided sprint brief (2026-07-02).
+
+**Scope restriction:** QA Pilot-local only. No Librarian mutation, startup substrate changes, MCP tools, or runtime integration.
+
+**Implementation summary:**
+- **Path safety:** `is_safe_audit_id()` rejects `/`, `\`, `..`, null bytes
+- **Schema enforcement:** `register()` now blocks persistence on schema validation failure
+- **Status transitions:** `update-status` command with `ALLOWED_TRANSITIONS` (registered→running→completed/failed, terminal states)
+- **Immutable fields:** 13 identity fields protected from mutation after registration
+- **Corruption handling:** `get()` catches JSON decode errors, returns `corruption_notice`
+- **Deterministic listing:** Sort by `stored_at` ascending
+- **7 new validator rules:** AS-13 through AS-19
+- **16 new fixtures:** path traversal, duplicates, transitions, corruption, bad timestamps, etc.
+
+**Validation:**
+- Audit store validator: 19/19 checks pass
+- Audit store test runner: 44/44 tests pass
+- 9 existing QA Pilot validators: all still pass
+- Boundary validator: PASS
+- Contract fixtures validator: PASS (12/12)
+- Registry fixtures validator: PASS (14/15)
+- QA Pilot startup: managed
+- No startup substrate files changed
+- No Librarian files changed
+
+**Sealed by:** (Pending Owner review)
+
+---
+
+# Session Handoff — PROJECT-STARTUP-CONTRACT-REGISTRY-1
+
+## Status: ✅ **Sealed (ledger #14)** — Owner-approved 2026-07-02 per Owner confirmation
+
+---
+
+## PROJECT-STARTUP-CONTRACT-REGISTRY-1 — Startup Contract Registry Selection
+
+**Type:** Governance / registration hardening
+**Mode:** Registry-backed project selection — pointer requests, registry resolves, contract validates
+**Predecessor:** PROJECT-STARTUP-CONTRACT-NEGATIVE-FIXTURES-1 (sealed #13)
+
+**Authorization basis:** Owner-provided sprint brief (2026-07-02).
+
+**Scope restriction:** No new project creation workflow, no registry UI, no MCP tool expansion, no runtime-node integration. Registry-backed selection only.
+
+**Implementation summary:**
+- **Validator:** `SessionStartup/validate-startup-registry-selection.py` — live mode + fixture mode
+- **Fixtures:** 14 registry fixtures (4 valid + 10 invalid) in `docs/examples/startup-registry/`
+- **Protocol:** AGENT-START.md §13 rewritten for registry-backed resolution
+- **Boundary doc:** Updated with registry selection flow and validation
+- **Live registry:** `startup_contract` field added to project-index.json entries
+
+**Validation:**
+- Registry live mode (QA Pilot): ✅ PASS
+- Registry live mode (Librarian): ✅ PASS
+- Registry fixture mode: 4/4 valid pass, 10/10 invalid rejected
+- Boundary validator: ✅ PASS
+- Contract fixture validator: ✅ PASS (2/2 valid, 10/10 invalid)
+- QA Pilot startup: ✅ managed
+- Librarian startup: ✅ managed
+
+**Sealed by:** (Pending Owner review)
+
+---
+
+# Session Handoff — PROJECT-STARTUP-CONTRACT-NEGATIVE-FIXTURES-1
+
+## Status: ✅ **Sealed (ledger #13)** — Owner-approved 2026-07-02 per Owner confirmation
+
+---
+
+## PROJECT-STARTUP-CONTRACT-NEGATIVE-FIXTURES-1 — Startup Contract Negative Fixtures
+
+**Type:** Validation / negative fixture coverage
+**Mode:** Deterministic rejection of invalid project startup contracts
+**Predecessor:** PROJECT-STARTUP-SYSTEM-SEPARATION-1 (sealed #12)
+
+**Authorization basis:** Owner-provided sprint brief (2026-07-02).
+
+**Scope restriction:** Must not modify generic startup files, registry/pointer behavior, live contracts, or MCP tools. Fixtures and validator only.
+
+**Implementation summary:**
+- **Fixtures:** 12 total (2 valid + 10 invalid) in `docs/examples/startup-contracts/`
+- **Validator:** `SessionStartup/validate-startup-contract-fixtures.py` — 7 check categories
+- **Rejection proof:** Missing identity doc ✗, missing check script ✗, path escape ✗, project ID mismatch ✗, wrong field types ✗, missing required fields ✗, web files on non-web project ✗, empty boundary guard ✗
+
+**Validation:**
+- Fixture validator: 2/2 valid fixtures pass, 10/10 invalid fixtures reject
+- Boundary validator: PASS (no project-specific terms in generic files)
+- QA Pilot startup: PASS (managed mode)
+- Librarian startup: PASS (managed mode)
+- No generic files, live contracts, or pointer behavior changed
+
+**Sealed by:** (Pending Owner review)
+
+**Next recommended sprint:** PROJECT-STARTUP-CONTRACT-REGISTRY-1
+
+---
+
+# Session Handoff — PROJECT-STARTUP-SYSTEM-SEPARATION-1
+
+## Status: ✅ **Sealed (ledger #12)** — Owner-approved 2026-07-02 per startup protocol confirmation
+
+---
+
+## PROJECT-STARTUP-SYSTEM-SEPARATION-1 — Startup System Separation
+
+**Type:** Governance / startup architecture
+**Mode:** Contract-based delegation — generic harness selects project, project declares shape
+**Predecessor:** QA-PILOT-BROKER-AUDIT-STORE-IMPLEMENTATION-1 (sealed #11); `start qa-pilot` blocker report
+
+**Authorization basis:** Owner-provided sprint brief (2026-07-02).
+
+**Scope restriction:** Must not create runtime integration, MCP tool expansion, product UI, or cross-project mutation beyond declared startup files.
+
+**Implementation summary:**
+- **System boundary docs:** `docs/startup/project-startup-contract-schema.json` (Draft 2020-12), `docs/startup/STARTUP-BOUNDARY-ARCHITECTURE.md`
+- **Project contracts:** `active/qa-pilot/startup-contract.json`, `active/librarian/startup-contract.json`
+- **QA Pilot startup:** `active/qa-pilot/PROJECT-STARTUP.md`, `active/qa-pilot/scripts/run-startup-checks.sh`, `active/qa-pilot/STARTUP-STATE.md`
+- **Harness updates:** AGENT-START.md (§4.0 root verification generic, §13 project selector added), ACTIVE-REPO-ROOT-RULE.md (generic Level 2), CLAUDE.md (updated protocol)
+- **Librarian updates:** PROJECT-STARTUP.md (project selector removed, references AGENT-START.md §13), run-startup-checks.sh (project-local state, dynamic project name)
+- **Boundary validator:** `SessionStartup/validate-startup-boundary.py`
+
+**Validation:**
+- Boundary validator: PASS — no project-specific terms in generic files
+- QA Pilot startup checks: PASS (managed mode, 10 validators, 10 test runners)
+- Librarian startup checks: PASS (managed mode, web app contract preserved)
+- Both startup contracts: valid per schema
+
+**Sealed by:** (Pending Owner review)
+
+**Next authorized sprint:** QA-PILOT-BROKER-AUDIT-STORE-HARDEN-1 or Owner direction.
+
+---
+
 # Session Handoff — QA-PILOT-BROKER-AUDIT-STORE-IMPLEMENTATION-1
 
 ## Status: ✅ **Sealed (ledger #11)** — Owner-approved 2026-07-02 per OD-QA-PILOT-BROKER-AUDIT-STORE-IMPLEMENTATION-1-SEAL

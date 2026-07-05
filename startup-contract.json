@@ -1,0 +1,46 @@
+{
+  "contract_schema": "startup-contract-v1",
+  "project_id": "qa-pilot",
+  "project_name": "QA Pilot",
+  "identity_source": "PROJECT-IDENTITY.md",
+  "startup_state_file": "STARTUP-STATE.md",
+  "startup_checks_script": "scripts/run-startup-checks.sh",
+  "is_web_app": false,
+  "verification_surfaces": [
+    "Python validators under scripts/validate-*.py",
+    "Shell test runners under scripts/test-*.sh",
+    "JSON schema fixtures under docs/schemas/",
+    "Example fixtures under docs/examples/"
+  ],
+  "required_files": [
+    "PROJECT-IDENTITY.md",
+    "PROJECT-PROFILE.json",
+    "project-state/sprint-ledger.json",
+    "SESSION-HANDOFF.md",
+    "FEATURE-STATUS.md"
+  ],
+  "forbidden_terms_in_generic": [
+    "Public/index.html",
+    "Public/app.js",
+    "Public/styles.css",
+    "Public/theme.css",
+    "active/librarian",
+    "sprint-3",
+    "540",
+    ".tests-baseline.json",
+    "Sources/App/",
+    "run-validation-harness.sh"
+  ],
+  "historical_root": {
+    "path": "/Users/andrew/Desktop/CarbideFrame",
+    "policy": "read-only",
+    "allowed_use": "reference-only — QA Pilot was created within CarbideFrame; workspace root is the historical anchor"
+  },
+  "context_sources": [
+    { "path": "PROJECT-IDENTITY.md", "required": true },
+    { "path": "PROJECT-PROFILE.json", "required": true },
+    { "path": "SESSION-HANDOFF.md", "required": true },
+    { "path": "FEATURE-STATUS.md", "required": false },
+    { "path": "project-state/sprint-ledger.json", "required": false }
+  ]
+}

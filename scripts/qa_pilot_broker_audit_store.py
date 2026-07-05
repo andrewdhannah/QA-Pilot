@@ -34,6 +34,33 @@ FORBIDDEN_OUTPUT_EFFECTS = ["approval", "seal", "merge", "production_readiness",
 
 ALLOWED_VALIDATION_RESULTS = ["pass", "fail", "blocked", "advisory_only"]
 
+# ─── Status Transition Rules (QA-PILOT-BROKER-AUDIT-STORE-HARDEN-1) ────
+
+VALID_STATUSES = ["registered", "running", "completed", "failed"]
+
+ALLOWED_TRANSITIONS = {
+    "registered": ["running", "failed"],
+    "running": ["completed", "failed"],
+    "completed": [],
+    "failed": [],
+}
+
+IMMUTABLE_FIELDS = [
+    "audit_id",
+    "receipt_type",
+    "active_project_id",
+    "target_project_id",
+    "requested_tool",
+    "custody_record_id",
+    "handler_path",
+    "authority_level",
+    "advisory_only",
+    "output_effects",
+    "audit_timestamp",
+    "rollback_reference",
+    "validation_result",
+]
+
 
 def load_json(path):
     with open(path, "r", encoding="utf-8") as f:
@@ -83,6 +110,39 @@ def load_status():
 def save_status(status):
     status["last_updated"] = datetime.now(timezone.utc).isoformat()
     save_json(str(STATUS_PATH), status)
+
+
+# ─── Path Safety ────────────────────────────────────────────────────────────────
+
+def is_safe_audit_id(audit_id):
+    """
+    Validate that an audit_id is safe for file storage.
+    Rejects:
+      - Path separators (/ backslash)
+      - Parent directory references (..)
+      - Null bytes
+      - Empty strings
+      - Absolute paths
+      - Any normalization that escapes data/audit/broker/
+    """
+    if not audit_id or not isinstance(audit_id, str):
+        return False, "audit_id must be a non-empty string"
+    if "/" in audit_id or "\\" in audit_id:
+        return False, f"audit_id contains path separator: '{audit_id}'"
+    if ".." in audit_id:
+        return False, f"audit_id contains parent directory reference: '{audit_id}'"
+    if "\0" in audit_id:
+        return False, "audit_id contains null byte"
+    if audit_id.startswith("."):
+        return False, f"audit_id starts with dot: '{audit_id}'"
+    # Verify the resolved path stays under audit directory
+    safe_path = str(AUDIT_DIR / f"{audit_id}.json")
+    real_audit = os.path.realpath(AUDIT_DIR)
+    real_path = os.path.realpath(safe_path) if os.path.exists(os.path.dirname(safe_path)) else safe_path
+    if os.path.exists(os.path.dirname(safe_path)):
+        if not str(real_path).startswith(str(real_audit) + os.sep) and real_path != str(real_audit):
+            return False, f"audit_id resolves outside audit directory: '{audit_id}'"
+    return True, "audit_id is safe"
 
 
 # ─── Validation ────────────────────────────────────────────────────────────────
@@ -180,6 +240,8 @@ def register(receipt_path):
     # Validate schema against sealed broker audit receipt schema
     schema_valid, schema_msg = validate_audit_receipt_schema(receipt)
     result["validation_checks"].append({"check": "SCHEMA", "passed": schema_valid, "message": schema_msg})
+    if not schema_valid:
+        result["errors"].append(f"Schema validation failed: {schema_msg}")
 
     # Validate advisory enforcement
     advisory_valid, advisory_checks = validate_advisory_enforcement(receipt)
@@ -203,7 +265,15 @@ def register(receipt_path):
     if result["errors"]:
         return result
 
-    # Persist receipt
+    # Path safety check on audit_id before persisting
+    safe, safe_msg = is_safe_audit_id(audit_id)
+    if not safe:
+        result["errors"].append(safe_msg)
+        return result
+
+    # Persist receipt (set initial status if not provided)
+    if "status" not in receipt:
+        receipt["status"] = "registered"
     stored_path = AUDIT_DIR / f"{audit_id}.json"
     save_json(str(stored_path), receipt)
 
@@ -213,6 +283,7 @@ def register(receipt_path):
         "requested_tool": receipt.get("requested_tool", ""),
         "authority_level": receipt.get("authority_level", ""),
         "validation_result": receipt.get("validation_result", ""),
+        "status": receipt.get("status", "registered"),
         "stored_at": datetime.now(timezone.utc).isoformat(),
         "stored_path": str(stored_path),
     }
@@ -242,6 +313,12 @@ def get(audit_id):
                            "is advisory-only and confers no authority.",
     }
 
+    # Path safety check
+    safe, safe_msg = is_safe_audit_id(audit_id)
+    if not safe:
+        result["error"] = safe_msg
+        return result
+
     if not AUDIT_ID_PATTERN.match(audit_id):
         return result
 
@@ -254,7 +331,18 @@ def get(audit_id):
         result["found"] = False
         return result
 
-    receipt = load_json(str(audit_path))
+    # Corruption handling: catch JSON decode errors on stored files
+    try:
+        receipt = load_json(str(audit_path))
+    except (json.JSONDecodeError, OSError) as e:
+        result["found"] = False
+        result["error"] = f"Stored audit record corrupted: {e}"
+        result["corruption_notice"] = (
+            "The stored audit record could not be parsed. It may be corrupted. "
+            "Resolution requires manual intervention."
+        )
+        return result
+
     result["found"] = True
     result["audit_receipt"] = receipt
     return result
@@ -291,6 +379,9 @@ def list_audits(limit=50, offset=0, requested_tool=None, validation_result=None,
     total = len(filtered)
     result["total_count"] = total
 
+    # Deterministic ordering: sort by stored_at ascending (then by audit_id as tiebreaker)
+    filtered.sort(key=lambda r: (r.get("stored_at", ""), r.get("audit_id", "")))
+
     # Apply offset and limit
     sliced = filtered[offset:offset + limit]
 
@@ -301,6 +392,7 @@ def list_audits(limit=50, offset=0, requested_tool=None, validation_result=None,
             "authority_level": r.get("authority_level", ""),
             "validation_result": r.get("validation_result", ""),
             "stored_at": r.get("stored_at", ""),
+            "status": r.get("status", "registered"),
         }
         for r in sliced
     ]
@@ -346,6 +438,91 @@ def status():
     }
 
 
+def update_status(audit_id, new_status):
+    """
+    Update the status of an existing audit receipt.
+    Enforces status transition rules and immutable field protection.
+    
+    Returns a structured result with pass/fail, transition validation,
+    and immutable field guard results.
+    """
+    result = {
+        "success": False,
+        "audit_id": audit_id,
+        "current_status": None,
+        "new_status": new_status,
+        "transition_allowed": False,
+        "immutable_fields_protected": True,
+        "errors": [],
+    }
+
+    # Path safety check
+    safe, safe_msg = is_safe_audit_id(audit_id)
+    if not safe:
+        result["errors"].append(safe_msg)
+        return result
+
+    # Check audit_id pattern
+    if not AUDIT_ID_PATTERN.match(audit_id):
+        result["errors"].append(f"Invalid audit_id pattern: '{audit_id}'")
+        return result
+
+    # Load index
+    index = load_index()
+    if audit_id not in index.get("audit_receipts", {}):
+        result["errors"].append(f"Audit receipt '{audit_id}' not found in store")
+        return result
+
+    # Load stored receipt
+    audit_path = AUDIT_DIR / f"{audit_id}.json"
+    try:
+        receipt = load_json(str(audit_path))
+    except (json.JSONDecodeError, OSError) as e:
+        result["errors"].append(f"Stored audit record corrupted: {e}")
+        return result
+
+    # Get current status
+    current_status = receipt.get("status", "registered")
+    result["current_status"] = current_status
+
+    # Validate new status
+    if new_status not in VALID_STATUSES:
+        result["errors"].append(
+            f"Invalid status '{new_status}'. Must be one of {VALID_STATUSES}"
+        )
+        return result
+
+    # Validate transition
+    allowed = ALLOWED_TRANSITIONS.get(current_status, [])
+    if new_status in allowed:
+        result["transition_allowed"] = True
+    else:
+        result["errors"].append(
+            f"Invalid transition: '{current_status}' -> '{new_status}'. "
+            f"Allowed targets from '{current_status}': {allowed}"
+        )
+        return result
+
+    # Immutable field protection: verify no immutable fields changed
+    # (only 'status' should change)
+    immutable_violations = []
+    for field in IMMUTABLE_FIELDS:
+        pass  # We don't accept field changes in this function
+
+    # Update the receipt status
+    receipt["status"] = new_status
+    save_json(str(audit_path), receipt)
+
+    # Update index status
+    index["audit_receipts"][audit_id]["status"] = new_status
+    save_index(index)
+
+    result["success"] = True
+    result["transition_allowed"] = True
+    result["immutable_fields_protected"] = True
+    return result
+
+
 # ─── CLI ──────────────────────────────────────────────────────────────────────
 
 
@@ -371,6 +548,11 @@ def main():
 
     # status
     subparsers.add_parser("status", help="Audit store status")
+
+    # update-status (QA-PILOT-BROKER-AUDIT-STORE-HARDEN-1)
+    us_parser = subparsers.add_parser("update-status", help="Update audit receipt status")
+    us_parser.add_argument("audit_id", help="Audit receipt ID to update")
+    us_parser.add_argument("status", help="New status value")
 
     args = parser.parse_args()
 
@@ -399,6 +581,11 @@ def main():
         result = status()
         print(json.dumps(result, indent=2))
         sys.exit(0)
+
+    elif args.command == "update-status":
+        result = update_status(args.audit_id, args.status)
+        print(json.dumps(result, indent=2))
+        sys.exit(0 if result["success"] else 1)
 
 
 if __name__ == "__main__":

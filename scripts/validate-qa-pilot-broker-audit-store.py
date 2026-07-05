@@ -17,6 +17,13 @@ Rules:
     AS-10: Store schema exists
     AS-11: Fixtures exist (valid and invalid)
     AS-12: No Librarian runtime references in store docs
+    AS-13: Path traversal audit ids are rejected
+    AS-14: Duplicate audit ids are rejected
+    AS-15: Invalid statuses are rejected
+    AS-16: Invalid status transitions are rejected
+    AS-17: Immutable fields are protected
+    AS-18: Corruption handling in get/list/status
+    AS-19: Deterministic listing order
 """
 
 import json
@@ -174,6 +181,75 @@ def check_as_12():
     return (True, "AS-12: No Librarian runtime references in store docs")
 
 
+def check_as_13():
+    """AS-13: Path traversal audit ids are rejected."""
+    if not STORE_SCRIPT.exists():
+        return (False, "AS-13: Store module not found")
+    content = STORE_SCRIPT.read_text()
+    has_is_safe = "is_safe_audit_id" in content
+    has_path_reject = "path separator" in content or "parent directory" in content
+    return ((has_is_safe and has_path_reject), "AS-13: Path traversal audit ids rejected" if (has_is_safe and has_path_reject) else "AS-13: Missing path traversal rejection")
+
+
+def check_as_14():
+    """AS-14: Duplicate audit ids are rejected."""
+    if not STORE_SCRIPT.exists():
+        return (False, "AS-14: Store module not found")
+    content = STORE_SCRIPT.read_text()
+    has_dup_check = "already exists" in content or "duplicate" in content.lower()
+    return (has_dup_check, "AS-14: Duplicate audit ids rejected" if has_dup_check else "AS-14: Missing duplicate rejection")
+
+
+def check_as_15():
+    """AS-15: Invalid statuses are rejected."""
+    if not STORE_SCRIPT.exists():
+        return (False, "AS-15: Store module not found")
+    content = STORE_SCRIPT.read_text()
+    has_valid_statuses = "VALID_STATUSES" in content
+    has_status_check = "Invalid status" in content
+    return ((has_valid_statuses and has_status_check), "AS-15: Invalid statuses rejected" if (has_valid_statuses and has_status_check) else "AS-15: Missing status validation")
+
+
+def check_as_16():
+    """AS-16: Invalid status transitions are rejected."""
+    if not STORE_SCRIPT.exists():
+        return (False, "AS-16: Store module not found")
+    content = STORE_SCRIPT.read_text()
+    has_transitions = "ALLOWED_TRANSITIONS" in content
+    has_transition_check = "Invalid transition" in content or "transition_allowed" in content
+    return ((has_transitions and has_transition_check), "AS-16: Status transitions validated" if (has_transitions and has_transition_check) else "AS-16: Missing transition validation")
+
+
+def check_as_17():
+    """AS-17: Immutable fields are protected."""
+    if not STORE_SCRIPT.exists():
+        return (False, "AS-17: Store module not found")
+    content = STORE_SCRIPT.read_text()
+    has_immutable = "IMMUTABLE_FIELDS" in content
+    has_protection = "immutable_fields_protected" in content or "immutable" in content
+    return ((has_immutable and has_protection), "AS-17: Immutable fields protected" if (has_immutable and has_protection) else "AS-17: Missing immutable field protection")
+
+
+def check_as_18():
+    """AS-18: Corruption handling in get/list/status."""
+    if not STORE_SCRIPT.exists():
+        return (False, "AS-18: Store module not found")
+    content = STORE_SCRIPT.read_text()
+    has_corruption = "corruption" in content or "corrupted" in content
+    has_catch = "except (json.JSONDecodeError" in content
+    return ((has_corruption and has_catch), "AS-18: Corruption handled gracefully" if (has_corruption and has_catch) else "AS-18: Missing corruption handling")
+
+
+def check_as_19():
+    """AS-19: Deterministic listing order."""
+    if not STORE_SCRIPT.exists():
+        return (False, "AS-19: Store module not found")
+    content = STORE_SCRIPT.read_text()
+    has_sort = ".sort(key" in content or "sorted(" in content
+    has_stored_at = "stored_at" in content
+    return ((has_sort and has_stored_at), "AS-19: Listing order deterministic" if (has_sort and has_stored_at) else "AS-19: Missing deterministic sort")
+
+
 def main():
     args = sys.argv[1:]
     list_rules = "--list-rules" in args
@@ -192,6 +268,13 @@ def main():
             "AS-10: Store schema exists",
             "AS-11: Fixtures exist (valid and invalid)",
             "AS-12: No Librarian runtime references in store docs",
+            "AS-13: Path traversal audit ids are rejected",
+            "AS-14: Duplicate audit ids are rejected",
+            "AS-15: Invalid statuses are rejected",
+            "AS-16: Invalid status transitions are rejected",
+            "AS-17: Immutable fields are protected",
+            "AS-18: Corruption handling in get/list/status",
+            "AS-19: Deterministic listing order",
         ]
         for r in rules:
             print(f"  {r}")
@@ -210,6 +293,13 @@ def main():
         ("AS-10", check_as_10, "Store schema"),
         ("AS-11", check_as_11, "Fixtures"),
         ("AS-12", check_as_12, "No Librarian refs in docs"),
+        ("AS-13", check_as_13, "Path safety"),
+        ("AS-14", check_as_14, "Duplicate rejection"),
+        ("AS-15", check_as_15, "Status validation"),
+        ("AS-16", check_as_16, "Transition validation"),
+        ("AS-17", check_as_17, "Immutable fields"),
+        ("AS-18", check_as_18, "Corruption handling"),
+        ("AS-19", check_as_19, "Deterministic listing"),
     ]
 
     all_pass = True
