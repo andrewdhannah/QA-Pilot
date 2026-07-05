@@ -1,7 +1,7 @@
 {
   "$schema": "sprint-ledger-v1",
   "description": "QA Pilot sprint ledger — canonical record of all QA Pilot sprints, their status, and metadata.",
-  "last_updated": "2026-07-05T09:55:00Z",
+  "last_updated": "2026-07-05T22:18:00Z",
   "sprints": [
     {
       "id": "QA-PILOT-CROSS-PROJECT-MCP-QA-BRIDGE-PLAN-1",
@@ -60,8 +60,8 @@
       "dependencies": ["QA-PILOT-CROSS-PROJECT-MCP-QA-BRIDGE-PLAN-1"],
       "sealed_number": 17,
       "start_head": "1652698402e6d88e49b5cb17bff51879c1d2a734",
-      "final_head": null,
-      "commit": "pending",
+      "final_head": "ebaedd46514b0f2c16e78e9305e4b1ea13eaede8",
+      "commit": "ebaedd46514b0f2c16e78e9305e4b1ea13eaede8",
       "harness": "QA Pilot-local packet ingestion: schema, fixtures (4 valid + 4 invalid), validator (14 rules PI-1-14), test runner (22 tests), ingest CLI (validate/ingest/list/status/clear), governance doc. Ingested packets marked advisory-only, cross-project-write-denied, owner-apply-required. No Librarian mutation. No regression suite. No training sim.",
       "evidence_note": "Sealed per OD-QA-PILOT-QA-PACKET-INGEST-1-SEAL (2026-07-05). All 14 PI rules pass. 22/22 tests pass. 4/4 valid fixtures pass, 4/4 invalid rejected. No Librarian files modified. All existing QA Pilot validators still pass.",
       "doc": "docs/sprints/QA-PILOT-QA-PACKET-INGEST-1.md"
@@ -275,9 +275,9 @@
       "blocked": false,
       "dependencies": ["QA-PILOT-BROKER-AUDIT-STORE-IMPLEMENTATION-1"],
       "sealed_number": 12,
-      "start_head": "1652698",
-      "final_head": null,
-      "commit": null,
+      "start_head": "1652698402e6d88e49b5cb17bff51879c1d2a734",
+      "final_head": "ebaedd46514b0f2c16e78e9305e4b1ea13eaede8",
+      "commit": "ebaedd46514b0f2c16e78e9305e4b1ea13eaede8",
       "harness": "Startup System Separation: separated generic startup harness from project-specific contracts. Created docs/startup/ with contract schema and boundary architecture. Added startup-contract.json for both QA Pilot and Librarian. Added QA Pilot scripts/run-startup-checks.sh, PROJECT-STARTUP.md, STARTUP-STATE.md. Cleaned Librarian assumptions from generic files (AGENT-START.md, ACTIVE-REPO-ROOT-RULE.md, CLAUDE.md). Added project selector protocol to AGENT-START.md §13. Added boundary validator. Both QA Pilot and Librarian startup checks pass cleanly. No project-specific terms in generic files. Owner-confirmed 2026-07-02.",
       "evidence_note": "PROJECT-STARTUP-SYSTEM-SEPARATION-1: Created 9 new files, modified 5 existing files. Generic startup is now structurally project-agnostic. QA Pilot proves a non-Librarian, non-web-app project can start cleanly through the same generic system path. Boundary validator passes — no forbidden terms in generic files. QA Pilot checks: managed mode, 10 validators, 10 test runners. Librarian checks: managed mode, web app contract preserved. Owner-confirmed 2026-07-02. See docs/sprints/PROJECT-STARTUP-SYSTEM-SEPARATION-1.md.",
       "doc": "docs/sprints/PROJECT-STARTUP-SYSTEM-SEPARATION-1.md"
@@ -293,9 +293,9 @@
       "blocked": false,
       "dependencies": ["PROJECT-STARTUP-SYSTEM-SEPARATION-1"],
       "sealed_number": 13,
-      "start_head": "1652698",
-      "final_head": null,
-      "commit": null,
+      "start_head": "1652698402e6d88e49b5cb17bff51879c1d2a734",
+      "final_head": "ebaedd46514b0f2c16e78e9305e4b1ea13eaede8",
+      "commit": "ebaedd46514b0f2c16e78e9305e4b1ea13eaede8",
       "harness": "Startup Contract Negative Fixtures: added 12 startup contract fixtures (2 valid + 10 invalid) plus fixture validator. All valid fixtures pass, all invalid fixtures reject with clear reasons. Schema compliance, path confinement, file existence, project ID match, web-app semantic, and forbidden-terms checks all proven. Cross-project paths rejected before execution. Missing check scripts rejected before execution. Validator exits nonzero for unexpected pass/fail. No generic files modified.",
       "evidence_note": "PROJECT-STARTUP-CONTRACT-NEGATIVE-FIXTURES-1: Created 13 fixture files and 1 validator. 2/2 valid fixtures pass. 10/10 invalid fixtures reject. 7 check categories: schema compliance, schema version, project ID match, path confinement (no ../ escapes), file existence (missing identity/check scripts), web-app semantic (non-web project cannot require Public/), forbidden-terms semantic (non-Librarian must guard boundary). Owner-confirmed 2026-07-02. Boundary validator still pass. QA Pilot startup: managed. Librarian startup: managed. See docs/sprints/PROJECT-STARTUP-CONTRACT-NEGATIVE-FIXTURES-1.md.",
       "doc": "docs/sprints/PROJECT-STARTUP-CONTRACT-NEGATIVE-FIXTURES-1.md"
@@ -311,9 +311,9 @@
       "blocked": false,
       "dependencies": ["PROJECT-STARTUP-CONTRACT-NEGATIVE-FIXTURES-1"],
       "sealed_number": 14,
-      "start_head": "1652698",
-      "final_head": null,
-      "commit": null,
+      "start_head": "1652698402e6d88e49b5cb17bff51879c1d2a734",
+      "final_head": "ebaedd46514b0f2c16e78e9305e4b1ea13eaede8",
+      "commit": "ebaedd46514b0f2c16e78e9305e4b1ea13eaede8",
       "harness": "Startup Contract Registry Selection: registry-backed project selection. Created 14 registry fixtures (4 valid + 10 invalid) plus registry selection validator. Added startup_contract field to live project-index.json. Rewrote AGENT-START.md §13 with registry-backed resolution flow and fail-closed invariant. Updated boundary architecture with registry selection flow. All 4/4 valid registry fixtures pass. All 10/10 invalid registry fixtures reject. Live QA Pilot selection: PASS. Live Librarian selection: PASS. All existing validators unchanged.",
       "evidence_note": "PROJECT-STARTUP-CONTRACT-REGISTRY-1: Created 16 files, modified 3 files. Registry-backed project selection implemented and validated. Pointer requests by id only (not path). Registry validates project existence, entry fields, path confinement, and project-id agreement with startup contract. Unknown project ids fail closed. Registry duplicate ids fail closed. Path escapes fail closed. No fallback project selected after failure. Owner-confirmed 2026-07-02. QA Pilot: managed. Librarian: managed. See docs/sprints/PROJECT-STARTUP-CONTRACT-REGISTRY-1.md.",
       "doc": "docs/sprints/PROJECT-STARTUP-CONTRACT-REGISTRY-1.md"
@@ -329,9 +329,9 @@
       "blocked": false,
       "dependencies": ["QA-PILOT-BROKER-AUDIT-STORE-IMPLEMENTATION-1"],
       "sealed_number": 15,
-      "start_head": "1652698",
-      "final_head": null,
-      "commit": null,
+      "start_head": "1652698402e6d88e49b5cb17bff51879c1d2a734",
+      "final_head": "ebaedd46514b0f2c16e78e9305e4b1ea13eaede8",
+      "commit": "ebaedd46514b0f2c16e78e9305e4b1ea13eaede8",
       "harness": "Broker Audit Store Hardening: path safety, schema enforcement (block on failure), status transitions (registered/running/completed/failed), immutable fields, corruption handling, deterministic listing. 44/44 tests pass. 19 AS rules pass. 9 regression validators pass. No startup substrate, Librarian, or MCP changes.",
       "evidence_note": "QA-PILOT-BROKER-AUDIT-STORE-HARDEN-1: Added is_safe_audit_id() path rejection, update-status command with ALLOWED_TRANSITIONS and IMMUTABLE_FIELDS, schema enforcement in register(), corruption handling in get(), deterministic sort in list(). 16 new fixtures. 7 new AS rules (AS-13-19). 44/44 tests pass. Owner-confirmed 2026-07-02. See docs/sprints/QA-PILOT-BROKER-AUDIT-STORE-HARDEN-1.md.",
       "doc": "docs/sprints/QA-PILOT-BROKER-AUDIT-STORE-HARDEN-1.md"
