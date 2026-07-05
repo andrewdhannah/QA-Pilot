@@ -1,0 +1,46 @@
+{
+  "receipt_type": "owner_decision_seal",
+  "decision_id": "OD-QA-PILOT-LOCAL-TRAINING-SIM-1-SEAL",
+  "project_id": "qa-pilot",
+  "sprint_id": "QA-PILOT-LOCAL-TRAINING-SIM-1",
+  "ledger_number": 19,
+  "decision": "APPROVE_AND_SEAL",
+  "approved_by": "Andrew Hannah (Owner)",
+  "approved_at": "2026-07-05T23:15:00Z",
+  "decision_basis": [
+    "Scope satisfied: QA Pilot-local simulation layer only",
+    "Artifacts complete: schemas, fixtures, validator, CLI, runner, governance doc, sprint receipt",
+    "Validation clean: 4/4 valid sim fixtures pass, 5/5 invalid rejected, 10/10 TS rules pass, 17/17 tests pass",
+    "MR regression suite still passes (no regression)",
+    "PI ingest validator still passes (no regression)",
+    "Idempotency confirmed: no duplicate sim cases on rerun",
+    "Boundary clean: no Librarian files touched",
+    "Hard constraints preserved: no fine-tuning, no runtime training loop, no packet application, no MCP bridge, no cross-project writes, no authority promotion"
+  ],
+  "seal_conditions": [
+    "Do not add runtime training loop without a new sprint authorization",
+    "Do not wire packet apply or auto-accept behavior",
+    "Do not promote advisory sim results to authoritative status",
+    "Do not mutate Librarian from QA Pilot simulation paths"
+  ],
+  "boundary_assertion": {
+    "project_boundary": "qa-pilot",
+    "lane": "parallel_planning",
+    "librarian_impact": "none",
+    "cross_project_registration": false,
+    "runtime_mutation_authorized": false,
+    "implementation_authorized": true
+  },
+  "evidence": [
+    "docs/schemas/qa-pilot-training-sim-case.schema.json",
+    "docs/schemas/qa-pilot-training-sim-result.schema.json",
+    "docs/examples/qa-pilot-training-sim/ (9 fixtures: 4 valid + 5 invalid)",
+    "scripts/validate-qa-pilot-training-sim.py (10 rules TS-1 through TS-10)",
+    "scripts/qa_pilot_training_sim.py (generate/list/validate/status/clear)",
+    "scripts/test-qa-pilot-training-sim.sh (17 tests)",
+    "docs/governance/QA-PILOT-TRAINING-SIM.md",
+    "docs/sprints/QA-PILOT-LOCAL-TRAINING-SIM-1.md",
+    "project-state/sprint-ledger.json (entry #19)"
+  ],
+  "authorized_next_sprint": "QA-PILOT-TRAINING-SIM-ADVISORY-REVIEW-1"
+}

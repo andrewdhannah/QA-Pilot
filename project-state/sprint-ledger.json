@@ -1,7 +1,7 @@
 {
   "$schema": "sprint-ledger-v1",
   "description": "QA Pilot sprint ledger — canonical record of all QA Pilot sprints, their status, and metadata.",
-  "last_updated": "2026-07-05T23:10:00Z",
+  "last_updated": "2026-07-05T23:15:00Z",
   "sprints": [
     {
       "id": "QA-PILOT-CROSS-PROJECT-MCP-QA-BRIDGE-PLAN-1",
@@ -49,7 +49,7 @@
       "id": "QA-PILOT-LOCAL-TRAINING-SIM-1",
       "title": "QA Pilot Local Training Simulation",
       "area": "simulation",
-      "status": "complete_pending_owner_review",
+      "status": "sealed",
       "lane": "parallel_planning",
       "boundary": "qa_pilot_local",
       "librarian_impact": "none",
@@ -61,7 +61,7 @@
         "QA-PILOT-QA-PACKET-INGEST-1",
         "QA-PILOT-MILESTONE-REGRESSION-SUITE-1"
       ],
-      "sealed_number": null,
+      "sealed_number": 19,
       "start_head": "2ddf1af9f15baf7b9b327ea5002730780be92413",
       "final_head": "5cfbacb894a69b0290ffcc625349bb9f2e9e594e",
       "commit": "5cfbacb894a69b0290ffcc625349bb9f2e9e594e",

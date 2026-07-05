@@ -32,7 +32,7 @@ This file tracks the verification status of features in the QA Pilot project.
 | **QA-PILOT-BROKER-AUDIT-STORE-HARDEN-1** | ✅ **Sealed (ledger #15, Owner-approved 2026-07-02)** | Broker Audit Store Hardening — path safety, schema enforcement (block on failure), status transitions (registered/running/completed/failed), immutable fields, corruption handling, deterministic listing. 44/44 tests pass. 19 AS validator rules pass. 9 regression validators still pass. 16 new fixtures. No startup substrate changes. See `docs/sprints/QA-PILOT-BROKER-AUDIT-STORE-HARDEN-1.md`. |
 | **QA-PILOT-QA-PACKET-INGEST-1** | ✅ **Sealed (ledger #17, Owner-approved 2026-07-05 per OD-QA-PILOT-QA-PACKET-INGEST-1-SEAL)** | QA Pilot QA Packet Ingest — ingested sealed Librarian export packets as advisory QA Pilot-local records. Schema (11 custody fields), 8 fixtures (4 valid + 4 invalid), validator (14 rules PI-1-14), test runner (22 tests), ingest CLI (validate/ingest/list/status/clear). All validations pass. No Librarian mutation. No cross-project write paths. See `docs/sprints/QA-PILOT-QA-PACKET-INGEST-1.md`. |
 | **QA-PILOT-MILESTONE-REGRESSION-SUITE-1** | ✅ **Sealed (ledger #18, Owner-approved 2026-07-05 per OD-QA-PILOT-MILESTONE-REGRESSION-SUITE-1-SEAL)** | Milestone regression suite — 12 regression fixtures (5 valid + 7 invalid), 11 regression rules (MR-1 through MR-11), 15 tests. All pass. Locks packet custody invariants, advisory boundary, derived-store behavior, invalid-packet rejection, no-cross-project-write rule. No Librarian mutation. See `docs/governance/QA-PILOT-MILESTONE-REGRESSION.md`.
-| **QA-PILOT-LOCAL-TRAINING-SIM-1** | 🔍 **Complete, pending Owner review** | Local training simulation layer — generates advisory sim cases from ingested packets. 2 schemas, 9 fixtures (4 valid + 5 invalid), 10 TS rules, CLI (generate/list/validate/status/clear), 17 tests. All pass. No model fine-tuning, no training loop, no packet apply, no MCP bridge, no cross-project write. See `docs/governance/QA-PILOT-TRAINING-SIM.md`.
+| **QA-PILOT-LOCAL-TRAINING-SIM-1** | ✅ **Sealed (ledger #19, Owner-approved 2026-07-05 per OD-QA-PILOT-LOCAL-TRAINING-SIM-1-SEAL)** | Local training simulation layer — generates advisory sim cases from ingested packets. 2 schemas, 9 fixtures (4 valid + 5 invalid), 10 TS rules, CLI (generate/list/validate/status/clear), 17 tests. All pass. No model fine-tuning, no training loop, no packet apply, no MCP bridge, no cross-project write. See `docs/governance/QA-PILOT-TRAINING-SIM.md`.
 
 ## 2. Project Profile
 
@@ -40,5 +40,5 @@ This file tracks the verification status of features in the QA Pilot project.
 |-------|-------|
 | project_id | `qa-pilot` |
 | sandbox_boundary | `harness_governed` |
-| active_sprint | `QA-PILOT-LOCAL-TRAINING-SIM-1` |
+| active_sprint | `QA-PILOT-TRAINING-SIM-ADVISORY-REVIEW-1` |
 | ledger_path | `project-state/sprint-ledger.json` |

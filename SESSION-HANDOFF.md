@@ -1,6 +1,6 @@
 # Session Handoff — QA-PILOT-LOCAL-TRAINING-SIM-1
 
-## Status: 🔍 **Complete, pending Owner review** — Agent work complete 2026-07-05
+## Status: ✅ **Sealed (ledger #19)** — Owner-approved 2026-07-05 per OD-QA-PILOT-LOCAL-TRAINING-SIM-1-SEAL
 
 ---
 
@@ -40,7 +40,7 @@
 - Prohibited-zone scan: CLEAN — no Librarian files modified
 - Boundary scan: no training sim files in Librarian
 
-**Next authorized sprint:** Awaiting Owner direction — QA-PILOT-CROSS-PROJECT-MCP-QA-BRIDGE-PLAN-1 follows.
+**Next authorized sprint:** QA-PILOT-TRAINING-SIM-ADVISORY-REVIEW-1 — read-only advisory review surface for sim outputs. No apply path, no MCP bridge, no model-training behavior.
 
 ---
 
