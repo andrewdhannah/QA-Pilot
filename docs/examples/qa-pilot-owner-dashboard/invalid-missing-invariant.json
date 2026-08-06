@@ -1,0 +1,14 @@
+{
+  "dashboard_id": "OD-20260720T120000",
+  "generated_at": "2026-07-20T12:00:00Z",
+  "version": "1.0",
+  "invariant": "This dashboard can approve releases.",
+  "sections": {
+    "assurance_health": { "title": "Assurance Health", "registry": {}, "continuous_loop": {}, "history": {} },
+    "active_findings": { "title": "Active Findings", "data": {} },
+    "risk_posture": { "title": "Risk Posture", "data": {} },
+    "evidence_freshness": { "title": "Evidence Freshness", "data": {} },
+    "owner_queue": { "title": "Owner Queue", "data": {} },
+    "release_readiness": { "title": "Release Readiness", "data": {} }
+  }
+}

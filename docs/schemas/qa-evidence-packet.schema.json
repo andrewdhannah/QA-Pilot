@@ -1,0 +1,83 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://qa-pilot.carbideframe/schemas/qa-evidence-packet-v1",
+  "title": "QA Evidence Packet",
+  "description": "A bounded QA evidence packet exported from a Librarian sprint for QA Pilot intake.",
+  "type": "object",
+  "required": [
+    "packet_id", "project", "sprint_id", "source_ledger",
+    "changed_files", "validation_output", "receipt_references",
+    "boundary_assertions", "provenance", "hash"
+  ],
+  "properties": {
+    "packet_id": { "type": "string", "pattern": "^EP-" },
+    "project": { "type": "string", "enum": ["librarian", "qa-pilot"] },
+    "sprint_id": { "type": "string" },
+    "source_ledger": { "type": "string" },
+    "changed_files": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "path": { "type": "string" },
+          "change_type": { "enum": ["created", "modified", "deleted", "moved"] },
+          "diff_summary": { "type": "string" }
+        },
+        "required": ["path", "change_type"]
+      },
+      "minItems": 1
+    },
+    "validation_output": {
+      "type": "object",
+      "required": ["tests_passed", "tests_failed", "summary"],
+      "properties": {
+        "tests_passed": { "type": "integer", "minimum": 0 },
+        "tests_failed": { "type": "integer", "minimum": 0 },
+        "summary": { "type": "string" }
+      }
+    },
+    "receipt_references": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "boundary_assertions": {
+      "type": "object",
+      "required": ["librarian_impact", "cross_project_registration"],
+      "properties": {
+        "librarian_impact": { "enum": ["none", "read_only", "advisory"] },
+        "cross_project_registration": { "type": "boolean" }
+      }
+    },
+    "known_defects": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "defect_id": { "type": "string" },
+          "severity": { "enum": ["low", "medium", "high", "critical"] },
+          "description": { "type": "string" }
+        }
+      }
+    },
+    "evidence_artifacts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "artifact_id": { "type": "string" },
+          "type": { "enum": ["screenshot", "log", "manual_evidence", "fixture"] },
+          "path": { "type": "string" }
+        }
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "required": ["source", "timestamp"],
+      "properties": {
+        "source": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" }
+      }
+    },
+    "hash": { "type": "string" }
+  }
+}

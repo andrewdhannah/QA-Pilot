@@ -1,0 +1,18 @@
+{
+  "schema": "owner-decision-custody-receipt-fixture-v1",
+  "fixture_type": "valid",
+  "description": "Normalized live custody warning receipt",
+  "input": {
+    "custody_source": "live",
+    "source_contract": "#24",
+    "decision": "REQUIRES_OWNER_APPROVAL",
+    "blocker_code": "OWNER_APPROVAL_MISSING",
+    "project_id": "qa-pilot",
+    "sprint_id": "SPRINT-1",
+    "file_path": "startup-contract.json",
+    "reason": "Authority file modification",
+    "mode": "live"
+  },
+  "expected_decision_type": "warning",
+  "expected_immutable": true
+}

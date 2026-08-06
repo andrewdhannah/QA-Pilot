@@ -1,0 +1,22 @@
+{
+  "entry_id": "CDQ-20260706-106",
+  "queued_at": "2026-07-06T17:45:00Z",
+  "status": "pending",
+  "source": "startup_report",
+  "finding_type": "degraded_custody",
+  "description": "This entry claims to advance the active sprint",
+  "custody_context": {
+    "contract_id": "#30",
+    "receipt_count": 0,
+    "detail": "Sprint advance claim test"
+  },
+  "advisory": true,
+  "owner_required": true,
+  "owner_decision": null,
+  "sprint_advanced": true,
+  "claims": {
+    "sprint_advanced": true,
+    "next_sprint": "SOME-SPRINT-1"
+  },
+  "cross_project": false
+}

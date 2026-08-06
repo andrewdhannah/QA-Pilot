@@ -1,0 +1,7 @@
+{
+  "label": "Invalid missing RCR section fixture",
+  "snapshot_id": "SRS-FIXTURE-NO-RCR-001",
+  "expected_rcr_receipts_found": 0,
+  "expected_rcr_status": "no_receipts",
+  "advisory_only": true
+}

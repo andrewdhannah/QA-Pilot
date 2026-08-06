@@ -1,0 +1,50 @@
+{
+  "packet_id": "HP-DEMO-HEAVY-001",
+  "source_evaluation_id": "RD-EVAL-DEMO-AUTHORITY-002",
+  "assigned_depth": "heavy",
+  "evidence_bundle_review": "E4 evidence bundle: 10 checks, 0 failures. Authority change detected — full evidence trace required.",
+  "per_finding_commentary": [
+    {
+      "finding_ref": "E4-OVERALL",
+      "commentary": "Evidence bundle complete. Authority boundary assessment attached."
+    },
+    {
+      "finding_ref": "AUTHORITY-BOUNDARY",
+      "commentary": "Authority change detected: this result modifies authority boundaries. Heavy review required per ER-1."
+    }
+  ],
+  "consistency_guard_evaluation": "RC guards: 11 checks, 0 failures. All consistency checks pass.",
+  "risk_input_breakdown": {
+    "authority_change": true,
+    "production_path_impact": true,
+    "ledger_registry_change": false,
+    "cross_node_involvement": false,
+    "partial_completion": false,
+    "incomplete_requirements_count": 0,
+    "rc_failures": "0/11",
+    "e4_failures": "0/10"
+  },
+  "cross_node_involvement_trace": "Cross-node: no. Single node only.",
+  "authority_boundary_assessment": "Authority boundary: changed. ER-1 triggered — mandatory heavy review. QA Pilot advisory-only preserved.",
+  "registry_ledger_impact_analysis": "Registry/ledger impact: no. No registry or ledger changes detected.",
+  "partial_completion_gap_evaluation": "Partial completion: no. Result is complete.",
+  "escalation_chain_documentation": [
+    {"rule_id": "ER-1", "triggered": true, "effect": "Authority change → heavy depth"},
+    {"rule_id": "ER-2", "triggered": false, "effect": "Not triggered"},
+    {"rule_id": "ER-3", "triggered": true, "effect": "Production path impact → standard floor"},
+    {"rule_id": "ER-4", "triggered": false, "effect": "Not triggered"},
+    {"rule_id": "ER-5", "triggered": false, "effect": "Not triggered"},
+    {"rule_id": "ER-6", "triggered": false, "effect": "Not triggered"},
+    {"rule_id": "ER-7", "triggered": false, "effect": "All RC checks pass"},
+    {"rule_id": "ER-8", "triggered": false, "effect": "All E4 checks pass"},
+    {"rule_id": "ER-9", "triggered": false, "effect": "Not a lightweight lane"},
+    {"rule_id": "ER-10", "triggered": true, "effect": "Multiple rules: highest depth (heavy) wins"}
+  ],
+  "full_evidence_trace": "Full evidence trace attached. All findings documented with source references.",
+  "recommendation_summary": "Risk score 17 — heavy review depth. Authority change detected. Owner review required with full evidence trace.",
+  "generated_at": "2026-07-08T07:36:00Z",
+  "authority_disclaimer": "This heavy evidence review packet is advisory-only. It does not approve intake, verify evidence, close workbench items, seal results, execute work, or replace Owner decision authority. Owner remains the final decision point. Custody is qa-pilot-local. Librarian impact is none.",
+  "custody": "qa-pilot-local",
+  "advisory_only": true,
+  "librarian_impact": "none"
+}

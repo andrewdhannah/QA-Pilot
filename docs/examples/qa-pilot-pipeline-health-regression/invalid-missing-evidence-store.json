@@ -1,0 +1,7 @@
+{
+  "label": "Invalid: missing evidence store path",
+  "test_type": "ph5_missing_path",
+  "store_path_exists": false,
+  "expected_failure": true,
+  "advisory_only": true
+}

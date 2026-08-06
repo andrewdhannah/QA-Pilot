@@ -1,0 +1,19 @@
+{
+  "handoff_id": "HI-REVIEW-0001",
+  "source_export_id": "AXPK-AUTH-0001",
+  "source_action_packet_id": "AP-AUTHORIZED-0001",
+  "source_receipt_id": "WDR-AUTH-0001",
+  "source_summary_id": "DS-REVIEW-0001",
+  "source_intake_id": "IR-REVIEW-0001",
+  "source_item_ids": ["QA-FUNC-0001"],
+  "source_evidence_ids": [],
+  "action_state": "owner_authorized",
+  "decision": "authorized",
+  "rationale": "Owner authorized triage. Under downstream review.",
+  "intake_status": "in_review",
+  "received_at": "2026-07-08T03:16:00Z",
+  "authority_disclaimer": "This action handoff intake receives an exported action path for downstream review only. It does not execute the action, authorize execution, approve intake, verify evidence, close workbench items, mutate source records, or seal anything. Custody is qa-pilot-local. Librarian impact is none.",
+  "custody": "qa-pilot-local",
+  "advisory_only": true,
+  "librarian_impact": "none"
+}

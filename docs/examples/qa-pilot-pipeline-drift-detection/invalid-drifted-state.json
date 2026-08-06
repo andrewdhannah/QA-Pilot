@@ -1,0 +1,11 @@
+{
+  "expected_layers": [
+    {"slot": 33, "id": "QA-PILOT-MCP-EVIDENCE-INTAKE-1", "layer": "evidence"}
+  ],
+  "expected_drift": true,
+  "missing_layers": ["#34", "#35", "#36", "#37", "#38", "#39", "#40", "#41", "#42", "#43", "#44", "#45", "#46", "#47", "#48"],
+  "head_mismatch": true,
+  "custody": "librarian-canonical",
+  "advisory": false,
+  "_authority_claim": "seal drifted pipeline"
+}

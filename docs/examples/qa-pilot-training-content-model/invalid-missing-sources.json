@@ -1,0 +1,34 @@
+{
+  "schema_version": "training-content-v1",
+  "pack_id": "TC-INVALID-03",
+  "title": "Invalid Missing Sources",
+  "artifact_type": "operator_guide",
+  "intended_audience": "operator",
+  "generated_at": "2026-07-08T22:00:00Z",
+  "prerequisites": [],
+  "content": {
+    "sections": [
+      {
+        "id": "s1",
+        "title": "Untethered Content",
+        "body": "This content has no source reference.",
+        "content_type": "text",
+        "sources": [],
+        "exercises": []
+      }
+    ]
+  },
+  "provenance": {
+    "librarian_sources": [],
+    "generator": "test",
+    "generator_version": "1.0.0",
+    "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "governance": {
+    "authority_posture": "advisory",
+    "owner_decision_required_for_publish": true,
+    "validation_status": "draft",
+    "source_coverage_pct": 0,
+    "ownership_state": "owned_by_librarian"
+  }
+}

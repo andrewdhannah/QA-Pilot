@@ -1,0 +1,30 @@
+{
+  "source_project": "qa-pilot",
+  "custody": "qa-pilot-local",
+  "librarian_impact": "none",
+  "advisory_only": true,
+  "timestamp": "2026-07-08T07:30:00Z",
+  "dp_surface": {
+    "packet_count": 2,
+    "dp_status": "approved_present",
+    "classification": "ready",
+    "latest_packet_id": "DP-AUTHORITY-0001",
+    "latest_packet_state": "prepared",
+    "latest_threshold_id": "TD-AUTH-0001",
+    "latest_threshold_state": "sufficient",
+    "latest_evidence_bundle_ref": "E4-BUNDLE-AUTH",
+    "latest_result_packet_ref": "QR-AUTH-001",
+    "latest_consistency_guard_refs": [],
+    "latest_timestamp": "2026-07-08T06:00:00Z",
+    "by_packet_state": {
+      "prepared": 1,
+      "needs_owner_review": 1
+    },
+    "by_threshold_state": {
+      "sufficient": 1,
+      "needs_more_context": 1
+    },
+    "approved_by": "Andrew",
+    "sealed_by": "automated"
+  }
+}

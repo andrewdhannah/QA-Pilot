@@ -1,0 +1,258 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/andrewdhannah/QA-Pilot/schemas/qa-pilot-sdk-integration.schema.json",
+  "title": "QA Pilot SDK Integration",
+  "description": "Governed read-only SDK contract for consuming Librarian evidence artifacts. Defines the 5 capability-oriented query methods (getEvidenceSnapshot, getFindings, getCompositionGraph, getProvenanceChain, getValidationArtifacts) and their return shapes. All results are advisory-only, read-only, and provenance-tracked.",
+  "type": "object",
+  "required": [
+    "sdk_version",
+    "generated_at"
+  ],
+  "properties": {
+    "sdk_version": {
+      "type": "string",
+      "const": "qa-pilot-evidence-sdk-v1",
+      "description": "SDK version identifier"
+    },
+    "contract_version": {
+      "type": "string",
+      "description": "Evidence plane contract version"
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When this SDK response was generated"
+    },
+    "evidence_generated_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When the source evidence was generated"
+    },
+    "run_id": {
+      "type": "string",
+      "description": "Evidence plane evaluation run ID"
+    },
+    "operational_mode": {
+      "type": "string",
+      "enum": ["NORMAL", "DEGRADED", "LIMITED", "RECOVERY", null],
+      "description": "Evidence plane operational mode"
+    },
+    "evidence_available": {
+      "type": "boolean",
+      "description": "Whether evidence data was available"
+    },
+    "evidence_summary": {
+      "type": "object",
+      "properties": {
+        "all_current": { "type": "boolean" },
+        "any_stale": { "type": "boolean" },
+        "any_unavailable": { "type": "boolean" },
+        "any_absent": { "type": "boolean" },
+        "critical_unavailable": { "type": "boolean" },
+        "authority_lost": { "type": "boolean" }
+      },
+      "description": "Aggregate evidence freshness summary"
+    },
+    "source_count": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Total evidence sources evaluated"
+    },
+    "status_summary": {
+      "type": "object",
+      "description": "Count of evidence by status (CURRENT, STALE, ABSENT, UNAVAILABLE)"
+    },
+    "confidence_summary": {
+      "type": "object",
+      "description": "Count of evidence by confidence level"
+    },
+    "finding_count": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Total diagnostic findings"
+    },
+    "findings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "schema": { "type": "string", "const": "diagnostic-finding-v1" },
+          "finding_id": { "type": "string", "pattern": "^F-[0-9]{4,}$" },
+          "code": { "type": "string" },
+          "category": { "type": "string" },
+          "status": { "type": "string" },
+          "severity": { "type": "string" },
+          "confidence": { "type": "string" },
+          "impact_scope": { "type": "string" },
+          "resolution_state": { "type": "string" },
+          "evidence_class": { "type": "string" }
+        },
+        "required": ["finding_id", "code", "severity", "status"]
+      },
+      "description": "Array of diagnostic-finding-v1 objects"
+    },
+    "severity_counts": {
+      "type": "object",
+      "description": "Count of findings by severity level"
+    },
+    "category_counts": {
+      "type": "object",
+      "description": "Count of findings by category"
+    },
+    "confidence_counts": {
+      "type": "object",
+      "description": "Count of findings by confidence level"
+    },
+    "sources": {
+      "type": "object",
+      "description": "Evidence source records, keyed by source ID"
+    },
+    "node_count": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Number of nodes in composition graph"
+    },
+    "edge_count": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Number of edges in composition graph"
+    },
+    "nodes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "finding_id": { "type": "string" },
+          "code": { "type": "string" },
+          "category": { "type": "string" },
+          "severity": { "type": "string" },
+          "evidence_class": { "type": "string" },
+          "root_cause_candidate": { "type": "boolean" },
+          "symptom": { "type": "boolean" }
+        }
+      },
+      "description": "Graph nodes (findings)"
+    },
+    "edges": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "source": { "type": "string" },
+          "target": { "type": "string" },
+          "type": { "type": "string" },
+          "rationale": { "type": "string" }
+        }
+      },
+      "description": "Graph edges (relationships between findings)"
+    },
+    "root_cause_candidates": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Finding IDs identified as root cause candidates"
+    },
+    "dependency_levels": {
+      "type": "object",
+      "description": "Topological dependency levels of the graph"
+    },
+    "topology": {
+      "type": "object",
+      "description": "Topological analysis of the composition graph"
+    },
+    "provenance_count": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Total provenance records"
+    },
+    "provenance_records": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "source_id": { "type": "string" },
+          "category": { "type": "string" },
+          "evidence_status": { "type": "string" },
+          "governance_confidence": { "type": ["string", "null"] },
+          "age_hours": { "type": ["number", "null"] },
+          "last_reconciled_at": { "type": ["string", "null"] }
+        }
+      },
+      "description": "Provenance records by source"
+    },
+    "by_category": {
+      "type": "object",
+      "description": "Provenance records grouped by category (runtime, projection, lifecycle, reconciliation)"
+    },
+    "freshness_summary": {
+      "type": "object",
+      "description": "Aggregate freshness of provenance records"
+    },
+    "artifacts_available": {
+      "type": "boolean",
+      "description": "Whether validation artifacts are available"
+    },
+    "read_only": {
+      "type": "boolean",
+      "const": true,
+      "description": "All SDK results are read-only"
+    },
+    "read_only_validation": {
+      "type": "object",
+      "properties": {
+        "operation": { "type": "string" },
+        "warnings": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "clean": { "type": "boolean" },
+        "advisory": { "type": "boolean", "const": true },
+        "no_mutation_path": { "type": "boolean" }
+      },
+      "description": "Read-only enforcement validation metadata"
+    },
+    "provenance_linked": {
+      "type": "boolean",
+      "description": "Whether provenance links are included in the result"
+    },
+    "no_mutation_authority": {
+      "type": "boolean",
+      "const": true,
+      "description": "Result does not confer mutation authority"
+    },
+    "error": {
+      "type": "string",
+      "description": "Error message if evidence is unavailable"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "evidence_available": { "const": false }
+        },
+        "required": ["evidence_available"]
+      },
+      "then": {
+        "required": ["error"],
+        "properties": {
+          "error": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "finding_count": { "minimum": 1 }
+        },
+        "required": ["finding_count"]
+      },
+      "then": {
+        "required": ["findings"],
+        "properties": {
+          "findings": { "type": "array", "minItems": 1 }
+        }
+      }
+    }
+  ],
+  "additionalProperties": false
+}

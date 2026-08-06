@@ -1,0 +1,35 @@
+{
+  "$schema": "owner-decision-v1",
+  "decision_id": "OD-EPIC-QA-PILOT-TRAINING-SYSTEM-1-BATCH-SEAL",
+  "date": "2026-07-08",
+  "owner": "Andrew Hannah",
+  "epic": "EPIC-QA-PILOT-TRAINING-SYSTEM-1",
+  "decision": "BATCH_APPROVE_AND_SEAL",
+  "sprints_sealed": [
+    {"id": "QA-PILOT-TRAINING-CONTENT-MODEL-1", "ledger_number": 96},
+    {"id": "QA-PILOT-TRAINING-PACKAGE-GENERATOR-1", "ledger_number": 97},
+    {"id": "QA-PILOT-TRAINING-VALIDATION-ENGINE-1", "ledger_number": 98},
+    {"id": "QA-PILOT-LEARNING-PATHS-1", "ledger_number": 99},
+    {"id": "QA-PILOT-TRAINING-SIMULATION-EXPANSION-1", "ledger_number": 100},
+    {"id": "QA-PILOT-PROJECT-TRAINING-PACKAGE-EXPORT-1", "ledger_number": 101},
+    {"id": "QA-PILOT-TRAINING-SYSTEM-MCP-SURFACE-1", "ledger_number": 102},
+    {"id": "QA-PILOT-TRAINING-SYSTEM-OPERATIONAL-BASELINE-1", "ledger_number": 103}
+  ],
+  "basis": "Batch seal of Sprints 4-11 under bounded continuation. No stop conditions triggered. All 11 sprints in EPIC-QA-PILOT-TRAINING-SYSTEM-1 now complete and sealed.",
+  "bounded_continuation": true,
+  "stop_conditions": {
+    "scope_exceeded": false,
+    "authority_model_changed": false,
+    "librarian_mutation": false,
+    "autonomous_publication": false,
+    "cross_project_write": false,
+    "validation_failures": false,
+    "design_questions": false,
+    "sprint_order_changed": false,
+    "mcp_authority_expanded": false
+  },
+  "classification": "epic_completion_batch_seal",
+  "authority": "Owner",
+  "status": "sealed",
+  "sealed_at": "2026-07-08T23:10:00Z"
+}

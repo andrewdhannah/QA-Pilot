@@ -1,0 +1,67 @@
+{
+  "linker_id": "EL-PIPELINE-ALL-FOUND-001",
+  "source_checklist_id": "EC-PIPELINE-EVIDENCE-001",
+  "title": "Pipeline Evidence Link Check — All Found",
+  "description": "Link validation for the pipeline evidence checklist. All 5 evidence refs resolved successfully against sealed pipeline stores (#33-#45).",
+  "links": [
+    {
+      "item_id": "ECI-EVIDENCE-INTAKE-001",
+      "pipeline_layer": "evidence_intake",
+      "ref": "evidence-index.json",
+      "status": "found",
+      "expected_path": "data/evidence/evidence-index.json"
+    },
+    {
+      "item_id": "ECI-TEST-COMPOSITION-001",
+      "pipeline_layer": "test_composition",
+      "ref": "test-case-index.json",
+      "status": "found",
+      "expected_path": "data/test-cases/test-case-index.json"
+    },
+    {
+      "item_id": "ECI-RESULT-EXPORT-001",
+      "pipeline_layer": "result_export",
+      "ref": "result-packet-index.json",
+      "status": "found",
+      "expected_path": "data/result-packets/result-packet-index.json"
+    },
+    {
+      "item_id": "ECI-PIPELINE-HEALTH-001",
+      "pipeline_layer": "pipeline_health",
+      "ref": "pipeline-health-report.json",
+      "status": "found"
+    },
+    {
+      "item_id": "ECI-DRIFT-DETECTION-001",
+      "pipeline_layer": "drift_detection",
+      "ref": "drift-report.json",
+      "status": "found"
+    }
+  ],
+  "aggregate": {
+    "total_links": 5,
+    "found": 5,
+    "missing": 0,
+    "stale": 0,
+    "all_found": true,
+    "missing_refs": [],
+    "stale_refs": []
+  },
+  "advisory_only": true,
+  "custody": "qa-pilot-local",
+  "librarian_impact": "none",
+  "not_seal_authority": "This evidence linker does not confer sealing authority. Sealing requires explicit Owner action.",
+  "not_librarian_mutation_authority": "This evidence linker does not authorize any Librarian file mutation. All data is QA Pilot-local.",
+  "created_at": "2026-07-07T17:20:00Z",
+  "created_by": "QA-PILOT-CHECKLIST-EVIDENCE-LINKER-1",
+  "pipeline_refs": [
+    { "layer_id": "layer_1", "layer_name": "Evidence Intake", "sprint_id": "QA-PILOT-MCP-EVIDENCE-INTAKE-1", "sealed_number": 33 },
+    { "layer_id": "layer_2", "layer_name": "Test Composition", "sprint_id": "QA-PILOT-TEST-COMPOSITION-1", "sealed_number": 34 },
+    { "layer_id": "layer_3", "layer_name": "Result Export", "sprint_id": "QA-PILOT-RESULT-PACKET-EXPORT-1", "sealed_number": 35 },
+    { "layer_id": "layer_4", "layer_name": "Epic Regression", "sprint_id": "QA-PILOT-EPIC-REGRESSION-BUILDER-1", "sealed_number": 36 },
+    { "layer_id": "layer_6", "layer_name": "Pipeline Health Regression", "sprint_id": "QA-PILOT-PIPELINE-HEALTH-REGRESSION-1", "sealed_number": 38 },
+    { "layer_id": "layer_7", "layer_name": "Drift Detection", "sprint_id": "QA-PILOT-PIPELINE-DRIFT-DETECTION-1", "sealed_number": 39 },
+    { "layer_id": "layer_12", "layer_name": "Evidence Checklist", "sprint_id": "QA-PILOT-EVIDENCE-CHECKLIST-1", "sealed_number": 44 },
+    { "layer_id": "layer_13", "layer_name": "Checklist Review Packet", "sprint_id": "QA-PILOT-CHECKLIST-REVIEW-PACKET-1", "sealed_number": 45 }
+  ]
+}

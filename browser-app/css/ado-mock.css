@@ -1,0 +1,278 @@
+/*
+ * ado-mock.css — Azure DevOps Cloud UI Chrome
+ * ============================================
+ * Mimics the visual identity of Azure DevOps (dev.azure.com, cloud version).
+ * Based on Microsoft Fluent design tokens as used in the ADO web client.
+ */
+
+:root {
+  --ado-header-bg:      #11100f;
+  --ado-header-fg:      #ffffff;
+  --ado-nav-bg:         #f8f8f8;
+  --ado-nav-active:     #0078d4;
+  --ado-nav-text:       #242424;
+  --ado-page-bg:        #f3f2f1;
+  --ado-surface:        #ffffff;
+  --ado-border:         #d1d1d1;
+  --ado-primary:        #0078d4;
+  --ado-primary-dark:   #005a9e;
+  --ado-text:           #242424;
+  --ado-text-muted:     #616161;
+  --ado-field-bg:       #ffffff;
+  --ado-tag-bg:         #e8f4fd;
+  --ado-font:           'Segoe UI', system-ui, -apple-system, sans-serif;
+}
+
+.ado-page {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background: var(--ado-page-bg);
+  font-family: var(--ado-font);
+  color: var(--ado-text);
+  overflow: hidden;
+}
+
+.ado-header {
+  height: 48px;
+  background: var(--ado-header-bg);
+  color: var(--ado-header-fg);
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.ado-logo {
+  font-weight: 600;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.ado-header-right {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.ado-avatar {
+  width: 24px;
+  height: 24px;
+  background: var(--ado-primary);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: bold;
+  color: white;
+}
+
+.ado-layout {
+  display: flex;
+  flex: 1;
+  height: calc(100vh - 48px);
+}
+
+.ado-left-nav {
+  width: 220px;
+  background: var(--ado-nav-bg);
+  border-right: 1px solid var(--ado-border);
+  overflow-y: auto;
+  flex-shrink: 0;
+}
+
+.ado-nav-heading {
+  font-size: 11px;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--ado-text-muted);
+  padding: 12px 16px 4px;
+}
+
+.ado-nav-link {
+  display: block;
+  padding: 6px 16px 6px 24px;
+  font-size: 13px;
+  color: var(--ado-nav-text);
+  text-decoration: none;
+  border-left: 3px solid transparent;
+  transition: background 0.1s;
+}
+
+.ado-nav-link:hover {
+  background: rgba(0,0,0,0.03);
+}
+
+.ado-nav-link.active {
+  border-left-color: var(--ado-nav-active);
+  color: var(--ado-primary);
+  background: rgba(0,120,212,0.06);
+}
+
+.ado-main {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.ado-breadcrumb {
+  padding: 8px 24px;
+  font-size: 12px;
+  color: var(--ado-text-muted);
+  background: var(--ado-surface);
+  border-bottom: 1px solid var(--ado-border);
+}
+
+.ado-work-item {
+  margin: 16px 24px;
+  background: var(--ado-surface);
+  border: 1px solid var(--ado-border);
+  border-radius: 2px;
+}
+
+.ado-work-item-header {
+  padding: 12px 20px;
+  border-bottom: 1px solid var(--ado-border);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.ado-type-icon {
+  font-size: 16px;
+}
+
+.ado-id-badge {
+  font-size: 12px;
+  background: var(--ado-tag-bg);
+  padding: 2px 6px;
+  border-radius: 2px;
+  color: var(--ado-primary);
+  font-weight: 600;
+}
+
+.ado-state-badge {
+  padding: 2px 10px;
+  border-radius: 10px;
+  font-size: 12px;
+  font-weight: 600;
+}
+.state-new      { background: #e5f1fb; color: #0078d4; }
+.state-active    { background: #fff4e0; color: #b45309; }
+.state-resolved  { background: #e6f4ea; color: #16a34a; }
+.state-closed    { background: #f3f2f1; color: #616161; }
+
+.ado-work-item-body {
+  display: grid;
+  grid-template-columns: 1fr 280px;
+}
+
+.ado-work-item-main {
+  padding: 20px;
+  border-right: 1px solid var(--ado-border);
+}
+
+.ado-work-item-sidebar {
+  padding: 16px;
+  background: var(--ado-nav-bg);
+  font-size: 13px;
+}
+
+.ado-field {
+  margin-bottom: 20px;
+}
+
+.ado-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ado-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  display: block;
+  margin-bottom: 6px;
+}
+
+.ado-input, .ado-select, .ado-textarea {
+  width: 100%;
+  padding: 6px 10px;
+  border: 1px solid var(--ado-border);
+  border-radius: 2px;
+  font-family: var(--ado-font);
+  font-size: 14px;
+  background: var(--ado-field-bg);
+  box-sizing: border-box;
+}
+
+.ado-input:focus, .ado-select:focus, .ado-textarea:focus {
+  outline: none;
+  border-color: var(--ado-primary);
+  box-shadow: 0 0 0 1px var(--ado-primary);
+}
+
+.is-invalid { border-color: #d13438 !important; }
+
+.ado-field-error {
+  font-size: 12px;
+  color: #d13438;
+  margin-top: 4px;
+  display: none;
+}
+.ado-field-error.visible { display: block; }
+
+.ado-repro-step {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 8px;
+  align-items: flex-start;
+}
+
+.ado-repro-step-number {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--sdo-primary, var(--ado-primary));
+  color: white;
+  font-size: 11px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.ado-save-btn {
+  background: var(--sdo-primary, var(--ado-primary));
+  color: white;
+  padding: 6px 16px;
+  border: none;
+  border-radius: 2px;
+  font-family: var(--ado-font);
+  font-size: 13px;
+  cursor: pointer;
+  transition: background 0.1s;
+}
+.ado-save-btn:hover { background: var(--ado-primary-dark); }
+
+.btn-add-step {
+  background: transparent;
+  border: 1px dashed var(--ado-border);
+  color: var(--ado-primary);
+  font-size: 12px;
+  padding: 4px 8px;
+  cursor: pointer;
+  border-radius: 2px;
+}
+.btn-remove-step {
+  background: none;
+  border: none;
+  color: #d13438;
+  cursor: pointer;
+  font-size: 14px;
+}

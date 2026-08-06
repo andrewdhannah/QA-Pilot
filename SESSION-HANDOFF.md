@@ -1,719 +1,344 @@
-# Session Handoff — QA-PILOT-LOCAL-TRAINING-SIM-1
+# Session Handoff — Active Direction
 
-## Status: ✅ **Sealed (ledger #19)** — Owner-approved 2026-07-05 per OD-QA-PILOT-LOCAL-TRAINING-SIM-1-SEAL
+## Current Epic: EPIC-ASSURANCE-CONTRACT-EVOLUTION-1
 
----
+**Status:** ✅ **DIRECTED — Owner-directed 2026-07-21**
+**Phase:** Phase 4 — Contract extraction
+**Objective:** Convert adoption evidence into stable assurance contracts without prematurely generalizing implementation-specific concepts. Complete the adoption discipline: Observe → Measure → Classify → Generalize.
 
-## QA-PILOT-LOCAL-TRAINING-SIM-1 — QA Pilot Local Training Simulation
+## Previous Epic: EPIC-ASSURANCE-OPERATIONS-ADOPTION-1
 
-**Type:** Implementation / simulation
-**Lane:** `parallel_planning`
-**Boundary:** `qa_pilot_local`
-**Librarian impact:** `none`
-**Input dependencies:** QA-PILOT-QA-PACKET-INGEST-1 (ledger #17), QA-PILOT-MILESTONE-REGRESSION-SUITE-1 (ledger #18)
+**Status:** ✅ **COMPLETE — All 4 phases sealed**
+**Milestone completed:** Adoption epic complete — model survived all 4 consumer shapes.
+**Phase transition:** Adoption → Contract extraction
 
-**Scope satisfied:** QA Pilot-local simulation layer using ingested, regression-proven QA packets as advisory training examples only.
-**Boundary satisfied:** No Librarian mutation; no QA Pilot leakage into Librarian.
-**Governance satisfied:** No model fine-tuning, no runtime training loop, no packet application path, no MCP bridge activation, no cross-project writes, no authority promotion.
+| Phase | Consumer | Shape | Key Finding | Sprint |
+|-------|----------|-------|-------------|--------|
+| Phase 1 | Librarian | Governance/documentation | Semantic portability — model generalizes beyond origin | #207 |
+| Phase 1b | Librarian adapters | Projection adaptation | Adapter pattern confirmed | #208 |
+| Phase 2 | Agent Bridge | Runtime/integration | Operational portability — compound identity gap | #209 |
+| Phase 3 | Runtime Node | Hardware/operational | Evidence model boundary — artifact vs runtime evidence | #210 |
 
-**Implementation summary:**
-- **Case schema:** `docs/schemas/qa-pilot-training-sim-case.schema.json` — 9 required fields, advisory-only constraints
-- **Result schema:** `docs/schemas/qa-pilot-training-sim-result.schema.json` — 6 required fields, read-only advisory
-- **Fixtures:** 9 total (4 valid + 5 invalid) in `docs/examples/qa-pilot-training-sim/`
-- **Validator:** `scripts/validate-qa-pilot-training-sim.py` — 10 rules (TS-1 through TS-10)
-- **CLI:** `scripts/qa_pilot_training_sim.py` — generate/list/validate/status/clear from ingested store
-- **Test runner:** `scripts/test-qa-pilot-training-sim.sh` — 17 tests
-- **Governance doc:** `docs/governance/QA-PILOT-TRAINING-SIM.md` — 9 sections
+## Epic: EPIC-ASSURANCE-CONTRACT-EVOLUTION-1
 
-**Invariant coverage:**
-- TS-1 through TS-10 cover sim_id, type, advisory, owner_decision, source, reproducibility, mutation paths, cross-project claims, unsafe quarantine, Librarian references
-- Auto-generation from ingested packets produces advisory-only, locally-reproducible sim cases
-- Generated results are read-only with advisory=true
-- Sim generation is idempotent (no duplicates on re-run)
-- All hard boundaries enforced
+**Status:** ✅ **PHASE 4 COMPLETE — All 4 phases sealed 2026-07-27**
+**Type:** contract extraction
+**Lane:** assurance
+**Boundary:** QA Pilot-local (reads all 3 consumer projects)
+**Librarian impact:** contract_interface (Phase 4 scope)
+**Dependencies:** EPIC-ASSURANCE-OPERATIONS-ADOPTION-1 (complete)
 
-**Validation:**
-- Sim validator: 4/4 valid fixtures pass, 5/5 invalid fixtures rejected, 10/10 TS rules pass
-- Sim test runner: 17/17 tests pass
-- Existing PI-1-14 validator: still passes (no regression)
-- Existing MR-1-11 regression validator: still passes (no regression)
-- Prohibited-zone scan: CLEAN — no Librarian files modified
-- Boundary scan: no training sim files in Librarian
+**Purpose:** Convert adoption evidence into stable assurance contracts without prematurely generalizing implementation-specific concepts.
 
-**Next authorized sprint:** QA-PILOT-TRAINING-SIM-ADVISORY-REVIEW-1 — read-only advisory review surface for sim outputs. No apply path, no MCP bridge, no model-training behavior.
+**Contract extraction:** Complete. All 9 identified surfaces evaluated against evidence corpus.
 
----
+### Phase 4 Extraction Outcome
 
-# Session Handoff — QA-PILOT-MILESTONE-REGRESSION-SUITE-1
+| Category | Surface | Disposition |
+|----------|---------|-------------|
+| **Promoted to contract** | Evidence state | `contracts/assurance/evidence-contract.md` |
+| | Finding derivation | `contracts/assurance/finding-contract.md` |
+| | Remediation lifecycle | `contracts/assurance/remediation-contract.md` |
+| | Owner decision boundary | `contracts/assurance/owner-decision-contract.md` |
+| | Regression lifecycle | `contracts/assurance/regression-contract.md` |
+| **Evaluated — covered** | Custody invariants | Existing #215 contracts sufficient |
+| **Evaluated — local behavior** | Finding lifecycle states | QA Pilot-local implementation, not universal |
+| **Deferred** | Verification sufficiency | No completed remediation evidence |
+| | Learning → regression | No verified fixes exist |
 
-## Status: ✅ **Sealed (ledger #18)** — Owner-approved 2026-07-05 per OD-QA-PILOT-MILESTONE-REGRESSION-SUITE-1-SEAL
+### Disposition Record — Visual Parity Epic (#153–#155)
 
----
+| Sprint | Disposition | Reason |
+|--------|------------|--------|
+| #153 Reference audit | ✅ Sealed | One-time analysis — mismatch matrix (M1-M10) is durable reference evidence |
+| #154 Landing shell remediation | ✅ Closed (superseded) | Implementation applied to pre-migration surface, overwritten by migration (#157), not restored |
+| #155 Admin/learner remediation | ✅ Closed (superseded) | Implementation applied to pre-migration surface, overwritten by migration, not restored. Execution against incomplete browser shell noted but secondary to surface replacement |
 
-## QA-PILOT-MILESTONE-REGRESSION-SUITE-1 — QA Pilot Milestone Regression Suite
+**Note:** Visual parity intent remains unfulfilled at the canonical surface level. The current `browser-app/` retains original design language (blue hero, emoji, uniform cards, no source-chips). If Librarian visual parity is desired, it requires a new implementation pass against the canonical surface.
 
-**Type:** Validation / regression suite
-**Lane:** `parallel_planning`
-**Boundary:** `qa_pilot_local`
-**Librarian impact:** `none`
-**Input dependency:** QA-PILOT-QA-PACKET-INGEST-1 (sealed ledger #17)
+### Disposition Record — Post-Canonical Reassessment
 
-**Scope satisfied:** Regression suite proving the sealed packet-ingest chain remains stable.
-**Boundary satisfied:** No Librarian mutation; no QA Pilot leakage into Librarian.
-**Governance satisfied:** No new ingest semantics, training behavior, MCP bridge activation, packet application path, or authority promotion. All hard boundaries enforced.
+| Sprint | Disposition | Reason |
+|--------|------------|--------|
+| QA-PILOT-POST-CANONICAL-SURFACE-REASSESSMENT-1 | ✅ Closed (absorbed) | Original purpose fulfilled by subsequent sealed validation: frontend roundtrip validation (#135), post-migration I18N (#170-#177), canonical surface governance rule. Reassessment is now a repeatable assurance operation.
 
-**Implementation summary:**
-- **Fixtures:** 12 total (5 valid + 7 invalid) in `docs/examples/qa-pilot-milestone-regression/`
-- **Validator:** `scripts/validate-qa-pilot-milestone-regression.py` — 11 rules (MR-1 through MR-11)
-- **Test runner:** `scripts/test-qa-pilot-milestone-regression.sh` — 15 tests
-- **Governance doc:** `docs/governance/QA-PILOT-MILESTONE-REGRESSION.md` — 7 sections
-- **Invariant coverage:** advisory, cross-project-write, owner-apply, mutation rejection, reconstruction, adversarial fail-closed, boundary integrity
-- **Hard boundaries:** No Librarian mutation, no MCP bridge, no training-sim, no packet apply path, no authority promotion, no Owner decision bypass
+### Disposition Record — I18N Epic (#148–#152)
 
-**Validation:**
-- Regression validator: 11/11 MR rules pass
-- Regression test runner: 15/15 tests pass
-- Existing PI-1-14 validator: still passes (no regression)
-- Existing ingest test runner: still passes (no regression)
-- Prohibited-zone scan: CLEAN — no Librarian files modified
-- Reconstruction test: clear → re-ingest → verify: PASS
-- Invalid fixture rejection: 7/7 invalid fixtures rejected by ingest CLI
+| Sprint | Disposition | Reason |
+|--------|------------|--------|
+| #148 I18N baseline | ✅ Sealed | Historical baseline evidence — analysis that informed later work |
+| #149 Core dictionary | ✅ Closed (superseded) | Implementation replaced by #170/#171/#173 |
+| #150 Page wiring | ✅ Closed (superseded) | Wiring replaced by post-migration #170/#171 |
+| #151 Rerender/state | ✅ Closed (superseded) | Behavior re-established by later implementation |
+| #152 Roundtrip validation | ✅ Closed (superseded) | Validation target replaced; current validation at #135 |
 
-**Next authorized sprint:** QA-PILOT-LOCAL-TRAINING-SIM-1 — Build local training simulation using the proven ingest chain, guaranteed by this regression suite.
+**Governance rule derived:** `docs/governance/CANONICAL-SURFACE-VALIDATION-RULE.md` — A completed work item may only be sealed as a current implementation artifact if the validated surface remains the canonical target.
 
----
+### Architecture Boundary Established
 
-# Session Handoff — QA-PILOT-QA-PACKET-INGEST-1
+```
+Universal Assurance Layer
+├── Evidence contract
+├── Finding derivation contract
+├── Remediation contract
+├── Owner decision contract
+└── Regression contract
 
-## Status: ✅ **Sealed (ledger #17)** — Owner-approved 2026-07-05 per OD-QA-PILOT-QA-PACKET-INGEST-1-SEAL
+Consumer Operational Layers (NOT universal)
+├── QA Pilot finding lifecycle (local)
+├── Librarian execution lifecycle (local)
+├── Agent Bridge artifact lifecycle (local)
+└── Runtime Node lifecycle (local)
+```
 
----
+The invariant is not "every consumer has the same workflow." The invariant is: "every consumer participates in the same governed evidence and authority boundaries."
 
-## QA-PILOT-QA-PACKET-INGEST-1 — QA Pilot QA Packet Ingest
+### Remaining Gap
 
-**Type:** QA Pilot-side implementation
-**Lane:** `parallel_planning`
-**Boundary:** `qa_pilot_local`
-**Librarian impact:** `none`
-**Input dependency:** LIBRARIAN-QA-PACKET-EXPORT-1 (sealed upstream)
+The assurance model is complete enough for operational use. The remaining blocker is **execution activation** — not assurance definition. The deferred surfaces (verification, learning→regression) require an operational loop: Finding → Owner Decision → Work Proposal → Work Packet → Execution → Verification Evidence → Regression Learning.
 
-**Scope satisfied:** QA Pilot-local ingest of sealed Librarian export packets.
-**Boundary satisfied:** No Librarian mutation; no QA Pilot leakage into Librarian.
-**Governance satisfied:** Advisory-only, no cross-project write authorization, Owner apply required.
+**Extraction pipeline:**
+```
+Evidence Corpus
+    |
+    v
+Repeated Observation
+    |
+    v
+Cross-Consumer Comparison
+    |
+    v
+Invariant Candidate
+    |
+    v
+Contract Candidate
+    |
+    v
+Formal Assurance Contract
+```
 
-**Implementation summary:**
-- **Schema:** `docs/schemas/qa-pilot-qa-packet-ingest.schema.json` — 11 required custody fields
-- **Fixtures:** 8 total (4 valid + 4 invalid) in `docs/examples/qa-pilot-qa-packet-ingest/`
-- **Validator:** `scripts/validate-qa-pilot-qa-packet-ingest.py` — 14 rules (PI-1-14)
-- **Test runner:** `scripts/test-qa-pilot-qa-packet-ingest.sh` — 22 tests
-- **Ingest CLI:** `scripts/qa_pilot_qa_packet_ingest.py` — validate/ingest/list/status/clear
-- **Governance doc:** `docs/governance/QA-PILOT-QA-PACKET-INGEST.md` — 8 sections
-- **Ingested packets marked:** `advisory=True`, `cross_project_write_authorized=False`, `owner_apply_required=True`
+**The invariant test:** Single consumer observation ≠ contract candidate. Multiple consumer shapes + stable behavior independent of implementation = contract candidate.
 
-**Validation:**
-- Packet ingest validator: 14/14 PI rules pass
-- Packet ingest test runner: 22/22 tests pass
-- All existing QA Pilot validators: still pass
-- Prohibited-zone scan: CLEAN — no Librarian files modified
-- No cross-project write paths created
+**Classification buckets for each pattern found:**
+| Classification | Meaning | Action |
+|---------------|---------|--------|
+| Local behavior | Specific to one consumer or implementation | Retain as evidence only |
+| Repeated practice | Appears multiple times but lacks universal boundary | Continue observing |
+| Stable invariant | Survives across shapes and contexts | Promote into contract |
 
-**Sealed by:** OD-QA-PILOT-QA-PACKET-INGEST-1-SEAL
+**Extraction ordering (evidence-driven — revised 2026-07-27):**
 
-**Next authorized sprint:** QA-PILOT-MILESTONE-REGRESSION-SUITE-1
+| Surface | Status | Reason |
+|---------|--------|--------|
+| Evidence state | ✅ Complete | #215 |
+| Finding derivation | ✅ Complete | #215 |
+| Remediation lifecycle | ✅ Complete | #215 |
+| Owner decision boundary | ✅ Complete | #215 |
+| Regression lifecycle model | ✅ Complete | #215 |
+| Custody invariants | ✅ Evaluated | Covered by existing contracts — no new contract |
+| Verification sufficiency | ⏸ Deferred | No completed remediation evidence in corpus |
+| Learning → regression | ⏸ Deferred | No verified fixes exist; requires P1 first |
+| Finding lifecycle states | 🔍 Candidate | Corpus: 17 OPEN, 0 transitions. Expected outcome: no invariant unless non-state lifecycle behavior survives cross-consumer test |
 
----
+**Note on test ownership (governance rule — not a contract):**
+- A test belongs in QA Pilot when its failure means "the governed system violated an assurance contract."
+- A test belongs in the implementation repo when its failure means "this component does not function correctly."
+- This prevents QA Pilot from becoming a second copy of every project's test suite while preserving it as the assurance verification plane.
 
-# Session Handoff — QA-PILOT-BROKER-AUDIT-STORE-HARDEN-1
+**Constraint:** A contract should only exist because the evidence corpus demonstrates a stable invariant, not because the system would benefit from having one.
 
-## Status: ✅ **Sealed (ledger #15)** — Owner-approved 2026-07-02 per Owner confirmation
+**Phase 4 extraction categories:**
+| Category | Status |
+|----------|--------|
+| Proven from evidence → Formal contracts | #215 (5 contracts) |
+| Not yet proven → Deferred | Verification sufficiency, finding lifecycle, learning→regression |
+| Ready for extraction | Custody invariants |
 
----
+Librarian work packet service (P1) is a separate parallel track — no dependency inversion required. QA Pilot Phase 4 asks "what must be true?"; Librarian asks "how is authorized work executed?"
 
-## QA-PILOT-BROKER-AUDIT-STORE-HARDEN-1 — Broker Audit Store Hardening
+**Key decisions:**
 
-**Type:** Hardening / negative coverage
-**Mode:** QA Pilot-local broker audit store — path safety, status transitions, immutability, corruption handling, deterministic listing
-**Predecessor:** QA-PILOT-BROKER-AUDIT-STORE-IMPLEMENTATION-1 (sealed #11)
+| Decision | Priority | Status | Source |
+|----------|----------|--------|--------|
+| `assurance_record` vs `assurance_snapshot` | HIGH — evidence-backed | ✅ Extracted as contract | Runtime Node (#210) |
+| Evidence freshness semantics | HIGH | ✅ Extracted as contract | Cross-cutting |
+| QA Pilot → Librarian work proposals | HIGH | ✅ Interface defined (#214), blocked by P1 | #214 |
+| Compound identity | MEDIUM | Observation — not promoted to contract | Agent Bridge (#209) |
+| Runtime-specific adapters | LOW | Covered by adapter boundary pattern | Cross-cutting |
 
-**Authorization basis:** Owner-provided sprint brief (2026-07-02).
+**Adoption discipline:** Observe → Measure → Classify → Generalize
 
-**Scope restriction:** QA Pilot-local only. No Librarian mutation, startup substrate changes, MCP tools, or runtime integration.
+## Previous Epic: EPIC-ASSURANCE-OPERATIONS-ADOPTION-1
 
-**Implementation summary:**
-- **Path safety:** `is_safe_audit_id()` rejects `/`, `\`, `..`, null bytes
-- **Schema enforcement:** `register()` now blocks persistence on schema validation failure
-- **Status transitions:** `update-status` command with `ALLOWED_TRANSITIONS` (registered→running→completed/failed, terminal states)
-- **Immutable fields:** 13 identity fields protected from mutation after registration
-- **Corruption handling:** `get()` catches JSON decode errors, returns `corruption_notice`
-- **Deterministic listing:** Sort by `stored_at` ascending
-- **7 new validator rules:** AS-13 through AS-19
-- **16 new fixtures:** path traversal, duplicates, transitions, corruption, bad timestamps, etc.
-
-**Validation:**
-- Audit store validator: 19/19 checks pass
-- Audit store test runner: 44/44 tests pass
-- 9 existing QA Pilot validators: all still pass
-- Boundary validator: PASS
-- Contract fixtures validator: PASS (12/12)
-- Registry fixtures validator: PASS (14/15)
-- QA Pilot startup: managed
-- No startup substrate files changed
-- No Librarian files changed
-
-**Sealed by:** (Pending Owner review)
-
----
-
-# Session Handoff — PROJECT-STARTUP-CONTRACT-REGISTRY-1
-
-## Status: ✅ **Sealed (ledger #14)** — Owner-approved 2026-07-02 per Owner confirmation
-
----
-
-## PROJECT-STARTUP-CONTRACT-REGISTRY-1 — Startup Contract Registry Selection
-
-**Type:** Governance / registration hardening
-**Mode:** Registry-backed project selection — pointer requests, registry resolves, contract validates
-**Predecessor:** PROJECT-STARTUP-CONTRACT-NEGATIVE-FIXTURES-1 (sealed #13)
-
-**Authorization basis:** Owner-provided sprint brief (2026-07-02).
-
-**Scope restriction:** No new project creation workflow, no registry UI, no MCP tool expansion, no runtime-node integration. Registry-backed selection only.
-
-**Implementation summary:**
-- **Validator:** `SessionStartup/validate-startup-registry-selection.py` — live mode + fixture mode
-- **Fixtures:** 14 registry fixtures (4 valid + 10 invalid) in `docs/examples/startup-registry/`
-- **Protocol:** AGENT-START.md §13 rewritten for registry-backed resolution
-- **Boundary doc:** Updated with registry selection flow and validation
-- **Live registry:** `startup_contract` field added to project-index.json entries
-
-**Validation:**
-- Registry live mode (QA Pilot): ✅ PASS
-- Registry live mode (Librarian): ✅ PASS
-- Registry fixture mode: 4/4 valid pass, 10/10 invalid rejected
-- Boundary validator: ✅ PASS
-- Contract fixture validator: ✅ PASS (2/2 valid, 10/10 invalid)
-- QA Pilot startup: ✅ managed
-- Librarian startup: ✅ managed
-
-**Sealed by:** (Pending Owner review)
+**Status:** ✅ **COMPLETE — All 6 sprints sealed (#201–#206)**
+**Milestone completed:** QA-PILOT-ASSURANCE-OPERATING-LAYER-1 (#166–#200)
+**Current phase:** Pre-sprint (baseline reconciliation ready — entry gate)
+**Awaiting:** `authorize sprint QA-PILOT-CANONICAL-ASSURANCE-BASELINE-RECONCILIATION-1` to begin Sprint 201
 
 ---
 
-# Session Handoff — PROJECT-STARTUP-CONTRACT-NEGATIVE-FIXTURES-1
+## Epic Summary
 
-## Status: ✅ **Sealed (ledger #13)** — Owner-approved 2026-07-02 per Owner confirmation
+**Type:** assurance operations integration (5 sprints planned)
+**Lane:** assurance
+**Boundary:** QA Pilot-local
+**Librarian impact:** none (integration_interface for Phase 2)
 
----
+**Purpose:** Demonstrate that the QA Pilot assurance operating layer functions continuously across projects, surfaces, evidence sources, and Owner decisions. Transition from building assurance primitives to proving the assurance loop operates at scale.
 
-## PROJECT-STARTUP-CONTRACT-NEGATIVE-FIXTURES-1 — Startup Contract Negative Fixtures
+**Entry condition:** Milestone QA-PILOT-ASSURANCE-OPERATING-LAYER-1 recorded as COMPLETE (scope #166–#200).
 
-**Type:** Validation / negative fixture coverage
-**Mode:** Deterministic rejection of invalid project startup contracts
-**Predecessor:** PROJECT-STARTUP-SYSTEM-SEPARATION-1 (sealed #12)
+### Authorized Sprint Sequence
 
-**Authorization basis:** Owner-provided sprint brief (2026-07-02).
+| Sprint | Purpose | Status |
+|--------|---------|--------|
+| QA-PILOT-CANONICAL-ASSURANCE-BASELINE-RECONCILIATION-1 | Freeze post-#200 baseline, verify lifecycle chain integrity, establish metrics | ✅ SEALED (#201) |
+| QA-PILOT-ASSURANCE-LAYER-REGISTRY-RECONCILIATION-1 | Pre-dashboard data reconciliation — registry extended through slot 201, health baselines regenerated | ✅ SEALED (#202) |
+| QA-PILOT-OWNER-DASHBOARD-INTEGRATION-1 | Expose assurance state through Owner-facing governance surface | ✅ SEALED (#203) |
+| QA-PILOT-PROJECT-ASSURANCE-ROUTING-1 | Multi-project assurance routing | ✅ SEALED (#204) |
+| QA-PILOT-ASSURANCE-CALIBRATION-1 | Operational calibration — measure false positives, stale state, decision queue, evidence freshness, projection accuracy | ✅ SEALED (#205) |
+| QA-PILOT-ASSURANCE-GOVERNANCE-MATURITY-1 | Institutionalize operating model — policies, maturity criteria, cadence, lifecycle ownership, drift detection | ✅ SEALED (#206) |
+| QA-PILOT-PROJECT-ASSURANCE-ROUTING-1 | Multi-project assurance routing | ✅ SEALED (#204) |
+| QA-PILOT-ASSURANCE-CALIBRATION-1 | Operational calibration over sustained activity | Planned (Phase 3) |
+| QA-PILOT-ASSURANCE-GOVERNANCE-MATURITY-1 | SLAs, trends, scorecards, release gates | Planned (Phase 4) |
 
-**Scope restriction:** Must not modify generic startup files, registry/pointer behavior, live contracts, or MCP tools. Fixtures and validator only.
+### Sprint Resolutions
 
-**Implementation summary:**
-- **Fixtures:** 12 total (2 valid + 10 invalid) in `docs/examples/startup-contracts/`
-- **Validator:** `SessionStartup/validate-startup-contract-fixtures.py` — 7 check categories
-- **Rejection proof:** Missing identity doc ✗, missing check script ✗, path escape ✗, project ID mismatch ✗, wrong field types ✗, missing required fields ✗, web files on non-web project ✗, empty boundary guard ✗
-
-**Validation:**
-- Fixture validator: 2/2 valid fixtures pass, 10/10 invalid fixtures reject
-- Boundary validator: PASS (no project-specific terms in generic files)
-- QA Pilot startup: PASS (managed mode)
-- Librarian startup: PASS (managed mode)
-- No generic files, live contracts, or pointer behavior changed
-
-**Sealed by:** (Pending Owner review)
-
-**Next recommended sprint:** PROJECT-STARTUP-CONTRACT-REGISTRY-1
-
----
-
-# Session Handoff — PROJECT-STARTUP-SYSTEM-SEPARATION-1
-
-## Status: ✅ **Sealed (ledger #12)** — Owner-approved 2026-07-02 per startup protocol confirmation
+| Previous Sprint | Resolution |
+|----------------|-----------|
+| QA-PILOT-CANONICAL-BASELINE-AUDIT-1 | 🔄 Reclassified → QA-PILOT-CANONICAL-ASSURANCE-BASELINE-RECONCILIATION-1 (entry gate for new epic) |
+| QA-PILOT-POST-CANONICAL-SURFACE-REASSESSMENT-1 | ⏸️ Deferred into EPIC-QA-PILOT-ASSURANCE-OPERATIONS-INTEGRATION-1 Phase 2 |
 
 ---
 
-## PROJECT-STARTUP-SYSTEM-SEPARATION-1 — Startup System Separation
+## Milestone: QA-PILOT-ASSURANCE-OPERATING-LAYER-1
 
-**Type:** Governance / startup architecture
-**Mode:** Contract-based delegation — generic harness selects project, project declares shape
-**Predecessor:** QA-PILOT-BROKER-AUDIT-STORE-IMPLEMENTATION-1 (sealed #11); `start qa-pilot` blocker report
+**Status:** ✅ **COMPLETE — Recorded 2026-07-20**
+**Scope:** #166–#200
+**Classification:** Capability milestone
+**Location:** `reports/QA-PILOT-ASSURANCE-OPERATING-LAYER-1-MILESTONE.md`
 
-**Authorization basis:** Owner-provided sprint brief (2026-07-02).
+**Outcome:** QA Pilot now contains an operational assurance layer capable of transforming findings into governed lifecycle decisions through evidence-backed validation, risk prioritization, Owner decision control, and continuous assurance management.
 
-**Scope restriction:** Must not create runtime integration, MCP tool expansion, product UI, or cross-project mutation beyond declared startup files.
-
-**Implementation summary:**
-- **System boundary docs:** `docs/startup/project-startup-contract-schema.json` (Draft 2020-12), `docs/startup/STARTUP-BOUNDARY-ARCHITECTURE.md`
-- **Project contracts:** `active/qa-pilot/startup-contract.json`, `active/librarian/startup-contract.json`
-- **QA Pilot startup:** `active/qa-pilot/PROJECT-STARTUP.md`, `active/qa-pilot/scripts/run-startup-checks.sh`, `active/qa-pilot/STARTUP-STATE.md`
-- **Harness updates:** AGENT-START.md (§4.0 root verification generic, §13 project selector added), ACTIVE-REPO-ROOT-RULE.md (generic Level 2), CLAUDE.md (updated protocol)
-- **Librarian updates:** PROJECT-STARTUP.md (project selector removed, references AGENT-START.md §13), run-startup-checks.sh (project-local state, dynamic project name)
-- **Boundary validator:** `SessionStartup/validate-startup-boundary.py`
-
-**Validation:**
-- Boundary validator: PASS — no project-specific terms in generic files
-- QA Pilot startup checks: PASS (managed mode, 10 validators, 10 test runners)
-- Librarian startup checks: PASS (managed mode, web app contract preserved)
-- Both startup contracts: valid per schema
-
-**Sealed by:** (Pending Owner review)
-
-**Next authorized sprint:** QA-PILOT-BROKER-AUDIT-STORE-HARDEN-1 or Owner direction.
+**Notable sprints in scope:**
+- #178–#184: Testing, regression, UAT, a11y, performance, security capabilities
+- #185–#194: Assurance profiles, continuous assurance loop, evidence lineage, risk prioritization, history recorder
+- #195–#198: Automation refinement, release governance, enterprise packs, model-assisted
+- #199–#200: Finding lifecycle architecture and implementation (capstone)
 
 ---
 
-# Session Handoff — QA-PILOT-BROKER-AUDIT-STORE-IMPLEMENTATION-1
+## Previous Epics (Sealed — Historical)
 
-## Status: ✅ **Sealed (ledger #11)** — Owner-approved 2026-07-02 per OD-QA-PILOT-BROKER-AUDIT-STORE-IMPLEMENTATION-1-SEAL
+### EPIC-QA-PILOT-OPENWORK-TO-CARBIDEFRAME-MIGRATION-1 — Sealed (#156–#160)
 
----
+**Type:** migration (5 sprints)
+**Status:** ✅ Sealed — all 5 sprints sealed. Migration work complete.
+**Note:** Migration-source canonical promotion decision superseded by assurance operations integration direction.
 
-## QA-PILOT-BROKER-AUDIT-STORE-IMPLEMENTATION-1 — QA Pilot Broker Audit Store Implementation
+### EPIC-QA-PILOT-DESIGN-QUALITY-REGRESSION-1 — Sealed (#143–#147)
 
-**Type:** Implementation sprint
-**Mode:** QA Pilot-local broker audit store — schema validation, advisory-only enforcement, file-based persistence
-**Predecessor:** QA-PILOT-BROKER-AUDIT-RECEIPT-STORE-1 (sealed #10)
+**Type:** design / accessibility remediation
+**Status:** ✅ Sealed — Owner-approved 2026-07-09.
+**Scope:** Keyboard nav, focus, semantics, landmarks, form labels, contrast, i18n toggle, responsive media queries across all 8 pages.
 
-**Authorization basis:** Owner-approved per OD-QA-PILOT-BROKER-AUDIT-RECEIPT-STORE-1-SEAL.
+### EPIC-QA-PILOT-DESIGN-LANGUAGE-REFRESH-1 — Sealed (#136–#142)
 
-**Scope restriction:** QA Pilot-local only. Must not mutate The Librarian repo, register native MCPController tools, execute cross-project calls, touch external QA Pilot production repos, or broaden authority.
+**Type:** design language convergence (7 sprints)
+**Status:** ✅ Sealed.
 
-**Implementation summary:**
-- **Store module:** `scripts/qa_pilot_broker_audit_store.py` with 4 operations (register, get, list, status)
-- **Schema:** Validates against sealed `docs/schemas/qa-pilot-broker-audit-receipt.schema.json`
-- **Enforcement:** Rejects approval/seal/merge/production_readiness effects, Librarian runtime paths, unbounded list limits
-- **Storage:** Files under `data/audit/broker/`, index at `data/audit/broker-index.json`, status at `data/audit/broker-store-status.json`
-- **Governance doc:** `docs/governance/QA-PILOT-BROKER-AUDIT-STORE-IMPLEMENTATION.md` (6 sections)
-- **Fixtures:** 8 total (4 valid, 4 invalid)
-- **Validator:** `scripts/validate-qa-pilot-broker-audit-store.py` (12 rules AS-1-12)
-- **Test runner:** `scripts/test-qa-pilot-broker-audit-store.sh` (29 tests)
+### EPIC-QA-PILOT-TRAINING-SYSTEM-1 — Sealed (#106–#116)
 
-**Validation:**
-- Audit store validator: 12/12 AS rules pass
-- Audit store test runner: 29/29 pass
-- All 9 existing QA Pilot validators: all still pass
-- Prohibited-zone scan: CLEAN — no Librarian files modified
-- No MCPController registration: Confirmed
-- No cross-project calls: Confirmed
-- Authority: advisory-only — no authority broadened
+**Type:** training system (11 sprints)
+**Status:** ✅ Sealed.
+**Scope:** Training data browser, pipeline, execution, report builder, admin dashboard, review surface, simulator.
 
-**Sealed by:** OD-QA-PILOT-BROKER-AUDIT-STORE-IMPLEMENTATION-1-SEAL
+### EPIC-QA-PILOT-BROWSER-ONLY-DEPLOYMENT-AND-STARTUP-1 — Sealed (#92–#100)
 
-**Next authorized sprint:** QA-PILOT-BROKER-AUDIT-STORE-HARDEN-1 — QA Pilot-local hardening only. No Librarian mutation, no MCPController registration, no runtime integration, no cross-project execution, no authority expansion.
+**Type:** deployment and startup surface (9 sprints)
+**Status:** ✅ Sealed.
 
----
+### EPIC-QA-PILOT-BROWSER-ONLY-REAL-WORLD-PILOT-1 — Sealed (#87–#91)
 
-# Session Handoff — QA-PILOT-BROKER-AUDIT-RECEIPT-STORE-1
+**Type:** browser-only real-world pilot (5 sprints)
+**Status:** ✅ Sealed.
+**Scope:** Risk-based review depth, decision packet, startup surface.
 
-## Status: ✅ **Sealed (ledger #10)** — Owner-approved 2026-07-02 per OD-QA-PILOT-BROKER-AUDIT-RECEIPT-STORE-1-SEAL
+### EPIC-QA-PILOT-ORIGINAL-FRONTEND-MIGRATION-1 — Sealed (#125–#134)
 
----
+**Type:** frontend migration (10 sprints)
+**Status:** ✅ Sealed.
 
-## QA-PILOT-BROKER-AUDIT-RECEIPT-STORE-1 — QA Pilot Broker Audit Receipt Store
+### EPIC-QA-PILOT-APP-SURFACE-MIGRATION-1 — Merged into ORIGINAL-FRONTEND
 
-**Type:** Schema/validation sprint
-**Mode:** QA Pilot-local broker audit receipt store schema, governance, fixtures, validator, test runner — no runtime implementation, no storage mechanism changes
-**Predecessor:** QA-PILOT-BROKER-MCP-ADVISORY-SURFACE-1 (sealed #9)
-
-**Authorization basis:** Owner-approved per OD-QA-PILOT-BROKER-MCP-ADVISORY-SURFACE-1-SEAL.
-
-**Scope restriction:** Schema/validation only. Must not mutate The Librarian repo, register native MCPController tools, execute cross-project calls, touch external QA Pilot production repos, or modify broker storage mechanisms.
-
-**Audit receipt fields defined:**
-- 13 required fields: audit_id, receipt_type, active_project_id, target_project_id, requested_tool, custody_record_id, handler_path, authority_level, advisory_only, output_effects, audit_timestamp, rollback_reference, validation_result
-- 12 validation rules (BA-1 through BA-12)
-
-**What was done:**
-- Created audit receipt governance doc at `docs/governance/QA-PILOT-BROKER-AUDIT-RECEIPT-STORE.md` (6 sections)
-- Created audit receipt schema at `docs/schemas/qa-pilot-broker-audit-receipt.schema.json` (Draft 2020-12, 13 required fields)
-- Created 7 fixtures (3 valid, 4 invalid) in `docs/examples/qa-pilot-broker-audit/`
-- Created validator (12 rules BA-1-12) at `scripts/validate-qa-pilot-broker-audit-receipt.py`
-- Created test runner (19 tests) at `scripts/test-qa-pilot-broker-audit-receipt.sh`
-- Created sprint receipt at `docs/sprints/QA-PILOT-BROKER-AUDIT-RECEIPT-STORE-1.md`
-- Updated QA Pilot ledger to include sprint #10
-- Updated FEATURE-STATUS.md and SESSION-HANDOFF.md
-
-**Validation:**
-- Audit receipt validator: 3/3 valid fixtures pass (12/12 checks each), 4/4 invalid fixtures rejected
-- Audit receipt test runner: 19/19 pass
-- All 8 existing validators: all still pass
-- Prohibited-zone scan: CLEAN — no Librarian files modified
-- BA-12 (Librarian runtime reference scan): CLEAN
-- Authority: schema/validation only — no runtime implementation
-
-**Sealed by:** OD-QA-PILOT-BROKER-AUDIT-RECEIPT-STORE-1-SEAL
-
-**Next authorized sprint:** QA-PILOT-BROKER-AUDIT-STORE-IMPLEMENTATION-1 — implement QA Pilot-owned broker audit storage mechanics using the sealed broker audit receipt schema. QA Pilot-local only. Must not mutate The Librarian repo, MCPController, runtime, MCP enforcement, or external QA Pilot production repos.
+**Note:** Single sprint (#117) absorbed into the frontend migration epic.
 
 ---
 
-# Session Handoff — QA-PILOT-BROKER-MCP-ADVISORY-SURFACE-1
+## Re-scoped / Paused Epics (Historical)
 
-## Status: ✅ **Sealed (ledger #9)** — Owner-approved 2026-07-02 per OD-QA-PILOT-BROKER-MCP-ADVISORY-SURFACE-1-SEAL
-
----
-
-## QA-PILOT-BROKER-MCP-ADVISORY-SURFACE-1 — QA Pilot Broker MCP Advisory Surface
-
-**Type:** Implementation sprint
-**Mode:** QA Pilot-local advisory MCP-style surface wrapping the sealed broker — no native MCP registration, no Librarian mutation
-**Predecessor:** QA-PILOT-BROKER-IMPLEMENTATION-1 (sealed #8)
-
-**Authorization basis:** Owner-approved per OD-QA-PILOT-BROKER-IMPLEMENTATION-1-SEAL.
-
-**Scope restriction:** QA Pilot-local only. Must not mutate The Librarian repo, register native MCPController tools, execute cross-project calls, touch external QA Pilot production repos, create approval/seal/merge pathways, or broaden broker authority.
-
-**Implementation summary:**
-- **Surface script:** `scripts/qa_pilot_broker_advisory_surface.py` — delegates to sealed broker
-- **Commands:** accept, audit, list-audit, status, enable, disable (all QA Pilot-local, not MCP registrations)
-- **Response format:** 10 required fields including surface, command, authority, accepted, custody_verified, refusal_code, audit_receipt_id, broker_commit_or_version, timestamp, limitations
-- **Governance doc:** `docs/governance/QA-PILOT-BROKER-MCP-ADVISORY-SURFACE.md` (7 sections)
-- **Schema:** `docs/schemas/qa-pilot-broker-mcp-advisory-surface.schema.json` (Draft 2020-12)
-- **Fixtures:** 12 total (4 valid, 8 invalid)
-- **Validator:** `scripts/validate-qa-pilot-broker-advisory-surface.py` (19 rules VA-1-19)
-- **Test runner:** `scripts/test-qa-pilot-broker-advisory-surface.sh` (36 tests)
-
-**Validation:**
-- Advisory surface validator: 19/19 VA rules pass
-- Advisory surface test runner: 36/36 pass
-- Implementation test runner: 32/32 pass
-- Plan test runner: 18/18 pass
-- All 5 existing QA Pilot validators: all still pass
-- Prohibited-zone scan: CLEAN — no Librarian files modified
-- No MCPController registration: Confirmed
-- No cross-project calls: Confirmed
-- Authority: advisory-only — no authority broadened
-
-**Sealed by:** OD-QA-PILOT-BROKER-MCP-ADVISORY-SURFACE-1-SEAL
-
-**Next recommended sprint:** Awaiting Owner direction.
+**EPIC-QA-PILOT-LIBRARIAN-VISUAL-PARITY-CORRECTION-1** — 🚫 Re-scoped 2026-07-10.
+**EPIC-QA-PILOT-I18N-WIRING-1** — ⏸️ Deferred by Owner 2026-07-09.
 
 ---
 
-# Session Handoff — QA-PILOT-BROKER-IMPLEMENTATION-1
-
-## Status: ✅ **Sealed (ledger #8)** — Owner-approved 2026-07-02 per OD-QA-PILOT-BROKER-IMPLEMENTATION-1-SEAL
-
----
-
-## QA-PILOT-BROKER-IMPLEMENTATION-1 — QA Pilot Option B Broker Implementation
-
-**Type:** Implementation sprint
-**Mode:** QA Pilot-local broker implementation with custody verification (CC-1-10), advisory-only enforcement, audit receipt generation, disable flag — no Librarian mutation, no MCPController registration
-**Predecessor:** QA-PILOT-BROKER-PLAN-1 (sealed #7)
-
-**Authorization basis:** Owner-approved per OD-QA-PILOT-BROKER-PLAN-1-SEAL — "Implement the Option B broker layer in QA Pilot space only, using the sealed broker plan."
-
-**Scope restriction:** QA Pilot-local only. Must not mutate The Librarian repo, register native MCPController tools, execute cross-project calls, touch external QA Pilot production repos, broaden authority, or add new broker tools.
-
-**Implementation summary:**
-- **Broker module:** `scripts/librarian_broker_qa_pilot.py` with 6 CLI commands (accept, audit, list-audit, status, enable, disable)
-- **Custody verification:** CC-1 through CC-10 enforced on every request
-- **Advisory enforcement:** All outputs carry authority=advisory_only; approval/seal/merge/production flags overridden
-- **Audit receipts:** `data/audit/broker/<id>.json` for every call (accepted or rejected)
-- **Disable flag:** `config/broker-config.json` with enable/disable CLI
-- **Governance doc:** `docs/governance/QA-PILOT-BROKER-IMPLEMENTATION.md` (10 sections)
-- **Request schema:** `docs/schemas/qa-pilot-broker-implementation.schema.json` (Draft 2020-12)
-- **Fixtures:** 10 total (4 valid, 6 invalid) in `fixtures/broker-implementation/`
-- **Validator:** `scripts/validate-qa-pilot-broker-implementation.py` (20 rules BI-1-20)
-- **Test runner:** `scripts/test-qa-pilot-broker-implementation.sh` (32 tests)
-
-**Validation:**
-- Implementation validator: 20/20 BI rules pass
-- Implementation test runner: 32/32 pass
-- Broker plan validator: ALL CHECKS PASS
-- All 5 existing QA Pilot validators: all still pass
-- Prohibited-zone scan: CLEAN — no Librarian files modified
-- No MCPController registration: Confirmed
-- No cross-project calls: Confirmed
-- Authority: advisory-only — no authority broadened
-
-**Sealed by:** OD-QA-PILOT-BROKER-IMPLEMENTATION-1-SEAL
-
-**Next recommended sprint:** Awaiting Owner direction.
-
----
-
-## QA-PILOT-BROKER-PLAN-1 — QA Pilot Option B Broker Plan
-
-**Type:** Planning / design sprint
-**Mode:** Governance doc, schema, fixtures, validator, test runner — planning-only, no implementation authorized
-**Predecessor:** QA-PILOT-LIBRARIAN-MCP-CUSTODY-PACKET-1 (sealed #6)
-
-**Authorization basis:** Owner-approved per OD-QA-PILOT-LIBRARIAN-MCP-CUSTODY-PACKET-1-SEAL — "Option B planning only — may be designed, not implemented."
-
-**Scope restriction:** Planning/design only. Must not implement broker tools, mutate The Librarian runtime, register native MCPController tools, execute cross-project calls, or touch external QA Pilot production repos.
-
-**Planning outcome:**
-- **Current operating mode:** Option A (Separate MCP) — preserved
-- **Option B broker model:** Defined (planning-only) — Librarian routes to QA Pilot handlers, does not absorb them
-- **Option C:** Reaffirmed — not authorized for planning or implementation
-- **Forward broker direction only:** Librarian → QA Pilot. Reverse direction out of scope.
-- **Custody CC-1-10:** All mapped with verification mechanisms
-- **Audit receipt requirements:** Defined (broker_audit, 9 required fields, indefinite retention)
-- **Rollback requirements:** Defined (files to revert, audit cleanup, disable mechanism, context reset, post-rollback validation)
-- **Future mutation envelope:** Explicit (allowed files, forbidden files, no runtime mutation, no implementation)
-
-**What was done:**
-- Created broker planning governance doc at `docs/governance/QA-PILOT-BROKER-PLAN.md` (10 sections)
-- Created broker plan schema at `docs/schemas/qa-pilot-broker-plan.schema.json` (Draft 2020-12)
-- Created 6 fixtures (2 valid, 4 invalid) in `docs/examples/qa-pilot-broker-plan/`
-- Created validator (24 rules BP-1-24) at `scripts/validate-qa-pilot-broker-plan.py`
-- Created test runner (18 tests) at `scripts/test-qa-pilot-broker-plan.sh`
-- Created sprint receipt at `docs/sprints/QA-PILOT-BROKER-PLAN-1.md`
-- Updated QA Pilot ledger to include sprint #7
-- Updated FEATURE-STATUS.md and SESSION-HANDOFF.md
-
-**Validation:**
-- Broker plan validator: 2/2 valid fixtures pass (24/24 checks each), 4/4 invalid fixtures rejected
-- Broker plan test runner: 18/18 pass
-- All 5 existing validators: all still pass
-- All 5 existing test runners: all still pass
-- Prohibited-zone scan: CLEAN — no Librarian files modified
-- BP-24 (Librarian runtime reference scan): CLEAN
-- Authority: planning-only — no implementation authorized
-
-**Sealed by:** OD-QA-PILOT-BROKER-PLAN-1-SEAL
-
-**Next authorized sprint:** QA-PILOT-BROKER-IMPLEMENTATION-1 — implement the Option B broker layer in QA Pilot space (scripts, audit store, validation). Requires:
-1. Documented rollback plan (CC-10)
-2. Owner decision to authorize implementation
-3. Implementation must remain inside authorized QA Pilot mutation envelope
-4. Must not mutate The Librarian repo, MCPController, Sources/App, runtime, MCP enforcement, or external QA Pilot production repos
-
----
-
-# Session Handoff — QA-PILOT-LIBRARIAN-MCP-CUSTODY-PACKET-1
-
-## Status: ✅ **Sealed (ledger #6)** — Owner-approved 2026-07-02 per OD-QA-PILOT-LIBRARIAN-MCP-CUSTODY-PACKET-1-SEAL
-
----
-
-# Session Handoff — QA-PILOT-MCP-HANDLER-REGISTRATION-1
-
-## Status: ✅ **Sealed (ledger #5)** — Owner-approved 2026-07-02 per OD-QA-PILOT-MCP-HANDLER-REGISTRATION-1-SEAL
-
----
-
-## QA-PILOT-MCP-HANDLER-REGISTRATION-1 — QA Pilot MCP Handler Registration
-
-**Type:** MCP Handler Registration
-**Mode:** QA Pilot-owned local handler stubs wrapping receipt store — no The Librarian runtime registration, no cross-project integration
-**Predecessor:** QA-PILOT-RECEIPT-STORE-1 (sealed #4)
-
-**Authorization basis:** Owner-approved per OD-QA-PILOT-RECEIPT-STORE-1-SEAL — "Wire the sealed QA Pilot MCP surface contracts to the sealed QA Pilot receipt store as QA Pilot-owned runtime handler stubs or local project handlers, without mutating The Librarian runtime/MCP enforcement."
-
-**Scope restriction:** Create QA Pilot-owned handler stubs only. Must not register in The Librarian MCP runtime, mutate The Librarian repo, mutate The Librarian MCPController, or cross the project boundary.
-
-**What was done:**
-- Created handler governance doc at `docs/governance/QA-PILOT-MCP-HANDLER-REGISTRATION.md` (8 sections)
-- Created handler schema at `docs/schemas/qa-pilot-mcp-handler.schema.json` (Draft 2020-12)
-- Created handler module at `scripts/qa_pilot_mcp_handlers.py` with 4 functions:
-  - `handle_register` — validates, persists via store, returns advisory_only=true
-  - `handle_get` — retrieves via store
-  - `handle_list` — lists via store with bounded limits
-  - `handle_status` — status via store
-- Created 8 fixtures (4 valid, 4 invalid) in `docs/examples/qa-pilot-mcp-handler/`
-- Created validator (6 rules HR-1-6) at `scripts/validate-qa-pilot-mcp-handler.py`
-- Created test runner (14 tests) at `scripts/test-qa-pilot-mcp-handler.sh`
-- Created sprint receipt at `docs/sprints/QA-PILOT-MCP-HANDLER-REGISTRATION-1.md`
-- Updated QA Pilot ledger to include sprint #5
-- Updated FEATURE-STATUS.md and SESSION-HANDOFF.md
-
-**Handler boundary enforcement:**
-- `project_boundary: "qa-pilot"` in all handler outputs
-- `store_integration: "qa_pilot_receipt_store"` in all handler outputs
-- `cross_project_registration: false` in all handler outputs
-- Invalid cross-project registration fixture explicitly tests boundary rejection
-
-**Validation:**
-- Handler validator: 6/6 checks pass (HR-1-6)
-- Handler test runner: 14/14 pass (including register/get/list/status, authority rejection, unbounded rejection, boundary checks)
-- All 3 existing validators: all still pass
-- All 3 existing test runners: all still pass
-- Prohibited-zone scan: CLEAN — no The Librarian files modified
-
-**Sealed by:** OD-QA-PILOT-MCP-HANDLER-REGISTRATION-1-SEAL
-
-**Next authorized sprint:** QA-PILOT-LIBRARIAN-MCP-CUSTODY-PACKET-1 — create a cross-project custody packet authorizing, constraining, or rejecting future integration of QA Pilot local handler stubs into The Librarian MCP runtime.
-
----
-
-# Session Handoff — QA-PILOT-RECEIPT-STORE-1
-
-## Status: ✅ **Sealed (ledger #4)** — Owner-approved 2026-07-02 per OD-QA-PILOT-RECEIPT-STORE-1-SEAL
-
----
-
-## QA-PILOT-RECEIPT-STORE-1 — QA Pilot Receipt Store
-
-**Type:** Receipt Store Implementation
-**Mode:** Local file-based store, governance doc, fixtures, validator, test runner — no runtime MCP registration, no The Librarian mutation
-**Predecessor:** QA-PILOT-MCP-SURFACE-1 (sealed #3)
-
-**Authorization basis:** Owner-approved per OD-QA-PILOT-MCP-SURFACE-1-SEAL — "Next authorized sprint: QA-PILOT-RECEIPT-STORE-1. Implement a QA Pilot-owned local receipt store for production receipt registration/query/status, using the sealed receipt schema and MCP surface contracts."
-
-**Scope restriction:** Implement local receipt store only. Must not register runtime MCP handlers, mutate The Librarian repo, mutate The Librarian MCP controller, or touch external QA Pilot production repos.
-
-**What was done:**
-- Created receipt store governance doc at `docs/governance/QA-PILOT-RECEIPT-STORE.md` (10 sections)
-- Created receipt store schema at `docs/schemas/qa-pilot-receipt-store.schema.json` (Draft 2020-12)
-- Created receipt store module at `scripts/qa_pilot_receipt_store.py` with 4 operations:
-  - `register` — validates against receipt schema, enforces advisory-only, persists to `data/receipts/`
-  - `get` — retrieves receipt by receipt_id
-  - `list` — bounded listing with optional filters (limit 1-100)
-  - `status` — counts, breakdowns, last registration, advisory notice
-- Created 8 fixtures (4 valid, 4 invalid) in `docs/examples/qa-pilot-receipt-store/`
-- Created validator (6 rules RS-1-6) at `scripts/validate-qa-pilot-receipt-store.py`
-- Created test runner (14 tests) at `scripts/test-qa-pilot-receipt-store.sh`
-- Created sprint receipt at `docs/sprints/QA-PILOT-RECEIPT-STORE-1.md`
-- Updated QA Pilot ledger to include sprint #4
-- Updated QA Pilot FEATURE-STATUS.md and SESSION-HANDOFF.md
-
-**Validation:**
-- Store validator: 6/6 checks pass
-- Store test runner: 14/14 tests pass (including register/get/list/status behavior)
-- Existing receipt validator: still passes
-- Existing receipt test runner: still passes
-- Existing MCP surface validator: still passes
-- Existing MCP surface test runner: still passes
-- Prohibited-zone scan: CLEAN — no The Librarian files modified
-- Authority boundary: advisory-only enforced across all operations
-
-**Sealed by:** OD-QA-PILOT-RECEIPT-STORE-1-SEAL
-
-**Next authorized sprint:** QA-PILOT-MCP-HANDLER-REGISTRATION-1 — wire the sealed QA Pilot MCP surface contracts to the sealed QA Pilot receipt store as QA Pilot-owned runtime handler stubs or local project handlers, without mutating The Librarian runtime/MCP enforcement unless a separate cross-project custody packet explicitly authorizes that boundary crossing.
-
----
-
-# Session Handoff — QA-PILOT-MCP-SURFACE-1
-
-## Status: ✅ **Sealed (ledger #3)** — Owner-approved 2026-07-02 per OD-QA-PILOT-MCP-SURFACE-1-SEAL
-
----
-
-## QA-PILOT-MCP-SURFACE-1 — QA Pilot MCP Surface (Lane B)
-
-**Type:** Lane B — MCP Tool Stub Contracts
-**Mode:** Governance doc, schema, fixtures, validator, test runner — no runtime MCP registration, no The Librarian mutation
-**Predecessor:** QA-PILOT-PRODUCTION-LANE-A-1 (sealed #2)
-
-**Authorization basis:** Owner-approved per OD-QA-PILOT-PRODUCTION-LANE-A-1-SEAL — "Next authorized sprint: QA-PILOT-MCP-SURFACE-1. Scope: Implement QA Pilot MCP tool stubs for production receipt registration, query, and status surfaces under the QA Pilot project boundary."
-
-**Scope restriction:** Define QA Pilot MCP tool stubs/contracts only. Must not register runtime MCP handlers, mutate The Librarian repo, mutate The Librarian MCP controller, or touch external QA Pilot production repos.
-
-**What was done:**
-- Created MCP surface governance doc at `docs/governance/QA-PILOT-MCP-SURFACE.md` (8 sections)
-- Created MCP tool contract schema at `docs/schemas/qa-pilot-mcp-tool.schema.json` (Draft 2020-12, 4 tool sub-schemas)
-- Created 8 fixtures (4 valid, 4 invalid) in `docs/examples/qa-pilot-mcp-surface/`
-- Created Python validator (13 rules MP-1-4 + R-1-3 + G-1-2 + L-1-2 + S-1-2) at `scripts/validate-qa-pilot-mcp-surface.py`
-- Created bash test runner (14 tests) at `scripts/test-qa-pilot-mcp-surface.sh`
-- Created sprint receipt at `docs/sprints/QA-PILOT-MCP-SURFACE-1.md`
-- Updated QA Pilot ledger to include sprint #3
-- Updated QA Pilot FEATURE-STATUS.md and SESSION-HANDOFF.md
-
-**MCP tools defined:**
-
-| Tool | Authority | Purpose |
-|------|-----------|---------|
-| `qa_pilot_receipt_register` | R1 (advisory mutation) | Register receipt as advisory evidence |
-| `qa_pilot_receipt_get` | R0 (read-only) | Retrieve receipt by receipt_id |
-| `qa_pilot_receipt_list` | R0 (read-only) | List receipts with bounded limit (1-100) |
-| `qa_pilot_receipt_status` | R0 (read-only) | Summarize receipt store status |
-
-**Validation:**
-- MCP surface validator: 4/4 valid fixtures pass (13/13 checks), 4/4 invalid fixtures rejected
-- MCP surface test runner: 14/14 tests pass
-- Existing receipt validator: still passes (regression confirmed)
-- Existing receipt test runner: still passes (regression confirmed)
-- Prohibited-zone scan: CLEAN — no The Librarian files modified
-- Authority boundary: advisory-only enforced across all tool contracts
-
-**Sealed by:** OD-QA-PILOT-MCP-SURFACE-1-SEAL
-
-**Next authorized sprint:** QA-PILOT-RECEIPT-STORE-1 — implement a QA Pilot-owned local receipt store for production receipt registration/query/status, using the sealed receipt schema and MCP surface contracts.
-
----
-
-# Session Handoff — QA-PILOT-PRODUCTION-LANE-A-1
-
-## Status: ✅ **Sealed (ledger #2)** — Owner-approved 2026-07-02 per OD-QA-PILOT-PRODUCTION-LANE-A-1-SEAL
-
----
-
-## QA-PILOT-PRODUCTION-LANE-A-1 — QA Pilot Production Lane A (Receipt Schema)
-
-**Type:** Production Lane A — Receipt Schema Import
-**Mode:** Schema, governance, fixtures, validator, test runner — no runtime, no MCP, no The Librarian mutation
-**Predecessor:** QA-PILOT-PROJECT-INIT-1 (sealed #1)
-
-**Authorization basis:** Owner-approved per QA-PILOT-PROJECT-INIT-1 seal receipt — "Next authorized sprint: QA-PILOT-PRODUCTION-LANE-A-1 — run production Lane A under the QA Pilot ledger."
-
-**Scope restriction:** Import QA Pilot receipt artifacts from The Librarian planning-only evidence into QA Pilot as production implementation. Must not mutate The Librarian repo, runtime custody enforcement, MCP enforcement, or production QA Pilot repos.
-
-**What was done:**
-- Imported QA Pilot production receipt schema from The Librarian planning-only evidence → QA Pilot-owned `docs/schemas/qa-pilot-receipt.schema.json`
-- Imported and adapted QA Pilot receipt governance doc → QA Pilot-owned `docs/governance/QA-PILOT-RECEIPT.md`
-- Imported and adapted 8 fixtures (4 valid, 4 invalid) → QA Pilot-owned `docs/examples/qa-pilot-receipt/`
-- Imported and adapted Python validator (12 rules PR-1-12) → QA Pilot-owned `scripts/validate-qa-pilot-receipt.py`
-- Imported and adapted bash test runner (14 tests) → QA Pilot-owned `scripts/test-qa-pilot-receipt.sh`
-- Created QA Pilot sprint receipt at `docs/sprints/QA-PILOT-PRODUCTION-LANE-A-1.md`
-- Updated QA Pilot ledger to include sprint #2
-- Updated QA Pilot FEATURE-STATUS.md and SESSION-HANDOFF.md
-
-**Adaptations performed on imported artifacts:**
-- Schema `$id` and fixtures `$schema` URLs changed from TheLibrarian to QA-Pilot
-- All fixture `project_id` values changed from `librarian` to `qa-pilot`
-- Governance doc rewritten: "planning-only evidence" → "QA Pilot-owned production contract"
-- Test runner: Librarian regression guards replaced with QA Pilot project integrity checks
-- Sprint receipt: complete rewrite for QA Pilot ledger ownership
-
-**Validation:**
-- Validator: all 4 valid fixtures pass (12/12 checks), all 4 invalid fixtures rejected
-- Test runner: 14/14 tests pass
-- Prohibited-zone scan: CLEAN — no The Librarian files modified
-- Authority boundary: advisory-only enforced
-
-**Sealed by:** OD-QA-PILOT-PRODUCTION-LANE-A-1-SEAL
-
-**Next authorized sprint:** QA-PILOT-MCP-SURFACE-1 (Lane B — MCP tool stubs for production receipt registration)
-
----
-
-# Session Handoff — QA-PILOT-PROJECT-INIT-1
-
-## Status: ✅ **Sealed (ledger #1)** — Owner-approved 2026-07-02 per OD-QA-PILOT-PROJECT-INIT-1-SEAL
-
----
-
-## QA-PILOT-PROJECT-INIT-1 — QA Pilot Project Initialization
-
-**Type:** Project initialization
-**Mode:** Workspace, identity, profile, ledger, status surfaces, receipt paths, governance docs — no production implementation
-**Predecessor:** PROJECT-LEDGER-CUSTODY-SEPARATION-1 (sealed #225 in The Librarian)
-
-**Authorization basis:** Owner-approved per OD-PROJECT-LEDGER-CUSTODY-SEPARATION-1-SEAL — "Next authorized sprint: QA-PILOT-PROJECT-INIT-1"
-
-**Scope restriction:** This sprint initializes the QA Pilot project workspace only. It must not import QA Pilot production implementation, copy planning-only evidence as production, mutate The Librarian runtime, or seal any QA Pilot production work.
-
-**What was done:**
-- Created `active/qa-pilot/` workspace with directory structure
-- Created PROJECT-IDENTITY.md (project_id, project_name, owner, canonical_repo)
-- Created PROJECT-PROFILE.json (12 required fields including sandbox_boundary, allowed_mutation_paths, forbidden_cross_project_paths)
-- Created `project-state/sprint-ledger.json` (initialized with this sprint, sealed #1)
-- Created FEATURE-STATUS.md (status surface)
-- Created SESSION-HANDOFF.md (handoff surface)
-- Created receipt directories (`receipts/decision-resolutions/`, `receipts/sprint-closeouts/`)
-- Created `docs/governance/QA-PILOT-PROJECT-GOVERNANCE.md` (sandbox boundary rules, cross-project mutation prohibitions)
-- Created `receipts/decision-resolutions/od-qa-pilot-project-init-1-seal.json` (Owner decision receipt)
-- Initialized git repo in `active/qa-pilot/`
-
-**Next authorized sprint:** QA-PILOT-PRODUCTION-LANE-A-1 — run production Lane A under the QA Pilot ledger. May import the Librarian planning-only QA Pilot receipt artifacts as QA Pilot-owned production implementation only with explicit Owner authorization recorded in the QA Pilot ledger.
+## Active Project State
+
+**Ledger updated:** 2026-07-24
+**Latest sealed sprint:** #214 QA-PILOT-LIBRARIAN-WORK-QUEUE-INTEGRATION-1
+**Active epic:** EPIC-ASSURANCE-CONTRACT-EVOLUTION-1 (Phase 4 — directed)
+**Authorized sprints:** none — #214 sealed; Tier 2 dependency on LIBRARIAN-WORK-PACKET-SERVICE-ACTIVATION-1 (not yet created)
+**Deferred sprints:** QA-PILOT-POST-CANONICAL-SURFACE-REASSESSMENT-1 (→ Phase 2)
+**Future sprint:** QA-PILOT-REGRESSION-LEARNING-LOOP-1 (deferred — requires end-to-end loop operational)
+
+## Sealed Sprint: ASSURANCE-CONTRACT-EVIDENCE-STATE-CONTRACT-FORMALIZATION-1 (#215)
+
+**Status:** ✅ **SEALED — Owner-sealed 2026-07-27**
+**Epic:** EPIC-ASSURANCE-CONTRACT-EVOLUTION-1 Phase 4 (Contract extraction)
+**Purpose:** Convert the four sealed adoption baselines (#207–#210) from evidence collections into canonical assurance contracts. Extract the invariants that survived across all 4 consumer shapes.
+**Deliverables:** 5 contract artifacts under `contracts/assurance/`:
+- `evidence-contract.md` — Canonical evidence object (2-class record/snapshot model)
+- `finding-contract.md` — Finding derivation (3-layer evidence/finding/recommendation separation)
+- `remediation-contract.md` — Remediation lifecycle (7-state model with provenance)
+- `owner-decision-contract.md` — QA Pilot ≠ Authority (9 MUST NOT rules, mechanically testable)
+- `regression-contract.md` — Regression guard lifecycle
+- `assurance-contracts.schema.json` — Machine-checkable schema with authority enforcement
+- `CROSS-CONSUMER-VOCABULARY-MATRIX.md` — Proves 10 universal invariants
+**Acceptance gates:** 10/10 PASS (CF-1 through CF-10)
+**Architectural milestone:** QA Pilot transitioned from evidence-producing subsystem to contract-governed assurance subsystem. Assurance behavior is now represented as enforceable contracts rather than accumulated observations.
+
+## Sealed Sprint: QA-PILOT-LIBRARIAN-WORK-QUEUE-INTEGRATION-1 (#214)
+
+**Status:** ✅ **SEALED — Owner-sealed 2026-07-24**
+**Purpose:** Create governed bridge from QA-Pilot diagnostic findings to Librarian-compatible work proposals. Proposal artifact, not work packet. QA-Pilot-local execution. Tier 1/Tier 2 acceptance split.
+**Key invariant:** QA-Pilot detects and proposes. It does not call Librarian work packet MCP tools. It does not create work packets. It does not authorize, dispatch, or execute anything.
+**Tier 1 gates (QA-Pilot-owned):** WQI-001, WQI-002, WQI-003, WQI-004, WQI-007, WQI-008 — all PASS
+**Tier 2 gates (blocked):** WQI-005, WQI-006 — blocked pending LIBRARIAN-WORK-PACKET-SERVICE-ACTIVATION-1 (not yet created)
+**Test results:** 19/19 tests pass, validator passes all Tier 1 gates including WQI-008 (fail-closed regression gate)
+**MCP diagnostic trail:** Librarian work packet bridge probed during authorization — `work_packet_service_available: false`, `bridge_status: degraded`. MCP tool surface is routable but backing service is not operational. This is the contract-first approach: interface exists ahead of capability. The diagnostic trail itself is QA-Pilot evidence of the missing Librarian operational layer. WQI-008 captures this as a regression asset.
+**Seal note:** Tier 2 gates remain blocked by LIBRARIAN-WORK-PACKET-SERVICE-ACTIVATION-1. Blocking condition is external dependency, not implementation failure.
+
+## Sprint Sequencing (End-to-End Loop)
+
+| Order | Sprint | Side | Status |
+|-------|--------|------|--------|
+| 1 | ASSURANCE-CONTRACT-EVIDENCE-STATE-CONTRACT-FORMALIZATION-1 | QA-Pilot | ✅ Sealed (#215) |
+| 2 | QA-PILOT-LIBRARIAN-WORK-QUEUE-INTEGRATION-1 | QA-Pilot | ✅ Sealed (#214) |
+| 3 | LIBRARIAN-WORK-PACKET-SERVICE-ACTIVATION-1 | Librarian | Not yet created — activate DB-backed work packet dispatch/intake/verification/closure |
+| 4 | QA-PILOT-REGRESSION-LEARNING-LOOP-1 | QA-Pilot | Deferred — verified fixes become reusable regression tests |
+
+Sprints 1-2 (QA-Pilot side) are sealed. The end-to-end loop requires sprint 3 (Librarian). The feedback loop requires both.
+
+## Do Not Touch Unless Asked
+
+- The Librarian repo (active/librarian/)
+- Canonical docs without checkout receipt
+- Cross-project mutation paths defined in PROJECT-PROFILE.json
+- OpenWork source location (/Users/andrew/Desktop/OpenWork/QA Pilot)
+- Sealed epic artifacts without explicit Owner direction
+
+## Required Behavior
+
+- Mark agent work 🔍 Pending; never mark ✅ Verified.
+- Use deterministic tools/scripts for exact paths, counts, JSON/YAML, markdown slots, custody, and destructive dry runs.
+- This is a Python/script project — no web app checks apply.

@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QA Pilot Academy — Visual Regression Harness</title>
+  <link rel="icon" href="favicon.svg">
+  <link rel="stylesheet" href="css/main.css">
+  <style>
+    body { background: var(--color-bg); padding: var(--space-6); font-family: var(--font-sans); }
+    .harness-header { max-width: 960px; margin: 0 auto var(--space-6); }
+    .harness-header h1 { font-size: var(--text-xl); font-weight: var(--weight-bold); color: var(--color-ink); margin-bottom: var(--space-2); }
+    .harness-header p { font-size: var(--text-sm); color: var(--color-ink-soft); }
+    .harness-stats { display: flex; gap: var(--space-4); margin-bottom: var(--space-6); flex-wrap: wrap; max-width: 960px; margin-left: auto; margin-right: auto; }
+    .harness-stat { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: var(--space-3) var(--space-5); text-align: center; flex: 1; min-width: 100px; }
+    .harness-stat-num { font-size: var(--text-xl); font-weight: var(--weight-bold); color: var(--color-primary); }
+    .harness-stat-lbl { font-size: var(--text-caption); color: var(--color-ink-muted); text-transform: uppercase; letter-spacing: var(--ls-wider); }
+    .harness-page { max-width: 960px; margin: 0 auto var(--space-5); background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-sm); }
+    .harness-page-header { display: flex; align-items: center; justify-content: space-between; padding: var(--space-4) var(--space-5); background: var(--color-bg); border-bottom: 1px solid var(--color-border); cursor: pointer; }
+    .harness-page-header h2 { font-size: var(--text-heading); font-weight: var(--weight-bold); color: var(--color-ink); margin: 0; }
+    .harness-page-header .page-status { font-size: var(--text-caption); font-weight: var(--weight-semibold); text-transform: uppercase; letter-spacing: var(--ls-wider); }
+    .harness-page-header .page-status.pass { color: var(--color-success); }
+    .harness-page-header .page-status.fail { color: var(--color-error); }
+    .harness-page-header .page-status.pending { color: var(--color-ink-muted); }
+    .harness-checks { padding: var(--space-4) var(--space-5); }
+    .harness-check { display: flex; align-items: flex-start; gap: var(--space-3); padding: var(--space-2) 0; border-bottom: 1px solid var(--color-border); }
+    .harness-check:last-child { border-bottom: none; }
+    .harness-check .check-toggle { margin-top: 2px; cursor: pointer; width: 18px; height: 18px; }
+    .harness-check .check-label { flex: 1; font-size: var(--text-body); color: var(--color-ink); line-height: var(--lh-normal); }
+    .harness-check .check-category { font-size: var(--text-caption); color: var(--color-ink-muted); text-transform: uppercase; letter-spacing: var(--ls-wider); margin-right: var(--space-2); font-weight: var(--weight-semibold); }
+    .harness-actions { max-width: 960px; margin: 0 auto var(--space-6); display: flex; gap: var(--space-3); flex-wrap: wrap; }
+    .harness-page-link { display: inline-block; padding: var(--space-2) var(--space-4); background: var(--color-primary-light); color: var(--color-primary); text-decoration: none; border-radius: var(--radius-md); font-size: var(--text-small); font-weight: var(--weight-medium); }
+    .harness-page-link:hover { background: var(--color-primary); color: #fff; }
+    .btn-reset { background: var(--color-surface); border: 1px solid var(--color-border); color: var(--color-ink); padding: var(--space-2) var(--space-4); border-radius: var(--radius-md); cursor: pointer; font-size: var(--text-small); }
+    .btn-reset:hover { background: var(--color-bg); }
+  </style>
+</head>
+<body>
+<div class="harness-header">
+  <h1>Visual Regression Harness</h1>
+  <p>QA Pilot Academy — Static browser validation checklist. Open each page and verify listed checks. Use checkboxes to track progress (saved in browser storage).</p>
+</div>
+
+<div class="harness-stats" id="statsBar">
+  <div class="harness-stat"><div class="harness-stat-num" id="statTotal">0</div><div class="harness-stat-lbl">Total Checks</div></div>
+  <div class="harness-stat"><div class="harness-stat-num" id="statPass">0</div><div class="harness-stat-lbl">Passed</div></div>
+  <div class="harness-stat"><div class="harness-stat-num" id="statFail">0</div><div class="harness-stat-lbl">Failed</div></div>
+  <div class="harness-stat"><div class="harness-stat-num" id="statPending">0</div><div class="harness-stat-lbl">Pending</div></div>
+</div>
+
+<div class="harness-actions">
+  <a class="harness-page-link" href="index.html" target="_blank">Open index.html</a>
+  <a class="harness-page-link" href="admin.html" target="_blank">Open admin.html</a>
+  <a class="harness-page-link" href="identity.html" target="_blank">Open identity.html</a>
+  <a class="harness-page-link" href="catalog.html" target="_blank">Open catalog.html</a>
+  <a class="harness-page-link" href="course-view.html?pack=TP-LIBRARIAN-PILOT-1" target="_blank">Open course-view.html</a>
+  <a class="harness-page-link" href="certificate.html?pack=TP-LIBRARIAN-PILOT-1" target="_blank">Open certificate.html</a>
+  <a class="harness-page-link" href="export.html" target="_blank">Open export.html</a>
+  <a class="harness-page-link" href="import.html" target="_blank">Open import.html</a>
+  <button class="btn-reset" onclick="resetAll()">Reset All Checks</button>
+</div>
+
+<div id="harnessContent"></div>
+
+<script>
+const STORAGE_KEY = 'qapilot_visual_regression';
+
+const PAGES = [
+  {
+    id: 'index', label: 'index.html — Splash Page',
+    checks: [
+      { id: 'index-loads', label: 'Page loads without JS errors', category: 'function' },
+      { id: 'index-title', label: 'Title: "QA Pilot Academy"', category: 'brand' },
+      { id: 'index-design', label: 'Original QA Pilot Academy design (frosted topbar, blue gradient hero)', category: 'visual' },
+      { id: 'index-modes', label: '3 mode cards visible: Solo, Import, Admin', category: 'function' },
+      { id: 'index-lang-toggle', label: 'EN/FR language toggle renders and is clickable', category: 'i18n' },
+      { id: 'index-skip-link', label: 'Skip-link present and focusable (Tab key)', category: 'a11y' },
+      { id: 'index-header', label: 'header[role="banner"] landmark present', category: 'a11y' },
+      { id: 'index-main', label: 'main[id="main-content"][role="main"] landmark present', category: 'a11y' },
+      { id: 'index-footer', label: 'view-data-footer present with source info', category: 'visual' },
+      { id: 'index-responsive', label: 'Pages render reasonably at 375px viewport width', category: 'responsive' },
+    ]
+  },
+  {
+    id: 'admin', label: 'admin.html — Admin Dashboard',
+    checks: [
+      { id: 'admin-loads', label: 'Page loads without JS errors', category: 'function' },
+      { id: 'admin-title', label: 'Title: "QA Pilot Academy — Admin Dashboard"', category: 'brand' },
+      { id: 'admin-dashboard', label: 'Dashboard tab is default with bento cards (attention/active/flat)', category: 'visual' },
+      { id: 'admin-tabs', label: '6 tabs render: Dashboard, Workspace, Members, Packages, Deploy, Results', category: 'function' },
+      { id: 'admin-tab-roles', label: 'Admin tabs have role="tab" and aria-selected management', category: 'a11y' },
+      { id: 'admin-tabpanel-roles', label: 'All tab content panels have role="tabpanel"', category: 'a11y' },
+      { id: 'admin-labels', label: 'Form inputs have associated label[for]', category: 'a11y' },
+      { id: 'admin-aria-live', label: 'Deploy preview has aria-live="polite"', category: 'a11y' },
+      { id: 'admin-skip-link', label: 'Skip-link present and functional', category: 'a11y' },
+      { id: 'admin-workspace', label: 'Workspace tab: can set workspace name', category: 'function' },
+      { id: 'admin-members', label: 'Members tab: can add/remove members', category: 'function' },
+      { id: 'admin-deploy', label: 'Deploy tab: preview updates with workspace/members/packages', category: 'function' },
+      { id: 'admin-dash-stats', label: 'Dashboard stats show live member/package counts', category: 'function' },
+      { id: 'admin-data-footer', label: 'view-data-footer present', category: 'visual' },
+    ]
+  },
+  {
+    id: 'catalog', label: 'catalog.html — Training Portal',
+    checks: [
+      { id: 'cat-loads', label: 'Page loads without JS errors', category: 'function' },
+      { id: 'cat-title', label: 'Title: "QA Pilot Academy — Training Portal"', category: 'brand' },
+      { id: 'cat-hero', label: 'Blue gradient hero with "My Training" heading', category: 'visual' },
+      { id: 'cat-cards', label: 'Course cards render with accent colors, title, meta, progress', category: 'visual' },
+      { id: 'cat-completed', label: 'Completed section appears when courses are finished', category: 'function' },
+      { id: 'cat-aria-live', label: 'In-progress grid has aria-live="polite"', category: 'a11y' },
+      { id: 'cat-skip-link', label: 'Skip-link present', category: 'a11y' },
+      { id: 'cat-footer', label: 'view-data-footer present', category: 'visual' },
+    ]
+  },
+  {
+    id: 'identity', label: 'identity.html — Learner Identity',
+    checks: [
+      { id: 'id-loads', label: 'Page loads without JS errors', category: 'function' },
+      { id: 'id-title', label: 'Title: "QA Pilot Academy — Select Identity"', category: 'brand' },
+      { id: 'id-deployment', label: 'Deployment info displays workspace name + member count', category: 'function' },
+      { id: 'id-members', label: 'Member list renders with selectable rows', category: 'function' },
+      { id: 'id-skip-link', label: 'Skip-link present', category: 'a11y' },
+      { id: 'id-footer', label: 'view-data-footer present', category: 'visual' },
+    ]
+  },
+  {
+    id: 'course', label: 'course-view.html — Course Runtime',
+    checks: [
+      { id: 'course-loads', label: 'Page loads with training content (no "Package not found" error)', category: 'function' },
+      { id: 'course-title', label: 'Title: "QA Pilot Academy — Course View"', category: 'brand' },
+      { id: 'course-sidebar', label: 'Sidebar renders module + lesson list', category: 'visual' },
+      { id: 'course-content', label: 'Content area shows lesson title + body text', category: 'function' },
+      { id: 'course-breadcrumb', label: 'Breadcrumb shows "Section X of Y"', category: 'visual' },
+      { id: 'course-nav', label: 'Previous/Next buttons navigate between sections', category: 'function' },
+      { id: 'course-progress', label: 'Progress bar updates as sections are completed', category: 'function' },
+      { id: 'course-skip-link', label: 'Skip-link present', category: 'a11y' },
+      { id: 'course-footer', label: 'view-data-footer present', category: 'visual' },
+    ]
+  },
+  {
+    id: 'certificate', label: 'certificate.html — Certificate',
+    checks: [
+      { id: 'cert-loads', label: 'Page loads without JS errors', category: 'function' },
+      { id: 'cert-title', label: 'Title: "QA Pilot Academy — Certificate"', category: 'brand' },
+      { id: 'cert-header', label: 'Certificate header shows "QA Pilot Academy" + "Certificate of Completion"', category: 'visual' },
+      { id: 'cert-learner', label: 'Learner name and package title displayed', category: 'function' },
+      { id: 'cert-advisory', label: 'Advisory notice present ("not an official certification")', category: 'function' },
+      { id: 'cert-footer', label: 'view-data-footer present', category: 'visual' },
+    ]
+  },
+  {
+    id: 'export', label: 'export.html — Result Export',
+    checks: [
+      { id: 'export-loads', label: 'Page loads without JS errors', category: 'function' },
+      { id: 'export-title', label: 'Title: "QA Pilot Academy — Export Results"', category: 'brand' },
+      { id: 'export-items', label: 'Completed items list renders', category: 'function' },
+      { id: 'export-preview', label: 'Result JSON preview generates on selection', category: 'function' },
+      { id: 'export-footer', label: 'view-data-footer present', category: 'visual' },
+    ]
+  },
+  {
+    id: 'import', label: 'import.html — Admin Import',
+    checks: [
+      { id: 'import-loads', label: 'Page loads without JS errors', category: 'function' },
+      { id: 'import-title', label: 'Title: "QA Pilot Academy — Import Results"', category: 'brand' },
+      { id: 'import-upload', label: 'File input for result JSON present', category: 'function' },
+      { id: 'import-dashboard', label: 'Results dashboard shows stats after import', category: 'function' },
+      { id: 'import-footer', label: 'view-data-footer present', category: 'visual' },
+    ]
+  }
+];
+
+// Cross-cutting checks
+const CROSS_CHECKS = [
+  { id: 'cross-main-css', label: 'All pages load main.css without 404', category: 'global' },
+  { id: 'cross-lang-toggle', label: 'EN/FR language toggle present and renders on all pages', category: 'i18n' },
+  { id: 'cross-dark-theme', label: 'No dark theme colors (#0f1117, #1a1d28, #2a2d3a) on any page', category: 'visual' },
+  { id: 'cross-no-backend', label: 'No backend/server/auth/install dependencies', category: 'custody' },
+  { id: 'cross-academy-brand', label: 'QA Pilot Academy brand in title on all pages', category: 'brand' },
+];
+
+function loadState() {
+  try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}; } catch { return {}; }
+}
+function saveState(state) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+}
+function getCheckId(pageId, checkId) { return pageId + '-' + checkId; }
+
+function render() {
+  const state = loadState();
+  let total = 0, passed = 0, failed = 0;
+  
+  let html = '';
+  
+  // Cross-cutting section
+  html += '<div class="harness-page"><div class="harness-page-header" style="background:var(--color-primary-light);">';
+  html += '<h2 style="font-size:var(--text-heading);">Cross-Cutting Checks</h2>';
+  html += '<span class="page-status"></span></div><div class="harness-checks">';
+  CROSS_CHECKS.forEach(c => {
+    total++;
+    const sid = 'cross-' + c.id;
+    const val = state[sid] || 'pending';
+    if (val === 'pass') passed++; else if (val === 'fail') failed++;
+    html += renderCheck(sid, c.label, val, c.category);
+  });
+  html += '</div></div>';
+  
+  // Per-page sections
+  PAGES.forEach(page => {
+    let pagePass = 0, pageTotal = 0;
+    html += '<div class="harness-page">';
+    html += '<div class="harness-page-header">';
+    html += '<h2>' + page.label + '</h2>';
+    html += '<span class="page-status pending" id="status-' + page.id + '">' + page.checks.length + ' checks</span>';
+    html += '</div><div class="harness-checks">';
+    
+    page.checks.forEach(check => {
+      total++;
+      pageTotal++;
+      const sid = getCheckId(page.id, check.id);
+      const val = state[sid] || 'pending';
+      if (val === 'pass') { passed++; pagePass++; }
+      else if (val === 'fail') failed++;
+      html += renderCheck(sid, check.label, val, check.category);
+    });
+    
+    html += '</div></div>';
+    
+    // Update page status after render
+    setTimeout(function() {
+      const el = document.getElementById('status-' + page.id);
+      if (el) {
+        const allPass = pagePass === page.checks.length;
+        const anyFail = page.checks.some(c => (state[getCheckId(page.id, c.id)] || 'pending') === 'fail');
+        el.textContent = pagePass + '/' + pageTotal + (allPass ? ' ✅' : anyFail ? ' ❌' : ' ⏳');
+        el.className = 'page-status ' + (allPass ? 'pass' : anyFail ? 'fail' : 'pending');
+      }
+    }, 0);
+  });
+  
+  document.getElementById('harnessContent').innerHTML = html;
+  document.getElementById('statTotal').textContent = total;
+  document.getElementById('statPass').textContent = passed;
+  document.getElementById('statFail').textContent = failed;
+  document.getElementById('statPending').textContent = total - passed - failed;
+}
+
+function renderCheck(sid, label, val, category) {
+  const checked = val === 'pass' ? 'checked' : '';
+  const isFail = val === 'fail';
+  return '<div class="harness-check" style="' + (isFail ? 'background:var(--color-error-light);' : val === 'pass' ? 'background:var(--color-success-light);' : '') + '">' +
+    '<input type="checkbox" class="check-toggle" id="chk-' + sid + '" ' + checked + ' onchange="toggleCheck(\'' + sid + '\')">' +
+    '<div class="check-label"><span class="check-category">[' + category + ']</span> ' + label + '</div>' +
+    '<button class="btn-reset" onclick="markFail(\'' + sid + '\')" style="font-size:10px;padding:2px 6px;" title="Mark as failed">✕</button>' +
+    '</div>';
+}
+
+function toggleCheck(sid) {
+  const state = loadState();
+  state[sid] = state[sid] === 'pass' ? 'pending' : 'pass';
+  saveState(state);
+  render();
+}
+function markFail(sid) {
+  const state = loadState();
+  state[sid] = state[sid] === 'fail' ? 'pending' : 'fail';
+  saveState(state);
+  render();
+}
+function resetAll() {
+  if (!confirm('Reset all visual regression checks?')) return;
+  localStorage.removeItem(STORAGE_KEY);
+  render();
+}
+document.addEventListener('DOMContentLoaded', render);
+</script>
+</body>
+</html>

@@ -1,0 +1,20 @@
+{
+  "adapter_version": "knowledge-adapter-v1",
+  "generated_at": "2026-07-08T21:00:00Z",
+  "operation": "status",
+  "result": {
+    "librarian_root": "(configured path)",
+    "librarian_accessible": true,
+    "source_types": {
+      "governance": {"path": "docs/governance/", "files": 42, "exists": true},
+      "schema": {"path": "docs/schemas/", "files": 25, "exists": true},
+      "rule": {"path": "docs/rules/", "files": 8, "exists": true},
+      "ledger": {"path": "project-state/sprint-ledger.json", "files": 1, "exists": true},
+      "receipt": {"path": "receipts/decision-resolutions/", "files": 35, "exists": true}
+    },
+    "total_source_files": 111,
+    "authority": "advisory-only",
+    "cross_project_write": "NOT AUTHORIZED",
+    "read_only": true
+  }
+}

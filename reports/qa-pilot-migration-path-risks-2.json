@@ -1,0 +1,1584 @@
+{
+  "$schema": "qa-pilot-migration-path-risks-v1",
+  "destination_root": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app",
+  "html_files_scanned": 43,
+  "html_files_with_broken_refs": 7,
+  "per_page": [
+    {
+      "html": "QA-Pilot-Session.html",
+      "references": [
+        {
+          "attr": "href",
+          "target": "index.html",
+          "resolved": "index.html",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "href",
+          "target": "debug/index.html",
+          "resolved": "debug/index.html",
+          "exists": true,
+          "is_external": false
+        }
+      ],
+      "reference_count": 2
+    },
+    {
+      "html": "QASimulator.html",
+      "references": [
+        {
+          "attr": "href",
+          "target": "../favicon.svg",
+          "resolved": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/favicon.svg",
+          "exists": false,
+          "is_external": false
+        },
+        {
+          "attr": "src",
+          "target": "js/db.js",
+          "resolved": "js/db.js",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "src",
+          "target": "data/bug-keys.js",
+          "resolved": "data/bug-keys.js",
+          "exists": true,
+          "is_external": false
+        }
+      ],
+      "reference_count": 3
+    },
+    {
+      "html": "START_Me_Up.html",
+      "references": [
+        {
+          "attr": "href",
+          "target": "index.html",
+          "resolved": "index.html",
+          "exists": true,
+          "is_external": false
+        }
+      ],
+      "reference_count": 1
+    },
+    {
+      "html": "admin/assign.html",
+      "references": [
+        {
+          "attr": "href",
+          "target": "../favicon.svg",
+          "resolved": "favicon.svg",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "href",
+          "target": "../css/main.css",
+          "resolved": "css/main.css",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "href",
+          "target": "../index.html",
+          "resolved": "index.html",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "src",
+          "target": "../data/content.js",
+          "resolved": "data/content.js",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "src",
+          "target": "../data/quiz-questions.js",
+          "resolved": "data/quiz-questions.js",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "src",
+          "target": "../js/db.js",
+          "resolved": "js/db.js",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "src",
+          "target": "../js/app.js",
+          "resolved": "js/app.js",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "href",
+          "target": "../index.html",
+          "resolved": "index.html",
+          "exists": true,
+          "is_external": false
+        }
+      ],
+      "reference_count": 8
+    },
+    {
+      "html": "admin/bugs.html",
+      "references": [
+        {
+          "attr": "href",
+          "target": "../favicon.svg",
+          "resolved": "favicon.svg",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "href",
+          "target": "../css/main.css",
+          "resolved": "css/main.css",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "href",
+          "target": "dashboard.html",
+          "resolved": "admin/dashboard.html",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "href",
+          "target": "assign.html",
+          "resolved": "admin/assign.html",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "href",
+          "target": "editor.html",
+          "resolved": "admin/editor.html",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "href",
+          "target": "bugs.html",
+          "resolved": "admin/bugs.html",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "href",
+          "target": "dashboard.html",
+          "resolved": "admin/dashboard.html",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "src",
+          "target": "../data/content.js",
+          "resolved": "data/content.js",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "src",
+          "target": "../data/quiz-questions.js",
+          "resolved": "data/quiz-questions.js",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "src",
+          "target": "../js/db.js",
+          "resolved": "js/db.js",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "src",
+          "target": "../js/app.js",
+          "resolved": "js/app.js",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "src",
+          "target": "../data/bug-keys.js",
+          "resolved": "data/bug-keys.js",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "href",
+          "target": "index.html",
+          "resolved": "admin/index.html",
+          "exists": true,
+          "is_external": false
+        }
+      ],
+      "reference_count": 13
+    },
+    {
+      "html": "admin/dashboard.html",
+      "references": [
+        {
+          "attr": "href",
+          "target": "../favicon.svg",
+          "resolved": "favicon.svg",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "href",
+          "target": "../css/main.css",
+          "resolved": "css/main.css",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "href",
+          "target": "simple.html",
+          "resolved": "admin/simple.html",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "href",
+          "target": "../index.html",
+          "resolved": "index.html",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "src",
+          "target": "../data/content.js",
+          "resolved": "data/content.js",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "src",
+          "target": "../data/quiz-questions.js",
+          "resolved": "data/quiz-questions.js",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "src",
+          "target": "../js/db.js",
+          "resolved": "js/db.js",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "src",
+          "target": "../js/app.js",
+          "resolved": "js/app.js",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "href",
+          "target": "../index.html",
+          "resolved": "index.html",
+          "exists": true,
+          "is_external": false
+        }
+      ],
+      "reference_count": 9
+    },
+    {
+      "html": "admin/editor.html",
+      "references": [
+        {
+          "attr": "href",
+          "target": "../favicon.svg",
+          "resolved": "favicon.svg",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "href",
+          "target": "../css/main.css",
+          "resolved": "css/main.css",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "href",
+          "target": "dashboard.html",
+          "resolved": "admin/dashboard.html",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "href",
+          "target": "assign.html",
+          "resolved": "admin/assign.html",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "href",
+          "target": "editor.html",
+          "resolved": "admin/editor.html",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "src",
+          "target": "../data/content.js",
+          "resolved": "data/content.js",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "src",
+          "target": "../js/app.js",
+          "resolved": "js/app.js",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "src",
+          "target": "../js/db.js",
+          "resolved": "js/db.js",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "href",
+          "target": "index.html",
+          "resolved": "admin/index.html",
+          "exists": true,
+          "is_external": false
+        }
+      ],
+      "reference_count": 9
+    },
+    {
+      "html": "admin/index.html",
+      "references": [
+        {
+          "attr": "href",
+          "target": "../favicon.svg",
+          "resolved": "favicon.svg",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "href",
+          "target": "../css/main.css",
+          "resolved": "css/main.css",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "href",
+          "target": "../index.html",
+          "resolved": "index.html",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "src",
+          "target": "../data/content.js",
+          "resolved": "data/content.js",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "src",
+          "target": "../data/quiz-questions.js",
+          "resolved": "data/quiz-questions.js",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "src",
+          "target": "../js/db.js",
+          "resolved": "js/db.js",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "src",
+          "target": "../js/app.js",
+          "resolved": "js/app.js",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "href",
+          "target": "dashboard.html",
+          "resolved": "admin/dashboard.html",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "href",
+          "target": "dashboard.html",
+          "resolved": "admin/dashboard.html",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "href",
+          "target": "dashboard.html",
+          "resolved": "admin/dashboard.html",
+          "exists": true,
+          "is_external": false
+        }
+      ],
+      "reference_count": 10
+    },
+    {
+      "html": "admin/simple.html",
+      "references": [
+        {
+          "attr": "href",
+          "target": "../favicon.svg",
+          "resolved": "favicon.svg",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "href",
+          "target": "../css/main.css",
+          "resolved": "css/main.css",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "href",
+          "target": "dashboard.html",
+          "resolved": "admin/dashboard.html",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "href",
+          "target": "../simple-login.html",
+          "resolved": "simple-login.html",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "src",
+          "target": "../js/db.js",
+          "resolved": "js/db.js",
+          "exists": true,
+          "is_external": false
+        }
+      ],
+      "reference_count": 5
+    },
+    {
+      "html": "ado-lab.html",
+      "references": [
+        {
+          "attr": "href",
+          "target": "favicon.svg",
+          "resolved": "favicon.svg",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "src",
+          "target": "data/content.js",
+          "resolved": "data/content.js",
+          "exists": true,
+          "is_external": false
+        }
+      ],
+      "reference_count": 2
+    },
+    {
+      "html": "apps/_stub.html",
+      "references": [],
+      "reference_count": 0
+    },
+    {
+      "html": "apps/ac.html",
+      "references": [],
+      "reference_count": 0
+    },
+    {
+      "html": "apps/ado.html",
+      "references": [],
+      "reference_count": 0
+    },
+    {
+      "html": "apps/browser.html",
+      "references": [],
+      "reference_count": 0
+    },
+    {
+      "html": "apps/dynamics.html",
+      "references": [],
+      "reference_count": 0
+    },
+    {
+      "html": "apps/excel.html",
+      "references": [],
+      "reference_count": 0
+    },
+    {
+      "html": "apps/inspector.html",
+      "references": [],
+      "reference_count": 0
+    },
+    {
+      "html": "apps/powerpoint.html",
+      "references": [],
+      "reference_count": 0
+    },
+    {
+      "html": "apps/qapache.html",
+      "references": [],
+      "reference_count": 0
+    },
+    {
+      "html": "apps/qoutlook.html",
+      "references": [],
+      "reference_count": 0
+    },
+    {
+      "html": "apps/qtube.html",
+      "references": [],
+      "reference_count": 0
+    },
+    {
+      "html": "apps/reports.html",
+      "references": [],
+      "reference_count": 0
+    },
+    {
+      "html": "apps/settings.html",
+      "references": [],
+      "reference_count": 0
+    },
+    {
+      "html": "apps/teams.html",
+      "references": [],
+      "reference_count": 0
+    },
+    {
+      "html": "apps/training.html",
+      "references": [],
+      "reference_count": 0
+    },
+    {
+      "html": "apps/word.html",
+      "references": [],
+      "reference_count": 0
+    },
+    {
+      "html": "capstone-2.html",
+      "references": [
+        {
+          "attr": "href",
+          "target": "favicon.svg",
+          "resolved": "favicon.svg",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "href",
+          "target": "css/main.css",
+          "resolved": "css/main.css",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "href",
+          "target": "portal.html",
+          "resolved": "portal.html",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "src",
+          "target": "js/clippy-guide.js",
+          "resolved": "js/clippy-guide.js",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "src",
+          "target": "data/content.js",
+          "resolved": "data/content.js",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "src",
+          "target": "scenarios/capstone-scenario-2.js",
+          "resolved": "scenarios/capstone-scenario-2.js",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "src",
+          "target": "js/db.js",
+          "resolved": "js/db.js",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "src",
+          "target": "js/app.js",
+          "resolved": "js/app.js",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "href",
+          "target": "certificate.html?course=",
+          "resolved": "certificate.html",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "href",
+          "target": "portal.html",
+          "resolved": "portal.html",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "href",
+          "target": "certificate.html?course=capstone-2",
+          "resolved": "certificate.html",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "href",
+          "target": "portal.html?caseId=",
+          "resolved": "portal.html",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "href",
+          "target": "portal.html",
+          "resolved": "portal.html",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "href",
+          "target": "../favicon.svg",
+          "resolved": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/favicon.svg",
+          "exists": false,
+          "is_external": false
+        },
+        {
+          "attr": "src",
+          "target": "js/db.js",
+          "resolved": "js/db.js",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "src",
+          "target": "data/bug-keys.js",
+          "resolved": "data/bug-keys.js",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "href",
+          "target": "index.html",
+          "resolved": "index.html",
+          "exists": true,
+          "is_external": false
+        }
+      ],
+      "reference_count": 17
+    },
+    {
+      "html": "capstone-lab.html",
+      "references": [
+        {
+          "attr": "href",
+          "target": "favicon.svg",
+          "resolved": "favicon.svg",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "src",
+          "target": "js/clippy-guide.js",
+          "resolved": "js/clippy-guide.js",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "src",
+          "target": "desktop/dist.html",
+          "resolved": "desktop/dist.html",
+          "exists": true,
+          "is_external": false
+        }
+      ],
+      "reference_count": 3
+    },
+    {
+      "html": "capstone.html",
+      "references": [
+        {
+          "attr": "href",
+          "target": "favicon.svg",
+          "resolved": "favicon.svg",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "href",
+          "target": "css/main.css",
+          "resolved": "css/main.css",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "href",
+          "target": "portal.html",
+          "resolved": "portal.html",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "src",
+          "target": "js/db.js",
+          "resolved": "js/db.js",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "src",
+          "target": "js/app.js",
+          "resolved": "js/app.js",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "href",
+          "target": "QASimulator.html?mode=capstone",
+          "resolved": "QASimulator.html",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "href",
+          "target": "../favicon.svg",
+          "resolved": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/favicon.svg",
+          "exists": false,
+          "is_external": false
+        },
+        {
+          "attr": "src",
+          "target": "js/db.js",
+          "resolved": "js/db.js",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "src",
+          "target": "data/bug-keys.js",
+          "resolved": "data/bug-keys.js",
+          "exists": true,
+          "is_external": false
+        }
+      ],
+      "reference_count": 9
+    },
+    {
+      "html": "certificate.html",
+      "references": [
+        {
+          "attr": "href",
+          "target": "favicon.svg",
+          "resolved": "favicon.svg",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "href",
+          "target": "css/main.css",
+          "resolved": "css/main.css",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "href",
+          "target": "course.html",
+          "resolved": "course.html",
+          "exists": false,
+          "is_external": false
+        },
+        {
+          "attr": "href",
+          "target": "portal.html",
+          "resolved": "portal.html",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "src",
+          "target": "js/db.js",
+          "resolved": "js/db.js",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "src",
+          "target": "js/app.js",
+          "resolved": "js/app.js",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "src",
+          "target": "data/content.js",
+          "resolved": "data/content.js",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "href",
+          "target": "portal.html",
+          "resolved": "portal.html",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "href",
+          "target": "capstone.html",
+          "resolved": "capstone.html",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "href",
+          "target": "course-view.html?courseId=",
+          "resolved": "course-view.html",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "href",
+          "target": "course-view.html?courseId=",
+          "resolved": "course-view.html",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "href",
+          "target": "portal.html",
+          "resolved": "portal.html",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "href",
+          "target": "capstone.html",
+          "resolved": "capstone.html",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "href",
+          "target": "course-view.html?courseId=",
+          "resolved": "course-view.html",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "href",
+          "target": "course-view.html?courseId=",
+          "resolved": "course-view.html",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "href",
+          "target": "portal.html",
+          "resolved": "portal.html",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "href",
+          "target": "index.html",
+          "resolved": "index.html",
+          "exists": true,
+          "is_external": false
+        }
+      ],
+      "reference_count": 17
+    },
+    {
+      "html": "chrome-extension/popup.html",
+      "references": [],
+      "reference_count": 0
+    },
+    {
+      "html": "confirm.html",
+      "references": [],
+      "reference_count": 0
+    },
+    {
+      "html": "course-view.html",
+      "references": [
+        {
+          "attr": "href",
+          "target": "favicon.svg",
+          "resolved": "favicon.svg",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "href",
+          "target": "css/main.css",
+          "resolved": "css/main.css",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "src",
+          "target": "data/content.js",
+          "resolved": "data/content.js",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "src",
+          "target": "data/quiz-questions.js",
+          "resolved": "data/quiz-questions.js",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "src",
+          "target": "js/db.js",
+          "resolved": "js/db.js",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "src",
+          "target": "js/app.js",
+          "resolved": "js/app.js",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "src",
+          "target": "js/i18n.js",
+          "resolved": "js/i18n.js",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "src",
+          "target": "js/lang-en.js",
+          "resolved": "js/lang-en.js",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "src",
+          "target": "js/lang-fr.js",
+          "resolved": "js/lang-fr.js",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "href",
+          "target": "certificate.html?course=",
+          "resolved": "certificate.html",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "href",
+          "target": "portal.html",
+          "resolved": "portal.html",
+          "exists": true,
+          "is_external": false
+        }
+      ],
+      "reference_count": 11
+    },
+    {
+      "html": "crm-lab.html",
+      "references": [
+        {
+          "attr": "href",
+          "target": "favicon.svg",
+          "resolved": "favicon.svg",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "src",
+          "target": "data/content.js",
+          "resolved": "data/content.js",
+          "exists": true,
+          "is_external": false
+        }
+      ],
+      "reference_count": 2
+    },
+    {
+      "html": "debug/index.html",
+      "references": [
+        {
+          "attr": "href",
+          "target": "debug.css",
+          "resolved": "debug/debug.css",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "src",
+          "target": "../qa/qa-schema.js",
+          "resolved": "qa/qa-schema.js",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "src",
+          "target": "../qa/qa-db.js",
+          "resolved": "qa/qa-db.js",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "src",
+          "target": "../qa/qa-workitem-api.js",
+          "resolved": "qa/qa-workitem-api.js",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "src",
+          "target": "../qa/qa-templates.js",
+          "resolved": "qa/qa-templates.js",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "src",
+          "target": "../qa/qa-queries.js",
+          "resolved": "qa/qa-queries.js",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "src",
+          "target": "../qa/qa-export-json.js",
+          "resolved": "qa/qa-export-json.js",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "src",
+          "target": "../qa/qa-import-json.js",
+          "resolved": "qa/qa-import-json.js",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "src",
+          "target": "../qa/qa-export-md.js",
+          "resolved": "qa/qa-export-md.js",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "src",
+          "target": "debug.js",
+          "resolved": "debug/debug.js",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "src",
+          "target": "debug-panel.js",
+          "resolved": "debug/debug-panel.js",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "src",
+          "target": "debug-filters.js",
+          "resolved": "debug/debug-filters.js",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "src",
+          "target": "debug-board.js",
+          "resolved": "debug/debug-board.js",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "src",
+          "target": "debug-import-export.js",
+          "resolved": "debug/debug-import-export.js",
+          "exists": true,
+          "is_external": false
+        }
+      ],
+      "reference_count": 14
+    },
+    {
+      "html": "desktop/dist.html",
+      "references": [
+        {
+          "attr": "href",
+          "target": "../favicon.svg",
+          "resolved": "favicon.svg",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "src",
+          "target": "../js/db.js",
+          "resolved": "js/db.js",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "src",
+          "target": "data/bug-keys.js",
+          "resolved": "desktop/data/bug-keys.js",
+          "exists": false,
+          "is_external": false
+        }
+      ],
+      "reference_count": 3
+    },
+    {
+      "html": "desktop/index.html",
+      "references": [
+        {
+          "attr": "href",
+          "target": "../favicon.svg",
+          "resolved": "favicon.svg",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "href",
+          "target": "os.css",
+          "resolved": "desktop/os.css",
+          "exists": false,
+          "is_external": false
+        },
+        {
+          "attr": "src",
+          "target": "os.bundle.js",
+          "resolved": "desktop/os.bundle.js",
+          "exists": true,
+          "is_external": false
+        }
+      ],
+      "reference_count": 3
+    },
+    {
+      "html": "guide-facilitator.html",
+      "references": [
+        {
+          "attr": "href",
+          "target": "portal.html",
+          "resolved": "portal.html",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "href",
+          "target": "portal.html",
+          "resolved": "portal.html",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "href",
+          "target": "portal.html",
+          "resolved": "portal.html",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "href",
+          "target": "guide-student.html",
+          "resolved": "guide-student.html",
+          "exists": true,
+          "is_external": false
+        }
+      ],
+      "reference_count": 4
+    },
+    {
+      "html": "guide-student.html",
+      "references": [
+        {
+          "attr": "href",
+          "target": "portal.html",
+          "resolved": "portal.html",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "href",
+          "target": "portal.html",
+          "resolved": "portal.html",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "href",
+          "target": "portal.html",
+          "resolved": "portal.html",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "href",
+          "target": "guide-facilitator.html",
+          "resolved": "guide-facilitator.html",
+          "exists": true,
+          "is_external": false
+        }
+      ],
+      "reference_count": 4
+    },
+    {
+      "html": "index.html",
+      "references": [
+        {
+          "attr": "href",
+          "target": "favicon.svg",
+          "resolved": "favicon.svg",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "href",
+          "target": "css/main.css",
+          "resolved": "css/main.css",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "href",
+          "target": "simple-login.html",
+          "resolved": "simple-login.html",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "href",
+          "target": "admin/index.html",
+          "resolved": "admin/index.html",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "href",
+          "target": "simple-login.html",
+          "resolved": "simple-login.html",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "href",
+          "target": "about.html",
+          "resolved": "about.html",
+          "exists": false,
+          "is_external": false
+        },
+        {
+          "attr": "src",
+          "target": "data/content.js",
+          "resolved": "data/content.js",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "src",
+          "target": "data/quiz-questions.js",
+          "resolved": "data/quiz-questions.js",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "src",
+          "target": "js/db.js",
+          "resolved": "js/db.js",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "src",
+          "target": "js/app.js",
+          "resolved": "js/app.js",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "src",
+          "target": "js/i18n.js",
+          "resolved": "js/i18n.js",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "src",
+          "target": "js/lang-en.js",
+          "resolved": "js/lang-en.js",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "src",
+          "target": "js/lang-fr.js",
+          "resolved": "js/lang-fr.js",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "href",
+          "target": "portal.html",
+          "resolved": "portal.html",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "href",
+          "target": "portal.html",
+          "resolved": "portal.html",
+          "exists": true,
+          "is_external": false
+        }
+      ],
+      "reference_count": 15
+    },
+    {
+      "html": "mock.html",
+      "references": [],
+      "reference_count": 0
+    },
+    {
+      "html": "portal.html",
+      "references": [
+        {
+          "attr": "href",
+          "target": "favicon.svg",
+          "resolved": "favicon.svg",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "href",
+          "target": "css/main.css",
+          "resolved": "css/main.css",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "href",
+          "target": "guide-student.html",
+          "resolved": "guide-student.html",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "href",
+          "target": "guide-facilitator.html",
+          "resolved": "guide-facilitator.html",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "href",
+          "target": "admin/dashboard.html",
+          "resolved": "admin/dashboard.html",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "href",
+          "target": "guide-student.html",
+          "resolved": "guide-student.html",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "href",
+          "target": "guide-facilitator.html",
+          "resolved": "guide-facilitator.html",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "src",
+          "target": "data/content.js",
+          "resolved": "data/content.js",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "src",
+          "target": "data/quiz-questions.js",
+          "resolved": "data/quiz-questions.js",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "src",
+          "target": "js/db.js",
+          "resolved": "js/db.js",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "src",
+          "target": "js/app.js",
+          "resolved": "js/app.js",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "src",
+          "target": "js/i18n.js",
+          "resolved": "js/i18n.js",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "src",
+          "target": "js/lang-en.js",
+          "resolved": "js/lang-en.js",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "src",
+          "target": "js/lang-fr.js",
+          "resolved": "js/lang-fr.js",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "href",
+          "target": "index.html",
+          "resolved": "index.html",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "href",
+          "target": "course-view.html?courseId=",
+          "resolved": "course-view.html",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "href",
+          "target": "certificate.html?course=",
+          "resolved": "certificate.html",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "href",
+          "target": "certificate.html?course=",
+          "resolved": "certificate.html",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "href",
+          "target": "index.html",
+          "resolved": "index.html",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "href",
+          "target": "index.html",
+          "resolved": "index.html",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "href",
+          "target": "index.html",
+          "resolved": "index.html",
+          "exists": true,
+          "is_external": false
+        }
+      ],
+      "reference_count": 21
+    },
+    {
+      "html": "simple-login.html",
+      "references": [
+        {
+          "attr": "href",
+          "target": "favicon.svg",
+          "resolved": "favicon.svg",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "href",
+          "target": "admin/simple.html",
+          "resolved": "admin/simple.html",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "src",
+          "target": "js/db.js",
+          "resolved": "js/db.js",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "src",
+          "target": "js/app.js",
+          "resolved": "js/app.js",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "href",
+          "target": "portal.html",
+          "resolved": "portal.html",
+          "exists": true,
+          "is_external": false
+        },
+        {
+          "attr": "href",
+          "target": "portal.html",
+          "resolved": "portal.html",
+          "exists": true,
+          "is_external": false
+        }
+      ],
+      "reference_count": 6
+    }
+  ]
+}

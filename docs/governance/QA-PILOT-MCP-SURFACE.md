@@ -1,159 +1,132 @@
-# QA Pilot MCP Surface — Governance
+# QA-PILOT-MCP-SURFACE.md — QA Pilot MCP Surface
 
-**Sprint:** QA-PILOT-MCP-SURFACE-1 (Lane B)
-**Project:** QA Pilot
-**Status:** 🔍 Pending Owner review (not sealed)
-**Authority:** Advisory only. Tool stubs only — no runtime MCP registration, no The Librarian MCP mutation.
+**Status:** 🔍 Planning draft (sprint #32)
+**Authority:** QA Pilot owns a dedicated MCP surface. The QA Pilot MCP is an advisory QA interface for evidence intake, validation, test composition, regression execution, simulator/help lookup, learning records, and QA result export. It does not expose tools that approve, seal, mutate Librarian canonical state, advance sprints, create Librarian receipts, or exercise cross-project authority.
 
 ---
 
-## 1. Purpose
+## 1. Standalone Architecture
 
-Define the QA Pilot MCP tool surface for production receipt workflows. This sprint creates the contract definitions, input/output schemas, authority boundaries, and validation infrastructure for four MCP tools that will later be registered as actual MCP tools in a follow-up implementation sprint.
+QA Pilot operates as a **standalone QA workbench and optional add-on/value layer for The Librarian ecosystem**.
 
-All tools are defined as **stubs/contracts** under the QA Pilot project boundary. They describe what the tools do, what authority they have, and how they validate input/output — without registering any runtime MCP handlers.
+The QA Pilot MCP surface is:
+- QA Pilot-local — owned and operated by QA Pilot independently
+- Usable by The Librarian workflow (advisory evidence intake)
+- Usable by Owner directly (standalone QA operations)
+- Capable of ingesting bounded packets from multiple governed projects
+- Capable of building QA/regression evidence independently
+- Capable of exporting advisory result packets
+- **Not** capable of mutating source project authority
 
-## 2. Tool Inventory
+QA Pilot is not a submodule of The Librarian. It is a separate QA product/lane with its own MCP, DB, simulator/help surface, and regression lifecycle.
 
-### Tool 1: `qa_pilot_receipt_register`
+## 2. Tool Families
 
-| Field | Value |
-|-------|-------|
-| **Tool name** | `qa_pilot_receipt_register` |
-| **Purpose** | Register a QA Pilot production receipt as advisory evidence |
-| **Authority** | R1 — advisory mutation only |
-| **Input** | `receipt` — a QA Pilot production receipt object (validates against `qa-pilot-receipt.schema.json`) |
-| **Output** | Registered receipt ID, status, timestamp, advisory confirmation |
-| **Non-effects** | Does not approve, seal, merge, or mark production readiness |
-| **R0 boundary** | Mutates receipt store only. Does not seal sprints, approve work, or grant authority. |
-| **Input schema** | `qa-pilot-mcp-tool.schema.json` (receipt_register sub-schema) |
+### Family 1: Evidence Intake (R0/R1)
 
-**Validation rules:**
-- R-1: Input receipt must be valid against QA Pilot production receipt schema
-- R-2: Input receipt `authority` must be `advisory`
-- R-3: Input receipt must include `non_approval_statement` (≥20 chars)
-- R-4: Output must include `advisory_only` confirmation
-- R-5: Must not output any field claiming approval, seal, merge, or production readiness
+| Tool | R-level | Description |
+|------|---------|-------------|
+| `qa_evidence_ingest` | R1 | Ingest a bounded evidence packet into QA Pilot-local store from any governed project |
+| `qa_evidence_validate` | R0 | Validate an evidence packet against schema without storing |
+| `qa_evidence_list` | R0 | List ingested evidence packets with filters (project, sprint, date) |
+| `qa_evidence_read` | R0 | Read a specific evidence packet by ID |
 
-### Tool 2: `qa_pilot_receipt_get`
+**Behavior:** Accepts evidence from any governed project that respects the evidence packet contract. Rejects packets with missing required fields, invalid schema, unknown project, or missing provenance.
 
-| Field | Value |
-|-------|-------|
-| **Tool name** | `qa_pilot_receipt_get` |
-| **Purpose** | Retrieve a QA Pilot receipt by receipt_id |
-| **Authority** | R0 — read-only |
-| **Input** | `receipt_id` — canonical QA Pilot receipt identifier (pattern `qapr-\d{8}-\d{3,}`) |
-| **Output** | Full receipt object if found, or not_found error |
-| **Non-effects** | Does not mutate any state |
-| **R0 boundary** | Pure read. No mutation, no authority change, no state change. |
+### Family 2: Test Composition (R0/R1)
 
-**Validation rules:**
-- G-1: `receipt_id` must match `qapr-\d{8}-\d{3,}` pattern
-- G-2: Output must not contain authority claims
-- G-3: Tool must not mutate any state
+| Tool | R-level | Description |
+|------|---------|-------------|
+| `qa_test_compose` | R1 | Compose test cases from evidence for a sprint |
+| `qa_test_list` | R0 | List composed test cases with filters (sprint, status, tag) |
+| `qa_test_read` | R0 | Read a specific test case by ID |
+| `qa_test_run` | R1 | Run composed tests and record results (live or dry-run) |
 
-### Tool 3: `qa_pilot_receipt_list`
+**Behavior:** Tests are derived from changed files, acceptance criteria, prior defects, sealed invariants, regression history, simulator scenarios. Results are advisory only.
 
-| Field | Value |
-|-------|-------|
-| **Tool name** | `qa_pilot_receipt_list` |
-| **Purpose** | List bounded QA Pilot receipts with filters |
-| **Authority** | R0 — read-only |
-| **Input** | `project_id` (optional), `status` (optional), `packet_type` (optional), `limit` (required, 1-100), `offset` (optional, default 0) |
-| **Output** | Bounded list of receipts, total count, advisory notice |
-| **Non-effects** | Does not mutate any state |
-| **R0 boundary** | Pure read. Must reject unbounded listings. |
+### Family 3: Epic Regression (R0/R1)
 
-**Validation rules:**
-- L-1: `limit` must be an integer between 1 and 100 (inclusive)
-- L-2: If `limit` is absent, tool must reject with `unbounded_listing_rejected`
-- L-3: `offset` must be >= 0 if provided
-- L-4: Output must include `advisory_notice` warning of non-authoritative nature
-- L-5: Output must not include any approval/seal/merge/production-ready claims
+| Tool | R-level | Description |
+|------|---------|-------------|
+| `qa_epic_suite_build` | R1 | Build Epic-level regression suite from sprint tests |
+| `qa_epic_suite_read` | R0 | Read an Epic regression suite definition and results |
+| `qa_epic_suite_run` | R1 | Run an Epic regression suite (advisory output) |
 
-### Tool 4: `qa_pilot_receipt_status`
+**Behavior:** Builds cross-sprint regression suites. Results are advisory until Owner accepts. No approve/seal/advance authority.
 
-| Field | Value |
-|-------|-------|
-| **Tool name** | `qa_pilot_receipt_status` |
-| **Purpose** | Summarize QA Pilot receipt store and validation status |
-| **Authority** | R0 — read-only/status-only |
-| **Input** | None (status is global to QA Pilot project) |
-| **Output** | Receipt counts, last validation timestamp, last validation result, store integrity |
-| **Non-effects** | Does not mutate any state |
-| **R0 boundary** | Status-only. Must not mutate, approve, seal, or claim authority. |
+### Family 4: Learning / Defect Memory (R1)
 
-**Validation rules:**
-- S-1: Input must be empty (no parameters)
-- S-2: Output must be read-only status fields only
-- S-3: Must not claim any approval, seal, merge, or production-readiness authority
-- S-4: Must not contain action fields (register, update, delete, seal, approve)
+| Tool | R-level | Description |
+|------|---------|-------------|
+| `qa_learning_record` | R1 | Record a lesson learned from a defect, regression, or observation |
+| `qa_defect_record` | R1 | Record a defect found during QA activity |
+| `qa_regression_link` | R1 | Link a defect/learning record to specific regression tests |
 
-## 3. Authority Model
+**Behavior:** All records are advisory. Defect severity and status tracked within QA Pilot. No cross-project mutation.
 
-| Tool | Authority Level | Classification |
-|------|----------------|----------------|
-| `qa_pilot_receipt_register` | R1 | Advisory mutation — receipt store append only |
-| `qa_pilot_receipt_get` | R0 | Read-only query |
-| `qa_pilot_receipt_list` | R0 | Read-only list |
-| `qa_pilot_receipt_status` | R0 | Read-only status |
+### Family 5: Simulator / Help Surface (R0/R1)
 
-### Authority Principles (MP-1 through MP-4)
+| Tool | R-level | Description |
+|------|---------|-------------|
+| `qa_simulator_scenario_list` | R0 | List available simulator scenarios |
+| `qa_simulator_scenario_read` | R0 | Read a specific simulator scenario |
+| `qa_help_lookup` | R0 | Look up help/documentation references by feature or topic |
 
-| Rule | Description |
-|------|-------------|
-| MP-1 | Register tools must classify submitted receipts as advisory evidence only |
-| MP-2 | Query/list/status tools must be read-only |
-| MP-3 | No MCP tool may claim or imply approval, seal, merge, or production-readiness authority |
-| MP-4 | All tool outputs must include advisory/read-only boundary statements |
+**Behavior:** Scenarios and references built from sprint evidence, governance docs, and manual input. Advisory-only. No help/doc mutation.
 
-## 4. Non-Effects
+### Family 6: Reporting / Export (R0/R1)
 
-All QA Pilot MCP tool stubs defined in this sprint:
+| Tool | R-level | Description |
+|------|---------|-------------|
+| `qa_result_export` | R1 | Export advisory QA result packet for Owner review |
+| `qa_status_summary` | R0 | Return aggregated QA status summary |
 
-- Do not register runtime MCP handlers
-- Do not mutate The Librarian MCP controller code
-- Do not implement Swift services
-- Do not grant real MCP dispatch access
-- Do not seal sprints, approve work, or promote authority
-- Do not interact with external QA Pilot production repos (`qa-pilot-v2`, `QA-PilotV2`)
-- Do not read from or write to The Librarian ledger, status surfaces, or governance docs
+**Behavior:** All exports carry `advisory: true` and `owner_action_required: true`. No export may approve, seal, mutate, or advance work in any project.
 
-## 5. Input/Output Contracts
+## 3. Hard Negative Constraints
 
-See `docs/schemas/qa-pilot-mcp-tool.schema.json` for the full Draft 2020-12 JSON Schema defining all four tool input/output shapes, including:
-- `receipt_register_input` / `receipt_register_output`
-- `receipt_get_input` / `receipt_get_output`
-- `receipt_list_input` / `receipt_list_output`
-- `receipt_status_input` / `receipt_status_output`
+The following tools or effects are **forbidden** in the QA Pilot MCP surface:
 
-## 6. Relationship to Existing Components
+| Forbidden Tool/Effect | Reason |
+|----------------------|--------|
+| `approve_sprint` | QA Pilot may not approve sprints |
+| `seal_sprint` | QA Pilot may not seal sprints |
+| `start_sprint` | QA Pilot may not start sprints |
+| `advance_sprint` | QA Pilot may not advance sprint lifecycle |
+| `mutate_librarian_ledger` | QA Pilot may not touch Librarian ledger |
+| `create_librarian_receipt` | QA Pilot may not create Librarian receipts |
+| `update_librarian_status` | QA Pilot may not update Librarian status surfaces |
+| `write_librarian_file` | QA Pilot may not write Librarian canonical files |
+| `apply_patch_to_librarian` | QA Pilot may not apply patches to Librarian codebase |
+| `execute_librarian_work` | QA Pilot may not execute Librarian work orders |
 
-| Component | Relationship |
-|-----------|-------------|
-| `docs/schemas/qa-pilot-receipt.schema.json` | Register tool validates receipts against this schema |
-| `docs/governance/QA-PILOT-RECEIPT.md` | Authority model derives from production receipt governance |
-| `scripts/validate-qa-pilot-receipt.py` | Register tool reuses PR-2, PR-3, PR-10, PR-11 authority checks |
-| `docs/examples/qa-pilot-receipt/` | Register tool accepts these production receipt fixtures as input |
+These constraints are enforced by the QA Pilot MCP tool contracts. Any tool output that claims these capabilities is rejected.
 
-## 7. Non-Goals
+## 4. Standalone Invariants
 
-- No runtime MCP handler registration
-- No The Librarian MCP controller mutation
-- No Swift service implementation
-- No real receipt store implementation
-- No gRPC, HTTP transport, or wire protocol definition
-- No automated dispatch, seal, approval, or authority-promotion workflow
-- No cross-project MCP invocation
-- No integration with Librarian's node-registry receipt store
+1. QA Pilot MCP is owned and operated by QA Pilot independently
+2. QA Pilot MCP can accept evidence from any governed project that respects the evidence contract
+3. QA Pilot MCP can build QA/regression evidence independently of any source project
+4. QA Pilot MCP can export advisory result packets without source project involvement
+5. QA Pilot MCP cannot mutate source project authority, files, receipts, ledgers, status, or sprint state
+6. QA Pilot MCP tools are advisory-only (`advisory: true`)
+7. QA Pilot MCP enforces hard negative constraints at the tool definition level
+8. QA Pilot MCP cross-project references require explicit Owner authorization
 
-## 8. Required Boundaries
+## 5. Common Response Envelope
 
-1. Do not mutate `active/librarian/` (The Librarian repo)
-2. Do not mutate `qa-pilot-v2/` or `QA-PilotV2/` (production QA Pilot repos)
-3. Do not alter mainline Owner decision records
-4. Do not claim QA approval, sealing, merge authority, or production readiness
-5. All tool contracts must enforce advisory/read-only authority levels
-6. Register tools must classify receipts as advisory evidence only
-7. List tools must reject unbounded listing
-8. Tools must not imply runtime MCP registration capability
+All tools return this envelope:
+
+```json
+{
+  "tool": "<tool_name>",
+  "advisory": true,
+  "no_canonical_authority": true,
+  "project_boundary": "qa-pilot",
+  "standalone_mcp": true,
+  "multi_project_capable": true,
+  "cross_project_registration": false,
+  "result": { ... },
+  "timestamp": "<ISO 8601>"
+}
+```

@@ -1,0 +1,16 @@
+{
+  "receipt_id": "RCR-BACKFILL-VALID-001",
+  "sprint_id": "QA-PILOT-HYPOTHETICAL-SPRINT-1",
+  "ledger_number": 55,
+  "registry_impact": "adds_layer",
+  "registry_before_summary": "Registry had 21 layers (#33-#54) before hypothetical sprint.",
+  "registry_after_summary": "Registry has 22 layers (#33-#55) after adding hypothetical layer.",
+  "layer_slot_added": 55,
+  "rationale": "Backfill receipt for hypothetical sprint #55. This is a valid backfill with all fields present and consistent.",
+  "advisory_only": true,
+  "custody": "qa-pilot-local",
+  "librarian_impact": "none",
+  "not_seal_authority": "This backfill receipt does not confer sealing authority.",
+  "not_librarian_mutation_authority": "This backfill receipt does not authorize Librarian mutation.",
+  "created_at": "2026-07-07T20:25:00Z"
+}

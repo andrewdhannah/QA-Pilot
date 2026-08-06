@@ -1,0 +1,16 @@
+{
+  "qa_item_id": "QA-BAD-0103",
+  "title": "Item claiming approved without decision ref",
+  "source": "manual",
+  "status": "open",
+  "severity": "high",
+  "category": "functional",
+  "description": "This item claims accepted owner_decision_state but has no owner_decision_ref.",
+  "evidence_refs": [],
+  "owner_decision_state": "accepted",
+  "created_at": "2026-07-07T22:56:00Z",
+  "updated_at": "2026-07-07T22:56:00Z",
+  "advisory_only": true,
+  "custody": "qa-pilot-local",
+  "librarian_impact": "none"
+}

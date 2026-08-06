@@ -1,0 +1,23 @@
+{
+  "expected_layers": [
+    {"slot": 33, "id": "QA-PILOT-MCP-EVIDENCE-INTAKE-1", "layer": "pipeline"},
+    {"slot": 34, "id": "QA-PILOT-TEST-COMPOSITION-1", "layer": "pipeline"},
+    {"slot": 35, "id": "QA-PILOT-RESULT-PACKET-EXPORT-1", "layer": "pipeline"},
+    {"slot": 36, "id": "QA-PILOT-EPIC-REGRESSION-BUILDER-1", "layer": "pipeline"},
+    {"slot": 37, "id": "QA-PILOT-EPIC-REGRESSION-STARTUP-SURFACE-1", "layer": "pipeline"},
+    {"slot": 38, "id": "QA-PILOT-PIPELINE-HEALTH-REGRESSION-1", "layer": "validation"},
+    {"slot": 39, "id": "QA-PILOT-PIPELINE-DRIFT-DETECTION-1", "layer": "validation"},
+    {"slot": 40, "id": "QA-PILOT-PIPELINE-RECOVERY-DIAGNOSTICS-1", "layer": "validation"},
+    {"slot": 41, "id": "QA-PILOT-PIPELINE-OWNER-REVIEW-PACKET-1", "layer": "governance"},
+    {"slot": 42, "id": "QA-PILOT-OWNER-REVIEW-DECISION-RECEIPT-1", "layer": "governance"},
+    {"slot": 43, "id": "QA-PILOT-OWNER-DECISION-RECEIPT-STARTUP-SURFACE-1", "layer": "governance"},
+    {"slot": 44, "id": "QA-PILOT-EVIDENCE-CHECKLIST-1", "layer": "governance"},
+    {"slot": 45, "id": "QA-PILOT-CHECKLIST-REVIEW-PACKET-1", "layer": "governance"},
+    {"slot": 46, "id": "QA-PILOT-CHECKLIST-EVIDENCE-LINKER-1", "layer": "governance"},
+    {"slot": 47, "id": "QA-PILOT-MCP-CALL-LOOP-GUARD-1", "layer": "governance"},
+    {"slot": 48, "id": "QA-PILOT-PIPELINE-HEALTH-LAYER-REGISTRY-1", "layer": "governance"}
+  ],
+  "expected_drift": false,
+  "custody": "qa-pilot-local",
+  "advisory": true
+}

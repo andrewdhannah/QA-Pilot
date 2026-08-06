@@ -1,0 +1,13 @@
+{
+  "review_packet_id": "CRP-INVALID-MUTATION-001",
+  "source_checklist_id": "EC-PIPELINE-EVIDENCE-001",
+  "title": "Invalid — claims Librarian mutation authority",
+  "description": "This review packet claims Librarian mutation authority, violating CRP-4 and CRP-12.",
+  "item_summary": { "total": 1, "blocked": 0, "degraded": 0, "ready": 1 },
+  "advisory_only": true,
+  "custody": "qa-pilot-local",
+  "librarian_impact": "read_only",
+  "not_seal_authority": "This review packet does not confer sealing authority.",
+  "not_librarian_mutation_authority": "This review packet does not authorize Librarian mutation.",
+  "created_at": "2026-07-07T03:32:00Z"
+}

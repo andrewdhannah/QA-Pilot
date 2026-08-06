@@ -1,0 +1,17 @@
+{
+  "entry_id": "CDQ-20260706-002",
+  "queued_at": "2026-07-06T17:45:00Z",
+  "status": "pending",
+  "source": "startup_report",
+  "finding_type": "missing_receipt",
+  "description": "No custody receipt found for sealed contract #23 in current index",
+  "custody_context": {
+    "contract_id": "#23",
+    "receipt_count": 0,
+    "detail": "Expected at least one receipt for PROJECT-WIDE-WRITE-CUSTODY-ENFORCEMENT-1"
+  },
+  "advisory": true,
+  "owner_required": true,
+  "owner_decision": null,
+  "cross_project": false
+}

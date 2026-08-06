@@ -1,0 +1,10 @@
+{
+  "label": "Invalid: extra unsealed layer (sprint >=33 not in registry)",
+  "test_type": "dr4_extra_unsealed",
+  "ledger_sprints": [{"id": "QA-PILOT-MCP-EVIDENCE-INTAKE-1", "sealed_number": 33, "status": "sealed"},
+                     {"id": "QA-PILOT-UNKNOWN-EXTRA-1", "sealed_number": 64, "status": "sealed"}],
+  "registry_sprint_ids": ["QA-PILOT-MCP-EVIDENCE-INTAKE-1"],
+  "expected_dr4_extra": ["QA-PILOT-UNKNOWN-EXTRA-1"],
+  "expected_drift": true,
+  "advisory_only": true
+}

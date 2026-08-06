@@ -1,0 +1,34 @@
+{
+  "$schema": "owner-decision-v1",
+  "decision_id": "OD-EPIC-QA-PILOT-DESIGN-LANGUAGE-REFRESH-1-BATCH-SEAL",
+  "date": "2026-07-09",
+  "owner": "Andrew Hannah",
+  "epic": "EPIC-QA-PILOT-DESIGN-LANGUAGE-REFRESH-1",
+  "decision": "BATCH_APPROVE_AND_SEAL",
+  "sprints_sealed": [
+    {"id": "QA-PILOT-DESIGN-LANGUAGE-BASELINE-1", "ledger_number": 136},
+    {"id": "QA-PILOT-DESIGN-TOKEN-AND-SHELL-REFRESH-1", "ledger_number": 137},
+    {"id": "QA-PILOT-ADMIN-DASHBOARD-DESIGN-REFRESH-1", "ledger_number": 138},
+    {"id": "QA-PILOT-LEARNER-PORTAL-DESIGN-REFRESH-1", "ledger_number": 139},
+    {"id": "QA-PILOT-COURSE-RUNTIME-DESIGN-REFRESH-1", "ledger_number": 140},
+    {"id": "QA-PILOT-EXPORT-IMPORT-CERTIFICATE-DESIGN-REFRESH-1", "ledger_number": 141},
+    {"id": "QA-PILOT-DESIGN-LANGUAGE-ROUNDTRIP-VALIDATION-1", "ledger_number": 142}
+  ],
+  "basis": "Design-language convergence epic complete. All 7 authorized sprints completed under bounded continuation (#136-#142). Sprint 1: design baseline and defect remediation (lang toggle, export/import branding). Sprint 2: 50+ Librarian design tokens and 15+ component classes merged into main.css. Sprint 3: admin dashboard redesigned with bento card layout. Sprints 4-6: learner portal, course runtime, and export/import/certificate refreshed with token alignment and data footers. Sprint 7: roundtrip validation PASS across all 8 pages. No unresolved defects. No authority-boundary violations. No backend, auth, install, or Librarian mutation introduced.",
+  "stop_conditions_clear": {
+    "backend_required": false,
+    "install_required": false,
+    "auth_required": false,
+    "cloud_account_required": false,
+    "cross_project_write": false,
+    "librarian_mutation": false,
+    "authority_expansion": false,
+    "browser_only_broken": false,
+    "json_custody_bypassed": false,
+    "design_replaces_academy_identity": false
+  },
+  "classification": "epic_completion_design_language_refresh",
+  "authority": "Owner",
+  "status": "sealed",
+  "sealed_at": "2026-07-09T22:00:00Z"
+}

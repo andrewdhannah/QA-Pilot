@@ -1,0 +1,43 @@
+{
+  "surface_metadata": {
+    "schema": "custody-receipt-summary-surface-v1",
+    "deterministic": true,
+    "index_status": "empty",
+    "index_directory_path": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/receipts/owner-decision-custody",
+    "total_receipts_in_index": 0,
+    "index_schema": "custody-receipt-index-v1",
+    "status_detail": "Receipts directory is empty — zero custody receipts indexed"
+  },
+  "summary": {
+    "by_custody_source": {},
+    "by_decision_type": {
+      "approvals": 0,
+      "denied": 0,
+      "warning": 0,
+      "dry_run": 0
+    },
+    "by_violation_code": {},
+    "by_mutation_status": {},
+    "by_approval_provenance": {
+      "owner_approval_present": 0,
+      "owner_approval_absent": 0
+    },
+    "by_sprint": {},
+    "by_ledger_reference": {},
+    "by_sealed_contract": {}
+  },
+  "sealed_contract_references": {
+    "#23": {"receipts_referencing": 0, "known_contract": true},
+    "#24": {"receipts_referencing": 0, "known_contract": true},
+    "#25": {"receipts_referencing": 0, "known_contract": true},
+    "#26": {"receipts_referencing": 0, "known_contract": true},
+    "#27": {"receipts_referencing": 0, "known_contract": true}
+  },
+  "review_items": [],
+  "surface_controls": {
+    "approve": false,
+    "seal": false,
+    "execute": false,
+    "write": false
+  }
+}

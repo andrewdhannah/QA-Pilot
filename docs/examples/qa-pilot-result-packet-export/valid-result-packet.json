@@ -1,0 +1,48 @@
+{
+  "result_id": "QR-20260706-0001",
+  "sprint_ids": ["QA-PILOT-MCP-EVIDENCE-INTAKE-1", "QA-PILOT-TEST-COMPOSITION-1"],
+  "summary": {
+    "tests_passed": 4,
+    "tests_failed": 0,
+    "defects_found": 1
+  },
+  "advisory": true,
+  "owner_action_required": true,
+  "findings": [
+    {
+      "finding_id": "F-0001",
+      "type": "defect",
+      "description": "Evidence store clear command does not report count when empty",
+      "severity": "low",
+      "source_evidence": "EP-20260706-010"
+    },
+    {
+      "finding_id": "F-0002",
+      "type": "observation",
+      "description": "All 4 composed test cases passed. No regressions detected.",
+      "severity": "low",
+      "source_test": "TC-20260706-06-010-001"
+    }
+  ],
+  "defect_list": ["F-0001"],
+  "recommendation": "Owner review required for any promotion or sign-off action",
+  "exported_at": "2026-07-06T22:30:00Z",
+  "provenance": {
+    "source": "qa-pilot-export",
+    "qa_pilot_version": "35",
+    "evidence_packets": [
+      {
+        "packet_id": "EP-20260706-010",
+        "project": "qa-pilot",
+        "sprint_id": "QA-PILOT-MCP-EVIDENCE-INTAKE-1"
+      }
+    ],
+    "test_cases": [
+      {
+        "test_id": "TC-20260706-06-010-001",
+        "source_artifact": "EP-20260706-010",
+        "status": "composed"
+      }
+    ]
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "evaluation_id": "RD-EVAL-INVALID-AUTH-005",
+  "result_packet_ref": "QR-INVALID-005",
+  "risk_inputs": {
+    "authority_change": false,
+    "production_path_impact": false,
+    "ledger_registry_change": false,
+    "cross_node_involvement": false,
+    "partial_completion": false,
+    "incomplete_requirements": 0,
+    "rc_failure_count": 0,
+    "rc_total_count": 11,
+    "e4_failure_count": 0,
+    "e4_total_count": 10,
+    "lightweight_lane": true
+  },
+  "composite_risk_score": 0,
+  "assigned_depth": "none",
+  "escalation_chain": ["ER-9"],
+  "evaluated_at": "2026-07-08T07:40:00Z",
+  "authority_disclaimer": "This risk-based review depth evaluation is advisory-only. It does not auto-accept evidence, auto-reject findings, execute work, approve intake, verify evidence, close workbench items, seal anything, mutate the evidence chain, or replace Owner decision authority. Owner remains the final decision point. Custody is qa-pilot-local. Librarian impact is none.",
+  "custody": "qa-pilot-local",
+  "advisory_only": true,
+  "librarian_impact": "none",
+  "approved_by": "auto-approval-system",
+  "seal_status": "sealed"
+}

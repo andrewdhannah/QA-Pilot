@@ -1,0 +1,16 @@
+{
+  "intake_id": "IR-REVIEW-0001",
+  "source_packet_id": "XPK-EXPORT-0001",
+  "source_project": "qa-pilot",
+  "intake_status": "received",
+  "received_at": "2026-07-08T01:55:00Z",
+  "included_item_ids": ["QA-FUNC-0001"],
+  "item_count": 1,
+  "evidence_summary": {"total_links": 0, "by_type": {}},
+  "lifecycle_summary": {"total_transitions": 1, "by_status": {"open": 1}},
+  "owner_decision_state": "pending",
+  "authority_disclaimer": "This review intake record is advisory-only. It does not approve packet contents, verify item correctness, accept defects, or close/seal/promote anything. Custody is qa-pilot-local. Librarian impact is none.",
+  "custody": "qa-pilot-local",
+  "advisory_only": true,
+  "librarian_impact": "none"
+}

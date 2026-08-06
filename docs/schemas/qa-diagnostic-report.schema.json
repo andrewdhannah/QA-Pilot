@@ -1,0 +1,91 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/andrewdhannah/QA-Pilot/schemas/qa-diagnostic-report.schema.json",
+  "title": "QA Pilot Diagnostic Report",
+  "description": "A diagnostic report produced by QA-Pilot when a validation test fails. Describes what failed, why, what contract was violated, and provides the context needed for remediation. It does NOT authorize repair — that is a separate governance decision.",
+  "type": "object",
+  "required": [
+    "report_id", "generated_at", "test_id", "domain",
+    "failure", "provenance"
+  ],
+  "properties": {
+    "report_id": {
+      "type": "string",
+      "pattern": "^DIAG-[A-Z]+-[0-9]{4,}$",
+      "description": "Unique diagnostic report identifier"
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "test_id": {
+      "type": "string",
+      "description": "The test definition that failed"
+    },
+    "domain": {
+      "type": "string",
+      "enum": ["regression", "security", "uat", "accessibility", "performance", "ai", "compliance"]
+    },
+    "severity": {
+      "type": "string",
+      "enum": ["LOW", "MEDIUM", "HIGH", "CRITICAL"],
+      "default": "MEDIUM"
+    },
+    "failure": {
+      "type": "object",
+      "required": ["expected", "actual", "reproduction"],
+      "properties": {
+        "expected": { "type": "string", "minLength": 10 },
+        "actual": { "type": "string", "minLength": 10 },
+        "reproduction": { "type": "string" },
+        "contract_ref": { "type": "string" },
+        "evidence_refs": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      },
+      "description": "What failed, what was expected, and how to reproduce"
+    },
+    "affected_area": {
+      "type": "object",
+      "properties": {
+        "component": { "type": "string" },
+        "file_scope": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "contract_scope": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "constraints": {
+      "type": "object",
+      "properties": {
+        "must_not_modify": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Paths, records, or systems the repair must not touch"
+        },
+        "required_validation": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Tests that must pass after repair"
+        }
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "required": ["advisory", "no_authority_conferred"],
+      "properties": {
+        "advisory": { "type": "boolean", "const": true },
+        "no_authority_conferred": { "type": "boolean", "const": true },
+        "detected_by": { "type": "string" },
+        "validation_run": { "type": "string" },
+        "pipeline_run": { "type": "string" }
+      }
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,13 @@
+{
+  "review_packet_id": "CRP-INVALID-BLOCKED-NO-ITEMS-001",
+  "source_checklist_id": "EC-PIPELINE-EVIDENCE-001",
+  "title": "Invalid — blocked > 0 but no blocked_items",
+  "description": "This review packet has blocked=1 but no blocked_items array, violating CRP-9.",
+  "item_summary": { "total": 1, "blocked": 1, "degraded": 0, "ready": 0 },
+  "advisory_only": true,
+  "custody": "qa-pilot-local",
+  "librarian_impact": "none",
+  "not_seal_authority": "This review packet does not confer sealing authority.",
+  "not_librarian_mutation_authority": "This review packet does not authorize Librarian mutation.",
+  "created_at": "2026-07-07T03:32:00Z"
+}

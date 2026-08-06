@@ -1,0 +1,17 @@
+{
+  "$schema": "qa-pilot-migration-overwrite-protection-v1",
+  "destination_root": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app",
+  "destination_root_exists": true,
+  "destination_root_empty": true,
+  "manifest_sha256": "c85fda640f617ef2dc2b6162496e2d05c09a409206b1382f0479aa7c57406ef0",
+  "manifest_path": "reports/qa-pilot-migration-copy-manifest-1.json",
+  "files_total": 123,
+  "overwrite_collisions_count": 0,
+  "governance_collisions_count": 0,
+  "verdict": "PASS",
+  "notes": [
+    "All destinations are inside browser-app/ which is empty (created this sprint).",
+    "Top-level directory and filename collisions with CarbideFrame governance roots are pre-filtered.",
+    "Sprint 1 does not perform any copy; this manifest is the plan Sprint 2 will execute."
+  ]
+}

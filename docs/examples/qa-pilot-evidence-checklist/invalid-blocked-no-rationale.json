@@ -1,0 +1,19 @@
+{
+  "checklist_id": "EC-INVALID-BLOCKED-001",
+  "title": "Invalid — blocked item without rationale",
+  "description": "This checklist has a blocked item with no rationale, violating EC-7.",
+  "evidence_class": "required",
+  "items": [
+    {
+      "item_id": "ECI-INVALID-BLOCKED-001",
+      "description": "Missing evidence — no rationale provided.",
+      "state": "blocked"
+    }
+  ],
+  "pipeline_refs": [
+    { "layer_id": "layer_1", "layer_name": "Evidence Intake", "sprint_id": "QA-PILOT-MCP-EVIDENCE-INTAKE-1", "sealed_number": 33 }
+  ],
+  "advisory_only": true,
+  "custody": "qa-pilot-local",
+  "librarian_impact": "none"
+}

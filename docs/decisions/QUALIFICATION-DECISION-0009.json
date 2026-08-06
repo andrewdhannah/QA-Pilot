@@ -1,0 +1,41 @@
+{
+  "decision_id": "QUALIFICATION-DECISION-0009",
+  "source_record": "QR-F347C0US-0426",
+  "target_id": "evidence-index.json",
+  "target_type": "evidence_packet",
+  "qualification_type": "artifact",
+  "qualification_level": "spot_checked",
+  "assessment": "advisory",
+  "overall_score": 0.88,
+  "sub_dimension_scores": {
+    "schema_compliance": 1.0,
+    "evidence_freshness": 1.0,
+    "evidence_diversity": 0.2,
+    "authority_boundary": 1.0,
+    "provenance_quality": 1.0
+  },
+  "score_weights": {
+    "schema_compliance": 0.25,
+    "evidence_freshness": 0.2,
+    "evidence_diversity": 0.15,
+    "authority_boundary": 0.25,
+    "provenance_quality": 0.15
+  },
+  "evidence_refs": [
+    {
+      "evidence_id": "evidence-index.json",
+      "evidence_type": "evidence_packet",
+      "evidence_source": "data/evidence/evidence-index.json",
+      "verification_status": "verified",
+      "verified_at": "2026-07-16T19:01:34.822187+00:00"
+    }
+  ],
+  "violations": [],
+  "decision": "modify",
+  "rationale": "Test modify decision",
+  "advisory_only": true,
+  "custody": "qa-pilot-local",
+  "librarian_impact": "none",
+  "generated_at": "2026-07-16T19:24:37.003411+00:00",
+  "generated_by": "qa-pilot-qualification-review-surface"
+}

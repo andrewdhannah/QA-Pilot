@@ -1,0 +1,36 @@
+{
+  "packet_id": "EP-20260706-001",
+  "project": "qa-pilot",
+  "sprint_id": "QA-PILOT-MCP-EVIDENCE-INTAKE-1",
+  "source_ledger": "qa-pilot-local",
+  "changed_files": [
+    {
+      "path": "scripts/qa_pilot_mcp_evidence_intake.py",
+      "change_type": "created",
+      "diff_summary": "New evidence intake MCP implementation"
+    }
+  ],
+  "validation_output": {
+    "tests_passed": 12,
+    "tests_failed": 0,
+    "summary": "All evidence intake tests pass"
+  },
+  "receipt_references": ["qapr-20260706-001"],
+  "boundary_assertions": {
+    "librarian_impact": "none",
+    "cross_project_registration": false
+  },
+  "known_defects": [],
+  "evidence_artifacts": [
+    {
+      "artifact_id": "artifact-evidence-intake-001",
+      "type": "fixture",
+      "path": "docs/examples/qa-pilot-mcp-evidence-intake/valid-evidence-packet.json"
+    }
+  ],
+  "provenance": {
+    "source": "qa-pilot-local",
+    "timestamp": "2026-07-06T18:00:00Z"
+  },
+  "hash": "a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2"
+}

@@ -1,0 +1,132 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "active/qa-pilot/docs/schemas/qa-pilot-knowledge-adapter.schema.json",
+  "title": "QA Pilot Knowledge Adapter",
+  "description": "Schema for the governed read-only bridge from Librarian canonical knowledge to QA Pilot training generation. Defines source references, provenance records, and query results. Read-only — never mutates Librarian state.",
+  "type": "object",
+  "required": [
+    "adapter_version", "generated_at", "operation", "result"
+  ],
+  "properties": {
+    "adapter_version": {
+      "type": "string",
+      "const": "knowledge-adapter-v1",
+      "description": "Adapter schema version"
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp of operation"
+    },
+    "operation": {
+      "type": "string",
+      "enum": ["scan", "query", "reference", "provenance", "verify", "status"],
+      "description": "Type of knowledge adapter operation"
+    },
+    "result": {
+      "type": "object",
+      "description": "Operation-specific result data"
+    },
+    "query": {
+      "type": "object",
+      "properties": {
+        "pattern": { "type": "string" },
+        "source_type": { "type": "string", "enum": ["governance", "schema", "rule", "ledger", "receipt", "all"] },
+        "keyword": { "type": "string" },
+        "limit": { "type": "integer", "minimum": 1, "maximum": 100 }
+      },
+      "description": "Query parameters for query operation"
+    },
+    "sources": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/source_reference"
+      },
+      "description": "Array of Librarian source references for provenance/reference operations"
+    }
+  },
+  "$defs": {
+    "source_reference": {
+      "type": "object",
+      "required": ["path", "revision", "source_type", "accessible"],
+      "properties": {
+        "path": {
+          "type": "string",
+          "description": "Relative path from Librarian project root"
+        },
+        "revision": {
+          "type": "string",
+          "description": "Git revision or content hash of the source at time of reference"
+        },
+        "source_type": {
+          "type": "string",
+          "enum": ["governance", "schema", "rule", "ledger", "receipt"],
+          "description": "Type of source artifact"
+        },
+        "accessible": {
+          "type": "boolean",
+          "description": "Whether the source file exists and is readable at reference time"
+        },
+        "title": {
+          "type": "string",
+          "description": "Human-readable title extracted from source"
+        },
+        "content_hash": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$",
+          "description": "SHA-256 hash of source content at reference time"
+        },
+        "last_modified": {
+          "type": "string",
+          "format": "date-time",
+          "description": "File modification timestamp"
+        },
+        "referenced_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "When this reference was created"
+        }
+      },
+      "description": "A reference to a single Librarian source document"
+    },
+    "provenance_record": {
+      "type": "object",
+      "required": ["provenance_id", "generated_at", "sources", "source_hash", "advisory"],
+      "properties": {
+        "provenance_id": {
+          "type": "string",
+          "pattern": "^KAP-[A-Z0-9-]+$",
+          "description": "Unique provenance record identifier"
+        },
+        "generated_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "When this provenance record was created"
+        },
+        "sources": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/source_reference" },
+          "minItems": 1,
+          "description": "Source references that compose this provenance record"
+        },
+        "source_hash": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$",
+          "description": "SHA-256 hash of concatenated source content + metadata"
+        },
+        "advisory": {
+          "type": "boolean",
+          "const": true,
+          "description": "Provenance record is always advisory — never authoritative"
+        },
+        "no_authority_promotion": {
+          "type": "boolean",
+          "const": true,
+          "description": "This record does not grant authority"
+        }
+      },
+      "description": "A provenance record linking a training artifact to its Librarian sources"
+    }
+  },
+  "additionalProperties": false
+}

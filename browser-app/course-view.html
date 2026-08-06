@@ -1,0 +1,3261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QA Pilot — Course Viewer</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="stylesheet" href="css/main.css">
+
+  <style>
+    /* ── COURSE VIEWER STYLES ──────────────────────────────────────────────
+     * This page uses a two-column layout: module navigation sidebar on the
+     * left, content viewer panel on the right. Both use the existing design
+     * tokens from main.css for visual consistency.
+     */
+
+    /* ── TOPBAR ──────────────────────────────────────────────────────────── */
+    .cv-topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: var(--space-4) var(--space-6);
+      background: linear-gradient(90deg, #ffffff 0%, #f9fafb 100%);
+      border-bottom: 2px solid #e5e7eb;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    }
+
+    .cv-topbar-left {
+      display: flex;
+      align-items: center;
+      gap: var(--space-4);
+    }
+
+    .cv-back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-1);
+      font-size: var(--text-sm);
+      color: var(--color-ink-muted);
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: var(--space-1) var(--space-2);
+      border-radius: var(--radius-sm);
+      transition: background var(--transition-fast), color var(--transition-fast);
+    }
+
+    .cv-back-btn:hover {
+      background: var(--color-bg);
+      color: var(--color-ink);
+    }
+
+    .cv-topbar-title {
+      font-size: var(--text-base);
+      font-weight: var(--weight-bold);
+      color: var(--color-ink);
+    }
+
+    .cv-topbar-right {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      font-size: var(--text-sm);
+      color: var(--color-ink-muted);
+    }
+
+    .cv-topbar-pct {
+      font-weight: var(--weight-bold);
+      color: var(--color-ink);
+    }
+
+    .cv-topbar-bar {
+      width: 120px;
+      height: 6px;
+      background: var(--color-border);
+      border-radius: var(--radius-full);
+      overflow: hidden;
+    }
+
+    .cv-topbar-bar-fill {
+      height: 100%;
+      background: var(--color-primary);
+      border-radius: var(--radius-full);
+      transition: width 0.4s ease;
+    }
+
+    .cv-topbar-bar-fill.complete {
+      background: var(--color-success);
+    }
+
+    /* ── LAYOUT: Two-column split ──────────────────────────────────────────── */
+    .cv-layout {
+      display: flex;
+      height: calc(100vh - 53px);  /* Full viewport minus topbar height */
+      overflow: hidden;
+    }
+
+    /* ── LEFT SIDEBAR: Module navigation ──────────────────────────────────── */
+    .cv-sidebar {
+      width: 300px;
+      flex-shrink: 0;
+      overflow-y: auto;
+      background: #f9fafb;
+      border-right: 2px solid #e5e7eb;
+      padding: var(--space-4) 0;
+    }
+
+    .cv-module-group {
+      border-bottom: 2px solid #e5e7eb;
+    }
+
+    .cv-module-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: var(--space-3) var(--space-5);
+      cursor: pointer;
+      transition: background var(--transition-fast), color var(--transition-fast);
+      user-select: none;
+      font-weight: 600;
+      color: #1f2937;
+      border-left: 3px solid transparent;
+      border-bottom: 1px solid #f0f1f3;
+    }
+
+    .cv-module-header:hover {
+      background: #f3f4f6;
+      border-left-color: #3b82f6;
+    }
+
+    .cv-module-header-left {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      min-width: 0;
+    }
+
+    .cv-module-expand {
+      font-size: 10px;
+      color: var(--color-ink-muted);
+      width: 14px;
+      text-align: center;
+      flex-shrink: 0;
+      transition: transform var(--transition-fast);
+    }
+
+    .cv-module-expand.open {
+      transform: rotate(90deg);
+    }
+
+    .cv-module-number {
+      font-size: var(--text-xs);
+      font-weight: var(--weight-bold);
+      color: var(--color-ink-muted);
+      letter-spacing: 0.04em;
+      flex-shrink: 0;
+    }
+
+    .cv-module-title {
+      font-size: var(--text-sm);
+      font-weight: var(--weight-medium);
+      color: var(--color-ink);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .cv-module-status-icon {
+      font-size: 12px;
+      flex-shrink: 0;
+    }
+
+    /* Sub-module list (inside expandable module) */
+    .cv-submodule-list {
+      display: none;
+      padding: 0 0 var(--space-2) 0;
+    }
+
+    .cv-submodule-list.open {
+      display: block;
+    }
+
+    .cv-submodule-item {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      padding: var(--space-2) var(--space-5) var(--space-2) var(--space-10);
+      cursor: pointer;
+      transition: background var(--transition-fast);
+      font-size: var(--text-sm);
+      color: var(--color-ink-soft);
+      border-left: 3px solid transparent;
+    }
+
+    .cv-submodule-item:hover {
+      background: var(--color-bg);
+    }
+
+    .cv-submodule-item.active {
+      background: #dbeafe;
+      color: #1e40af;
+      border-left-color: #3b82f6;
+      font-weight: 600;
+    }
+
+    .cv-submodule-item.complete {
+      color: var(--color-ink-muted);
+    }
+
+    .cv-submodule-item.locked {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .cv-submodule-icon {
+      font-size: 12px;
+      width: 18px;
+      text-align: center;
+      flex-shrink: 0;
+    }
+
+    .cv-submodule-label {
+      flex: 1;
+      min-width: 0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .cv-submodule-time {
+      font-size: 10px;
+      color: var(--color-ink-muted);
+      flex-shrink: 0;
+    }
+
+    /* ── RIGHT PANEL: Content viewer ────────────────────────────────────────── */
+    .cv-content {
+      flex: 1;
+      overflow-y: auto;
+      padding: var(--space-8) var(--space-10);
+      background: var(--color-bg);
+    }
+
+    .cv-content-welcome {
+      text-align: center;
+      padding: var(--space-16) var(--space-6);
+    }
+
+    .cv-content-welcome h2 {
+      font-size: var(--text-lg);
+      font-weight: var(--weight-bold);
+      color: var(--color-ink);
+      margin-bottom: var(--space-3);
+    }
+
+    .cv-content-welcome p {
+      font-size: var(--text-sm);
+      color: var(--color-ink-muted);
+      max-width: 480px;
+      margin: 0 auto;
+      line-height: var(--leading-base);
+    }
+
+    /* Sub-module content rendered here */
+    .cv-lesson-content {
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    .cv-lesson-header {
+      margin-bottom: var(--space-6);
+      padding-bottom: var(--space-4);
+      border-bottom: 2px solid #e5e7eb;
+    }
+
+    .cv-lesson-breadcrumb {
+      font-size: var(--text-xs);
+      color: var(--color-ink-muted);
+      margin-bottom: var(--space-2);
+    }
+
+    .cv-lesson-title {
+      font-size: var(--text-xl);
+      font-weight: var(--weight-bold);
+      color: var(--color-ink);
+      line-height: var(--leading-tight);
+    }
+
+    .cv-lesson-body {
+      font-size: var(--text-base);
+      line-height: var(--leading-loose);
+      color: var(--color-ink);
+    }
+
+    .cv-lesson-body p {
+      margin-bottom: var(--space-4);
+    }
+
+    .cv-lesson-body h2 {
+      font-size: var(--text-md);
+      font-weight: var(--weight-bold);
+      margin: var(--space-6) 0 var(--space-3);
+      color: var(--color-ink);
+    }
+
+    .cv-lesson-body h3 {
+      font-size: var(--text-base);
+      font-weight: var(--weight-medium);
+      margin: var(--space-5) 0 var(--space-2);
+      color: var(--color-ink-soft);
+    }
+
+    .cv-lesson-body ul, .cv-lesson-body ol {
+      margin: var(--space-3) 0;
+      padding-left: var(--space-6);
+    }
+
+    .cv-lesson-body li {
+      margin-bottom: var(--space-2);
+    }
+
+    .cv-lesson-body blockquote {
+      margin: var(--space-4) 0;
+      padding: var(--space-4) var(--space-5);
+      background: #dbeafe;
+      border-left: 4px solid #2563eb;
+      border-radius: 6px;
+      font-size: var(--text-sm);
+      color: #1e40af;
+      font-style: italic;
+    }
+
+    .cv-lesson-body pre {
+      margin: var(--space-4) 0;
+      padding: var(--space-4);
+      background: var(--color-ink);
+      color: #e2e8f0;
+      border: 1px solid #334155;
+      border-radius: var(--radius-md);
+      font-size: var(--text-sm);
+      overflow-x: auto;
+      font-family: var(--font-mono);
+    }
+
+    .cv-lesson-body code {
+      font-family: var(--font-mono);
+      font-size: var(--text-sm);
+      background: var(--color-bg);
+      padding: 1px 4px;
+      border-radius: 2px;
+    }
+
+    .cv-lesson-body .callout {
+      margin: var(--space-5) 0;
+    }
+    .cv-lesson-body .callout strong {
+      color: var(--color-primary);
+      font-style: normal;
+    }
+
+    /* Comparison grid (good/bad side-by-side cards) */
+    .cv-lesson-body .comparison-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-4);
+      margin: var(--space-6) 0;
+    }
+    .cv-lesson-body .comparison-card {
+      padding: var(--space-4);
+      border-radius: var(--radius-sm);
+      font-size: var(--text-sm);
+    }
+    .cv-lesson-body .comparison-card.bad {
+      background: var(--color-error-light);
+      border: 1px solid var(--color-error-border);
+    }
+    .cv-lesson-body .comparison-card.good {
+      background: var(--color-success-light);
+      border: 1px solid var(--color-success-border);
+    }
+    .cv-lesson-body .comparison-label {
+      font-weight: var(--weight-bold);
+      margin-bottom: var(--space-2);
+    }
+    .cv-lesson-body .comparison-card.bad .comparison-label { color: var(--color-error); }
+    .cv-lesson-body .comparison-card.good .comparison-label { color: var(--color-success); }
+
+    /* Triage exercise (details/summary) */
+    .cv-lesson-body .triage-exercise {
+      margin: var(--space-6) 0;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+    }
+    .cv-lesson-body .triage-exercise summary {
+      padding: var(--space-4);
+      background: var(--color-bg);
+      cursor: pointer;
+      font-weight: var(--weight-medium);
+      color: var(--color-ink);
+    }
+    .cv-lesson-body .triage-exercise p {
+      padding: var(--space-4);
+      margin: 0;
+      background: white;
+      border-top: 1px solid var(--color-border);
+    }
+
+    /* Checklist box */
+    .cv-lesson-body .checklist-box {
+      background: #f0f9ff;
+      border: 2px solid #3b82f6;
+      border-radius: 8px;
+      padding: var(--space-6);
+      margin: var(--space-6) 0;
+    }
+    .cv-lesson-body .checklist-box ul {
+      list-style: none;
+      padding: 0;
+    }
+    .cv-lesson-body .checklist-box li {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      margin-bottom: var(--space-3);
+      color: var(--color-ink-soft);
+      font-size: var(--text-sm);
+    }
+    .cv-lesson-body .checklist-box li::before {
+      content: '\u2610';
+      font-family: monospace;
+      font-size: 16px;
+      color: var(--color-primary);
+    }
+
+    /* ── Lab container (CRM / ADO iframes) ─────────────────────────── */
+    .cv-lab-container {
+      margin: var(--space-4) 0;
+    }
+    .cv-lab-frame-wrap {
+      width: 100%;
+      min-height: 400px;
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      background: var(--color-bg);
+    }
+    .cv-lab-frame-wrap iframe {
+      display: block;
+    }
+    .cv-lab-loading {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 400px;
+      font-size: var(--text-sm);
+      color: var(--color-ink-muted);
+      background: var(--color-bg);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+    }
+
+    /* ── Full-height lab layout (capstone) ─────────────────────────── */
+    .cv-content--lab-fullscreen {
+      overflow: hidden !important;
+      padding: 0 !important;
+      display: flex;
+      flex-direction: column;
+    }
+    .cv-content--lab-fullscreen .cv-lesson-header { display: none; }
+    .cv-content--lab-fullscreen .cv-lesson-content {
+      max-width: none !important;
+      margin: 0 !important;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+    .cv-content--lab-fullscreen .cv-lesson-body {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+    .cv-content--lab-fullscreen .cv-lesson-body .cv-lab-container {
+      margin: 0;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+    .cv-content--lab-fullscreen .cv-lesson-body .cv-lab-frame-wrap {
+      flex: 1;
+      min-height: 0;
+      height: 100%;
+    }
+    .cv-content--lab-fullscreen .cv-lesson-body .cv-lab-frame-wrap iframe {
+      height: 100% !important;
+    }
+    .cv-content--lab-fullscreen .cv-lesson-footer { display: none; }
+
+    /* ── CHEAT SHEET PANEL (replaces sidebar during capstone) ──────────── */
+    .cv-sidebar--cheatsheet .cv-module-group,
+    .cv-sidebar--cheatsheet .cv-sidebar-header {
+      display: none;
+    }
+    .cv-cheatsheet-panel {
+      position: relative;
+      padding: 0;
+      transition: all 0.4s ease;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      min-height: 0;
+    }
+
+    /* Header — always visible, clickable to toggle ──────────────────────────────── */
+    .cv-cheatsheet-header {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      padding: var(--space-3) var(--space-4);
+      background: #fef3c7;
+      border: 2px solid #fcd34d;
+      border-radius: 8px;
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.3s ease;
+      position: relative;
+      z-index: 10;
+      margin-bottom: var(--space-3);
+      flex-shrink: 0;
+    }
+    .cv-cheatsheet-header:hover {
+      background: #fef08a;
+      transform: scale(1.02);
+    }
+    .cv-cheatsheet-icon {
+      font-size: 24px;
+      transition: transform 0.3s ease;
+    }
+    .cv-cheatsheet-header.cv-notes-expanded .cv-cheatsheet-icon {
+      transform: rotate(-10deg);
+    }
+    .cv-cheatsheet-title {
+      font-size: var(--text-base);
+      font-weight: var(--weight-bold);
+      color: var(--color-ink);
+      flex: 1;
+    }
+    .cv-cheatsheet-toggle {
+      font-size: 14px;
+      transition: transform 0.3s ease;
+    }
+    .cv-cheatsheet-header.cv-notes-expanded .cv-cheatsheet-toggle {
+      transform: rotate(180deg);
+    }
+    .cv-cheatsheet-back {
+      font-size: var(--text-xs);
+      color: #7c2d12;
+      cursor: pointer;
+      background: none;
+      border: 1px solid #ea580c;
+      padding: 4px 8px;
+      border-radius: var(--radius-sm);
+      font-weight: 600;
+    }
+    .cv-cheatsheet-back:hover {
+      background: #fed7aa;
+    }
+
+    /* Notes container ────────────────────────────────────────────────────────────── */
+    .cv-cheatsheet-notes {
+      position: relative;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease;
+      flex: 0;
+      min-height: 0;
+    }
+    .cv-cheatsheet-panel.cv-notes-expanded .cv-cheatsheet-notes {
+      /* Expanded: notes fill remaining vertical space, scroll only if needed */
+      max-height: none;
+      flex: 1;
+      overflow-y: auto;
+      overflow-x: hidden;
+      padding-bottom: var(--space-8);
+    }
+    /* Hide scrollbar but keep scrolling functional (modern browsers) */
+    .cv-cheatsheet-panel.cv-notes-expanded .cv-cheatsheet-notes::-webkit-scrollbar {
+      display: none;
+    }
+    .cv-cheatsheet-panel.cv-notes-expanded .cv-cheatsheet-notes {
+      -ms-overflow-style: none;  /* IE and Edge */
+      scrollbar-width: none;  /* Firefox */
+    }
+
+    /* Note cards — hand-printed style ─────────────────────────────────────────────── */
+    .cv-cheatsheet-note {
+      font-family: 'Segoe Print', 'Comic Sans MS', 'Marker Felt', 'Segoe Script', cursive;
+      font-size: 15px;
+      font-weight: 500;
+      line-height: 1.7;
+      padding: var(--space-4);
+      background: #fffbeb;
+      border: 2px solid #fcd34d;
+      border-radius: 6px;
+      margin: var(--space-3) 0;
+      color: #78350f;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.08), 0 2px 4px rgba(0,0,0,0.06);
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      transition: all 0.3s ease;
+      transform-origin: center;
+      position: relative;
+      z-index: 5;
+    }
+    .cv-cheatsheet-note:nth-child(2) {
+      transform: rotate(-2deg);
+    }
+    .cv-cheatsheet-note:nth-child(3) {
+      transform: rotate(1deg);
+    }
+    .cv-cheatsheet-note:nth-child(4) {
+      transform: rotate(-1.5deg);
+    }
+    .cv-cheatsheet-note:nth-child(5) {
+      transform: rotate(2deg);
+    }
+    .cv-cheatsheet-note:hover {
+      box-shadow: 0 8px 12px rgba(0,0,0,0.12), 0 4px 6px rgba(0,0,0,0.08);
+      transform: translateY(-4px) rotate(0deg);
+    }
+    .cv-cheatsheet-note strong {
+      font-family: 'Segoe Print', 'Comic Sans MS', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #ea580c;
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    /* Complete button area */
+    .cv-lesson-footer {
+      margin-top: var(--space-8);
+      padding-top: var(--space-6);
+      border-top: 1px solid var(--color-border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .cv-lesson-nav {
+      display: flex;
+      gap: var(--space-3);
+    }
+
+    /* ── QUIZ STYLES ──────────────────────────────────────────────────────── */
+    .cv-quiz-question {
+      margin-bottom: var(--space-6);
+      padding: var(--space-5);
+      background: white;
+      border: 2px solid #e5e7eb;
+      border-radius: 8px;
+    }
+
+    .cv-quiz-question-text {
+      font-size: var(--text-base);
+      font-weight: var(--weight-medium);
+      color: var(--color-ink);
+      margin-bottom: var(--space-4);
+    }
+
+    .cv-quiz-options {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-2);
+    }
+
+    .cv-quiz-option {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--space-3);
+      padding: var(--space-3) var(--space-4);
+      border: 2px solid #e5e7eb;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-size: var(--text-sm);
+    }
+
+    .cv-quiz-option:hover {
+      border-color: #3b82f6;
+      background: #dbeafe;
+    }
+
+    .cv-quiz-option.selected {
+      border-color: #2563eb;
+      background: #dbeafe;
+      font-weight: 600;
+    }
+
+    .cv-quiz-option.correct {
+      border-color: var(--color-success);
+      background: var(--color-success-light);
+    }
+
+    .cv-quiz-option.incorrect {
+      border-color: var(--color-error);
+      background: var(--color-error-light);
+    }
+
+    /* ── SEQUENTIAL QUIZ: Progress indicator ──────────────────────────────── */
+    .cv-quiz-progress {
+      font-size: var(--text-xs);
+      font-weight: var(--weight-bold);
+      color: var(--color-ink-muted);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      margin-bottom: var(--space-3);
+    }
+
+    /* ── QUIZ: AC Reference Panel (collapsible acceptance criteria list) ──── */
+    .cv-ac-ref-panel {
+      border: 1px solid var(--color-border, #d0d0d0);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .cv-ac-ref-header:hover {
+      background: var(--color-surface-2-hover, #e4e7ec);
+    }
+    .cv-ac-ref-header:active {
+      background: var(--color-surface-2-active, #d8dbe0);
+    }
+    .cv-ac-ref-body {
+      display: none;
+      padding: 12px 16px;
+      background: var(--color-surface, #fff);
+      border-top: 1px solid var(--color-border, #d0d0d0);
+    }
+    .cv-ac-ref-body.visible {
+      display: block;
+    }
+
+    /* ── SEQUENTIAL QUIZ: Feedback panel (shown after answering) ──────────── */
+    .cv-quiz-feedback {
+      display: none;
+      margin-top: var(--space-4);
+      padding: var(--space-4);
+      border-radius: var(--radius-md);
+      font-size: var(--text-sm);
+      line-height: var(--leading-base);
+    }
+
+    .cv-quiz-feedback.visible {
+      display: block;
+    }
+
+    .cv-quiz-feedback.feedback-correct {
+      background: var(--color-success-light);
+      border: 1px solid var(--color-success-border);
+    }
+
+    .cv-quiz-feedback.feedback-incorrect {
+      background: var(--color-error-light);
+      border: 1px solid var(--color-error-border);
+    }
+
+    .cv-quiz-feedback-title {
+      font-size: var(--text-base);
+      margin-bottom: var(--space-2);
+    }
+
+    .cv-quiz-feedback-body {
+      color: var(--color-ink-soft);
+      font-style: italic;
+    }
+
+    .cv-quiz-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: var(--space-3);
+      margin-top: var(--space-6);
+    }
+
+    .cv-quiz-result {
+      display: none;
+      text-align: center;
+      padding: var(--space-6);
+      margin-top: var(--space-4);
+      border-radius: var(--radius-lg);
+    }
+
+    .cv-quiz-result.visible {
+      display: block;
+    }
+
+    .cv-quiz-result.passed {
+      background: var(--color-success-light);
+      border: 1px solid var(--color-success-border);
+      color: var(--color-success);
+    }
+
+    .cv-quiz-result.failed {
+      background: var(--color-error-light);
+      border: 1px solid var(--color-error-border);
+      color: var(--color-error);
+    }
+
+    .cv-quiz-review {
+      font-size: var(--text-sm);
+      line-height: var(--leading-loose);
+    }
+
+    .cv-quiz-review ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .cv-quiz-review li {
+      padding: var(--space-2) var(--space-3);
+      background: var(--color-surface);
+      border-radius: var(--radius-sm);
+      border-left: 3px solid var(--color-error);
+    }
+
+    .cv-quiz-review li + li {
+      margin-top: var(--space-2);
+    }
+
+    /* ── BUTTON STYLING: Academy Professional Theme ────────────────────────── */
+    .cv-back-btn {
+      color: #6b7280;
+      transition: all 0.2s ease;
+    }
+
+    .cv-back-btn:hover {
+      background: #f3f4f6;
+      color: #2563eb;
+      border-radius: 6px;
+    }
+
+    .cv-back-btn:focus {
+      outline: 2px solid #3b82f6;
+      outline-offset: 2px;
+    }
+
+    /* Academy primary button style */
+    .btn-primary {
+      background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%);
+      color: white;
+      border-color: #2563eb;
+      text-transform: uppercase;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+      transition: all 0.2s ease;
+    }
+
+    .btn-primary:hover {
+      background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(37, 99, 235, 0.35);
+    }
+
+    .btn-primary:active {
+      transform: translateY(0);
+      box-shadow: 0 2px 8px rgba(37, 99, 235, 0.2);
+    }
+
+    /* Academy ghost button style */
+    .btn-ghost {
+      background: transparent;
+      color: #6b7280;
+      border: 2px solid #e5e7eb;
+      border-radius: 8px;
+      transition: all 0.2s ease;
+    }
+
+    .btn-ghost:hover {
+      background: white;
+      border-color: #3b82f6;
+      color: #3b82f6;
+      box-shadow: 0 2px 6px rgba(59, 130, 246, 0.15);
+    }
+
+    /* ── RESPONSIVE ────────────────────────────────────────────────────────── */
+    @media (max-width: 768px) {
+      .cv-sidebar {
+        width: 240px;
+      }
+      .cv-content {
+        padding: var(--space-6) var(--space-5);
+      }
+    }
+
+    @media (max-width: 600px) {
+      .cv-layout {
+        flex-direction: column;
+      }
+      .cv-sidebar {
+        width: 100%;
+        height: auto;
+        max-height: 40vh;
+        border-right: none;
+        border-bottom: 2px solid #e5e7eb;
+      }
+      .cv-content {
+        height: auto;
+      }
+    }
+
+    /* ── PLACEHOLDER CONTENT ──────────────────────────────────────────────── */
+    .cv-placeholder {
+      text-align: center;
+      padding: var(--space-12) 0;
+      color: var(--color-ink-muted);
+    }
+
+    .cv-placeholder-icon {
+      font-size: 48px;
+      margin-bottom: var(--space-4);
+      opacity: 0.4;
+    }
+
+    .cv-placeholder h3 {
+      font-size: var(--text-md);
+      color: var(--color-ink-soft);
+      margin-bottom: var(--space-2);
+    }
+
+    .cv-placeholder p {
+      font-size: var(--text-sm);
+    }
+
+    /* ── MODULE OVERVIEW ──────────────────────────────────────────────────── */
+    .cv-module-overview {
+      max-width: 700px;
+    }
+
+    .cv-overview-badge {
+      display: inline-block;
+      background: var(--color-primary, #2563eb);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 3px 12px;
+      border-radius: 4px;
+      margin-bottom: var(--space-4);
+    }
+
+    .cv-module-overview h1 {
+      font-size: 28px;
+      font-weight: 800;
+      margin: 0 0 var(--space-3) 0;
+      color: var(--color-ink);
+      line-height: 1.2;
+    }
+
+    .cv-module-overview .chapter-intro {
+      font-size: var(--text-md);
+      color: var(--color-ink-soft);
+      line-height: 1.6;
+      margin-bottom: var(--space-6);
+    }
+
+    .cv-module-overview h2 {
+      font-size: var(--text-md);
+      font-weight: 700;
+      color: var(--color-ink);
+      margin: 0 0 var(--space-3) 0;
+    }
+
+    .cv-module-overview ul {
+      padding-left: var(--space-5);
+      color: var(--color-ink-soft);
+      margin-bottom: var(--space-6);
+    }
+
+    .cv-module-overview ul li {
+      margin-bottom: var(--space-2);
+      line-height: 1.5;
+    }
+
+    .cv-module-overview .callout {
+      margin: var(--space-6) 0;
+    }
+
+    /* ── COURSE END CARD ─────────────────────────────────────────────────── */
+    .course-end-card-wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: var(--space-8);
+      min-height: 500px;
+    }
+
+    .course-end-card {
+      background: white;
+      border: 2px solid #e5e7eb;
+      border-radius: 12px;
+      max-width: 500px;
+      width: 100%;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
+
+    .course-end-header {
+      background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%);
+      color: white;
+      padding: 20px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      font-size: 13px;
+      letter-spacing: 0.5px;
+    }
+
+    .course-end-body {
+      padding: 32px 24px;
+      text-align: center;
+      color: var(--color-ink);
+    }
+
+    .course-end-body h2 {
+      font-size: 24px;
+      margin: 0 0 16px 0;
+      color: var(--color-ink);
+    }
+
+    .course-end-body p {
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--color-ink-soft);
+      margin: 0;
+    }
+
+    .course-end-footer-dual {
+      padding: 0 24px 24px;
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+    }
+
+    .course-end-footer-dual .btn {
+      flex: 1;
+      text-align: center;
+    }
+
+    @media (max-width: 480px) {
+      .course-end-card {
+        max-width: 100%;
+      }
+
+      .course-end-footer-dual {
+        flex-direction: column;
+      }
+
+      .course-end-footer-dual .btn {
+        flex: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       TOPBAR — Course title, back button, progress
+       ═══════════════════════════════════════════════════════════════ -->
+  <nav class="cv-topbar">
+    <div class="cv-topbar-left">
+      <button class="cv-back-btn" id="cv-back-btn" onclick="goBackToPortal()">
+        ← Back
+      </button>
+      <span class="ca-flag" title="Canada / Canada" aria-label="Canada">
+        <svg viewBox="0 0 30 30" xmlns="http://www.w3.org/2000/svg">
+          <!-- Maple leaf: 5-lobe shape with stem, matches Canadian flag silhouette -->
+          <path d="M15,2 L19,7 L22.5,5.5 L20,11 L27,10 L23,14 L26,19 L20,17 L19,23 L17,23 L17,28 L13,28 L13,23 L11,23 L10,17 L4,19 L7,14 L3,10 L10,11 L8,5.5 L11,7 Z" fill="#d52b1e"/>
+        </svg>
+      </span>
+      <span class="cv-topbar-title" id="cv-course-title">Loading…</span>
+    </div>
+    <div class="cv-topbar-right">
+      <div id="lang-toggle-container"></div>
+      <span id="cv-progress-text">0% done</span>
+      <div class="cv-topbar-bar">
+        <div class="cv-topbar-bar-fill" id="cv-progress-bar" style="width:0%"></div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       MAIN LAYOUT — Sidebar (modules) + Content panel
+       ═══════════════════════════════════════════════════════════════ -->
+  <div class="cv-layout">
+
+    <!-- ──── LEFT SIDEBAR: Module navigation ─────────── -->
+    <aside class="cv-sidebar" id="cv-sidebar">
+      <!-- Modules are rendered here by JavaScript -->
+    </aside>
+
+    <!-- ──── RIGHT PANEL: Content area ────────────────── -->
+    <main class="cv-content" id="cv-content">
+      <div class="cv-content-welcome" id="cv-welcome">
+        <h2 id="cv-welcome-title">Select a lesson to begin</h2>
+        <p id="cv-welcome-desc">Choose a module from the sidebar and click a lesson to start learning. Your progress is saved automatically.</p>
+      </div>
+
+      <div class="cv-lesson-content" id="cv-lesson-content" style="display:none;">
+        <div class="cv-lesson-header">
+          <div class="cv-lesson-breadcrumb" id="cv-breadcrumb"></div>
+          <h1 class="cv-lesson-title" id="cv-lesson-title"></h1>
+        </div>
+
+        <div class="cv-lesson-body" id="cv-lesson-body">
+          <!-- Content rendered here by JavaScript -->
+        </div>
+
+        <div class="cv-lesson-footer">
+          <div class="cv-lesson-nav">
+            <button class="btn btn-ghost" id="cv-prev-btn" onclick="navigateSubModule(-1)" style="font-size:var(--text-sm);">__prev__</button>
+            <button class="btn btn-ghost" id="cv-next-btn" onclick="navigateSubModule(1)" style="font-size:var(--text-sm);display:none;">__next__</button>
+          </div>
+          <button class="btn btn-primary" id="cv-complete-btn" onclick="markCurrentComplete()" style="font-size:var(--text-sm);">
+            Mark Complete →
+          </button>
+        </div>
+      </div>
+    </main>
+
+  </div>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script src="data/content.js"></script>
+  <script src="data/quiz-questions.js"></script>
+  <script src="js/db.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/i18n.js"></script>
+  <script src="js/lang-en.js"></script>
+  <script src="js/lang-fr.js"></script>
+
+  <script>
+    /**
+     * course-view.html — Unified Multi-Course Module Viewer
+     * =======================================================
+     * WHAT THIS PAGE DOES:
+     * - Loads a course definition from IndexedDB using the ?courseId= URL parameter.
+     * - Renders the module/sub-module navigation tree in the left sidebar.
+     * - Shows module content (reading, exercises) in the right content panel.
+     * - Supports quizzes with inline answer submission and scoring.
+     * - Tracks completion per sub-module and per module.
+     * - Calculates overall course progress percentage.
+     *
+     * FLOW:
+     * 1. initDB() + seedCourses() — ensure courses are loaded
+     * 2. requireLogin() — verify student session
+     * 3. Read ?courseId= from URL
+     * 4. Load course definition + student progress from IndexedDB
+     * 5. Render module sidebar
+     * 6. If a sub-module is selected, render its content
+     *
+     * READS FROM:   IndexedDB via db.js (courses, progress)
+     * WRITES TO:    IndexedDB via db.js (progress — completion tracking)
+     * REDIRECTS TO: index.html if no session; portal.html on Back
+     */
+
+
+    // ── SECTION 1: PAGE STATE ──────────────────────────────────────────────────
+
+    var currentSession   = null;   // Session from requireLogin()
+    var currentStudent   = null;   // Student record from IndexedDB
+    var currentCourse    = null;   // Full course definition from IndexedDB
+    var courseProgress   = null;   // Course-specific progress sub-object
+    var activeSubModule  = null;   // Currently displayed sub-module ID
+    var sidebarRendered  = false;  // Prevents re-render on every state change
+
+    // Ordered flat list of all sub-modules (built from course.modules)
+    var allSubModules    = [];     // Array of { subModuleId, moduleIndex, subIndex, ... }
+
+    // Quiz state (per active quiz sub-module)
+    var quizState = {
+      active:          false,       // True when viewing a quiz sub-module
+      questions:       [],          // Questions loaded for the current quiz
+      //introShown:     false,       // Whether the quiz intro has been shown
+      submitted:       false,       // Whether the quiz has been submitted
+      score:           null,        // { score, maxScore, percentage, passed }
+      currentQuestion: 0,           // 0-indexed
+      answered:        false,       // Whether the current question has been answered
+      introShown:      {},          // Per-module tracking: { 'mod-1': true, 'mod-2': true, ... }
+    };
+
+
+    // ── SECTION 2: INITIALISE ─────────────────────────────────────────────────
+
+    // Initialise i18n (language) before anything else
+    initI18n();
+
+    // Render the language toggle
+    renderLangToggle('lang-toggle-container');
+
+    // Translate static UI elements
+    translateCourseView();
+
+    /**
+     * translateCourseView()
+     * Applies __() translations to static text elements on the course viewer page.
+     */
+    function translateCourseView() {
+      var el;
+      el = document.getElementById('cv-welcome-title');
+      if (el) el.textContent = __('cv_welcome_title');
+      el = document.getElementById('cv-welcome-desc');
+      if (el) el.textContent = __('cv_welcome_desc');
+      el = document.getElementById('cv-back-btn');
+      if (el) el.textContent = __('cv_back');
+      el = document.getElementById('cv-course-title');
+      if (el) el.textContent = __('cv_loading');
+      el = document.getElementById('cv-progress-text');
+      if (el) el.textContent = __('cv_percent_done', 0);
+      el = document.getElementById('cv-prev-btn');
+      if (el) el.textContent = __('cv_previous');
+      el = document.getElementById('cv-next-btn');
+      if (el) el.textContent = __('__next__');
+      el = document.getElementById('cv-complete-btn');
+      if (el) el.textContent = __('cv_mark_complete');
+    }
+
+    // Parse courseId from URL parameters
+    var urlParams = new URLSearchParams(window.location.search);
+    var COURSE_ID = urlParams.get('courseId') || '';
+
+    console.log('🔍 course-view.html init: COURSE_ID=' + COURSE_ID);
+
+    // Safety timeout: if continueInit() hasn't been called in 5 seconds, force it
+    var initTimeout = setTimeout(function() {
+      console.error('⚠️ Initialization timeout — forcing continueInit()');
+      if (!currentCourse) {
+        showError('Failed to load course data. Please try again or go back to the portal.');
+      }
+    }, 5000);
+
+    initDB()
+      .then(function() {
+        // Verify content.js loaded properly
+        if (typeof COURSE_DEFINITIONS === 'undefined') {
+          console.error('⚠️ COURSE_DEFINITIONS not loaded from content.js');
+        } else {
+          console.log('✓ COURSE_DEFINITIONS loaded. Courses:', COURSE_DEFINITIONS.length);
+        }
+        return seedCourses();  // Ensure course definitions are in IndexedDB
+      })
+      .then(function() {
+        console.log('✓ Courses seeded. Retrieving active course...');
+        currentSession = requireLogin();
+        if (!currentSession) return;  // Redirect already fired
+      })
+      .then(function() {
+        if (!currentSession) return;
+
+        // Safety check: COURSE_ID must not be empty
+        if (!COURSE_ID) {
+          console.error('❌ COURSE_ID is empty. URL may be missing ?courseId= parameter.');
+          showError('No course specified. Please select a course from the portal.');
+          clearTimeout(initTimeout);
+          return;
+        }
+
+        return Promise.all([
+          getCourse(COURSE_ID),
+          getCourseProgress(currentSession.caseId, COURSE_ID),
+          getProgress(currentSession.caseId),
+          getStudent(currentSession.caseId),
+        ]);
+      })
+      .then(function(results) {
+        if (!currentSession) return;
+
+        currentCourse  = results[0];
+        courseProgress = results[1];  // May be null if not yet started
+        currentStudent = results[3];  // Student record for name/avatar
+
+        console.log('📚 Loaded course:', currentCourse ? currentCourse.courseId : 'NULL', 'Progress:', courseProgress ? 'exists' : 'null');
+
+        if (!currentCourse) {
+          console.error('❌ Course not found in database. courseId=' + COURSE_ID);
+          showError(__('cv_error_not_found'));
+          clearTimeout(initTimeout);
+          return;
+        }
+
+        // If student has no progress record yet, create one now (enrolls them)
+        if (!courseProgress) {
+          console.log('📝 No progress found, creating new course progress...');
+          return initCourseProgress(currentSession.caseId, COURSE_ID).then(function() {
+            console.log('✓ Course progress created');
+            return getCourseProgress(currentSession.caseId, COURSE_ID);
+          }).then(function(freshProgress) {
+            courseProgress = freshProgress;
+            clearTimeout(initTimeout);
+            continueInit();
+          });
+        }
+
+        clearTimeout(initTimeout);
+        continueInit();
+      })
+      .catch(function(error) {
+        clearTimeout(initTimeout);
+        console.error('course-view.html: Failed to init.', error);
+        showError(__('cv_error_load'));
+      });
+
+    /**
+     * continueInit()
+     * Continues initialisation after progress is loaded/created.
+     * Extracted so we can call it from both fresh and returning students.
+     */
+    function continueInit() {
+      // Build flat list of all sub-modules with their positions
+      buildSubModuleIndex();
+
+      // Render the UI
+      renderTopbar();
+      renderSidebar();
+
+      // Auto-select the first incomplete or first sub-module
+      autoSelectSubModule();
+
+      // Initialize demo banner if user is demo account
+      initDemoBanner();
+    }
+
+
+    // ── SECTION 3: SIDEBAR RENDERING ─────────────────────────────────────────
+
+    /**
+     * buildSubModuleIndex()
+     * Builds a flat ordered array of all sub-modules across all modules.
+     * Each entry includes the sub-module data plus its module/sub-module indices
+     * so we can navigate between them and know which module they belong to.
+     */
+    function buildSubModuleIndex() {
+      allSubModules = [];
+      if (!currentCourse || !currentCourse.modules) return;
+
+      currentCourse.modules.forEach(function(mod, modIdx) {
+        mod.subModules.forEach(function(sm, subIdx) {
+          allSubModules.push({
+            subModuleId: sm.subModuleId,
+            moduleIndex: modIdx,
+            subIndex:    subIdx,
+            moduleId:    mod.moduleId,
+            data:        sm,
+          });
+        });
+      });
+    }
+
+    /**
+     * renderTopbar()
+     * Sets the course title in the topbar and the initial progress percentage.
+     */
+    function renderTopbar() {
+      document.getElementById('cv-course-title').textContent = currentCourse.title || 'Course';
+      updateProgressDisplay();
+    }
+
+    /**
+     * renderSidebar()
+     * Renders the full module/sub-module tree in the left sidebar.
+     * Each module is an expandable group with its sub-modules listed inside.
+     * States: active (currently selected), complete, locked, or available.
+     */
+    function renderSidebar() {
+      var sidebar = document.getElementById('cv-sidebar');
+      sidebar.innerHTML = '';
+
+      if (!currentCourse || !currentCourse.modules) {
+        sidebar.innerHTML = '<div class="portal-empty">' + __('cv_no_modules') + '</div>';
+        return;
+      }
+
+      currentCourse.modules.forEach(function(mod, modIdx) {
+        var allDone = areAllSubModulesComplete(mod);
+        var isExpanded = isModuleExpanded(mod, modIdx);
+
+        // Module group container
+        var group = document.createElement('div');
+        group.className = 'cv-module-group';
+
+        // Module header (clickable to expand/collapse)
+        var header = document.createElement('div');
+        header.className = 'cv-module-header';
+        header.setAttribute('data-module-idx', modIdx);
+
+        var statusIcon = allDone ? '✅' : (isModuleLocked(mod, modIdx) ? '🔒' : '📘');
+
+        header.innerHTML =
+          '<div class="cv-module-header-left">' +
+            '<span class="cv-module-expand ' + (isExpanded ? 'open' : '') + '">▶</span>' +
+            '<span class="cv-module-number">' + padZero(mod.order) + '</span>' +
+            '<span class="cv-module-title">' + escapeHtml(mod.title) + '</span>' +
+          '</div>' +
+          '<span class="cv-module-status-icon">' + statusIcon + '</span>';
+
+        header.addEventListener('click', function() {
+          toggleModule(modIdx);
+        });
+        group.appendChild(header);
+
+        // Sub-module list
+        var list = document.createElement('div');
+        list.className = 'cv-submodule-list' + (isExpanded ? ' open' : '');
+        list.setAttribute('data-module-list-idx', modIdx);
+
+        mod.subModules.forEach(function(sm, subIdx) {
+          var isActive = (activeSubModule === sm.subModuleId);
+          var isComplete = isSubModuleComplete(sm.subModuleId);
+          var isLocked = isSubModuleLocked(sm.subModuleId, mod, modIdx);
+
+          var item = document.createElement('div');
+          item.className = 'cv-submodule-item' +
+            (isActive ? ' active' : '') +
+            (isComplete ? ' complete' : '') +
+            (isLocked ? ' locked' : '');
+          item.setAttribute('data-sm-id', sm.subModuleId);
+
+          var icon = isComplete ? '✅' : (isActive ? '▶' : (isLocked ? '🔒' : '○'));
+          var typeLabel = getTypeLabel(sm.type);
+
+          item.innerHTML =
+            '<span class="cv-submodule-icon">' + icon + '</span>' +
+            '<span class="cv-submodule-label">' + escapeHtml(sm.title) + '</span>' +
+            '<span class="cv-submodule-time">' + typeLabel + ' · ' + (sm.estimatedMins || '—') + 'm</span>';
+
+          // Click to open this sub-module (unless locked)
+          if (!isLocked) {
+            item.addEventListener('click', function() {
+              openSubModule(sm.subModuleId);
+            });
+          }
+
+          list.appendChild(item);
+        });
+
+        group.appendChild(list);
+        sidebar.appendChild(group);
+      });
+
+      sidebarRendered = true;
+    }
+
+    /**
+     * toggleModule(moduleIndex)
+     * Expands or collapses a module group in the sidebar.
+     *
+     * @param {number} moduleIndex - Index of the module in currentCourse.modules.
+     */
+    function toggleModule(moduleIndex) {
+      var list = document.querySelector('[data-module-list-idx="' + moduleIndex + '"]');
+      var expand = document.querySelector('[data-module-idx="' + moduleIndex + '"] .cv-module-expand');
+      if (!list || !expand) return;
+
+      var isOpen = list.classList.contains('open');
+      if (isOpen) {
+        list.classList.remove('open');
+        expand.classList.remove('open');
+      } else {
+        list.classList.add('open');
+        expand.classList.add('open');
+      }
+    }
+
+
+    // ── SECTION 4: SUB-MODULE NAVIGATION ──────────────────────────────────────
+
+    /**
+     * openSubModule(subModuleId)
+     * Loads and displays the content for the given sub-module.
+     * Updates the sidebar active state, renders the content panel,
+     * and manages the Previous/Next/Complete buttons.
+     *
+     * @param {string} subModuleId - e.g. 'mod-1-1'
+     */
+    function openSubModule(subModuleId) {
+      // Scroll content panel to top so user starts at the beginning
+      document.querySelector('.cv-content').scrollTop = 0;
+
+      // Reset full-height lab layout and restore sidebar
+      document.querySelector('.cv-content').classList.remove('cv-content--lab-fullscreen');
+      disableCheatsheet();
+
+      // Find the sub-module in our flat index
+      var entry = allSubModules.find(function(sm) { return sm.subModuleId === subModuleId; });
+      if (!entry) return;
+
+      var sm = entry.data;
+      activeSubModule = subModuleId;
+
+      // Update sidebar active state
+      document.querySelectorAll('.cv-submodule-item').forEach(function(el) {
+        el.classList.remove('active');
+        if (el.getAttribute('data-sm-id') === subModuleId) {
+          el.classList.add('active');
+        }
+      });
+
+      // Show lesson content panel, hide welcome
+      document.getElementById('cv-welcome').style.display = 'none';
+      var contentEl = document.getElementById('cv-lesson-content');
+      contentEl.style.display = 'block';
+
+      // Breadcrumb
+      var mod = currentCourse.modules[entry.moduleIndex];
+      document.getElementById('cv-breadcrumb').textContent =
+        __('cv_module', mod.order) + ' · ' + mod.title;
+
+      // Title
+      document.getElementById('cv-lesson-title').textContent = sm.title;
+
+      // ── Render body content based on type ──
+      var bodyEl = document.getElementById('cv-lesson-body');
+
+      if (sm.type === 'quiz' || sm.type === 'final-exam') {
+        renderQuizContent(bodyEl, sm, mod);
+      } else {
+        renderReadingContent(bodyEl, sm, mod);
+        // If this sub-module has a lab container, inject the lab iframe
+        initLabIframe(subModuleId);
+
+        // Dynamically inject caseId into any capstone-2 links so they
+        // open in a new tab with a valid session (otherwise sessionStorage
+        // is empty in the new tab, causing requireLogin to redirect).
+        if (currentSession && currentSession.caseId) {
+          bodyEl.querySelectorAll('a[href*="capstone-2.html"]').forEach(function(a) {
+            var sep = a.href.indexOf('?') === -1 ? '?' : '&';
+            a.href = a.href + sep + 'caseId=' + encodeURIComponent(currentSession.caseId);
+          });
+        }
+      }
+
+      // Save the current position so the next session resumes here
+      if (currentSession && currentSession.caseId && COURSE_ID && sm.type !== 'quiz' && sm.type !== 'final-exam') {
+        getCourseProgress(currentSession.caseId, COURSE_ID).then(function(cp) {
+          if (cp && cp.currentSubModule !== subModuleId) {
+            cp.currentSubModule = subModuleId;
+            saveCourseProgress(currentSession.caseId, COURSE_ID, cp);
+            if (courseProgress) courseProgress.currentSubModule = subModuleId;
+          }
+        }).catch(function() {});
+      }
+
+      // Update navigation buttons
+      updateNavButtons(entry);
+
+      // Update complete and nav buttons
+      var completeBtn = document.getElementById('cv-complete-btn');
+      var navEl = document.querySelector('.cv-lesson-nav');
+      var isComplete = isSubModuleComplete(subModuleId);
+      if (sm.type === 'quiz' || sm.type === 'final-exam') {
+        completeBtn.style.display = 'none';  // Quiz has its own submit flow
+        // Show nav buttons for COMPLETED quizzes so the user can navigate
+        // away to other sub-modules. Only hide nav for in-progress quizzes.
+        var quizWasCompleted = courseProgress && courseProgress.quizResults &&
+          courseProgress.quizResults[mod.moduleId];
+        if (navEl) navEl.style.display = quizWasCompleted ? 'flex' : 'none';
+      } else {
+        completeBtn.style.display = 'inline-flex';
+        completeBtn.textContent = isComplete ? __('cv_completed') : __('cv_mark_complete');
+        completeBtn.disabled = isComplete;
+        if (navEl) navEl.style.display = 'flex';
+      }
+    }
+
+    /**
+     * navigateSubModule(direction)
+     * Moves to the previous (-1) sub-module in the flat list.
+     * Used by the "← Previous" button for backwards navigation
+     * without auto-marking the current page (use "Mark Complete →"
+     * to mark and advance).
+     *
+     * @param {number} direction - -1 for previous.
+     */
+    function navigateSubModule(direction) {
+      if (allSubModules.length === 0 || !activeSubModule) return;
+
+      var currentIdx = allSubModules.findIndex(function(sm) {
+        return sm.subModuleId === activeSubModule;
+      });
+
+      if (currentIdx === -1) return;
+      var nextIdx = currentIdx + direction;
+      if (nextIdx < 0 || nextIdx >= allSubModules.length) return;
+
+      var next = allSubModules[nextIdx];
+
+      // Don't navigate to locked sub-modules
+      var mod = currentCourse.modules[next.moduleIndex];
+      if (isSubModuleLocked(next.subModuleId, mod, next.moduleIndex)) {
+        showToast(__('cv_error_module_locked'), 'default');
+        return;
+      }
+
+      openSubModule(next.subModuleId);
+    }
+
+    /**
+     * updateNavButtons(entry)
+     * Enables/disables the Previous and Next buttons based on position.
+     *
+     * @param {Object} entry - The current sub-module entry from allSubModules.
+     */
+    function updateNavButtons(entry) {
+      var idx = allSubModules.indexOf(entry);
+      var prevBtn = document.getElementById('cv-prev-btn');
+      var nextBtn = document.getElementById('cv-next-btn');
+      var completeBtn = document.getElementById('cv-complete-btn');
+      if (prevBtn) prevBtn.disabled = (idx <= 0);
+      // Show Next button when there's a next unlocked sub-module,
+      // hide it when we're at the end
+      if (nextBtn && completeBtn) {
+        var hasNext = (idx >= 0 && idx < allSubModules.length - 1);
+        if (hasNext) {
+          var nextEntry = allSubModules[idx + 1];
+          var nextMod = currentCourse.modules[nextEntry.moduleIndex];
+          var isLocked = isSubModuleLocked(nextEntry.subModuleId, nextMod, nextEntry.moduleIndex);
+          if (isLocked) {
+            nextBtn.style.display = 'none';
+          } else {
+            nextBtn.style.display = 'inline-flex';
+          }
+        } else {
+          nextBtn.style.display = 'none';
+        }
+      }
+    }
+
+    /**
+     * autoSelectSubModule()
+     * Finds the first incomplete sub-module and opens it.
+     * If all are complete, opens the first sub-module.
+     * Called once on page load after initial render.
+     */
+    function autoSelectSubModule() {
+      // Try the last active sub-module from progress first
+      if (courseProgress && courseProgress.currentSubModule) {
+        var entry = allSubModules.find(function(sm) {
+          return sm.subModuleId === courseProgress.currentSubModule;
+        });
+        if (entry) {
+          openSubModule(entry.subModuleId);
+          return;
+        }
+      }
+
+      // Find first incomplete sub-module
+      for (var i = 0; i < allSubModules.length; i++) {
+        var sm = allSubModules[i];
+        if (!isSubModuleComplete(sm.subModuleId)) {
+          openSubModule(sm.subModuleId);
+          return;
+        }
+      }
+
+      // All complete — open the first one
+      if (allSubModules.length > 0) {
+        openSubModule(allSubModules[0].subModuleId);
+      }
+    }
+
+
+    // ── SECTION 5: CONTENT RENDERING ──────────────────────────────────────────
+
+    /**
+     * renderReadingContent(container, subModule, module)
+     * Renders the content for a "reading" type sub-module.
+     * Content is loaded from the COURSE_CONTENT data structure.
+     * If no content is defined, shows a friendly placeholder.
+     *
+     * @param {HTMLElement} container - The body element to render into.
+     * @param {Object}      subModule - The sub-module definition object.
+     * @param {Object}      module    - The parent module definition.
+     */
+    function renderReadingContent(container, subModule, module) {
+      // Try to load content from COURSE_CONTENT (defined in content.js)
+      // Falls back to a placeholder if content hasn't been written yet.
+      var content = getCourseContent(currentCourse.courseId, subModule.subModuleId);
+
+      if (content) {
+        container.innerHTML = content;
+      } else {
+        // Placeholder — this lesson hasn't been written yet
+        container.innerHTML =
+            '<div class="cv-placeholder">' +
+              '<div class="cv-placeholder-icon">📝</div>' +
+              '<h3>' + __('cv_placeholder_title') + '</h3>' +
+              '<p>' + __('cv_placeholder_desc') + '</p>' +
+            '</div>';
+      }
+    }
+
+    /**
+     * initLabIframe(subModuleId)
+     * Detects whether the rendered sub-module content contains a lab container
+     * (e.g. CRM lab, Azure DevOps lab) and dynamically injects an iframe
+     * pointing to the standalone lab page with the student's caseId and name.
+     * This keeps the lab experience embedded in the page rather than opening
+     * a new tab that redirects to login.
+     *
+     * @param {string} subModuleId - The sub-module ID (e.g. 'mod-3-1').
+     */
+    function initLabIframe(subModuleId) {
+      var wrap = document.querySelector('.cv-lab-frame-wrap');
+      if (!wrap) return;
+
+      var container = wrap.closest('.cv-lab-container');
+      if (!container) return;
+
+      var labType = container.getAttribute('data-lab');
+      if (!labType) return;
+
+      // Build URL — the lab page reads caseId and name from query params
+      var caseId = (currentSession && currentSession.caseId) || 'CASE-00000';
+      var studentName = 'Trainee';
+      if (currentStudent && currentStudent.name) {
+        studentName = currentStudent.name;
+      }
+
+      var labPage = '';
+      var isFullHeight = false;
+      if (labType === 'crm') {
+        labPage = 'crm-lab.html';
+      } else if (labType === 'ado') {
+        labPage = 'ado-lab.html';
+      } else if (labType === 'capstone') {
+        labPage = 'capstone-lab.html';
+        isFullHeight = true;
+      } else {
+        return;
+      }
+
+      var iframe = document.createElement('iframe');
+      iframe.src = labPage + '?caseId=' + encodeURIComponent(caseId) + '&name=' + encodeURIComponent(studentName) + '&courseId=' + encodeURIComponent(COURSE_ID) + '&autoLaunch=true';
+      iframe.style.width = '100%';
+      if (isFullHeight) {
+        // Capstone fills the content area via CSS class; no inline height needed
+        document.querySelector('.cv-content').classList.add('cv-content--lab-fullscreen');
+        // Show handwritten-notes cheat sheet in the sidebar
+        enableCheatsheet();
+      } else {
+        iframe.style.height = '750px';
+      }
+      iframe.style.border = '1px solid var(--color-border, #d0d0d0)';
+      iframe.style.borderRadius = '8px';
+      iframe.style.overflow = 'hidden';
+      iframe.setAttribute('allowfullscreen', '');
+      iframe.title = labType === 'crm' ? 'Dynamics 365 CRM Simulator' : (labType === 'ado' ? 'Azure DevOps Simulator' : 'Capstone Assessment');
+
+      // Replace the loading placeholder
+      wrap.innerHTML = '';
+      wrap.appendChild(iframe);
+
+      // Hide the loading text
+      var loadingId = '';
+      if (labType === 'crm') loadingId = 'crm-lab-loading';
+      else if (labType === 'ado') loadingId = 'ado-lab-loading';
+      else if (labType === 'capstone') loadingId = 'capstone-lab-loading';
+      var loadingEl = document.getElementById(loadingId);
+      if (loadingEl) loadingEl.style.display = 'none';
+    }
+
+    /**
+     * enableCheatsheet()
+     * Creates a hand-written style cheat sheet panel with expandable notes.
+     * Notes start in a compact stacked state and expand on click.
+     * The module sidebar remains visible and clickable even when notes are showing.
+     */
+    function enableCheatsheet() {
+      var sidebar = document.getElementById('cv-sidebar');
+      if (!sidebar) return;
+
+      // Don't double-add
+      if (sidebar.querySelector('.cv-cheatsheet-panel')) return;
+
+      sidebar.classList.add('cv-sidebar--cheatsheet');
+
+      var panel = document.createElement('div');
+      panel.className = 'cv-cheatsheet-panel';
+
+      // Header — clickable to toggle expansion
+      var header = document.createElement('div');
+      header.className = 'cv-cheatsheet-header';
+      header.onclick = function(e) {
+        toggleCheatsheet();
+      };
+      header.innerHTML =
+        '<span class="cv-cheatsheet-icon">📝</span>' +
+        '<span class="cv-cheatsheet-title">Tester\'s Notes</span>' +
+        '<span class="cv-cheatsheet-toggle">▼</span>';
+      panel.appendChild(header);
+
+      // Notes container — collapse/expand via CSS
+      var notesContainer = document.createElement('div');
+      notesContainer.className = 'cv-cheatsheet-notes';
+      notesContainer.innerHTML =
+        '<div class="cv-cheatsheet-note">' +
+          '<strong>🔍 The Case</strong>' +
+          'Invoice INV-8821 — £42,000 stuck.\n' +
+          'Northgate Logistics. Portal error?\n' +
+          'Start in Dynamics 365 to investigate.\n' +
+        '</div>' +
+        '<div class="cv-cheatsheet-note">' +
+          '<strong>⚡ Role Check</strong>' +
+          'Switch roles in the taskbar (Junior↔Senior).\n' +
+          'Some fields lock for Juniors — intentional!\n' +
+          'Note what changes when you switch.\n' +
+        '</div>' +
+        '<div class="cv-cheatsheet-note">' +
+          '<strong>🎯 What to Look For</strong>' +
+          '• Priority match the issue severity?\n' +
+          '• Any future dates in date fields?\n' +
+          '• Can Junior set status to Closed?\n' +
+          '• Escalation Reason filled when Escalated?\n' +
+          '• Owner assigned to the case?\n' +
+        '</div>' +
+        '<div class="cv-cheatsheet-note">' +
+          '<strong>📋 Filing Bugs</strong>' +
+          'Each bug needs:\n' +
+          '• Repro steps (numbered)\n' +
+          '• Expected vs actual result\n' +
+          '• AC reference (e.g. AC-2.1)\n' +
+          'Use Azure DevOps to file reports.\n' +
+        '</div>' +
+        '<div class="cv-cheatsheet-note" style="border-color:#bfdbfe;background:#eff6ff;">' +
+          '<strong>💡 Tip</strong>' +
+          'Click the header above to collapse\n' +
+          'your notes if you need more space.\n' +
+          'Your work in the capstone is\n' +
+          'always preserved.\n' +
+        '</div>';
+      panel.appendChild(notesContainer);
+
+      sidebar.appendChild(panel);
+    }
+
+    /**
+     * toggleCheatsheet()
+     * Toggles the cheatsheet between stacked (compact) and expanded views.
+     * Smooth CSS transition handles the animation.
+     */
+    function toggleCheatsheet() {
+      var panel = document.querySelector('.cv-cheatsheet-panel');
+      if (!panel) return;
+
+      panel.classList.toggle('cv-notes-expanded');
+      var header = panel.querySelector('.cv-cheatsheet-header');
+      if (header) {
+        header.classList.toggle('cv-notes-expanded');
+      }
+    }
+
+    /**
+     * disableCheatsheet()
+     * Removes the cheat sheet panel and restores the module sidebar.
+     * Called when clicking "Hide" button or when navigating away from Capstone.
+     */
+    function disableCheatsheet() {
+      var sidebar = document.getElementById('cv-sidebar');
+      if (!sidebar) return;
+
+      var panel = sidebar.querySelector('.cv-cheatsheet-panel');
+      if (panel) panel.remove();
+
+      sidebar.classList.remove('cv-sidebar--cheatsheet');
+    }
+
+    /**
+     * Acceptance Criteria reference content for quizzes that test against
+     * specific lab requirements. Students can open the collapsible panel
+     * while taking the quiz to check expected behaviour.
+     * Structure: QUIZ_ACS[courseId][moduleId] = Array of AC strings
+     */
+    var QUIZ_ACS = {
+      "qa-onboarding": {
+        "mod-3": [
+          "AC-1.2: Outcome/Resolution visible ONLY to Senior Investigators. Absent from DOM for Juniors.",
+          "AC-2.1: Case Title is required. Save is blocked if blank.",
+          "AC-2.2: Case Title max 120 chars. 121st not accepted.",
+          "AC-3.4: When the Escalated checkbox is checked, the Escalation Reason dropdown must appear.",
+          "AC-4.2: Junior Investigators cannot set Status to Resolved or Closed. Save is blocked with: You do not have permission to resolve or close cases.",
+          "AC-5.2: The Last Updated timestamp in the sidebar updates to the current time after every successful save."
+        ]
+      }
+    };
+
+    /**
+     * renderQuizIntro(container, module, questions, passingScore)
+     * Displays a pre-quiz information screen showing:
+     * - Question count
+     * - Question types (multiple choice, true/false, etc.)
+     * - Time estimate
+     * - Passing score and instructions
+     * Student must click "Start Quiz" to proceed to the actual questions.
+     *
+     * @param {HTMLElement} container - The body element to render into.
+     * @param {Object}      module    - The module definition.
+     * @param {Array}       questions - Array of question objects.
+     * @param {number}      passingScore - Passing percentage (e.g., 80).
+     */
+    function renderQuizIntro(container, module, questions, passingScore) {
+      // Analyze question types
+      var types = {};
+      questions.forEach(function(q) {
+        var type = q.type || 'multiple-choice';
+        types[type] = (types[type] || 0) + 1;
+      });
+
+      var typesList = Object.keys(types).map(function(type) {
+        var label = type === 'multiple-choice' ? 'Multiple Choice' :
+                    type === 'true-false' ? 'True/False' :
+                    type === 'matching' ? 'Matching' :
+                    type === 'essay' ? 'Short Answer' : type;
+        return label + ' (' + types[type] + ')';
+      }).join(', ');
+
+      // Get time estimate from module or calculate from question count
+      var timeEstimate = module.quiz && module.quiz.estimatedMins ?
+                         module.quiz.estimatedMins :
+                         Math.ceil(questions.length * 0.5);  // ~30 sec per question
+
+      var html =
+        '<div style="max-width:600px;margin:var(--space-8) auto;text-align:center;">' +
+          '<div style="font-size:56px;margin-bottom:var(--space-4);">📝</div>' +
+          '<h2 style="font-size:var(--text-2xl);color:var(--color-ink);margin-bottom:var(--space-2);">Ready to Begin?</h2>' +
+          '<p style="font-size:var(--text-sm);color:var(--color-ink-muted);margin-bottom:var(--space-6);">Here\'s what to expect:</p>' +
+
+          // Quiz info cards
+          '<div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-4);margin-bottom:var(--space-6);">' +
+            '<div style="padding:var(--space-4);background:var(--color-surface-2);border-radius:var(--radius-md);border:1px solid var(--color-border);">' +
+              '<div style="font-size:24px;margin-bottom:var(--space-2);">📊</div>' +
+              '<div style="font-size:var(--text-xs);color:var(--color-ink-muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:var(--space-1);">Questions</div>' +
+              '<div style="font-size:var(--text-xl);font-weight:var(--weight-bold);color:var(--color-ink);">' + questions.length + '</div>' +
+            '</div>' +
+
+            '<div style="padding:var(--space-4);background:var(--color-surface-2);border-radius:var(--radius-md);border:1px solid var(--color-border);">' +
+              '<div style="font-size:24px;margin-bottom:var(--space-2);">⏱️</div>' +
+              '<div style="font-size:var(--text-xs);color:var(--color-ink-muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:var(--space-1);">Est. Time</div>' +
+              '<div style="font-size:var(--text-xl);font-weight:var(--weight-bold);color:var(--color-ink);">' + timeEstimate + 'm</div>' +
+            '</div>' +
+
+            '<div style="padding:var(--space-4);background:var(--color-surface-2);border-radius:var(--radius-md);border:1px solid var(--color-border);">' +
+              '<div style="font-size:24px;margin-bottom:var(--space-2);">✅</div>' +
+              '<div style="font-size:var(--text-xs);color:var(--color-ink-muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:var(--space-1);">Pass Score</div>' +
+              '<div style="font-size:var(--text-xl);font-weight:var(--weight-bold);color:var(--color-ink);">' + passingScore + '%</div>' +
+            '</div>' +
+
+            '<div style="padding:var(--space-4);background:var(--color-surface-2);border-radius:var(--radius-md);border:1px solid var(--color-border);">' +
+              '<div style="font-size:24px;margin-bottom:var(--space-2);">🎯</div>' +
+              '<div style="font-size:var(--text-xs);color:var(--color-ink-muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:var(--space-1);">Question Types</div>' +
+              '<div style="font-size:var(--text-sm);font-weight:var(--weight-bold);color:var(--color-ink);">' + escapeHtml(typesList) + '</div>' +
+            '</div>' +
+          '</div>' +
+
+          // Instructions
+          '<div style="text-align:left;background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-md);padding:var(--space-4);margin-bottom:var(--space-6);">' +
+            '<h3 style="font-size:var(--text-sm);font-weight:var(--weight-bold);color:var(--color-ink);margin-bottom:var(--space-3);">How This Quiz Works</h3>' +
+            '<ul style="margin:0;padding-left:var(--space-5);color:var(--color-ink-soft);font-size:var(--text-sm);line-height:1.6;">' +
+              '<li style="margin-bottom:var(--space-2);">You\'ll see one question at a time.</li>' +
+              '<li style="margin-bottom:var(--space-2);">After answering each question, you\'ll get immediate feedback and an explanation.</li>' +
+              '<li style="margin-bottom:var(--space-2);">You can review your answers before submitting.</li>' +
+              '<li style="margin-bottom:var(--space-2);">At the end, you\'ll see your final score and whether you passed.</li>' +
+              '<li>You can retake the quiz if needed.</li>' +
+            '</ul>' +
+          '</div>' +
+
+          // Start button
+          '<button class="btn btn-primary" onclick="startQuizNow(\'' + module.moduleId + '\')" style="font-size:var(--text-base);padding:var(--space-3) var(--space-6);">' +
+            'Start Quiz (' + questions.length + ' questions)' +
+          '</button>' +
+        '</div>';
+
+      container.innerHTML = html;
+    }
+
+    /**
+     * startQuizNow(moduleId)
+     * Called when student clicks "Start Quiz" button on the intro screen.
+     * Re-renders the current sub-module with quizState.introShown = true,
+     * which causes renderQuizContent to skip the intro and show questions.
+     *
+     * @param {string} moduleId - The module ID (e.g. 'mod-1')
+     */
+    function startQuizNow(moduleId) {
+      // Find the quiz sub-module for this module
+      var mod = currentCourse.modules.find(function(m) { return m.moduleId === moduleId; });
+      if (!mod) return;
+
+      var quizSubModule = mod.subModules.find(function(sm) { return sm.type === 'quiz'; });
+      if (!quizSubModule) return;
+
+      // Mark intro as shown for THIS module, then re-render the content
+      // (which will skip intro now that introShown[moduleId] is truthy)
+      quizState.introShown[moduleId] = true;
+      openSubModule(quizSubModule.subModuleId);
+    }
+
+    /**
+     * renderQuizContent(container, subModule, module)
+     * Renders a sequential one-question-at-a-time quiz for "quiz" type
+     * sub-modules. Questions are loaded from QUIZ_QUESTIONS via
+     * getQuizQuestions(). Each question is shown individually; the student
+     * answers, gets immediate feedback (correct/incorrect + explanation),
+     * then advances to the next question. After the final question a
+     * full report card is displayed.
+     *
+     * @param {HTMLElement} container - The body element to render into.
+     * @param {Object}      subModule - The sub-module definition object.
+     * @param {Object}      module    - The parent module (contains quiz config).
+     */
+    function renderQuizContent(container, subModule, module) {
+      // Check if this quiz was already completed — show retake prompt
+      var existingResults = null;
+      if (courseProgress && courseProgress.quizResults && courseProgress.quizResults[module.moduleId]) {
+        existingResults = courseProgress.quizResults[module.moduleId];
+      }
+      if (existingResults) {
+        container.innerHTML =
+          '<div class="cv-quiz-result visible" style="background:var(--color-surface);border:1px solid var(--color-border);text-align:center;padding:var(--space-8);border-radius:var(--radius-lg);">' +
+            '<div style="font-size:48px;margin-bottom:var(--space-3);">✅</div>' +
+            '<div style="font-size:var(--text-lg);font-weight:var(--weight-bold);color:var(--color-ink);margin-bottom:var(--space-2);">' +
+              __('cv_quiz_complete') +
+            '</div>' +
+            '<div style="font-size:var(--text-sm);color:var(--color-ink-muted);margin-bottom:var(--space-2);">' +
+              __('cv_quiz_score', existingResults.score, existingResults.maxScore, Math.round(existingResults.percentage)) +
+            '</div>' +
+            '<div style="font-size:var(--text-xs);color:var(--color-ink-soft);margin-bottom:var(--space-5);">' +
+              (existingResults.passed ? '✓ Passed' : 'Needs improvement') +
+            '</div>' +
+            '<div class="cv-quiz-actions" style="justify-content:center;margin-top:0;">' +
+              '<button class="btn btn-primary" onclick="retakeQuiz(\'' + module.moduleId + '\', this)">' +
+                __('cv_quiz_retake') +
+              '</button>' +
+            '</div>' +
+          '</div>';
+        quizState.active = false;
+        return;
+      }
+
+      // Reset quiz state for this quiz
+      quizState.active = true;
+      quizState.answers = {};
+      quizState.submitted = false;
+      quizState.score = null;
+      quizState.currentQuestion = 0;
+      quizState.answered = false;
+      if (!quizState.introShown[module.moduleId]) quizState.introShown[module.moduleId] = false;
+
+      // Try to load questions. Quizzes are stored in the QUIZ_QUESTIONS
+      // object keyed by moduleId (e.g. 'mod-1') or by course-specific keys.
+      var questions = getQuizQuestions(currentCourse.courseId, module.moduleId);
+
+      if (!questions || questions.length === 0) {
+        container.innerHTML =
+          '<div class="cv-placeholder">' +
+            '<div class="cv-placeholder-icon">❓</div>' +
+            '<h3>' + __('cv_quiz_not_available') + '</h3>' +
+            '<p>' + __('cv_quiz_not_available_desc') + '</p>' +
+          '</div>';
+        quizState.active = false;
+        return;
+      }
+
+      quizState.questions = questions;
+
+      var passingScore = module.quiz ? module.quiz.passingScore : 80;
+
+      // Show quiz intro screen if not yet shown for this module
+      // Each module gets its own intro so the first quiz (mod-1) doesn't
+      // consume the intro for mod-2, mod-3, etc.
+      if (!quizState.introShown[module.moduleId]) {
+        renderQuizIntro(container, module, questions, passingScore);
+        quizState.introShown[module.moduleId] = true;
+        return;
+      }
+
+      // Check if this module has AC reference content
+      var moduleACs = null;
+      if (typeof QUIZ_ACS !== 'undefined' &&
+          QUIZ_ACS[currentCourse.courseId] &&
+          QUIZ_ACS[currentCourse.courseId][module.moduleId]) {
+        moduleACs = QUIZ_ACS[currentCourse.courseId][module.moduleId];
+      }
+
+      // Build the sequential quiz shell
+      var html =
+        // Intro banner
+        '<div class="cv-quiz-intro" style="margin-bottom:var(--space-5);">' +
+          '<p style="color:var(--color-ink-muted);font-size:var(--text-sm);">' +
+            __('cv_quiz_intro', questions.length) +
+          '</p>' +
+        '</div>' +
+
+        // Collapsible AC reference panel (only shown when ACs exist for this module)
+        (moduleACs ? (
+        '<div class="cv-ac-ref-panel" style="margin-bottom:var(--space-4);border:1px solid var(--color-border,#d0d0d0);border-radius:8px;overflow:hidden;">' +
+          '<div class="cv-ac-ref-header" onclick="toggleQuizACRef()" ' +
+            'style="padding:10px 14px;background:var(--color-surface-2,#f0f2f5);cursor:pointer;display:flex;align-items:center;gap:8px;user-select:none;">' +
+            '<span style="font-size:16px;">📋</span>' +
+            '<span style="font-weight:600;font-size:var(--text-sm,13px);flex:1;">View Acceptance Criteria</span>' +
+            '<span id="cv-ac-ref-toggle" style="font-size:12px;transition:transform 0.2s;">▼</span>' +
+          '</div>' +
+          '<div id="cv-ac-ref-body" class="cv-ac-ref-body" style="display:none;padding:12px 16px;background:var(--color-surface,#fff);">' +
+            moduleACs.map(function(ac, i) {
+              return '<div style="margin-bottom:8px;font-size:var(--text-sm,13px);color:var(--color-ink-soft,#666);line-height:1.5;">' +
+                (i + 1) + '. ' + escapeHtml(ac) +
+              '</div>';
+            }).join('') +
+          '</div>' +
+        '</div>'
+        ) : '') +
+
+        // Progress indicator (updated by renderQuizQuestion)
+        '<div class="cv-quiz-progress" id="cv-quiz-progress">' +
+          __('cv_quiz_question_of', 1, questions.length) +
+        '</div>' +
+
+        // Single question card (filled by renderQuizQuestion)
+        '<div class="cv-quiz-question" id="cv-quiz-question-card"></div>' +
+
+        // Feedback panel — hidden until student answers
+        '<div class="cv-quiz-feedback" id="cv-quiz-feedback">' +
+          '<div class="cv-quiz-feedback-title" id="cv-quiz-feedback-title"></div>' +
+          '<div class="cv-quiz-feedback-body" id="cv-quiz-feedback-body"></div>' +
+        '</div>' +
+
+        // Navigation: next-question button (hidden until answered)
+        '<div class="cv-quiz-actions">' +
+          '<button class="btn btn-primary" id="cv-quiz-next-btn" ' +
+            'onclick="advanceQuiz()" style="display:none;">Next question →</button>' +
+        '</div>';
+
+      container.innerHTML = html;
+
+      // Render the first question
+      renderQuizQuestion(0);
+    }
+
+    /**
+     * toggleQuizACRef()
+     * Toggles the collapsible Acceptance Criteria reference panel
+     * inside the quiz view. Called by onclick on the panel header.
+     */
+    function toggleQuizACRef() {
+      var body = document.getElementById('cv-ac-ref-body');
+      var toggle = document.getElementById('cv-ac-ref-toggle');
+      if (!body || !toggle) return;
+      var isVisible = body.style.display !== 'none';
+      body.style.display = isVisible ? 'none' : 'block';
+      toggle.style.transform = isVisible ? 'rotate(0deg)' : 'rotate(180deg)';
+    }
+
+    /**
+     * renderQuizQuestion(index)
+     * Renders a single quiz question into the question card. Updates the
+     * progress indicator and resets the feedback panel.
+     *
+     * @param {number} index - Zero-based index into quizState.questions.
+     */
+    function renderQuizQuestion(index) {
+      var q = quizState.questions[index];
+
+      // Update progress
+      document.getElementById('cv-quiz-progress').textContent =
+        __('cv_quiz_question_of', (index + 1), quizState.questions.length);
+
+      // Build the question card HTML
+      var card = document.getElementById('cv-quiz-question-card');
+      var html =
+        '<div class="cv-quiz-question-text">' +
+          (index + 1) + '. ' + escapeHtml(q.questionText) +
+        '</div>' +
+        '<div class="cv-quiz-options" id="cv-quiz-options-' + q.questionId + '">';
+
+      q.options.forEach(function(opt) {
+        html +=
+          '<div class="cv-quiz-option" data-value="' + escapeHtml(opt) + '" ' +
+            'onclick="handleQuizAnswer(\'' + q.questionId + '\', this)">' +
+            '<span>' + escapeHtml(opt) + '</span>' +
+          '</div>';
+      });
+
+      html += '</div>';
+      card.innerHTML = html;
+
+      // Reset feedback panel
+      var feedbackEl = document.getElementById('cv-quiz-feedback');
+      feedbackEl.className = 'cv-quiz-feedback';
+
+      // Hide next button
+      document.getElementById('cv-quiz-next-btn').style.display = 'none';
+
+      quizState.answered = false;
+    }
+
+    /**
+     * handleQuizAnswer(questionId, optionEl)
+     * Called when the student clicks an answer option. Records the answer,
+     * highlights correct/incorrect options, and shows the feedback panel
+     * with the correct answer and explanation. Enables the "Next question"
+     * (or "See results") button.
+     *
+     * @param {string} questionId      - The question being answered.
+     * @param {HTMLElement} optionEl   - The clicked option element.
+     */
+    function handleQuizAnswer(questionId, optionEl) {
+      // Guard: already submitted or already answered this question
+      if (quizState.submitted || quizState.answered) return;
+
+      var q = quizState.questions[quizState.currentQuestion];
+      var selectedValue = optionEl.getAttribute('data-value');
+      var isCorrect = (selectedValue === q.correctAnswer);
+
+      // Record the answer
+      quizState.answers[questionId] = selectedValue;
+      quizState.answered = true;
+
+      // Disable further clicks and highlight correct/incorrect
+      var options = optionEl.parentNode.querySelectorAll('.cv-quiz-option');
+      options.forEach(function(opt) {
+        opt.style.cursor = 'default';  // Remove pointer cursor
+        var val = opt.getAttribute('data-value');
+        if (val === q.correctAnswer) {
+          opt.classList.add('correct');
+        } else if (val === selectedValue && !isCorrect) {
+          opt.classList.add('incorrect');
+        }
+      });
+
+      // Show feedback panel
+      var feedbackEl = document.getElementById('cv-quiz-feedback');
+      feedbackEl.className = 'cv-quiz-feedback visible ' +
+        (isCorrect ? 'feedback-correct' : 'feedback-incorrect');
+
+      var titleEl = document.getElementById('cv-quiz-feedback-title');
+      if (isCorrect) {
+        titleEl.innerHTML = '✅ <strong>' + __('cv_quiz_correct') + '</strong>';
+      } else {
+        titleEl.innerHTML =
+          '❌ <strong>' + __('cv_quiz_incorrect') + '</strong> ' +
+          __('cv_quiz_correct_answer') + ' ' +
+          '<span style="color:var(--color-success);font-weight:var(--weight-bold);">' +
+            escapeHtml(q.correctAnswer) +
+          '</span>';
+      }
+
+      document.getElementById('cv-quiz-feedback-body').textContent =
+        q.explanation || '';
+
+      // Show the next/see-results button
+      var isLast = (quizState.currentQuestion === quizState.questions.length - 1);
+      var nextBtn = document.getElementById('cv-quiz-next-btn');
+      nextBtn.style.display = '';
+      nextBtn.textContent = isLast ? __('cv_quiz_see_results') : __('cv_quiz_next');
+    }
+
+    /**
+     * advanceQuiz()
+     * Moves to the next question, or — if the last question was just
+     * answered — calls submitQuiz() to grade and show the report card.
+     */
+    function advanceQuiz() {
+      if (!quizState.answered) return;  // Student hasn't answered yet
+
+      quizState.currentQuestion++;
+
+      if (quizState.currentQuestion < quizState.questions.length) {
+        renderQuizQuestion(quizState.currentQuestion);
+      } else {
+        submitQuiz();
+      }
+    }
+
+    /**
+     * submitQuiz()
+     * Grades all answers, displays a report card (score, per-question
+     * breakdown with explanations), and saves the results to IndexedDB.
+     * If the student passes, marks the module as complete.
+     */
+    function submitQuiz() {
+      if (quizState.submitted) return;
+
+      quizState.submitted = true;
+
+      var questions = quizState.questions;
+      var maxScore = questions.length;
+      var score = 0;
+
+      // Grade every question from recorded answers
+      var results = questions.map(function(q) {
+        var studentAnswer = quizState.answers[q.questionId] || '';
+        var isCorrect = (studentAnswer === q.correctAnswer);
+        if (isCorrect) score++;
+        return {
+          questionId:    q.questionId,
+          questionText:  q.questionText,
+          studentAnswer: studentAnswer,
+          correctAnswer: q.correctAnswer,
+          isCorrect:     isCorrect,
+          explanation:   q.explanation || ''
+        };
+      });
+
+      var percentage = Math.round((score / maxScore) * 100);
+      var passingScore = getModuleQuizPassingScore(getCurrentModule());
+      var passed = percentage >= passingScore;
+
+      quizState.score = {
+        score:      score,
+        maxScore:   maxScore,
+        percentage: percentage,
+        passed:     passed
+      };
+
+      // ── Build the report card HTML ────────────────────────────────────────
+      var html = '';
+
+      // Result banner — neutral, learning-focused. Score is recorded for the
+      // audit trail but completion is not gated on a passing percentage.
+      html +=
+        '<div class="cv-quiz-result visible" ' +
+          'style="background:var(--color-primary-light);' +
+            'border:1px solid var(--color-border);' +
+            'color:var(--color-ink);">' +
+          '<div style="font-size:var(--text-2xl);font-weight:var(--weight-bold);">' +
+            __('cv_quiz_complete') +
+          '</div>' +
+          '<div style="font-size:var(--text-lg);margin-top:var(--space-2);color:var(--color-ink-muted);">' +
+            __('cv_quiz_score', score, maxScore, percentage) +
+          '</div>' +
+        '</div>';
+
+      // Per-question breakdown
+      html +=
+        '<div class="cv-quiz-results-list" style="margin-top:var(--space-5);">';
+
+      results.forEach(function(r, i) {
+        var qNum = i + 1;
+        html +=
+          '<div class="cv-quiz-result-item" ' +
+            'style="padding:var(--space-3) var(--space-4);' +
+              'margin-bottom:var(--space-2);' +
+              'background:var(--color-surface);' +
+              'border-radius:var(--radius-md);' +
+              'border:1px solid var(--color-border);' +
+              'border-left:3px solid ' +
+                (r.isCorrect ? 'var(--color-success)' : 'var(--color-error)') + ';">' +
+
+            // Question text
+            '<div style="font-weight:var(--weight-medium);margin-bottom:var(--space-1);">' +
+              '<span style="color:' +
+                (r.isCorrect ? 'var(--color-success)' : 'var(--color-error)') + ';">' +
+                (r.isCorrect ? '✅' : '❌') +
+              '</span> ' +
+              'Q' + qNum + ': ' + escapeHtml(r.questionText) +
+            '</div>';
+
+        // Wrong-answer correction
+        if (!r.isCorrect) {
+          html +=
+            '<div style="font-size:var(--text-sm);margin-top:var(--space-1);color:var(--color-ink-muted);">' +
+              'Your answer: ' +
+              '<span style="color:var(--color-error);text-decoration:line-through;">' +
+                escapeHtml(r.studentAnswer) +
+              '</span>' +
+              ' &rarr; ' +
+              '<span style="color:var(--color-success);font-weight:var(--weight-bold);">' +
+                escapeHtml(r.correctAnswer) +
+              '</span>' +
+            '</div>';
+        }
+
+        // Explanation
+        if (r.explanation) {
+          html +=
+            '<div style="font-size:var(--text-sm);color:var(--color-ink-muted);' +
+              'font-style:italic;margin-top:var(--space-1);">' +
+              escapeHtml(r.explanation) +
+            '</div>';
+        }
+
+        html += '</div>';  // Close .cv-quiz-result-item
+      });
+
+      html += '</div>';  // Close .cv-quiz-results-list
+
+      // Action buttons — render Reset Quiz now, add Continue AFTER save
+      // to prevent a race condition where Continue is clicked before
+      // quiz results are persisted and courseProgress is refreshed.
+      html +=
+        '<div class="cv-quiz-actions" style="margin-top:var(--space-5);justify-content:center;">' +
+          '<button class="btn btn-secondary" onclick="resetQuiz()" ' +
+            'style="font-size:var(--text-sm);">' + __('cv_quiz_reset_btn') + '</button>' +
+          '<span id="cv-quiz-save-spinner" style="color:var(--color-ink-muted);font-size:var(--text-sm);">' +
+            __('cv_saving') + '…</span>';
+
+      html += '</div>';  // Close .cv-quiz-actions
+
+      // Replace the container with the full report card
+      var container = document.getElementById('cv-lesson-body');
+      container.innerHTML = html;
+
+      // ── Save results to IndexedDB ─────────────────────────────────────────
+      var modId = getCurrentModuleId();
+      if (modId) {
+        saveCourseQuizResults(currentSession.caseId, COURSE_ID, modId, quizState.score)
+          .then(function() {
+            // Always mark the module complete — this is a learning app, not a
+            // certification exam. Completing the quiz IS the requirement.
+            // Score is saved above for the audit trail ("they took it, no excuses").
+            return markModuleComplete(currentSession.caseId, COURSE_ID, modId);
+          })
+          .then(function() {
+            // Award the certificate when the final exam is completed — no score gate.
+            if (getCurrentSubModule().type === 'final-exam') {
+              return awardCourseCertificate(currentSession.caseId, COURSE_ID);
+            }
+          })
+          .then(function() {
+            // If this was the final exam, redirect to the certificate page
+            if (getCurrentSubModule().type === 'final-exam') {
+              // Small delay to let the user see the score before redirecting
+              setTimeout(function() {
+                window.location.href = 'certificate.html?course=' + encodeURIComponent(COURSE_ID);
+              }, 2500);
+              return;  // Don't update display — we're redirecting
+            }
+            // Refresh local progress from IndexedDB before re-rendering
+            return getCourseProgress(currentSession.caseId, COURSE_ID);
+          })
+          .then(function(freshProgress) {
+            if (!freshProgress) return;  // Final exam redirect — don't update
+            courseProgress = freshProgress;
+            updateProgressDisplay();
+            renderSidebar();  // Re-render to show updated status icons
+
+            // ── Restore navigation buttons that were hidden during quiz ──
+            var navEl = document.querySelector('.cv-lesson-nav');
+            if (navEl) navEl.style.display = 'flex';
+
+            // ── Now data is saved and progress is fresh — safe to show Continue ──
+            var actionsEl = document.querySelector('.cv-quiz-actions');
+            if (actionsEl) {
+              // Remove the "Saving…" spinner
+              var spinner = document.getElementById('cv-quiz-save-spinner');
+              if (spinner) spinner.remove();
+
+              // Add the Continue button now that data is consistent
+              var continueBtn = document.createElement('button');
+              continueBtn.className = 'btn btn-primary';
+              continueBtn.style.fontSize = 'var(--text-sm)';
+              continueBtn.textContent = __('cv_quiz_continue');
+              continueBtn.addEventListener('click', function() {
+                continueAfterQuiz();
+              });
+              actionsEl.appendChild(continueBtn);
+            }
+          })
+          .catch(function(error) {
+            console.error('Failed to save quiz results:', error);
+            var spinner = document.getElementById('cv-quiz-save-spinner');
+            if (spinner) {
+              spinner.textContent = __('cv_error_save');
+            }
+          });
+      }
+    }
+
+    /**
+     * retakeQuiz(moduleId, btnEl)
+     * Clears the stored quiz results for this module and re-renders the
+     * quiz from scratch. Called from the "Retake" button on the completed
+     * quiz prompt.
+     */
+    function retakeQuiz(moduleId, btnEl) {
+      if (!confirm(__('cv_quiz_reset_confirm'))) return;
+      btnEl.disabled = true;
+      btnEl.textContent = __('cv_saving');
+
+      // Clear saved quiz results for this module
+      if (currentSession && courseProgress && courseProgress.quizResults) {
+        delete courseProgress.quizResults[moduleId];
+        if (typeof saveCourseQuizResults !== 'undefined') {
+          saveCourseQuizResults(currentSession.caseId, COURSE_ID, moduleId, null)
+            .then(function() {
+              return getCourseProgress(currentSession.caseId, COURSE_ID);
+            })
+            .then(function(freshProgress) {
+              if (freshProgress) courseProgress = freshProgress;
+              // Re-navigate to this sub-module to show fresh quiz
+              var entry = allSubModules.find(function(e) {
+                return e.subModuleId === activeSubModule;
+              });
+              if (entry) openSubModule(entry.subModuleId);
+            })
+            .catch(function(error) {
+              console.error('Failed to clear quiz results:', error);
+              btnEl.disabled = false;
+              btnEl.textContent = __('cv_quiz_retake');
+            });
+        } else {
+          // Fallback: just re-render
+          var entry = allSubModules.find(function(e) {
+            return e.subModuleId === activeSubModule;
+          });
+          if (entry) openSubModule(entry.subModuleId);
+        }
+      } else {
+        var entry = allSubModules.find(function(e) {
+          return e.subModuleId === activeSubModule;
+        });
+        if (entry) openSubModule(entry.subModuleId);
+      }
+    }
+
+    /**
+     * resetQuiz()
+     * Clears all quiz state and re-renders the quiz from scratch.
+     * Allows the student to retake the quiz after reviewing their answers.
+     */
+    function resetQuiz() {
+      if (!confirm(__('cv_quiz_reset_confirm'))) return;
+
+      var container = document.getElementById('cv-lesson-body');
+      if (!container) return;
+
+      var entry = allSubModules.find(function(e) { return e.subModuleId === activeSubModule; });
+      if (!entry || !entry.data) return;
+
+      // Find the module that contains this sub-module
+      var mod = currentCourse.modules[entry.moduleIndex];
+      if (!mod) return;
+
+      // Re-render the quiz with fresh state
+      renderQuizContent(container, entry.data, mod);
+    }
+
+    /**
+     * continueAfterQuiz()
+     * Navigates forward from a completed quiz to the next unlocked
+     * sub-module. If there is no next sub-module (course complete),
+     * returns to the portal.
+     */
+    function continueAfterQuiz() {
+      if (!activeSubModule) return;
+
+      var currentIdx = allSubModules.findIndex(function(sm) {
+        return sm.subModuleId === activeSubModule;
+      });
+      if (currentIdx === -1 || currentIdx >= allSubModules.length - 1) {
+        goBackToPortal();
+        return;
+      }
+
+      // Navigate to the next sub-module in the flat list
+      var next = allSubModules[currentIdx + 1];
+      var mod = currentCourse.modules[next.moduleIndex];
+
+      // If the next sub-module is locked (e.g. across a module boundary),
+      // go back to portal instead so the student can see their progress
+      if (isSubModuleLocked(next.subModuleId, mod, next.moduleIndex)) {
+        goBackToPortal();
+        return;
+      }
+
+      openSubModule(next.subModuleId);
+    }
+
+
+    // ── SECTION 7: COMPLETION TRACKING ────────────────────────────────────────
+
+    /**
+     * completeCourseFromCapstone()
+     * Called when the student clicks "Complete Course →" on a capstone overview page.
+     * Marks all remaining sub-modules in the current (last) module as complete,
+     * awards the course certificate, auto-enrolls in the next prerequisite course,
+     * and redirects to the certificate page.
+     */
+    window.completeCourseFromCapstone = function() {
+      if (!activeSubModule || !currentCourse) return;
+
+      // Disable button to prevent double-click
+      var btn = document.querySelector('.cv-module-overview .btn-primary');
+      if (btn) { btn.disabled = true; btn.textContent = 'Completing…'; }
+
+      // Get the last module
+      var lastMod = currentCourse.modules[currentCourse.modules.length - 1];
+      if (!lastMod) return;
+
+      // Find all non-quiz sub-modules in the last module that need to be marked complete
+      var subsToMark = lastMod.subModules.filter(function(sm) {
+        return sm.type !== 'quiz' && sm.type !== 'final-exam' && !isSubModuleComplete(sm.subModuleId);
+      });
+
+      if (subsToMark.length === 0) {
+        // Already complete — just go to certificate
+        awardCourseCertificate(currentSession.caseId, COURSE_ID).then(function() {
+          var certUrl = 'certificate.html?courseId=' + encodeURIComponent(COURSE_ID) + '&confetti=true';
+          window.location.href = certUrl;
+        });
+        return;
+      }
+
+      // Mark each sub-module complete, then handle finalisation
+      var promiseChain = Promise.resolve();
+      subsToMark.forEach(function(sm) {
+        promiseChain = promiseChain.then(function() {
+          return markSubModuleComplete(currentSession.caseId, COURSE_ID, sm.subModuleId);
+        });
+      });
+
+      promiseChain
+        .then(function() {
+          return getCourseProgress(currentSession.caseId, COURSE_ID);
+        })
+        .then(function(updated) {
+          courseProgress = updated;
+
+          // Mark the module complete
+          return markModuleComplete(currentSession.caseId, COURSE_ID, lastMod.moduleId);
+        })
+        .then(function() {
+          // Award certificate
+          return awardCourseCertificate(currentSession.caseId, COURSE_ID);
+        })
+        .then(function() {
+          // Find the next course that requires this course as a prerequisite
+          var nextCourse = null;
+          if (typeof COURSE_DEFINITIONS !== 'undefined' && COURSE_DEFINITIONS.length > 0) {
+            for (var ci = 0; ci < COURSE_DEFINITIONS.length; ci++) {
+              if (COURSE_DEFINITIONS[ci].prerequisiteId === COURSE_ID) {
+                nextCourse = COURSE_DEFINITIONS[ci];
+                break;
+              }
+            }
+          }
+
+          // If there's a next course, auto-enroll the student
+          if (nextCourse && typeof enrollStudent === 'function') {
+            return enrollStudent(currentSession.caseId, nextCourse.courseId).then(function() {
+              showToast('🎉 Great work! You\'ve been enrolled in ' + nextCourse.title, 'success');
+              // Show toast briefly then redirect to certificate
+              setTimeout(function() {
+                var certUrl = 'certificate.html?courseId=' + encodeURIComponent(COURSE_ID) + '&confetti=true';
+                window.location.href = certUrl;
+              }, 1500);
+            }).catch(function() {
+              // Fall back to certificate
+              var certUrl = 'certificate.html?courseId=' + encodeURIComponent(COURSE_ID) + '&confetti=true';
+              window.location.href = certUrl;
+            });
+          } else {
+            // No next course, show certificate
+            var certUrl = 'certificate.html?courseId=' + encodeURIComponent(COURSE_ID) + '&confetti=true';
+            window.location.href = certUrl;
+          }
+        })
+        .catch(function(error) {
+          console.error('Failed to complete course from capstone:', error);
+          showToast('Error completing course. Please try again.', 'error');
+          if (btn) { btn.disabled = false; btn.textContent = 'Complete Course →'; }
+        });
+    };
+
+    /**
+     * markCurrentComplete()
+     * Marks the currently active sub-module as complete, updates progress
+     * displays, then automatically navigates forward to the next
+     * sub-module (or shows a completion toast if this was the last one).
+     * Quizzes are excluded — they have their own submit flow.
+     */
+    function markCurrentComplete() {
+      if (!activeSubModule) return;
+
+      var entry = allSubModules.find(function(sm) { return sm.subModuleId === activeSubModule; });
+      if (!entry) return;
+
+      var sm = entry.data;
+      if (sm.type === 'quiz' || sm.type === 'final-exam') return;  // Quiz has its own flow
+
+      // Prevent double-click
+      var btn = document.getElementById('cv-complete-btn');
+      if (btn.disabled) return;
+      btn.disabled = true;
+      btn.textContent = __('cv_saving');
+
+      // Find which module contains this sub-module (for later checks)
+      var containingModuleId = null;
+      for (var mi = 0; mi < currentCourse.modules.length; mi++) {
+        var m = currentCourse.modules[mi];
+        for (var si = 0; si < m.subModules.length; si++) {
+          if (m.subModules[si].subModuleId === activeSubModule) {
+            containingModuleId = m.moduleId;
+            break;
+          }
+        }
+        if (containingModuleId) break;
+      }
+
+      var isLastModule = containingModuleId && currentCourse.modules[currentCourse.modules.length - 1].moduleId === containingModuleId;
+
+      markSubModuleComplete(currentSession.caseId, COURSE_ID, activeSubModule)
+        .then(function() {
+          return getCourseProgress(currentSession.caseId, COURSE_ID);
+        })
+        .then(function(updated) {
+          courseProgress = updated;
+
+          renderSidebar();
+          updateProgressDisplay();
+
+          // If all sub-modules in this module are now complete, mark module complete
+          if (containingModuleId) {
+            var containingMod = null;
+            for (var i = 0; i < currentCourse.modules.length; i++) {
+              if (currentCourse.modules[i].moduleId === containingModuleId) {
+                containingMod = currentCourse.modules[i];
+                break;
+              }
+            }
+            if (containingMod) {
+              var allSubsDone = containingMod.subModules.every(function(sm) {
+                if (sm.type === 'quiz' || sm.type === 'final-exam') return true; // Skip quizzes for module completion
+                return isSubModuleComplete(sm.subModuleId);
+              });
+              if (allSubsDone) {
+                markModuleComplete(currentSession.caseId, COURSE_ID, containingModuleId);
+              }
+            }
+          }
+
+          // If last module completed, award certificate and auto-enroll in next prerequisite course
+          if (isLastModule) {
+            // Use a brief delay so the progress bar updates before redirect
+            setTimeout(function() {
+              awardCourseCertificate(currentSession.caseId, COURSE_ID).then(function() {
+                // Find the next course that requires this course as a prerequisite
+                var nextCourse = null;
+                if (typeof COURSE_DEFINITIONS !== 'undefined' && COURSE_DEFINITIONS.length > 0) {
+                  for (var ci = 0; ci < COURSE_DEFINITIONS.length; ci++) {
+                    if (COURSE_DEFINITIONS[ci].prerequisiteId === COURSE_ID) {
+                      nextCourse = COURSE_DEFINITIONS[ci];
+                      break;
+                    }
+                  }
+                }
+
+                // If there's a next course, auto-enroll the student
+                if (nextCourse && typeof enrollStudent === 'function') {
+                  return enrollStudent(currentSession.caseId, nextCourse.courseId).then(function() {
+                    // Show success message with next course name
+                    showToast('🎉 Great work! You\'ve been enrolled in ' + nextCourse.title, 'success');
+                    // Navigate to next course (capstone courses go to capstone-2.html, others to course-view.html)
+                    var targetPage = nextCourse.isCapstone ? 'capstone-2.html' : 'course-view.html';
+                    setTimeout(function() {
+                      window.location.href = targetPage + '?courseId=' + encodeURIComponent(nextCourse.courseId) + '&confetti=true';
+                    }, 1500);
+                  }).catch(function(err) {
+                    console.error('Auto-enrollment failed:', err);
+                    // Fall back to certificate if enrollment fails
+                    var certUrl = 'certificate.html?courseId=' + encodeURIComponent(COURSE_ID) + '&confetti=true';
+                    window.location.href = certUrl;
+                  });
+                } else {
+                  // No next course, show certificate
+                  var certUrl = 'certificate.html?courseId=' + encodeURIComponent(COURSE_ID) + '&confetti=true';
+                  window.location.href = certUrl;
+                }
+              });
+            }, 500);
+            return;
+          }
+
+          // Find the next sub-module in the flat list
+          var currentIdx = allSubModules.indexOf(entry);
+
+          // Navigate forward if there is a next unlocked sub-module
+          if (currentIdx >= 0 && currentIdx < allSubModules.length - 1) {
+            var nextEntry = allSubModules[currentIdx + 1];
+            var nextMod = currentCourse.modules[nextEntry.moduleIndex];
+            if (!isSubModuleLocked(nextEntry.subModuleId, nextMod, nextEntry.moduleIndex)) {
+              openSubModule(nextEntry.subModuleId);
+              return;
+            }
+          }
+
+          // No next sub-module — show completion state
+          btn.textContent = __('cv_completed');
+          showToast(__('cv_course_complete'), 'success');
+        })
+        .catch(function(error) {
+          console.error('Failed to mark complete:', error);
+          showToast(__('cv_error_save'), 'error');
+          btn.disabled = false;
+          btn.textContent = __('cv_mark_complete');
+        });
+    }
+
+    /**
+     * handleExternalModuleComplete(subModuleId)
+     * Called when a lab page (e.g. capstone-lab.html) sends MARK_MODULE_COMPLETE
+     * via postMessage. Marks the entire containing module as complete.
+     * This bridges standalone lab pages back into course progress tracking.
+     *
+     * @param {string} subModuleId - The sub-module ID that was completed (e.g. 'capstone').
+     */
+    function handleExternalModuleComplete(subModuleId) {
+      if (!currentSession || !currentCourse || !COURSE_ID) return;
+
+      // Find the module containing this sub-module
+      var targetModule = null;
+      var targetModuleId = null;
+      for (var m = 0; m < currentCourse.modules.length; m++) {
+        var mod = currentCourse.modules[m];
+        for (var s = 0; s < mod.subModules.length; s++) {
+          if (mod.subModules[s].subModuleId === subModuleId) {
+            targetModule = mod;
+            targetModuleId = mod.moduleId;
+            break;
+          }
+        }
+        if (targetModule) break;
+      }
+      if (!targetModule || !targetModuleId) {
+        console.warn('handleExternalModuleComplete: module not found for', subModuleId);
+        return;
+      }
+
+      // Mark every sub-module in this module as complete
+      var promises = [];
+      for (var s = 0; s < targetModule.subModules.length; s++) {
+        var smId = targetModule.subModules[s].subModuleId;
+        if (!isSubModuleComplete(smId)) {
+          promises.push(markSubModuleComplete(currentSession.caseId, COURSE_ID, smId));
+        }
+      }
+
+      // Mark the module itself complete
+      promises.push(markModuleComplete(currentSession.caseId, COURSE_ID, targetModuleId));
+
+      // Record bypass event if this was a bypass (for admin dashboard visibility)
+      if (window.__bypassPending) {
+        promises.push(getCourseProgress(currentSession.caseId, COURSE_ID).then(function(cp) {
+          if (cp) {
+            cp.bypassed = true;
+            cp.bypassDate = new Date().toISOString();
+            return saveCourseProgress(currentSession.caseId, COURSE_ID, cp);
+          }
+        }));
+        window.__bypassPending = false;
+      }
+
+      // Award certificate if this is the final module
+      var isLastModule = currentCourse.modules[currentCourse.modules.length - 1].moduleId === targetModuleId;
+      if (isLastModule) {
+        promises.push(awardCourseCertificate(currentSession.caseId, COURSE_ID));
+      }
+
+      Promise.all(promises)
+        .then(function() {
+          return getCourseProgress(currentSession.caseId, COURSE_ID);
+        })
+        .then(function(updated) {
+          courseProgress = updated;
+          updateProgressDisplay();
+          renderSidebar();
+          showToast(__('cv_course_complete'), 'success');
+        })
+        .catch(function(err) {
+          console.error('handleExternalModuleComplete: save failed', err);
+          showToast(__('cv_error_save'), 'error');
+        });
+    }
+
+    /**
+     * updateProgressDisplay()
+     * Recalculates the overall course progress and updates the topbar bar + text.
+     */
+    function updateProgressDisplay() {
+      var total = 0;
+      var done = 0;
+
+      if (courseProgress && currentCourse) {
+        currentCourse.modules.forEach(function(mod) {
+          mod.subModules.forEach(function(sm) {
+            if (sm.type !== 'quiz' && sm.type !== 'final-exam') {
+              total++;
+              if (isSubModuleComplete(sm.subModuleId)) done++;
+            }
+          });
+        });
+      }
+
+      var pct = total > 0 ? Math.min(100, Math.round((done / total) * 100)) : 0;
+      document.getElementById('cv-progress-text').textContent = __('cv_percent_done', pct);
+      var bar = document.getElementById('cv-progress-bar');
+      bar.style.width = pct + '%';
+      if (pct >= 100) bar.classList.add('complete');
+    }
+
+
+    // ── SECTION 8: STATE HELPERS ─────────────────────────────────────────────
+
+    /**
+     * isSubModuleComplete(subModuleId)
+     * Checks if a sub-module has been marked complete in the student's progress.
+     *
+     * @param {string} subModuleId - e.g. 'mod-1-1'
+     * @returns {boolean} True if the sub-module is in the completed list.
+     */
+    function isSubModuleComplete(subModuleId) {
+      if (!courseProgress || !courseProgress.subModulesComplete) return false;
+      return courseProgress.subModulesComplete.indexOf(subModuleId) !== -1;
+    }
+
+    /**
+     * isSubModuleLocked(subModuleId, module, moduleIndex)
+     * A sub-module is locked if all sub-modules in the previous module
+     * are NOT yet complete (i.e., you must finish module N before module N+1).
+     *
+     * @param {string} subModuleId - The sub-module to check.
+     * @param {Object} module      - The module this sub-module belongs to.
+     * @param {number} moduleIndex - Index of this module.
+     * @returns {boolean} True if the sub-module should be locked.
+     */
+    function isSubModuleLocked(subModuleId, module, moduleIndex) {
+      if (moduleIndex === 0) return false;  // First module is always unlocked
+
+      var prevModule = currentCourse.modules[moduleIndex - 1];
+      if (!prevModule) return false;
+
+      // Previous module is complete only if ALL its sub-modules are done
+      // (excluding quizzes — quizzes are graded separately)
+      return !areAllSubModulesComplete(prevModule);
+    }
+
+    /**
+     * areAllSubModulesComplete(module)
+     * Checks if all non-quiz sub-modules in a module are marked complete.
+     * NOTE: Fast path — if the module is marked complete in modulesComplete[],
+     * return true immediately (this is set by markModuleComplete() after quiz).
+     *
+     * @param {Object} module - A module definition object.
+     * @returns {boolean} True if every reading/exercise sub-module is done.
+     */
+    function areAllSubModulesComplete(module) {
+      if (!courseProgress) return false;
+
+      // Fast path: if the module itself is already marked complete, it's done
+      // (This is set by markModuleComplete() after quiz submission)
+      if (courseProgress.modulesComplete && courseProgress.modulesComplete.indexOf(module.moduleId) !== -1) {
+        return true;
+      }
+
+      if (!courseProgress.subModulesComplete) return false;
+
+      // All reading/exercise sub-modules must be complete
+      var required = module.subModules.filter(function(sm) {
+        return sm.type === 'reading' || sm.type === 'exercise';
+      });
+
+      if (required.length === 0) return true;
+
+      for (var i = 0; i < required.length; i++) {
+        if (courseProgress.subModulesComplete.indexOf(required[i].subModuleId) === -1) {
+          return false;
+        }
+      }
+
+      // Also check if the module quiz (if any) has been taken.
+      // NOTE: We only check existence of quiz results, NOT `passed`.
+      // Per learning-mode requirements, completing the quiz IS the
+      // requirement — score is recorded for audit but does NOT gate
+      // progress. The save chain in submitQuiz() always marks the
+      // module complete regardless of score.
+      if (module.quiz) {
+        var quizResults = courseProgress.quizResults ? courseProgress.quizResults[module.moduleId] : null;
+        if (!quizResults) return false;
+      }
+
+      return true;
+    }
+
+    /**
+     * isModuleExpanded(module, moduleIndex)
+     * Determines if a module group should be expanded in the sidebar.
+     * Expands: the module containing the active sub-module, or the first
+     * incomplete module, or the first module.
+     *
+     * @param {Object} module      - The module to check.
+     * @param {number} moduleIndex - Its index.
+     * @returns {boolean} True if the module should be expanded.
+     */
+    function isModuleExpanded(module, moduleIndex) {
+      // If there's an active sub-module in this module, expand it
+      if (activeSubModule) {
+        var entry = allSubModules.find(function(sm) { return sm.subModuleId === activeSubModule; });
+        if (entry && entry.moduleIndex === moduleIndex) return true;
+      }
+
+      // Auto-expand the first module by default
+      if (moduleIndex === 0 && !activeSubModule) return true;
+
+      return false;
+    }
+
+    /**
+     * isModuleLocked(module, moduleIndex)
+     * Determines if a module group as a whole is locked (previous module not done).
+     *
+     * @param {Object} module      - The module to check.
+     * @param {number} moduleIndex - Its index.
+     * @returns {boolean} True if the module is locked.
+     */
+    function isModuleLocked(module, moduleIndex) {
+      if (moduleIndex === 0) return false;
+      var prevModule = currentCourse.modules[moduleIndex - 1];
+      if (!prevModule) return false;
+      return !areAllSubModulesComplete(prevModule);
+    }
+
+    /**
+     * getCurrentModule()
+     * Returns the module object that contains the active sub-module.
+     *
+     * @returns {Object|null} The module object, or null.
+     */
+    function getCurrentModule() {
+      if (!activeSubModule || !currentCourse) return null;
+      var entry = allSubModules.find(function(sm) { return sm.subModuleId === activeSubModule; });
+      if (!entry) return null;
+      return currentCourse.modules[entry.moduleIndex];
+    }
+
+    /**
+     * getCurrentSubModule()
+     * Returns the data of the currently active sub-module.
+     *
+     * @returns {Object|null} The sub-module data, or null if none active.
+     */
+    function getCurrentSubModule() {
+      if (!activeSubModule || !allSubModules) return null;
+      var entry = allSubModules.find(function(sm) { return sm.subModuleId === activeSubModule; });
+      return entry ? entry.data : null;
+    }
+
+    /**
+     * getCurrentModuleId()
+     * Returns the moduleId of the module containing the active sub-module.
+     *
+     * @returns {string|null} e.g. 'mod-1', or null.
+     */
+    function getCurrentModuleId() {
+      var mod = getCurrentModule();
+      return mod ? mod.moduleId : null;
+    }
+
+    /**
+     * getModuleQuizPassingScore(module)
+     * Returns the passing score percentage for a module's quiz.
+     * Falls back to the course-level passing score, then to 80.
+     *
+     * @param {Object|null} module - The module object.
+     * @returns {number} Passing percentage (e.g. 80).
+     */
+    function getModuleQuizPassingScore(module) {
+      if (module && module.quiz && module.quiz.passingScore) return module.quiz.passingScore;
+      if (currentCourse && currentCourse.passingScore) return currentCourse.passingScore;
+      return 80;
+    }
+
+
+    // ── SECTION 9: CONTENT DATA LOADERS ───────────────────────────────────────
+
+    /**
+     * getCourseContent(courseId, subModuleId)
+     * Returns the HTML content for a specific sub-module.
+     * Reads from the COURSE_CONTENT data structure if available.
+     * Returns null if no content has been written yet.
+     *
+     * The COURSE_CONTENT object is defined in data/content.js and maps
+     * courseId + subModuleId to HTML strings. This keeps content separate
+     * from the viewer logic so content can be edited without touching code.
+     *
+     * @param {string} courseId    - The course ID.
+     * @param {string} subModuleId - The sub-module ID.
+     * @returns {string|null} HTML content, or null if not found.
+     */
+    function getCourseContent(courseId, subModuleId) {
+      // Use the i18n localised content function (checks French content first)
+      if (typeof getLocalizedContent === 'function') {
+        return getLocalizedContent(courseId, subModuleId);
+      }
+
+      // Fallback: direct COURSE_CONTENT access
+      if (typeof COURSE_CONTENT !== 'undefined' &&
+          COURSE_CONTENT[courseId] &&
+          COURSE_CONTENT[courseId][subModuleId]) {
+        return COURSE_CONTENT[courseId][subModuleId];
+      }
+      return null;
+    }
+
+    /**
+     * getQuizQuestions(courseId, moduleId)
+     * Returns quiz questions for a given course module.
+     * Checks the global QUIZ_QUESTIONS object first (for backward compat with
+     * existing QA Onboarding quizzes), then checks course-specific quiz data.
+     *
+     * @param {string} courseId - The course ID.
+     * @param {string} moduleId - The module ID. e.g. 'mod-1'
+     * @returns {Array|null} Array of question objects, or null.
+     */
+    function getQuizQuestions(courseId, moduleId) {
+      // If French is active, check for French quiz translations first
+      if (typeof getLanguage === 'function' && getLanguage() === 'fr') {
+        if (typeof LANG_QUIZZES_FR !== 'undefined' &&
+            LANG_QUIZZES_FR[courseId] &&
+            LANG_QUIZZES_FR[courseId][moduleId]) {
+          return LANG_QUIZZES_FR[courseId][moduleId];
+        }
+      }
+
+      // Check if these questions exist in course-specific quiz data
+      if (typeof COURSE_QUIZZES !== 'undefined' &&
+          COURSE_QUIZZES[courseId] &&
+          COURSE_QUIZZES[courseId][moduleId]) {
+        return COURSE_QUIZZES[courseId][moduleId];
+      }
+
+      // Check MODULE_QUIZ_MAP — maps new module IDs to legacy lesson quiz IDs
+      // so migrated courses can use their existing quiz question banks
+      if (typeof MODULE_QUIZ_MAP !== 'undefined' &&
+          MODULE_QUIZ_MAP[courseId] &&
+          MODULE_QUIZ_MAP[courseId][moduleId] &&
+          typeof getQuestionsForLesson === 'function') {
+        return getQuestionsForLesson(MODULE_QUIZ_MAP[courseId][moduleId]);
+      }
+
+      // Fall back to the legacy quiz store (used by QA Onboarding directly)
+      if (typeof getQuestionsForLesson === 'function') {
+        return getQuestionsForLesson(moduleId);
+      }
+
+      return null;
+    }
+
+
+    // ── SECTION 10: UTILITY FUNCTIONS ─────────────────────────────────────────
+
+    /**
+     * getTypeLabel(type)
+     * Returns a short human-readable label for a sub-module type.
+     *
+     * @param {string} type - e.g. 'reading', 'quiz', 'exercise', 'final-exam'
+     * @returns {string} Short label. e.g. 'Read', 'Quiz', 'Practice', 'Exam'
+     */
+    function getTypeLabel(type) {
+      var labels = {
+        'reading':    __('cv_read'),
+        'quiz':       __('cv_quiz'),
+        'exercise':   __('cv_practice'),
+        'final-exam': __('cv_exam'),
+      };
+      return labels[type] || type;
+    }
+
+    /**
+     * padZero(num)
+     * Pads a number to 2 digits with leading zero.
+     *
+     * @param {number} num - The number to format.
+     * @returns {string} e.g. '01', '09', '12'
+     */
+    function padZero(num) {
+      return String(num).padStart(2, '0');
+    }
+
+    /**
+     * escapeHtml(str)
+     * Escapes HTML special characters. Used when rendering dynamic text
+     * into innerHTML to prevent XSS.
+     *
+     * @param {string} str - The string to escape.
+     * @returns {string} Escaped string safe for innerHTML.
+     */
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    /**
+     * showError(message)
+     * Shows an error message in the content panel when something goes wrong.
+     *
+     * @param {string} message - The error message.
+     */
+    function showError(message) {
+      document.getElementById('cv-welcome').style.display = 'block';
+      document.getElementById('cv-welcome').innerHTML =
+        '<h2 style="color:var(--color-error);">⚠️ ' + __('cv_error_load') + '</h2>' +
+        '<p>' + escapeHtml(message) + '</p>';
+    }
+
+    /**
+     * goBackToPortal()
+     * Returns the student to the course portal page.
+     */
+    function goBackToPortal() {
+      window.location.href = 'portal.html';
+    }
+
+    // ── MESSAGE LISTENER: External module completion (from lab iframes) ────
+    window.addEventListener('message', function(event) {
+      var msg = event.data;
+      if (!msg || !msg.type) return;
+
+      if (msg.type === 'MARK_MODULE_COMPLETE') {
+        // Record bypass flag so handleExternalModuleComplete can store it
+        if (msg.bypassed) {
+          window.__bypassPending = true;
+        }
+        handleExternalModuleComplete(msg.subModuleId);
+      }
+
+      // Capstone 1 finished — navigate to certificate with confetti animation
+      if (msg.type === 'CAPSTONE_FINISHED') {
+        var certUrl = 'certificate.html?confetti=true';
+        if (msg.courseId) {
+          certUrl += '&course=' + encodeURIComponent(msg.courseId);
+        }
+        window.location.href = certUrl;
+      }
+    });
+
+  </script>
+</body>
+</html>

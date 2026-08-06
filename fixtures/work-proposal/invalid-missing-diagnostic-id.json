@@ -1,0 +1,13 @@
+{
+  "proposal_id": "WP-QA-REG-10001",
+  "source_test_id": "test-pipeline-health-regression",
+  "failure_summary": {"expected": "All rules pass", "actual": "Rule failed"},
+  "severity": "HIGH",
+  "affected_domain": "regression",
+  "suggested_objective": "Fix the regression failure in pipeline health",
+  "constraints": {"must_not_modify": ["librarian/"], "required_validation": ["test.py"]},
+  "verification_requirements": {"rerun_tests": ["test.py"], "pass_criteria": "All tests must pass"},
+  "compliance_mappings": {},
+  "limitations": {"advisory_only": true, "no_execution_authority": true, "no_mutation_authority": true},
+  "provenance": {"advisory": true, "no_authority_conferred": true, "compiled_by": "compiler.py", "compiled_from": ""}
+}

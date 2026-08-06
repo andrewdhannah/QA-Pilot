@@ -1,0 +1,56 @@
+{
+  "record_id": "QR-REVAUD-0001",
+  "qualification_type": "reviewer",
+  "target_id": "OD-20260710-001",
+  "target_type": "decision_packet",
+  "qualification_level": "audited",
+  "qualification_criteria": {
+    "required_level": "audited",
+    "pass_rate_threshold": 0.95,
+    "evidence_count_min": 3,
+    "authority_check_required": true
+  },
+  "evidence_refs": [
+    {
+      "evidence_id": "ODR-20260710-001",
+      "evidence_type": "owner_decision",
+      "evidence_source": "docs/examples/qa-pilot-qualification/valid/reviewer-audited.json",
+      "verification_status": "verified",
+      "verified_at": "2026-07-16T12:00:00Z"
+    },
+    {
+      "evidence_id": "CR-20260710-005",
+      "evidence_type": "custody_audit",
+      "evidence_source": "docs/examples/qa-pilot-qualification/valid/reviewer-audited.json",
+      "verification_status": "verified",
+      "verified_at": "2026-07-16T12:00:00Z"
+    },
+    {
+      "evidence_id": "WDR-20260710-001",
+      "evidence_type": "review_outcome",
+      "evidence_source": "docs/examples/qa-pilot-qualification/valid/reviewer-audited.json",
+      "verification_status": "verified",
+      "verified_at": "2026-07-15T12:00:00Z"
+    }
+  ],
+  "sub_dimension_scores": {
+    "schema_compliance": 1.0,
+    "evidence_freshness": 1.0,
+    "evidence_diversity": 0.90,
+    "authority_boundary": 1.0,
+    "provenance_quality": 1.0
+  },
+  "overall_score": 0.98,
+  "lifecycle_state": "completed",
+  "provenance": {
+    "assessor_id": "OpenWork-DeepSeek-V4-Flash",
+    "session_id": "qual-schema-1-session",
+    "tool_call_log": "validate-qa-pilot-qualification.py fixture mode"
+  },
+  "expiry_date": "2027-01-12",
+  "advisory_only": true,
+  "custody": "qa-pilot-local",
+  "librarian_impact": "none",
+  "assessed_at": "2026-07-16T12:00:00Z",
+  "assessed_by": "OpenWork (DeepSeek V4 Flash)"
+}

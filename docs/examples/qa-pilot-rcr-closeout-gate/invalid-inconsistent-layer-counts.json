@@ -1,0 +1,16 @@
+{
+  "gate_id": "RCG-INVALID-LAYER-001",
+  "sprint_id": "QA-PILOT-PIPELINE-HEALTH-LAYER-REGISTRY-1",
+  "ledger_number": 48,
+  "registry_impact": "adds_layer",
+  "rcr_receipt_id": "RCR-ADD-LAYER-048",
+  "registry_before_summary": "Registry has 17 layers.",
+  "registry_after_summary": "Registry has 17 layers. No change.",
+  "closeout_status": "blocked",
+  "advisory_only": true,
+  "custody": "qa-pilot-local",
+  "librarian_impact": "none",
+  "not_seal_authority": "No sealing authority claimed.",
+  "not_librarian_mutation_authority": "No Librarian mutation claimed.",
+  "created_at": "2026-07-07T20:05:00Z"
+}

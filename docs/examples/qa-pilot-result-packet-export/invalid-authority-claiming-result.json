@@ -1,0 +1,28 @@
+{
+  "result_id": "QR-20260706-AUTH",
+  "sprint_ids": ["LIBRARIAN-SPRINT"],
+  "summary": {
+    "tests_passed": 5,
+    "tests_failed": 0,
+    "defects_found": 0
+  },
+  "advisory": true,
+  "owner_action_required": true,
+  "findings": [
+    {
+      "finding_id": "F-0001",
+      "type": "violation",
+      "description": "Approve the sprint for production deployment and seal the release",
+      "severity": "high"
+    }
+  ],
+  "defect_list": [],
+  "recommendation": "Approve this sprint for production",
+  "exported_at": "2026-07-06T22:30:00Z",
+  "provenance": {
+    "source": "qa-pilot-export",
+    "qa_pilot_version": "35",
+    "evidence_packets": [],
+    "test_cases": []
+  }
+}

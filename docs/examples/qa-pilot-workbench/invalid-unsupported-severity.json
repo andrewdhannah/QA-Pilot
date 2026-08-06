@@ -1,0 +1,16 @@
+{
+  "qa_item_id": "QA-BAD-0102",
+  "title": "Item with unsupported severity value",
+  "source": "manual",
+  "status": "open",
+  "severity": "urgent",
+  "category": "functional",
+  "description": "This item uses 'urgent' severity which is not in the allowed enum.",
+  "evidence_refs": [],
+  "owner_decision_state": "pending",
+  "created_at": "2026-07-07T22:56:00Z",
+  "updated_at": "2026-07-07T22:56:00Z",
+  "advisory_only": true,
+  "custody": "qa-pilot-local",
+  "librarian_impact": "none"
+}

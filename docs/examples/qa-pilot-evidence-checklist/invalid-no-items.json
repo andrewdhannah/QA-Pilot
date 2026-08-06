@@ -1,0 +1,13 @@
+{
+  "checklist_id": "EC-INVALID-NO-ITEMS-001",
+  "title": "Invalid — no checklist items",
+  "description": "This checklist has zero items, violating EC-5.",
+  "evidence_class": "required",
+  "items": [],
+  "pipeline_refs": [
+    { "layer_id": "layer_1", "layer_name": "Evidence Intake", "sprint_id": "QA-PILOT-MCP-EVIDENCE-INTAKE-1", "sealed_number": 33 }
+  ],
+  "advisory_only": true,
+  "custody": "qa-pilot-local",
+  "librarian_impact": "none"
+}

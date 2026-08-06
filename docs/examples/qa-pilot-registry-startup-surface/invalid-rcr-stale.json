@@ -1,0 +1,14 @@
+{
+  "registry_posture": {
+    "rcr_posture": {
+      "receipts_found": 2,
+      "latest_receipt": "RCR-STALE-RECEIPT-001",
+      "latest_impact": "no_registry_impact",
+      "latest_before_layers": 12,
+      "latest_after_layers": 12,
+      "rcr_status": "fail",
+      "classification": "blocked",
+      "_authority_claim": "seal without receipts"
+    }
+  }
+}

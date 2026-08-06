@@ -1,0 +1,37 @@
+{
+  "test_id": "A11Y-003",
+  "domain": "accessibility",
+  "title": "Screen reader semantics — ARIA landmarks and roles",
+  "objective": "Verify that governed surfaces use correct ARIA landmarks, roles, and semantic HTML to support screen reader navigation. Based on WCAG 2.2 4.1.2 Name, Role, Value.",
+  "source": {
+    "type": "contract",
+    "reference": "QA-PILOT-VISUAL-INTEGRATION-CONTRACT-1",
+    "description": "Surface-level HTML must provide semantic structure for assistive technology — add-on surfaces inherit this requirement"
+  },
+  "execution": {
+    "type": "manual",
+    "criteria": "Inspect HTML structure: banner landmark, navigation landmark, main content region, complementary region, status region. Verify each interactive element has an accessible name.",
+    "expected_outcome": "All ARIA landmarks present, interactive elements have accessible names"
+  },
+  "pass_criteria": [
+    {
+      "id": "A11Y-003-A",
+      "description": "Page has banner, navigation, main, and contentinfo landmarks",
+      "evidence_required": ["HTML includes role=banner, role=navigation, role=main, role=contentinfo"]
+    },
+    {
+      "id": "A11Y-003-B",
+      "description": "Status indicators have accessible names (not just color)",
+      "evidence_required": ["State badges include aria-label or visible text"]
+    },
+    {
+      "id": "A11Y-003-C",
+      "description": "Interactive cards and panels are focusable with correct roles",
+      "evidence_required": ["Bento cards have role=button or role=region"]
+    }
+  ],
+  "contract_refs": [],
+  "status": "active",
+  "advisory_only": true,
+  "no_seal_authority": true
+}

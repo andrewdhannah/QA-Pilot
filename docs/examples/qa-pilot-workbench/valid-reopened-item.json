@@ -1,0 +1,67 @@
+{
+  "qa_item_id": "QA-LIFE-0800",
+  "title": "Reopened item after being resolved",
+  "source": "manual",
+  "status": "open",
+  "severity": "medium",
+  "category": "functional",
+  "description": "A previously resolved item reopened because the issue recurred under new conditions.",
+  "evidence_refs": [],
+  "evidence_links": [],
+  "lifecycle_history": [
+    {
+      "from_status": "__init__",
+      "to_status": "open",
+      "transition_reason": "Item created from sprint review",
+      "actor": "agent",
+      "timestamp": "2026-07-08T00:00:00Z",
+      "advisory_only": true
+    },
+    {
+      "from_status": "open",
+      "to_status": "triaged",
+      "transition_reason": "Triaged as reproducible",
+      "actor": "agent",
+      "timestamp": "2026-07-08T00:05:00Z",
+      "advisory_only": true
+    },
+    {
+      "from_status": "triaged",
+      "to_status": "evidence_attached",
+      "transition_reason": "Evidence linked from test run",
+      "actor": "agent",
+      "timestamp": "2026-07-08T00:10:00Z",
+      "advisory_only": true
+    },
+    {
+      "from_status": "evidence_attached",
+      "to_status": "needs_review",
+      "transition_reason": "Ready for review",
+      "actor": "agent",
+      "timestamp": "2026-07-08T00:15:00Z",
+      "advisory_only": true
+    },
+    {
+      "from_status": "needs_review",
+      "to_status": "resolved_locally",
+      "transition_reason": "Resolved with configuration change",
+      "actor": "agent",
+      "timestamp": "2026-07-08T00:20:00Z",
+      "advisory_only": true
+    },
+    {
+      "from_status": "resolved_locally",
+      "to_status": "open",
+      "transition_reason": "REOPEN: Issue recurred after new deployment with different configuration params",
+      "actor": "agent",
+      "timestamp": "2026-07-08T00:25:00Z",
+      "advisory_only": true
+    }
+  ],
+  "owner_decision_state": "pending",
+  "created_at": "2026-07-08T00:00:00Z",
+  "updated_at": "2026-07-08T00:25:00Z",
+  "advisory_only": true,
+  "custody": "qa-pilot-local",
+  "librarian_impact": "none"
+}

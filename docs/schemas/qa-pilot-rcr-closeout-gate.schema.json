@@ -1,0 +1,140 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://qa-pilot.carbideframe/schemas/qa-pilot-rcr-closeout-gate-v1",
+  "title": "QA Pilot RCR Closeout Gate",
+  "description": "Schema for QA Pilot RCR closeout gate packets. Every completed sprint must declare its registry impact and provide a valid RCR receipt (or no_registry_impact rationale) before it can be considered seal-ready. Advisory-only, QA Pilot-local.",
+  "type": "object",
+  "required": [
+    "gate_id",
+    "sprint_id",
+    "ledger_number",
+    "registry_impact",
+    "registry_before_summary",
+    "registry_after_summary",
+    "closeout_status",
+    "advisory_only",
+    "custody",
+    "librarian_impact",
+    "not_seal_authority",
+    "not_librarian_mutation_authority",
+    "created_at"
+  ],
+  "properties": {
+    "gate_id": {
+      "type": "string",
+      "pattern": "^RCG-[A-Z0-9-]+$",
+      "description": "Unique closeout gate identifier (e.g. RCG-CLOSEOUT-048)."
+    },
+    "sprint_id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "The sprint ID being closed out."
+    },
+    "ledger_number": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Ledger number of the sprint being closed out."
+    },
+    "registry_impact": {
+      "type": "string",
+      "enum": ["adds_layer", "updates_layer", "no_registry_impact", "deprecates_layer"],
+      "description": "Declared registry impact for this sprint."
+    },
+    "rcr_receipt_id": {
+      "type": "string",
+      "pattern": "^RCR-",
+      "description": "RCR receipt ID for sprints that affect the registry. Required when registry_impact is adds_layer/updates_layer/deprecates_layer."
+    },
+    "registry_before_summary": {
+      "type": "string",
+      "minLength": 10,
+      "description": "Registry state summary before this sprint."
+    },
+    "registry_after_summary": {
+      "type": "string",
+      "minLength": 10,
+      "description": "Registry state summary after this sprint."
+    },
+    "no_impact_rationale": {
+      "type": "string",
+      "minLength": 20,
+      "description": "Rationale for no_registry_impact classification. Required and >= 20 chars when registry_impact=no_registry_impact."
+    },
+    "closeout_status": {
+      "type": "string",
+      "enum": ["ready", "blocked", "degraded"],
+      "description": "Closeout gate status: ready=all checks pass, blocked=missing critical requirements, degraded=non-critical issues."
+    },
+    "gate_checks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["check_id", "passed", "message"],
+        "properties": {
+          "check_id": { "type": "string" },
+          "passed": { "type": "boolean" },
+          "message": { "type": "string" }
+        }
+      },
+      "description": "Individual closeout gate check results."
+    },
+    "advisory_only": {
+      "type": "boolean",
+      "const": true
+    },
+    "custody": {
+      "type": "string",
+      "pattern": "^qa-pilot-local$"
+    },
+    "librarian_impact": {
+      "type": "string",
+      "const": "none"
+    },
+    "not_seal_authority": {
+      "type": "string",
+      "minLength": 20
+    },
+    "not_librarian_mutation_authority": {
+      "type": "string",
+      "minLength": 20
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "created_by": {
+      "type": "string"
+    }
+  },
+  "allOf": [
+    {
+      "description": "If registry_impact is not no_registry_impact, RCR receipt required.",
+      "if": {
+        "properties": {
+          "registry_impact": {
+            "not": { "const": "no_registry_impact" }
+          }
+        },
+        "required": ["registry_impact"]
+      },
+      "then": {
+        "required": ["rcr_receipt_id"]
+      }
+    },
+    {
+      "description": "If registry_impact is no_registry_impact, rationale required with minLength 20.",
+      "if": {
+        "properties": {
+          "registry_impact": { "const": "no_registry_impact" }
+        },
+        "required": ["registry_impact"]
+      },
+      "then": {
+        "required": ["no_impact_rationale"],
+        "properties": {
+          "no_impact_rationale": { "minLength": 20 }
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "schema": "project-wide-write-custody-v1",
+  "project_id": "unknown-project",
+  "sprint_id": "NONE",
+  "file_path": "Sources/App/Controllers/Controller.swift",
+  "requested_action": "Add new endpoint",
+  "custody_class": "READ_ONLY_BY_DEFAULT",
+  "write_authority_source": "none",
+  "sprint_allowlisted": false,
+  "release_state": "pre_release",
+  "sealed_evidence": false,
+  "generated_by_tool": false,
+  "owner_approval_required": false,
+  "owner_approval_present": false,
+  "warning_required": false,
+  "warning_present": false,
+  "expected_decision": "BLOCK_WRITE_SCOPE_VIOLATION",
+  "expected_blocker_code": "WRITE_SCOPE_VIOLATION",
+  "description": "Write to a file in an unknown/unlisted project without any authority"
+}

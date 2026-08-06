@@ -1,0 +1,7 @@
+QA Pilot startup checks complete.
+Operating mode: blocked
+Active work session: none
+Project root: /Users/andrew/Desktop/CarbideFrame/active/qa-pilot
+MCP: partial (no check-mcp-health.sh found)
+Startup file written: /Users/andrew/Desktop/CarbideFrame/active/qa-pilot/STARTUP-STATE.md
+Blockers: 1 required project files missing

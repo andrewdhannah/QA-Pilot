@@ -1,0 +1,22 @@
+{
+  "schema": "live-custody-integration-v1",
+  "fixture_type": "valid",
+  "description": "Dry-run returns decision without writing",
+  "mode": "dry-run",
+  "request": {
+    "project_id": "qa-pilot",
+    "sprint_id": "SPRINT-1",
+    "file_path": "scripts/dry-test.py",
+    "content": "# dry run",
+    "requested_action": "Dry-run create",
+    "sprint_allowlisted": true,
+    "custody_class": "READ_ONLY_BY_DEFAULT",
+    "release_state": "pre_release",
+    "sealed_evidence": false,
+    "generated_by_tool": false,
+    "owner_approval_present": false
+  },
+  "expected_decision": "ALLOW",
+  "expected_write_executed": false,
+  "expected_dry_run": true
+}

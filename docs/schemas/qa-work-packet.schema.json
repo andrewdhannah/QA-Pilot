@@ -1,0 +1,104 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/andrewdhannah/QA-Pilot/schemas/qa-work-packet.schema.json",
+  "title": "QA Pilot Work Packet",
+  "description": "An authorized work packet created from an approved queue item. This is what an agent receives to perform a governed repair. It contains the diagnostic context, constraints, required validation, and authority boundaries. The work packet is the boundary between detection and action — QA-Pilot produces diagnostics, the Librarian authorizes work packets.",
+  "type": "object",
+  "required": [
+    "packet_id", "queue_item_ref", "status",
+    "failure_context", "constraints", "verification_required",
+    "authority", "provenance"
+  ],
+  "properties": {
+    "packet_id": {
+      "type": "string",
+      "pattern": "^WP-QA-[0-9]{4,}$",
+      "description": "Unique work packet identifier"
+    },
+    "queue_item_ref": {
+      "type": "string",
+      "description": "Source queue item"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["authorized", "in_progress", "completed", "failed", "cancelled"]
+    },
+    "failure_context": {
+      "type": "object",
+      "required": ["expected", "actual"],
+      "properties": {
+        "test_id": { "type": "string" },
+        "domain": { "type": "string" },
+        "expected": { "type": "string" },
+        "actual": { "type": "string" },
+        "reproduction": { "type": "string" },
+        "contract_ref": { "type": "string" },
+        "evidence_refs": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "constraints": {
+      "type": "object",
+      "required": ["must_not_modify", "required_validation"],
+      "properties": {
+        "must_not_modify": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "required_validation": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "verification_required": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Tests that must pass before the packet can be closed"
+    },
+    "authority": {
+      "type": "object",
+      "required": ["authorized_by", "authorized_at", "scope"],
+      "properties": {
+        "authorized_by": { "type": "string" },
+        "authorized_at": { "type": "string", "format": "date-time" },
+        "scope": {
+          "type": "string",
+          "description": "What the agent is authorized to do"
+        },
+        "expires_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "agent_result": {
+      "type": "object",
+      "properties": {
+        "summary": { "type": "string" },
+        "artifacts_changed": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "receipts": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "completed_at": { "type": "string", "format": "date-time" }
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "required": ["advisory", "no_authority_conferred"],
+      "properties": {
+        "advisory": { "type": "boolean", "const": true },
+        "no_authority_conferred": { "type": "boolean", "const": true },
+        "generated_from": { "type": "string" },
+        "authority_granted_by": { "type": "string" }
+      }
+    }
+  },
+  "additionalProperties": false
+}

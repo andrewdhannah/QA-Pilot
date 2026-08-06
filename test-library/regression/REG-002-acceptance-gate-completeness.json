@@ -1,0 +1,37 @@
+{
+  "test_id": "REG-002",
+  "domain": "regression",
+  "title": "Sealed work order acceptance gate verification",
+  "objective": "Verify that sealed work orders have acceptance gates and that those gates are documented with id, description, and pass_criteria.",
+  "source": {
+    "type": "acceptance_gate",
+    "reference": "AG-PREP-1 through AG-PREP-6, AG-COPY-1 through AG-COPY-8",
+    "description": "Every sealed work packet must define acceptance gates with the triple pattern (id, description, pass_criteria)"
+  },
+  "execution": {
+    "type": "contract_check",
+    "criteria": "Each sealed work packet JSON in packets/ has an acceptance_gates array with non-zero length",
+    "expected_outcome": "All sealed packets have acceptance_gates with valid structure"
+  },
+  "pass_criteria": [
+    {
+      "id": "REG-002-A",
+      "description": "All work packet JSONs have acceptance_gates array",
+      "evidence_required": ["packets/wp-*.json files contain acceptance_gates key"]
+    },
+    {
+      "id": "REG-002-B",
+      "description": "Each gate has id, description, and pass_criteria",
+      "evidence_required": ["Gate objects meet schema requirements"]
+    },
+    {
+      "id": "REG-002-C",
+      "description": "All sealed work orders pass their acceptance gates",
+      "evidence_required": ["Seal receipt references passed gates"]
+    }
+  ],
+  "contract_refs": ["qa-workbench-item"],
+  "status": "active",
+  "advisory_only": true,
+  "no_seal_authority": true
+}

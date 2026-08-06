@@ -1,0 +1,35 @@
+{
+  "qa_item_id": "QA-PERF-0004",
+  "title": "Epic regression suite covers 5-layer pipeline correctly",
+  "source": "epic_regression",
+  "status": "resolved_locally",
+  "severity": "low",
+  "category": "performance",
+  "description": "Epic regression suite ERS-001 covers evidence intake (#33), test composition (#34), result export (#35), epic builder (#36), and startup surface (#37). All 13 ER rules pass.",
+  "evidence_refs": [
+    "EPIC-ERS-001",
+    "EPIC-ERS-002"
+  ],
+  "validator_refs": [
+    "ER-1",
+    "ER-2",
+    "ER-3",
+    "ER-4",
+    "ER-5",
+    "ER-6",
+    "ER-7",
+    "ER-8",
+    "ER-9",
+    "ER-10",
+    "ER-11",
+    "ER-12",
+    "ER-13"
+  ],
+  "owner_decision_state": "accepted",
+  "owner_decision_ref": "OD-EPIC-REGRESSION-001",
+  "created_at": "2026-07-07T22:56:00Z",
+  "updated_at": "2026-07-07T22:58:00Z",
+  "advisory_only": true,
+  "custody": "qa-pilot-local",
+  "librarian_impact": "none"
+}

@@ -1,0 +1,30 @@
+{
+  "$schema": "owner-decision-v1",
+  "decision_id": "OD-EPIC-QA-PILOT-I18N-WIRING-1-AUTHORIZATION",
+  "date": "2026-07-09",
+  "owner": "Andrew Hannah",
+  "epic": "EPIC-QA-PILOT-I18N-WIRING-1",
+  "decision": "AUTHORIZE_EPIC_WITH_BOUNDED_CONTINUATION",
+  "basis": "Resolve carried-forward I18N limitation from EPIC-QA-PILOT-DESIGN-QUALITY-REGRESSION-1: the EN/FR toggle changes language state and reloads, but page text remains hardcoded because visible UI strings are not wired through the existing __() translation function. All 8 browser asset pages affected.",
+  "epic_sequence": [
+    {"sprint": "QA-PILOT-I18N-WIRING-BASELINE-1", "purpose": "Inventory all hardcoded visible UI text across 8 pages. Identify translation functions, dictionaries, gaps. Produce page-by-page wiring plan."},
+    {"sprint": "QA-PILOT-I18N-CORE-DICTIONARY-1", "purpose": "Extend/normalize translation dictionary for shared shell, nav, status, footer, labels, recurring text."},
+    {"sprint": "QA-PILOT-I18N-PAGE-WIRING-1", "purpose": "Wire visible static text through __() across all affected pages."},
+    {"sprint": "QA-PILOT-I18N-RERENDER-AND-STATE-1", "purpose": "Verify language switching updates rendered text. Fix reload/rerender if required."},
+    {"sprint": "QA-PILOT-I18N-ROUNDTRIP-VALIDATION-1", "purpose": "Validate EN and FR rendering across all 8 pages. Confirm no regressions. Final report."}
+  ],
+  "bounded_continuation": true,
+  "stop_conditions": {
+    "backend_required": false,
+    "auth_required": false,
+    "install_required": false,
+    "cross_project_write": false,
+    "librarian_mutation": false,
+    "sealed_epic_mutated": false,
+    "scope_exceeded": false
+  },
+  "classification": "epic_authorization_i18n_wiring",
+  "authority": "Owner",
+  "status": "authorized",
+  "authorized_at": "2026-07-09T23:15:00Z"
+}

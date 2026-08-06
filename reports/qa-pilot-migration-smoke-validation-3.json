@@ -1,0 +1,488 @@
+{
+  "$schema": "qa-pilot-migration-smoke-validation-3-v1",
+  "epic": "EPIC-QA-PILOT-OPENWORK-TO-CARBIDEFRAME-MIGRATION-1",
+  "sprint": "QA-PILOT-MIGRATED-APP-SMOKE-VALIDATION-1",
+  "started_at": "2026-07-10T19:28:51.280314+00:00",
+  "finished_at": "2026-07-10T19:28:51.779266+00:00",
+  "approval_token": "apt_331f122e",
+  "destination_root": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app",
+  "method": "static_analysis + read_file_reference_scan",
+  "overall_verdict": "PASS",
+  "flow_summary": {
+    "1. Landing/login/session": {
+      "pages_tested": 4,
+      "pages_exist": 4,
+      "all_well_formed": true,
+      "pass": true
+    },
+    "2. Portal/course catalog": {
+      "pages_tested": 1,
+      "pages_exist": 1,
+      "all_well_formed": true,
+      "pass": true
+    },
+    "3. Course-view/lesson path": {
+      "pages_tested": 3,
+      "pages_exist": 3,
+      "all_well_formed": true,
+      "pass": true
+    },
+    "4. Quiz/progress path": {
+      "pages_tested": 4,
+      "pages_exist": 4,
+      "all_well_formed": true,
+      "pass": true
+    },
+    "5. Certificate path": {
+      "pages_tested": 1,
+      "pages_exist": 1,
+      "all_well_formed": true,
+      "pass": true
+    },
+    "6. Admin suite path": {
+      "pages_tested": 6,
+      "pages_exist": 6,
+      "all_well_formed": true,
+      "pass": true
+    },
+    "7. Desktop OS simulator": {
+      "pages_tested": 3,
+      "pages_exist": 3,
+      "all_well_formed": true,
+      "pass": true
+    },
+    "8. QA module/debug/export/import": {
+      "pages_tested": 5,
+      "pages_exist": 5,
+      "all_well_formed": true,
+      "pass": true
+    },
+    "9. Build/launcher scripts": {
+      "pages_tested": 4,
+      "pages_exist": 4,
+      "all_well_formed": true,
+      "pass": true
+    }
+  },
+  "all_flows_pass": true,
+  "pre_identified_risks": {
+    "total": 7,
+    "still_present": 7,
+    "fixed": 3,
+    "remaining_non_blocking": 4,
+    "remaining_blocking": 0,
+    "details": [
+      {
+        "page": "QASimulator.html",
+        "ref": "../favicon.svg",
+        "still_present": true,
+        "page_exists": true
+      },
+      {
+        "page": "capstone.html",
+        "ref": "../favicon.svg",
+        "still_present": true,
+        "page_exists": true
+      },
+      {
+        "page": "capstone-2.html",
+        "ref": "../favicon.svg",
+        "still_present": true,
+        "page_exists": true
+      },
+      {
+        "page": "certificate.html",
+        "ref": "course.html",
+        "still_present": true,
+        "page_exists": true
+      },
+      {
+        "page": "index.html",
+        "ref": "about.html",
+        "still_present": true,
+        "page_exists": true
+      },
+      {
+        "page": "desktop/index.html",
+        "ref": "os.css",
+        "still_present": true,
+        "page_exists": true
+      },
+      {
+        "page": "desktop/dist.html",
+        "ref": "data/bug-keys.js",
+        "still_present": true,
+        "page_exists": true
+      }
+    ]
+  },
+  "defects_fixed": [
+    {
+      "page": "certificate.html",
+      "old_ref": "href=\"course.html\"",
+      "new_ref": "href=\"course-view.html\"",
+      "occurrences_replaced": 1,
+      "before_sha256": "4aae66693a784b9567ae5be71b3f0f837d03539e36634bfd53995faec931efdd",
+      "after_sha256": "1aea56850df028ef98567744922b8e55529968223c6ef3c7a94a10348d2b2625",
+      "fixed": true
+    },
+    {
+      "page": "desktop/index.html",
+      "old_ref": "href=\"os.css\"",
+      "new_ref": "href=\"../os.css\"",
+      "occurrences_replaced": 1,
+      "before_sha256": "ffe98df56c6a12f259afeb883027d7c39d1440377da205a15b9846b22233bf9e",
+      "after_sha256": "f85671eab3df7dafe5b09007ffbfed59be9b26f512fc64d72afed3a03b98ed54",
+      "fixed": true
+    },
+    {
+      "page": "desktop/dist.html",
+      "old_ref": "src=\"data/bug-keys.js\"",
+      "new_ref": "src=\"../data/bug-keys.js\"",
+      "occurrences_replaced": 1,
+      "before_sha256": "a535b4d79f51067315c6059caf3f4f75f4e204116a4f12b5db065cb4b29fc0e8",
+      "after_sha256": "363df3aae575dddc51467cf1ec7f548b7c7eead07b5e59aac70e8063d0a10ddb",
+      "fixed": true
+    }
+  ],
+  "all_missing_refs": [
+    "index.html -> about.html",
+    "capstone.html -> ../favicon.svg",
+    "capstone-2.html -> ../favicon.svg",
+    "certificate.html -> course.html",
+    "QASimulator.html -> ../favicon.svg",
+    "desktop/index.html -> os.css",
+    "desktop/dist.html -> data/bug-keys.js"
+  ],
+  "discovered_blocking": [
+    "certificate.html -> course.html",
+    "desktop/index.html -> os.css",
+    "desktop/dist.html -> data/bug-keys.js"
+  ],
+  "app_open_check": [
+    {
+      "page": "index.html",
+      "openable": true,
+      "missing_refs": [
+        "about.html"
+      ],
+      "opens_cleanly": false
+    },
+    {
+      "page": "portal.html",
+      "openable": true,
+      "missing_refs": [],
+      "opens_cleanly": true
+    },
+    {
+      "page": "course-view.html",
+      "openable": true,
+      "missing_refs": [],
+      "opens_cleanly": true
+    },
+    {
+      "page": "certificate.html",
+      "openable": true,
+      "missing_refs": [],
+      "opens_cleanly": true
+    }
+  ],
+  "area_results": {
+    "1. Landing/login/session": [
+      {
+        "page": "index.html",
+        "exists": true,
+        "size_bytes": 35678,
+        "well_formed": true,
+        "references_total": 15,
+        "assets_resolved": 14,
+        "assets_missing": [
+          "about.html"
+        ]
+      },
+      {
+        "page": "simple-login.html",
+        "exists": true,
+        "size_bytes": 19491,
+        "well_formed": true,
+        "references_total": 6,
+        "assets_resolved": 6,
+        "assets_missing": []
+      },
+      {
+        "page": "confirm.html",
+        "exists": true,
+        "size_bytes": 5876,
+        "well_formed": true,
+        "references_total": 0,
+        "assets_resolved": 0,
+        "assets_missing": []
+      },
+      {
+        "page": "QA-Pilot-Session.html",
+        "exists": true,
+        "size_bytes": 7826,
+        "well_formed": true,
+        "references_total": 2,
+        "assets_resolved": 2,
+        "assets_missing": []
+      }
+    ],
+    "2. Portal/course catalog": [
+      {
+        "page": "portal.html",
+        "exists": true,
+        "size_bytes": 140665,
+        "well_formed": true,
+        "references_total": 26,
+        "assets_resolved": 21,
+        "assets_missing": []
+      }
+    ],
+    "3. Course-view/lesson path": [
+      {
+        "page": "course-view.html",
+        "exists": true,
+        "size_bytes": 120954,
+        "well_formed": true,
+        "references_total": 11,
+        "assets_resolved": 11,
+        "assets_missing": []
+      },
+      {
+        "page": "guide-facilitator.html",
+        "exists": true,
+        "size_bytes": 16368,
+        "well_formed": true,
+        "references_total": 5,
+        "assets_resolved": 4,
+        "assets_missing": []
+      },
+      {
+        "page": "guide-student.html",
+        "exists": true,
+        "size_bytes": 16191,
+        "well_formed": true,
+        "references_total": 5,
+        "assets_resolved": 4,
+        "assets_missing": []
+      }
+    ],
+    "4. Quiz/progress path": [
+      {
+        "page": "capstone.html",
+        "exists": true,
+        "size_bytes": 841129,
+        "well_formed": true,
+        "references_total": 9,
+        "assets_resolved": 8,
+        "assets_missing": [
+          "../favicon.svg"
+        ]
+      },
+      {
+        "page": "capstone-2.html",
+        "exists": true,
+        "size_bytes": 913815,
+        "well_formed": true,
+        "references_total": 17,
+        "assets_resolved": 16,
+        "assets_missing": [
+          "../favicon.svg"
+        ]
+      },
+      {
+        "page": "capstone-lab.html",
+        "exists": true,
+        "size_bytes": 30299,
+        "well_formed": true,
+        "references_total": 3,
+        "assets_resolved": 3,
+        "assets_missing": []
+      },
+      {
+        "page": "mock.html",
+        "exists": true,
+        "size_bytes": 40963,
+        "well_formed": true,
+        "references_total": 4,
+        "assets_resolved": 0,
+        "assets_missing": []
+      }
+    ],
+    "5. Certificate path": [
+      {
+        "page": "certificate.html",
+        "exists": true,
+        "size_bytes": 52754,
+        "well_formed": true,
+        "references_total": 18,
+        "assets_resolved": 17,
+        "assets_missing": [],
+        "defects_cleared": [
+          "course.html"
+        ]
+      }
+    ],
+    "6. Admin suite path": [
+      {
+        "page": "admin/index.html",
+        "exists": true,
+        "size_bytes": 14868,
+        "well_formed": true,
+        "references_total": 10,
+        "assets_resolved": 10,
+        "assets_missing": []
+      },
+      {
+        "page": "admin/dashboard.html",
+        "exists": true,
+        "size_bytes": 214291,
+        "well_formed": true,
+        "references_total": 14,
+        "assets_resolved": 9,
+        "assets_missing": []
+      },
+      {
+        "page": "admin/bugs.html",
+        "exists": true,
+        "size_bytes": 6375,
+        "well_formed": true,
+        "references_total": 13,
+        "assets_resolved": 13,
+        "assets_missing": []
+      },
+      {
+        "page": "admin/editor.html",
+        "exists": true,
+        "size_bytes": 7694,
+        "well_formed": true,
+        "references_total": 9,
+        "assets_resolved": 9,
+        "assets_missing": []
+      },
+      {
+        "page": "admin/assign.html",
+        "exists": true,
+        "size_bytes": 27988,
+        "well_formed": true,
+        "references_total": 8,
+        "assets_resolved": 8,
+        "assets_missing": []
+      },
+      {
+        "page": "admin/simple.html",
+        "exists": true,
+        "size_bytes": 28930,
+        "well_formed": true,
+        "references_total": 5,
+        "assets_resolved": 5,
+        "assets_missing": []
+      }
+    ],
+    "7. Desktop OS simulator": [
+      {
+        "page": "QASimulator.html",
+        "exists": true,
+        "size_bytes": 813893,
+        "well_formed": true,
+        "references_total": 3,
+        "assets_resolved": 2,
+        "assets_missing": [
+          "../favicon.svg"
+        ]
+      },
+      {
+        "page": "desktop/index.html",
+        "exists": true,
+        "size_bytes": 23428,
+        "well_formed": true,
+        "references_total": 3,
+        "assets_resolved": 3,
+        "assets_missing": [],
+        "defects_cleared": [
+          "os.css"
+        ]
+      },
+      {
+        "page": "desktop/dist.html",
+        "exists": true,
+        "size_bytes": 813703,
+        "well_formed": true,
+        "references_total": 3,
+        "assets_resolved": 3,
+        "assets_missing": [],
+        "defects_cleared": [
+          "data/bug-keys.js"
+        ]
+      }
+    ],
+    "8. QA module/debug/export/import": [
+      {
+        "file": "qa/qa-db.js",
+        "exists": true,
+        "size_bytes": 16458,
+        "lines": 498,
+        "well_formed": true
+      },
+      {
+        "file": "qa/qa-export-json.js",
+        "exists": true,
+        "size_bytes": 6673,
+        "lines": 197,
+        "well_formed": true
+      },
+      {
+        "file": "qa/qa-export-md.js",
+        "exists": true,
+        "size_bytes": 14162,
+        "lines": 424,
+        "well_formed": true
+      },
+      {
+        "file": "qa/qa-import-json.js",
+        "exists": true,
+        "size_bytes": 11067,
+        "lines": 344,
+        "well_formed": true
+      },
+      {
+        "page": "debug/index.html",
+        "exists": true,
+        "size_bytes": 21509,
+        "well_formed": true,
+        "references_total": 15,
+        "assets_resolved": 14,
+        "assets_missing": []
+      }
+    ],
+    "9. Build/launcher scripts": [
+      {
+        "file": "build.sh",
+        "exists": true,
+        "size_bytes": 167,
+        "lines": 5,
+        "well_formed": true
+      },
+      {
+        "file": "build.js",
+        "exists": true,
+        "size_bytes": 15633,
+        "lines": 329,
+        "well_formed": true
+      },
+      {
+        "asset": "launch.command",
+        "exists": true,
+        "size_bytes": 500
+      },
+      {
+        "file": "serve.js",
+        "exists": true,
+        "size_bytes": 3420,
+        "lines": 90,
+        "well_formed": true
+      }
+    ]
+  }
+}

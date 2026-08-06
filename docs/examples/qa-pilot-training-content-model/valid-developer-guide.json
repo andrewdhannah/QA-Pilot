@@ -1,0 +1,39 @@
+{
+  "schema_version": "training-content-v1",
+  "pack_id": "TC-VALID-03",
+  "title": "Developer Guide",
+  "artifact_type": "developer_guide",
+  "intended_audience": "developer",
+  "generated_at": "2026-07-08T22:00:00Z",
+  "content": {
+    "sections": [
+      {
+        "id": "setup",
+        "title": "Development Environment Setup",
+        "body": "Instructions for configuring your local development environment, including dependencies and tooling.",
+        "sources": [
+          "docs/dev/setup.md",
+          "docs/dev/toolchain.md"
+        ]
+      }
+    ]
+  },
+  "provenance": {
+    "librarian_sources": [
+      {
+        "path": "docs/dev/setup.md",
+        "revision": "ghi789"
+      }
+    ],
+    "generator": "qa-pilot-content-model-test",
+    "generator_version": "1.0.0",
+    "source_hash": "3aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+  },
+  "governance": {
+    "authority_posture": "advisory",
+    "owner_decision_required_for_publish": true,
+    "validation_status": "draft",
+    "source_coverage_pct": 85,
+    "ownership_state": "owned_by_librarian"
+  }
+}

@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QA Pilot Academy — Admin</title>
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+  <link rel="stylesheet" href="../css/main.css">
+  <style>
+    /* ── Layout ─────────────────────────────────────────── */
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: var(--space-4) var(--space-6);
+      background: linear-gradient(90deg, #ffffff 0%, #f9fafb 100%);
+      border-bottom: 2px solid #e5e7eb;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    }
+    .topbar-brand {
+      font-size: var(--text-base);
+      font-weight: var(--weight-bold);
+      color: var(--color-ink);
+    }
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: var(--space-4);
+      font-size: var(--text-sm);
+      color: var(--color-ink-muted);
+    }
+    .main-content { max-width: 1100px; margin: var(--space-10) auto; padding: 0 var(--space-6); }
+
+    /* ── Course Selector ─────────────────────────────────── */
+    .selector-bar { display: flex; align-items: center; gap: var(--space-4); margin-bottom: var(--space-8); padding: var(--space-4); background: #f9fafb; border: 2px solid #e5e7eb; border-radius: 8px; }
+    .selector-bar label { font-weight: 600; font-size: var(--text-sm); white-space: nowrap; color: #1f2937; }
+    .selector-bar select { min-width: 280px; padding: var(--space-2) var(--space-3); border: 2px solid #e5e7eb; border-radius: 6px; font-size: var(--text-base); background: white; }
+
+    /* ── Student Table ───────────────────────────────────── */
+    .student-table { width: 100%; border-collapse: collapse; background: white; border: 2px solid #e5e7eb; border-radius: 8px; overflow: hidden; }
+    .student-table th, .student-table td { text-align: left; padding: var(--space-3) var(--space-4); border-bottom: 1px solid #e5e7eb; font-size: var(--text-sm); }
+    .student-table th { background: #f9fafb; font-size: var(--text-xs); text-transform: uppercase; color: #6b7280; font-weight: 600; }
+    .student-table tr:last-child td { border-bottom: none; }
+
+    .enrolled-badge { display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; border-radius: var(--radius-sm); font-size: var(--text-xs); font-weight: var(--weight-bold); }
+    .enrolled-badge.yes { background: #d1fae5; color: #065f46; }
+    .enrolled-badge.no  { background: #fee2e2; color: #991b1b; }
+
+    .progress-bar-bg { width: 80px; height: 6px; background: var(--color-border); border-radius: 3px; overflow: hidden; display: inline-block; vertical-align: middle; margin-right: 6px; }
+    .progress-bar-fill { height: 100%; background: var(--color-primary); border-radius: 3px; transition: width 0.3s; }
+
+    .module-tag { display: inline-block; padding: 1px 6px; border-radius: var(--radius-sm); font-size: 10px; margin: 1px 2px; background: var(--color-bg); border: 1px solid var(--color-border); }
+    .module-tag.restricted { border-color: var(--color-warning); color: #92400e; background: #fffbeb; }
+    .module-tag.full { border-color: var(--color-success); color: #065f46; background: #d1fae5; }
+
+    /* ── Assignment Panel (modal) ────────────────────────── */
+    #assignment-panel { display: none; position: fixed; top: 0; right: 0; bottom: 0; left: 0; background: rgba(0,0,0,0.5); z-index: 100; align-items: center; justify-content: center; }
+    .panel-card { background: var(--color-surface); width: 580px; max-height: 80vh; overflow-y: auto; border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); padding: var(--space-8); }
+
+    .panel-header { margin-bottom: var(--space-6); }
+    .panel-header h2 { font-size: var(--text-lg); font-weight: var(--weight-bold); margin: 0 0 var(--space-1); }
+    .panel-header .subtitle { font-size: var(--text-sm); color: var(--color-ink-muted); }
+
+    .enrollment-status-bar { display: flex; align-items: center; justify-content: space-between; padding: var(--space-3) var(--space-4); background: var(--color-bg); border-radius: var(--radius-md); margin-bottom: var(--space-6); }
+    .status-label { font-size: var(--text-sm); font-weight: var(--weight-bold); }
+    .status-value { font-size: var(--text-sm); }
+    .status-value.active { color: var(--color-success); }
+    .status-value.completed { color: var(--color-primary); }
+    .status-value.none { color: var(--color-ink-muted); }
+
+    .module-group { margin-bottom: var(--space-5); }
+    .module-group h3 { font-size: var(--text-sm); font-weight: var(--weight-bold); margin: 0 0 var(--space-2); padding-bottom: var(--space-1); border-bottom: 1px solid var(--color-border); }
+    .checkbox-item { display: flex; align-items: center; gap: var(--space-3); cursor: pointer; font-size: var(--text-sm); padding: var(--space-1) 0; }
+    .checkbox-item input { width: 16px; height: 16px; }
+    .checkbox-item .module-order { display: inline-block; width: 22px; height: 22px; line-height: 22px; text-align: center; border-radius: 50%; background: var(--color-bg); font-size: 11px; font-weight: var(--weight-bold); color: var(--color-ink-muted); flex-shrink: 0; }
+    .checkbox-item .sub-label { color: var(--color-ink-muted); font-size: 10px; margin-left: auto; }
+
+    .panel-footer { display: flex; justify-content: flex-end; gap: var(--space-3); margin-top: var(--space-8); padding-top: var(--space-4); border-top: 1px solid var(--color-border); }
+
+    /* ── Toast ───────────────────────────────────────────── */
+    .toast { position: fixed; bottom: var(--space-8); right: var(--space-8); padding: var(--space-3) var(--space-6); border-radius: var(--radius-md); font-size: var(--text-sm); font-weight: var(--weight-bold); box-shadow: var(--shadow-lg); z-index: 200; display: none; }
+    .toast.success { background: #d1fae5; color: #065f46; border: 1px solid #a7f3d0; }
+    .toast.error   { background: #fee2e2; color: #991b1b; border: 1px solid #fecaca; }
+    .toast.info    { background: #dbeafe; color: #1e40af; border: 1px solid #bfdbfe; }
+
+    /* ── Empty state ─────────────────────────────────────── */
+    .empty-state { text-align: center; padding: var(--space-16) var(--space-6); color: var(--color-ink-muted); }
+    .empty-state p { margin: var(--space-2) 0; }
+  </style>
+</head>
+<body>
+
+  <!-- ═══ Topbar ═══ -->
+  <header class="topbar">
+    <div class="topbar-left">
+      <span class="topbar-brand">QA Pilot Academy — Admin</span>
+    </div>
+    <div class="topbar-right">
+      <div id="lang-toggle-container"></div>
+      <span class="text-sm" style="color: var(--color-ink-muted);">Administrator</span>
+      <a href="../index.html" class="btn btn-ghost text-xs" onclick="handleAdminLogout(); return false;">Sign Out</a>
+    </div>
+  </header>
+
+  <!-- ═══ Main Content ═══ -->
+  <main class="main-content">
+
+    <!-- Course Selector -->
+    <div class="selector-bar">
+      <label for="course-select">Course:</label>
+      <select id="course-select" onchange="onCourseChange()">
+        <option value="">— Select a course —</option>
+      </select>
+      <span id="course-description" class="text-sm text-muted"></span>
+    </div>
+
+    <!-- Table -->
+    <h1 class="text-xl font-bold mb-4">Student Enrollments</h1>
+    <table class="student-table">
+      <thead>
+        <tr>
+          <th>Student</th>
+          <th>Case ID</th>
+          <th>Enrolled</th>
+          <th>Progress</th>
+          <th>Modules</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody id="student-list-body">
+        <tr><td colspan="6" class="empty-state"><p>Select a course above to see enrolled students.</p></td></tr>
+      </tbody>
+    </table>
+  </main>
+
+  <!-- ═══ Assignment Panel (modal) ═══ -->
+  <div id="assignment-panel">
+    <div class="panel-card">
+      <div class="panel-header">
+        <h2 id="panel-title">Assign Modules</h2>
+        <p class="subtitle" id="panel-subtitle">Select which modules this student can access.</p>
+      </div>
+
+      <!-- Enrollment status bar -->
+      <div class="enrollment-status-bar">
+        <span class="status-label">Enrollment Status:</span>
+        <span id="enrollment-status-value" class="status-value none">Not Enrolled</span>
+        <button id="btn-toggle-enroll" class="btn btn-secondary text-xs" onclick="handleToggleEnroll()">Enroll</button>
+      </div>
+
+      <!-- Module checkboxes -->
+      <div id="module-checkboxes">
+        <p class="text-sm text-muted">Enroll the student to assign modules.</p>
+      </div>
+
+      <div class="panel-footer">
+        <button class="btn btn-ghost" onclick="closePanel()">Cancel</button>
+        <button class="btn btn-secondary text-sm" id="btn-reset-modules" onclick="handleResetModules()">Reset to All Modules</button>
+        <button class="btn btn-primary text-sm" id="btn-save-assignment" onclick="handleSave()">Save Assignment</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ Toast ═══ -->
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <!-- ═══ Scripts ═══ -->
+  <script src="../js/i18n.js"></script>
+  <script src="../js/lang-en.js"></script>
+  <script src="../js/lang-fr.js"></script>
+  <script src="../data/content.js"></script>
+  <script src="../data/quiz-questions.js"></script>
+  <script src="../js/db.js"></script>
+  <script src="../js/app.js"></script>
+
+  <script>
+    /**
+     * admin/assign.html — Multi-Course Enrollment & Module Assignment
+     * ===============================================================
+     *
+     * WHAT THIS PAGE DOES:
+     * - Lets Admin select a course, then view/manage student enrollments.
+     * - For each enrolled student, Admin can restrict which modules are
+     *   accessible (unchecked modules are hidden from the student).
+     * - Syncs to IndexedDB via the enrollments store (assignedModules field).
+     *
+     * DATA MODEL:
+     * - Enrollment record has an optional `assignedModules` array (moduleIds).
+     * - If null/undefined/empty → student has access to ALL modules.
+     * - If populated → only those specific modules are accessible.
+     * - course-view.html reads this field to filter the sidebar.
+     *
+     * FLOW:
+     * 1. initDB() + requireAdmin() verify access.
+     * 2. loadCourses() populates the course dropdown from COURSE_DEFINITIONS.
+     * 3. onCourseChange() → loadStudentTable() renders all students with
+     *    enrollment status, progress, and module count for selected course.
+     * 4. openPanel() builds module checkboxes from the course definition.
+     * 5. handleSave() writes assignedModules to the enrollment record.
+     */
+
+    // ── SECTION 1: STATE ──────────────────────────────────────────────────────
+
+    var activeStudent = null;          // Current student in the panel
+    var selectedCourseId = '';         // Currently selected course ID
+    var selectedCourseDef = null;      // COURSE_DEFINITIONS entry for selected course
+
+    // ── SECTION 2: INIT ───────────────────────────────────────────────────────
+
+    // Initialise i18n (language) before anything else
+    initI18n();
+
+    // Render the language toggle
+    renderLangToggle('lang-toggle-container');
+
+    // Translate admin assign page static strings
+    function translateAssignPage() {
+      // Table heading
+      var el = document.querySelector('h1.text-xl.font-bold.mb-4');
+      if (el) el.textContent = __('admin_assign_enrollments');
+
+      // Table headers
+      var ths = document.querySelectorAll('.student-table th');
+      if (ths.length >= 6) {
+        ths[0].textContent = __('admin_onboarding_students');  // "Students"
+        ths[1].textContent = __('admin_assign_case_id');
+        ths[2].textContent = __('admin_assign_enrolled');
+        ths[3].textContent = __('portal_progress');            // "Progress"
+        ths[4].textContent = __('portal_modules');             // "Modules"
+        ths[5].textContent = __('admin_assign_action');
+      }
+
+      // Panel
+      el = document.getElementById('panel-title');
+      if (el) el.textContent = __('admin_assign_title');
+
+      // Enrollment status
+      el = document.querySelector('.status-label');
+      if (el) el.textContent = __('admin_assign_enrolled') + ':';
+
+      // Buttons
+      el = document.getElementById('btn-toggle-enroll');
+      if (el) el.textContent = __('admin_assign_enrolled');
+      el = document.getElementById('btn-reset-modules');
+      if (el) el.textContent = __('admin_assign_reset');
+      el = document.getElementById('btn-save-assignment');
+      if (el) el.textContent = __('admin_assign_save');
+
+      // Cancel button
+      var cancelBtns = document.querySelectorAll('.panel-footer .btn-ghost');
+      cancelBtns.forEach(function(btn) {
+        if (btn.textContent.includes('Cancel')) {
+          btn.textContent = __('admin_general_cancel');
+        }
+      });
+
+      // Topbar
+      el = document.querySelector('.topbar-right .text-sm');
+      if (el) el.textContent = __('admin_topbar_role');
+      el = document.querySelector('.topbar-right .btn-ghost');
+      if (el) el.textContent = __('admin_topbar_sign_out');
+    }
+    translateAssignPage();
+
+    initDB().then(function() {
+      if (!requireAdmin()) return;
+      loadCourses();
+    });
+
+    // ── SECTION 3: COURSE SELECTOR ────────────────────────────────────────────
+
+    /**
+     * loadCourses()
+     * Populates the course dropdown from COURSE_DEFINITIONS (active courses only).
+     * Also seeds any new courses into IndexedDB via seedCourses().
+     */
+    async function loadCourses() {
+      await seedCourses();
+
+      var select = document.getElementById('course-select');
+      select.innerHTML = '<option value="">— Select a course —</option>';
+
+      var courses = typeof COURSE_DEFINITIONS !== 'undefined' ? COURSE_DEFINITIONS : [];
+
+      // Also fetch from IndexedDB in case admin created custom courses
+      var dbCourses = await getAllCourses();
+      if (dbCourses && dbCourses.length > 0) {
+        courses = dbCourses;
+      }
+
+      courses.forEach(function(c) {
+        if (c.isActive === false) return;  // Skip inactive courses
+        var opt = document.createElement('option');
+        opt.value = c.courseId;
+        opt.textContent = c.title;
+        select.appendChild(opt);
+      });
+    }
+
+    /**
+     * onCourseChange()
+     * Called when the admin selects a different course.
+     * Reloads the student table for the selected course.
+     */
+    function onCourseChange() {
+      var select = document.getElementById('course-select');
+      selectedCourseId = select.value;
+
+      var desc = document.getElementById('course-description');
+      selectedCourseDef = null;
+
+      if (!selectedCourseId) {
+        desc.textContent = '';
+        renderEmptyTable('Select a course above to see enrolled students.');
+        return;
+      }
+
+      // Find the course definition
+      var courses = typeof COURSE_DEFINITIONS !== 'undefined' ? COURSE_DEFINITIONS : [];
+      for (var i = 0; i < courses.length; i++) {
+        if (courses[i].courseId === selectedCourseId) {
+          selectedCourseDef = courses[i];
+          break;
+        }
+      }
+
+      if (selectedCourseDef) {
+        desc.textContent = selectedCourseDef.description || '';
+      }
+
+      loadStudentTable();
+    }
+
+    // ── SECTION 4: STUDENT TABLE ──────────────────────────────────────────────
+
+    /**
+     * loadStudentTable()
+     * Fetches all students and their enrollment status for the selected course.
+     * Renders a row per student with enrollment badge, progress, and module info.
+     */
+    async function loadStudentTable() {
+      if (!selectedCourseId) {
+        renderEmptyTable('Select a course above to see enrolled students.');
+        return;
+      }
+
+      var students = await getAllStudents();
+      var allEnrollments = await getAllEnrollments();
+      var courseId = selectedCourseId;
+
+      // Filter enrollments for this course
+      var courseEnrollments = {};
+      allEnrollments.forEach(function(e) {
+        if (e.courseId === courseId) {
+          courseEnrollments[e.caseId] = e;
+        }
+      });
+
+      var body = document.getElementById('student-list-body');
+      body.innerHTML = '';
+
+      if (!students || students.length === 0) {
+        renderEmptyTable('No students registered yet. Add students from the admin dashboard.');
+        return;
+      }
+
+      // Batch-read progress for speed
+      var progressCache = {};
+      for (var si = 0; si < students.length; si++) {
+        var p = await getProgress(students[si].caseId);
+        if (p) progressCache[students[si].caseId] = p;
+      }
+
+      students.forEach(function(student) {
+        var enrollment = courseEnrollments[student.caseId] || null;
+        var isEnrolled = enrollment && enrollment.status !== 'dropped';
+        var courseProgress = null;
+        if (isEnrolled && progressCache[student.caseId] && progressCache[student.caseId].courses) {
+          courseProgress = progressCache[student.caseId].courses[courseId] || null;
+        }
+
+        var row = document.createElement('tr');
+
+        // Enrolled badge
+        var enrolledHtml = isEnrolled
+          ? '<span class="enrolled-badge yes">✅ Enrolled</span>'
+          : '<span class="enrolled-badge no">— Not enrolled</span>';
+
+        // Progress
+        var progressHtml = '—';
+        if (courseProgress && selectedCourseDef && selectedCourseDef.modules) {
+          var completed = (courseProgress.modulesComplete || []).length;
+          var total = selectedCourseDef.modules.length;
+          var pct = total > 0 ? Math.round((completed / total) * 100) : 0;
+          progressHtml = '<span class="progress-bar-bg"><span class="progress-bar-fill" style="width:' + pct + '%"></span></span>'
+            + '<span class="text-xs">' + completed + '/' + total + '</span>';
+        }
+
+        // Modules assigned
+        var modulesHtml = '—';
+        if (isEnrolled && selectedCourseDef && selectedCourseDef.modules) {
+          var assigned = enrollment.assignedModules;
+          if (assigned && Array.isArray(assigned) && assigned.length > 0) {
+            modulesHtml = assigned.map(function(mId) {
+              var m = findModule(selectedCourseDef, mId);
+              var label = m ? m.title : mId;
+              return '<span class="module-tag restricted">' + label + '</span>';
+            }).join('');
+          } else {
+            var totalMods = selectedCourseDef.modules.length;
+            modulesHtml = '<span class="module-tag full">All ' + totalMods + ' modules</span>';
+          }
+        }
+
+        row.innerHTML = [
+          '<td><span class="font-medium">' + escapeHtml(student.name) + '</span></td>',
+          '<td class="text-sm font-mono">' + escapeHtml(student.caseId) + '</td>',
+          '<td>' + enrolledHtml + '</td>',
+          '<td>' + progressHtml + '</td>',
+          '<td style="max-width:200px;">' + modulesHtml + '</td>',
+          '<td><button class="btn btn-secondary text-xs" onclick="openPanel(\'' + student.caseId + '\')">' + (isEnrolled ? 'Edit' : 'Enroll') + '</button></td>'
+        ].join('');
+
+        body.appendChild(row);
+      });
+    }
+
+    function renderEmptyTable(msg) {
+      var body = document.getElementById('student-list-body');
+      body.innerHTML = '<tr><td colspan="6" class="empty-state"><p>' + escapeHtml(msg) + '</p></td></tr>';
+    }
+
+    // ── SECTION 5: PANEL ──────────────────────────────────────────────────────
+
+    /**
+     * openPanel(caseId)
+     * Opens the assignment modal for a specific student in the selected course.
+     * Shows enrollment status and module checkboxes.
+     */
+    async function openPanel(caseId) {
+      activeStudent = await getStudent(caseId);
+      if (!activeStudent) {
+        showToast('Student not found.', 'error');
+        return;
+      }
+      if (!selectedCourseDef) {
+        showToast('Select a course first.', 'error');
+        return;
+      }
+
+      var enrollment = await getEnrollment(caseId, selectedCourseId);
+
+      // Panel header
+      document.getElementById('panel-title').textContent = selectedCourseDef.title;
+      document.getElementById('panel-subtitle').textContent = 'Assign modules for: ' + activeStudent.name + ' (' + activeStudent.caseId + ')';
+
+      // Enrollment status bar
+      var statusValue = document.getElementById('enrollment-status-value');
+      var toggleBtn = document.getElementById('btn-toggle-enroll');
+      if (enrollment && enrollment.status !== 'dropped') {
+        statusValue.textContent = enrollment.status === 'completed' ? 'Completed' : 'Active';
+        statusValue.className = 'status-value ' + (enrollment.status === 'completed' ? 'completed' : 'active');
+        toggleBtn.textContent = 'Unenroll';
+        toggleBtn.className = 'btn btn-danger text-xs';
+      } else {
+        statusValue.textContent = 'Not Enrolled';
+        statusValue.className = 'status-value none';
+        toggleBtn.textContent = 'Enroll in Course';
+        toggleBtn.className = 'btn btn-secondary text-xs';
+      }
+
+      // Build module checkboxes
+      var container = document.getElementById('module-checkboxes');
+      container.innerHTML = '';
+
+      if (!enrollment || enrollment.status === 'dropped') {
+        container.innerHTML = '<p class="text-sm text-muted">Enroll this student in the course to assign specific modules.</p>';
+      } else {
+        // Figure out which modules are assigned
+        var assignedModules = enrollment.assignedModules;
+        if (!assignedModules || !Array.isArray(assignedModules) || assignedModules.length === 0) {
+          // Not restricted → all modules assigned
+          assignedModules = selectedCourseDef.modules.map(function(m) { return m.moduleId; });
+        }
+
+        selectedCourseDef.modules.forEach(function(mod) {
+          var group = document.createElement('div');
+          group.className = 'module-group';
+
+          var moduleChecked = assignedModules.indexOf(mod.moduleId) !== -1;
+          var subCount = (mod.subModules || []).length;
+
+          group.innerHTML = [
+            '<h3>',
+            '<label class="checkbox-item" style="font-weight:var(--weight-bold);padding:var(--space-2) 0;">',
+            '<input type="checkbox" class="module-master-cb" value="' + mod.moduleId + '" ' + (moduleChecked ? 'checked' : '') + ' onchange="onModuleMasterChange(this)">',
+            '<span class="module-order" style="background:var(--color-primary);color:white;">' + mod.order + '</span>',
+            '<span>' + escapeHtml(mod.title) + '</span>',
+            '<span class="sub-label">' + subCount + ' sub-module' + (subCount !== 1 ? 's' : '') + '</span>',
+            '</label>',
+            '</h3>'
+          ].join('');
+
+          // Sub-module list (informational, not individually selectable)
+          if (mod.subModules && mod.subModules.length > 0) {
+            var subList = document.createElement('div');
+            subList.style.paddingLeft = '36px';
+            subList.style.marginBottom = 'var(--space-2)';
+            mod.subModules.forEach(function(sub) {
+              var subEl = document.createElement('div');
+              subEl.style.cssText = 'font-size:var(--text-xs);color:var(--color-ink-muted);padding:2px 0;';
+              var icons = { reading: '📖', quiz: '📝', exercise: '🔧', 'final-exam': '🎓' };
+              subEl.textContent = (icons[sub.type] || '📄') + ' ' + sub.title + ' (' + sub.estimatedMins + ' min)';
+              subList.appendChild(subEl);
+            });
+            group.appendChild(subList);
+          }
+
+          container.appendChild(group);
+        });
+
+        // Re-check master checkboxes against individual state (all children checked = master checked)
+        updateAllMasterCheckboxes();
+      }
+
+      document.getElementById('assignment-panel').style.display = 'flex';
+    }
+
+    /**
+     * onModuleMasterChange(cb)
+     * When a module-level master checkbox is toggled, sync its visual state.
+     * (Sub-modules follow the module; they're informational here.)
+     */
+    function onModuleMasterChange(cb) {
+      // Visual feedback only — individual sub-modules follow the module checkbox
+    }
+
+    /**
+     * updateAllMasterCheckboxes()
+     * Ensures all master module checkboxes reflect the correct state.
+     * Called after initial rendering.
+     */
+    function updateAllMasterCheckboxes() {
+      // Nothing extra needed — master Cbs are rendered with correct initial state
+    }
+
+    function closePanel() {
+      document.getElementById('assignment-panel').style.display = 'none';
+      activeStudent = null;
+    }
+
+    // ── SECTION 6: ENROLLMENT ACTIONS ─────────────────────────────────────────
+
+    /**
+     * handleToggleEnroll()
+     * Enrolls or unenrolls the active student from the selected course.
+     */
+    async function handleToggleEnroll() {
+      if (!activeStudent || !selectedCourseId) return;
+
+      var enrollment = await getEnrollment(activeStudent.caseId, selectedCourseId);
+
+      if (enrollment && enrollment.status !== 'dropped') {
+        // Unenroll
+        if (!confirm('Remove ' + activeStudent.name + ' from "' + selectedCourseDef.title + '"?\nTheir progress for this course will be cleared.')) {
+          return;
+        }
+        await unenrollStudent(activeStudent.caseId, selectedCourseId);
+        showToast(activeStudent.name + ' unenrolled from ' + selectedCourseDef.title + '.', 'info');
+      } else {
+        // Enroll
+        await enrollStudent(activeStudent.caseId, selectedCourseId);
+        showToast(activeStudent.name + ' enrolled in ' + selectedCourseDef.title + '.', 'success');
+      }
+
+      closePanel();
+      loadStudentTable();
+    }
+
+    /**
+     * handleSave()
+     * Saves the module assignment for the active student.
+     */
+    async function handleSave() {
+      if (!activeStudent || !selectedCourseId || !selectedCourseDef) return;
+
+      var enrollment = await getEnrollment(activeStudent.caseId, selectedCourseId);
+      if (!enrollment || enrollment.status === 'dropped') {
+        showToast('Student is not enrolled in this course. Enroll them first.', 'error');
+        return;
+      }
+
+      // Collect checked module IDs
+      var masterCbs = document.querySelectorAll('.module-master-cb:checked');
+      var assignedModules = Array.from(masterCbs).map(function(cb) { return cb.value; });
+
+      if (assignedModules.length === 0) {
+        showToast('Select at least one module, or unenroll the student.', 'error');
+        return;
+      }
+
+      // If all modules are selected, store null (full access)
+      var allModuleIds = selectedCourseDef.modules.map(function(m) { return m.moduleId; });
+      var isFullAccess = (assignedModules.length === allModuleIds.length);
+
+      await saveEnrollmentModules(activeStudent.caseId, selectedCourseId, isFullAccess ? null : assignedModules);
+      showToast('Assignment saved for ' + activeStudent.name + '.', 'success');
+      closePanel();
+      loadStudentTable();
+    }
+
+    /**
+     * handleResetModules()
+     * Resets the student to full access (all modules).
+     */
+    async function handleResetModules() {
+      if (!activeStudent || !selectedCourseId) return;
+
+      var enrollment = await getEnrollment(activeStudent.caseId, selectedCourseId);
+      if (!enrollment || enrollment.status === 'dropped') {
+        showToast('Student is not enrolled in this course.', 'error');
+        return;
+      }
+
+      await saveEnrollmentModules(activeStudent.caseId, selectedCourseId, null);
+      showToast(activeStudent.name + ' now has access to all modules.', 'success');
+      closePanel();
+      loadStudentTable();
+    }
+
+    // ── SECTION 7: HELPERS ────────────────────────────────────────────────────
+
+    /**
+     * findModule(courseDef, moduleId)
+     * Returns the module object from a course definition, or null.
+     */
+    function findModule(courseDef, moduleId) {
+      if (!courseDef || !courseDef.modules) return null;
+      for (var i = 0; i < courseDef.modules.length; i++) {
+        if (courseDef.modules[i].moduleId === moduleId) return courseDef.modules[i];
+      }
+      return null;
+    }
+
+    /**
+     * escapeHtml(str)
+     * Prevents XSS when rendering user-provided data.
+     */
+    function escapeHtml(str) {
+      if (typeof str !== 'string') return String(str || '');
+      return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+
+    /**
+     * showToast(msg, type)
+     * Displays a temporary toast notification.
+     */
+    function showToast(msg, type) {
+      var el = document.getElementById('toast');
+      el.textContent = msg;
+      el.className = 'toast ' + (type || 'info');
+      el.style.display = 'block';
+      clearTimeout(el._timer);
+      el._timer = setTimeout(function() { el.style.display = 'none'; }, 3000);
+    }
+
+    function handleAdminLogout() {
+      sessionStorage.removeItem('qa_admin');
+      window.location.href = '../index.html';
+    }
+  </script>
+</body>
+</html>

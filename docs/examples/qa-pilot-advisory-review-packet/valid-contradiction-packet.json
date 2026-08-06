@@ -1,0 +1,35 @@
+{
+  "packet_id": "ARP-CONTRADICTION-001",
+  "sprint_id": "QA-PILOT-HYPOTHETICAL-CONTRADICT-1",
+  "ledger_number": 64,
+  "prior_sealed_head": "#63 hypothetical",
+  "claimed_posture": "Contradictory packet.",
+  "completion_summary": "Ledger says #64 but SRS says stale at #60, creating a contradiction that should be flagged.",
+  "posture_sections": {
+    "sealed_head": "#64 HYPOTHETICAL-CONTRADICTION",
+    "sealed_number": 64,
+    "registry_layer_count": 28,
+    "registry_classification": "degraded",
+    "rcr_receipts_found": 12,
+    "rcr_status": "degraded",
+    "rcg_coverage_gap": 4,
+    "rcg_status": "fail",
+    "srs_captured_at": 60,
+    "srs_current": false
+  },
+  "validator_results": [
+    {"validator": "startup_surface_validate", "status": "pass", "summary": "ALL CHECKS PASS"},
+    {"validator": "SRS_snapshot", "status": "fail", "summary": "SRS at #60 vs ledger #64 contradiction"},
+    {"validator": "SUG_update_gate", "status": "degraded", "summary": "update needed due to SRS/ledger gap"},
+    {"validator": "RCR", "status": "degraded", "summary": "gap=4"},
+    {"validator": "RCG_closeout_gate", "status": "fail", "summary": "gap=4"},
+    {"validator": "PLR_registry", "status": "pass", "summary": "registry layers correct"},
+    {"validator": "MG_loop_guard", "status": "pass", "summary": "no MCP loop issues"}
+  ],
+  "librarian_impact": "none",
+  "pending_owner_decision": "unknown",
+  "advisory_only": true,
+  "defines_new_authority": false,
+  "mode_owner": "librarian",
+  "created_at": "2026-07-07T22:33:00Z"
+}

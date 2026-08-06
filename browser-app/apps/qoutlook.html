@@ -1,0 +1,1282 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>QOutlook — Mail</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+      font-size: 13px;
+      background: #fff;
+      color: #1a1a1a;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      user-select: none;
+    }
+
+    /* ── ROOT VARS ─────────────────────────────────────────── */
+    :root {
+      --ol-accent: #0078d4;
+      --ol-accent-hover: #106ebe;
+      --ol-bg-nav: #f3f2f1;
+      --ol-bg-folders: #faf9f8;
+      --ol-bg-list: #fff;
+      --ol-bg-reading: #fff;
+      --ol-border: #e1dfdd;
+      --ol-border-light: #edebe9;
+      --ol-text: #1a1a1a;
+      --ol-text-muted: #605e5c;
+      --ol-text-dim: #a19f9d;
+      --ol-text-on-accent: #fff;
+      --ol-hover: #e1dfdd;
+      --ol-selected: #deecf9;
+      --ol-ribbon-bg: #f8f8f8;
+      --ol-ribbon-tab-active: #fff;
+    }
+
+    /* ── RIBBON ────────────────────────────────────────────── */
+    .ol-ribbon {
+      flex-shrink: 0;
+      background: var(--ol-ribbon-bg);
+      border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: var(--ol-border);
+    }
+    .ol-ribbon-tabs {
+      display: flex;
+      align-items: center;
+      padding: 0 6px;
+      height: 30px;
+      gap: 0;
+    }
+    .ol-ribbon-tab {
+      padding: 5px 12px;
+      font-size: 12px;
+      color: var(--ol-text-muted);
+      cursor: default;
+      border: 1px solid transparent;
+      border-bottom: none;
+      margin-bottom: -1px;
+      border-radius: 3px 3px 0 0;
+    }
+    .ol-ribbon-tab.active {
+      color: var(--ol-text);
+      background: var(--ol-ribbon-tab-active);
+      border-color: var(--ol-border);
+      font-weight: 500;
+    }
+    .ol-ribbon-toolbar {
+      display: flex;
+      align-items: center;
+      height: 40px;
+      padding: 0 8px;
+      gap: 2px;
+      background: var(--ol-ribbon-tab-active);
+      border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: var(--ol-border);
+    }
+    .ol-ribbon-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 48px;
+      height: 36px;
+      border: none;
+      background: transparent;
+      border-radius: 4px;
+      cursor: pointer;
+      color: var(--ol-text);
+      font-size: 10px;
+      gap: 2px;
+      padding: 2px 0;
+      transition: background 0.1s;
+    }
+    .ol-ribbon-btn:hover { background: var(--ol-hover); }
+    .ol-ribbon-btn:active { background: #cecece; }
+    .ol-ribbon-btn svg { width: 18px; height: 18px; fill: currentColor; }
+    .ol-ribbon-btn span { line-height: 1; }
+    .ol-ribbon-sep {
+      width: 1px;
+      height: 24px;
+      background: var(--ol-border);
+      margin: 0 6px;
+      flex-shrink: 0;
+    }
+    .ol-ribbon-search {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+    }
+    .ol-ribbon-search input {
+      width: 220px;
+      height: 26px;
+      border-width: 1px; border-style: solid; border-color: var(--ol-border);
+      border-radius: 3px;
+      padding: 0 8px;
+      font-size: 12px;
+      font-family: inherit;
+      outline: none;
+      background: #fff;
+    }
+    .ol-ribbon-search input:focus {
+      border-color: var(--ol-accent);
+    }
+
+    /* ── MAIN BODY ─────────────────────────────────────────── */
+    .ol-body {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    /* ── NAV RAIL ──────────────────────────────────────────── */
+    .ol-nav-rail {
+      width: 48px;
+      min-width: 48px;
+      background: var(--ol-bg-nav);
+      border-right-width: 1px; border-right-style: solid; border-right-color: var(--ol-border);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 8px 0;
+      gap: 4px;
+    }
+    .ol-nav-btn {
+      width: 36px;
+      height: 36px;
+      border: none;
+      background: transparent;
+      border-radius: 4px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--ol-text-muted);
+      transition: background 0.1s;
+      position: relative;
+    }
+    .ol-nav-btn svg { width: 20px; height: 20px; fill: currentColor; }
+    .ol-nav-btn:hover { background: var(--ol-hover); color: var(--ol-text); }
+    .ol-nav-btn.active {
+      background: var(--ol-selected);
+      color: var(--ol-accent);
+    }
+    .ol-nav-btn.active::before {
+      content: '';
+      position: absolute;
+      left: -10px;
+      top: 6px;
+      bottom: 6px;
+      width: 3px;
+      background: var(--ol-accent);
+      border-radius: 0 2px 2px 0;
+    }
+
+    /* ── FOLDER PANE ───────────────────────────────────────── */
+    .ol-folders {
+      width: 180px;
+      min-width: 180px;
+      background: var(--ol-bg-folders);
+      border-right-width: 1px; border-right-style: solid; border-right-color: var(--ol-border);
+      overflow-y: auto;
+      padding: 8px 0;
+    }
+    .ol-folder-section {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--ol-text-dim);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      padding: 8px 16px 4px;
+    }
+    .ol-folder {
+      display: flex;
+      align-items: center;
+      padding: 5px 16px;
+      font-size: 13px;
+      color: var(--ol-text);
+      cursor: pointer;
+      gap: 8px;
+      transition: background 0.1s;
+    }
+    .ol-folder:hover { background: var(--ol-hover); }
+    .ol-folder.active { background: var(--ol-selected); font-weight: 600; }
+    .ol-folder-icon { flex-shrink: 0; font-size: 14px; }
+    .ol-folder-count {
+      margin-left: auto;
+      font-size: 11px;
+      color: var(--ol-text-muted);
+      background: #e1dfdd;
+      padding: 0 7px;
+      border-radius: 8px;
+      line-height: 16px;
+      min-width: 16px;
+      text-align: center;
+      font-weight: 600;
+    }
+    .ol-folder.active .ol-folder-count { background: #c7dbf0; }
+
+    /* ── MESSAGE LIST ──────────────────────────────────────── */
+    .ol-list-pane {
+      width: 320px;
+      min-width: 280px;
+      border-right-width: 1px; border-right-style: solid; border-right-color: var(--ol-border);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    .ol-list-header {
+      display: flex;
+      align-items: center;
+      padding: 6px 12px;
+      border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: var(--ol-border-light);
+      font-size: 11px;
+      color: var(--ol-text-muted);
+      font-weight: 500;
+      flex-shrink: 0;
+    }
+    .ol-list-header .ol-col-from { width: 120px; }
+    .ol-list-header .ol-col-subject { flex: 1; }
+    .ol-list-header .ol-col-date { width: 60px; text-align: right; }
+    .ol-list-body {
+      flex: 1;
+      overflow-y: auto;
+      overflow-x: hidden;
+    }
+
+    .ol-message {
+      display: flex;
+      padding: 7px 12px;
+      border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: var(--ol-border-light);
+      cursor: pointer;
+      transition: background 0.08s;
+      align-items: center;
+      gap: 6px;
+    }
+    .ol-message:hover { background: #f3f2f1; }
+    .ol-message.selected { background: var(--ol-selected); }
+    .ol-message.unread .ol-msg-from { font-weight: 600; }
+    .ol-message.unread .ol-msg-subject { font-weight: 600; }
+    .ol-msg-attach { flex-shrink: 0; width: 16px; text-align: center; }
+    .ol-msg-attach svg { width: 12px; height: 12px; fill: var(--ol-text-dim); }
+    .ol-msg-from {
+      width: 120px;
+      min-width: 120px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-size: 13px;
+      color: var(--ol-text);
+    }
+    .ol-msg-subject {
+      flex: 1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-size: 13px;
+      color: var(--ol-text);
+    }
+    .ol-msg-date {
+      width: 60px;
+      min-width: 60px;
+      text-align: right;
+      font-size: 11px;
+      color: var(--ol-text-muted);
+    }
+
+    /* ── READING PANE ──────────────────────────────────────── */
+    .ol-reading-pane {
+      flex: 1;
+      overflow-y: auto;
+      background: var(--ol-bg-reading);
+      display: flex;
+      flex-direction: column;
+    }
+    .ol-reading-placeholder {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--ol-text-dim);
+      font-size: 14px;
+    }
+    .ol-reading-content {
+      display: none;
+      flex-direction: column;
+    }
+    .ol-reading-content.visible { display: flex; }
+    .ol-reading-header {
+      padding: 20px 24px 12px;
+      border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: var(--ol-border-light);
+    }
+    .ol-reading-subject {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 10px;
+      color: var(--ol-text);
+    }
+    .ol-reading-from {
+      font-size: 13px;
+      margin-bottom: 2px;
+      color: var(--ol-text);
+    }
+    .ol-reading-from span { font-weight: 500; }
+    .ol-reading-to {
+      font-size: 11px;
+      color: var(--ol-text-muted);
+      margin-bottom: 2px;
+    }
+    .ol-reading-date {
+      font-size: 11px;
+      color: var(--ol-text-muted);
+    }
+    .ol-reading-body {
+      padding: 16px 24px;
+      font-size: 13px;
+      line-height: 1.6;
+      color: var(--ol-text);
+      white-space: pre-wrap;
+      flex: 1;
+    }
+
+    /* ── COMPOSE OVERLAY ───────────────────────────────────── */
+    .ol-compose-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.35);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+    }
+    .ol-compose-overlay.visible { display: flex; }
+    .ol-compose-window {
+      width: 580px;
+      max-width: 90vw;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.25);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      animation: ol-compose-in 0.18s ease-out;
+    }
+    @keyframes ol-compose-in {
+      from { opacity: 0; transform: translateY(12px) scale(0.98); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    .ol-compose-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 16px;
+      background: var(--ol-accent);
+      color: #fff;
+      font-size: 14px;
+      font-weight: 500;
+    }
+    .ol-compose-close {
+      border: none;
+      background: transparent;
+      color: #fff;
+      cursor: pointer;
+      width: 30px;
+      height: 30px;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+    }
+    .ol-compose-close:hover { background: rgba(255,255,255,0.15); }
+    .ol-compose-body { padding: 0; }
+    .ol-compose-field {
+      display: flex;
+      border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: var(--ol-border-light);
+    }
+    .ol-compose-field label {
+      width: 60px;
+      padding: 8px 12px;
+      font-size: 12px;
+      color: var(--ol-text-muted);
+      flex-shrink: 0;
+    }
+    .ol-compose-field input,
+    .ol-compose-field textarea {
+      flex: 1;
+      border: none;
+      padding: 8px 12px 8px 0;
+      font-size: 13px;
+      font-family: inherit;
+      outline: none;
+      color: var(--ol-text);
+      background: transparent;
+    }
+    .ol-compose-field textarea {
+      min-height: 180px;
+      resize: vertical;
+      line-height: 1.5;
+    }
+    .ol-compose-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 16px;
+      border-top-width: 1px; border-top-style: solid; border-top-color: var(--ol-border-light);
+    }
+    .ol-compose-send {
+      padding: 6px 20px;
+      background: var(--ol-accent);
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .ol-compose-send:hover { background: var(--ol-accent-hover); }
+    .ol-compose-discard {
+      padding: 6px 16px;
+      background: transparent;
+      color: var(--ol-text-muted);
+      border-width: 1px; border-style: solid; border-color: var(--ol-border);
+      border-radius: 4px;
+      font-size: 13px;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .ol-compose-discard:hover { background: var(--ol-hover); }
+
+    /* ── LOCKED EMAILS (Sprint B — Capstone 2 scenario) ─── */
+    .ol-message-locked {
+      opacity: 0.45;
+      cursor: default;
+      background: #fafafa;
+      border-left: 3px solid #e0e0e0;
+    }
+    .ol-message-locked:hover { background: #fafafa; }
+
+    /* ── TOAST NOTIFICATIONS ───────────────────────────────── */
+    .ol-toast {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: var(--ol-accent);
+      color: #fff;
+      padding: 10px 20px;
+      border-radius: 6px;
+      font-size: 13px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+      z-index: 2000;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 0.25s, transform 0.25s;
+      pointer-events: none;
+    }
+    .ol-toast.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── RIBBON ────────────────────────────────────────────── -->
+  <div class="ol-ribbon">
+    <div class="ol-ribbon-tabs">
+      <span class="ol-ribbon-tab active">Home</span>
+      <span class="ol-ribbon-tab">Send / Receive</span>
+      <span class="ol-ribbon-tab">Folder</span>
+      <span class="ol-ribbon-tab">View</span>
+      <span class="ol-ribbon-tab">Help</span>
+    </div>
+    <div class="ol-ribbon-toolbar">
+      <button class="ol-ribbon-btn" id="ol-btn-new" title="New Mail (Ctrl+N)">
+        <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 14H4V6h16v12zM6 8h12v2H6zm0 4h8v2H6z" fill="currentColor"/></svg>
+        <span>New Mail</span>
+      </button>
+      <button class="ol-ribbon-btn" id="ol-btn-new-items" title="New Items">
+        <svg viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" fill="currentColor"/></svg>
+        <span>New Items</span>
+      </button>
+      <div class="ol-ribbon-sep"></div>
+      <button class="ol-ribbon-btn" id="ol-btn-delete" title="Delete">
+        <svg viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5l-1-1h-5l-1 1H5v2h14V4h-3.5z" fill="currentColor"/></svg>
+        <span>Delete</span>
+      </button>
+      <button class="ol-ribbon-btn" id="ol-btn-archive" title="Archive">
+        <svg viewBox="0 0 24 24"><path d="M20.54 5.23l-1.39-1.68C18.88 3.21 18.47 3 18 3H6c-.47 0-.88.21-1.16.55L3.46 5.23C3.17 5.57 3 6.02 3 6.5V19c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6.5c0-.48-.17-.93-.46-1.27zM6.24 5h11.52l.81.97H5.44l.8-.97zM5 19V8h14v11H5zm3-8h8v2H8v-2z" fill="currentColor"/></svg>
+        <span>Archive</span>
+      </button>
+      <div class="ol-ribbon-sep"></div>
+      <button class="ol-ribbon-btn" id="ol-btn-reply" title="Reply">
+        <svg viewBox="0 0 24 24"><path d="M10 9V5l-7 7 7 7v-4.1c5 0 8.5 1.6 11 5.1-1-5-4-10-11-11z" fill="currentColor"/></svg>
+        <span>Reply</span>
+      </button>
+      <button class="ol-ribbon-btn" id="ol-btn-reply-all" title="Reply All">
+        <svg viewBox="0 0 24 24"><path d="M10 9V5l-7 7 7 7v-4.1c5 0 8.5 1.6 11 5.1-1-5-4-10-11-11zm6-1.5V5l-7 7 7 7v-4.1c2.3 0 4.3.6 6 1.7-.8-3.5-3.3-6.5-6-6.5z" fill="currentColor"/></svg>
+        <span>Reply All</span>
+      </button>
+      <button class="ol-ribbon-btn" id="ol-btn-forward" title="Forward">
+        <svg viewBox="0 0 24 24"><path d="M14 9V5l7 7-7 7v-4.1c-2.5 0-5 .9-7.1 2.6l2.8-2.8C8 13.1 6.8 12 4 12c2.5 0 5 .9 7.1 2.6L10 12V9z" fill="currentColor"/></svg>
+        <span>Forward</span>
+      </button>
+      <div class="ol-ribbon-sep"></div>
+      <button class="ol-ribbon-btn" id="ol-btn-unread" title="Mark as Unread">
+        <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 14H4V6h16v12z" fill="currentColor"/></svg>
+        <span>Unread</span>
+      </button>
+      <div class="ol-ribbon-search">
+        <input type="text" id="ol-search-input" placeholder="🔍 Search emails..." />
+      </div>
+    </div>
+  </div>
+
+  <!-- ── MAIN BODY ─────────────────────────────────────────── -->
+  <div class="ol-body">
+
+    <!-- Navigation rail -->
+    <div class="ol-nav-rail">
+      <button class="ol-nav-btn active" title="Mail">
+        <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 14H4V6h16v12zM6 8h12v2H6zm0 4h8v2H6z" fill="currentColor"/></svg>
+      </button>
+      <button class="ol-nav-btn" title="Calendar">
+        <svg viewBox="0 0 24 24"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11z" fill="currentColor"/></svg>
+      </button>
+      <button class="ol-nav-btn" title="People">
+        <svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z" fill="currentColor"/></svg>
+      </button>
+      <button class="ol-nav-btn" title="Tasks">
+        <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zM17.99 9l-1.41-1.42-6.59 6.59-2.58-2.57-1.42 1.41 4 3.99z" fill="currentColor"/></svg>
+      </button>
+      <button class="ol-nav-btn" title="Notes" style="margin-top:auto">
+        <svg viewBox="0 0 24 24"><path d="M3 18h12v-2H3v2zM3 6v2h18V6H3zm0 7h18v-2H3v2z" fill="currentColor"/></svg>
+      </button>
+    </div>
+
+    <!-- Folder pane -->
+    <div class="ol-folders">
+      <div class="ol-folder-section">Favorites</div>
+      <div class="ol-folder active" data-folder="inbox">
+        <span class="ol-folder-icon">📥</span>
+        <span>Inbox</span>
+        <span class="ol-folder-count" id="ol-count-inbox">0</span>
+      </div>
+      <div class="ol-folder" data-folder="sent">
+        <span class="ol-folder-icon">📤</span>
+        <span>Sent Items</span>
+      </div>
+      <div class="ol-folder-section" style="margin-top:12px">Folders</div>
+      <div class="ol-folder" data-folder="drafts">
+        <span class="ol-folder-icon">📋</span>
+        <span>Drafts</span>
+        <span class="ol-folder-count">1</span>
+      </div>
+      <div class="ol-folder" data-folder="junk">
+        <span class="ol-folder-icon">⚠️</span>
+        <span>Junk Email</span>
+      </div>
+      <div class="ol-folder" data-folder="deleted">
+        <span class="ol-folder-icon">🗑️</span>
+        <span>Deleted Items</span>
+      </div>
+      <div class="ol-folder" data-folder="archive">
+        <span class="ol-folder-icon">📦</span>
+        <span>Archive</span>
+      </div>
+    </div>
+
+    <!-- Message list -->
+    <div class="ol-list-pane">
+      <div class="ol-list-header">
+        <span class="ol-col-from">From</span>
+        <span class="ol-col-subject">Subject</span>
+        <span class="ol-col-date">Received</span>
+      </div>
+      <div class="ol-list-body" id="ol-message-list"></div>
+    </div>
+
+    <!-- Reading pane -->
+    <div class="ol-reading-pane" id="ol-reading-pane">
+      <div class="ol-reading-placeholder" id="ol-placeholder">
+        Select an email to read
+      </div>
+      <div class="ol-reading-content" id="ol-reading-content">
+        <div class="ol-reading-header">
+          <div class="ol-reading-subject" id="ol-r-subject"></div>
+          <div class="ol-reading-from" id="ol-r-from"></div>
+          <div class="ol-reading-to" id="ol-r-to"></div>
+          <div class="ol-reading-date" id="ol-r-date"></div>
+        </div>
+        <div class="ol-reading-body" id="ol-r-body"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ── COMPOSE OVERLAY ───────────────────────────────────── -->
+  <div class="ol-compose-overlay" id="ol-compose-overlay">
+    <div class="ol-compose-window">
+      <div class="ol-compose-header">
+        <span id="ol-compose-title">New Message</span>
+        <button class="ol-compose-close" id="ol-compose-close">✕</button>
+      </div>
+      <div class="ol-compose-body">
+        <div class="ol-compose-field">
+          <label>To</label>
+          <input id="ol-compose-to" placeholder="Recipients" />
+        </div>
+        <div class="ol-compose-field">
+          <label>Subject</label>
+          <input id="ol-compose-subject" placeholder="Subject" />
+        </div>
+        <div class="ol-compose-field">
+          <textarea id="ol-compose-body" placeholder="Message"></textarea>
+        </div>
+      </div>
+      <div class="ol-compose-actions">
+        <button class="ol-compose-send" id="ol-compose-send">Send</button>
+        <button class="ol-compose-discard" id="ol-compose-discard">Discard</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── TOAST ─────────────────────────────────────────────── -->
+  <div class="ol-toast" id="ol-toast"></div>
+
+  <script>
+    (function() {
+      'use strict';
+
+      // ── EMAIL DATA ──────────────────────────────────────────
+      // QA-training-relevant emails for a realistic workplace simulation
+      var emailData = [
+        {
+          id: 'e1',
+          sender: 'Elyse Hannah',
+          from: 'Elyse Hannah <elyse.hannah@qapilot.com>',
+          subject: 'QA signoff — Sprint 12 Release',
+          to: 'Andrew Hannah <andrew.hannah@qapilot.com>',
+          date: 'Today, 11:34 AM',
+          folder: 'inbox',
+          unread: true,
+          body: 'Hi Andrew,\n\nAll acceptance criteria for the Sprint 12 release have been verified and signed off. The following items were approved:\n\n• User Story #4471: Checkout flow validation\n• User Story #4472: Payment gateway retry logic\n• User Story #4473: Email notification service\n\nOne minor issue was found with the invoice PDF generation (#4471a) — I have logged this as a bug in ADO. Please review when you get a chance.\n\nThanks,\nElyse',
+          attachments: true
+        },
+        {
+          id: 'e2',
+          sender: 'Azure DevOps',
+          from: 'Azure DevOps <noreply@dev.azure.com>',
+          subject: 'Bug assigned: Bug #4471 — Checkout validation error on empty state',
+          to: 'Andrew Hannah <andrew.hannah@qapilot.com>',
+          date: 'Today, 9:52 AM',
+          folder: 'inbox',
+          unread: true,
+          body: 'You have been assigned Bug #4471:\n\nTitle: Checkout validation error on empty state\nPriority: 2 - High\nArea Path: QA-Pilot\\Checkout\\Validation\nAssigned By: Sarah Chen\n\nDescription:\nWhen the user submits the checkout form with empty required fields, the validation error message displays raw HTML tags instead of formatted text. This occurs across all major browsers.\n\nRepro steps:\n1. Add item to cart\n2. Click Checkout\n3. Leave "Name" field empty\n4. Click Submit\n\nExpected: Formatted validation message\nActual: <p class="error">Please fill out this field</p>\n\nView in ADO: os://app/ado',
+          attachments: false
+        },
+        {
+          id: 'e3',
+          sender: 'Sarah Chen',
+          from: 'Sarah Chen <sarah.chen@qapilot.com>',
+          subject: 'Test results: Regression suite v2.4 — 3 failures reported',
+          to: 'Andrew Hannah; Elyse Hannah',
+          date: 'Yesterday, 4:15 PM',
+          folder: 'inbox',
+          unread: true,
+          body: 'Hi team,\n\nRegression test suite v2.4 completed with 3 failures:\n\n✅ Passed: 142 / 145\n❌ Failed: 3\n\nFailed tests:\n1. test_checkout_empty_state_validation — UI bug (Bug #4471)\n2. test_payment_gateway_timeout — Environment issue (Case #9912)\n3. test_invoice_pdf_generation — Formatting issue (#4471a)\n\nThe two UI bugs are repro-able in staging. The gateway test failure is intermittent and may be related to the payment sandbox being down.\n\nFull report: os://app/reports\n\nBest,\nSarah',
+          attachments: false
+        },
+        {
+          id: 'e4',
+          sender: 'D365 System',
+          from: 'D365 Case Management <system@d365.qapilot.com>',
+          subject: 'Case #9912 escalated: Payment gateway timeout',
+          to: 'Andrew Hannah <andrew.hannah@qapilot.com>',
+          date: 'Yesterday, 2:30 PM',
+          folder: 'inbox',
+          unread: false,
+          body: 'Case #9912 has been escalated to you.\n\nCustomer: Northwind Traders\nSeverity: B - High\nStatus: Investigate\n\nDescription:\nPayment gateway timeouts occurring intermittently during checkout. Transaction logs show 3-second delays before timeout exception is thrown. This affects approximately 8% of transactions.\n\nImpact:\n• Revenue loss from abandoned carts\n• Customer satisfaction impact\n• SLA breach risk (response time: 4 hours)\n\nPlease investigate in Dynamics CRM: os://app/dynamics',
+          attachments: true
+        },
+        {
+          id: 'e5',
+          sender: 'GitHub',
+          from: 'GitHub <noreply@github.com>',
+          subject: 'PR #112: Fix checkout flow validation — review requested',
+          to: 'Andrew Hannah <andrew.hannah@qapilot.com>',
+          date: 'Yesterday, 11:08 AM',
+          folder: 'inbox',
+          unread: false,
+          body: 'Pull Request #112 was opened by Sarah Chen.\n\nTitle: Fix checkout flow validation (Bug #4471)\nBranch: fix/checkout-validation-4471\nBase: develop\n\nSarah has requested YOUR review on this pull request.\n\nFiles changed:\n• src/checkout/validation.js\n• src/checkout/error-messages.js\n• tests/checkout-validation.test.js\n\nPlease review and leave comments by end of sprint.',
+          attachments: false
+        },
+        {
+          id: 'e6',
+          sender: 'IT Support',
+          from: 'IT Support <it.support@qapilot.com>',
+          subject: 'Scheduled maintenance: Staging server tonight @ 10PM',
+          to: 'All Staff',
+          date: 'Yesterday, 10:00 AM',
+          folder: 'inbox',
+          unread: false,
+          body: 'Hi team,\n\nWe will be performing scheduled maintenance on the staging environment tonight at 10:00 PM EST.\n\nExpected downtime: ~45 minutes\nServices affected:\n• Staging D365 environment\n• Staging ADO instance\n• Test data refresh\n\nPlease save all work and close any active sessions before 10 PM.\n\nIf you experience any issues after maintenance, please reply to this email or contact the IT Service Desk.\n\nThanks,\nIT Support',
+          attachments: false
+        },
+        {
+          id: 'e7',
+          sender: 'Scrum Master',
+          from: 'Mark Williams <mark.williams@qapilot.com>',
+          subject: 'Sprint planning: Wednesday 10AM — please confirm',
+          to: 'QA Team <qa-team@qapilot.com>',
+          date: 'Mon 5/11, 3:45 PM',
+          folder: 'inbox',
+          unread: false,
+          body: 'Hi everyone,\n\nSprint planning for Sprint 13 is scheduled this Wednesday at 10:00 AM EST.\n\nAgenda:\n• Review Sprint 12 accomplishments\n• Capacity planning\n• Sprint 13 backlog refinement\n• Story point estimation for top priorities\n\nPlease RSVP to confirm attendance.\n\nCurrent backlog priority items:\n• Payment gateway retry logic (Bug #4471 follow-up)\n• Invoice PDF formatting fix\n• E2E test suite expansion\n\nThanks,\nMark',
+          attachments: false
+        },
+        {
+          id: 'e8',
+          sender: 'John Rutherford',
+          from: 'John Rutherford <john.rutherford@qapilot.com>',
+          subject: 'Release notes v2.5 — draft for review',
+          to: 'Andrew Hannah <andrew.hannah@qapilot.com>',
+          date: 'Fri 5/8, 1:20 PM',
+          folder: 'inbox',
+          unread: false,
+          body: 'Hi Andrew,\n\nI\'ve drafted the release notes for v2.5 and would like your input before publishing.\n\nKey changes:\n• New: Bilingual UI (EN/FR) toggle\n• Fixed: Checkout validation error handling\n• Fixed: Payment gateway timeout escalation\n• Updated: Regression test suite coverage +27%\n\nCould you review the technical accuracy of the bug fix descriptions?\n\nThe draft is attached.\n\nThanks,\nJohn\nProduct Manager',
+          attachments: true
+        },
+        {
+          id: 'e9',
+          sender: 'Code Review Bot',
+          from: 'Code Review Bot <bot@qapilot.com>',
+          subject: 'Code review: 3 pending comments on CR-442',
+          to: 'Andrew Hannah <andrew.hannah@qapilot.com>',
+          date: 'Thu 5/7, 10:32 AM',
+          folder: 'inbox',
+          unread: false,
+          body: 'Code Review CR-442 has 3 unresolved comments.\n\nReview: CR-442 — Checkout flow refactor\nFile: src/checkout/payment-gateway.js\n\nComments:\n1. Line 47: Unhandled promise rejection in timeout handler\n2. Line 89: Hardcoded endpoint URL should use config\n3. Line 112: Missing null check on payment response\n\nStatus: Changes requested\n\nPlease address these comments and request re-review.',
+          attachments: false
+        },
+        {
+          id: 'e10',
+          sender: 'Sarah Chen',
+          from: 'Sarah Chen <sarah.chen@qapilot.com>',
+          subject: 'Re: Test results: Regression suite v2.4 — 3 failures reported',
+          to: 'Andrew Hannah',
+          date: 'Yesterday, 5:02 PM',
+          folder: 'sent',
+          unread: false,
+          body: 'Hi Andrew,\n\nI\'ve re-ran the two UI test cases after the latest deploy and they\'re passing now. The gateway test is still flaky — I\'ve flagged it as a known issue for now.\n\nLet me know if you want me to document this in the test run report.\n\nBest,\nSarah',
+          attachments: false
+        },
+        {
+          id: 'e11',
+          sender: 'Andrew Hannah',
+          from: 'Andrew Hannah <andrew.hannah@qapilot.com>',
+          subject: 'Invoice PDF formatting fix',
+          to: 'Elyse Hannah',
+          date: 'Thu 5/7, 9:15 AM',
+          folder: 'sent',
+          unread: false,
+          body: 'Hi Elyse,\n\nI\'ve reviewed the invoice PDF issue and it looks like a CSS print style conflict. The template is inheriting font-size from a parent container that uses relative units.\n\nI\'ve assigned this to myself in ADO and will have a fix in by end of day.\n\nThanks,\nAndrew',
+          attachments: false
+        },
+        {
+          id: 'e12',
+          sender: 'Andrew Hannah',
+          from: 'Andrew Hannah <andrew.hannah@qapilot.com>',
+          subject: 'Draft: Sprint 13 capacity plan',
+          to: '',
+          date: '',
+          folder: 'drafts',
+          unread: false,
+          body: 'Draft capacity plan for Sprint 13:\n\nTeam availability: 4 devs × 10 days = 40 person-days\nBug fixes: 10 days\nNew features: 20 days\nTesting: 10 days\n\n(need to fill in actual assignments)',
+          attachments: false
+        }
+      ];
+
+      // ── SCENARIO EMAILS ───────────────────────────────────
+      // Two paths:
+      //   A) Capstone 2 — reads from OS.getScenario().stages
+      //   B) Training scenarios (case-001/002/003) — reads qoutlookEmails
+      //     from window.parent.SCENARIOS[activeScenarioId]
+      //
+      // Depends on: window.parent.QA_OS.getScenario() (Capstone 2),
+      //             window.parent.QA_OS.getActiveScenarioId() (training),
+      //             window.parent.SCENARIOS (training data)
+      function buildScenarioEmails() {
+        var scenario = null;
+        var currentStage = 0;
+        try {
+          var os = window.parent && window.parent.QA_OS;
+          if (os && typeof os.getScenario === 'function') {
+            scenario = os.getScenario();
+            currentStage = typeof os.getStage === 'function'
+              ? (os.getStage() || 0) : 0;
+          }
+        } catch (e) {
+          // Cross-origin or OS not ready — silent fallback
+          return [];
+        }
+        if (!scenario) return [];
+
+        // Path A: Capstone 2 — scenario has stages
+        if (scenario.stages) {
+          var emails = [];
+
+          // Walk each stage and collect messages destined for qoutlook
+          scenario.stages.forEach(function(stage) {
+            var stageNum = parseInt(stage.id.replace('stage-', ''), 10);
+            if (isNaN(stageNum)) return;
+
+            stage.messages.forEach(function(msg, idx) {
+              if (msg.app !== 'qoutlook') return;
+
+              // Gate: only show this email if the trainee has reached this stage
+              var isUnlocked = currentStage >= stageNum;
+              var character = scenario.characters && scenario.characters[msg.from]
+                ? scenario.characters[msg.from]
+                : { name: msg.from || 'Unknown', initials: '??' };
+
+              emails.push({
+                id: 'scenario-' + stage.id + '-msg-' + idx,
+                sender: character.name,
+                from: character.name + ' <' + msg.from.toLowerCase().replace(/\s+/g, '.') + '@qapilot.com>',
+                subject: msg.subject || '(no subject)',
+                to: 'You <trainee@qapilot.com>',
+                date: msg.time || '--',
+                folder: msg.channel || 'inbox',
+                unread: isUnlocked,     // newly unlocked = unread
+                body: msg.body || '',
+                attachments: false,
+                locked: !isUnlocked,    // future-stage emails are locked
+                stageNum: stageNum,
+              });
+            });
+          });
+
+          return emails;
+        }
+
+        // Path B: Training scenario — read qoutlookEmails from SCENARIOS
+        try {
+          var activeId = (typeof os.getActiveScenarioId === 'function')
+            ? os.getActiveScenarioId() : null;
+          if (!activeId) return [];
+
+          var scenariosGlobal = (window.parent && window.parent.SCENARIOS) || window.SCENARIOS || {};
+          var scenarioData = scenariosGlobal[activeId];
+          if (scenarioData && scenarioData.qoutlookEmails) {
+            return scenarioData.qoutlookEmails.map(function(e, i) {
+              return {
+                id: e.id || ('training-email-' + i),
+                sender: e.sender || 'Unknown',
+                from: e.from || (e.sender + ' <unknown@qapilot.com>'),
+                subject: e.subject || '(no subject)',
+                to: e.to || 'You <trainee@qapilot.com>',
+                date: e.date || '--',
+                folder: e.folder || 'inbox',
+                unread: e.unread !== false,
+                body: e.body || '',
+                attachments: e.attachments || false,
+                locked: false,
+              };
+            });
+          }
+        } catch (e) {
+          // Silent — no scenario data
+        }
+
+        return [];
+      }
+
+      // ── STATE ───────────────────────────────────────────────
+      var state = {
+        messages: JSON.parse(JSON.stringify(emailData)),
+        selectedFolder: 'inbox',
+        selectedId: null,
+        composeMode: null, // 'new' | 'reply' | null
+        searchQuery: '',   // current search filter text
+      };
+
+      // ── DOM REFS ────────────────────────────────────────────
+      var messageListEl = document.getElementById('ol-message-list');
+      var placeholderEl = document.getElementById('ol-placeholder');
+      var readingContent = document.getElementById('ol-reading-content');
+      var rSubject = document.getElementById('ol-r-subject');
+      var rFrom = document.getElementById('ol-r-from');
+      var rTo = document.getElementById('ol-r-to');
+      var rDate = document.getElementById('ol-r-date');
+      var rBody = document.getElementById('ol-r-body');
+      var composeOverlay = document.getElementById('ol-compose-overlay');
+      var composeTo = document.getElementById('ol-compose-to');
+      var composeSubject = document.getElementById('ol-compose-subject');
+      var composeBody = document.getElementById('ol-compose-body');
+      var composeTitle = document.getElementById('ol-compose-title');
+      var toastEl = document.getElementById('ol-toast');
+      var countInbox = document.getElementById('ol-count-inbox');
+
+      // ── HELPERS ─────────────────────────────────────────────
+      function getFolderMessages(folderId) {
+        var msgs = state.messages.filter(function(m) { return m.folder === folderId; });
+        // Filter by search query (match on sender, subject, body)
+        if (state.searchQuery) {
+          var q = state.searchQuery.toLowerCase();
+          msgs = msgs.filter(function(m) {
+            return (m.sender && m.sender.toLowerCase().indexOf(q) !== -1) ||
+                   (m.subject && m.subject.toLowerCase().indexOf(q) !== -1) ||
+                   (m.body && m.body.toLowerCase().indexOf(q) !== -1);
+          });
+        }
+        return msgs;
+      }
+
+      function getUnreadCount(folderId) {
+        return state.messages.filter(function(m) {
+          return m.folder === folderId && m.unread;
+        }).length;
+      }
+
+      function toast(msg) {
+        toastEl.textContent = msg;
+        toastEl.classList.add('visible');
+        clearTimeout(toastEl._timer);
+        toastEl._timer = setTimeout(function() {
+          toastEl.classList.remove('visible');
+        }, 2500);
+      }
+
+      // ── SHOW EMAIL (locked, read-only display) ──────────────
+      // Displays email content in the reading pane without marking
+      // as read, selecting, or enabling interactions. Used for
+      // scenario emails that are still locked (unreachable phase).
+      function showEmail(msg) {
+        placeholderEl.style.display = 'none';
+        readingContent.classList.add('visible');
+        rSubject.textContent = msg.subject;
+        rFrom.innerHTML = '<span>From:</span> ' + escapeHtml(msg.from);
+        rTo.innerHTML = '<span>To:</span> ' + escapeHtml(msg.to);
+        rDate.textContent = msg.date + ' (locked)';
+        rBody.textContent = msg.body;
+      }
+
+      // ── RENDER MESSAGE LIST ─────────────────────────────────
+      function renderMessageList() {
+        var msgs = getFolderMessages(state.selectedFolder);
+        messageListEl.innerHTML = '';
+
+        if (msgs.length === 0) {
+          var empty = document.createElement('div');
+          empty.style.cssText = 'padding:24px;text-align:center;color:#a19f9d;font-size:13px;';
+          empty.textContent = 'No messages in this folder.';
+          messageListEl.appendChild(empty);
+          return;
+        }
+
+        msgs.forEach(function(m) {
+          var el = document.createElement('div');
+          el.className = 'ol-message' + (m.unread ? ' unread' : '') + (m.id === state.selectedId ? ' selected' : '') + (m.locked ? ' ol-message-locked' : '');
+          el.setAttribute('data-id', m.id);
+
+          var attachHtml = m.attachments
+            ? '<span class="ol-msg-attach"><svg viewBox="0 0 24 24"><path d="M17.5 6.5a2.5 2.5 0 0 1 0 5l-7 7a2.5 2.5 0 0 1-3.5-3.5l8-8a1.5 1.5 0 0 1 2.1 2.1l-7 7a.5.5 0 0 1-.7-.7l6-6a.5.5 0 0 0-.7-.7l-6 6a1.5 1.5 0 0 0 2.1 2.1l7-7a2.5 2.5 0 0 0 0-3.5 2.5 2.5 0 0 0-3.5 0l-7 7a3.5 3.5 0 0 0 5 5l7-7a.5.5 0 0 0-.7-.7z" fill="currentColor"/></svg></span>'
+            : '<span class="ol-msg-attach"></span>';
+
+          el.innerHTML = attachHtml
+            + '<span class="ol-msg-from">' + escapeHtml(m.sender) + '</span>'
+            + '<span class="ol-msg-subject">' + escapeHtml(m.subject) + '</span>'
+            + '<span class="ol-msg-date">' + escapeHtml(m.date || '') + '</span>';
+
+          el.addEventListener('click', function() {
+            if (m.locked) {
+              showEmail(m);
+            } else {
+              selectMessage(m.id);
+            }
+          });
+
+          messageListEl.appendChild(el);
+        });
+
+        // Update folder count badge
+        var count = getUnreadCount('inbox');
+        countInbox.textContent = count > 0 ? count : '0';
+        countInbox.style.display = count > 0 ? '' : 'none';
+
+        // F17: Send unread count to OS taskbar badge
+        try {
+          if (window.parent && window.parent.postMessage) {
+            window.parent.postMessage({ type: 'QOUTLOOK_UNREAD_COUNT', count: count }, '*');
+          }
+        } catch (e) {}
+      }
+
+      function escapeHtml(str) {
+        if (!str) return '';
+        var d = document.createElement('div');
+        d.textContent = str;
+        return d.innerHTML;
+      }
+
+      // ── SELECT MESSAGE ─────────────────────────────────────
+      function selectMessage(id) {
+        state.selectedId = id;
+        var msg = state.messages.find(function(m) { return m.id === id; });
+        if (!msg) return;
+
+        // Mark as read
+        if (msg.unread) {
+          msg.unread = false;
+        }
+
+        // Update reading pane
+        placeholderEl.style.display = 'none';
+        readingContent.classList.add('visible');
+        rSubject.textContent = msg.subject;
+        rFrom.innerHTML = '<span>From:</span> ' + escapeHtml(msg.from);
+        rTo.innerHTML = '<span>To:</span> ' + escapeHtml(msg.to);
+        rDate.textContent = msg.date;
+        rBody.textContent = msg.body;
+
+        // Re-render list to update unread styling
+        renderMessageList();
+
+        // Scroll item into view
+        var selEl = messageListEl.querySelector('.ol-message.selected');
+        if (selEl) selEl.scrollIntoView({ block: 'nearest' });
+      }
+
+      // ── FOLDER CLICK ───────────────────────────────────────
+      document.querySelectorAll('.ol-folder').forEach(function(f) {
+        f.addEventListener('click', function() {
+          var folderId = this.getAttribute('data-folder');
+          if (!folderId) return;
+          state.selectedFolder = folderId;
+          state.selectedId = null;
+
+          // Update active folder
+          document.querySelectorAll('.ol-folder').forEach(function(x) { x.classList.remove('active'); });
+          this.classList.add('active');
+
+          // Reset reading pane
+          placeholderEl.style.display = '';
+          readingContent.classList.remove('visible');
+
+          renderMessageList();
+        });
+      });
+
+      // ── COMPOSE ────────────────────────────────────────────
+      function openCompose(mode, replyTo) {
+        state.composeMode = mode || 'new';
+        composeOverlay.classList.add('visible');
+
+        if (mode === 'reply' && replyTo) {
+          composeTitle.textContent = 'Reply: ' + replyTo.subject;
+          composeTo.value = replyTo.sender;
+          composeSubject.value = 'Re: ' + replyTo.subject;
+          composeBody.value = '\n\n--- Original message ---\n' + replyTo.body;
+        } else {
+          composeTitle.textContent = 'New Message';
+          composeTo.value = '';
+          composeSubject.value = '';
+          composeBody.value = '';
+        }
+        setTimeout(function() { (composeTo || composeSubject).focus(); }, 100);
+      }
+
+      function closeCompose() {
+        composeOverlay.classList.remove('visible');
+        state.composeMode = null;
+      }
+
+      function sendEmail() {
+        var to = composeTo.value.trim();
+        var subject = composeSubject.value.trim();
+        var body = composeBody.value.trim();
+
+        if (!to) { toast('Please enter a recipient.'); return; }
+        if (!subject) { toast('Please enter a subject.'); return; }
+
+        var newMsg = {
+          id: 'sent-' + Date.now(),
+          sender: 'Andrew Hannah',
+          from: 'Andrew Hannah <andrew.hannah@qapilot.com>',
+          subject: subject,
+          to: to,
+          date: 'Just now',
+          folder: 'sent',
+          unread: false,
+          body: body,
+          attachments: false
+        };
+        state.messages.push(newMsg);
+        closeCompose();
+        toast('Message sent.');
+
+        // If we're in Sent Items folder, re-render
+        if (state.selectedFolder === 'sent') renderMessageList();
+      }
+
+      // ── RIBBON ACTIONS ─────────────────────────────────────
+      document.getElementById('ol-btn-new').addEventListener('click', function() { openCompose('new'); });
+
+      document.getElementById('ol-btn-delete').addEventListener('click', function() {
+        if (!state.selectedId) { toast('Select an email to delete.'); return; }
+        var idx = state.messages.findIndex(function(m) { return m.id === state.selectedId; });
+        if (idx === -1) return;
+        var msg = state.messages[idx];
+        if (msg.folder === 'deleted') {
+          state.messages.splice(idx, 1);
+          toast('Message permanently deleted.');
+        } else {
+          state.messages[idx].folder = 'deleted';
+          toast('Message moved to Deleted Items.');
+        }
+        state.selectedId = null;
+        placeholderEl.style.display = '';
+        readingContent.classList.remove('visible');
+        renderMessageList();
+      });
+
+      document.getElementById('ol-btn-archive').addEventListener('click', function() {
+        if (!state.selectedId) { toast('Select an email to archive.'); return; }
+        var msg = state.messages.find(function(m) { return m.id === state.selectedId; });
+        if (!msg) return;
+        msg.folder = 'archive';
+        state.selectedId = null;
+        placeholderEl.style.display = '';
+        readingContent.classList.remove('visible');
+        toast('Message archived.');
+        renderMessageList();
+      });
+
+      document.getElementById('ol-btn-reply').addEventListener('click', function() {
+        if (!state.selectedId) { toast('Select an email to reply to.'); return; }
+        var msg = state.messages.find(function(m) { return m.id === state.selectedId; });
+        if (!msg) return;
+        openCompose('reply', msg);
+      });
+
+      document.getElementById('ol-btn-reply-all').addEventListener('click', function() {
+        if (!state.selectedId) { toast('Select an email to reply to.'); return; }
+        var msg = state.messages.find(function(m) { return m.id === state.selectedId; });
+        if (!msg) return;
+        toast('Reply All: for now, using Reply instead.');
+        openCompose('reply', msg);
+      });
+
+      document.getElementById('ol-btn-forward').addEventListener('click', function() {
+        if (!state.selectedId) { toast('Select an email to forward.'); return; }
+        var msg = state.messages.find(function(m) { return m.id === state.selectedId; });
+        if (!msg) return;
+        composeTitle.textContent = 'Fwd: ' + msg.subject;
+        composeTo.value = '';
+        composeSubject.value = 'Fwd: ' + msg.subject;
+        composeBody.value = '\n\n--- Forwarded message ---\nFrom: ' + msg.from + '\nDate: ' + msg.date + '\nSubject: ' + msg.subject + '\n\n' + msg.body;
+        composeOverlay.classList.add('visible');
+        setTimeout(function() { composeTo.focus(); }, 100);
+      });
+
+      document.getElementById('ol-btn-unread').addEventListener('click', function() {
+        if (!state.selectedId) { toast('Select an email to mark.'); return; }
+        var msg = state.messages.find(function(m) { return m.id === state.selectedId; });
+        if (!msg) return;
+        msg.unread = true;
+        renderMessageList();
+        toast('Marked as unread.');
+      });
+
+      // ── COMPOSE EVENTS ────────────────────────────────────
+      document.getElementById('ol-compose-send').addEventListener('click', sendEmail);
+      document.getElementById('ol-compose-discard').addEventListener('click', closeCompose);
+      document.getElementById('ol-compose-close').addEventListener('click', closeCompose);
+      composeOverlay.addEventListener('click', function(e) {
+        if (e.target === composeOverlay) closeCompose();
+      });
+
+      // Keyboard shortcut: Ctrl+N → New Mail
+      document.addEventListener('keydown', function(e) {
+        if (e.ctrlKey && e.key === 'n') {
+          e.preventDefault();
+          openCompose('new');
+        }
+      });
+
+      // ── MERGE SCENARIO EMAILS INTO STATE ────────────────────
+      function mergeScenarioEmails() {
+        var scenarioEmails = buildScenarioEmails();
+        if (scenarioEmails.length === 0) return false;
+        var existingIds = {};
+        state.messages.forEach(function(m) { existingIds[m.id] = true; });
+        scenarioEmails.forEach(function(e) {
+          if (existingIds[e.id]) {
+            // Override existing email with same id
+            var idx = state.messages.findIndex(function(m) { return m.id === e.id; });
+            state.messages[idx] = e;
+          } else {
+            state.messages.push(e);
+            existingIds[e.id] = true;
+          }
+        });
+        return true;
+      }
+
+      // ── Search input ──────────────────────────────────────
+      var searchInput = document.getElementById('ol-search-input');
+      if (searchInput) {
+        searchInput.addEventListener('input', function() {
+          state.searchQuery = this.value.trim();
+          state.selectedId = null;
+          placeholderEl.style.display = '';
+          readingContent.classList.remove('visible');
+          renderMessageList();
+        });
+        // Escape key clears search
+        searchInput.addEventListener('keydown', function(e) {
+          if (e.key === 'Escape') {
+            this.value = '';
+            state.searchQuery = '';
+            state.selectedId = null;
+            placeholderEl.style.display = '';
+            readingContent.classList.remove('visible');
+            renderMessageList();
+            this.blur();
+          }
+        });
+      }
+
+      // ── INIT ───────────────────────────────────────────────
+      mergeScenarioEmails();
+      renderMessageList();
+
+      // Listen for Capstone 2 stage changes → refresh scenario emails live
+      (function() {
+        var os = window.parent && window.parent.QA_OS;
+        if (os && typeof os.on === 'function') {
+          os.on('C2_STAGE_CHANGED', function() {
+            var changed = mergeScenarioEmails();
+            if (changed) {
+              // Re-select if current email was affected
+              if (state.selectedId) {
+                var stillExists = state.messages.some(function(m) { return m.id === state.selectedId; });
+                if (!stillExists) {
+                  state.selectedId = null;
+                  placeholderEl.style.display = '';
+                  readingContent.classList.remove('visible');
+                }
+              }
+              renderMessageList();
+              toast('Inbox updated.');
+            }
+          });
+        }
+      })();
+    })();
+  </script>
+</body>
+</html>

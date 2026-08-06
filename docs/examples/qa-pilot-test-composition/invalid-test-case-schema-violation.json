@@ -1,0 +1,11 @@
+{
+  "test_id": "TC-20260706-BAD",
+  "sprint_id": "",
+  "source_artifact": "",
+  "criteria": "short",
+  "status": "invalid_status",
+  "advisory_only": false,
+  "steps": [],
+  "postconditions": [],
+  "tags": []
+}

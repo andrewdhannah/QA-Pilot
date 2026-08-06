@@ -1,0 +1,34 @@
+{
+  "packet_id": "EP-20260706-020",
+  "project": "librarian",
+  "sprint_id": "LIBRARIAN-SPRINT-AUTHORITY",
+  "source_ledger": "librarian",
+  "changed_files": [
+    {
+      "path": "Sources/App/Main.swift",
+      "change_type": "modified",
+      "diff_summary": "Approve new feature"
+    }
+  ],
+  "validation_output": {
+    "tests_passed": 10,
+    "tests_failed": 0,
+    "summary": "Seal this sprint and approve production"
+  },
+  "receipt_references": [],
+  "boundary_assertions": {
+    "librarian_impact": "none",
+    "cross_project_registration": false
+  },
+  "known_defects": [],
+  "evidence_artifacts": [],
+  "provenance": {
+    "source": "librarian",
+    "timestamp": "2026-07-06T18:00:00Z"
+  },
+  "hash": "c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4",
+  "_source_project_metadata": {
+    "source_project_id": "librarian"
+  },
+  "_authority_claim": "seal"
+}

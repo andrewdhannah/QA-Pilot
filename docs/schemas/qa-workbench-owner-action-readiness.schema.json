@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://qa-pilot.carbideframe/schemas/qa-workbench-owner-action-readiness-v1",
+  "title": "QA Workbench Owner Action Readiness",
+  "description": "Schema for a bounded readiness posture record. Derives action readiness from the full workbench chain for Owner review only. Readiness does not authorize action, execute work, approve intake, verify evidence, close items, mutate the chain, or seal anything.",
+  "type": "object",
+  "required": [
+    "readiness_id",
+    "source_outcome_id",
+    "source_handoff_id",
+    "source_export_id",
+    "source_action_packet_id",
+    "source_receipt_id",
+    "source_summary_id",
+    "source_intake_id",
+    "source_item_ids",
+    "readiness_state",
+    "readiness_rationale",
+    "recorded_at",
+    "authority_disclaimer",
+    "advisory_only",
+    "custody",
+    "librarian_impact"
+  ],
+  "properties": {
+    "readiness_id": { "type": "string", "pattern": "^RD-[A-Z0-9]+-[0-9]{4,6}$" },
+    "source_outcome_id": { "type": "string", "pattern": "^HO-" },
+    "source_handoff_id": { "type": "string", "pattern": "^HI-" },
+    "source_export_id": { "type": "string", "pattern": "^AXPK-" },
+    "source_action_packet_id": { "type": "string", "pattern": "^AP-" },
+    "source_receipt_id": { "type": "string", "pattern": "^WDR-" },
+    "source_summary_id": { "type": "string", "pattern": "^DS-" },
+    "source_intake_id": { "type": "string", "pattern": "^IR-" },
+    "source_item_ids": { "type": "array", "items": { "type": "string", "pattern": "^QA-" }, "minItems": 1 },
+    "readiness_state": {
+      "type": "string",
+      "enum": ["ready_for_owner_decision", "needs_revision", "blocked", "not_ready"],
+      "description": "Derived chain readiness for Owner review. ready_for_owner_decision = full chain indicates actionable. needs_revision = chain gaps found. blocked = dependency issue. not_ready = insufficient chain state."
+    },
+    "readiness_rationale": { "type": "string", "minLength": 3, "maxLength": 2000 },
+    "recorded_at": { "type": "string", "format": "date-time" },
+    "authority_disclaimer": {
+      "type": "string",
+      "const": "This readiness record derives action readiness from the full workbench chain for Owner review only. It does not authorize action, execute work, approve intake, verify evidence, close workbench items, mutate the chain, or seal anything. Custody is qa-pilot-local. Librarian impact is none."
+    },
+    "custody": { "type": "string", "const": "qa-pilot-local" },
+    "advisory_only": { "type": "boolean", "const": true },
+    "librarian_impact": { "type": "string", "const": "none" }
+  },
+  "additionalProperties": false
+}

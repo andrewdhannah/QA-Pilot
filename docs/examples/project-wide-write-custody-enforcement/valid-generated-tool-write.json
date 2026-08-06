@@ -1,0 +1,20 @@
+{
+  "schema": "project-wide-write-custody-v1",
+  "project_id": "qa-pilot",
+  "sprint_id": "STARTUP-REGRESSION-1",
+  "file_path": "STARTUP-STATE.md",
+  "requested_action": "Regenerate startup state via run-startup-checks.sh",
+  "custody_class": "GENERATED_WRITE_ALLOWED",
+  "write_authority_source": "generated_by_tool",
+  "sprint_allowlisted": false,
+  "release_state": "pre_release",
+  "sealed_evidence": false,
+  "generated_by_tool": true,
+  "tool_is_deterministic": true,
+  "owner_approval_required": false,
+  "owner_approval_present": false,
+  "warning_required": false,
+  "warning_present": false,
+  "expected_decision": "ALLOW",
+  "description": "Generated state file written by deterministic startup check script"
+}

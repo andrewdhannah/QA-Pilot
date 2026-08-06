@@ -1,0 +1,16 @@
+{
+  "receipt_id": "RCR-BACKFILL-INCON-001",
+  "sprint_id": "QA-PILOT-HYPOTHETICAL-SPRINT-2",
+  "ledger_number": 56,
+  "registry_impact": "adds_layer",
+  "registry_before_summary": "Registry has 22 layers.",
+  "registry_after_summary": "Registry has 23 layers. Claims add but counts are wrong.",
+  "layer_slot_added": 56,
+  "rationale": "This backfill claims adds_layer but before and after counts have same layer count.",
+  "advisory_only": true,
+  "custody": "qa-pilot-local",
+  "librarian_impact": "none",
+  "not_seal_authority": "No sealing authority claimed.",
+  "not_librarian_mutation_authority": "No Librarian mutation claimed.",
+  "created_at": "2026-07-07T20:27:00Z"
+}

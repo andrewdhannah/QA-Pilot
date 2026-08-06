@@ -1,0 +1,16 @@
+{
+  "receipt_id": "RCR-ADD-LAYER-048",
+  "sprint_id": "QA-PILOT-PIPELINE-HEALTH-LAYER-REGISTRY-1",
+  "ledger_number": 48,
+  "registry_impact": "adds_layer",
+  "registry_before_summary": "Registry had 15 layers (#33-#47) covering evidence intake through MCP call loop guard. PH-12 flagged #38-#47 as expected-layer drift.",
+  "registry_after_summary": "Registry has 16 layers (#33-#48) after adding pipeline health layer registry sprint. PH-12 no longer flags any layers as drift.",
+  "layer_slot_added": 48,
+  "rationale": "Sprint #48 created the governed layer registry. It added its own sealed layer (#48) to the registry as the first registry entry beyond the original hardcoded EXPECTED_LAYERS.",
+  "advisory_only": true,
+  "custody": "qa-pilot-local",
+  "librarian_impact": "none",
+  "not_seal_authority": "This registry change receipt does not confer sealing authority. Sealing requires explicit Owner action.",
+  "not_librarian_mutation_authority": "This receipt does not authorize any Librarian file mutation. All data is QA Pilot-local.",
+  "created_at": "2026-07-07T19:15:00Z"
+}

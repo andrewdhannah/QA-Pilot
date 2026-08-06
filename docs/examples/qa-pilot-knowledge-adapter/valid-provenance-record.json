@@ -1,0 +1,59 @@
+{
+  "adapter_version": "knowledge-adapter-v1",
+  "generated_at": "2026-07-08T21:00:00Z",
+  "operation": "provenance",
+  "sources": [
+    {
+      "path": "docs/governance/QA-PILOT-PROJECT-GOVERNANCE.md",
+      "revision": "abc1234",
+      "source_type": "governance",
+      "accessible": true,
+      "title": "QA Pilot Project Governance",
+      "content_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "last_modified": "2026-07-08T12:00:00Z",
+      "referenced_at": "2026-07-08T21:00:00Z"
+    },
+    {
+      "path": "docs/schemas/qa-pilot-evidence-checklist.schema.json",
+      "revision": "def5678",
+      "source_type": "schema",
+      "accessible": true,
+      "title": "qa-pilot-evidence-checklist.schema.json",
+      "content_hash": "a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b",
+      "last_modified": "2026-07-08T10:00:00Z",
+      "referenced_at": "2026-07-08T21:00:00Z"
+    }
+  ],
+  "result": {
+    "provenance": {
+      "provenance_id": "KAP-A1B2C3D4E5F6",
+      "generated_at": "2026-07-08T21:00:00Z",
+      "sources": [
+        {
+          "path": "docs/governance/QA-PILOT-PROJECT-GOVERNANCE.md",
+          "revision": "abc1234",
+          "source_type": "governance",
+          "accessible": true,
+          "title": "QA Pilot Project Governance",
+          "content_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "last_modified": "2026-07-08T12:00:00Z",
+          "referenced_at": "2026-07-08T21:00:00Z"
+        },
+        {
+          "path": "docs/schemas/qa-pilot-evidence-checklist.schema.json",
+          "revision": "def5678",
+          "source_type": "schema",
+          "accessible": true,
+          "title": "qa-pilot-evidence-checklist.schema.json",
+          "content_hash": "a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b",
+          "last_modified": "2026-07-08T10:00:00Z",
+          "referenced_at": "2026-07-08T21:00:00Z"
+        }
+      ],
+      "source_hash": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+      "advisory": true,
+      "no_authority_promotion": true
+    },
+    "source_count": 2
+  }
+}

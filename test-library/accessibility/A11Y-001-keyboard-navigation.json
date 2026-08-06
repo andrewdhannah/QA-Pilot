@@ -1,0 +1,37 @@
+{
+  "test_id": "A11Y-001",
+  "domain": "accessibility",
+  "title": "Keyboard navigation — all interactive elements reachable by keyboard",
+  "objective": "Verify that all interactive elements in governed surfaces are reachable and operable via keyboard alone, without requiring mouse interaction. Based on WCAG 2.2 2.1.1 Keyboard.",
+  "source": {
+    "type": "contract",
+    "reference": "QA-PILOT-VISUAL-INTEGRATION-CONTRACT-1",
+    "description": "Visual contract surfaces must be keyboard accessible — add-ons inheriting the design system inherit accessibility requirements"
+  },
+  "execution": {
+    "type": "manual",
+    "criteria": "Tab through all interactive elements: navigation items, buttons, links, form inputs, cards, status indicators. Each must receive visible focus and be activatable with Enter/Space.",
+    "expected_outcome": "All interactive elements reachable via sequential keyboard navigation"
+  },
+  "pass_criteria": [
+    {
+      "id": "A11Y-001-A",
+      "description": "All navigation items are keyboard-focusable",
+      "evidence_required": ["Tab order includes sidebar nav items"]
+    },
+    {
+      "id": "A11Y-001-B",
+      "description": "All action buttons are keyboard-activatable",
+      "evidence_required": ["Buttons respond to Enter/Space key"]
+    },
+    {
+      "id": "A11Y-001-C",
+      "description": "Visible focus indicator on every interactive element",
+      "evidence_required": ["Focus ring or outline visible on tab stop"]
+    }
+  ],
+  "contract_refs": [],
+  "status": "active",
+  "advisory_only": true,
+  "no_seal_authority": true
+}

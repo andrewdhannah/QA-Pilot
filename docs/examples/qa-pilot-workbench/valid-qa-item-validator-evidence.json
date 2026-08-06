@@ -1,0 +1,17 @@
+{
+  "qa_item_id": "QA-REGR-0002",
+  "title": "Pipeline health regression detects stale registry state",
+  "source": "result_export",
+  "status": "triaged",
+  "severity": "medium",
+  "category": "regression",
+  "description": "PH-12 detects when the pipeline layer registry does not match the sealed sprint ledger. This is proven by the pipeline health regression validator across 14 PH rules.",
+  "evidence_refs": ["EP-HEALTH-REGRESSION-001", "QR-PH-VALIDATION-001"],
+  "validator_refs": ["PH-12", "PH-7", "PH-8"],
+  "owner_decision_state": "pending",
+  "created_at": "2026-07-07T22:56:00Z",
+  "updated_at": "2026-07-07T22:57:00Z",
+  "advisory_only": true,
+  "custody": "qa-pilot-local",
+  "librarian_impact": "none"
+}

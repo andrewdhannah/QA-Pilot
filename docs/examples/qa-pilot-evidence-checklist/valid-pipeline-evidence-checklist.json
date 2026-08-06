@@ -1,0 +1,80 @@
+{
+  "checklist_id": "EC-PIPELINE-EVIDENCE-001",
+  "title": "Pipeline Evidence Requirements",
+  "description": "Evidence requirements for reviewing a sealed pipeline QA claim across all #33-#43 advisory layers.",
+  "evidence_class": "required",
+  "items": [
+    {
+      "item_id": "ECI-EVIDENCE-INTAKE-001",
+      "description": "Evidence intake must have ingested at least one valid EP- packet from each referenced sprint.",
+      "evidence_class": "required",
+      "state": "ready",
+      "rationale": "Without evidence intake records, no upstream QA artifacts exist for review.",
+      "evidence_refs": [
+        { "pipeline_layer": "evidence_intake", "packet_type": "EP-", "ref": "evidence-index.json" }
+      ]
+    },
+    {
+      "item_id": "ECI-TEST-COMPOSITION-001",
+      "description": "Test composition must have derived test cases (TC-*) from ingested evidence.",
+      "evidence_class": "required",
+      "state": "ready",
+      "rationale": "Test cases are the primary reviewable artifacts for QA claim validation.",
+      "evidence_refs": [
+        { "pipeline_layer": "test_composition", "packet_type": "TC-", "ref": "test-case-index.json" }
+      ]
+    },
+    {
+      "item_id": "ECI-RESULT-EXPORT-001",
+      "description": "Result packets (QR-*) must be exported for all completed test cases.",
+      "evidence_class": "required",
+      "state": "ready",
+      "rationale": "Without result packets, there is no record of test outcomes.",
+      "evidence_refs": [
+        { "pipeline_layer": "result_export", "packet_type": "QR-", "ref": "result-packet-index.json" }
+      ]
+    },
+    {
+      "item_id": "ECI-PIPELINE-HEALTH-001",
+      "description": "Pipeline health regression must pass (PH rules, 12/12).",
+      "evidence_class": "required",
+      "state": "ready",
+      "rationale": "Pipeline health regression proves the advisory chain is intact.",
+      "evidence_refs": [
+        { "pipeline_layer": "pipeline_health", "packet_type": "PH-", "ref": "pipeline-health-report.json" }
+      ]
+    },
+    {
+      "item_id": "ECI-DRIFT-DETECTION-001",
+      "description": "Drift detection must report no drift or documented drift only.",
+      "evidence_class": "optional",
+      "state": "ready",
+      "rationale": "Drift detection provides additional confidence in pipeline consistency.",
+      "evidence_refs": [
+        { "pipeline_layer": "drift_detection", "packet_type": "DR-", "ref": "drift-report.json" }
+      ]
+    }
+  ],
+  "pipeline_refs": [
+    { "layer_id": "layer_1", "layer_name": "Evidence Intake", "sprint_id": "QA-PILOT-MCP-EVIDENCE-INTAKE-1", "sealed_number": 33 },
+    { "layer_id": "layer_2", "layer_name": "Test Composition", "sprint_id": "QA-PILOT-TEST-COMPOSITION-1", "sealed_number": 34 },
+    { "layer_id": "layer_3", "layer_name": "Result Export", "sprint_id": "QA-PILOT-RESULT-PACKET-EXPORT-1", "sealed_number": 35 },
+    { "layer_id": "layer_4", "layer_name": "Epic Regression", "sprint_id": "QA-PILOT-EPIC-REGRESSION-BUILDER-1", "sealed_number": 36 },
+    { "layer_id": "layer_5", "layer_name": "Pipeline Startup Surface", "sprint_id": "QA-PILOT-EPIC-REGRESSION-STARTUP-SURFACE-1", "sealed_number": 37 },
+    { "layer_id": "layer_6", "layer_name": "Pipeline Health Regression", "sprint_id": "QA-PILOT-PIPELINE-HEALTH-REGRESSION-1", "sealed_number": 38 },
+    { "layer_id": "layer_7", "layer_name": "Drift Detection", "sprint_id": "QA-PILOT-PIPELINE-DRIFT-DETECTION-1", "sealed_number": 39 },
+    { "layer_id": "layer_8", "layer_name": "Recovery Diagnostics", "sprint_id": "QA-PILOT-PIPELINE-RECOVERY-DIAGNOSTICS-1", "sealed_number": 40 },
+    { "layer_id": "layer_9", "layer_name": "Owner Review Packet", "sprint_id": "QA-PILOT-PIPELINE-OWNER-REVIEW-PACKET-1", "sealed_number": 41 },
+    { "layer_id": "layer_10", "layer_name": "Owner Decision Receipt", "sprint_id": "QA-PILOT-OWNER-REVIEW-DECISION-RECEIPT-1", "sealed_number": 42 },
+    { "layer_id": "layer_11", "layer_name": "ODR Startup Surface", "sprint_id": "QA-PILOT-OWNER-DECISION-RECEIPT-STARTUP-SURFACE-1", "sealed_number": 43 }
+  ],
+  "advisory_only": true,
+  "custody": "qa-pilot-local",
+  "librarian_impact": "none",
+  "metadata": {
+    "created_at": "2026-07-07T03:15:00Z",
+    "created_by": "QA-PILOT-EVIDENCE-CHECKLIST-1",
+    "updated_at": "2026-07-07T03:15:00Z",
+    "status": "active"
+  }
+}

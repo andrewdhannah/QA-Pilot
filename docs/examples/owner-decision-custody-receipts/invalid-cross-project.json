@@ -1,0 +1,16 @@
+{
+  "schema": "owner-decision-custody-receipt-fixture-v1",
+  "fixture_type": "invalid",
+  "description": "Cross-project receipt claim rejected",
+  "input": {
+    "custody_source": "write",
+    "source_contract": "#23",
+    "decision": "ALLOW",
+    "project_id": "librarian",
+    "sprint_id": "SPRINT-1",
+    "file_path": "Sources/App/Controller.swift",
+    "reason": "Cross-project write",
+    "mode": "dry-run"
+  },
+  "expected_error": "cross-project"
+}

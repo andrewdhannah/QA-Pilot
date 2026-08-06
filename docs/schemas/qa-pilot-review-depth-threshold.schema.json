@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://qa-pilot.carbideframe/schemas/qa-pilot-review-depth-threshold-v1",
+  "title": "QA Pilot Review Depth Threshold",
+  "description": "Schema for a bounded advisory review-depth threshold evaluation. Classifies evidence completeness and consistency depth for Owner review guidance. Does not auto-accept, auto-reject, execute work, approve intake, verify evidence, close items, mutate the chain, or seal anything. Owner remains the final decision point.",
+  "type": "object",
+  "required": [
+    "threshold_id",
+    "source_evidence_context",
+    "threshold_state",
+    "rationale",
+    "evaluated_at",
+    "authority_disclaimer",
+    "advisory_only",
+    "custody",
+    "librarian_impact"
+  ],
+  "properties": {
+    "threshold_id": { "type": "string", "pattern": "^TD-[A-Z0-9]+-[0-9]{4,6}$" },
+    "source_evidence_context": {
+      "type": "object",
+      "properties": {
+        "evidence_bundle_ref": { "type": "string" },
+        "consistency_guard_refs": { "type": "array", "items": { "type": "string" } },
+        "evidence_item_count": { "type": "integer", "minimum": 0 },
+        "consistency_check_count": { "type": "integer", "minimum": 0 },
+        "consistency_pass_count": { "type": "integer", "minimum": 0 }
+      },
+      "description": "Reference to the evidence context evaluated for depth."
+    },
+    "threshold_state": {
+      "type": "string",
+      "enum": ["sufficient", "needs_more_context", "blocked"],
+      "description": "Advisory depth classification. sufficient = evidence depth adequate for Owner review. needs_more_context = gaps found, additional evidence recommended before Owner review. blocked = critical gaps prevent meaningful Owner review."
+    },
+    "rationale": { "type": "string", "minLength": 3, "maxLength": 2000 },
+    "evaluated_at": { "type": "string", "format": "date-time" },
+    "authority_disclaimer": {
+      "type": "string",
+      "const": "This review-depth threshold evaluation is advisory-only. It does not auto-accept evidence, auto-reject findings, execute work, approve intake, verify evidence, close workbench items, mutate the evidence chain, or seal anything. Owner remains the final decision point. Custody is qa-pilot-local. Librarian impact is none."
+    },
+    "custody": { "type": "string", "const": "qa-pilot-local" },
+    "advisory_only": { "type": "boolean", "const": true },
+    "librarian_impact": { "type": "string", "const": "none" }
+  },
+  "additionalProperties": false
+}

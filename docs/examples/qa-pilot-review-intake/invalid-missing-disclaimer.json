@@ -1,0 +1,16 @@
+{
+  "intake_id": "IR-BAD-0003",
+  "source_packet_id": "XPK-BAD-0003",
+  "source_project": "qa-pilot",
+  "intake_status": "received",
+  "received_at": "2026-07-08T01:55:00Z",
+  "included_item_ids": ["QA-BAD-0003"],
+  "item_count": 1,
+  "evidence_summary": {"total_links": 0, "by_type": {}},
+  "lifecycle_summary": {"total_transitions": 0, "by_status": {"open": 1}},
+  "owner_decision_state": "pending",
+  "authority_disclaimer": "This intake is approved and verified by the team.",
+  "custody": "qa-pilot-local",
+  "advisory_only": true,
+  "librarian_impact": "none"
+}

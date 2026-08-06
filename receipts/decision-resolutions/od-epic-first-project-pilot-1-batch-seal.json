@@ -1,0 +1,41 @@
+{
+  "$schema": "owner-decision-v1",
+  "decision_id": "OD-EPIC-QA-PILOT-TRAINING-SYSTEM-FIRST-PROJECT-PILOT-1-BATCH-SEAL",
+  "date": "2026-07-08",
+  "owner": "Andrew Hannah",
+  "epic": "EPIC-QA-PILOT-TRAINING-SYSTEM-FIRST-PROJECT-PILOT-1",
+  "pilot_target": "Librarian",
+  "decision": "BATCH_APPROVE_AND_SEAL",
+  "sprints_sealed": [
+    {"id": "QA-PILOT-FIRST-PROJECT-PILOT-SOURCE-SELECTION-1", "ledger_number": 104},
+    {"id": "QA-PILOT-FIRST-PROJECT-PILOT-PACKAGE-DESIGN-1", "ledger_number": 105},
+    {"id": "QA-PILOT-FIRST-PROJECT-PILOT-GENERATION-1", "ledger_number": 106},
+    {"id": "QA-PILOT-FIRST-PROJECT-PILOT-VALIDATION-1", "ledger_number": 107},
+    {"id": "QA-PILOT-FIRST-PROJECT-PILOT-LEARNING-PATH-1", "ledger_number": 108},
+    {"id": "QA-PILOT-FIRST-PROJECT-PILOT-EXPORT-AND-REVIEW-1", "ledger_number": 109}
+  ],
+  "basis": "Batch seal of pilot epic Sprints 1-6. All validations passed. No stop conditions triggered. Training package TP-LIBRARIAN-PILOT-1 is NOT published — remains advisory, pending separate Owner publication/adoption review.",
+  "note": "Epic execution sealed. Training package publication is a separate Owner decision — not authorized by this seal.",
+  "stop_conditions": {
+    "validation_failure": false,
+    "missing_provenance": false,
+    "zero_source_content": false,
+    "authority_violation": false,
+    "source_hash_mismatch": false,
+    "librarian_mutation": false,
+    "cross_project_write": false,
+    "autonomous_publication": false,
+    "mcp_authority_expansion": false
+  },
+  "package_status": {
+    "id": "TP-LIBRARIAN-PILOT-1",
+    "path": "data/training-exports/librarian/TP-LIBRARIAN-PILOT-1/",
+    "advisory": true,
+    "published": false,
+    "owner_decision_required_for_publish": true
+  },
+  "classification": "epic_completion_batch_seal_first_pilot",
+  "authority": "Owner",
+  "status": "sealed",
+  "sealed_at": "2026-07-08T23:25:00Z"
+}

@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QA Pilot Academy — Facilitator Guide</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --font-sans: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text',
+                   'Helvetica Neue', Helvetica, Arial, sans-serif;
+      --color-bg: #F5F5F7;
+      --color-white: #FFFFFF;
+      --color-label: #1D1D1F;
+      --color-secondary: #6E6E73;
+      --color-tertiary: #86868B;
+      --color-border: rgba(0,0,0,0.06);
+      --color-blue: #007AFF;
+      --color-purple: #AF52DE;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.04);
+      --shadow-md: 0 4px 12px rgba(0,0,0,0.06);
+      --space-2: 8px;
+      --space-3: 12px;
+      --space-4: 16px;
+      --space-5: 20px;
+      --space-6: 24px;
+      --space-8: 40px;
+      --space-10: 56px;
+      --space-12: 80px;
+    }
+
+    html { font-size: 16px; -webkit-font-smoothing: antialiased; }
+    body {
+      font-family: var(--font-sans);
+      background: var(--color-bg);
+      color: var(--color-label);
+      line-height: 1.6;
+    }
+
+    /* ── APPLE-STYLE TOPBAR ────────────────────────────────────────── */
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 var(--space-6);
+      height: 56px;
+      background: rgba(255,255,255,0.80);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .topbar-brand {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--color-label);
+      letter-spacing: -0.01em;
+      text-decoration: none;
+    }
+
+    .topbar-brand svg {
+      width: 26px;
+      height: 26px;
+      flex-shrink: 0;
+    }
+
+    .topbar-actions {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+    }
+
+    .topbar-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 14px;
+      font-size: 13px;
+      font-weight: 500;
+      font-family: var(--font-sans);
+      border: 1px solid #E5E5EA;
+      border-radius: 9999px;
+      background: var(--color-white);
+      color: var(--color-label);
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+
+    .topbar-btn:hover {
+      background: #F5F5F7;
+    }
+
+    .topbar-btn.primary {
+      background: var(--color-purple);
+      border-color: var(--color-purple);
+      color: var(--color-white);
+    }
+
+    .topbar-btn.primary:hover {
+      background: #9B3ED6;
+    }
+
+    /* ── PAGE HEADER ───────────────────────────────────────────────── */
+    .page-header {
+      background: linear-gradient(135deg, #1A1A2E 0%, #2D1F5E 40%, #3B2A7A 70%, #4A3A8A 100%);
+      padding: var(--space-10) var(--space-6) var(--space-8);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .page-header::before {
+      content: '';
+      position: absolute;
+      top: -30%;
+      left: -5%;
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(175,82,222,0.12) 0%, transparent 60%);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .page-header-inner {
+      max-width: 720px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    .page-header h1 {
+      font-size: 36px;
+      font-weight: 700;
+      color: var(--color-white);
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+      margin-bottom: var(--space-3);
+    }
+
+    .page-header .badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 600;
+      color: rgba(255,255,255,0.6);
+      background: rgba(255,255,255,0.1);
+      padding: 3px 10px;
+      border-radius: 9999px;
+      margin-bottom: var(--space-3);
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+    }
+
+    .page-header p {
+      font-size: 16px;
+      color: rgba(255,255,255,0.65);
+      max-width: 560px;
+    }
+
+    /* ── MAIN CONTENT ──────────────────────────────────────────────── */
+    .main {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: var(--space-8) var(--space-6) var(--space-12);
+    }
+
+    .guide-section {
+      background: var(--color-white);
+      border-radius: 14px;
+      padding: var(--space-6);
+      margin-bottom: var(--space-5);
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--color-border);
+    }
+
+    .guide-section h2 {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--color-label);
+      margin-bottom: var(--space-4);
+      letter-spacing: -0.02em;
+    }
+
+    .guide-section h3 {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--color-label);
+      margin-bottom: var(--space-2);
+      margin-top: var(--space-5);
+    }
+
+    .guide-section h3:first-child {
+      margin-top: 0;
+    }
+
+    .guide-section p {
+      font-size: 14px;
+      color: var(--color-secondary);
+      line-height: 1.7;
+      margin-bottom: var(--space-3);
+    }
+
+    .guide-section ul, .guide-section ol {
+      margin: var(--space-3) 0 var(--space-4) var(--space-5);
+    }
+
+    .guide-section li {
+      font-size: 14px;
+      color: var(--color-secondary);
+      line-height: 1.7;
+      margin-bottom: var(--space-2);
+    }
+
+    .guide-section code {
+      font-family: 'SF Mono', 'Menlo', monospace;
+      font-size: 13px;
+      background: #F5F5F7;
+      padding: 2px 8px;
+      border-radius: 4px;
+      color: var(--color-label);
+    }
+
+    .guide-step {
+      display: flex;
+      gap: var(--space-4);
+      padding: var(--space-4) 0;
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .guide-step:last-child {
+      border-bottom: none;
+    }
+
+    .guide-step-num {
+      flex-shrink: 0;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--color-purple);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .guide-step-body {
+      flex: 1;
+    }
+
+    .guide-step-body strong {
+      display: block;
+      font-size: 14px;
+      color: var(--color-label);
+      margin-bottom: 4px;
+    }
+
+    .guide-step-body p {
+      font-size: 13px;
+      color: var(--color-tertiary);
+      margin: 0;
+    }
+
+    .callout {
+      padding: var(--space-4);
+      border-radius: 10px;
+      margin: var(--space-4) 0;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .callout.tip {
+      background: rgba(175, 82, 222, 0.06);
+      border: 1px solid rgba(175, 82, 222, 0.12);
+      color: var(--color-secondary);
+    }
+
+    .callout.tip strong {
+      color: var(--color-purple);
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    /* ── SITE FOOTER ──────────────────────────────────────────────── */
+    .site-footer-wrap {
+      background: #1D1D1F;
+      color: rgba(255,255,255,0.5);
+      padding: var(--space-8) var(--space-6);
+    }
+
+    .site-footer-inner {
+      max-width: 720px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+    }
+
+    .site-footer-inner a {
+      color: rgba(255,255,255,0.5);
+      text-decoration: none;
+      margin-left: var(--space-4);
+    }
+
+    .site-footer-inner a:hover {
+      color: rgba(255,255,255,0.8);
+    }
+
+    @media (max-width: 640px) {
+      .page-header h1 { font-size: 26px; }
+      .topbar { padding: 0 var(--space-4); }
+      .main { padding: var(--space-6) var(--space-4) var(--space-10); }
+      .site-footer-inner { flex-direction: column; gap: var(--space-3); text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ════════════════════════════════════════════════════════════════
+       TOPBAR
+       ════════════════════════════════════════════════════════════════ -->
+  <nav class="topbar">
+    <a href="portal.html" class="topbar-brand">
+      <svg viewBox="0 0 48 48" fill="none">
+        <rect width="48" height="48" rx="10" fill="#007AFF"/>
+        <path d="M14 24L20 30L34 16" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="24" cy="24" r="10" stroke="white" stroke-width="2" fill="none" opacity="0.3"/>
+      </svg>
+      QA Pilot Academy
+    </a>
+    <div class="topbar-actions">
+      <a href="portal.html" class="topbar-btn">← Back to Portal</a>
+    </div>
+  </nav>
+
+  <!-- ════════════════════════════════════════════════════════════════
+       PAGE HEADER
+       ════════════════════════════════════════════════════════════════ -->
+  <div class="page-header">
+    <div class="page-header-inner">
+      <div class="badge">Instructor Resource</div>
+      <h1>Facilitator Guide</h1>
+      <p>A comprehensive guide for instructors and training coordinators managing QA Pilot Academy students, courses, and assessments.</p>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════════════════════════
+       MAIN CONTENT
+       ════════════════════════════════════════════════════════════════ -->
+  <main class="main">
+
+    <!-- Section 1: Platform Overview -->
+    <div class="guide-section">
+      <h2>Platform Overview</h2>
+      <p>QA Pilot Academy is a desktop-based training platform designed for QA onboarding. All student data is stored locally using IndexedDB — nothing is transmitted to external servers. The platform runs entirely from local files, making it deployable without a server infrastructure.</p>
+
+      <h3>Key Components</h3>
+      <ul>
+        <li><strong>Portal</strong> — The student's landing page showing enrolled courses, available courses, and progress tracking.</li>
+        <li><strong>Course Viewer</strong> — The lesson delivery interface with modules, quizzes, and interactive labs.</li>
+        <li><strong>Admin Dashboard</strong> — Management interface for student accounts, course configuration, and reporting.</li>
+        <li><strong>Capstone Assessments</strong> — Hands-on simulated environments (Dynamics CRM, Azure DevOps) for practical evaluation.</li>
+      </ul>
+    </div>
+
+    <!-- Section 2: Managing Students -->
+    <div class="guide-section">
+      <h2>Managing Students</h2>
+
+      <div class="guide-step">
+        <div class="guide-step-num">1</div>
+        <div class="guide-step-body">
+          <strong>Access the Admin Dashboard</strong>
+          <p>Navigate to the Admin Dashboard via the login page link or the "Go to Admin Dashboard" link in the portal sidebar. Use your admin credentials to sign in.</p>
+        </div>
+      </div>
+
+      <div class="guide-step">
+        <div class="guide-step-num">2</div>
+        <div class="guide-step-body">
+          <strong>Add a New Student</strong>
+          <p>In the Students tab, click "Add Student". Enter the student's name and email address. A unique CASE ID is generated automatically. The student will use their email to log in for the first time.</p>
+        </div>
+      </div>
+
+      <div class="guide-step">
+        <div class="guide-step-num">3</div>
+        <div class="guide-step-body">
+          <strong>Monitor Progress</strong>
+          <p>The Dashboard displays each student's enrolled courses, completion percentage, quiz scores, and certificate status. Use the course filter to focus on specific programs. Export data as CSV for external reporting.</p>
+        </div>
+      </div>
+
+      <div class="guide-step">
+        <div class="guide-step-num">4</div>
+        <div class="guide-step-body">
+          <strong>Reset or Deactivate Students</strong>
+          <p>Use the bulk action tools to activate or deactivate students. The "Reset All Students" button (in Settings) clears all data — use with caution. Individual student progress can be reset from the student detail view.</p>
+        </div>
+      </div>
+
+      <div class="callout tip">
+        <strong>🔒 Demo Account</strong>
+        The demo account (<code>demo@qapilot.com</code>) auto-resets on logout. Configure demo course access in Settings → Demo Course Mode. "First-only" shows one course, "Grey-out" shows all but disables enrollment beyond the first.
+      </div>
+    </div>
+
+    <!-- Section 3: Course Configuration -->
+    <div class="guide-section">
+      <h2>Course Configuration</h2>
+      <p>Courses are defined in <code>data/content.js</code> with the <code>COURSE_DEFINITIONS</code> array. Each course has modules, sub-modules, and optional quizzes.</p>
+
+      <h3>Course Prerequisites</h3>
+      <p>Set a <code>prerequisiteId</code> on a course to require completion of another course before enrollment. The portal automatically checks prerequisites and shows helpful messages for locked courses.</p>
+
+      <h3>Pass Mode &amp; Scoring</h3>
+      <p>Each course has a <code>passMode</code> (assess or audit) and <code>passingScore</code>. In audit mode, students can bypass assessments. Scores are calculated from quiz results and capstone rubric evaluations.</p>
+
+      <h3>Capstone Assessments</h3>
+      <p>Capstone courses (<code>isCapstone: true</code>) route to <code>capstone-2.html</code> instead of the standard course viewer. They use a simulated OS environment with Dynamics CRM, Azure DevOps, and Outlook apps for realistic testing scenarios.</p>
+    </div>
+
+    <!-- Section 4: Data & Privacy -->
+    <div class="guide-section">
+      <h2>Data &amp; Privacy</h2>
+      <p>All student data is stored in IndexedDB within the browser. Key data stores include:</p>
+      <ul>
+        <li><strong>students</strong> — Student profiles (name, email, CASE ID, status)</li>
+        <li><strong>courses</strong> — Course definitions seeded from <code>COURSE_DEFINITIONS</code></li>
+        <li><strong>enrollments</strong> — Course enrollment records linking students to courses</li>
+        <li><strong>progress</strong> — Per-course progress, completed sub-modules, quiz results, certificates</li>
+        <li><strong>settings</strong> — Platform configuration (demo mode, pass scores, etc.)</li>
+      </ul>
+      <p>Data persists in the browser until cleared. Use the "Export Student Data" button in the portal or the CSV export in the admin dashboard to back up records. Resetting or clearing browser data will remove all local information.</p>
+    </div>
+
+  </main>
+
+  <!-- ════════════════════════════════════════════════════════════════
+       FOOTER
+       ════════════════════════════════════════════════════════════════ -->
+  <footer class="site-footer-wrap">
+    <div class="site-footer-inner">
+      <span>&copy; 2026 QA Pilot Academy</span>
+      <div>
+        <a href="portal.html">Back to Portal</a>
+        <a href="guide-student.html">Student Guide</a>
+        <a href="#" onclick="history.back();return false;">Help</a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Rounded rectangle background — deep navy -->
+  <rect x="10" y="10" width="80" height="80" rx="20" ry="20" fill="#0F1E3C"/>
+  
+  <!-- Airplane fuselage — bright blue -->
+  <polygon points="26.0,72.4 48.4,50.0 56.4,42.0 67.6,32.4 72.4,27.6 75.6,26.0 74.0,30.8 64.4,37.2 54.8,46.8 51.6,51.6 29.2,74.0" fill="#0088FF"/>
+  
+  <!-- Airplane wing — bright blue -->
+  <polygon points="51.6,51.6 54.8,46.8 40.4,59.6 21.2,69.2 19.6,74.0 40.4,66.0" fill="#0088FF"/>
+  
+  <!-- Airplane tail fin — white -->
+  <polygon points="29.2,74.0 32.4,64.4 38.8,67.6 37.2,75.6" fill="#FFFFFF"/>
+  
+  <!-- "QA" label — white, bottom-right -->
+  <text x="77" y="88" fill="#FFFFFF" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-weight="bold" font-size="16" text-anchor="end">QA</text>
+</svg>

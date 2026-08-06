@@ -1,0 +1,47 @@
+{
+  "receipt_type": "owner_decision_seal",
+  "decision_id": "OD-QA-PILOT-FULL-WORKBENCH-ARCHITECTURE-PLAN-1-SEAL",
+  "project_id": "qa-pilot",
+  "sprint_id": "QA-PILOT-FULL-WORKBENCH-ARCHITECTURE-PLAN-1",
+  "ledger_number": 32,
+  "decision": "APPROVE_AND_SEAL",
+  "approved_by": "Andrew Hannah (Owner)",
+  "approved_at": "2026-07-06T18:20:00Z",
+  "decision_basis": [
+    "plan validator AP-1-AP-13: 13/13 pass",
+    "startup regression: 15/15 pass",
+    "parity matrix: 13/13 pass",
+    "existing validators: 15/15 pass",
+    "CRL lock #30: 7/7 pass",
+    "CDQ #31 fixtures: 16/16 pass",
+    "standalone MCP invariant: enforced (AP-MCP-STANDALONE)"
+  ],
+  "seal_conditions": [
+    "QA Pilot is a standalone QA workbench and optional add-on/value layer, not a Librarian submodule",
+    "QA Pilot owns its own MCP surface, DB, simulator/help surface, and regression lifecycle",
+    "QA Pilot may ingest bounded evidence from multiple governed projects",
+    "QA Pilot may validate evidence, compose tests, build regression suites, record learning, surface simulator/help mappings, and export advisory result packets",
+    "QA Pilot may not approve, seal, start, advance, execute, patch, write, create source-project receipts, mutate source-project ledgers, update source-project status surfaces, or exercise cross-project authority"
+  ],
+  "boundary_assertion": {
+    "project_boundary": "qa-pilot",
+    "lane": "planning",
+    "librarian_impact": "none",
+    "cross_project_registration": false,
+    "runtime_mutation_authorized": false,
+    "implementation_authorized": false
+  },
+  "evidence": [
+    "docs/governance/QA-PILOT-FULL-WORKBENCH-ARCHITECTURE.md",
+    "docs/governance/QA-PILOT-MCP-SURFACE.md",
+    "docs/governance/QA-PILOT-DB-DESIGN.md",
+    "docs/governance/QA-PILOT-SIMULATOR-HELP-SURFACE.md",
+    "docs/governance/QA-PILOT-WORKBENCH-ROADMAP.md",
+    "docs/schemas/ (5 QA schemas)",
+    "scripts/validate-qa-pilot-full-workbench-architecture-plan.py",
+    "scripts/test-qa-pilot-full-workbench-architecture-plan.sh",
+    "QA-PILOT-FULL-WORKBENCH-ARCHITECTURE-PLAN-1.zip",
+    "project-state/sprint-ledger.json (entry #32)"
+  ],
+  "authorized_next_sprint": null
+}

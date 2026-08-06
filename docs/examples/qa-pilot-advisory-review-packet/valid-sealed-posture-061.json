@@ -1,0 +1,35 @@
+{
+  "packet_id": "ARP-REFERENCE-061",
+  "sprint_id": "QA-PILOT-POST-SEAL-SNAPSHOT-REFRESH-2",
+  "ledger_number": 61,
+  "prior_sealed_head": "#60 QA-PILOT-STARTUP-SURFACE-POST-SEAL-RECONCILIATION-1",
+  "claimed_posture": "Post-seal snapshot refresh #2. SUG gate proven repeatable. SRS refreshed from #59 to #60. All 7 validators green.",
+  "completion_summary": "Exercised the Snapshot Update Gate for the second consecutive post-seal refresh, proving the SUG gate is a repeatable post-seal maintenance loop. SRS-BASELINE-001 refreshed from #59 to #60 via governed SUG-REFRESH-060 packet. Registry updated to 28 layers (#33-#60). No Librarian mutation.",
+  "posture_sections": {
+    "sealed_head": "#61 QA-PILOT-POST-SEAL-SNAPSHOT-REFRESH-2",
+    "sealed_number": 61,
+    "registry_layer_count": 28,
+    "registry_classification": "ready",
+    "rcr_receipts_found": 12,
+    "rcr_status": "pass",
+    "rcg_coverage_gap": 0,
+    "rcg_status": "pass",
+    "srs_captured_at": 60,
+    "srs_current": true
+  },
+  "validator_results": [
+    {"validator": "startup_surface_validate", "status": "pass", "summary": "ALL STARTUP SURFACE CHECKS PASS"},
+    {"validator": "SRS_snapshot", "status": "pass", "summary": "ALL SNAPSHOT CHECKS PASS"},
+    {"validator": "SUG_update_gate", "status": "pass", "summary": "ALL CHECKS PASS"},
+    {"validator": "RCR", "status": "pass", "summary": "ALL CHECKS PASS"},
+    {"validator": "RCG_closeout_gate", "status": "pass", "summary": "ALL CHECKS PASS"},
+    {"validator": "PLR_registry", "status": "pass", "summary": "ALL CHECKS PASS"},
+    {"validator": "MG_loop_guard", "status": "pass", "summary": "ALL CHECKS PASS"}
+  ],
+  "librarian_impact": "none",
+  "pending_owner_decision": "sealed",
+  "advisory_only": true,
+  "defines_new_authority": false,
+  "mode_owner": "librarian",
+  "created_at": "2026-07-07T22:30:00Z"
+}

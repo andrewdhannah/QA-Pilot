@@ -1,0 +1,35 @@
+{
+  "packet_id": "ARP-INVALID-STALE-001",
+  "sprint_id": "QA-PILOT-HYPOTHETICAL-STALE-1",
+  "ledger_number": 62,
+  "prior_sealed_head": "#60 hypothetical",
+  "claimed_posture": "Stale posture packet.",
+  "completion_summary": "Claims sealed head #60 but ledger is at #62 — stale posture mismatch that should be flagged as contradictory evidence.",
+  "posture_sections": {
+    "sealed_head": "#60 QA-PILOT-POST-DATED-SPRINT-1",
+    "sealed_number": 60,
+    "registry_layer_count": 27,
+    "registry_classification": "ready",
+    "rcr_receipts_found": 12,
+    "rcr_status": "pass",
+    "rcg_coverage_gap": 0,
+    "rcg_status": "pass",
+    "srs_captured_at": 60,
+    "srs_current": false
+  },
+  "validator_results": [
+    {"validator": "startup_surface_validate", "status": "pass", "summary": "ALL CHECKS PASS"},
+    {"validator": "SRS_snapshot", "status": "degraded", "summary": "SRS stale re #60 vs #62"},
+    {"validator": "SUG_update_gate", "status": "degraded", "summary": "update needed"},
+    {"validator": "RCR", "status": "pass", "summary": "ALL CHECKS PASS"},
+    {"validator": "RCG_closeout_gate", "status": "pass", "summary": "ALL CHECKS PASS"},
+    {"validator": "PLR_registry", "status": "pass", "summary": "ALL CHECKS PASS"},
+    {"validator": "MG_loop_guard", "status": "pass", "summary": "ALL CHECKS PASS"}
+  ],
+  "librarian_impact": "none",
+  "pending_owner_decision": "unknown",
+  "advisory_only": true,
+  "defines_new_authority": false,
+  "mode_owner": "librarian",
+  "created_at": "2026-07-07T22:56:00Z"
+}

@@ -1,0 +1,163 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "QA Pilot Owner Dashboard",
+  "description": "Schema for the Owner Dashboard projection layer output. The dashboard exposes assurance state from authoritative stores. It does not create, approve, or override governed state. Evidence classification distinguishes historical proof from current operational observation per #211 contract.",
+  "type": "object",
+  "required": ["dashboard_id", "generated_at", "version", "invariant", "sections", "evidence_classification"],
+  "properties": {
+    "dashboard_id": {
+      "type": "string",
+      "description": "Unique dashboard generation identifier",
+      "pattern": "^OD-\\d{8}T\\d{6}$"
+    },
+    "generated_at": {
+      "type": "string",
+      "description": "ISO 8601 timestamp of dashboard generation",
+      "format": "date-time"
+    },
+    "version": {
+      "type": "string",
+      "description": "Dashboard schema version",
+      "enum": ["1.1"]
+    },
+    "invariant": {
+      "type": "string",
+      "description": "Architectural invariant — projection layer only",
+      "pattern": "Projection layer"
+    },
+    "evidence_classification": {
+      "type": "object",
+      "description": "Evidence state classification per #211 contract. Distinguishes historical proof (assurance_record) from current observation (assurance_snapshot). No projection may represent historical evidence as current operational state without explicit classification.",
+      "required": ["summary", "classifications", "invariant"],
+      "properties": {
+        "summary": {
+          "type": "object",
+          "description": "Aggregate counts by evidence class",
+          "required": ["total_records", "total_snapshots", "exit_invariant_satisfied"],
+          "properties": {
+            "total_records": {
+              "type": "integer",
+              "description": "Number of assurance_record items"
+            },
+            "total_snapshots": {
+              "type": "integer",
+              "description": "Number of assurance_snapshot items"
+            },
+            "exit_invariant_satisfied": {
+              "type": "boolean",
+              "description": "True if no historical record is rendered as current operational state without classification",
+              "const": true
+            }
+          }
+        },
+        "classifications": {
+          "type": "array",
+          "description": "Per-evidence-item classification",
+          "items": {
+            "type": "object",
+            "required": ["source", "evidence_class", "display_label", "temporal_note"],
+            "properties": {
+              "source": {
+                "type": "string",
+                "description": "Source identifier or file path"
+              },
+              "evidence_class": {
+                "type": "string",
+                "enum": ["assurance_record", "assurance_snapshot"],
+                "description": "assurance_record = historical proof (immutable, attributable, evidence-backed). assurance_snapshot = current observed state (time-bound, refreshable, environment-dependent)."
+              },
+              "display_label": {
+                "type": "string",
+                "description": "Human-readable label for dashboard rendering"
+              },
+              "temporal_note": {
+                "type": "string",
+                "description": "Temporal context — e.g. 'captured at {timestamp}' for records, 'observed at {timestamp}' for snapshots"
+              },
+              "source_type": {
+                "type": "string",
+                "description": "Original evidence source type (EP, QR, EC, RCR, OD, health, port, etc.)"
+              }
+            }
+          }
+        },
+        "invariant": {
+          "type": "string",
+          "description": "Exit invariant from #211: no projection may represent historical evidence as current operational state without explicit classification",
+          "pattern": "No historical record is rendered as current operational state without explicit classification"
+        }
+      }
+    },
+    "sections": {
+      "type": "object",
+      "description": "Dashboard sections, each exposing a dimension of assurance state",
+      "required": [
+        "assurance_health",
+        "active_findings",
+        "risk_posture",
+        "evidence_freshness",
+        "owner_queue",
+        "release_readiness"
+      ],
+      "properties": {
+        "assurance_health": {
+          "type": "object",
+          "description": "Pipeline health, registry state, continuous loop, history",
+          "properties": {
+            "title": { "type": "string" },
+            "registry": { "type": "object" },
+            "continuous_loop": { "type": "object" },
+            "history": { "type": "object" }
+          }
+        },
+        "active_findings": {
+          "type": "object",
+          "description": "Finding lifecycle records with state breakdown",
+          "properties": {
+            "title": { "type": "string" },
+            "data": {
+              "type": "object",
+              "properties": {
+                "total": { "type": "integer" },
+                "by_state": { "type": "object" },
+                "unacknowledged": { "type": "integer" }
+              }
+            }
+          }
+        },
+        "risk_posture": {
+          "type": "object",
+          "description": "Risk prioritization summary",
+          "properties": {
+            "title": { "type": "string" },
+            "data": { "type": "object" }
+          }
+        },
+        "evidence_freshness": {
+          "type": "object",
+          "description": "Evidence freshness tracking",
+          "properties": {
+            "title": { "type": "string" },
+            "data": { "type": "object" }
+          }
+        },
+        "owner_queue": {
+          "type": "object",
+          "description": "Pending Owner decisions",
+          "properties": {
+            "title": { "type": "string" },
+            "data": { "type": "object" }
+          }
+        },
+        "release_readiness": {
+          "type": "object",
+          "description": "Release readiness profile summary",
+          "properties": {
+            "title": { "type": "string" },
+            "data": { "type": "object" }
+          }
+        }
+      }
+    }
+  }
+}

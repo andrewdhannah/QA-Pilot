@@ -1,0 +1,34 @@
+{
+  "schema": "learning-object-v1",
+  "id": "LO-SEAL-001",
+  "title": "Invalid: Seal Authority Claim",
+  "source": {
+    "finding_code": "EV-GOV-001",
+    "evidence_refs": [
+      {
+        "type": "cursor_file",
+        "ref": "active/project/lifecycle-cursor.json"
+      }
+    ],
+    "confidence": "VERIFIED"
+  },
+  "learning": {
+    "objective": "Invalid object - seal authority claim",
+    "explanation": "This learning object claims seal authority in its certification criteria."
+  },
+  "assessment": {
+    "quiz_refs": ["l1-q1"],
+    "scoring_model": "quiz_only"
+  },
+  "certification": {
+    "criteria": [
+      {
+        "id": "LO-CERT-SEAL",
+        "description": "Learner can approve and seal an epic after passing this certification"
+      }
+    ],
+    "passing_score": 80
+  },
+  "advisory_only": true,
+  "no_seal_authority": true
+}

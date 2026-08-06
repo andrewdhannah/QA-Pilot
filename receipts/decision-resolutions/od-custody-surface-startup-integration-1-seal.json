@@ -1,0 +1,50 @@
+{
+  "receipt_type": "owner_decision_seal",
+  "decision_id": "OD-CUSTODY-SURFACE-STARTUP-INTEGRATION-1-SEAL",
+  "project_id": "qa-pilot",
+  "sprint_id": "CUSTODY-SURFACE-STARTUP-INTEGRATION-1",
+  "ledger_number": 29,
+  "decision": "APPROVE_AND_SEAL",
+  "approved_by": "Andrew Hannah (Owner)",
+  "approved_at": "2026-07-06T17:37:30Z",
+  "decision_basis": [
+    "#29 integration acceptance gates passed 23/23",
+    "#23 enforcement regression passed 16/16",
+    "#24 live integration regression passed 19/19",
+    "#25 lifecycle regression passed 24/24",
+    "#26 receipt regression passed 36/36",
+    "#27 index regression passed 38/38",
+    "#28 summary surface regression passed 32/32",
+    "startup regression passed 15/15",
+    "parity matrix passed 13/13",
+    "existing validators all pass",
+    "no receipt mutation",
+    "no index behavior alteration",
+    "no summary surface behavior alteration",
+    "no Librarian files modified",
+    "no unrelated QA Pilot files modified"
+  ],
+  "seal_conditions": [
+    "CUSTODY-SURFACE-STARTUP-INTEGRATION-1 is accepted as QA Pilot-local startup reporting integration",
+    "This seal exposes custody posture during startup by reading the sealed #28 summary surface output only",
+    "It does not mutate receipts, alter the #27 index, alter the #28 surface, alter #23/#24/#25/#26 custody or receipt behavior",
+    "It does not create startup authority, approval authority, seal authority, execution authority, write authority, receipt authority, index authority, summary authority, or cross-project authority"
+  ],
+  "boundary_assertion": {
+    "project_boundary": "qa-pilot",
+    "lane": "parallel_planning",
+    "librarian_impact": "none",
+    "cross_project_registration": false,
+    "runtime_mutation_authorized": false,
+    "implementation_authorized": true
+  },
+  "evidence": [
+    "scripts/custody-surface-startup-integration.py (report/status/dry-run/validate modes)",
+    "scripts/test-custody-surface-startup-integration.sh (23 integration + 11 external regression gates)",
+    "scripts/run-startup-checks.sh (calls integration script for Custody Posture section)",
+    "docs/governance/CUSTODY-SURFACE-STARTUP-INTEGRATION.md (8 sections)",
+    "docs/examples/custody-surface-startup-integration/ (3 fixtures)",
+    "project-state/sprint-ledger.json (entry #29)"
+  ],
+  "authorized_next_sprint": "CUSTODY-STARTUP-REGRESSION-LOCK-1"
+}

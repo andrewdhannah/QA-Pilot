@@ -1,0 +1,19 @@
+{
+  "schema": "project-wide-write-custody-v1",
+  "project_id": "qa-pilot",
+  "sprint_id": "QA-PILOT-STARTUP-REGRESSION-SUITE-1",
+  "file_path": "scripts/validate-qa-pilot-startup-regression.py",
+  "requested_action": "Update regression validator with new SR rule",
+  "custody_class": "READ_ONLY_BY_DEFAULT",
+  "write_authority_source": "sprint_allowlist",
+  "sprint_allowlisted": true,
+  "release_state": "pre_release",
+  "sealed_evidence": false,
+  "generated_by_tool": false,
+  "owner_approval_required": false,
+  "owner_approval_present": false,
+  "warning_required": false,
+  "warning_present": false,
+  "expected_decision": "ALLOW",
+  "description": "Sprint-allowlisted write to a validator script within sprint scope"
+}

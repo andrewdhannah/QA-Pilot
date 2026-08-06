@@ -1,0 +1,33 @@
+{
+  "$schema": "owner-decision-v1",
+  "decision_id": "OD-EPIC-QA-PILOT-TRAINING-SYSTEM-FIRST-PROJECT-PILOT-1-AUTHORIZATION",
+  "date": "2026-07-08",
+  "owner": "Andrew Hannah",
+  "epic": "EPIC-QA-PILOT-TRAINING-SYSTEM-FIRST-PROJECT-PILOT-1",
+  "pilot_target": "Librarian",
+  "decision": "AUTHORIZE_BOUNDED_CONTINUATION",
+  "sprints_authorized": [
+    "QA-PILOT-FIRST-PROJECT-PILOT-SOURCE-SELECTION-1",
+    "QA-PILOT-FIRST-PROJECT-PILOT-PACKAGE-DESIGN-1",
+    "QA-PILOT-FIRST-PROJECT-PILOT-GENERATION-1",
+    "QA-PILOT-FIRST-PROJECT-PILOT-VALIDATION-1",
+    "QA-PILOT-FIRST-PROJECT-PILOT-LEARNING-PATH-1",
+    "QA-PILOT-FIRST-PROJECT-PILOT-EXPORT-AND-REVIEW-1"
+  ],
+  "guardrails": [
+    "No validation failure without stop",
+    "No missing provenance",
+    "No zero-source generated content",
+    "No unsupported authority claim",
+    "No source hash mismatch",
+    "No Librarian mutation",
+    "No cross-project write",
+    "No publication without Owner",
+    "No MCP authority expansion",
+    "Stop if design question arises",
+    "Stop if sprint order or scope change needed"
+  ],
+  "authority": "Owner",
+  "status": "authorized",
+  "authorized_at": "2026-07-08T23:15:00Z"
+}

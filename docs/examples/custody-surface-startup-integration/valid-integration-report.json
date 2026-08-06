@@ -1,0 +1,35 @@
+{
+  "report_metadata": {
+    "schema": "custody-surface-startup-integration-v1",
+    "deterministic": true,
+    "surface_status": "ok",
+    "report_type": "startup_custody_posture"
+  },
+  "custody_posture": {
+    "available": true,
+    "status": "available",
+    "detail": "12 custody receipts indexed",
+    "total_receipts_in_index": 12
+  },
+  "summary": {
+    "by_custody_source": {"lifecycle": 3, "live": 2, "write": 7},
+    "by_decision_type": {"approvals": 10, "denied": 2, "warning": 0, "dry_run": 0},
+    "by_violation_code": {"WRITE_SCOPE_VIOLATION": 2},
+    "by_mutation_status": {"blocked": 2, "mutated": 10},
+    "by_approval_provenance": {"owner_approval_present": 2, "owner_approval_absent": 10},
+    "by_sprint": {"AG-1": 1, "AG-2": 1, "AG-3": 1, "AG-4": 3, "AG-5a": 1, "AG-5b": 1, "AG-6": 1, "AG-7": 1, "AG-8": 1, "SPRINT-X": 1},
+    "by_ledger_reference": {"#23": 1, "#24": 1, "#25": 1},
+    "by_sealed_contract": {"#23": 7, "#24": 3, "#25": 4}
+  },
+  "sealed_contract_references": {
+    "#23": {"receipts_referencing": 7, "tracked_in_surface": true},
+    "#24": {"receipts_referencing": 3, "tracked_in_surface": true},
+    "#25": {"receipts_referencing": 4, "tracked_in_surface": true},
+    "#26": {"receipts_referencing": 0, "tracked_in_surface": true},
+    "#27": {"receipts_referencing": 0, "tracked_in_surface": true},
+    "#28": {"receipts_referencing": 0, "tracked_in_surface": true}
+  },
+  "review_items": [],
+  "review_item_summary": {"malformed_count": 0, "duplicate_count": 0, "total_review_items": 0},
+  "surface_controls": {"approve": false, "seal": false, "execute": false, "write": false}
+}

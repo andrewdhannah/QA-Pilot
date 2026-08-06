@@ -1,0 +1,17 @@
+{
+  "record_id": "QR-BADREQ-0001",
+  "qualification_type": "artifact",
+  "target_id": "MISSING-FIELDS-001",
+  "target_type": "workbench_item",
+  "qualification_level": "spot_checked",
+  "evidence_refs": [],
+  "overall_score": 0.85,
+  "sub_dimension_scores": {
+    "schema_compliance": 0.95
+  },
+  "advisory_only": true,
+  "custody": "qa-pilot-local",
+  "librarian_impact": "none",
+  "assessed_at": "2026-07-16T12:00:00Z",
+  "assessed_by": ""
+}

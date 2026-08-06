@@ -1,0 +1,76 @@
+{
+  "guard_id": "MG-INVALID-RETRY-LOOP-001",
+  "session_id": "ses_auto_retry_001",
+  "title": "Invalid — Auto-Retry Loop After Successful Health Check",
+  "description": "Agent entered an auto-retry loop repeatedly calling the MCP health check after a successful result, never stopping despite repeated identical outcomes.",
+  "mcp_calls": [
+    {
+      "call_number": 1,
+      "tool": "check-mcp-health",
+      "params_summary": "qa-pilot MCP endpoint health check",
+      "result": "success",
+      "result_detail": "MCP endpoint reachable, all 8 tools available.",
+      "phase": "startup",
+      "retry": false,
+      "stop_reason": null
+    },
+    {
+      "call_number": 2,
+      "tool": "check-mcp-health",
+      "params_summary": "qa-pilot MCP endpoint health check",
+      "result": "success",
+      "result_detail": "MCP endpoint reachable, all 8 tools available.",
+      "phase": "startup",
+      "retry": true,
+      "stop_reason": null
+    },
+    {
+      "call_number": 3,
+      "tool": "check-mcp-health",
+      "params_summary": "qa-pilot MCP endpoint health check",
+      "result": "success",
+      "result_detail": "MCP endpoint reachable, all 8 tools available.",
+      "phase": "startup",
+      "retry": true,
+      "stop_reason": null
+    },
+    {
+      "call_number": 4,
+      "tool": "check-mcp-health",
+      "params_summary": "qa-pilot MCP endpoint health check",
+      "result": "success",
+      "result_detail": "MCP endpoint reachable, all 8 tools available.",
+      "phase": "startup",
+      "retry": true,
+      "stop_reason": null
+    },
+    {
+      "call_number": 5,
+      "tool": "check-mcp-health",
+      "params_summary": "qa-pilot MCP endpoint health check",
+      "result": "success",
+      "result_detail": "MCP endpoint reachable, all 8 tools available.",
+      "phase": "startup",
+      "retry": true,
+      "stop_reason": null
+    }
+  ],
+  "aggregate": {
+    "total_calls": 5,
+    "unique_tools": 1,
+    "repeated_identical_calls": 4,
+    "repeated_health_checks": 4,
+    "stop_reason_present": false,
+    "cross_lane_detected": false,
+    "bounded": false,
+    "no_auto_retry_loop": false,
+    "terminal_result_recognized": false,
+    "cross_lane_calls": []
+  },
+  "advisory_only": true,
+  "custody": "qa-pilot-local",
+  "librarian_impact": "none",
+  "not_seal_authority": "No sealing authority claimed.",
+  "not_librarian_mutation_authority": "No Librarian mutation claimed.",
+  "created_at": "2026-07-07T17:55:00Z"
+}

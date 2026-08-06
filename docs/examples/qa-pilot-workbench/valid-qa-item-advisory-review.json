@@ -1,0 +1,32 @@
+{
+  "qa_item_id": "QA-GOV-0003",
+  "title": "Advisory review packet produced from live posture",
+  "source": "advisory_review",
+  "status": "needs_review",
+  "severity": "info",
+  "category": "governance",
+  "description": "ARP-LIVE-062 was produced from sealed #62 posture. All 10 AR rules pass. Proves advisory review consumer readiness contract works against live posture.",
+  "evidence_refs": [
+    "ARP-LIVE-062",
+    "ARP-QA-PILOT-CONSUMER-001",
+    "ARP-QA-PILOT-CONSUMER-002"
+  ],
+  "validator_refs": [
+    "AR-1",
+    "AR-2",
+    "AR-3",
+    "AR-4",
+    "AR-5",
+    "AR-6",
+    "AR-7",
+    "AR-8",
+    "AR-9",
+    "AR-10"
+  ],
+  "owner_decision_state": "pending",
+  "created_at": "2026-07-07T22:56:00Z",
+  "updated_at": "2026-07-07T22:56:00Z",
+  "advisory_only": true,
+  "custody": "qa-pilot-local",
+  "librarian_impact": "none"
+}

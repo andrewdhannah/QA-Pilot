@@ -1,0 +1,53 @@
+{
+  "$schema": "qa-pilot-migration-app-open-v1",
+  "destination_root": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app",
+  "checked_pages": [
+    "index.html",
+    "portal.html",
+    "course-view.html",
+    "certificate.html"
+  ],
+  "results": [
+    {
+      "page": "index.html",
+      "exists": true,
+      "size_bytes": 35678,
+      "reference_count": 15,
+      "missing_references": [
+        "about.html"
+      ],
+      "opens_cleanly": false
+    },
+    {
+      "page": "portal.html",
+      "exists": true,
+      "size_bytes": 140665,
+      "reference_count": 26,
+      "missing_references": [],
+      "opens_cleanly": true
+    },
+    {
+      "page": "course-view.html",
+      "exists": true,
+      "size_bytes": 120954,
+      "reference_count": 11,
+      "missing_references": [],
+      "opens_cleanly": true
+    },
+    {
+      "page": "certificate.html",
+      "exists": true,
+      "size_bytes": 52749,
+      "reference_count": 18,
+      "missing_references": [
+        "course.html"
+      ],
+      "opens_cleanly": false
+    }
+  ],
+  "verdict": "FAIL",
+  "notes": [
+    "Read-only check: scan HTML files for asset references and verify each resolves under browser-app/.",
+    "No browser launch performed in this audit."
+  ]
+}

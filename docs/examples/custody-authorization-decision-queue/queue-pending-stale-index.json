@@ -1,0 +1,17 @@
+{
+  "entry_id": "CDQ-20260706-003",
+  "queued_at": "2026-07-06T17:45:00Z",
+  "status": "pending",
+  "source": "startup_report",
+  "finding_type": "stale_index",
+  "description": "Custody index #27 may be stale — last rebuild timestamp unavailable",
+  "custody_context": {
+    "contract_id": "#27",
+    "receipt_count": 12,
+    "detail": "Index rebuilt at unknown time; receipts present but index age uncertain"
+  },
+  "advisory": true,
+  "owner_required": true,
+  "owner_decision": null,
+  "cross_project": false
+}

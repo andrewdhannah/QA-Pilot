@@ -1,0 +1,15 @@
+{
+  "review_id": "qa-pilot-review-detailed-boundary-001",
+  "source_sim_id": "qa-pilot-sim-valid-boundary-test-001",
+  "review_type": "detailed",
+  "summary": "Detailed boundary review: sim tested advisory boundary with milestone-regression packet. Sim observed 22/22 pass results but did not auto-approve any downstream action. All hard boundaries held. Owner decision remains required.",
+  "advisory": true,
+  "no_apply_path": true,
+  "no_train_behavior": true,
+  "no_bridge_behavior": true,
+  "no_mutation_authorized": true,
+  "no_cross_project_write": true,
+  "owner_decision_required": true,
+  "generated_at": "2026-07-05T23:21:00Z",
+  "notes": "Valid detailed review: boundary test, all invariants confirmed."
+}

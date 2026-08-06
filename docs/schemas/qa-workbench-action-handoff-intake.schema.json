@@ -1,0 +1,107 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://qa-pilot.carbideframe/schemas/qa-workbench-action-handoff-intake-v1",
+  "title": "QA Workbench Action Handoff Intake",
+  "description": "Schema for a bounded handoff-intake record. Ingests an exported action packet for downstream review only. Intake does not execute the action, authorize execution, approve intake, verify evidence, close items, mutate source records, or seal anything.",
+  "type": "object",
+  "required": [
+    "handoff_id",
+    "source_export_id",
+    "source_action_packet_id",
+    "source_receipt_id",
+    "source_summary_id",
+    "source_intake_id",
+    "source_item_ids",
+    "source_evidence_ids",
+    "action_state",
+    "decision",
+    "rationale",
+    "intake_status",
+    "received_at",
+    "authority_disclaimer",
+    "advisory_only",
+    "custody",
+    "librarian_impact"
+  ],
+  "properties": {
+    "handoff_id": {
+      "type": "string",
+      "pattern": "^HI-[A-Z0-9]+-[0-9]{4,6}$",
+      "description": "Unique handoff intake identifier (e.g. HI-ACTION-0001)."
+    },
+    "source_export_id": {
+      "type": "string",
+      "pattern": "^AXPK-",
+      "description": "The action packet export ID that this intake derives from."
+    },
+    "source_action_packet_id": {
+      "type": "string",
+      "pattern": "^AP-",
+      "description": "The action packet ID."
+    },
+    "source_receipt_id": {
+      "type": "string",
+      "pattern": "^WDR-",
+      "description": "The review decision receipt ID."
+    },
+    "source_summary_id": {
+      "type": "string",
+      "pattern": "^DS-",
+      "description": "The decision summary ID."
+    },
+    "source_intake_id": {
+      "type": "string",
+      "pattern": "^IR-",
+      "description": "The intake record ID."
+    },
+    "source_item_ids": {
+      "type": "array",
+      "items": { "type": "string", "pattern": "^QA-" },
+      "minItems": 1
+    },
+    "source_evidence_ids": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "action_state": {
+      "type": "string",
+      "enum": ["proposed", "owner_authorized", "deferred", "rejected"]
+    },
+    "decision": {
+      "type": "string",
+      "enum": ["accepted_for_action", "authorized", "deferred", "rejected"]
+    },
+    "rationale": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 2000,
+      "description": "Owner or reviewer rationale for the action."
+    },
+    "intake_status": {
+      "type": "string",
+      "enum": ["received", "in_review", "completed", "deferred"],
+      "description": "Advisory-only intake lifecycle status. Does not imply approval or closure."
+    },
+    "received_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "authority_disclaimer": {
+      "type": "string",
+      "const": "This action handoff intake receives an exported action path for downstream review only. It does not execute the action, authorize execution, approve intake, verify evidence, close workbench items, mutate source records, or seal anything. Custody is qa-pilot-local. Librarian impact is none."
+    },
+    "custody": {
+      "type": "string",
+      "const": "qa-pilot-local"
+    },
+    "advisory_only": {
+      "type": "boolean",
+      "const": true
+    },
+    "librarian_impact": {
+      "type": "string",
+      "const": "none"
+    }
+  },
+  "additionalProperties": false
+}

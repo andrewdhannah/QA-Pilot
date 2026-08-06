@@ -1,0 +1,51 @@
+{
+  "authority" : {
+    "applies_changes" : false,
+    "closes_work" : false,
+    "owner_decision_recorded" : false,
+    "packet_authorized" : true,
+    "result_validated" : false,
+    "worker_trusted" : false
+  },
+  "canonical_intake" : {
+    "http_endpoint" : "\/api\/work-results\/intake",
+    "mcp_tool" : "project_work_result_intake",
+    "required_packet_linkage" : true
+  },
+  "created_at" : "2026-07-10T19:05:46Z",
+  "dispatch_id" : "spd-qa-pilot-20260710-2",
+  "dispatch_status" : "dispatched",
+  "governance_mode" : "DELEGATED_DISPATCH",
+  "packet_authorization_id" : "OD-qa-pilot-20260710-260710-2",
+  "project_id" : "qa-pilot",
+  "work_packet_id" : "wp-qa-pilot-20260710-2",
+  "worker_context" : {
+    "allowed_scope" : [
+      "Capture and verify Owner authorization (apr_952575e5 \/ apt_3ed7340e)",
+      "Re-read the approved manifest reports\/qa-pilot-migration-copy-manifest-1.json and verify SHA-256s of every source file right before copy",
+      "Perform the copy into active\/qa-pilot\/browser-app\/ per the manifest, preserving relative paths",
+      "Verify every copied file's SHA-256 matches the manifest post-copy; record any mismatch",
+      "Verify no CarbideFrame governance file was modified or overwritten (refresh overwrite-protection verdict)",
+      "Verify OpenWork source mtimes are unchanged",
+      "Audit relative path risks (e.g., admin\/dashboard.html referencing ..\/js\/app.js) without auto-rewriting; record the audit",
+      "Verify the migrated app opens: read browser-app\/index.html, walk referenced assets, confirm presence; do not perform a browser launch",
+      "Run startup checks; confirm managed; confirm governance framework remains green",
+      "Produce Sprint 2 audit (JSON), result (JSON), completion report (MD), and receipt (JSON)",
+      "Carry forward the Sprint 1 advisory gap (missing project_work_result_intake server-side record) explicitly",
+      "Emit Sprint 2 completion report and stop for Owner direction"
+    ],
+    "execution_context_id" : "spd-qa-pilot-20260710-2",
+    "forbidden_actions" : [
+      "mutate_carbideframe_governance_files",
+      "mutate_carbideframe_librarian_files",
+      "mutate_openwork_qa_pilot_source",
+      "add_backend_auth_telemetry_external_dependencies",
+      "continue_visual_parity_or_i18n_wiring_work",
+      "rename_browser_app_data_to_browser_app_courses",
+      "archive_or_supersede_openwork_source",
+      "delete_docs_schemas_browser_assets",
+      "seal_epic_without_owner_decision"
+    ],
+    "worker_type" : "qa-pilot-migration-worker"
+  }
+}

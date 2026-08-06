@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title id="pageTitle">QA Pilot Academy</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="stylesheet" href="css/main.css">
+  <script src="js/i18n.js"></script>
+  <script src="i18n/lang-en.js"></script>
+  <script src="i18n/lang-fr.js"></script>
+  <style>
+    /* Landing page shell — bento workbench, no marketing hero */
+    body { background: var(--color-bg); }
+    .lp-topbar { display:flex; align-items:center; justify-content:space-between; height:56px; padding:0 var(--space-5); background:var(--color-surface); border-bottom:1px solid var(--color-border); position:sticky; top:0; z-index:10; }
+    .lp-topbar-left { display:flex; align-items:center; gap:var(--space-3); min-width:0; }
+    .lp-topbar-brand { display:flex; align-items:center; gap:var(--space-2); font-size:var(--text-heading); font-weight:var(--weight-semibold); color:var(--color-ink); letter-spacing:var(--ls-tight); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .lp-topbar-right { display:flex; align-items:center; gap:var(--space-3); }
+    .lp-topbar-label { font-size:var(--text-caption); color:var(--color-ink-muted); letter-spacing:var(--ls-wider); text-transform:uppercase; padding:2px var(--space-2); border-left:1px solid var(--color-border); }
+
+    .lp-main { max-width:var(--content-readable-width, 1180px); margin:0 auto; padding:var(--space-5) var(--space-6); }
+
+    /* Page header */
+    .lp-header { margin-bottom:var(--space-5); }
+
+    /* Bento primary row: 2-column asymmetrical (attention left, active right) */
+    .lp-bento-primary { display:grid; grid-template-columns:1.4fr 1fr; gap:var(--space-5); margin-bottom:var(--space-5); }
+
+    /* Bento secondary: full-width flat card row */
+    .lp-bento-secondary { display:grid; grid-template-columns:1fr 1fr; gap:var(--space-5); margin-bottom:var(--space-5); }
+
+    /* Source chips */
+    .source-chip { display:inline-flex; align-items:center; gap:4px; padding:2px 8px; border-radius:var(--radius-sm); font-size:9px; font-family:var(--font-mono); color:var(--color-ink-muted); background:var(--color-bg); border:1px solid var(--color-border); white-space:nowrap; }
+    .source-chip::before { content:""; width:5px; height:5px; border-radius:50%; background:var(--color-success); flex-shrink:0; }
+
+    /* Action surface (replaces CTA buttons) */
+    .lp-action { display:inline-flex; align-items:center; gap:var(--space-2); font-size:var(--text-body); color:var(--color-primary); font-weight:var(--weight-medium); cursor:pointer; }
+    .lp-action:hover { color:var(--color-primary-hover); }
+
+    @media (max-width:768px) { .lp-bento-primary, .lp-bento-secondary { grid-template-columns:1fr; } }
+  </style>
+</head>
+<body>
+
+<a href="#main-content" class="skip-link" id="skipLink"></a>
+<header role="banner" class="lp-topbar">
+  <div class="lp-topbar-left">
+    <div class="lp-topbar-brand">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 2L2 7v10l10 5 10-5V7l-10-5z" fill="var(--color-primary)"/><path d="M12 12l-7-3.5v7L12 19l7-3.5v-7L12 12z" fill="#fff"/></svg>
+      <span id="brandText">QA Pilot Academy</span>
+    </div>
+    <span class="lp-topbar-label" id="topbarLabel">Training</span>
+  </div>
+  <div class="lp-topbar-right">
+    <div id="lang-toggle-container"></div>
+  </div>
+</header>
+
+<main id="main-content" role="main" class="lp-main">
+
+  <!-- Page header -->
+  <div class="lp-header">
+    <div class="panel-purpose-label" id="pagePurposeLabel">TRAINING WORKBENCH</div>
+    <h1 style="font-size:var(--text-heading-lg);font-weight:var(--weight-semibold);color:var(--color-ink);letter-spacing:var(--ls-tight);margin:var(--space-1) 0 var(--space-1);" id="pageHeading">QA Pilot Academy</h1>
+    <p style="font-size:var(--text-body);color:var(--color-ink-soft);max-width:620px;" id="pageSubhead">Static browser training platform · No install · No login · No server</p>
+  </div>
+
+  <!-- Bento primary row: Start Training (attention) + Import Deployment (active) -->
+  <div class="lp-bento-primary">
+
+    <!-- Attention card: Start Training (primary action) -->
+    <div class="card-attention card-enter" style="--card-index:0;cursor:pointer;" onclick="startSolo()" tabindex="0" role="button" aria-label="Start solo training">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--space-4);">
+        <span class="panel-purpose-label" style="margin-bottom:0;" id="startPurposeLabel">GET STARTED</span>
+        <span class="source-chip" id="startSourceChip">local browser</span>
+      </div>
+      <div style="font-size:var(--text-heading-lg);font-weight:var(--weight-bold);color:var(--color-ink);margin-bottom:var(--space-2);" id="startTitle">Start Training</div>
+      <p style="font-size:var(--text-body);color:var(--color-ink-soft);margin-bottom:var(--space-5);" id="startDesc">Begin immediately — no account, no team. Your progress is saved locally in this browser.</p>
+      <div style="display:flex;align-items:center;gap:var(--space-2);">
+        <span class="view-state-badge ok" id="startBadge">Ready</span>
+        <span class="lp-action" id="startAction">Launch training <span style="font-size:12px;">→</span></span>
+      </div>
+    </div>
+
+    <!-- Active card: Import deployment -->
+    <div class="card-active card-enter" style="--card-index:1;cursor:pointer;" onclick="showImport()" tabindex="0" role="button" aria-label="Import team deployment">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--space-4);">
+        <span class="panel-purpose-label" style="margin-bottom:0;" id="importPurposeLabel">TEAM DEPLOYMENT</span>
+        <span class="source-chip" id="importSourceChip">JSON file</span>
+      </div>
+      <div style="font-size:var(--text-heading-lg);font-weight:var(--weight-bold);color:var(--color-ink);margin-bottom:var(--space-2);" id="importTitle">Import Deployment</div>
+      <p style="font-size:var(--text-body);color:var(--color-ink-soft);margin-bottom:var(--space-5);" id="importDesc">Join a team session. Import the deployment JSON file from your trainer to access assigned packages.</p>
+      <div class="lp-action" id="importAction">Select file <span style="font-size:12px;">→</span></div>
+      <div class="import-area" id="importArea" style="margin-top:var(--space-4);">
+        <input type="file" id="deploymentInput" accept=".json" onchange="handleDeploymentImport(event)" aria-label="Select deployment JSON file">
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Bento secondary: flat cards for Admin and Status -->
+  <div class="lp-bento-secondary">
+
+    <!-- Flat card: Admin workspace -->
+    <div class="card-flat card-enter" style="--card-index:2;cursor:pointer;" onclick="enterAdmin()" tabindex="0" role="button" aria-label="Admin workspace">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--space-3);">
+        <span class="panel-purpose-label" style="margin-bottom:0;" id="adminPurposeLabel">ADMIN</span>
+        <span class="source-chip" id="adminSourceChip">local workspace</span>
+      </div>
+      <div style="font-size:var(--text-heading);font-weight:var(--weight-bold);color:var(--color-ink);margin-bottom:var(--space-2);" id="adminTitle">Admin / Trainer Workspace</div>
+      <p style="font-size:var(--text-body);color:var(--color-ink-soft);margin-bottom:var(--space-3);" id="adminDesc">Create deployments, manage members, assign packages, and import learner results.</p>
+      <span class="lp-action" id="adminAction">Open admin <span style="font-size:12px;">→</span></span>
+    </div>
+
+    <!-- Flat card: Recent / Resume -->
+    <div class="card-flat card-enter" style="--card-index:3;" id="resumeCard">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--space-3);">
+        <span class="panel-purpose-label" style="margin-bottom:0;" id="statusPurposeLabel">STATUS</span>
+        <span class="source-chip" id="statusSourceChip">local browser</span>
+      </div>
+      <div style="font-size:var(--text-heading);font-weight:var(--weight-bold);color:var(--color-ink);margin-bottom:var(--space-2);" id="statusTitle">Recent Activity</div>
+      <p style="font-size:var(--text-body);color:var(--color-ink-soft);margin-bottom:var(--space-3);" id="statusDesc">No training in progress. Start a new session or import a team deployment to begin.</p>
+      <div id="resumeBanner" style="display:none;">
+        <span class="view-state-badge info" id="resumeBadge">In progress</span>
+        <span class="lp-action" id="resumeAction" onclick="resumeTraining()" style="margin-left:var(--space-3);">Resume <span style="font-size:12px;">→</span></span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Identity posture / custody strip -->
+  <div class="card-flat" style="padding:var(--space-4) var(--space-5);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:var(--space-3);">
+    <div style="display:flex;align-items:center;gap:var(--space-3);flex-wrap:wrap;">
+      <span class="source-chip" style="border-color:var(--color-border);">local browser</span>
+      <span class="source-chip" style="border-color:var(--color-border);">no server</span>
+      <span class="source-chip" style="border-color:var(--color-border);">no auth</span>
+    </div>
+    <div style="font-size:var(--text-small);color:var(--color-ink-muted);" id="identityNote">
+      Local identity only. No passwords, no accounts, no server.
+    </div>
+  </div>
+
+</main>
+
+<div class="view-data-footer" style="max-width:var(--content-readable-width, 1180px);margin:var(--space-3) auto 0;padding:var(--space-2) var(--space-6);">
+  <span class="source-chip" style="font-size:9px;" id="footerSource">Source: local browser</span>
+  <span class="source-chip" style="font-size:9px;" id="footerCustody">Custody: static deployment</span>
+  <span class="source-chip" style="font-size:9px;" id="footerBuild">Build: dev</span>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  if (typeof renderLangToggle !== 'undefined') renderLangToggle('lang-toggle-container');
+  applyI18n();
+  detectResume();
+});
+
+function applyI18n() {
+  if (typeof __ === 'undefined') return;
+  var g = function(id) { return document.getElementById(id); };
+  if (g('brandText')) g('brandText').textContent = __('splash_title') || 'QA Pilot Academy';
+  if (g('pageHeading')) g('pageHeading').textContent = __('splash_title') || 'QA Pilot Academy';
+  if (g('startTitle')) g('startTitle').textContent = __('splash_solo') || 'Start Training';
+  if (g('startDesc')) g('startDesc').textContent = __('splash_solo_desc') || 'Begin immediately — no account, no team.';
+  if (g('importTitle')) g('importTitle').textContent = __('splash_import') || 'Import Deployment';
+  if (g('importDesc')) g('importDesc').textContent = __('splash_import_desc') || 'Join a team session.';
+  if (g('adminTitle')) g('adminTitle').textContent = __('splash_admin') || 'Admin Workspace';
+  if (g('adminDesc')) g('adminDesc').textContent = __('splash_admin_desc') || 'Create deployments, manage members.';
+}
+function detectResume() {
+  var state = null; try { state = JSON.parse(localStorage.getItem('qapilot_state')); } catch(e) {}
+  var banner = document.getElementById('resumeBanner');
+  var desc = document.getElementById('statusDesc');
+  if (state && state.profile && state.inProgress && state.inProgress.length > 0) {
+    if (banner) banner.style.display = 'block';
+    if (desc) desc.textContent = 'You have ' + state.inProgress.length + ' training session(s) in progress.';
+  }
+}
+function startSolo() {
+  var state = null; try { state = JSON.parse(localStorage.getItem('qapilot_state')); } catch(e) {}
+  if (!state || !state.profile) {
+    state = { profile:{id:'local-'+Date.now().toString(36),name:'Learner',created_at:new Date().toISOString(),is_local:true}, inProgress:[], completed:[], importedDeployments:[] };
+    localStorage.setItem('qapilot_state', JSON.stringify(state));
+  }
+  window.location.href = 'catalog.html';
+}
+function showImport() { var a = document.getElementById('importArea'); if (a) a.style.display = a.style.display === 'block' ? 'none' : 'block'; }
+function handleDeploymentImport(event) {
+  var file = event.target.files[0]; if (!file) return;
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      var dep = JSON.parse(e.target.result);
+      if (dep.deployment_schema !== 'deployment-v1') { alert('Invalid schema'); return; }
+      if (dep.advisory !== true) { alert('Must be advisory'); return; }
+      var state = JSON.parse(localStorage.getItem('qapilot_state')) || {profile:null,inProgress:[],completed:[],importedDeployments:[]};
+      state.importedDeployments = state.importedDeployments || [];
+      state.importedDeployments.push({workspace:dep.workspace_name,imported_at:new Date().toISOString(),members:dep.members||[],packages:dep.assigned_packages||[]});
+      localStorage.setItem('qapilot_state', JSON.stringify(state));
+      window.location.href = 'identity.html';
+    } catch(err) { alert('Error: ' + err.message); }
+  };
+  reader.readAsText(file);
+}
+function enterAdmin() { window.location.href = 'admin.html'; }
+function resumeTraining() {
+  var state = null; try { state = JSON.parse(localStorage.getItem('qapilot_state')); } catch(e) {}
+  if (state && state.inProgress && state.inProgress.length) {
+    var last = state.inProgress[state.inProgress.length - 1];
+    window.location.href = last.lastUrl || 'catalog.html';
+  } else { startSolo(); }
+}
+</script>
+</body>
+</html>

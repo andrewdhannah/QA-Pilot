@@ -1,0 +1,61 @@
+{
+  "schema": "learning-object-v1",
+  "id": "LO-EV-GOV-002-001",
+  "title": "Understanding Lifecycle Cursor Freshness",
+  "source": {
+    "finding_code": "EV-GOV-002",
+    "finding_id": "F-0001",
+    "evidence_refs": [
+      {
+        "type": "cursor_file",
+        "ref": "active/agent-bridge/lifecycle-cursor.json",
+        "description": "Agent bridge lifecycle cursor"
+      }
+    ],
+    "confidence": "ESTIMATED"
+  },
+  "learning": {
+    "objective": "The learner will understand what a lifecycle cursor is, why freshness matters, and how to identify a stale cursor from evidence data.",
+    "explanation": "A lifecycle cursor acts like a bookmark for a project's governance state. When the cursor is stale, it means the project has not been reconciled within the expected freshness threshold. This is similar to checking the last time a smoke alarm was tested \u2014 the alarm might still work, but you cannot be certain without a current status check. Staleness does not mean the project is broken; it means the governance state is uncertain. In governed development, uncertainty is treated as a risk signal that requires investigation before making lifecycle decisions."
+  },
+  "exercise": {
+    "scenario_id": "cursor-freshness-scenario",
+    "setup": "You are reviewing the governance posture of four projects. The evidence plane reports that three have stale lifecycle cursors, all exceeding 90 hours since last reconciliation. Your task is to evaluate the risk.",
+    "expected_observations": [
+      {
+        "observation": "Identify which projects have stale cursors",
+        "evidence_link": "F-0001: agent-bridge stale at 95.97 hours"
+      },
+      {
+        "observation": "Determine the freshness threshold (1 hour max)",
+        "evidence_link": "max_age_hours field in provenance record"
+      }
+    ]
+  },
+  "assessment": {
+    "quiz_refs": ["l1-q1", "l1-q3", "l2-q1"],
+    "scoring_model": "quiz_only"
+  },
+  "certification": {
+    "criteria": [
+      {
+        "id": "LO-CERT-001",
+        "description": "Learner can define what a lifecycle cursor is and explain its role in governed development",
+        "required": true
+      },
+      {
+        "id": "LO-CERT-002",
+        "description": "Learner can identify a stale cursor from evidence data and explain the implications",
+        "required": true
+      },
+      {
+        "id": "LO-CERT-003",
+        "description": "Learner can describe the correct response to stale governance state without attempting to resolve it unilaterally",
+        "required": true
+      }
+    ],
+    "passing_score": 80
+  },
+  "advisory_only": true,
+  "no_seal_authority": true
+}

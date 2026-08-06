@@ -1,0 +1,13 @@
+{
+  "registry_posture": {
+    "rcr_posture": {
+      "receipts_found": 4,
+      "latest_receipt": "RCR-NO-IMPACT-051",
+      "latest_impact": "no_registry_impact",
+      "latest_before_layers": 18,
+      "latest_after_layers": 18,
+      "rcr_status": "pass",
+      "classification": "ready"
+    }
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "report_metadata": {
+    "schema": "custody-surface-startup-integration-v1",
+    "deterministic": true,
+    "surface_status": "unavailable",
+    "report_type": "startup_custody_posture"
+  },
+  "custody_posture": {
+    "available": false,
+    "status": "unavailable",
+    "detail": "Custody surface unavailable at startup check time",
+    "total_receipts_in_index": 0
+  },
+  "summary": {
+    "by_custody_source": {},
+    "by_decision_type": {},
+    "by_violation_code": {},
+    "by_mutation_status": {},
+    "by_approval_provenance": {}
+  },
+  "sealed_contract_references": {
+    "#23": {"receipts_referencing": 0, "tracked_in_surface": true},
+    "#24": {"receipts_referencing": 0, "tracked_in_surface": true},
+    "#25": {"receipts_referencing": 0, "tracked_in_surface": true},
+    "#26": {"receipts_referencing": 0, "tracked_in_surface": true},
+    "#27": {"receipts_referencing": 0, "tracked_in_surface": true},
+    "#28": {"receipts_referencing": 0, "tracked_in_surface": true},
+    "#29": {"receipts_referencing": 0, "tracked_in_surface": true}
+  },
+  "review_items": [],
+  "surface_controls": {
+    "approve": false, "seal": false, "execute": false, "write": false
+  }
+}

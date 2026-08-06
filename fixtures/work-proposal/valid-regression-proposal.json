@@ -1,0 +1,54 @@
+{
+  "proposal_id": "WP-QA-REG-10001",
+  "source_diagnostic_id": "DIAG-REG-0001",
+  "source_test_id": "test-pipeline-health-regression",
+  "failure_summary": {
+    "expected": "All 12 PH rules should pass with zero failures",
+    "actual": "PH-7 failed: layer order mismatch at position 3 — expected evidence_intake but got test_composition",
+    "reproduction": "Run: python3 scripts/validate-qa-pilot-pipeline-health-regression.py",
+    "contract_ref": "qa-pilot-pipeline-layer-registry.schema.json",
+    "evidence_refs": ["evidence/ph-run-20260724.json"]
+  },
+  "severity": "HIGH",
+  "affected_domain": "regression",
+  "suggested_objective": "Repair regression failure detected by test-pipeline-health-regression. Expected: All 12 PH rules should pass with zero failures. Actual: PH-7 failed: layer order mismatch at position 3. Severity: HIGH.",
+  "constraints": {
+    "must_not_modify": ["active/librarian/Sources/", "active/librarian/project-state/sprint-ledger.json"],
+    "required_validation": ["python3 scripts/validate-qa-pilot-pipeline-health-regression.py", "python3 scripts/validate-qa-pilot-pipeline-layer-registry.py"]
+  },
+  "verification_requirements": {
+    "rerun_tests": ["python3 scripts/validate-qa-pilot-pipeline-health-regression.py", "python3 scripts/validate-qa-pilot-pipeline-layer-registry.py"],
+    "pass_criteria": "All tests in test-pipeline-health-regression must pass with zero failures. Expected: All 12 PH rules should pass with zero failures. The fix must not introduce new failures.",
+    "regression_test_proposed": false
+  },
+  "compliance_mappings": {
+    "diagnostic_to_proposal": "report_id->source_diagnostic_id, test_id->source_test_id, failure->failure_summary, severity->severity, domain->affected_domain",
+    "proposal_to_work_packet": "suggested_objective->scope, source_diagnostic_id->work_id_provenance, constraints.must_not_modify->forbidden_paths",
+    "status_mapping": [
+      {"proposal_status": "OPEN", "librarian_equivalent": "proposal_created"},
+      {"proposal_status": "REVIEW_REQUIRED", "librarian_equivalent": "owner_review"},
+      {"proposal_status": "APPROVED", "librarian_equivalent": "packet_authorized"},
+      {"proposal_status": "EXECUTING", "librarian_equivalent": "agent_active"},
+      {"proposal_status": "VERIFIED", "librarian_equivalent": "validation_passed"},
+      {"proposal_status": "CLOSED", "librarian_equivalent": "owner_closed"}
+    ]
+  },
+  "limitations": {
+    "advisory_only": true,
+    "no_execution_authority": true,
+    "no_mutation_authority": true,
+    "requires_owner_approval": true,
+    "requires_librarian_draft": true,
+    "notes": "This proposal is advisory-only. It confers no authority. The Owner must review and the Librarian must create a work packet draft."
+  },
+  "provenance": {
+    "advisory": true,
+    "no_authority_conferred": true,
+    "compiled_by": "qa_pilot_work_proposal_compiler.py",
+    "compiled_from": "DIAG-REG-0001",
+    "detected_by": "qa-pilot-pipeline-health-regression",
+    "validation_run": "ph-run-20260724",
+    "pipeline_run": "pipeline-20260724-001",
+    "compiled_at": "2026-07-24T10:05:00Z"
+  }
+}

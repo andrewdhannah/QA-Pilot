@@ -1,0 +1,17 @@
+{
+  "entry_id": "CDQ-20260706-001",
+  "queued_at": "2026-07-06T17:45:00Z",
+  "status": "pending",
+  "source": "startup_report",
+  "finding_type": "degraded_custody",
+  "description": "Custody surface #28 returned degraded status at startup check",
+  "custody_context": {
+    "contract_id": "#28",
+    "receipt_count": 12,
+    "detail": "Surface status degraded — receipts available but index incomplete"
+  },
+  "advisory": true,
+  "owner_required": true,
+  "owner_decision": null,
+  "cross_project": false
+}

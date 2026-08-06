@@ -1,0 +1,37 @@
+{
+  "qa_item_id": "QA-PERF-0050",
+  "title": "Training simulation validates evidence ingestion pipeline",
+  "source": "train_sim",
+  "status": "resolved_locally",
+  "severity": "low",
+  "category": "performance",
+  "description": "Training sim case validated against evidence ingestion pipeline produces expected results.",
+  "evidence_refs": [
+    "TS-EVIDENCE-INGEST-001"
+  ],
+  "validator_refs": [
+    "TS-1",
+    "TS-2",
+    "TS-3"
+  ],
+  "evidence_links": [
+    {
+      "evidence_link_id": "EL-PERF-0050-001",
+      "evidence_type": "train_sim_result",
+      "evidence_ref": "TS-EVIDENCE-INGEST-001",
+      "producing_validator": "validate-qa-pilot-training-sim.py",
+      "attachment_reason": "Training simulation result showing evidence ingestion pipeline produces expected outputs across 5 test cases.",
+      "custody": "qa-pilot-local",
+      "advisory_only": true,
+      "authority_note": "Evidence attachment does not prove defect validity or imply Owner approval.",
+      "attached_at": "2026-07-08T00:00:00Z"
+    }
+  ],
+  "owner_decision_state": "accepted",
+  "owner_decision_ref": "OD-TRAIN-SIM-001",
+  "created_at": "2026-07-08T00:00:00Z",
+  "updated_at": "2026-07-08T00:03:00Z",
+  "advisory_only": true,
+  "custody": "qa-pilot-local",
+  "librarian_impact": "none"
+}

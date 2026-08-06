@@ -1,0 +1,18 @@
+{
+  "suite_version": "qa-pilot-epic-scenario-suite-v1",
+  "generated_at": "2026-07-24T02:50:51Z",
+  "scenario_id": "EP-INVALID-001",
+  "title": "Invalid overall enum value",
+  "type": "complete_epic",
+  "target_epic": "Test",
+  "overall": "UNKNOWN",
+  "details": [],
+  "learning_artifact": {
+    "scenario_id": "EP-INVALID-001",
+    "title": "Invalid overall",
+    "type": "complete_epic",
+    "summary": "PASS"
+  },
+  "read_only": true,
+  "no_authority_conferred": true
+}

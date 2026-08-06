@@ -1,0 +1,44 @@
+{
+  "receipt_type": "owner_decision_seal",
+  "decision_id": "OD-QA-PILOT-STARTUP-REGRESSION-SUITE-1-SEAL",
+  "project_id": "qa-pilot",
+  "sprint_id": "QA-PILOT-STARTUP-REGRESSION-SUITE-1",
+  "ledger_number": 22,
+  "decision": "APPROVE_AND_SEAL",
+  "approved_by": "Andrew Hannah (Owner)",
+  "approved_at": "2026-07-06T01:44:15Z",
+  "decision_basis": [
+    "Startup regression governance doc, validator (15 SR rules), test runner, and baseline fixture created",
+    "QA Pilot startup remains managed",
+    "Selector routing resolves start qa-pilot to QA Pilot",
+    "MCP is reachable via QA Pilot-local health check, verifying 8/8 tools",
+    "Startup parity remains complete with 13/13 PM rules passing",
+    "Existing QA Pilot validators pass 14/14",
+    "Startup regression validation passes 15/15",
+    "Full validation sweep passes 42/42 with zero regressions",
+    "All 21 ledger entries remain intact",
+    "No Librarian files modified — all hard boundaries enforced"
+  ],
+  "seal_conditions": [
+    "This sprint proves the sealed QA Pilot startup chain holds under regression",
+    "Adding new startup features requires corresponding SR rules",
+    "Do not modify sealed startup files without updating regression suite"
+  ],
+  "boundary_assertion": {
+    "project_boundary": "qa-pilot",
+    "lane": "parallel_planning",
+    "librarian_impact": "none",
+    "cross_project_registration": false,
+    "runtime_mutation_authorized": false,
+    "implementation_authorized": true
+  },
+  "evidence": [
+    "docs/governance/QA-PILOT-STARTUP-REGRESSION.md",
+    "scripts/validate-qa-pilot-startup-regression.py (15 rules SR-1 through SR-13)",
+    "scripts/test-qa-pilot-startup-regression.sh",
+    "docs/examples/qa-pilot-startup-regression/regression-valid-chain.json",
+    "docs/sprints/QA-PILOT-STARTUP-REGRESSION-SUITE-1.md",
+    "project-state/sprint-ledger.json (entry #22)"
+  ],
+  "authorized_next_sprint": "PROJECT-WIDE-WRITE-CUSTODY-ENFORCEMENT-1"
+}

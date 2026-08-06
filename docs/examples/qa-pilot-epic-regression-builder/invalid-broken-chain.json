@@ -1,0 +1,17 @@
+{
+  "suite_id": "ERS-20260706-broken",
+  "epic_id": "EPIC-BROKEN-CHAIN",
+  "sprint_ids": ["QA-PILOT-MCP-EVIDENCE-INTAKE-1"],
+  "tests": [
+    {"test_id": "TC-MISSING-001", "sprint_id": "QA-PILOT-MCP-EVIDENCE-INTAKE-1", "status": "composed"}
+  ],
+  "status": "ready",
+  "advisory": true,
+  "result": {
+    "passed": 0,
+    "failed": 0,
+    "summary": "Missing chain references"
+  },
+  "provenance": {},
+  "created_at": "2026-07-06T23:30:00Z"
+}

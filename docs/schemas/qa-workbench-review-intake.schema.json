@@ -1,0 +1,103 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://qa-pilot.carbideframe/schemas/qa-workbench-review-intake-v1",
+  "title": "QA Workbench Review Intake Record",
+  "description": "Schema for a governed QA workbench review-intake record. Created when an export packet is imported for local review. Intake does not approve packet contents, verify item correctness, accept defects, seal or close anything, or mutate source packets.",
+  "type": "object",
+  "required": [
+    "intake_id",
+    "source_packet_id",
+    "source_project",
+    "intake_status",
+    "received_at",
+    "included_item_ids",
+    "authority_disclaimer",
+    "custody",
+    "advisory_only",
+    "librarian_impact"
+  ],
+  "properties": {
+    "intake_id": {
+      "type": "string",
+      "pattern": "^IR-[A-Z0-9]+-[0-9]{4,6}$",
+      "description": "Unique review intake identifier (e.g. IR-REVIEW-0001)."
+    },
+    "source_packet_id": {
+      "type": "string",
+      "pattern": "^XPK-",
+      "description": "The export packet ID that this intake record was created from."
+    },
+    "source_packet_path": {
+      "oneOf": [{ "type": "string" }, { "type": "null" }],
+      "description": "Optional filesystem path or reference to the source packet file."
+    },
+    "source_project": {
+      "type": "string",
+      "enum": ["qa-pilot", "librarian", "external"],
+      "description": "The project or origin that produced the source packet."
+    },
+    "intake_status": {
+      "type": "string",
+      "enum": ["received", "validated", "triaged", "in_review", "completed", "deferred"],
+      "description": "Local intake lifecycle status. Advisory-only — does not imply approval or closure."
+    },
+    "received_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp when the intake record was created."
+    },
+    "included_item_ids": {
+      "type": "array",
+      "items": { "type": "string", "pattern": "^QA-" },
+      "minItems": 1,
+      "description": "QA item IDs from the source packet."
+    },
+    "item_count": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Number of items in this intake."
+    },
+    "evidence_summary": {
+      "type": "object",
+      "properties": {
+        "total_links": { "type": "integer" },
+        "by_type": { "type": "object" }
+      },
+      "description": "Copied from source packet evidence_links_aggregate."
+    },
+    "lifecycle_summary": {
+      "type": "object",
+      "properties": {
+        "total_transitions": { "type": "integer" },
+        "by_status": { "type": "object" }
+      },
+      "description": "Copied from source packet lifecycle_summary."
+    },
+    "owner_decision_state": {
+      "type": "string",
+      "enum": ["pending", "in_review", "accepted", "rejected", "deferred"],
+      "description": "Owner decision state for this intake. 'accepted' does not confer seal authority."
+    },
+    "authority_disclaimer": {
+      "type": "string",
+      "const": "This review intake record is advisory-only. It does not approve packet contents, verify item correctness, accept defects, or close/seal/promote anything. Custody is qa-pilot-local. Librarian impact is none.",
+      "description": "Standard authority disclaimer. Must match exactly."
+    },
+    "custody": {
+      "type": "string",
+      "const": "qa-pilot-local",
+      "description": "Must always be qa-pilot-local."
+    },
+    "advisory_only": {
+      "type": "boolean",
+      "const": true,
+      "description": "Must always be true. Intake records are advisory-only."
+    },
+    "librarian_impact": {
+      "type": "string",
+      "const": "none",
+      "description": "Must always be none."
+    }
+  },
+  "additionalProperties": false
+}

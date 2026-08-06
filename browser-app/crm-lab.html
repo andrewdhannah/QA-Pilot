@@ -1,0 +1,1268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dynamics 365 — CRM Lab</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+
+  <style>
+    /* ═══════════════════════════════════════════════════════════════════════
+       CRM Lab — Dynamics 365 Simulation Styles
+       Designed to mimic Microsoft Dynamics 365 Unified Interface.
+       ═══════════════════════════════════════════════════════════════════════ */
+
+    :root {
+      --d365-bg: #ffffff;
+      --d365-bg-alt: #f3f2f1;
+      --d365-surface: #ffffff;
+      --d365-border: #d0d0d0;
+      --d365-border-subtle: #e1dfdd;
+      --d365-text: #201f1e;
+      --d365-text-subtle: #605e5c;
+      --d365-blue: #0078d4;
+      --d365-blue-dark: #005a9e;
+      --d365-nav-bg: #1b1a19;
+      --d365-nav-bg-hover: #323130;
+      --d365-nav-icon: #ffffff;
+      --d365-nav-icon-active: #ffffff;
+      --d365-nav-indicator: #0078d4;
+      --d365-bpf-bg: #f3f2f1;
+      --d365-bpf-border: #e1dfdd;
+      --d365-bpf-active: #0078d4;
+      --d365-bpf-complete: #107c10;
+      --d365-field-required: #a4262c;
+      --d365-timeline-bg: #faf9f8;
+      --d365-lock-bg: #f0f6fc;
+      --d365-lock-border: #c7e0f4;
+      --d365-success: #107c10;
+      --d365-error: #a4262c;
+      --d365-warning-bg: #fff4ce;
+      --d365-warning-border: #fbbf24;
+      --d365-warning-text: #835c00;
+      --d365-font: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      --d365-radius: 2px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      margin: 0;
+      font-family: var(--d365-font);
+      font-size: 13px;
+      background: var(--d365-bg);
+      color: var(--d365-text);
+      display: flex;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* ── NAV RAIL ─────────────────────────────────────────────────────── */
+    .d365-nav-rail {
+      width: 48px;
+      background: var(--d365-nav-bg);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 8px;
+      flex-shrink: 0;
+    }
+
+    .d365-nav-logo {
+      width: 28px; height: 28px;
+      border-radius: var(--d365-radius);
+      background: var(--d365-blue);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 12px;
+      color: #fff;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .d365-nav-item {
+      width: 100%; height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      cursor: pointer;
+      color: var(--d365-nav-icon);
+      opacity: 0.7;
+      font-size: 18px;
+    }
+
+    .d365-nav-item:hover { opacity: 1; background: var(--d365-nav-bg-hover); }
+    .d365-nav-item.active { opacity: 1; }
+    .d365-nav-item.active .d365-nav-indicator {
+      position: absolute; left: 0;
+      width: 3px; height: 24px;
+      border-radius: 0 4px 4px 0;
+      background: var(--d365-nav-indicator);
+    }
+
+    /* ── MAIN LAYOUT ──────────────────────────────────────────────────── */
+    .d365-main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      background: var(--d365-bg-alt);
+      min-width: 0;
+    }
+
+    /* ── ROLE BANNER ──────────────────────────────────────────────────── */
+    .d365-role-banner {
+      height: 36px;
+      background: #1b1a19;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+      flex-shrink: 0;
+    }
+
+    .d365-role-banner-label {
+      font-size: 12px;
+      color: rgba(255,255,255,0.8);
+    }
+
+    .d365-role-banner-label strong {
+      color: #fff;
+    }
+
+    .d365-role-btn {
+      font-size: 11px;
+      padding: 3px 10px;
+      border-radius: var(--d365-radius);
+      border: 1px solid rgba(255,255,255,0.3);
+      background: transparent;
+      color: #fff;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+
+    .d365-role-btn:hover { background: rgba(255,255,255,0.1); }
+
+    /* ── COMMAND BAR ──────────────────────────────────────────────────── */
+    .d365-command-bar {
+      height: 44px;
+      background: var(--d365-surface);
+      border-bottom: 1px solid var(--d365-border-subtle);
+      display: flex;
+      align-items: center;
+      padding: 0 12px;
+      flex-shrink: 0;
+    }
+
+    .d365-command-left { display: flex; align-items: center; gap: 8px; min-width: 0; }
+    .d365-app-name { font-size: 12px; color: var(--d365-text-subtle); }
+    .d365-record-title { font-size: 14px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .d365-command-center { flex: 1; display: flex; justify-content: center; }
+    .d365-command-right { display: flex; align-items: center; gap: 4px; }
+
+    .d365-btn {
+      border: 1px solid transparent;
+      background: transparent;
+      padding: 4px 8px;
+      border-radius: var(--d365-radius);
+      font-size: 12px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      cursor: pointer;
+      color: var(--d365-text);
+      font-family: var(--d365-font);
+    }
+
+    .d365-btn:hover { background: var(--d365-bg-alt); border-color: var(--d365-border-subtle); }
+    .d365-btn-primary { background: var(--d365-blue); color: #fff; border-color: var(--d365-blue-dark); }
+    .d365-btn-primary:hover { background: var(--d365-blue-dark); }
+    .d365-btn svg { width: 14px; height: 14px; fill: currentColor; }
+    .d365-btn-primary svg { fill: #fff; }
+
+    .d365-status-pill {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 11px;
+      background: #e1f3ff;
+      color: #005a9e;
+    }
+
+    /* ── CASE RIBBON ──────────────────────────────────────────────────── */
+    .d365-case-ribbon {
+      height: 28px;
+      display: flex;
+      align-items: center;
+      padding: 0 16px;
+      font-size: 12px;
+      font-weight: 500;
+      color: #fff;
+      flex-shrink: 0;
+    }
+
+    .d365-case-ribbon.status-active { background: #0078d4; }
+    .d365-case-ribbon.status-escalated { background: #c2394b; }
+    .d365-case-ribbon.status-resolved { background: #107c10; }
+    .d365-case-ribbon.status-closed { background: #69797e; }
+
+    .d365-case-ribbon-inner { display: flex; align-items: center; gap: 8px; }
+    .d365-case-ribbon-sep { opacity: 0.6; }
+
+    /* ── BUG BANNER ───────────────────────────────────────────────────── */
+    .d365-bug-banner {
+      background: var(--d365-warning-bg);
+      border-bottom: 1px solid var(--d365-warning-border);
+      padding: 6px 16px;
+      font-size: 12px;
+      color: var(--d365-warning-text);
+      display: none;
+    }
+    .d365-bug-banner.visible { display: block; }
+
+    /* ── BPF ──────────────────────────────────────────────────────────── */
+    .d365-bpf {
+      background: var(--d365-bpf-bg);
+      border-bottom: 1px solid var(--d365-bpf-border);
+      padding: 6px 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+
+    .d365-bpf-label { font-size: 11px; color: var(--d365-text-subtle); margin-right: 8px; }
+
+    .d365-bpf-stage {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--d365-bpf-border);
+      font-size: 11px;
+      cursor: pointer;
+      background: var(--d365-surface);
+      color: var(--d365-text-subtle);
+    }
+
+    .d365-bpf-stage + .d365-bpf-stage::before {
+      content: "›";
+      margin-right: 6px;
+      color: var(--d365-text-subtle);
+    }
+
+    .d365-bpf-stage.active { border-color: var(--d365-bpf-active); color: var(--d365-bpf-active); font-weight: 600; }
+    .d365-bpf-stage.complete { border-color: var(--d365-bpf-complete); color: var(--d365-bpf-complete); }
+
+    /* ── TABS ─────────────────────────────────────────────────────────── */
+    .d365-tabs {
+      background: var(--d365-surface);
+      border-bottom: 1px solid var(--d365-border-subtle);
+      display: flex;
+      padding: 0 16px;
+      flex-shrink: 0;
+    }
+
+    .d365-tab {
+      padding: 8px 12px;
+      font-size: 12px;
+      cursor: pointer;
+      color: var(--d365-text-subtle);
+      border-bottom: 2px solid transparent;
+    }
+
+    .d365-tab.active { color: var(--d365-text); border-bottom-color: var(--d365-blue); font-weight: 600; }
+    .d365-tab:hover { color: var(--d365-text); }
+
+    /* ── BODY (FORM + TIMELINE) ───────────────────────────────────────── */
+    .d365-body {
+      flex: 1;
+      display: flex;
+      padding: 12px 16px;
+      gap: 12px;
+      overflow: hidden;
+    }
+
+    .d365-form {
+      flex: 2;
+      background: var(--d365-surface);
+      border: 1px solid var(--d365-border-subtle);
+      border-radius: var(--d365-radius);
+      padding: 12px;
+      padding-bottom: 60px;
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+    }
+
+    .d365-form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px 16px;
+    }
+
+    .d365-section-title {
+      font-size: 11px;
+      text-transform: uppercase;
+      color: var(--d365-text-subtle);
+      margin-bottom: 4px;
+      margin-top: 12px;
+    }
+    .d365-section-title:first-child { margin-top: 0; }
+
+    .d365-field { display: flex; flex-direction: column; font-size: 12px; }
+    .d365-field.full-width { grid-column: 1 / -1; }
+
+    .d365-field-label {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      margin-bottom: 2px;
+      color: var(--d365-text-subtle);
+    }
+
+    .d365-field-required-bar {
+      width: 3px; height: 12px;
+      background: var(--d365-field-required);
+      border-radius: 2px;
+      flex-shrink: 0;
+    }
+
+    .d365-field input,
+    .d365-field select,
+    .d365-field textarea {
+      font-size: 12px;
+      padding: 4px 6px;
+      border-radius: var(--d365-radius);
+      border: 1px solid var(--d365-border);
+      background: var(--d365-bg);
+      color: var(--d365-text);
+      font-family: var(--d365-font);
+      width: 100%;
+    }
+
+    .d365-field textarea { resize: vertical; min-height: 48px; }
+    .d365-field input:focus,
+    .d365-field select:focus,
+    .d365-field textarea:focus {
+      outline: none;
+      border-color: var(--d365-blue);
+    }
+
+    .d365-field .field-error {
+      color: var(--d365-error);
+      font-size: 11px;
+      margin-top: 2px;
+      display: none;
+    }
+    .d365-field .field-error.visible { display: block; }
+    .d365-field.invalid input,
+    .d365-field.invalid select,
+    .d365-field.invalid textarea { border-color: var(--d365-error); }
+
+    /* ── LOCK CARD (Role-gated) ───────────────────────────────────────── */
+    .d365-lock-card {
+      background: var(--d365-lock-bg);
+      border: 1px dashed var(--d365-lock-border);
+      border-radius: 4px;
+      padding: 10px 12px;
+      text-align: center;
+      margin: 4px 0;
+    }
+
+    .d365-lock-card .lock-icon { font-size: 16px; margin-bottom: 2px; }
+    .d365-lock-card .lock-title { font-size: 12px; font-weight: 600; color: var(--d365-text); }
+    .d365-lock-card .lock-desc { font-size: 11px; color: var(--d365-text-subtle); line-height: 1.4; margin-top: 2px; }
+    .d365-lock-card .lock-hint { font-size: 11px; margin-top: 4px; color: var(--d365-blue); font-style: italic; }
+
+    .d365-lock-card.senior-visible { display: block; }
+    .d365-lock-card.senior-hidden { display: none; }
+
+    .d365-gated-field { display: none; }
+    .d365-gated-field.senior-visible { display: block; }
+
+    /* ── TIMELINE ─────────────────────────────────────────────────────── */
+    .d365-timeline {
+      flex: 1;
+      background: var(--d365-surface);
+      border: 1px solid var(--d365-border-subtle);
+      border-radius: var(--d365-radius);
+      padding: 8px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      min-width: 200px;
+    }
+
+    .d365-timeline-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 4px;
+    }
+
+    .d365-timeline-title { font-size: 12px; font-weight: 600; }
+
+    .d365-timeline-list {
+      flex: 1;
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+
+    .d365-timeline-item {
+      background: var(--d365-timeline-bg);
+      border-radius: 4px;
+      padding: 6px 8px;
+      margin-bottom: 4px;
+      border: 1px solid var(--d365-border-subtle);
+      font-size: 12px;
+    }
+
+    .d365-timeline-item .tl-time {
+      font-size: 10px;
+      color: var(--d365-text-subtle);
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    .d365-timeline-item .tl-body { font-size: 12px; }
+
+    .d365-timeline-add {
+      display: flex;
+      gap: 4px;
+      margin-top: 4px;
+    }
+
+    .d365-timeline-add input {
+      flex: 1;
+      font-size: 12px;
+      padding: 4px 6px;
+      border-radius: var(--d365-radius);
+      border: 1px solid var(--d365-border);
+      background: var(--d365-bg);
+      color: var(--d365-text);
+      font-family: var(--d365-font);
+    }
+
+    .d365-timeline-add button {
+      font-size: 12px;
+      padding: 4px 8px;
+      border-radius: var(--d365-radius);
+      border: 1px solid var(--d365-border);
+      background: var(--d365-bg-alt);
+      cursor: pointer;
+      color: var(--d365-text);
+    }
+    .d365-timeline-add button:hover { background: var(--d365-border-subtle); }
+
+    /* ── ERROR / TOAST ────────────────────────────────────────────────── */
+    #d365-error {
+      color: var(--d365-error);
+      font-size: 11px;
+      margin-bottom: 6px;
+      display: none;
+    }
+    #d365-error.visible { display: block; }
+
+    .d365-toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #323130;
+      color: #fff;
+      padding: 8px 16px;
+      border-radius: 4px;
+      font-size: 12px;
+      z-index: 200;
+      opacity: 0;
+      transition: opacity 0.25s;
+      pointer-events: none;
+    }
+    .d365-toast.visible { opacity: 1; }
+
+    /* ── AC REFERENCE PANEL (slide-out) ───────────────────────────────── */
+    .d365-ac-toggle {
+      font-size: 11px;
+      padding: 3px 10px;
+      border-radius: var(--d365-radius);
+      border: 1px solid rgba(0,120,212,0.4);
+      background: rgba(0,120,212,0.12);
+      color: #8fcbff;
+      cursor: pointer;
+      font-family: var(--d365-font);
+      transition: background 0.2s, box-shadow 0.25s, border-color 0.2s;
+      letter-spacing: 0.03em;
+    }
+
+    .d365-ac-toggle:hover {
+      background: rgba(0,120,212,0.25);
+      border-color: rgba(0,120,212,0.7);
+      box-shadow: 0 0 10px rgba(0,120,212,0.4), 0 0 24px rgba(0,120,212,0.15);
+    }
+
+    .d365-ac-panel {
+      position: fixed;
+      top: 0; right: 0; bottom: 0;
+      width: 340px;
+      background: var(--d365-surface);
+      border-left: 1px solid var(--d365-border);
+      overflow-y: auto;
+      padding: 20px;
+      transform: translateX(100%);
+      transition: transform 0.2s ease;
+      z-index: 150;
+      box-shadow: -4px 0 12px rgba(0,0,0,0.08);
+    }
+    .d365-ac-panel.open { transform: translateX(0); }
+
+    .d365-ac-panel h3 { font-size: 14px; margin-bottom: 4px; }
+    .d365-ac-panel .ac-sub {
+      font-size: 11px;
+      color: var(--d365-text-subtle);
+      margin-bottom: 16px;
+    }
+
+    .d365-ac-item {
+      padding: 8px 0;
+      border-bottom: 1px solid var(--d365-border-subtle);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .d365-ac-item .ac-id {
+      font-weight: 600;
+      color: var(--d365-blue);
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    .d365-ac-close {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: none;
+      border: none;
+      font-size: 18px;
+      cursor: pointer;
+      color: var(--d365-text-subtle);
+    }
+
+    /* ── RESPONSIVE ───────────────────────────────────────────────────── */
+    @media (max-width: 700px) {
+      .d365-body { flex-direction: column; overflow-y: auto; }
+      .d365-form, .d365-timeline { flex: none; width: 100%; }
+      .d365-timeline { min-height: 150px; }
+    }
+
+    @media (max-width: 480px) {
+      .d365-form-grid { grid-template-columns: 1fr; }
+      .d365-command-bar { flex-wrap: wrap; height: auto; gap: 4px; padding: 6px 8px; }
+      .d365-ac-panel { width: 280px; }
+    }
+
+    @media (max-width: 360px) {
+      .d365-nav-rail { width: 36px; }
+      .d365-nav-item { font-size: 14px; height: 32px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── NAV RAIL ──────────────────────────────────────────────────────────── -->
+  <nav class="d365-nav-rail">
+    <div class="d365-nav-logo">D</div>
+    <div class="d365-nav-item active" title="Cases">
+      <div class="d365-nav-indicator"></div>
+      📋
+    </div>
+    <div class="d365-nav-item" title="Accounts">👥</div>
+    <div class="d365-nav-item" title="Dashboards">📊</div>
+    <div class="d365-nav-item" title="Settings">⚙</div>
+  </nav>
+
+  <!-- ── MAIN ──────────────────────────────────────────────────────────────── -->
+  <div class="d365-main">
+
+    <!-- Role Banner -->
+    <div class="d365-role-banner">
+      <div class="d365-role-banner-label">
+        Active role: <strong id="role-label">Junior Investigator</strong>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <button class="d365-ac-toggle" id="ac-toggle-btn" onclick="toggleACPanel()">
+          📋 AC
+        </button>
+        <button class="d365-role-btn" id="role-toggle-btn" onclick="toggleRole()">
+          🔄 Switch to Senior
+        </button>
+      </div>
+    </div>
+
+    <!-- Command Bar -->
+    <div class="d365-command-bar">
+      <div class="d365-command-left">
+        <div class="d365-app-name">Dynamics 365</div>
+        <span style="color:var(--d365-border);margin:0 4px;">|</span>
+        <div class="d365-record-title" id="record-title">Case Investigation</div>
+      </div>
+      <div class="d365-command-center">
+        <span class="d365-status-pill" id="status-pill">Status: Open</span>
+      </div>
+      <div class="d365-command-right">
+        <button class="d365-btn d365-btn-primary" onclick="handleSave(false)">
+          <svg viewBox="0 0 16 16"><path d="M3 2h8l2 2v10H3V2zm2 2v3h6V4H5zm0 5v3h3V9H5z"/></svg>
+          Save
+        </button>
+        <button class="d365-btn" onclick="handleSave(true)">
+          Save &amp; Close
+        </button>
+        <button class="d365-btn" onclick="handleDiscard()">Discard</button>
+      </div>
+    </div>
+
+    <!-- Case Ribbon -->
+    <div class="d365-case-ribbon status-active" id="case-ribbon">
+      <div class="d365-case-ribbon-inner">
+        <span id="ribbon-case-id">CASE-00000</span>
+        <span class="d365-case-ribbon-sep">|</span>
+        <span id="ribbon-assigned">—</span>
+        <span class="d365-case-ribbon-sep">|</span>
+        <span id="ribbon-priority">Medium</span>
+        <span class="d365-case-ribbon-sep">|</span>
+        <span id="ribbon-status">Open</span>
+      </div>
+    </div>
+
+    <!-- Bug Banner -->
+    <div class="d365-bug-banner" id="bug-banner">
+      ⚠ Training mode: Verify behaviour against Acceptance Criteria.
+    </div>
+
+    <!-- BPF -->
+    <div class="d365-bpf">
+      <span class="d365-bpf-label">Process</span>
+      <div class="d365-bpf-stage active">Qualify</div>
+      <div class="d365-bpf-stage">Research</div>
+      <div class="d365-bpf-stage">Resolve</div>
+      <div class="d365-bpf-stage">Close</div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="d365-tabs">
+      <div class="d365-tab active">Summary</div>
+      <div class="d365-tab">Details</div>
+      <div class="d365-tab">Timeline</div>
+      <div class="d365-tab">Related</div>
+    </div>
+
+    <!-- Body -->
+    <div class="d365-body">
+      <!-- Form Panel -->
+      <div class="d365-form">
+        <div id="d365-error"></div>
+
+        <div class="d365-section-title">Case information</div>
+        <div class="d365-form-grid">
+          <!-- Case ID (readonly) -->
+          <div class="d365-field">
+            <div class="d365-field-label"><span>Case ID</span></div>
+            <input id="field-caseId" readonly>
+          </div>
+
+          <!-- Customer (readonly) -->
+          <div class="d365-field">
+            <div class="d365-field-label"><span>Customer</span></div>
+            <input id="field-customer" readonly value="Contoso Insurance">
+          </div>
+
+          <!-- Title (required) -->
+          <div class="d365-field required">
+            <div class="d365-field-label">
+              <div class="d365-field-required-bar"></div>
+              <span id="lbl-caseTitle">Case Title</span>
+            </div>
+            <input id="field-title" maxlength="120">
+            <div class="field-error" id="err-title"></div>
+          </div>
+
+          <!-- Priority -->
+          <div class="d365-field">
+            <div class="d365-field-label"><span id="lbl-priority">Priority</span></div>
+            <select id="field-priority"></select>
+          </div>
+
+          <!-- Status -->
+          <div class="d365-field">
+            <div class="d365-field-label"><span id="lbl-status">Status</span></div>
+            <select id="field-status"></select>
+            <div class="field-error" id="err-status"></div>
+          </div>
+
+          <!-- Date Opened (required) -->
+          <div class="d365-field required">
+            <div class="d365-field-label">
+              <div class="d365-field-required-bar"></div>
+              <span id="lbl-dateOpened">Date Opened</span>
+            </div>
+            <input id="field-dateOpened" type="date">
+            <div class="field-error" id="err-dateOpened"></div>
+          </div>
+
+          <!-- Escalated checkbox (full width) -->
+          <div class="d365-field full-width" style="margin-top:4px;">
+            <label style="display:flex;align-items:center;gap:6px;font-size:12px;cursor:pointer;">
+              <input type="checkbox" id="field-escalated" onchange="onEscalatedToggle()">
+              <span id="lbl-escalated">Mark as escalated</span>
+            </label>
+          </div>
+
+          <!-- Escalation Reason (conditional) -->
+          <div class="d365-field full-width" id="div-escalation-reason" style="display:none;">
+            <div class="d365-field-label">
+              <div class="d365-field-required-bar"></div>
+              <span id="lbl-escalationReason">Escalation Reason</span>
+            </div>
+            <select id="field-escalationReason"></select>
+            <div class="field-error" id="err-escalationReason"></div>
+          </div>
+        </div>
+
+        <div class="d365-section-title">Investigation</div>
+        <div class="d365-field full-width">
+          <div class="d365-field-label"><span id="lbl-notes">Investigation Notes</span></div>
+          <textarea id="field-notes" maxlength="2000" rows="4"></textarea>
+        </div>
+
+        <!-- ── Senior-only Section ── -->
+        <div class="d365-section-title" style="margin-top:16px;">Resolution</div>
+
+        <!-- Outcome / Resolution (senior-only) -->
+        <div class="d365-field full-width" id="div-outcome">
+          <div class="d365-field-label"><span id="lbl-outcome">Outcome / Resolution</span></div>
+          <div class="d365-lock-card" id="lock-outcome">
+            <div class="lock-icon">🔒</div>
+            <div class="lock-title">Senior Investigator Only</div>
+            <div class="lock-desc">Outcome / Resolution requires Senior role to view or edit.</div>
+            <div class="lock-hint">Use the role switcher above to unlock.</div>
+          </div>
+          <div class="d365-gated-field" id="gated-outcome">
+            <textarea id="field-outcome" rows="3" style="width:100%;font-size:12px;padding:4px 6px;border:1px solid var(--d365-border);border-radius:var(--d365-radius);font-family:var(--d365-font);"></textarea>
+          </div>
+        </div>
+
+        <!-- Assigned To (senior-only) -->
+        <div class="d365-field full-width" id="div-assignedTo">
+          <div class="d365-field-label"><span id="lbl-assignedTo">Assigned To</span></div>
+          <div class="d365-lock-card" id="lock-assignedTo">
+            <div class="lock-icon">🔒</div>
+            <div class="lock-title">Senior Investigator Only</div>
+            <div class="lock-desc">Assigned To requires Senior role to view or edit.</div>
+            <div class="lock-hint">Use the role switcher above to unlock.</div>
+          </div>
+          <div class="d365-gated-field" id="gated-assignedTo">
+            <input id="field-assignedTo" style="width:100%;font-size:12px;padding:4px 6px;border:1px solid var(--d365-border);border-radius:var(--d365-radius);font-family:var(--d365-font);" placeholder="Search for an investigator...">
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Timeline Panel -->
+      <div class="d365-timeline">
+        <div class="d365-timeline-header">
+          <div class="d365-timeline-title">Timeline</div>
+          <button class="d365-btn" onclick="document.getElementById('tl-input').focus()">+ Note</button>
+        </div>
+        <div class="d365-timeline-list" id="timeline-list"></div>
+        <div class="d365-timeline-add">
+          <input id="tl-input" placeholder="Add a note..." onkeydown="if(event.key==='Enter')addTimelineNote()">
+          <button onclick="addTimelineNote()">Add</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── AC REFERENCE PANEL (slide-out from right) ─────────────────────────── -->
+  <div class="d365-ac-panel" id="ac-panel">
+    <button class="d365-ac-close" onclick="toggleACPanel()">✕</button>
+    <h3>Acceptance Criteria</h3>
+    <p class="ac-sub">Case Investigation Screen — verify each AC against the CRM</p>
+    <div id="ac-list"></div>
+  </div>
+
+  <!-- ── TOAST ─────────────────────────────────────────────────────────────── -->
+  <div class="d365-toast" id="toast"></div>
+
+  <!-- ── SCRIPTS ──────────────────────────────────────────────────────────── -->
+  <script src="data/content.js"></script>
+
+  <style>
+    /* Quick overrides for the gated fields inside the D365 form */
+    #gated-outcome textarea,
+    #gated-assignedTo input {
+      width: 100% !important;
+      box-sizing: border-box;
+    }
+  </style>
+
+  <script>
+    (function() {
+      'use strict';
+
+      // ── Read URL parameters ───────────────────────────────────────────────
+      var params = new URLSearchParams(window.location.search);
+      var CASE_ID = params.get('caseId') || 'CASE-00000';
+      var STUDENT_NAME = params.get('name') || 'Trainee';
+
+      // ── State ──────────────────────────────────────────────────────────────
+      var state = {
+        role: 'junior',
+        timeline: [],
+        draft: {
+          title: '',
+          priority: 'Medium',
+          status: 'Open',
+          dateOpened: '',
+          notes: '',
+          escalated: false,
+          escalationReason: '',
+          outcome: '',
+          assignedTo: ''
+        },
+        original: null  // Snapshot for discard
+      };
+
+      // ── Get content labels ─────────────────────────────────────────────────
+      function getLabels() {
+        try {
+          var c = loadContent();
+          return {
+            caseTitle:      c.fieldLabels.caseTitle      || 'Case Title',
+            status:         c.fieldLabels.status         || 'Status',
+            priority:       c.fieldLabels.priority       || 'Priority',
+            dateOpened:     c.fieldLabels.dateOpened     || 'Date Opened',
+            notes:          c.fieldLabels.investigationNotes || 'Investigation Notes',
+            escalated:      c.fieldLabels.escalated      || 'Escalated',
+            escalationReason: c.fieldLabels.escalationReason || 'Escalation Reason',
+            outcome:        c.fieldLabels.outcome        || 'Outcome / Resolution',
+            assignedTo:     c.fieldLabels.assignedTo     || 'Assigned To',
+            statusOptions:  c.dropdownOptions.status     || ['Open','In Progress','Pending Review','Resolved','Closed'],
+            priorityOptions: c.dropdownOptions.priority  || ['Critical','High','Medium','Low'],
+            reasonOptions:  c.dropdownOptions.escalationReason || ['Policy Breach','Senior Review Required','Client Complaint','Regulatory'],
+            roleSenior:     c.roleNames.senior           || 'Senior Investigator',
+            roleJunior:     c.roleNames.junior           || 'Junior Investigator',
+            msgTitleRequired:   c.validationMessages.caseTitleRequired     || 'Case title is required.',
+            msgDateRequired:    c.validationMessages.dateOpenedRequired    || 'Date opened is required.',
+            msgDateFuture:      c.validationMessages.dateOpenedFuture      || 'Date opened cannot be a future date.',
+            msgReasonRequired:  c.validationMessages.escalationReasonRequired || 'Escalation reason is required when escalated.',
+            msgJuniorClose:     c.validationMessages.juniorCannotClose     || 'You do not have permission to resolve or close cases.',
+            msgSaved:           c.toastMessages.caseSaved                  || 'Case saved successfully.'
+          };
+        } catch(e) {
+          // Fallback if content.js not loaded
+          return {
+            caseTitle: 'Case Title', status: 'Status', priority: 'Priority',
+            dateOpened: 'Date Opened', notes: 'Investigation Notes',
+            escalated: 'Escalated', escalationReason: 'Escalation Reason',
+            outcome: 'Outcome / Resolution', assignedTo: 'Assigned To',
+            statusOptions: ['Open','In Progress','Pending Review','Resolved','Closed'],
+            priorityOptions: ['Critical','High','Medium','Low'],
+            reasonOptions: ['Policy Breach','Senior Review Required','Client Complaint','Regulatory'],
+            roleSenior: 'Senior Investigator', roleJunior: 'Junior Investigator',
+            msgTitleRequired: 'Case title is required.',
+            msgDateRequired: 'Date opened is required.',
+            msgDateFuture: 'Date opened cannot be a future date.',
+            msgReasonRequired: 'Escalation reason is required.',
+            msgJuniorClose: 'You do not have permission to resolve or close cases.',
+            msgSaved: 'Case saved successfully.'
+          };
+        }
+      }
+
+      var L = getLabels();
+
+      // ── Init form ─────────────────────────────────────────────────────────
+      function initForm() {
+        // Set read-only fields
+        document.getElementById('field-caseId').value = CASE_ID;
+        document.getElementById('ribbon-case-id').textContent = CASE_ID;
+        document.getElementById('ribbon-assigned').textContent = STUDENT_NAME + ' (Junior)';
+        document.getElementById('record-title').textContent = 'Case ' + CASE_ID;
+        document.getElementById('status-pill').textContent = 'Status: Open';
+        document.getElementById('field-customer').value = 'Contoso Insurance';
+
+        // Set field labels
+        document.getElementById('lbl-caseTitle').textContent = L.caseTitle;
+        document.getElementById('lbl-status').textContent = L.status;
+        document.getElementById('lbl-priority').textContent = L.priority;
+        document.getElementById('lbl-dateOpened').textContent = L.dateOpened;
+        document.getElementById('lbl-notes').textContent = L.notes;
+        document.getElementById('lbl-escalated').textContent = L.escalated;
+        document.getElementById('lbl-escalationReason').textContent = L.escalationReason;
+        document.getElementById('lbl-outcome').textContent = L.outcome;
+        document.getElementById('lbl-assignedTo').textContent = L.assignedTo;
+
+        // Populate dropdowns
+        populateSelect('field-priority', L.priorityOptions);
+        populateSelect('field-status', L.statusOptions);
+        populateSelect('field-escalationReason', L.reasonOptions);
+
+        // Default values
+        var today = getTodayString();
+        document.getElementById('field-dateOpened').value = today;
+        document.getElementById('field-priority').value = 'Medium';
+
+        // Snapshot for discard
+        captureOriginal();
+
+        // Status change → update ribbon
+        document.getElementById('field-status').addEventListener('change', updateRibbon);
+
+        // Apply initial role visibility
+        applyRoleVisibility();
+
+        // Add initial timeline entry
+        addTimelineEntry('Case opened by ' + STUDENT_NAME);
+        addTimelineEntry('Priority set to Medium');
+        addTimelineEntry('Assigned to ' + STUDENT_NAME + ' (Junior Investigator)');
+
+        // Update ribbon
+        updateRibbon();
+      }
+
+      function populateSelect(id, options) {
+        var sel = document.getElementById(id);
+        if (!sel) return;
+        sel.innerHTML = '';
+        options.forEach(function(opt) {
+          var o = document.createElement('option');
+          o.value = opt; o.textContent = opt;
+          sel.appendChild(o);
+        });
+      }
+
+      function getTodayString() {
+        var d = new Date();
+        var y = d.getFullYear();
+        var m = String(d.getMonth() + 1).padStart(2, '0');
+        var day = String(d.getDate()).padStart(2, '0');
+        return y + '-' + m + '-' + day;
+      }
+
+      function captureOriginal() {
+        state.original = {
+          title:         document.getElementById('field-title').value,
+          priority:      document.getElementById('field-priority').value,
+          status:        document.getElementById('field-status').value,
+          dateOpened:    document.getElementById('field-dateOpened').value,
+          notes:         document.getElementById('field-notes').value,
+          escalated:     document.getElementById('field-escalated').checked,
+          escalationReason: document.getElementById('field-escalationReason').value,
+          outcome:       document.getElementById('field-outcome').value,
+          assignedTo:    document.getElementById('field-assignedTo').value
+        };
+      }
+
+      // ── Role switching ────────────────────────────────────────────────────
+      window.toggleRole = function() {
+        state.role = (state.role === 'junior') ? 'senior' : 'junior';
+        applyRoleVisibility();
+        showToast('Switched to ' + (state.role === 'senior' ? L.roleSenior : L.roleJunior));
+      };
+
+      function applyRoleVisibility() {
+        var isSenior = state.role === 'senior';
+        var roleName = isSenior ? L.roleSenior : L.roleJunior;
+
+        // Update banner
+        document.getElementById('role-label').textContent = roleName;
+        document.getElementById('role-toggle-btn').textContent =
+          isSenior ? '🔄 Switch to Junior' : '🔄 Switch to Senior';
+
+        // Update ribbon
+        document.getElementById('ribbon-assigned').textContent =
+          isSenior ? STUDENT_NAME + ' (Senior)' : STUDENT_NAME + ' (Junior)';
+
+        // Lock cards vs editable fields
+        setLockState('lock-outcome', 'gated-outcome', isSenior);
+        setLockState('lock-assignedTo', 'gated-assignedTo', isSenior);
+
+        // Status restrictions for Junior
+        var statusEl = document.getElementById('field-status');
+        var currentVal = statusEl.value;
+        if (!isSenior) {
+          // Junior: only Open, In Progress, Pending Review
+          var juniorStatuses = ['Open', 'In Progress', 'Pending Review'];
+          statusEl.innerHTML = '';
+          juniorStatuses.forEach(function(s) {
+            var o = document.createElement('option');
+            o.value = s; o.textContent = s;
+            statusEl.appendChild(o);
+          });
+          if (juniorStatuses.indexOf(currentVal) === -1) {
+            statusEl.value = 'Open';
+          } else {
+            statusEl.value = currentVal;
+          }
+        } else {
+          // Senior: all statuses
+          statusEl.innerHTML = '';
+          L.statusOptions.forEach(function(s) {
+            var o = document.createElement('option');
+            o.value = s; o.textContent = s;
+            statusEl.appendChild(o);
+          });
+          if (L.statusOptions.indexOf(currentVal) !== -1) {
+            statusEl.value = currentVal;
+          } else {
+            statusEl.value = 'Open';
+          }
+        }
+
+        updateRibbon();
+
+        // Log role change
+        addTimelineEntry('Role switched to ' + roleName);
+      }
+
+      function setLockState(lockId, gatedId, isSenior) {
+        var lockEl = document.getElementById(lockId);
+        var gatedEl = document.getElementById(gatedId);
+        if (lockEl) {
+          lockEl.className = 'd365-lock-card ' + (isSenior ? 'senior-hidden' : 'senior-visible');
+        }
+        if (gatedEl) {
+          gatedEl.className = 'd365-gated-field ' + (isSenior ? 'senior-visible' : '');
+        }
+      }
+
+      // ── Escalated toggle ──────────────────────────────────────────────────
+      window.onEscalatedToggle = function() {
+        var checked = document.getElementById('field-escalated').checked;
+        document.getElementById('div-escalation-reason').style.display = checked ? 'block' : 'none';
+        if (checked) {
+          addTimelineEntry('Case escalated');
+        }
+      };
+
+      // ── Ribbon / Pill update ──────────────────────────────────────────────
+      function updateRibbon() {
+        var status = document.getElementById('field-status').value;
+        var priority = document.getElementById('field-priority').value;
+        var ribbon = document.getElementById('case-ribbon');
+        // Set ribbon class
+        ribbon.className = 'd365-case-ribbon';
+        if (status === 'Resolved') ribbon.classList.add('status-resolved');
+        else if (status === 'Closed') ribbon.classList.add('status-closed');
+        else if (status === 'Escalated' || document.getElementById('field-escalated').checked) {
+          ribbon.classList.add('status-escalated');
+          if (status === 'Open' || status === 'In Progress' || status === 'Pending Review') {
+            ribbon.classList.add('status-escalated');
+          } else {
+            ribbon.classList.add('status-' + status.toLowerCase().replace(' ', '-'));
+          }
+        } else {
+          ribbon.classList.add('status-active');
+        }
+
+        document.getElementById('ribbon-priority').textContent = priority;
+        document.getElementById('ribbon-status').textContent = status;
+        document.getElementById('status-pill').textContent = 'Status: ' + status;
+      }
+
+      // ── Timeline ──────────────────────────────────────────────────────────
+      function addTimelineEntry(text) {
+        var now = new Date();
+        var timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        state.timeline.push({ time: timeStr, text: text });
+        renderTimeline();
+      }
+
+      window.addTimelineNote = function() {
+        var input = document.getElementById('tl-input');
+        var text = input.value.trim();
+        if (!text) return;
+        addTimelineEntry(text);
+        input.value = '';
+      };
+
+      function renderTimeline() {
+        var list = document.getElementById('timeline-list');
+        list.innerHTML = '';
+        state.timeline.forEach(function(entry) {
+          var div = document.createElement('div');
+          div.className = 'd365-timeline-item';
+          div.innerHTML = '<span class="tl-time">' + entry.time + '</span><div class="tl-body">' + escapeHtml(entry.text) + '</div>';
+          list.appendChild(div);
+        });
+        list.scrollTop = list.scrollHeight;
+      }
+
+      function escapeHtml(str) {
+        var div = document.createElement('div');
+        div.textContent = str;
+        return div.innerHTML;
+      }
+
+      // ── Validation ────────────────────────────────────────────────────────
+      function validate() {
+        var errors = [];
+        var title = document.getElementById('field-title').value.trim();
+        var dateOpened = document.getElementById('field-dateOpened').value;
+        var escalated = document.getElementById('field-escalated').checked;
+        var reason = document.getElementById('field-escalationReason').value;
+        var status = document.getElementById('field-status').value;
+
+        // Clear all errors
+        document.querySelectorAll('.field-error').forEach(function(el) {
+          el.classList.remove('visible');
+          el.textContent = '';
+        });
+        document.querySelectorAll('.d365-field.invalid').forEach(function(el) {
+          el.classList.remove('invalid');
+        });
+
+        // Title required
+        if (!title) {
+          showFieldError('err-title', L.msgTitleRequired);
+          errors.push('title');
+        }
+
+        // Date required
+        if (!dateOpened) {
+          showFieldError('err-dateOpened', L.msgDateRequired);
+          errors.push('dateOpened');
+        } else {
+          // Future date check
+          var today = getTodayString();
+          if (dateOpened > today) {
+            showFieldError('err-dateOpened', L.msgDateFuture);
+            errors.push('dateOpened');
+          }
+        }
+
+        // Escalation reason required when escalated
+        if (escalated && !reason) {
+          showFieldError('err-escalationReason', L.msgReasonRequired);
+          errors.push('escalationReason');
+        }
+
+        // Junior cannot close/resolve
+        if (state.role === 'junior' && (status === 'Resolved' || status === 'Closed')) {
+          showFieldError('err-status', L.msgJuniorClose);
+          errors.push('status');
+        }
+
+        var errContainer = document.getElementById('d365-error');
+        if (errors.length > 0) {
+          errContainer.textContent = 'Please fix the highlighted fields before saving.';
+          errContainer.classList.add('visible');
+          return false;
+        } else {
+          errContainer.classList.remove('visible');
+          return true;
+        }
+      }
+
+      function showFieldError(id, msg) {
+        var el = document.getElementById(id);
+        if (el) {
+          el.textContent = msg;
+          el.classList.add('visible');
+          // Find parent d365-field and mark invalid
+          var parent = el.closest('.d365-field');
+          if (parent) parent.classList.add('invalid');
+        }
+      }
+
+      // ── Save / Discard ────────────────────────────────────────────────────
+      window.handleSave = function(andClose) {
+        if (!validate()) return;
+
+        // Capture current values
+        state.draft.title = document.getElementById('field-title').value;
+        state.draft.priority = document.getElementById('field-priority').value;
+        state.draft.status = document.getElementById('field-status').value;
+        state.draft.dateOpened = document.getElementById('field-dateOpened').value;
+        state.draft.notes = document.getElementById('field-notes').value;
+        state.draft.escalated = document.getElementById('field-escalated').checked;
+        state.draft.escalationReason = document.getElementById('field-escalationReason').value;
+        state.draft.outcome = document.getElementById('field-outcome').value;
+        state.draft.assignedTo = document.getElementById('field-assignedTo').value;
+
+        addTimelineEntry('Case saved by ' + (state.role === 'senior' ? L.roleSenior : L.roleJunior));
+        captureOriginal();
+        showToast(L.msgSaved);
+
+        if (andClose) {
+          // "Save & Close" - show a completion message
+          showToast('Case closed. You can return to the course.');
+        }
+      };
+
+      window.handleDiscard = function() {
+        if (state.original) {
+          document.getElementById('field-title').value = state.original.title || '';
+          document.getElementById('field-priority').value = state.original.priority || 'Medium';
+          document.getElementById('field-status').value = state.original.status || 'Open';
+          document.getElementById('field-dateOpened').value = state.original.dateOpened || getTodayString();
+          document.getElementById('field-notes').value = state.original.notes || '';
+          document.getElementById('field-escalated').checked = state.original.escalated || false;
+          document.getElementById('field-escalationReason').value = state.original.escalationReason || '';
+          document.getElementById('div-escalation-reason').style.display = state.original.escalated ? 'block' : 'none';
+          document.getElementById('field-outcome').value = state.original.outcome || '';
+          document.getElementById('field-assignedTo').value = state.original.assignedTo || '';
+          updateRibbon();
+        }
+        showToast('Changes discarded.');
+      };
+
+      // ── Toast ─────────────────────────────────────────────────────────────
+      function showToast(msg) {
+        var toast = document.getElementById('toast');
+        toast.textContent = msg;
+        toast.classList.add('visible');
+        setTimeout(function() {
+          toast.classList.remove('visible');
+        }, 2500);
+      }
+
+      // ── AC Panel ──────────────────────────────────────────────────────────
+      window.toggleACPanel = function() {
+        document.getElementById('ac-panel').classList.toggle('open');
+      };
+
+      function renderACs() {
+        var acs = [
+          { id: 'AC-1.2', text: 'Outcome/Resolution visible ONLY to Senior Investigators. Must be absent from DOM for Juniors.' },
+          { id: 'AC-2.1', text: 'Case Title is required. Save is blocked if blank.' },
+          { id: 'AC-2.2', text: 'Case Title max 120 characters. 121st character not accepted.' },
+          { id: 'AC-3.4', text: 'When the Escalated checkbox is checked, the Escalation Reason dropdown must appear.' },
+          { id: 'AC-4.2', text: 'Junior Investigators cannot set Status to Resolved or Closed. Save is blocked with permission error.' },
+          { id: 'AC-5.2', text: 'The Timeline entry updates after every successful save with new timestamp.' }
+        ];
+        var list = document.getElementById('ac-list');
+        list.innerHTML = acs.map(function(ac) {
+          return '<div class="d365-ac-item"><span class="ac-id">' + ac.id + '</span>' + ac.text + '</div>';
+        }).join('');
+      }
+
+      // ── Init ──────────────────────────────────────────────────────────────
+      function init() {
+        initForm();
+        renderACs();
+      }
+
+      // Run on DOM ready
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+      } else {
+        init();
+      }
+
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,40 @@
+{
+  "suite_version": "qa-pilot-epic-scenario-suite-v1",
+  "generated_at": "2026-07-24T02:50:51Z",
+  "sdk_version": "qa-pilot-evidence-sdk-v1",
+  "scenario_id": "EP-MISS-001",
+  "title": "Missing Evidence Artifact Detection",
+  "type": "missing_artifact",
+  "target_epic": "Evidence Plane \u2014 freshness",
+  "overall": "PASS",
+  "details": [
+    {
+      "check_id": "EVIDENCE_AVAILABLE",
+      "description": "Evidence is available",
+      "expected": true,
+      "observed": true,
+      "passed": true,
+      "detail": "Evidence Plane data is reachable through SDK"
+    },
+    {
+      "check_id": "ABSENT_SOURCES_CLASSIFIED",
+      "description": "Absent evidence sources are classified with ID and category",
+      "expected": true,
+      "observed": true,
+      "passed": true,
+      "detail": "3 absent sources identified: cursor_claude-conversation-ingestion, cursor_qa-pilot, cursor_working-bibliography-extension"
+    }
+  ],
+  "learning_artifact": {
+    "scenario_id": "EP-MISS-001",
+    "title": "Missing Evidence Artifact Detection",
+    "type": "missing_artifact",
+    "summary": "PASS",
+    "areas_of_attention": [],
+    "strengths": [],
+    "explanation": "An evidence gap means a governed source is not producing expected output.",
+    "teachable_moment": "3 absent sources identified and classified."
+  },
+  "read_only": true,
+  "no_authority_conferred": true
+}

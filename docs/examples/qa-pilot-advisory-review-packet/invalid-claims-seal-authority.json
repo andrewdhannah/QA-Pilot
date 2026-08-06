@@ -1,0 +1,30 @@
+{
+  "packet_id": "ARP-INVALID-CLAIMS-SEAL-001",
+  "sprint_id": "QA-PILOT-HYPOTHETICAL-SEAL-1",
+  "ledger_number": 65,
+  "prior_sealed_head": "#64 hypothetical",
+  "claimed_posture": "Claims approval authority.",
+  "completion_summary": "This packet attempts to claim sealing authority, violating AR-6.",
+  "posture_sections": {
+    "sealed_head": "#65",
+    "sealed_number": 65,
+    "registry_layer_count": 29,
+    "registry_classification": "ready",
+    "rcr_receipts_found": 13,
+    "rcr_status": "pass",
+    "rcg_coverage_gap": 0,
+    "rcg_status": "pass",
+    "srs_captured_at": 65,
+    "srs_current": true
+  },
+  "validator_results": [
+    {"validator": "all", "status": "pass", "summary": "all pass"}
+  ],
+  "librarian_impact": "none",
+  "pending_owner_decision": "approved_and_sealed",
+  "advisory_only": false,
+  "defines_new_authority": true,
+  "mode_owner": "qa_pilot",
+  "created_at": "2026-07-07T22:34:00Z",
+  "_authority_claim": "this packet seals sprint #65"
+}

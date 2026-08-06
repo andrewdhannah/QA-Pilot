@@ -1,0 +1,9 @@
+{
+  "expected_layers": [
+    {"slot": 99, "id": "STALE-SPRINT-1", "layer": "unknown"}
+  ],
+  "expected_custody": "librarian-canonical",
+  "expected_advisory": false,
+  "expected_mutation": true,
+  "_authority_claim": "seal this stale pipeline"
+}

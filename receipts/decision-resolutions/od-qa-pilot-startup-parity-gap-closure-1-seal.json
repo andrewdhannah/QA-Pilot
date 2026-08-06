@@ -1,0 +1,41 @@
+{
+  "receipt_type": "owner_decision_seal",
+  "decision_id": "OD-QA-PILOT-STARTUP-PARITY-GAP-CLOSURE-1-SEAL",
+  "project_id": "qa-pilot",
+  "sprint_id": "QA-PILOT-STARTUP-PARITY-GAP-CLOSURE-1",
+  "ledger_number": 21,
+  "decision": "APPROVE_AND_SEAL",
+  "approved_by": "Andrew Hannah (Owner)",
+  "approved_at": "2026-07-06T01:44:15Z",
+  "decision_basis": [
+    "All six parity gaps from QA-PILOT-STARTUP-LIBRARIAN-PARITY-MATRIX-1 were closed or resolved",
+    "startup-contract.json now includes mcp_context, operational_state, and fallback_docs blocks",
+    "PROJECT-STARTUP.md now defines work identity binding rules with 3 phases and hard rules",
+    "QA Pilot-local MCP health check exists at scripts/check-mcp-health.sh and verifies 8/8 tools",
+    "QA Pilot startup now reports managed mode with MCP reachable via local check",
+    "Parity matrix validation passes 13/13",
+    "Existing QA Pilot validators pass 14/14 with zero regressions",
+    "No Librarian files modified — all hard boundaries enforced"
+  ],
+  "seal_conditions": [
+    "This sprint closes declared startup parity gaps — it does not authorize unrelated runtime, enforcement, or cross-project mutations",
+    "Startup parity between QA Pilot and Librarian is now structurally complete — maintain on contract changes"
+  ],
+  "boundary_assertion": {
+    "project_boundary": "qa-pilot",
+    "lane": "parallel_planning",
+    "librarian_impact": "none",
+    "cross_project_registration": false,
+    "runtime_mutation_authorized": false,
+    "implementation_authorized": true
+  },
+  "evidence": [
+    "startup-contract.json (modified — 3 new blocks)",
+    "PROJECT-STARTUP.md (modified — work identity binding, MCP context steps, session rename)",
+    "scripts/check-mcp-health.sh (created — QA Pilot-local MCP health check, 8/8 tools pass)",
+    "scripts/validate-qa-pilot-startup-parity-matrix.py (13/13 PM rules pass)",
+    "docs/sprints/QA-PILOT-STARTUP-PARITY-GAP-CLOSURE-1.md",
+    "project-state/sprint-ledger.json (entry #21)"
+  ],
+  "authorized_next_sprint": "Owner direction — logical follow-ups: live write-custody enforcement or startup regression suite"
+}

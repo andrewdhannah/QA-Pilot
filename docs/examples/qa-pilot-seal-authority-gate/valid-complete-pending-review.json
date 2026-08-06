@@ -1,0 +1,15 @@
+{
+  "gate_id": "SG-AUDIT-0067",
+  "sprint_id": "QA-PILOT-WORKBENCH-ITEM-EVIDENCE-LINKING-1",
+  "ledger_number": 67,
+  "current_status": "complete_pending_owner_review",
+  "has_owner_seal_evidence": false,
+  "seal_evidence_type": "none",
+  "seal_eligible": true,
+  "proposed_correction": "none_needed",
+  "audit_finding": "clean",
+  "advisory_only": true,
+  "custody": "qa-pilot-local",
+  "librarian_impact": "none",
+  "created_at": "2026-07-08T01:15:00Z"
+}

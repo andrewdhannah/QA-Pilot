@@ -1,0 +1,39 @@
+{
+  "report_metadata": {
+    "schema": "custody-surface-startup-integration-v1",
+    "deterministic": true,
+    "surface_status": "ok",
+    "report_type": "startup_custody_posture"
+  },
+  "custody_posture": {
+    "available": true,
+    "status": "available",
+    "detail": "12 custody receipts indexed",
+    "total_receipts_in_index": 12
+  },
+  "summary": {
+    "by_custody_source": {"write": 7, "live": 2, "lifecycle": 3},
+    "by_decision_type": {"approvals": 10, "denied": 2, "warning": 0, "dry_run": 0},
+    "by_violation_code": {"WRITE_SCOPE_VIOLATION": 2},
+    "by_mutation_status": {"blocked": 2, "mutated": 10},
+    "by_approval_provenance": {"owner_approval_present": 2, "owner_approval_absent": 10}
+  },
+  "sealed_contract_references": {
+    "#23": {"receipts_referencing": 7, "tracked_in_surface": true},
+    "#24": {"receipts_referencing": 3, "tracked_in_surface": true},
+    "#25": {"receipts_referencing": 4, "tracked_in_surface": true},
+    "#26": {"receipts_referencing": 0, "tracked_in_surface": true},
+    "#27": {"receipts_referencing": 0, "tracked_in_surface": true},
+    "#28": {"receipts_referencing": 0, "tracked_in_surface": true},
+    "#29": {"receipts_referencing": 0, "tracked_in_surface": true}
+  },
+  "review_items": [],
+  "surface_controls": {
+    "approve": false, "seal": false, "execute": false, "write": false
+  },
+  "receipt_created": true,
+  "claims": {
+    "receipt_created": true,
+    "new_receipt_id": "CR-20260706-001"
+  }
+}

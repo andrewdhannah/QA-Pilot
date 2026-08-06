@@ -1,0 +1,28 @@
+{
+  "$schema": "owner-decision-v1",
+  "decision_id": "OD-QA-PILOT-TRAINING-SYSTEM-RECONCILIATION-PLAN-1-SEAL",
+  "date": "2026-07-08",
+  "owner": "Andrew Hannah",
+  "sprint": "QA-PILOT-TRAINING-SYSTEM-RECONCILIATION-PLAN-1",
+  "epic": "EPIC-QA-PILOT-TRAINING-SYSTEM-1",
+  "decision": "APPROVE_AND_SEAL",
+  "ledger_number": 93,
+  "basis": "Reconciliation sprint complete. 5 generations inventoried. 23 capabilities classified (9 keep, 4 redesign, 3 retire, 1 defer, 6 new). Architecture: V2 JSON course packs + current QA Pilot governance + Librarian source lineage. No implementation, migration, merge, or Librarian mutation performed.",
+  "deliverables": {
+    "reconciliation_report": "docs/planning/QA-PILOT-TRAINING-SYSTEM-RECONCILIATION-PLAN-1.md",
+    "epic_packet": "docs/governance/EPIC-QA-PILOT-TRAINING-SYSTEM-1.md",
+    "sprint_doc": "docs/sprints/QA-PILOT-TRAINING-SYSTEM-RECONCILIATION-PLAN-1.md"
+  },
+  "validation": {
+    "capabilities_classified": 23,
+    "generations_inventoried": 5,
+    "no_implementation_performed": true,
+    "no_migration_performed": true,
+    "no_merge_performed": true,
+    "no_librarian_mutation": true
+  },
+  "classification": "planning_reconciliation",
+  "authority": "Owner",
+  "status": "sealed",
+  "sealed_at": "2026-07-08T21:00:00Z"
+}

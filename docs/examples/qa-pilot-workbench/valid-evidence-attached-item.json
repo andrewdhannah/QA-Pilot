@@ -1,0 +1,55 @@
+{
+  "qa_item_id": "QA-LIFE-0400",
+  "title": "Item with evidence attached awaiting review",
+  "source": "evidence_intake",
+  "status": "evidence_attached",
+  "severity": "high",
+  "category": "functional",
+  "description": "Evidence has been attached to this QA finding. Awaiting review determination.",
+  "evidence_refs": ["EP-EVIDENCE-001"],
+  "evidence_links": [
+    {
+      "evidence_link_id": "EL-LIFE-0400-001",
+      "evidence_type": "validator_output",
+      "evidence_ref": "EP-EVIDENCE-001",
+      "producing_validator": "validate-qa-pilot-mcp-evidence-intake.py",
+      "attachment_reason": "Validator output showing evidence intake result for this finding.",
+      "custody": "qa-pilot-local",
+      "advisory_only": true,
+      "authority_note": "Evidence attachment does not prove defect validity or imply Owner approval.",
+      "attached_at": "2026-07-08T00:10:00Z"
+    }
+  ],
+  "lifecycle_history": [
+    {
+      "from_status": "__init__",
+      "to_status": "open",
+      "transition_reason": "Item created from evidence intake",
+      "actor": "agent",
+      "timestamp": "2026-07-08T00:00:00Z",
+      "advisory_only": true
+    },
+    {
+      "from_status": "open",
+      "to_status": "triaged",
+      "transition_reason": "Triaged as reproducible finding",
+      "actor": "agent",
+      "timestamp": "2026-07-08T00:05:00Z",
+      "advisory_only": true
+    },
+    {
+      "from_status": "triaged",
+      "to_status": "evidence_attached",
+      "transition_reason": "Evidence packet linked confirming the finding pattern",
+      "actor": "agent",
+      "timestamp": "2026-07-08T00:10:00Z",
+      "advisory_only": true
+    }
+  ],
+  "owner_decision_state": "pending",
+  "created_at": "2026-07-08T00:00:00Z",
+  "updated_at": "2026-07-08T00:10:00Z",
+  "advisory_only": true,
+  "custody": "qa-pilot-local",
+  "librarian_impact": "none"
+}

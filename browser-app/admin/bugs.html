@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QA Pilot Academy — Bug Lab</title>
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+  <link rel="stylesheet" href="../css/main.css">
+  <style>
+    .topbar { background: linear-gradient(90deg, #ffffff 0%, #f9fafb 100%); border-bottom: 2px solid #e5e7eb; padding: var(--space-4) var(--space-6); display: flex; align-items: center; justify-content: space-between; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06); }
+    .topbar-brand { font-size: var(--text-base); font-weight: var(--weight-bold); color: var(--color-ink); }
+    .main-content { max-width: 800px; margin: var(--space-10) auto; padding: 0 var(--space-6); }
+    .admin-nav { display: flex; gap: var(--space-4); margin-bottom: var(--space-6); border-bottom: 2px solid #e5e7eb; padding-bottom: var(--space-4); }
+    .admin-nav a { font-size: var(--text-sm); color: #6b7280; padding-bottom: var(--space-2); text-decoration: none; transition: all 0.2s ease; }
+    .admin-nav a.active { color: #2563eb; font-weight: 600; border-bottom: 3px solid #2563eb; }
+    
+    .warning-card { background: #fffbeb; border: 1px solid #fbbf24; border-radius: var(--radius-md); padding: var(--space-6); color: #92400e; margin-bottom: var(--space-8); }
+    
+    .bug-list { display: flex; flex-direction: column; gap: var(--space-3); }
+    .bug-row {
+      display: flex; align-items: center; gap: var(--space-6); padding: var(--space-5);
+      background: white; border: 2px solid #e5e7eb;
+      border-radius: 8px; cursor: pointer; transition: all 0.2s;
+    }
+    .bug-row:hover { background: var(--color-bg); }
+    .bug-info { flex: 1; }
+    .bug-id { font-family: var(--font-mono); font-weight: bold; color: var(--color-error); margin-right: 8px; }
+    .bug-desc { font-size: var(--text-sm); color: var(--color-ink-soft); }
+    
+    .checkbox-custom { width: 20px; height: 20px; accent-color: var(--color-primary); cursor: pointer; }
+  </style>
+</head>
+<body>
+
+  <nav class="topbar">
+    <span class="topbar-brand">QA Pilot Academy — Admin</span>
+    <div style="display:flex;align-items:center;gap:8px;">
+      <div id="lang-toggle-container"></div>
+      <button class="btn btn-ghost" onclick="handleAdminLogout()">Sign out</button>
+    </div>
+  </nav>
+
+  <main class="main-content">
+    <div class="page-header" style="margin-bottom: var(--space-6);">
+      <h1 class="text-xl font-bold">Bug Lab</h1>
+      <p class="text-muted">Activate intentional defects on the Dynamics mock screen for training exercises.</p>
+      <p class="text-sm text-muted" style="margin-top:var(--space-2);color:var(--color-ink-soft);">
+        These defects apply to the <strong>QA Onboarding — Capstone</strong> exercise. Activate them before a student begins the capstone to set up the training scenario.
+      </p>
+    </div>
+
+    <nav class="admin-nav">
+      <a href="dashboard.html">Students</a>
+      <a href="assign.html">Assign Lessons</a>
+      <a href="editor.html">Content Editor</a>
+      <a href="bugs.html" class="active">Bug Lab</a>
+    </nav>
+
+    <div class="warning-card" style="background: #e0f2fe; border-color: #38bdf8; color: #0c4a6e;">
+      <strong>ℹ️ Bug Lab moved:</strong> Bug configuration is now per-student from the
+      <a href="dashboard.html" style="font-weight:600;color:#0369a1;">Students dashboard</a>.
+      Click a student's <strong>Bug Config</strong> button to assign bugs per-student.
+      This global page is kept for backward compatibility only — settings here act as a
+      fallback when no student-specific config exists.
+    </div>
+
+    <div class="bug-list" id="bug-list">
+      <!-- Bug toggles injected here -->
+    </div>
+
+    <div class="footer-nav">
+      <button class="btn btn-primary" onclick="saveBugs()">Save Bug Settings</button>
+    </div>
+  </main>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script src="../js/i18n.js"></script>
+  <script src="../js/lang-en.js"></script>
+  <script src="../js/lang-fr.js"></script>
+  <script src="../data/content.js"></script>
+  <script src="../data/quiz-questions.js"></script>
+  <script src="../js/db.js"></script>
+  <script src="../js/app.js"></script>
+  <script src="../data/bug-keys.js"></script>
+
+  <script>
+    const BUG_DEFINITIONS = [
+      { id: BUG_KEYS.BUG_01, desc: 'Junior Investigator can see the Outcome/Resolution field (rendered when should be hidden)' },
+      { id: BUG_KEYS.BUG_02, desc: 'Junior Investigator can edit the Outcome/Resolution field (visible AND editable)' },
+      { id: BUG_KEYS.BUG_03, desc: 'Date Opened accepts future dates without validation error' },
+      { id: BUG_KEYS.BUG_04, desc: 'Escalation Reason dropdown does not appear when Escalated is checked' },
+      { id: BUG_KEYS.BUG_05, desc: 'Case Title allows blank save — required validation not firing' },
+      { id: BUG_KEYS.BUG_06, desc: 'Status can be set to Resolved without Outcome populated' },
+      { id: BUG_KEYS.BUG_07, desc: 'Last Updated timestamp does not refresh after save' },
+      { id: BUG_KEYS.BUG_08, desc: 'Junior can set Status to Closed (role-based restriction not enforced)' },
+    ];
+
+    initI18n();
+    renderLangToggle('lang-toggle-container');
+
+    function translateBugsPage() {
+      // Page title
+      var el = document.querySelector('h1.text-xl.font-bold');
+      if (el) el.textContent = __('admin_bug_lab');
+
+      // Save button
+      el = document.querySelector('.btn.btn-primary');
+      if (el) el.textContent = __('admin_save_bug_settings');
+
+      // Topbar brand
+      el = document.querySelector('.topbar-brand');
+      if (el) el.textContent = __('app_name') + ' — Admin';
+
+      // Sign out button
+      el = document.querySelector('.topbar .btn-ghost');
+      if (el) el.textContent = __('admin_topbar_sign_out');
+    }
+    translateBugsPage();
+
+    initDB().then(function() {
+      if (!requireAdmin()) return;
+      loadBugs();
+    });
+
+    async function loadBugs() {
+      const raw = await getSetting('activeBugs');
+      const activeBugs = raw ? JSON.parse(raw) : [];
+      const list = document.getElementById('bug-list');
+      list.innerHTML = '';
+
+      BUG_DEFINITIONS.forEach(bug => {
+        const checked = activeBugs.includes(bug.id) ? 'checked' : '';
+        const row = document.createElement('label');
+        row.className = 'bug-row';
+        row.innerHTML = `
+          <input type="checkbox" class="checkbox-custom" value="${bug.id}" ${checked}>
+          <div class="bug-info">
+            <span class="bug-id">${bug.id}</span>
+            <span class="bug-desc">${bug.desc}</span>
+          </div>
+        `;
+        list.appendChild(row);
+      });
+    }
+
+    async function saveBugs() {
+      const checked = Array.from(document.querySelectorAll('#bug-list input:checked')).map(cb => cb.value);
+      await saveSetting('activeBugs', JSON.stringify(checked));
+      showToast('Bug settings saved.', 'success');
+    }
+
+    function handleAdminLogout() {
+      sessionStorage.removeItem('qa_admin');
+      window.location.href = 'index.html';
+    }
+  </script>
+</body>
+</html>

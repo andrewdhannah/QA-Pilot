@@ -1,0 +1,22 @@
+{
+  "source_project": "qa-pilot",
+  "custody": "qa-pilot-local",
+  "librarian_impact": "none",
+  "advisory_only": true,
+  "timestamp": "2026-07-08T07:30:00Z",
+  "dp_surface": {
+    "packet_count": 0,
+    "dp_status": "present",
+    "classification": "unknown",
+    "latest_packet_id": "DP-NONEXISTENT-9999",
+    "latest_packet_state": "closed_by_owner",
+    "latest_threshold_id": "TD-FAKE-0001",
+    "latest_threshold_state": "sufficient",
+    "latest_evidence_bundle_ref": "E4-BUNDLE-FAKE",
+    "latest_result_packet_ref": "QR-FAKE-001",
+    "latest_consistency_guard_refs": [],
+    "latest_timestamp": "2026-07-08T05:00:00Z",
+    "by_packet_state": {},
+    "by_threshold_state": {}
+  }
+}

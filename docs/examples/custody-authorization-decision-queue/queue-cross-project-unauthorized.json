@@ -1,0 +1,18 @@
+{
+  "entry_id": "CDQ-20260706-108",
+  "queued_at": "2026-07-06T17:45:00Z",
+  "status": "pending",
+  "source": "startup_report",
+  "finding_type": "cross_project_reference",
+  "description": "Cross-project reference without Owner authorization",
+  "custody_context": {
+    "contract_id": "#30",
+    "receipt_count": 0,
+    "detail": "Cross-project unauthorized test"
+  },
+  "advisory": true,
+  "owner_required": true,
+  "owner_decision": null,
+  "cross_project": true,
+  "owner_authorized": false
+}

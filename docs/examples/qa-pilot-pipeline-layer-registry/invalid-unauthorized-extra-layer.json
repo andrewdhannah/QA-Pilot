@@ -1,0 +1,16 @@
+{
+  "registry_id": "PLR-INVALID-EXTRA-001",
+  "title": "Invalid — Unauthorized Extra Layer (Not in Ledger)",
+  "description": "Invalid fixture containing a sprint_id that does not resolve to a sealed entry in the sprint ledger, violating PLR-13.",
+  "layers": [
+    {"slot": 33, "sprint_id": "QA-PILOT-MCP-EVIDENCE-INTAKE-1", "layer_type": "pipeline", "status": "sealed", "advisory": true, "custody": "qa-pilot-local", "librarian_mutation": false},
+    {"slot": 34, "sprint_id": "QA-PILOT-TEST-COMPOSITION-1", "layer_type": "pipeline", "status": "sealed", "advisory": true, "custody": "qa-pilot-local", "librarian_mutation": false},
+    {"slot": 35, "sprint_id": "QA-PILOT-NONEXISTENT-SPRINT-1", "layer_type": "pipeline", "status": "sealed", "advisory": true, "custody": "qa-pilot-local", "librarian_mutation": false}
+  ],
+  "advisory_only": true,
+  "custody": "qa-pilot-local",
+  "librarian_impact": "none",
+  "not_seal_authority": "No sealing authority claimed.",
+  "not_librarian_mutation_authority": "No Librarian mutation claimed.",
+  "created_at": "2026-07-07T18:20:00Z"
+}

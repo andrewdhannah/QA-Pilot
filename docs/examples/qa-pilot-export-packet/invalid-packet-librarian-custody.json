@@ -1,0 +1,33 @@
+{
+  "packet_id": "XPK-BAD-0003",
+  "packet_type": "single_item",
+  "created_at": "2026-07-08T01:00:00Z",
+  "item_ids": ["QA-BAD-0003"],
+  "included_items": [
+    {
+      "qa_item_id": "QA-BAD-0003",
+      "title": "Item with Librarian path reference",
+      "source": "manual",
+      "status": "open",
+      "severity": "high",
+      "category": "functional",
+      "description": "This item references a Librarian path.",
+      "evidence_refs": [],
+      "evidence_links": [
+        {"evidence_link_id":"EL-LIB-0003-001","evidence_type":"validator_output","evidence_ref":"LIB-CUSTODY-001","source_path":"/Users/andrew/Desktop/CarbideFrame/active/librarian/data/report.json","attachment_reason":"Librarian evidence","custody":"librarian-runtime","advisory_only":true,"authority_note":"Evidence attachment does not prove defect validity or imply Owner approval.","attached_at":"2026-07-08T00:00:00Z"}
+      ],
+      "lifecycle_history": [{"from_status":"__init__","to_status":"open","transition_reason":"Created","actor":"agent","timestamp":"2026-07-08T00:00:00Z","advisory_only":true}],
+      "owner_decision_state": "pending",
+      "created_at": "2026-07-08T00:00:00Z",
+      "updated_at": "2026-07-08T00:00:00Z",
+      "advisory_only": true, "custody": "qa-pilot-local", "librarian_impact": "none"
+    }
+  ],
+  "evidence_links_aggregate": {"total_links": 1, "by_type": {"validator_output": 1}},
+  "lifecycle_summary": {"total_transitions": 1, "by_status": {"open": 1}},
+  "validator_summary": null,
+  "authority_disclaimer": "This export packet is advisory-only. It does not verify item correctness, imply defect acceptance, imply Owner approval, or close/seal/promote QA items. Custody is qa-pilot-local. Librarian impact is none.",
+  "custody": "qa-pilot-local",
+  "advisory_only": true,
+  "librarian_impact": "none"
+}

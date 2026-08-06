@@ -1,0 +1,19 @@
+{
+  "$schema": "owner-decision-v1",
+  "decision_id": "OD-EPIC-QA-PILOT-BROWSER-ONLY-REAL-WORLD-PILOT-1-BATCH-SEAL",
+  "date": "2026-07-08",
+  "owner": "Andrew Hannah",
+  "epic": "EPIC-QA-PILOT-BROWSER-ONLY-REAL-WORLD-PILOT-1",
+  "decision": "BATCH_APPROVE_AND_SEAL",
+  "sprints_sealed": [
+    {"id": "QA-PILOT-REAL-WORLD-PILOT-PACKAGE-PREP-1", "ledger_number": 120},
+    {"id": "QA-PILOT-REAL-WORLD-ROUNDTRIP-VALIDATION-1", "ledger_number": 121},
+    {"id": "QA-PILOT-BROWSER-ONLY-USABILITY-POLISH-1", "ledger_number": 122},
+    {"id": "QA-PILOT-BROWSER-ONLY-PUBLICATION-PACKAGE-1", "ledger_number": 123}
+  ],
+  "basis": "Real-world pilot epic complete. Deployment package prepared, roundtrip validated (11-step checklist), usability polish applied, publication package assembled. Deployment JSON, trainer/learner instructions, browser-content sync, and static hosting instructions all ready. No stop conditions triggered.",
+  "classification": "epic_completion_real_world_pilot",
+  "authority": "Owner",
+  "status": "sealed",
+  "sealed_at": "2026-07-09T00:00:00Z"
+}

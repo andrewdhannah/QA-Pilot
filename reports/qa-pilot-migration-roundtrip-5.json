@@ -1,0 +1,140 @@
+{
+  "$schema": "qa-pilot-migration-roundtrip-5-v1",
+  "epic": "EPIC-QA-PILOT-OPENWORK-TO-CARBIDEFRAME-MIGRATION-1",
+  "sprint": "QA-PILOT-MIGRATION-ROUNDTRIP-VALIDATION-1",
+  "approval_token": "apt_95de2494",
+  "started_at": "2026-07-13T07:25:56.384107+00:00",
+  "finished_at": "2026-07-13T07:25:56.802089+00:00",
+  "openwork_source": "/Users/andrew/Desktop/OpenWork/QA Pilot",
+  "carbideframe_copy": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app",
+  "file_inventory": {
+    "openwork_total": 123,
+    "manifest_total": 123,
+    "carbideframe_total": 123,
+    "missing_from_cf": [],
+    "extra_in_cf": [],
+    "excluded_from_manifest": 0
+  },
+  "sha_verification": {
+    "total_compared": 123,
+    "matches": 120,
+    "mismatches": 3,
+    "mismatch_details": [
+      {
+        "rel": "desktop/dist.html",
+        "manifest_sha256": "a535b4d79f51067315c6059caf3f4f75f4e204116a4f12b5db065cb4b29fc0e8",
+        "actual_ow_sha256": "a535b4d79f51067315c6059caf3f4f75f4e204116a4f12b5db065cb4b29fc0e8",
+        "cf_sha256": "363df3aae575dddc51467cf1ec7f548b7c7eead07b5e59aac70e8063d0a10ddb",
+        "size_bytes": 813703
+      },
+      {
+        "rel": "desktop/index.html",
+        "manifest_sha256": "ffe98df56c6a12f259afeb883027d7c39d1440377da205a15b9846b22233bf9e",
+        "actual_ow_sha256": "ffe98df56c6a12f259afeb883027d7c39d1440377da205a15b9846b22233bf9e",
+        "cf_sha256": "f85671eab3df7dafe5b09007ffbfed59be9b26f512fc64d72afed3a03b98ed54",
+        "size_bytes": 23428
+      },
+      {
+        "rel": "certificate.html",
+        "manifest_sha256": "4aae66693a784b9567ae5be71b3f0f837d03539e36634bfd53995faec931efdd",
+        "actual_ow_sha256": "4aae66693a784b9567ae5be71b3f0f837d03539e36634bfd53995faec931efdd",
+        "cf_sha256": "1aea56850df028ef98567744922b8e55529968223c6ef3c7a94a10348d2b2625",
+        "size_bytes": 52754
+      }
+    ],
+    "all_match": false,
+    "intentional_deviations": 3,
+    "intentional_deviation_files": [
+      "certificate.html (path fix: course.html -> course-view.html)",
+      "desktop/index.html (path fix: os.css -> ../os.css)",
+      "desktop/dist.html (path fix: data/bug-keys.js -> ../data/bug-keys.js)"
+    ]
+  },
+  "path_fixes_applied": [
+    {
+      "file": "certificate.html",
+      "old": "course.html",
+      "new": "course-view.html",
+      "reason": "certificate referenced non-existent course.html; actual file is course-view.html"
+    },
+    {
+      "file": "desktop/index.html",
+      "old": "href=\"os.css\"",
+      "new": "href=\"../os.css\"",
+      "reason": "page in desktop/ but referenced os.css as sibling; actual file is one level up"
+    },
+    {
+      "file": "desktop/dist.html",
+      "old": "src=\"data/bug-keys.js\"",
+      "new": "src=\"../data/bug-keys.js\"",
+      "reason": "page in desktop/ but referenced data/bug-keys.js as sibling; actual file is one level up"
+    }
+  ],
+  "functional_flows": {
+    "login_flow": {
+      "files_checked": 4,
+      "all_exist": true,
+      "missing": []
+    },
+    "portal_flow": {
+      "files_checked": 3,
+      "all_exist": true,
+      "missing": []
+    },
+    "course_flow": {
+      "files_checked": 4,
+      "all_exist": true,
+      "missing": []
+    },
+    "certificate_flow": {
+      "files_checked": 2,
+      "all_exist": true,
+      "missing": []
+    },
+    "admin_flow": {
+      "files_checked": 6,
+      "all_exist": true,
+      "missing": []
+    },
+    "simulator_flow": {
+      "files_checked": 4,
+      "all_exist": true,
+      "missing": []
+    },
+    "qa_module_flow": {
+      "files_checked": 4,
+      "all_exist": true,
+      "missing": []
+    },
+    "debug_flow": {
+      "files_checked": 2,
+      "all_exist": true,
+      "missing": []
+    }
+  },
+  "flows_pass": 8,
+  "flows_total": 8,
+  "path_risk_residual": {
+    "broken_refs_remaining": 0,
+    "details": [],
+    "all_known_nonblocking": true
+  },
+  "governance_integration": {
+    "is_web_app_true": true,
+    "web_app_root_set": true,
+    "browser_app_in_mutation_paths": true,
+    "separation_doc_exists": true
+  },
+  "all_governance_green": true,
+  "recommendation": {
+    "canonical_source": "PROMOTE_TO_CANONICAL_WITH_NOTES",
+    "confidence": "HIGH",
+    "rationale": "120/123 manifest files byte-identical to OpenWork source. 3 intentional deviations are the Sprint 3 path fixes (certificate.html, desktop/index.html, desktop/dist.html) \u2014 documented, Owner-authorized, and required for the app to function. All 8 functional flows complete (login, portal, course-view, certificate, admin, simulator, QA module, debug). Zero non-blocking path issues remaining (all fixed in Sprint 3). Governance integration complete. CarbideFrame browser-app/ is functionally equivalent to and structurally improved over OpenWork source.",
+    "next_steps": [
+      "Owner decision: promote CarbideFrame browser-app/ to canonical source",
+      "Archive OpenWork QA Pilot source after Owner approval",
+      "Close epic as fully sealed (Sprint 5 = #160)",
+      "Optionally: re-apply Librarian visual design as a follow-up epic"
+    ]
+  }
+}

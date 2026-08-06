@@ -1,0 +1,125 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/andrewdhannah/QA-Pilot/schemas/qa-pilot-epic-scenario-suite.schema.json",
+  "title": "QA Pilot Epic Scenario Suite",
+  "description": "Epic-level composition validation scenario. Defines input evidence expectations, expected composition state, pass/fail criteria, and produces structured validation results with learning artifacts. Read-only. No authority conferred.",
+  "type": "object",
+  "required": [
+    "suite_version",
+    "scenario_id",
+    "title",
+    "type",
+    "overall",
+    "details"
+  ],
+  "properties": {
+    "suite_version": {
+      "type": "string",
+      "const": "qa-pilot-epic-scenario-suite-v1",
+      "description": "Suite version identifier"
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When this result was generated"
+    },
+    "sdk_version": {
+      "type": "string",
+      "description": "SDK version used for evidence queries"
+    },
+    "scenario_id": {
+      "type": "string",
+      "pattern": "^EP-[A-Z]+-[0-9]{3,}$",
+      "description": "Unique scenario identifier"
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Human-readable scenario title"
+    },
+    "type": {
+      "type": "string",
+      "enum": ["complete_epic", "missing_artifact", "conflicting_sources", "broken_provenance", "mutation_boundary"],
+      "description": "Scenario category"
+    },
+    "target_epic": {
+      "type": "string",
+      "description": "The epic being validated"
+    },
+    "overall": {
+      "type": "string",
+      "enum": ["PASS", "REVIEW"],
+      "description": "Overall scenario outcome"
+    },
+    "details": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["check_id", "description", "expected", "observed", "passed"],
+        "properties": {
+          "check_id": { "type": "string" },
+          "description": { "type": "string" },
+          "expected": {},
+          "observed": {},
+          "passed": { "type": "boolean" },
+          "detail": { "type": "string" }
+        }
+      },
+      "description": "Individual check results"
+    },
+    "learning_artifact": {
+      "type": "object",
+      "required": ["scenario_id", "title", "summary"],
+      "properties": {
+        "scenario_id": { "type": "string" },
+        "title": { "type": "string" },
+        "type": { "type": "string" },
+        "summary": { "type": "string", "enum": ["PASS", "REVIEW NEEDED"] },
+        "areas_of_attention": {
+          "type": "array",
+          "items": { "type": "object" },
+          "description": "Checks that did not pass — learning opportunities"
+        },
+        "strengths": {
+          "type": "array",
+          "items": { "type": "object" },
+          "description": "Checks that passed — positive signals"
+        },
+        "explanation": {
+          "type": "string",
+          "description": "Training context for the scenario"
+        },
+        "teachable_moment": {
+          "type": "string",
+          "description": "Generated learning narrative"
+        }
+      },
+      "description": "Training/testing artifact produced by the scenario"
+    },
+    "observed_state": {
+      "type": "object",
+      "description": "Captured evidence state at evaluation time"
+    },
+    "read_only": {
+      "type": "boolean",
+      "const": true,
+      "description": "Result is read-only — no authority conferred"
+    },
+    "no_authority_conferred": {
+      "type": "boolean",
+      "const": true,
+      "description": "Result does not grant authority"
+    },
+    "scenarios_run": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Number of scenarios in a batch run"
+    },
+    "results": {
+      "type": "array",
+      "items": { "$ref": "#" },
+      "description": "Array of scenario results (batch runs)"
+    }
+  },
+  "additionalProperties": false
+}

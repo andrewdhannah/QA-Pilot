@@ -1,0 +1,20 @@
+{
+  "qa_item_id": "QA-BAD-0403",
+  "title": "Item with broken lifecycle that should not appear in valid results",
+  "source": "manual",
+  "status": "resolved_locally",
+  "severity": "high",
+  "category": "functional",
+  "description": "This item has a lifecycle history gap and should be flagged by WL-7. Queries must not surface items with corrupted lifecycle.",
+  "evidence_refs": [],
+  "evidence_links": [],
+  "lifecycle_history": [
+    {"from_status": "__init__", "to_status": "open", "transition_reason": "Item created", "actor": "agent", "timestamp": "2026-07-08T00:00:00Z", "advisory_only": true},
+    {"from_status": "open", "to_status": "triaged", "transition_reason": "Triaged", "actor": "agent", "timestamp": "2026-07-08T00:05:00Z", "advisory_only": true},
+    {"from_status": "open", "to_status": "resolved_locally", "transition_reason": "Gap in history", "actor": "agent", "timestamp": "2026-07-08T00:10:00Z", "advisory_only": true}
+  ],
+  "owner_decision_state": "pending",
+  "created_at": "2026-07-08T00:00:00Z",
+  "updated_at": "2026-07-08T00:10:00Z",
+  "advisory_only": true, "custody": "qa-pilot-local", "librarian_impact": "none"
+}

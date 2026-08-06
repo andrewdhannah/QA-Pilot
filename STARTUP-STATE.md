@@ -1,22 +1,38 @@
 # STARTUP-STATE.md — QA Pilot
 
-**Generated:** 2026-07-05T22:17:21Z
+**Generated:** 2026-07-27T21:39:15Z
 
 ## Current State
 
 - **Project:** QA Pilot
-- **Workspace root:** /Users/andrew/Desktop/CarbideFrame
+- **Workspace root:** unknown
 - **Active project root:** /Users/andrew/Desktop/CarbideFrame/active/qa-pilot
-- **Historical root:** /Users/andrew/Desktop/OpenWork
+- **Historical root:** unknown
 - **Operating mode:** managed
 - **Active work session:** none
-- **MCP:** reachable (via Librarian)
+- **MCP:** reachable
 - **Git branch:** main
-- **Last commit:** 1652698 QA-PILOT-BROKER-AUDIT-STORE-IMPLEMENTATION-1-SEAL
-- **Working tree:** dirty/45 changed or untracked
-- **Validators:** 11
-- **Test runners:** 11
+- **Last commit:** aed58a8 Seal: QA-PILOT-LOCAL-TRAINING-SIM-1 at QA Pilot ledger #19
+- **Working tree:** dirty/685 changed or untracked
+- **Validators:** 73
+- **Test runners:** 82
 - **Blockers:** none detected
+
+## Custody Posture (Startup Integration)
+
+- **Custody surface:** ok
+- **Posture:** available
+- **Detail:** 12 custody receipts indexed
+- **Total receipts indexed:** 12
+- **By custody source:** lifecycle=3, live=2, write=7
+- **By decision type:** approvals=10, denied=2, warning=0, dry_run=0
+- **Violation codes:** WRITE_SCOPE_VIOLATION=2
+- **Mutation status:** blocked=2, mutated=10
+- **Owner approval present:** 2
+- **Owner approval absent:** 10
+- **Sealed contract references #23–#28:** #23=7, #24=3, #25=4, #26=0, #27=0, #28=0
+- **Review items:** none detected
+- **Approval/seal/execute/write controls:** none
 
 ## QA Pilot Identity
 
@@ -38,11 +54,11 @@
 
 ## Execution Contract (ENV-CONTRACT-1)
 
-- **OS/Version:** Darwin Andrews-MacBook-Pro.local 24.6.0 Darwin Kernel Version 24.6.0: Fri Feb 27 19:33:24 PST 2026; root:xnu-11417.140.69.709.8~1/RELEASE_X86_64 x86_64
+- **OS/Version:** Darwin AndrewsMac.local 24.6.0 Darwin Kernel Version 24.6.0: Fri Feb 27 19:33:24 PST 2026; root:xnu-11417.140.69.709.8~1/RELEASE_X86_64 x86_64
 - **Python version:** Python 3.14.4
 - **Startup checks:** /Users/andrew/Desktop/CarbideFrame/active/qa-pilot/scripts/run-startup-checks.sh
-- **Validator count:** 11
-- **Test runner count:** 11
+- **Validator count:** 73
+- **Test runner count:** 82
 
 ## Next
 

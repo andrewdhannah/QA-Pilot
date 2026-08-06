@@ -1,0 +1,189 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://qa-pilot.carbideframe/schemas/qa-pilot-mcp-call-loop-guard-v1",
+  "title": "QA Pilot MCP Call Loop Guard Packet",
+  "description": "Schema for QA Pilot MCP call loop guard diagnostic packets. Captures an agent session's MCP tool-call trace and validates that no doom-loop patterns exist: no repeated identical calls, no repeated health checks after success, no unauthorized cross-lane calls, bounded call count, stop reason present, no auto-retry loops. Advisory-only diagnostic surface.",
+  "type": "object",
+  "required": [
+    "guard_id",
+    "session_id",
+    "title",
+    "mcp_calls",
+    "aggregate",
+    "advisory_only",
+    "custody",
+    "librarian_impact",
+    "created_at"
+  ],
+  "properties": {
+    "guard_id": {
+      "type": "string",
+      "pattern": "^MG-[A-Z0-9-]+$",
+      "description": "Unique MCP guard diagnostic identifier (e.g. MG-SESSION-EVAL-001)."
+    },
+    "session_id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "The agent session ID being monitored and evaluated."
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Human-readable title for this guard evaluation."
+    },
+    "description": {
+      "type": "string",
+      "minLength": 10,
+      "description": "Context for this guard evaluation — what session, what project, what startup mode."
+    },
+    "mcp_calls": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["call_number", "tool", "result", "phase"],
+        "properties": {
+          "call_number": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "Sequential call number within the session."
+          },
+          "tool": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The MCP tool name (e.g. project_get_profile, project_get_cursor)."
+          },
+          "params_summary": {
+            "type": "string",
+            "description": "Summary of parameters sent (e.g. profile_id=qa-pilot-full-governance)."
+          },
+          "result": {
+            "type": "string",
+            "enum": ["success", "not_found", "unreachable", "other_error"],
+            "description": "Result category: success=OK result, not_found=-32602, unreachable=connection error, other_error=other error."
+          },
+          "result_detail": {
+            "type": "string",
+            "description": "Full result detail or error message."
+          },
+          "phase": {
+            "type": "string",
+            "enum": ["startup", "implementation", "verification", "diagnostic", "seal"],
+            "description": "Session phase in which this call was made."
+          },
+          "retry": {
+            "type": "boolean",
+            "description": "Whether this call was a retry of the same tool with same params after a definitive result."
+          },
+          "stop_reason": {
+            "type": "string",
+            "description": "Why the agent stopped after this result (e.g. 'protocol §3.2 states -32602 expected for add-on'). Only present for the terminal call of a sequence."
+          }
+        },
+        "additionalProperties": false
+      },
+      "description": "Chronological trace of MCP tool calls in the session."
+    },
+    "aggregate": {
+      "type": "object",
+      "required": [
+        "total_calls", "unique_tools", "repeated_identical_calls",
+        "stop_reason_present", "cross_lane_detected", "bounded",
+        "no_auto_retry_loop", "terminal_result_recognized"
+      ],
+      "properties": {
+        "total_calls": { "type": "integer", "minimum": 0 },
+        "unique_tools": { "type": "integer", "minimum": 0 },
+        "repeated_identical_calls": { "type": "integer", "minimum": 0 },
+        "repeated_health_checks": { "type": "integer", "minimum": 0 },
+        "stop_reason_present": { "type": "boolean" },
+        "cross_lane_detected": { "type": "boolean" },
+        "bounded": { "type": "boolean" },
+        "no_auto_retry_loop": { "type": "boolean" },
+        "terminal_result_recognized": { "type": "boolean" },
+        "cross_lane_calls": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "List of cross-lane call details found."
+        }
+      },
+      "additionalProperties": false,
+      "description": "Aggregate guard-evaluation results across all MCP calls."
+    },
+    "advisory_only": {
+      "type": "boolean",
+      "const": true,
+      "description": "All QA Pilot guard packets are advisory. Must be true."
+    },
+    "custody": {
+      "type": "string",
+      "pattern": "^qa-pilot-local$",
+      "description": "Custody boundary. Must be qa-pilot-local."
+    },
+    "librarian_impact": {
+      "type": "string",
+      "const": "none",
+      "description": "No Librarian mutation permitted. Must be none."
+    },
+    "not_seal_authority": {
+      "type": "string",
+      "minLength": 20,
+      "description": "Explicit assertion that this guard does not confer sealing authority."
+    },
+    "not_librarian_mutation_authority": {
+      "type": "string",
+      "minLength": 20,
+      "description": "Explicit assertion that this guard does not authorize Librarian mutation."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp when this guard was created."
+    },
+    "created_by": {
+      "type": "string",
+      "description": "Agent or tool that created this guard."
+    }
+  },
+  "allOf": [
+    {
+      "description": "If cross_lane_detected is true, cross_lane_calls must be non-empty.",
+      "if": {
+        "properties": {
+          "aggregate": {
+            "properties": { "cross_lane_detected": { "const": true } },
+            "required": ["cross_lane_detected"]
+          }
+        },
+        "required": ["aggregate"]
+      },
+      "then": {
+        "properties": {
+          "aggregate": {
+            "required": ["cross_lane_calls"],
+            "properties": { "cross_lane_calls": { "minItems": 1 } }
+          }
+        }
+      }
+    },
+    {
+      "description": "If total_calls=0, bounded must be true (no calls is bounded by definition).",
+      "if": {
+        "properties": {
+          "aggregate": {
+            "properties": { "total_calls": { "const": 0 } },
+            "required": ["total_calls"]
+          }
+        },
+        "required": ["aggregate"]
+      },
+      "then": {
+        "properties": {
+          "aggregate": {
+            "properties": { "bounded": { "const": true } }
+          }
+        }
+      }
+    }
+  ]
+}

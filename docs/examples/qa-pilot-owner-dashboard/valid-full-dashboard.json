@@ -1,0 +1,89 @@
+{
+  "dashboard_id": "OD-20260720T120000",
+  "generated_at": "2026-07-20T12:00:00Z",
+  "version": "1.0",
+  "invariant": "Projection layer — does not create, approve, or override governed state.",
+  "sections": {
+    "assurance_health": {
+      "title": "Assurance Health",
+      "registry": {
+        "status": "available",
+        "total_layers": 157,
+        "slot_min": 33,
+        "slot_max": 201,
+        "by_type": {
+          "governance": 58,
+          "assurance": 16,
+          "frontend": 14,
+          "training": 12,
+          "validation": 10,
+          "design": 7,
+          "planning": 8,
+          "pipeline": 5,
+          "capability": 5,
+          "migration": 5,
+          "qualification": 4,
+          "architecture": 3,
+          "i18n": 2,
+          "security": 1,
+          "other": 7
+        }
+      },
+      "continuous_loop": {
+        "status": "available",
+        "last_run": null,
+        "total_runs": 0
+      },
+      "history": {
+        "status": "no_data"
+      }
+    },
+    "active_findings": {
+      "title": "Active Findings",
+      "data": {
+        "total": 17,
+        "by_state": {
+          "OPEN": 17
+        },
+        "unacknowledged": 17,
+        "findings": []
+      }
+    },
+    "risk_posture": {
+      "title": "Risk Posture",
+      "data": {
+        "status": "available",
+        "priority_counts": {
+          "high_attention": 2,
+          "review": 3,
+          "monitor": 12
+        },
+        "total": 17
+      }
+    },
+    "evidence_freshness": {
+      "title": "Evidence Freshness",
+      "data": {
+        "total_evidence_files": 16,
+        "fresh": 5,
+        "stale": 11,
+        "evidence_files": []
+      }
+    },
+    "owner_queue": {
+      "title": "Owner Queue — Pending Decisions",
+      "data": {
+        "pending": 0,
+        "total": 8,
+        "decisions": []
+      }
+    },
+    "release_readiness": {
+      "title": "Release Readiness",
+      "data": {
+        "status": "no_data",
+        "overall": "unknown"
+      }
+    }
+  }
+}

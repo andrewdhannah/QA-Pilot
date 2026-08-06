@@ -1,0 +1,17 @@
+{
+  "entry_id": "CDQ-20260706-111",
+  "queued_at": "2026-07-06T17:45:00Z",
+  "status": "pending",
+  "source": "startup_report",
+  "finding_type": "execute_immediately",
+  "description": "This entry has an invalid finding_type",
+  "custody_context": {
+    "contract_id": "#23",
+    "receipt_count": 5,
+    "detail": "Finding type validation test"
+  },
+  "advisory": true,
+  "owner_required": true,
+  "owner_decision": null,
+  "cross_project": false
+}

@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QA Pilot Sprint Primer</title>
+  <style>
+    /* ── BASE ─────────────────────────────────────────────────────────── */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #0f172a;
+      color: #e2e8f0;
+      width: 380px;
+      min-height: 200px;
+      padding: 0;
+    }
+
+    /* ── HEADER ───────────────────────────────────────────────────────── */
+    .header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 16px 12px;
+      background: #1e293b;
+      border-bottom: 1px solid #334155;
+    }
+
+    .header-icon {
+      /* Plane SVG inline — no external file needed */
+      width: 28px;
+      height: 28px;
+      flex-shrink: 0;
+    }
+
+    .header-text h1 {
+      font-size: 13px;
+      font-weight: 700;
+      color: #f8fafc;
+      letter-spacing: 0.01em;
+    }
+
+    .header-text p {
+      font-size: 11px;
+      color: #94a3b8;
+      margin-top: 1px;
+    }
+
+    /* ── RUNWAY STATUS BAR ────────────────────────────────────────────── */
+    .runway-bar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      background: #1a2332;
+      border-bottom: 1px solid #263045;
+      font-size: 11px;
+    }
+
+    .runway-label { color: #64748b; }
+
+    .goose-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 99px;
+      background: #1e3a5f;
+      color: #60a5fa;
+    }
+
+    .runway-hint {
+      margin-left: auto;
+      color: #475569;
+      font-size: 10px;
+      font-style: italic;
+    }
+
+    /* ── TEMPLATE TABS ────────────────────────────────────────────────── */
+    .tabs {
+      display: flex;
+      background: #1e293b;
+      border-bottom: 1px solid #334155;
+    }
+
+    .tab {
+      flex: 1;
+      padding: 8px 4px;
+      font-size: 11px;
+      font-weight: 600;
+      color: #64748b;
+      background: none;
+      border: none;
+      border-bottom: 2px solid transparent;
+      cursor: pointer;
+      transition: color 0.15s, border-color 0.15s;
+      text-align: center;
+      letter-spacing: 0.02em;
+    }
+
+    .tab:hover { color: #cbd5e1; }
+
+    .tab.active {
+      color: #60a5fa;
+      border-bottom-color: #3b82f6;
+    }
+
+    /* ── PREVIEW AREA ─────────────────────────────────────────────────── */
+    .preview-wrap {
+      padding: 12px 16px 8px;
+    }
+
+    .preview-label {
+      font-size: 10px;
+      font-weight: 700;
+      color: #475569;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 6px;
+    }
+
+    .preview {
+      background: #0f172a;
+      border: 1px solid #1e293b;
+      border-radius: 6px;
+      padding: 10px 12px;
+      font-family: "SF Mono", "Fira Code", monospace;
+      font-size: 10px;
+      line-height: 1.6;
+      color: #94a3b8;
+      max-height: 120px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    /* ── ACTION BUTTONS ───────────────────────────────────────────────── */
+    .actions {
+      display: flex;
+      gap: 8px;
+      padding: 10px 16px 14px;
+    }
+
+    .btn {
+      flex: 1;
+      padding: 9px 12px;
+      font-size: 12px;
+      font-weight: 600;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: opacity 0.15s, transform 0.1s;
+      letter-spacing: 0.01em;
+    }
+
+    .btn:active { transform: scale(0.97); }
+
+    .btn-primary {
+      background: #3b82f6;
+      color: #fff;
+    }
+
+    .btn-primary:hover { background: #2563eb; }
+
+    .btn-secondary {
+      background: #1e293b;
+      color: #94a3b8;
+      border: 1px solid #334155;
+    }
+
+    .btn-secondary:hover { background: #273549; color: #cbd5e1; }
+
+    /* ── TOAST FEEDBACK ───────────────────────────────────────────────── */
+    .toast {
+      display: none;
+      align-items: center;
+      gap: 6px;
+      margin: 0 16px 12px;
+      padding: 8px 12px;
+      background: #14532d;
+      border: 1px solid #166534;
+      border-radius: 6px;
+      font-size: 11px;
+      color: #86efac;
+      font-weight: 600;
+    }
+
+    .toast.visible { display: flex; }
+
+    /* ── SETTINGS PANEL ───────────────────────────────────────────────── */
+    .settings {
+      display: none;
+      padding: 12px 16px 14px;
+      border-top: 1px solid #1e293b;
+    }
+
+    .settings.visible { display: block; }
+
+    .settings label {
+      display: block;
+      font-size: 11px;
+      color: #64748b;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 4px;
+      margin-top: 10px;
+    }
+
+    .settings label:first-child { margin-top: 0; }
+
+    .settings input, .settings select, .settings textarea {
+      width: 100%;
+      background: #0f172a;
+      border: 1px solid #334155;
+      border-radius: 5px;
+      color: #e2e8f0;
+      font-size: 11px;
+      padding: 6px 8px;
+      font-family: inherit;
+    }
+
+    .settings textarea {
+      resize: vertical;
+      min-height: 60px;
+      font-family: "SF Mono", "Fira Code", monospace;
+      line-height: 1.5;
+    }
+
+    .settings-save {
+      margin-top: 10px;
+      width: 100%;
+      padding: 7px;
+      font-size: 11px;
+      font-weight: 600;
+      background: #1e3a5f;
+      color: #60a5fa;
+      border: 1px solid #1e40af;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .settings-save:hover { background: #1e40af; }
+
+    /* ── GEAR BUTTON ──────────────────────────────────────────────────── */
+    .gear-btn {
+      background: none;
+      border: none;
+      color: #475569;
+      cursor: pointer;
+      padding: 2px 4px;
+      font-size: 14px;
+      margin-left: auto;
+      transition: color 0.15s;
+    }
+
+    .gear-btn:hover { color: #94a3b8; }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <div class="header">
+    <svg class="header-icon" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect width="28" height="28" rx="6" fill="#1e40af"/>
+      <!-- Plane body -->
+      <path d="M5 14 L18 8 L22 14 L18 16 L14 22 L12 18 L5 14Z"
+            fill="#60a5fa" opacity="0.9"/>
+      <!-- Wing -->
+      <path d="M10 14 L18 10 L20 14 L10 14Z" fill="#93c5fd" opacity="0.7"/>
+    </svg>
+    <div class="header-text">
+      <h1>QA Pilot Sprint Primer</h1>
+      <p>FlightPlan · Session context · Code rules</p>
+    </div>
+    <button class="gear-btn" id="gear-btn" title="Settings">⚙</button>
+  </div>
+
+  <!-- RUNWAY STATUS -->
+  <div class="runway-bar">
+    <span class="runway-label">Runway:</span>
+    <span class="goose-badge" id="goose-badge">⬜ PREFLIGHT</span>
+    <span class="runway-hint" id="runway-hint">Run flightplan export first</span>
+  </div>
+
+  <!-- TEMPLATE TABS -->
+  <div class="tabs">
+    <button class="tab active" data-tab="full"   onclick="switchTab('full')">Full Sprint</button>
+    <button class="tab"        data-tab="quick"  onclick="switchTab('quick')">Quick Task</button>
+    <button class="tab"        data-tab="custom" onclick="switchTab('custom')">Custom</button>
+  </div>
+
+  <!-- PREVIEW -->
+  <div class="preview-wrap">
+    <div class="preview-label">Preview</div>
+    <div class="preview" id="preview-box">Loading…</div>
+  </div>
+
+  <!-- ACTIONS -->
+  <div class="actions">
+    <button class="btn btn-primary"   onclick="copyPrompt()">📋 Copy to clipboard</button>
+    <button class="btn btn-secondary" onclick="clearCustom()">↺ Reset</button>
+  </div>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast">✅ Copied! Paste into your AI tool.</div>
+
+  <!-- SETTINGS PANEL -->
+  <div class="settings" id="settings-panel">
+    <label>Project name</label>
+    <input type="text" id="cfg-project" value="QA Pilot">
+
+    <label>Your name</label>
+    <input type="text" id="cfg-name" value="Andrew">
+
+    <label>Handoff doc path</label>
+    <input type="text" id="cfg-handoff" value="Documents/SESSION-HANDOFF.md">
+
+    <label>Style guide path</label>
+    <input type="text" id="cfg-style" value="GEMMA-STYLE-GUIDE.md">
+
+    <label>Feature status path</label>
+    <input type="text" id="cfg-status" value="FEATURE-STATUS.MD">
+
+    <label>Custom notes (appended to every prompt)</label>
+    <textarea id="cfg-notes" placeholder="e.g. Elyse is the end-user trainer. No CDN links."></textarea>
+
+    <button class="settings-save" onclick="saveSettings()">Save settings</button>
+  </div>
+
+  <script>
+    // ── CONFIG ───────────────────────────────────────────────────────────────
+    // Default settings — overridden by anything saved in chrome.storage.local.
+    var defaults = {
+      project:  'QA Pilot',
+      name:     'Andrew',
+      handoff:  'Documents/SESSION-HANDOFF.md',
+      style:    'GEMMA-STYLE-GUIDE.md',
+      status:   'FEATURE-STATUS.MD',
+      notes:    '',
+    };
+
+    var cfg = Object.assign({}, defaults);  // Will be merged with saved values
+    var currentTab = 'full';
+
+    // ── LOAD SAVED SETTINGS ─────────────────────────────────────────────────
+    // chrome.storage.local persists across browser restarts.
+    chrome.storage.local.get(['primerConfig'], function(result) {
+      if (result.primerConfig) {
+        cfg = Object.assign({}, defaults, result.primerConfig);
+        applyConfigToForm();
+      }
+      renderPreview();
+    });
+
+    // ── TEMPLATE BUILDERS ───────────────────────────────────────────────────
+
+    /**
+     * buildFullSprint()
+     * The complete primer — FlightPlan startup, file reads, code rules, session end.
+     * Use this at the start of any new sprint.
+     */
+    function buildFullSprint() {
+      var today = new Date().toLocaleDateString('en-CA');  // YYYY-MM-DD format
+      return [
+        '## SESSION START — ' + today + ' — ' + cfg.project,
+        '',
+        '### STEP 1 — FLIGHTPLAN',
+        'Call session_start() now before doing anything else.',
+        'Then call get_runway() and read the Goose Scale level:',
+        '  🟢 CRUISING   → Proceed normally',
+        '  🟡 HEADWIND   → Small tasks only. Write checkpoint to ' + cfg.handoff + ' now.',
+        '  🟠 TURBULENCE → Finish current task only. Write checkpoint. Nothing new.',
+        '  🔴 HONK       → Stop. Call record_session(). Write final checkpoint.',
+        'Check get_runway() before every major file write or large generation.',
+        '',
+        '### STEP 2 — READ PROJECT STATE',
+        'Read these files in order before writing any code:',
+        '  1. ' + cfg.handoff + ' — what was done last session, what is pending',
+        '  2. ' + cfg.status + '  — verified feature states (ground truth)',
+        '  3. ' + cfg.style + '  — CSS tokens, component rules, do-not-break list',
+        '',
+        '### STEP 3 — CONFIRM WITH ' + cfg.name.toUpperCase(),
+        'After reading, give a one-paragraph summary of:',
+        '  - What the last session completed',
+        '  - The top priority right now',
+        '  - Current Goose Scale level',
+        'Then ask: "What are we working on today?" — do not start code until confirmed.',
+        '',
+        '### CODE RULES',
+        '  - Read before edit — no blind writes',
+        '  - Minimal changes — only what the task requires',
+        '  - Comment the WHY on non-obvious changes',
+        '  - No CDN links, no fetch(), no ES module imports',
+        '  - node --check <file> after every JS edit',
+        '  - Update ' + cfg.status + ' for any feature fixed, added, or broken',
+        '',
+        '### SESSION END',
+        '  1. Write final checkpoint to ' + cfg.handoff,
+        '  2. Update ' + cfg.status,
+        '  3. git add -A && git commit -m "descriptive message"',
+        '  4. Call record_session()',
+        cfg.notes ? '\n### ADDITIONAL NOTES\n' + cfg.notes : '',
+      ].filter(function(l) { return l !== undefined; }).join('\n');
+    }
+
+    /**
+     * buildQuickTask()
+     * Shorter version for continuing mid-sprint or a single small task.
+     * Skips the full onboarding reads — assumes context is already warm.
+     */
+    function buildQuickTask() {
+      var today = new Date().toLocaleDateString('en-CA');
+      return [
+        '## QUICK TASK — ' + today + ' — ' + cfg.project,
+        '',
+        'Call get_runway() first. Follow Goose Scale.',
+        'If HEADWIND or above, write a checkpoint to ' + cfg.handoff + ' before starting.',
+        '',
+        'Read only the files directly relevant to this task.',
+        'Read before edit. Comment the WHY. No CDN/fetch/ES modules.',
+        'Update ' + cfg.status + ' if you fix or add a feature.',
+        '',
+        'At end: checkpoint → git commit → record_session().',
+        cfg.notes ? '\nNotes: ' + cfg.notes : '',
+      ].filter(function(l) { return l !== undefined; }).join('\n');
+    }
+
+    /**
+     * buildCustom()
+     * Editable freeform area — user types their own prompt.
+     * Stored in chrome.storage.local so it persists between popups.
+     */
+    function buildCustom() {
+      return chrome.storage.local.get(['customPrompt'], function(result) {
+        return result.customPrompt || '(Type your custom prompt here — it will be saved automatically)';
+      });
+    }
+
+    // ── TAB SWITCHING ────────────────────────────────────────────────────────
+    function switchTab(tab) {
+      currentTab = tab;
+
+      // Update tab active state
+      document.querySelectorAll('.tab').forEach(function(el) {
+        el.classList.toggle('active', el.dataset.tab === tab);
+      });
+
+      renderPreview();
+    }
+
+    // ── PREVIEW RENDER ───────────────────────────────────────────────────────
+    function renderPreview() {
+      var box = document.getElementById('preview-box');
+
+      if (currentTab === 'full') {
+        box.textContent = buildFullSprint();
+      } else if (currentTab === 'quick') {
+        box.textContent = buildQuickTask();
+      } else {
+        // Custom tab — load saved custom prompt
+        chrome.storage.local.get(['customPrompt'], function(result) {
+          box.textContent = result.customPrompt || '(Type your custom prompt — edit in Settings)';
+        });
+      }
+    }
+
+    // ── COPY TO CLIPBOARD ────────────────────────────────────────────────────
+    function copyPrompt() {
+      var text;
+
+      if (currentTab === 'full') {
+        text = buildFullSprint();
+        doCopy(text);
+      } else if (currentTab === 'quick') {
+        text = buildQuickTask();
+        doCopy(text);
+      } else {
+        chrome.storage.local.get(['customPrompt'], function(result) {
+          doCopy(result.customPrompt || '');
+        });
+      }
+    }
+
+    function doCopy(text) {
+      navigator.clipboard.writeText(text).then(function() {
+        showToast();
+      }).catch(function() {
+        // Fallback for older Chrome versions
+        var ta = document.createElement('textarea');
+        ta.value = text;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+        showToast();
+      });
+    }
+
+    // ── TOAST ────────────────────────────────────────────────────────────────
+    function showToast() {
+      var toast = document.getElementById('toast');
+      toast.classList.add('visible');
+      setTimeout(function() { toast.classList.remove('visible'); }, 2200);
+    }
+
+    // ── SETTINGS ─────────────────────────────────────────────────────────────
+    document.getElementById('gear-btn').addEventListener('click', function() {
+      var panel = document.getElementById('settings-panel');
+      panel.classList.toggle('visible');
+    });
+
+    function applyConfigToForm() {
+      document.getElementById('cfg-project').value = cfg.project || '';
+      document.getElementById('cfg-name').value    = cfg.name    || '';
+      document.getElementById('cfg-handoff').value = cfg.handoff || '';
+      document.getElementById('cfg-style').value   = cfg.style   || '';
+      document.getElementById('cfg-status').value  = cfg.status  || '';
+      document.getElementById('cfg-notes').value   = cfg.notes   || '';
+    }
+
+    function saveSettings() {
+      cfg.project  = document.getElementById('cfg-project').value.trim();
+      cfg.name     = document.getElementById('cfg-name').value.trim();
+      cfg.handoff  = document.getElementById('cfg-handoff').value.trim();
+      cfg.style    = document.getElementById('cfg-style').value.trim();
+      cfg.status   = document.getElementById('cfg-status').value.trim();
+      cfg.notes    = document.getElementById('cfg-notes').value.trim();
+
+      chrome.storage.local.set({ primerConfig: cfg }, function() {
+        document.getElementById('settings-panel').classList.remove('visible');
+        renderPreview();
+        showToast();
+      });
+    }
+
+    // ── RESET CUSTOM PROMPT ──────────────────────────────────────────────────
+    function clearCustom() {
+      if (currentTab === 'custom') {
+        chrome.storage.local.remove('customPrompt', function() { renderPreview(); });
+      } else {
+        renderPreview();  // Just re-render for other tabs
+      }
+    }
+
+    // ── GOOSE SCALE DISPLAY ──────────────────────────────────────────────────
+    // Reads a cached runway state from storage. User can update it by clicking
+    // the badge — it prompts them to paste a Goose Scale level manually.
+    chrome.storage.local.get(['gooseLevel', 'gooseHint'], function(result) {
+      updateGooseBadge(result.gooseLevel || 'PREFLIGHT', result.gooseHint || 'Run flightplan export first');
+    });
+
+    document.getElementById('goose-badge').addEventListener('click', function() {
+      var level = prompt('Paste your current Goose Scale level (CRUISING / HEADWIND / TURBULENCE / HONK / PREFLIGHT):');
+      if (!level) return;
+      level = level.trim().toUpperCase();
+      var hints = {
+        'CRUISING':   'Healthy — proceed normally',
+        'HEADWIND':   'Burning fast — small tasks only',
+        'TURBULENCE': 'Tight — finish current task only',
+        'HONK':       'Stop — record session now!',
+        'PREFLIGHT':  'No session — call session_start() first',
+      };
+      var hint = hints[level] || 'Unknown level';
+      chrome.storage.local.set({ gooseLevel: level, gooseHint: hint });
+      updateGooseBadge(level, hint);
+    });
+
+    function updateGooseBadge(level, hint) {
+      var badge = document.getElementById('goose-badge');
+      var hintEl = document.getElementById('runway-hint');
+      var icons = {
+        'CRUISING':   '🟢',
+        'HEADWIND':   '🟡',
+        'TURBULENCE': '🟠',
+        'HONK':       '🔴',
+        'PREFLIGHT':  '⬜',
+      };
+      badge.textContent = (icons[level] || '⬜') + ' ' + level;
+      hintEl.textContent = hint || '';
+
+      // Colour the badge background based on level
+      var colours = {
+        'CRUISING':   { bg: '#14532d', color: '#86efac', border: '#166534' },
+        'HEADWIND':   { bg: '#713f12', color: '#fde68a', border: '#854d0e' },
+        'TURBULENCE': { bg: '#7c2d12', color: '#fdba74', border: '#9a3412' },
+        'HONK':       { bg: '#450a0a', color: '#fca5a5', border: '#7f1d1d' },
+        'PREFLIGHT':  { bg: '#1e293b', color: '#60a5fa', border: '#1e3a5f' },
+      };
+      var c = colours[level] || colours['PREFLIGHT'];
+      badge.style.background = c.bg;
+      badge.style.color = c.color;
+      badge.style.border = '1px solid ' + c.border;
+    }
+  </script>
+</body>
+</html>

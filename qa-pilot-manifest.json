@@ -1,0 +1,222 @@
+{
+  "manifest_version": "qa-pilot-manifest-v1",
+  "package_name": "QA Pilot",
+  "package_version": "1.3.0",
+  "generated_at": "2026-07-24",
+  "description": "Portable project validation and qualification framework. Consumes governed evidence, generates learning objects, executes scenarios, and measures AI/human capability.",
+  "authority": "advisory-only",
+  "no_authority_conferred": true,
+
+  "contracts": {
+    "diagnostic_report": {
+      "schema": "docs/schemas/qa-diagnostic-report.schema.json",
+      "version": "v1",
+      "status": "stable",
+      "validators": ["scripts/validate-qa-diagnostic-report.py"]
+    },
+    "work_queue_item": {
+      "schema": "docs/schemas/qa-work-queue-item.schema.json",
+      "version": "v1",
+      "status": "stable",
+      "validators": ["scripts/validate-qa-work-queue-item.py"]
+    },
+    "work_packet": {
+      "schema": "docs/schemas/qa-work-packet.schema.json",
+      "version": "v1",
+      "status": "stable",
+      "validators": ["scripts/validate-qa-work-packet.py"]
+    },
+    "learning_object_v1": {
+      "schema": "docs/schemas/learning-object-v1.schema.json",
+      "version": "v1",
+      "status": "stable",
+      "validators": ["scripts/validate-learning-object.py"]
+    },
+    "sdk_integration": {
+      "schema": "docs/schemas/qa-pilot-sdk-integration.schema.json",
+      "version": "v1",
+      "status": "stable",
+      "validators": ["scripts/validate-qa-pilot-sdk-integration.py"]
+    },
+    "epic_scenario_suite": {
+      "schema": "docs/schemas/qa-pilot-epic-scenario-suite.schema.json",
+      "version": "v1",
+      "status": "stable",
+      "validators": ["scripts/validate-qa-pilot-epic-scenario-suite.py"]
+    },
+    "receipt": {
+      "schema": "docs/schemas/qa-pilot-receipt.schema.json",
+      "version": "v1",
+      "status": "stable",
+      "validators": ["scripts/validate-qa-pilot-receipt.py"]
+    },
+    "knowledge_adapter": {
+      "schema": "docs/schemas/qa-pilot-knowledge-adapter.schema.json",
+      "version": "v1",
+      "status": "stable",
+      "validators": ["scripts/validate-qa-pilot-knowledge-adapter.py"]
+    },
+    "qualification_record": {
+      "schema": "docs/schemas/qa-pilot-qualification-record.schema.json",
+      "version": "v1",
+      "status": "stable",
+      "validators": ["scripts/validate-qa-pilot-qualification.py"]
+    },
+    "training_content_model": {
+      "schema": "docs/schemas/qa-pilot-training-content-model.schema.json",
+      "version": "v1",
+      "status": "stable",
+      "validators": ["scripts/validate-qa-pilot-training-content-model.py"]
+    },
+    "training_sim_case": {
+      "schema": "docs/schemas/qa-pilot-training-sim-case.schema.json",
+      "version": "v1",
+      "status": "stable",
+      "validators": ["scripts/validate-qa-pilot-training-sim.py"]
+    },
+    "workbench_item": {
+      "schema": "docs/schemas/qa-workbench-item.schema.json",
+      "version": "v1",
+      "status": "stable",
+      "validators": ["scripts/validate-qa-pilot-workbench.py"]
+    },
+    "project_validation_profile": {
+      "schema": "docs/schemas/qa-project-validation-profile.schema.json",
+      "version": "v1",
+      "status": "stable",
+      "validators": ["scripts/validate-qa-pilot-validation-profile.py"]
+    }
+  },
+
+  "capabilities": [
+    {
+      "id": "evidence_sdk",
+      "name": "Governed Evidence SDK",
+      "version": "v1",
+      "entry_point": "scripts/qa_pilot_evidence_sdk.py",
+      "queries": ["getEvidenceSnapshot", "getFindings", "getCompositionGraph", "getProvenanceChain", "getValidationArtifacts"],
+      "status": "stable"
+    },
+    {
+      "id": "epic_scenarios",
+      "name": "Epic Scenario Suite",
+      "version": "v1",
+      "entry_point": "scripts/qa_pilot_epic_scenario_suite.py",
+      "scenarios": ["EP-EP-001", "EP-MISS-001", "EP-CONF-001", "EP-PROV-001", "EP-BOUND-001"],
+      "status": "stable"
+    },
+    {
+      "id": "learning_objects",
+      "name": "Learning Object Generator",
+      "version": "v1",
+      "entry_point": "scripts/qa_pilot_lesson_generator.py",
+      "output_schema": "learning_object_v1",
+      "status": "stable"
+    },
+    {
+      "id": "scenario_adapter",
+      "name": "Scenario Adapter (V1.5 scoring bridge)",
+      "version": "v1",
+      "entry_point": "scripts/qa_pilot_scenario_adapter.py",
+      "scenarios": ["capstone-001", "capstone-002", "case-002", "scenario-case-003", "scenarios-bug-001"],
+      "status": "stable"
+    },
+    {
+      "id": "ai_qualification",
+      "name": "AI Qualification Engine",
+      "version": "v1",
+      "entry_point": "scripts/qa_pilot_ai_qualification.py",
+      "dimensions": ["evidence_interpretation", "boundary_adherence", "provenance_awareness", "instruction_adherence", "conflict_handling", "reasoning_quality"],
+      "status": "stable"
+    },
+    {
+      "id": "fresh_install",
+      "name": "Fresh Install Kit",
+      "version": "v1",
+      "entry_point": "scripts/qa-pilot-install.sh",
+      "status": "stable"
+    },
+    {
+      "id": "knowledge_adapter",
+      "name": "Librarian Knowledge Adapter",
+      "version": "v1",
+      "entry_point": "scripts/qa_pilot_knowledge_adapter.py",
+      "status": "stable"
+    },
+    {
+      "id": "workbench",
+      "name": "QA Workbench",
+      "version": "v1",
+      "entry_point": "scripts/qa_pilot_workbench.py",
+      "status": "stable"
+    },
+    {
+      "id": "broker",
+      "name": "Librarian MCP Broker",
+      "version": "v1",
+      "entry_point": "scripts/librarian_broker_qa_pilot.py",
+      "status": "stable"
+    },
+    {
+      "id": "receipt_store",
+      "name": "Receipt Store",
+      "version": "v1",
+      "entry_point": "scripts/qa_pilot_receipt_store.py",
+      "status": "stable"
+    },
+    {
+      "id": "validation_profile",
+      "name": "Project Validation Profiles",
+      "version": "v1",
+      "entry_point": "scripts/validate-qa-pilot-validation-profile.py",
+      "status": "stable"
+    },
+    {
+      "id": "work_queue",
+      "name": "Diagnostic Work Queue",
+      "version": "v1",
+      "entry_point": "scripts/qa_pilot_work_queue.py",
+      "schemas": ["qa-diagnostic-report", "qa-work-queue-item", "qa-work-packet"],
+      "status": "stable"
+    },
+    {
+      "id": "evidence_intake",
+      "name": "MCP Evidence Intake",
+      "version": "v1",
+      "entry_point": "scripts/qa_pilot_mcp_evidence_intake.py",
+      "status": "stable"
+    },
+    {
+      "id": "owner_dashboard",
+      "name": "Owner Dashboard",
+      "version": "v1",
+      "entry_point": "scripts/qa_pilot_owner_dashboard.py",
+      "status": "stable"
+    }
+  ],
+
+  "validators": {
+    "total": 63,
+    "total_rules": "~800",
+    "stable": ["validate-learning-object.py", "validate-qa-pilot-sdk-integration.py", "validate-qa-pilot-epic-scenario-suite.py"]
+  },
+
+  "test_runners": {
+    "total": 73,
+    "estimated_tests": "~1,150"
+  },
+
+  "dependencies": {
+    "python": ">=3.8",
+    "librarian_sdk": "evidence-plane-contract-v1 (optional — for full pipeline)",
+    "browser": "any modern browser (for UI surfaces)",
+    "runtime": "local-first — no server required"
+  },
+
+  "provenance": {
+    "advisory": true,
+    "no_authority_conferred": true,
+    "source": "CarbideFrame QA Pilot",
+    "manifest_version": "qa-pilot-manifest-v1"
+  }
+}

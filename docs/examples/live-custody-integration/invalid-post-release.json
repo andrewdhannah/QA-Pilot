@@ -1,0 +1,21 @@
+{
+  "schema": "live-custody-integration-v1",
+  "fixture_type": "invalid",
+  "description": "Post-release write without patch order blocked",
+  "mode": "live",
+  "request": {
+    "project_id": "qa-pilot",
+    "sprint_id": "SPRINT-1",
+    "file_path": "Public/app.js",
+    "content": "// edit",
+    "requested_action": "Fix typo in released app",
+    "sprint_allowlisted": false,
+    "custody_class": "POST_RELEASE_PATCH_ONLY",
+    "release_state": "released",
+    "sealed_evidence": false,
+    "generated_by_tool": false,
+    "owner_approval_present": false
+  },
+  "expected_decision": "FORBIDDEN_POST_RELEASE_ROUTINE_EDIT",
+  "expected_write_executed": false
+}

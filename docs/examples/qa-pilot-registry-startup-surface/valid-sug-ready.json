@@ -1,0 +1,15 @@
+{
+  "sealed_head": "#57 QA-PILOT-SNAPSHOT-UPDATE-GATE-1",
+  "sealed_number": 57,
+  "registry_posture": {
+    "sug_posture": {
+      "active_snapshot_id": "SRS-BASELINE-001",
+      "active_snapshot_sealed": 57,
+      "latest_sealed_ledger": 57,
+      "snapshot_current": true,
+      "update_pending": false,
+      "sug_status": "pass",
+      "classification": "ready"
+    }
+  }
+}

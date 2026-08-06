@@ -1,0 +1,226 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>Excel</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+      font-size: 12px;
+      background: #fff;
+      color: #1a1a1a;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    :root { --xl-accent: #107C10; --xl-accent-dark: #0A5C0A; }
+
+    .of-titlebar {
+      height: 32px; background: var(--xl-accent); display: flex; align-items: center;
+      padding: 0 12px; color: #fff; font-size: 12px; font-weight: 500;
+      flex-shrink: 0; gap: 8px;
+    }
+    .of-titlebar svg { width: 16px; height: 16px; fill: #fff; flex-shrink: 0; }
+    .of-titlebar span { flex: 1; }
+    .of-titlebar-btn {
+      border: none; background: transparent; color: #fff;
+      width: 32px; height: 28px; cursor: pointer; border-radius: 3px;
+      display: flex; align-items: center; justify-content: center; font-size: 14px;
+    }
+    .of-titlebar-btn:hover { background: rgba(255,255,255,0.15); }
+
+    .of-ribbon {
+      background: #f6f6f6; border-bottom: 1px solid #d0d0d0; flex-shrink: 0;
+    }
+    .of-ribbon-tabs {
+      display: flex; align-items: center; height: 28px; padding: 0 8px; gap: 0;
+    }
+    .of-ribbon-tab {
+      padding: 4px 14px; font-size: 11px; color: #444; cursor: default;
+      border: 1px solid transparent; border-bottom: none; margin-bottom: -1px;
+      border-radius: 3px 3px 0 0;
+    }
+    .of-ribbon-tab.active {
+      background: #fff; border-color: #d0d0d0; color: #000; font-weight: 500;
+    }
+    .of-ribbon-toolbar {
+      display: flex; align-items: center; height: 36px; padding: 0 8px; gap: 2px;
+      background: #fff; border-bottom: 1px solid #d0d0d0;
+    }
+    .of-ribbon-btn {
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      width: 40px; height: 30px; border: none; background: transparent;
+      border-radius: 3px; cursor: default; color: #444; font-size: 9px; gap: 1px;
+    }
+    .of-ribbon-btn svg { width: 16px; height: 16px; fill: #666; }
+    .of-ribbon-btn:hover { background: #e5e5e5; }
+    .of-sep { width: 1px; height: 20px; background: #d0d0d0; margin: 0 4px; flex-shrink: 0; }
+    .of-xl-grid-area { flex: 1; overflow: auto; background: #fff; }
+    .of-xl-formula {
+      height: 28px; display: flex; align-items: center;
+      border-bottom: 1px solid #d0d0d0; padding: 0 8px; background: #f9f9f9; flex-shrink: 0;
+    }
+    .of-xl-formula-label {
+      width: 40px; font-size: 11px; color: #666; text-align: center;
+      border-right: 1px solid #d0d0d0; padding: 2px 4px; background: #f0f0f0;
+    }
+    .of-xl-formula-input { flex: 1; border: none; padding: 2px 8px; font-size: 11px; font-family: Consolas, monospace; outline: none; }
+
+    /* Grid */
+    .of-grid { display: inline-block; padding: 0; min-width: 100%; }
+    .of-grid-row { display: flex; height: 22px; }
+    .of-grid-row-header {
+      width: 44px; min-width: 44px; background: #f0f0f0;
+      border-right: 1px solid #d0d0d0; border-bottom: 1px solid #d0d0d0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 10px; color: #666; font-weight: 500;
+    }
+    .of-grid-cell-header {
+      width: 80px; min-width: 80px; background: #f0f0f0;
+      border-right: 1px solid #d0d0d0; border-bottom: 1px solid #d0d0d0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 10px; color: #666; font-weight: 500;
+    }
+    .of-grid-cell {
+      width: 80px; min-width: 80px; height: 22px;
+      border-right: 1px solid #e0e0e0; border-bottom: 1px solid #e0e0e0;
+      padding: 1px 4px; font-size: 11px; font-family: Calibri, sans-serif;
+      color: #333; white-space: nowrap; overflow: hidden;
+    }
+    .of-grid-cell.highlight { background: #e8f5e9; font-weight: 500; }
+
+    .of-statusbar {
+      height: 24px; background: #f6f6f6; border-top: 1px solid #d0d0d0;
+      display: flex; align-items: center; padding: 0 12px;
+      font-size: 11px; color: #666; flex-shrink: 0; gap: 16px;
+    }
+    .of-statusbar .right { margin-left: auto; }
+  </style>
+</head>
+<body>
+  <div class="of-titlebar">
+    <svg viewBox="0 0 32 32"><rect x="2" y="2" width="28" height="28" rx="4" fill="#107C10"/><path d="M8 8h16v2H8zm0 5h16v2H8zm0 5h12v2H8z" fill="white"/></svg>
+    <span>Workbook1 - Excel</span>
+    <button class="of-titlebar-btn">―</button>
+    <button class="of-titlebar-btn">□</button>
+    <button class="of-titlebar-btn">✕</button>
+  </div>
+  <div class="of-ribbon">
+    <div class="of-ribbon-tabs">
+      <span class="of-ribbon-tab active">Home</span>
+      <span class="of-ribbon-tab">Insert</span>
+      <span class="of-ribbon-tab">Page Layout</span>
+      <span class="of-ribbon-tab">Formulas</span>
+      <span class="of-ribbon-tab">Data</span>
+      <span class="of-ribbon-tab">Review</span>
+      <span class="of-ribbon-tab">View</span>
+    </div>
+    <div class="of-ribbon-toolbar">
+      <button class="of-ribbon-btn"><svg viewBox="0 0 24 24"><path d="M3 17v-2l16-8 2 2-16 8zm0 4v-2h18v2H3z" fill="currentColor"/></svg><span>Paste</span></button>
+      <button class="of-ribbon-btn"><svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z" fill="currentColor"/></svg><span>Sum</span></button>
+      <div class="of-sep"></div>
+      <button class="of-ribbon-btn"><svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" fill="currentColor"/></svg><span>Bold</span></button>
+      <button class="of-ribbon-btn"><svg viewBox="0 0 24 24"><path d="M7 4h14v2H7zm0 7h14v2H7zm0 7h10v2H7z" fill="currentColor"/></svg><span>Wrap</span></button>
+      <button class="of-ribbon-btn"><svg viewBox="0 0 24 24"><path d="M3 3h18v2H3zm0 4h18v2H3zm0 4h18v2H3zm0 4h14v2H3z" fill="currentColor"/></svg><span>Merge</span></button>
+    </div>
+  </div>
+  <div class="of-xl-formula">
+    <span class="of-xl-formula-label">fx</span>
+    <input class="of-xl-formula-input" placeholder="Enter a value or formula..." readonly />
+  </div>
+  <div class="of-xl-grid-area">
+    <div class="of-grid">
+      <!-- Column headers -->
+      <div class="of-grid-row">
+        <div class="of-grid-row-header"></div>
+        <div class="of-grid-cell-header">A</div>
+        <div class="of-grid-cell-header">B</div>
+        <div class="of-grid-cell-header">C</div>
+        <div class="of-grid-cell-header">D</div>
+        <div class="of-grid-cell-header">E</div>
+        <div class="of-grid-cell-header">F</div>
+        <div class="of-grid-cell-header">G</div>
+      </div>
+      <!-- Data rows -->
+      <div class="of-grid-row">
+        <div class="of-grid-row-header">1</div>
+        <div class="of-grid-cell highlight">Test Case</div>
+        <div class="of-grid-cell highlight">Status</div>
+        <div class="of-grid-cell highlight">Priority</div>
+        <div class="of-grid-cell highlight">Assigned To</div>
+        <div class="of-grid-cell highlight">Bug ID</div>
+        <div class="of-grid-cell highlight">Sprint</div>
+        <div class="of-grid-cell highlight">Notes</div>
+      </div>
+      <div class="of-grid-row">
+        <div class="of-grid-row-header">2</div>
+        <div class="of-grid-cell">TC-4471</div>
+        <div class="of-grid-cell" style="color:#107C10">Pass</div>
+        <div class="of-grid-cell">High</div>
+        <div class="of-grid-cell">Sarah C.</div>
+        <div class="of-grid-cell">#4471</div>
+        <div class="of-grid-cell">Sprint 12</div>
+        <div class="of-grid-cell">Checkout validation</div>
+      </div>
+      <div class="of-grid-row">
+        <div class="of-grid-row-header">3</div>
+        <div class="of-grid-cell">TC-4472</div>
+        <div class="of-grid-cell" style="color:#C43E1C">Fail</div>
+        <div class="of-grid-cell">Critical</div>
+        <div class="of-grid-cell">Andrew H.</div>
+        <div class="of-grid-cell">#4472</div>
+        <div class="of-grid-cell">Sprint 12</div>
+        <div class="of-grid-cell">Payment timeout</div>
+      </div>
+      <div class="of-grid-row">
+        <div class="of-grid-row-header">4</div>
+        <div class="of-grid-cell">TC-4473</div>
+        <div class="of-grid-cell" style="color:#107C10">Pass</div>
+        <div class="of-grid-cell">Medium</div>
+        <div class="of-grid-cell">Elyse H.</div>
+        <div class="of-grid-cell">—</div>
+        <div class="of-grid-cell">Sprint 12</div>
+        <div class="of-grid-cell">Email notification</div>
+      </div>
+      <div class="of-grid-row">
+        <div class="of-grid-row-header">5</div>
+        <div class="of-grid-cell">TC-4474</div>
+        <div class="of-grid-cell" style="color:#C43E1C">Fail</div>
+        <div class="of-grid-cell">High</div>
+        <div class="of-grid-cell">—</div>
+        <div class="of-grid-cell">#4471a</div>
+        <div class="of-grid-cell">Sprint 12</div>
+        <div class="of-grid-cell">Invoice PDF format</div>
+      </div>
+      <div class="of-grid-row">
+        <div class="of-grid-row-header">6</div>
+        <div class="of-grid-cell" style="color:#999;font-style:italic">(empty)</div>
+        <div class="of-grid-cell"></div>
+        <div class="of-grid-cell"></div>
+        <div class="of-grid-cell"></div>
+        <div class="of-grid-cell"></div>
+        <div class="of-grid-cell"></div>
+        <div class="of-grid-cell"></div>
+      </div>
+      <div class="of-grid-row">
+        <div class="of-grid-row-header">7</div>
+        <div class="of-grid-cell" style="color:#999;font-style:italic">(empty)</div>
+        <div class="of-grid-cell"></div>
+        <div class="of-grid-cell"></div>
+        <div class="of-grid-cell"></div>
+        <div class="of-grid-cell"></div>
+        <div class="of-grid-cell"></div>
+        <div class="of-grid-cell"></div>
+      </div>
+    </div>
+  </div>
+  <div class="of-statusbar">
+    <span>Sheet1</span>
+    <span>Average: —</span>
+    <span>Count: 4</span>
+    <span class="right">Accessibility: Good</span>
+  </div>
+</body>
+</html>

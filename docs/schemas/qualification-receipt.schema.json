@@ -1,0 +1,265 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://qa-pilot.carbideframe/schemas/qualification-receipt-v1",
+  "title": "Qualification Receipt",
+  "description": "Schema-backed qualification receipt. Inherits from the existing Evidence Receipt pattern (qa-evidence-packet.schema.json). This schema defines the qualification-specific extension fields. In implementation, this must be composed with or inherit from the Evidence Receipt base schema — it does not replace it. All qualification receipts are advisory-only and do not grant approval, seal, or authority.",
+  "type": "object",
+  "allOf": [
+    {
+      "description": "This receipt inherits from the Evidence Receipt schema. The following fields are expected from the base: provenance (agent_id, session_id, source, timestamp), custody (hash, signer, chain_ref), result (outcome, evidence_hash). This allOf reference is a placeholder — the actual implementation must extend the base schema directly.",
+      "$ref": "#/definitions/evidence_receipt_base"
+    },
+    {
+      "$ref": "#/definitions/qualification_extension"
+    }
+  ],
+  "definitions": {
+    "evidence_receipt_base": {
+      "description": "Placeholder for Evidence Receipt base schema fields. In implementation, this must reference the canonical Evidence Receipt schema directly. The fields listed here are the expected inherited fields.",
+      "type": "object",
+      "properties": {
+        "receipt_type": {
+          "type": "string",
+          "enum": ["qualification"],
+          "description": "Distinguishes qualification receipts from other receipt types."
+        },
+        "provenance": {
+          "type": "object",
+          "properties": {
+            "agent_id": { "type": "string" },
+            "session_id": { "type": "string" },
+            "source": { "type": "string", "enum": ["qa-pilot"] },
+            "timestamp": { "type": "string", "format": "date-time" }
+          },
+          "required": ["agent_id", "session_id", "source", "timestamp"]
+        },
+        "custody": {
+          "type": "object",
+          "properties": {
+            "hash": { "type": "string" },
+            "signer": { "type": "string" },
+            "chain_ref": { "type": "string" }
+          },
+          "required": ["hash", "signer"]
+        },
+        "result": {
+          "type": "object",
+          "properties": {
+            "outcome": {
+              "type": "string",
+              "enum": ["PASS", "FAIL", "ERROR", "SKIPPED", "STALE"]
+            },
+            "evidence_hash": { "type": "string" }
+          },
+          "required": ["outcome"]
+        }
+      },
+      "required": ["receipt_type", "provenance", "custody", "result"]
+    },
+    "qualification_extension": {
+      "description": "Qualification-specific fields that extend the Evidence Receipt base.",
+      "type": "object",
+      "required": [
+        "domain",
+        "test_class",
+        "test_identity",
+        "component_refs",
+        "generator",
+        "execution"
+      ],
+      "properties": {
+        "domain": {
+          "type": "string",
+          "enum": [
+            "functional",
+            "performance",
+            "operational",
+            "security",
+            "ai_governance",
+            "compliance",
+            "accessibility",
+            "localization",
+            "release",
+            "regression"
+          ],
+          "description": "The qualification domain this receipt belongs to."
+        },
+        "test_class": {
+          "type": "string",
+          "enum": ["structural", "behavioral", "adversarial", "domain"],
+          "description": "The class of test that produced this receipt."
+        },
+        "test_identity": {
+          "type": "string",
+          "pattern": "^[A-Z][A-Z0-9_-]+/rev:\\d+$",
+          "description": "Stable test identity with revision suffix. Format: BASE-ID/rev:N (e.g., 'AUTH-BOUNDARY-001/rev:3')."
+        },
+        "component_refs": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "pattern": "^NODE-[A-Z][A-Z0-9_-]+$"
+          },
+          "description": "Node Registry IDs of the components tested."
+        },
+        "code_locations": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "description": "Specific code location references (e.g., 'OwnerQueueService.swift:87')."
+          },
+          "description": "Verifiable code locations exercised by this test."
+        },
+        "generator": {
+          "type": "object",
+          "required": ["type", "version"],
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": [
+                "security-template",
+                "structural-enumeration",
+                "schema-derived",
+                "adversarial-template",
+                "domain-authored"
+              ],
+              "description": "The type of generator that produced this test."
+            },
+            "version": {
+              "type": "string",
+              "description": "Generator version (e.g., '1.0')."
+            },
+            "template_id": {
+              "type": "string",
+              "description": "Optional reference to the specific template used (e.g., 'SEC-AUTHORIZATION-ACCESS')."
+            }
+          }
+        },
+        "execution": {
+          "type": "object",
+          "required": ["runner"],
+          "properties": {
+            "runner": {
+              "type": "string",
+              "enum": ["qa-pilot", "external"],
+              "description": "The system that executed this test."
+            },
+            "timestamp": {
+              "type": "string",
+              "format": "date-time",
+              "description": "When the test was executed."
+            },
+            "duration_ms": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "Execution duration in milliseconds."
+            },
+            "artifacts": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "description": "Paths to execution artifacts (logs, screenshots, dumps)."
+              },
+              "description": "References to execution artifacts."
+            },
+            "hash": {
+              "type": "string",
+              "description": "Hash of the combined execution output for evidence binding."
+            }
+          }
+        },
+        "coverage": {
+          "type": "object",
+          "properties": {
+            "domain": { "type": "string" },
+            "required": { "type": "integer", "minimum": 0 },
+            "executed": { "type": "integer", "minimum": 0 },
+            "passed": { "type": "integer", "minimum": 0 },
+            "level": {
+              "type": "string",
+              "enum": ["informational", "advisory", "required"]
+            }
+          },
+          "required": ["domain", "required", "executed", "passed", "level"],
+          "description": "Coverage summary for the qualification run this receipt is part of."
+        },
+        "evidence_links": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "description": "References to evidence artifacts (evidence packet IDs, receipt IDs)."
+          },
+          "description": "Links to related evidence in the Librarian evidence chain."
+        },
+        "limitations": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "description": "Known limitations of this qualification test (e.g., 'Requires network access', 'Does not test race conditions')."
+          },
+          "description": "Known limitations or caveats for this qualification result."
+        }
+      }
+    }
+  },
+  "required": [
+    "receipt_type",
+    "provenance",
+    "custody",
+    "result",
+    "domain",
+    "test_class",
+    "test_identity",
+    "component_refs",
+    "generator",
+    "execution"
+  ],
+  "additionalProperties": false,
+  "examples": [
+    {
+      "receipt_type": "qualification",
+      "provenance": {
+        "agent_id": "qa-pilot-gen-1",
+        "session_id": "session-20260716-001",
+        "source": "qa-pilot",
+        "timestamp": "2026-07-16T12:00:00Z"
+      },
+      "custody": {
+        "hash": "sha256-abc123def456",
+        "signer": "qa-pilot",
+        "chain_ref": "evidence-chain/qualification/20260716"
+      },
+      "result": {
+        "outcome": "PASS",
+        "evidence_hash": "sha256-evi789ghi012"
+      },
+      "domain": "security",
+      "test_class": "structural",
+      "test_identity": "AUTH-BOUNDARY-001/rev:3",
+      "component_refs": ["NODE-OWNER-QUEUE"],
+      "code_locations": ["OwnerQueueService.swift:87", "OwnerQueueService.swift:112"],
+      "generator": {
+        "type": "security-template",
+        "version": "1.0",
+        "template_id": "SEC-AUTHORIZATION-ACCESS"
+      },
+      "execution": {
+        "runner": "qa-pilot",
+        "timestamp": "2026-07-16T12:05:00Z",
+        "duration_ms": 234,
+        "artifacts": ["artifacts/session-001/AUTH-BOUNDARY-001.log"],
+        "hash": "sha256-art123"
+      },
+      "coverage": {
+        "domain": "security",
+        "required": 12,
+        "executed": 12,
+        "passed": 12,
+        "level": "required"
+      },
+      "evidence_links": ["EP-EVIDENCE-PACKET-001"],
+      "limitations": ["Does not test for race conditions in concurrent owner submissions"]
+    }
+  ]
+}

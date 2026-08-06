@@ -1,0 +1,17 @@
+{
+  "threshold_id": "TD-SUFF-0001",
+  "source_evidence_context": {
+    "evidence_bundle_ref": "E4-BUNDLE-001",
+    "consistency_guard_refs": ["RC-01","RC-02","RC-03","RC-04","RC-05","RC-06","RC-07","RC-08","RC-09","RC-10","RC-11"],
+    "evidence_item_count": 12,
+    "consistency_check_count": 11,
+    "consistency_pass_count": 11
+  },
+  "threshold_state": "sufficient",
+  "rationale": "All 11 consistency checks pass. 12 evidence items present across bundle. E4 validator EB-01-10 all green. Evidence depth is sufficient for Owner review.",
+  "evaluated_at": "2026-07-08T03:55:00Z",
+  "authority_disclaimer": "This review-depth threshold evaluation is advisory-only. It does not auto-accept evidence, auto-reject findings, execute work, approve intake, verify evidence, close workbench items, mutate the evidence chain, or seal anything. Owner remains the final decision point. Custody is qa-pilot-local. Librarian impact is none.",
+  "custody": "qa-pilot-local",
+  "advisory_only": true,
+  "librarian_impact": "none"
+}

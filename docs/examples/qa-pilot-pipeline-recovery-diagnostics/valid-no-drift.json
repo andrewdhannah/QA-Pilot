@@ -1,0 +1,16 @@
+{
+  "advisory": true,
+  "custody": "qa-pilot-local",
+  "has_recovery_options": false,
+  "auto_repair": false,
+  "summary": {
+    "drifts": 0,
+    "total_checks": 10,
+    "layers_affected": [],
+    "ph_validator": "pass"
+  },
+  "recovery_summary": {
+    "note": "No drift detected — no recovery action needed.",
+    "steps": []
+  }
+}

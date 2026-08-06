@@ -1,0 +1,47 @@
+{
+  "packet_id": "EP-20260706-010",
+  "project": "qa-pilot",
+  "sprint_id": "QA-PILOT-MCP-EVIDENCE-INTAKE-1",
+  "source_ledger": "qa-pilot-local",
+  "changed_files": [
+    {
+      "path": "scripts/qa_pilot_mcp_evidence_intake.py",
+      "change_type": "created",
+      "diff_summary": "New evidence intake MCP implementation with 4 tools"
+    },
+    {
+      "path": "scripts/validate-qa-pilot-mcp-evidence-intake.py",
+      "change_type": "created",
+      "diff_summary": "EM rules validator with 12 rules"
+    }
+  ],
+  "validation_output": {
+    "tests_passed": 25,
+    "tests_failed": 0,
+    "summary": "All evidence intake tests pass"
+  },
+  "receipt_references": ["qapr-20260706-001"],
+  "boundary_assertions": {
+    "librarian_impact": "none",
+    "cross_project_registration": false
+  },
+  "known_defects": [
+    {
+      "defect_id": "DEF-001",
+      "severity": "low",
+      "description": "Evidence store clear command does not report count when empty"
+    }
+  ],
+  "evidence_artifacts": [
+    {
+      "artifact_id": "artifact-comp-test-001",
+      "type": "fixture",
+      "path": "docs/examples/qa-pilot-test-composition/valid-evidence-source.json"
+    }
+  ],
+  "provenance": {
+    "source": "qa-pilot-local",
+    "timestamp": "2026-07-06T20:00:00Z"
+  },
+  "hash": "a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2"
+}

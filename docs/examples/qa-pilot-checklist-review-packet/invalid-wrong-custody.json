@@ -1,0 +1,13 @@
+{
+  "review_packet_id": "CRP-INVALID-CUSTODY-001",
+  "source_checklist_id": "EC-PIPELINE-EVIDENCE-001",
+  "title": "Invalid — wrong custody boundary",
+  "description": "This review packet claims Librarian-level custody, violating CRP-3.",
+  "item_summary": { "total": 1, "blocked": 0, "degraded": 0, "ready": 1 },
+  "advisory_only": true,
+  "custody": "librarian-managed",
+  "librarian_impact": "none",
+  "not_seal_authority": "This review packet does not confer sealing authority.",
+  "not_librarian_mutation_authority": "This review packet does not authorize Librarian mutation.",
+  "created_at": "2026-07-07T03:32:00Z"
+}

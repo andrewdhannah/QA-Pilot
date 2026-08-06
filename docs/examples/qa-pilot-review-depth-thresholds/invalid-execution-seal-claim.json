@@ -1,0 +1,19 @@
+{
+  "threshold_id": "TD-EXEC-0001",
+  "source_evidence_context": {
+    "evidence_bundle_ref": "E4-BUNDLE-001",
+    "consistency_guard_refs": ["RC-01"],
+    "evidence_item_count": 5,
+    "consistency_check_count": 11,
+    "consistency_pass_count": 5
+  },
+  "threshold_state": "needs_more_context",
+  "rationale": "Threshold evaluation recorded.",
+  "evaluated_at": "2026-07-08T03:59:00Z",
+  "authority_disclaimer": "This review-depth threshold evaluation is advisory-only. It does not auto-accept evidence, auto-reject findings, execute work, approve intake, verify evidence, close workbench items, mutate the evidence chain, or seal anything. Owner remains the final decision point. Custody is qa-pilot-local. Librarian impact is none.",
+  "custody": "qa-pilot-local",
+  "advisory_only": true,
+  "librarian_impact": "none",
+  "sealed": true,
+  "executed": true
+}

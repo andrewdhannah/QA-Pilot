@@ -1,0 +1,42 @@
+{
+  "test_id": "UAT-002",
+  "domain": "uat",
+  "title": "Owner review — evidence-backed decision surface",
+  "objective": "Verify that an Owner reviewer can see validation evidence, understand pass/fail criteria, and make an independent release decision without the system claiming authority.",
+  "source": {
+    "type": "acceptance_gate",
+    "reference": "AG-10 (live custody), VIS-005 (authority-safe presentation)",
+    "description": "Owner review is the terminal gate in the validation pipeline — evidence must be presented without authority claims"
+  },
+  "execution": {
+    "type": "scenario",
+    "criteria": "Validation package presents contract results, scenario outcomes, and learning artifacts to a human reviewer without asserting authority to approve or seal",
+    "expected_outcome": "Reviewer-summary.md states: 'does not constitute an approval, seal, or authorization'"
+  },
+  "pass_criteria": [
+    {
+      "id": "UAT-002-A",
+      "description": "Validation package includes reviewer-summary.md with provenance",
+      "evidence_required": ["Output contains reviewer-summary.md"]
+    },
+    {
+      "id": "UAT-002-B",
+      "description": "No validation artifact contains 'approved' or 'sealed' as action verbs",
+      "evidence_required": ["VIS-005 validator passes on all surfaces"]
+    },
+    {
+      "id": "UAT-002-C",
+      "description": "Each result artifact links to its source contract (traceability)",
+      "evidence_required": ["contract_refs present in each test definition"]
+    },
+    {
+      "id": "UAT-002-D",
+      "description": "Reviewer can see per-check pass/fail with evidence references",
+      "evidence_required": ["contract-results.json has per-check results with detail messages"]
+    }
+  ],
+  "contract_refs": ["qa-pilot-sdk-integration", "learning-object-v1"],
+  "status": "active",
+  "advisory_only": true,
+  "no_seal_authority": true
+}

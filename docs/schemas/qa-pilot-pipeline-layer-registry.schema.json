@@ -1,0 +1,152 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://qa-pilot.carbideframe/schemas/qa-pilot-pipeline-layer-registry-v1",
+  "title": "QA Pilot Pipeline Layer Registry",
+  "description": "Schema for the governed QA Pilot pipeline layer registry. Lists all sealed pipeline layers with slot, sprint ID, layer type, custody, and authority posture. Replaces hardcoded EXPECTED_LAYERS in pipeline health validation. Advisory-only, QA Pilot-local.",
+  "type": "object",
+  "required": [
+    "registry_id",
+    "title",
+    "description",
+    "layers",
+    "advisory_only",
+    "custody",
+    "librarian_impact",
+    "not_seal_authority",
+    "not_librarian_mutation_authority",
+    "created_at"
+  ],
+  "properties": {
+    "registry_id": {
+      "type": "string",
+      "pattern": "^PLR-[A-Z0-9-]+$",
+      "description": "Pipeline layer registry identifier (e.g. PLR-REGISTRY-001)."
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Human-readable title."
+    },
+    "description": {
+      "type": "string",
+      "minLength": 10,
+      "description": "Context for this registry — which pipeline chain it covers."
+    },
+    "layers": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["slot", "sprint_id", "layer_type", "status", "advisory", "custody", "librarian_mutation"],
+        "properties": {
+          "slot": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "Ledger sealed number for this layer."
+          },
+          "sprint_id": {
+            "type": "string",
+            "pattern": "^QA-PILOT-|^CUSTODY-|^PROJECT-|^LIFECYCLE-|^LIVE-|^OWNER-",
+            "description": "The authorized sprint ID that created this layer."
+          },
+          "layer_type": {
+            "type": "string",
+            "enum": [
+              "pipeline", "governance", "implementation", "validation",
+              "planning", "enforcement", "simulation", "production",
+              "architecture", "bridge", "defect"
+            ],
+            "description": "Type of layer."
+          },
+          "status": {
+            "type": "string",
+            "const": "sealed",
+            "description": "All registered pipeline layers must be sealed."
+          },
+          "advisory": {
+            "type": "boolean",
+            "const": true,
+            "description": "All pipeline layers are advisory-only."
+          },
+          "custody": {
+            "type": "string",
+            "pattern": "^qa-pilot-local$",
+            "description": "Custody boundary — must be qa-pilot-local."
+          },
+          "librarian_mutation": {
+            "type": "boolean",
+            "const": false,
+            "description": "No Librarian mutation — must be false."
+          },
+          "sprint_title": {
+            "type": "string",
+            "description": "Optional human-readable sprint title."
+          }
+        },
+        "additionalProperties": false
+      },
+      "description": "Ordered list of sealed pipeline layers."
+    },
+    "advisory_only": {
+      "type": "boolean",
+      "const": true,
+      "description": "The registry itself is advisory-only. Must be true."
+    },
+    "custody": {
+      "type": "string",
+      "pattern": "^qa-pilot-local$",
+      "description": "Custody boundary. Must be qa-pilot-local."
+    },
+    "librarian_impact": {
+      "type": "string",
+      "const": "none",
+      "description": "No Librarian mutation permitted. Must be none."
+    },
+    "not_seal_authority": {
+      "type": "string",
+      "minLength": 20,
+      "description": "Explicit assertion that this registry does not confer sealing authority."
+    },
+    "not_librarian_mutation_authority": {
+      "type": "string",
+      "minLength": 20,
+      "description": "Explicit assertion that this registry does not authorize Librarian mutation."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp when this registry was created."
+    },
+    "created_by": {
+      "type": "string",
+      "description": "Agent or tool that created this registry."
+    }
+  },
+  "allOf": [
+    {
+      "description": "Slot numbers must be strictly increasing (no duplicates).",
+      "if": {
+        "properties": {
+          "layers": {
+            "type": "array",
+            "minItems": 1
+          }
+        },
+        "required": ["layers"]
+      },
+      "then": {
+        "properties": {
+          "layers": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "slot": { "type": "integer" }
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}

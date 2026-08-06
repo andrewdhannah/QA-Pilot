@@ -1,0 +1,17 @@
+{
+  "packet_id": "EP-20260706-003",
+  "project": "qa-pilot",
+  "sprint_id": "QA-PILOT-MCP-EVIDENCE-INTAKE-1",
+  "changed_files": [
+    {
+      "path": "some/file.py",
+      "change_type": "modified",
+      "diff_summary": "Some change"
+    }
+  ],
+  "validation_output": {
+    "tests_passed": 10,
+    "tests_failed": 0,
+    "summary": "Tests pass"
+  }
+}

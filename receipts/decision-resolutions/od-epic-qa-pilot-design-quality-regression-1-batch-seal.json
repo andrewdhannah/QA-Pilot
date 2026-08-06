@@ -1,0 +1,29 @@
+{
+  "$schema": "owner-decision-v1",
+  "decision_id": "OD-EPIC-QA-PILOT-DESIGN-QUALITY-REGRESSION-1-BATCH-SEAL",
+  "date": "2026-07-09",
+  "owner": "Andrew Hannah",
+  "epic": "EPIC-QA-PILOT-DESIGN-QUALITY-REGRESSION-1",
+  "decision": "BATCH_APPROVE_AND_SEAL",
+  "sprints_sealed": [
+    {"id": "QA-PILOT-DESIGN-QUALITY-REGRESSION-BASELINE-1", "ledger_number": 143},
+    {"id": "QA-PILOT-ACCESSIBILITY-REGRESSION-1", "ledger_number": 144},
+    {"id": "QA-PILOT-VISUAL-REGRESSION-HARNESS-1", "ledger_number": 145},
+    {"id": "QA-PILOT-RESPONSIVE-I18N-REGRESSION-1", "ledger_number": 146},
+    {"id": "QA-PILOT-DESIGN-QUALITY-ROUNDTRIP-VALIDATION-1", "ledger_number": 147}
+  ],
+  "basis": "Design quality regression epic complete. All 5 sprints completed under bounded continuation (#143-#147). Sprint 1: baseline audit documented 18 risks across 8 pages. Sprint 2: accessibility remediation — skip-link, semantic landmarks, ARIA admin tabs, form labels, aria-live, lang attr. Sprint 3: visual regression harness with 72 checks. Sprint 4: responsive @media breakpoints added to 4 pages. Sprint 5: final roundtrip validation PASS. No backend, auth, telemetry, external services, or cross-project writes introduced. Static browser and custody boundaries preserved.",
+  "stop_conditions_clear": {
+    "backend_required": false,
+    "auth_required": false,
+    "install_required": false,
+    "cross_project_write": false,
+    "librarian_mutation": false,
+    "sealed_epic_mutated": false,
+    "scope_exceeded": false
+  },
+  "classification": "epic_completion_design_quality_regression",
+  "authority": "Owner",
+  "status": "sealed",
+  "sealed_at": "2026-07-09T23:00:00Z"
+}

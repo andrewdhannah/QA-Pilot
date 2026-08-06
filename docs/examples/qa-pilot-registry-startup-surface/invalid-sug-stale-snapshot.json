@@ -1,0 +1,15 @@
+{
+  "sealed_head": "#60 QA-PILOT-OUTDATED-SPRINT-1",
+  "sealed_number": 60,
+  "registry_posture": {
+    "sug_posture": {
+      "active_snapshot_id": "SRS-BASELINE-001",
+      "active_snapshot_sealed": 56,
+      "latest_sealed_ledger": 60,
+      "snapshot_current": false,
+      "update_pending": true,
+      "sug_status": "degraded",
+      "classification": "degraded"
+    }
+  }
+}

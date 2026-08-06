@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QA Pilot Academy — Select Identity</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="stylesheet" href="css/main.css">
+  <script src="js/i18n.js"></script>
+  <script src="i18n/lang-en.js"></script>
+  <script src="i18n/lang-fr.js"></script>
+  <style>
+    /* Identity page-specific styles — base from main.css */
+    .id-topbar { display:flex; align-items:center; justify-content:space-between; padding:0 var(--space-6); height:56px; background:var(--color-surface); border-bottom:1px solid var(--color-border); position:sticky; top:0; z-index:10; }
+    .id-hero { background:var(--color-surface); padding:var(--space-6) var(--space-6); border-bottom:1px solid var(--color-border); }
+    .id-hero h1 { color:var(--color-ink); font-size:var(--text-heading-lg); font-weight:var(--weight-semibold); letter-spacing:var(--ls-tight); margin-bottom:var(--space-1); }
+    .id-hero p { color:var(--color-ink-soft); font-size:var(--text-body); }
+    .source-chip { display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:var(--radius-sm);font-size:9px;font-family:var(--font-mono);color:var(--color-ink-muted);background:var(--color-bg);border:1px solid var(--color-border);white-space:nowrap; }
+    .source-chip::before { content:"";width:5px;height:5px;border-radius:50%;background:var(--color-success);flex-shrink:0; }
+    .id-content { max-width:600px; margin:0 auto; padding:var(--space-6); }
+    .member-row { display:flex; align-items:center; gap:var(--space-3); padding:var(--space-4); background:var(--color-bg); border:1.5px solid var(--color-border); border-radius:var(--radius-md); margin-bottom:var(--space-2); cursor:pointer; transition:border-color var(--motion-fast); }
+    .member-row:hover { border-color:#d1d5db; }
+    .member-row.selected { border-color:var(--color-primary); background:var(--color-primary-light); }
+    .member-row .name { font-weight:var(--weight-medium); font-size:var(--text-sm); }
+    .member-row .id { font-size:12px; color:var(--color-ink-muted); }
+    .id-note { margin-top:var(--space-5); padding:var(--space-4); background:var(--color-warning-light); border:1px solid var(--color-warning-border); border-radius:var(--radius-md); font-size:13px; color:#92400e; }
+    .back-link { color:var(--color-ink-muted); text-decoration:none; font-size:13px; }
+    .empty-state { text-align:center; padding:var(--space-10); color:var(--color-ink-muted); }
+    @media (max-width: 767px) { .id-hero h1 { font-size:20px; } .id-content { padding:var(--space-4); } }
+  </style>
+</head>
+<body>
+<a href="#main-content" class="skip-link">Skip to main content</a>
+<header role="banner" class="id-topbar">
+  <div class="portal-topbar-brand">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 2L2 7v10l10 5 10-5V7l-10-5z" fill="#2563eb"/><path d="M12 12l-7-3.5v7L12 19l7-3.5v-7L12 12z" fill="#fff"/></svg>
+    QA Pilot Academy
+  </div>
+  <div style="display:flex;align-items:center;gap:var(--space-3);">
+    <div id="lang-toggle-container"></div>
+    <a href="index.html" class="back-link">← Back</a>
+  </div>
+</div>
+
+<main id="main-content" role="main">
+<div class="id-hero">
+  <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:var(--space-3);">
+    <div>
+      <div class="panel-purpose-label">LEARNER IDENTITY</div>
+      <h1>Select Your Identity</h1>
+      <p id="deploymentInfo">Loading deployment information...</p>
+    </div>
+    <span class="source-chip">deployment roster</span>
+  </div>
+</div>
+
+<div class="id-content">
+  <div class="admin-card" style="margin-bottom:var(--space-5);">
+    <h2 style="font-size:var(--text-heading);">Team Members</h2>
+    <p>Choose your name from the deployment roster to begin training.</p>
+    <div id="memberList"></div>
+    <button class="btn btn-primary" id="confirmBtn" disabled onclick="confirmIdentity()">Confirm Identity →</button>
+  </div>
+  <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:var(--space-3);padding:var(--space-4);background:var(--color-bg);border:1px solid var(--color-border);border-radius:var(--radius-md);font-size:var(--text-small);color:var(--color-ink-muted);">
+    <div style="display:flex;align-items:center;gap:var(--space-2);">
+      <span class="source-chip">local browser</span>
+      <span class="source-chip">no server</span>
+    </div>
+    <span>Local identity only. No password, no account, no server.</span>
+  </div>
+  <div class="view-data-footer" style="margin-top:var(--space-4);">
+    <span class="source-chip">source: local browser</span>
+    <span class="source-chip">identity: learner roster</span>
+    <span class="source-chip">all data advisory</span>
+  </div>
+</main>
+
+<script>
+function gs() { try { return JSON.parse(localStorage.getItem('qapilot_state')); } catch { return null; } }
+function ss(s) { localStorage.setItem('qapilot_state', JSON.stringify(s)); }
+
+let selectedIdx = -1;
+
+function load() {
+  const app = gs();
+  const deps = app?.importedDeployments;
+  if (!deps || deps.length === 0) {
+    document.getElementById('memberList').innerHTML = '<div class="empty-state">📦 No deployment found. Import a team deployment JSON from the home screen first.</div>';
+    document.getElementById('deploymentInfo').textContent = 'No deployment imported yet.';
+    return;
+  }
+  const dep = deps[deps.length - 1];
+  document.getElementById('deploymentInfo').textContent = 'Workspace: ' + (dep.workspace || 'Unnamed') + ' · ' + (dep.members?.length || 0) + ' members';
+  const members = dep.members || [];
+  const el = document.getElementById('memberList');
+  if (members.length === 0) {
+    el.innerHTML = '<div class="empty-state">👥 No members in this deployment.</div>';
+    return;
+  }
+  el.innerHTML = members.map((m,i) => `
+    <div class="member-row" onclick="selectMember(${i})" data-index="${i}">
+      <div><div class="name">${esc(m.display_name)}</div><div class="id">${esc(m.local_id)}</div></div>
+    </div>
+  `).join('');
+}
+function selectMember(i) {
+  selectedIdx = i;
+  document.querySelectorAll('.member-row').forEach(el => el.classList.remove('selected'));
+  document.querySelector(`.member-row[data-index="${i}"]`).classList.add('selected');
+  document.getElementById('confirmBtn').disabled = false;
+}
+function confirmIdentity() {
+  const app = gs();
+  if (!app?.importedDeployments) return;
+  const dep = app.importedDeployments[app.importedDeployments.length - 1];
+  const member = dep.members?.[selectedIdx];
+  if (!member) return;
+  app.profile = { id: member.local_id, name: member.display_name, is_local: true, from_deployment: dep.workspace };
+  app.inProgress = app.inProgress || [];
+  (dep.packages || []).forEach(p => {
+    if (!app.inProgress.find(ip => ip.pack_id === p.pack_id))
+      app.inProgress.push({ pack_id: p.pack_id, title: p.title || p.pack_id, status: 'assigned', progress: 0, lastUrl: null, completedSections: [] });
+  });
+  ss(app);
+  window.location.href = 'catalog.html';
+}
+function esc(s) { const d=document.createElement('div'); d.textContent=s||''; return d.innerHTML; }
+document.addEventListener('DOMContentLoaded', load);
+</script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  if (typeof renderLangToggle !== 'undefined') {
+    renderLangToggle('lang-toggle-container');
+  }
+});
+</script>
+</body>
+</html>

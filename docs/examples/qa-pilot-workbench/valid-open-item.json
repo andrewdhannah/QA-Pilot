@@ -1,0 +1,35 @@
+{
+  "qa_item_id": "QA-LIFE-0200",
+  "title": "Open QA item ready for triage",
+  "source": "evidence_intake",
+  "status": "open",
+  "severity": "medium",
+  "category": "functional",
+  "description": "An open QA finding from evidence intake, awaiting triage assessment.",
+  "evidence_refs": [],
+  "evidence_links": [],
+  "lifecycle_history": [
+    {
+      "from_status": "__init__",
+      "to_status": "draft",
+      "transition_reason": "Item created as draft",
+      "actor": "agent",
+      "timestamp": "2026-07-08T00:00:00Z",
+      "advisory_only": true
+    },
+    {
+      "from_status": "draft",
+      "to_status": "open",
+      "transition_reason": "Draft assessment complete, item opened for triage",
+      "actor": "agent",
+      "timestamp": "2026-07-08T00:01:00Z",
+      "advisory_only": true
+    }
+  ],
+  "owner_decision_state": "pending",
+  "created_at": "2026-07-08T00:00:00Z",
+  "updated_at": "2026-07-08T00:01:00Z",
+  "advisory_only": true,
+  "custody": "qa-pilot-local",
+  "librarian_impact": "none"
+}

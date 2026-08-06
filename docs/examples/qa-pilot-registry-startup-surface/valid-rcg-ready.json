@@ -1,0 +1,13 @@
+{
+  "registry_posture": {
+    "rcg_posture": {
+      "latest_sealed_ledger": 54,
+      "latest_sealed_sprint": "QA-PILOT-REGISTRY-CHANGE-RECEIPT-BACKFILL-1",
+      "latest_rcr_ledger": 54,
+      "latest_rcr_receipt": "RCR-NO-IMPACT-054",
+      "coverage_gap": 0,
+      "rcg_status": "pass",
+      "classification": "ready"
+    }
+  }
+}

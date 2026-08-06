@@ -1,0 +1,13 @@
+{
+  "registry_posture": {
+    "rcg_posture": {
+      "latest_sealed_ledger": 58,
+      "latest_sealed_sprint": "QA-PILOT-STALE-SPRINT-1",
+      "latest_rcr_ledger": 54,
+      "latest_rcr_receipt": "RCR-NO-IMPACT-054",
+      "coverage_gap": 4,
+      "rcg_status": "fail",
+      "classification": "blocked"
+    }
+  }
+}

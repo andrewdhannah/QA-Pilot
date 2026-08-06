@@ -1,0 +1,111 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/andrewdhannah/QA-Pilot/schemas/qa-test-definition.schema.json",
+  "title": "QA Test Definition",
+  "description": "A governed test definition within the QA-Pilot test library. Each test defines what is being validated, how to execute it, and what constitutes a pass. Tests reference contracts; they do not replace them.",
+  "type": "object",
+  "required": [
+    "test_id", "domain", "title", "objective",
+    "source", "execution", "pass_criteria"
+  ],
+  "properties": {
+    "test_id": {
+      "type": "string",
+      "pattern": "^(REG|SEC|UAT|A11Y|PERF|AI|COMPL)-[0-9]{3,}$",
+      "description": "Unique test identifier with domain prefix (REG=regression, SEC=security, UAT=user acceptance, A11Y=accessibility, PERF=performance, AI=AI qualification, COMPL=compliance)"
+    },
+    "domain": {
+      "type": "string",
+      "enum": ["regression", "security", "uat", "accessibility", "performance", "ai", "compliance"],
+      "description": "Test domain"
+    },
+    "title": {
+      "type": "string",
+      "minLength": 3,
+      "description": "Human-readable test title"
+    },
+    "objective": {
+      "type": "string",
+      "minLength": 20,
+      "description": "What this test validates and why"
+    },
+    "source": {
+      "type": "object",
+      "required": ["type", "reference"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["work_order", "incident", "acceptance_gate", "contract", "epic", "external"],
+          "description": "What this test was derived from"
+        },
+        "reference": {
+          "type": "string",
+          "description": "Reference to the source artifact (e.g. sprint ID, incident ID, contract name)"
+        },
+        "description": {
+          "type": "string",
+          "description": "Additional context about the source"
+        }
+      },
+      "description": "Provenance — where this test came from"
+    },
+    "execution": {
+      "type": "object",
+      "required": ["type", "criteria"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["validator", "scenario", "sdk_query", "contract_check", "manual"],
+          "description": "How to execute this test"
+        },
+        "criteria": {
+          "type": "string",
+          "description": "The specific condition being tested"
+        },
+        "expected_outcome": {
+          "type": "string",
+          "description": "What a passing result looks like"
+        }
+      },
+      "description": "How to run this test"
+    },
+    "pass_criteria": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "description"],
+        "properties": {
+          "id": { "type": "string" },
+          "description": { "type": "string", "minLength": 10 },
+          "evidence_required": {
+            "type": "array",
+            "items": { "type": "string" }
+          }
+        }
+      },
+      "minItems": 1,
+      "description": "Explicit pass/fail criteria"
+    },
+    "contract_refs": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Contracts this test depends on"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["active", "draft", "deprecated", "archived"],
+      "default": "active"
+    },
+    "advisory_only": {
+      "type": "boolean",
+      "const": true,
+      "description": "Test results are advisory — they do not confer authority"
+    },
+    "no_seal_authority": {
+      "type": "boolean",
+      "const": true,
+      "description": "Test does not confer seal authority"
+    }
+  },
+  "additionalProperties": false
+}

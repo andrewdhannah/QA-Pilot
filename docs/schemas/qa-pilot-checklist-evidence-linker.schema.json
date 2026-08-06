@@ -1,0 +1,222 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://qa-pilot.carbideframe/schemas/qa-pilot-checklist-evidence-linker-v1",
+  "title": "QA Pilot Checklist Evidence Linker",
+  "description": "Schema for QA Pilot checklist evidence linker packets. A linker validates whether evidence refs inside an evidence checklist (#44) point to real, existing pipeline artifacts across the sealed advisory layers (#33-#45). Reports each link as found, missing, or stale with aggregate status.",
+  "type": "object",
+  "required": [
+    "linker_id",
+    "source_checklist_id",
+    "title",
+    "links",
+    "aggregate",
+    "advisory_only",
+    "custody",
+    "librarian_impact",
+    "created_at"
+  ],
+  "properties": {
+    "linker_id": {
+      "type": "string",
+      "pattern": "^EL-[A-Z0-9-]+$",
+      "description": "Unique evidence linker identifier (e.g. EL-PIPELINE-LINK-CHECK-001)."
+    },
+    "source_checklist_id": {
+      "type": "string",
+      "pattern": "^EC-[A-Z0-9-]+$",
+      "description": "The evidence checklist whose refs are being validated."
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Human-readable title for this link check."
+    },
+    "description": {
+      "type": "string",
+      "minLength": 10,
+      "description": "What this link check covers and which stores were scanned."
+    },
+    "links": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["item_id", "pipeline_layer", "ref", "status"],
+        "properties": {
+          "item_id": {
+            "type": "string",
+            "pattern": "^ECI-[A-Z0-9-]+$",
+            "description": "The checklist item whose evidence ref is being checked."
+          },
+          "pipeline_layer": {
+            "type": "string",
+            "enum": [
+              "evidence_intake", "test_composition", "result_export",
+              "epic_regression", "pipeline_health", "drift_detection",
+              "recovery_diagnostics", "owner_review_packet",
+              "owner_decision_receipt", "odr_startup_surface",
+              "evidence_checklist", "checklist_review_packet"
+            ],
+            "description": "The sealed pipeline layer that should contain this evidence."
+          },
+          "ref": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The specific evidence reference being resolved (e.g. file path, index key, packet ID)."
+          },
+          "status": {
+            "type": "string",
+            "enum": ["found", "missing", "stale"],
+            "description": "Link resolution status: found=exists, missing=not found, stale=exists but outdated."
+          },
+          "detail": {
+            "type": "string",
+            "description": "Additional detail about the link status (e.g. why stale, what was expected vs found)."
+          },
+          "expected_path": {
+            "type": "string",
+            "description": "Expected filesystem or store path for the referenced evidence."
+          }
+        },
+        "additionalProperties": false
+      },
+      "description": "Individual link checks from checklist items to pipeline evidence stores."
+    },
+    "aggregate": {
+      "type": "object",
+      "required": ["total_links", "found", "missing", "stale", "all_found"],
+      "properties": {
+        "total_links": { "type": "integer", "minimum": 0 },
+        "found": { "type": "integer", "minimum": 0 },
+        "missing": { "type": "integer", "minimum": 0 },
+        "stale": { "type": "integer", "minimum": 0 },
+        "all_found": { "type": "boolean" },
+        "missing_refs": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "List of refs that were not found."
+        },
+        "stale_refs": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "List of refs that were found but are stale."
+        }
+      },
+      "additionalProperties": false,
+      "description": "Aggregate link-resolution status across all checked refs."
+    },
+    "advisory_only": {
+      "type": "boolean",
+      "const": true,
+      "description": "All QA Pilot linkers are advisory. Must be true."
+    },
+    "custody": {
+      "type": "string",
+      "pattern": "^qa-pilot-local$",
+      "description": "Custody boundary. Must be qa-pilot-local."
+    },
+    "librarian_impact": {
+      "type": "string",
+      "const": "none",
+      "description": "No Librarian mutation permitted. Must be none."
+    },
+    "not_seal_authority": {
+      "type": "string",
+      "minLength": 20,
+      "description": "Explicit assertion that this linker does not confer sealing authority."
+    },
+    "not_librarian_mutation_authority": {
+      "type": "string",
+      "minLength": 20,
+      "description": "Explicit assertion that this linker does not authorize Librarian mutation."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp when this linker was created."
+    },
+    "created_by": {
+      "type": "string",
+      "description": "Agent or tool that created this linker."
+    },
+    "pipeline_refs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["layer_id", "layer_name", "sprint_id", "sealed_number"],
+        "properties": {
+          "layer_id": { "type": "string" },
+          "layer_name": { "type": "string" },
+          "sprint_id": { "type": "string" },
+          "sealed_number": { "type": "integer", "minimum": 33 }
+        },
+        "additionalProperties": false
+      },
+      "description": "References to the sealed pipeline layers whose stores were scanned."
+    }
+  },
+  "allOf": [
+    {
+      "description": "If missing > 0, aggregate.missing_refs must be non-empty.",
+      "if": {
+        "properties": {
+          "aggregate": {
+            "properties": { "missing": { "type": "integer", "minimum": 1 } },
+            "required": ["missing"]
+          }
+        },
+        "required": ["aggregate"]
+      },
+      "then": {
+        "properties": {
+          "aggregate": {
+            "required": ["missing_refs"],
+            "properties": { "missing_refs": { "minItems": 1 } }
+          }
+        }
+      }
+    },
+    {
+      "description": "If stale > 0, aggregate.stale_refs must be non-empty.",
+      "if": {
+        "properties": {
+          "aggregate": {
+            "properties": { "stale": { "type": "integer", "minimum": 1 } },
+            "required": ["stale"]
+          }
+        },
+        "required": ["aggregate"]
+      },
+      "then": {
+        "properties": {
+          "aggregate": {
+            "required": ["stale_refs"],
+            "properties": { "stale_refs": { "minItems": 1 } }
+          }
+        }
+      }
+    },
+    {
+      "description": "all_found must be true when missing=0 and stale=0, false otherwise.",
+      "if": {
+        "properties": {
+          "aggregate": {
+            "properties": {
+              "missing": { "const": 0 },
+              "stale": { "const": 0 }
+            },
+            "required": ["missing", "stale"]
+          }
+        },
+        "required": ["aggregate"]
+      },
+      "then": {
+        "properties": {
+          "aggregate": {
+            "properties": { "all_found": { "const": true } }
+          }
+        }
+      }
+    }
+  ]
+}

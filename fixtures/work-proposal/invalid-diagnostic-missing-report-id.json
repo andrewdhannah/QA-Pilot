@@ -1,0 +1,15 @@
+{
+  "generated_at": "2026-07-24T10:00:00Z",
+  "test_id": "test-pipeline-health-regression",
+  "domain": "regression",
+  "severity": "HIGH",
+  "failure": {
+    "expected": "All 12 PH rules should pass with zero failures",
+    "actual": "PH-7 failed: layer order mismatch at position 3"
+  },
+  "provenance": {
+    "advisory": true,
+    "no_authority_conferred": true,
+    "detected_by": "qa-pilot-pipeline-health-regression"
+  }
+}

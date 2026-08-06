@@ -1,0 +1,10 @@
+Browser-app/ is reserved for the migrated OpenWork QA Pilot application under
+EPIC-QA-PILOT-OPENWORK-TO-CARBIDEFRAME-MIGRATION-1. It is intentionally
+distinct from all CarbideFrame QA Pilot governance roots (scripts/,
+docs/governance/, docs/schemas/, fixtures/, project-state/, receipts/,
+data/, config/, status surfaces, identity, profile, startup contract).
+
+Sprint 1 created this directory. Sprint 2 (QA-PILOT-OPENWORK-APP-COPY-1)
+will populate it from /Users/andrew/Desktop/OpenWork/QA Pilot using the
+copy plan at reports/qa-pilot-migration-copy-manifest-1.json. No file copy
+occurred during Sprint 1.

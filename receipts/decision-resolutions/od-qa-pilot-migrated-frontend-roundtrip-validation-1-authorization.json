@@ -1,0 +1,56 @@
+{
+  "$schema": "owner-decision-v1",
+  "decision_id": "OD-QA-PILOT-MIGRATED-FRONTEND-ROUNDTRIP-VALIDATION-1-AUTHORIZATION",
+  "date": "2026-07-09",
+  "owner": "Andrew Hannah",
+  "sprint": "QA-PILOT-MIGRATED-FRONTEND-ROUNDTRIP-VALIDATION-1",
+  "decision": "AUTHORIZE_SPRINT",
+  "basis": "Authorize the migrated frontend roundtrip validation sprint. The browser-only deployment workflow (#111-#124) and original frontend/design migration (#125-#134) are both sealed. This sprint runs the full trainer/learner roundtrip using the migrated original-design frontend to prove the final product works end-to-end.",
+  "scope_included": [
+    "Open final index.html",
+    "Verify EN/FR toggle works",
+    "Create trainer/admin workspace",
+    "Create team/member",
+    "Generate deployment JSON",
+    "Import as learner",
+    "Select learner identity",
+    "Open catalog",
+    "Run course",
+    "Complete lesson/progress",
+    "Complete quiz if available",
+    "Generate/export result JSON",
+    "Import result in admin dashboard",
+    "Verify certificate path if completion criteria met"
+  ],
+  "scope_excluded": [
+    "No new features",
+    "No redesign",
+    "No backend",
+    "No auth",
+    "No Librarian mutation",
+    "No new architecture"
+  ],
+  "acceptance_criteria": [
+    "Full roundtrip passes using the migrated frontend",
+    "Original design language remains intact",
+    "Browser-only constraints remain intact",
+    "JSON deployment/result custody works",
+    "Admin and learner flows are usable without DevTools except where still explicitly documented",
+    "Any defects are logged with page/file evidence"
+  ],
+  "stop_conditions": {
+    "backend_required": false,
+    "install_required": false,
+    "auth_required": false,
+    "cloud_account_required": false,
+    "cross_project_write": false,
+    "librarian_mutation": false,
+    "authority_expansion": false,
+    "greenfield_replacement": false,
+    "new_architecture": false
+  },
+  "classification": "sprint_authorization_roundtrip_validation",
+  "authority": "Owner",
+  "status": "authorized",
+  "authorized_at": "2026-07-09T20:00:00Z"
+}

@@ -1,0 +1,20 @@
+{
+  "advisory": false,
+  "custody": "librarian-canonical",
+  "has_recovery_options": true,
+  "auto_repair": true,
+  "_authority_claim": "seal and promote this diagnostic to canonical truth",
+  "summary": {
+    "drifts": 5,
+    "total_checks": 10,
+    "layers_affected": ["EP", "TC", "LEDGER", "STARTUP"],
+    "ph_validator": "fail"
+  },
+  "recovery_summary": {
+    "note": "This diagnostic auto-repairs all drifts",
+    "steps": [
+      "This diagnostic claims repair authority",
+      "It should be rejected"
+    ]
+  }
+}

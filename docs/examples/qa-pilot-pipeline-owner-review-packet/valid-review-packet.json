@@ -1,0 +1,26 @@
+{
+  "review_id": "ORP-20260707-test",
+  "advisory": true,
+  "custody": "qa-pilot-local",
+  "librarian_mutation_authority": false,
+  "auto_repair": false,
+  "sections": {
+    "startup_surface": {"status": "ok", "sealed_head": "#40 QA-PILOT-PIPELINE-RECOVERY-DIAGNOSTICS-1"},
+    "pipeline_health": {"status": "pass", "checks_passed": 18, "checks_failed": 0},
+    "drift_detection": {"status": "pass", "drifts": 0},
+    "recovery_diagnostics": {"status": "ok", "drifts": 0},
+    "ledger": {"status": "ok", "total_sealed": 39}
+  },
+  "owner_options": [
+    {"id": "review_accept", "label": "Accept pipeline state"},
+    {"id": "review_authorize", "label": "Authorize repair sprint"},
+    {"id": "review_defer", "label": "Defer action"},
+    {"id": "review_reject", "label": "Reject current state"}
+  ],
+  "summary": {
+    "all_sections_pass": true,
+    "drifts_detected": false,
+    "advisory": true,
+    "owner_action_required": false
+  }
+}

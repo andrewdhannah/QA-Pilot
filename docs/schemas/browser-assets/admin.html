@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QA Pilot Academy — Admin Dashboard</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="stylesheet" href="css/main.css">
+  <script src="js/i18n.js"></script>
+  <script src="i18n/lang-en.js"></script>
+  <script src="i18n/lang-fr.js"></script>
+  <style>
+    /* Admin page-specific styles — base styles from main.css */
+    .admin-main { max-width:1280px; margin:var(--space-8) auto; padding:0 var(--space-6); }
+    .admin-tabs { display:flex; gap:var(--space-2); margin-bottom:var(--space-6); border-bottom:2px solid var(--color-border); }
+    .admin-tab { padding:var(--space-3) var(--space-5); border:none; background:transparent; color:var(--color-ink-muted); font-size:var(--text-sm); font-weight:var(--weight-medium); cursor:pointer; border-bottom:2px solid transparent; margin-bottom:-2px; transition:color var(--motion-fast), border-color var(--motion-fast); }
+    .admin-tab:hover { color:var(--color-ink); }
+    .admin-tab.active { color:var(--color-primary); border-bottom-color:var(--color-primary); }
+    .admin-card { background:var(--color-surface); border:1px solid var(--color-border); border-radius:var(--radius-lg); padding:var(--space-6); margin-bottom:var(--space-5); box-shadow:var(--shadow-sm); }
+    .admin-card h2 { font-size:var(--text-heading); font-weight:var(--weight-bold); margin-bottom:var(--space-3); color:var(--color-ink); }
+    .admin-card p { font-size:var(--text-sm); color:var(--color-ink-soft); }
+    .form-label { display:block; font-size:var(--text-small); font-weight:var(--weight-bold); color:var(--color-ink); margin-bottom:var(--space-2); }
+    .member-row { display:flex; align-items:center; justify-content:space-between; padding:var(--space-3) var(--space-4); background:var(--color-bg); border:1px solid var(--color-border); border-radius:var(--radius-md); margin-bottom:var(--space-2); }
+    .member-row .name { font-weight:var(--weight-medium); font-size:var(--text-sm); }
+    .member-row .id { font-size:12px; color:var(--color-ink-muted); }
+    .member-row .remove { color:var(--color-error); cursor:pointer; font-size:16px; }
+    .pkg-row { display:flex; align-items:center; gap:var(--space-3); padding:var(--space-3) var(--space-4); background:var(--color-bg); border:1px solid var(--color-border); border-radius:var(--radius-md); margin-bottom:var(--space-2); cursor:pointer; }
+    .pkg-row.selected { border-color:var(--color-primary); background:var(--color-primary-light); }
+    .pkg-row .pkg-title { font-weight:var(--weight-medium); font-size:var(--text-sm); }
+    .pkg-row .pkg-id { font-size:12px; color:var(--color-ink-muted); }
+    .preview-box { background:var(--color-bg); border:1px solid var(--color-border); border-radius:var(--radius-md); padding:var(--space-4); font-family:var(--font-mono); font-size:12px; white-space:pre-wrap; max-height:280px; overflow:auto; margin-top:var(--space-4); }
+    .source-chip { display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:var(--radius-sm);font-size:9px;font-family:var(--font-mono);color:var(--color-ink-muted);background:var(--color-bg);border:1px solid var(--color-border);white-space:nowrap; }
+    .source-chip::before { content:"";width:5px;height:5px;border-radius:50%;background:var(--color-success);flex-shrink:0; }
+    .identity-note { margin-top:var(--space-5); padding:var(--space-4); background:var(--color-bg); border:1px solid var(--color-border); border-radius:var(--radius-md); font-size:var(--text-sm); color:var(--color-ink-soft); }
+    .admin-grid-3 { display:grid; grid-template-columns:repeat(3,1fr); gap:var(--space-4); margin-bottom:var(--space-5); }
+    .admin-stat-box { background:var(--color-bg); border:1px solid var(--color-border); border-radius:var(--radius-md); padding:var(--space-5); text-align:center; }
+    .admin-stat-num { font-size:28px; font-weight:var(--weight-bold); color:var(--color-primary); }
+    .admin-stat-lbl { font-size:12px; color:var(--color-ink-muted); margin-top:var(--space-1); }
+    .dash-bento-row { display:grid; grid-template-columns:1fr 1fr; gap:var(--space-5); margin-bottom:var(--space-5); }
+    .dash-bento-full { grid-column:1 / -1; }
+    .dash-stat { display:flex; flex-direction:column; align-items:center; padding:var(--space-3) var(--space-4); }
+    .dash-stat-num { font-size:var(--text-xl); font-weight:var(--weight-bold); color:var(--color-primary); }
+    .dash-stat-lbl { font-size:var(--text-caption); color:var(--color-ink-muted); text-transform:uppercase; letter-spacing:var(--ls-wider); margin-top:2px; }
+    @media (max-width:768px) { .dash-bento-row { grid-template-columns:1fr; } .admin-grid-3 { grid-template-columns:1fr; } }
+  </style>
+</head>
+<body>
+<a href="#app" class="skip-link">Skip to main content</a>
+<header role="banner" class="topbar">
+  <div class="topbar-brand">QA Pilot Academy — Admin</div>
+  <div class="topbar-right">
+    <div id="lang-toggle-container"></div>
+    <span id="workspaceIndicator">No workspace</span>
+    <a href="index.html" style="color:var(--color-ink-muted);text-decoration:none;">← Back</a>
+  </div>
+</div>
+
+<main id="app" class="main-content" role="main">
+
+  <!-- Tabs -->
+  <div class="tabs" role="tablist" aria-label="Admin workspace sections">
+    <div class="admin-tab active" data-tab="dashboard" onclick="switchTab('dashboard')" role="tab" aria-selected="true" tabindex="0">Dashboard</div>
+    <div class="admin-tab" data-tab="workspace" onclick="switchTab('workspace')" role="tab" aria-selected="false" tabindex="-1">Workspace</div>
+    <div class="admin-tab" data-tab="members" onclick="switchTab('members')" role="tab" aria-selected="false" tabindex="-1">Members</div>
+    <div class="admin-tab" data-tab="packages" onclick="switchTab('packages')" role="tab" aria-selected="false" tabindex="-1">Packages</div>
+    <div class="admin-tab" data-tab="deploy" onclick="switchTab('deploy')" role="tab" aria-selected="false" tabindex="-1">Deploy</div>
+    <div class="admin-tab" data-tab="results" onclick="switchTab('results')" role="tab" aria-selected="false" tabindex="-1">Results</div>
+  </div>
+
+  <!-- Dashboard (bento overview — default tab) -->
+  <div id="tab-dashboard" role="tabpanel" aria-label="Dashboard">
+    <div class="panel-purpose-label">ADMIN DASHBOARD</div>
+    <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:var(--space-5);flex-wrap:wrap;gap:var(--space-3);">
+      <h1 style="font-size:var(--text-heading-lg);font-weight:var(--weight-semibold);color:var(--color-ink);letter-spacing:var(--ls-tight);margin:0;">Overview</h1>
+      <span class="status-pill" id="dashWorkspacePill">No workspace</span>
+    </div>
+
+    <div class="dash-bento-row">
+      <div class="card-attention card-enter" style="--card-index:0;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--space-4);">
+          <span class="panel-purpose-label" style="margin-bottom:0;">WORKSPACE</span>
+          <span style="display:flex;align-items:center;gap:var(--space-2);">
+            <span class="source-chip">local browser</span>
+            <span class="view-state-badge info" id="dashMemberBadge">0 members</span>
+          </span>
+        </div>
+        <div style="font-size:var(--text-heading-lg);font-weight:var(--weight-bold);color:var(--color-ink);margin-bottom:var(--space-2);" id="dashWorkspaceName">—</div>
+        <p style="font-size:var(--text-body);color:var(--color-ink-soft);margin-bottom:var(--space-4);">Current admin workspace status and quick actions.</p>
+        <div style="display:flex;gap:var(--space-3);flex-wrap:wrap;">
+          <button class="btn btn-primary" onclick="switchTab('members')" style="font-size:var(--text-small);padding:var(--space-2) var(--space-4);">Manage Members</button>
+          <button class="btn btn-outline" onclick="switchTab('deploy')" style="font-size:var(--text-small);padding:var(--space-2) var(--space-4);">Create Deployment</button>
+        </div>
+      </div>
+
+      <div class="card-active card-enter" style="--card-index:1;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--space-4);">
+          <span class="panel-purpose-label" style="margin-bottom:0;">ACTIVITY</span>
+          <span style="display:flex;align-items:center;gap:var(--space-2);">
+            <span class="source-chip">local workspace</span>
+            <span class="view-state-badge ok" id="dashDeployBadge">0 deploys</span>
+          </span>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-4);margin-bottom:var(--space-3);">
+          <div class="dash-stat"><span class="dash-stat-num" id="dashMemberCount">0</span><span class="dash-stat-lbl">Members</span></div>
+          <div class="dash-stat"><span class="dash-stat-num" id="dashPkgCount">0</span><span class="dash-stat-lbl">Packages</span></div>
+        </div>
+        <p style="font-size:var(--text-body);color:var(--color-ink-soft);">Team and package summary. Use the tabs above to manage each area.</p>
+      </div>
+    </div>
+
+    <div class="card-flat card-enter" style="--card-index:2;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--space-3);">
+        <span class="panel-purpose-label" style="margin-bottom:0;">RECENT RESULTS</span>
+        <span style="display:flex;align-items:center;gap:var(--space-2);">
+          <span class="source-chip">imported JSON</span>
+          <span class="view-state-badge info" id="dashResultBadge">0 imports</span>
+        </span>
+      </div>
+      <div id="dashRecentResults" style="font-size:var(--text-body);color:var(--color-ink-soft);">
+        <p>No results imported yet. Deploy training, collect learner results, then import them here.</p>
+      </div>
+      <div style="margin-top:var(--space-4);">
+        <button class="btn btn-outline" onclick="switchTab('results')" style="font-size:var(--text-small);padding:var(--space-2) var(--space-4);">View All Results →</button>
+      </div>
+    </div>
+
+    <div class="view-data-footer">
+      <span class="source-chip">source: local browser</span>
+      <span class="source-chip">identity: admin</span>
+      <span class="source-chip">all data advisory</span>
+    </div>
+  </div>
+
+  <!-- Workspace -->
+  <div class="admin-card" id="tab-workspace" style="display:none;" role="tabpanel" aria-label="Workspace">
+    <h2>Workspace Setup</h2>
+    <p>Name your team workspace. This appears in deployment JSON files sent to learners.</p>
+    <div class="form-group" style="margin-top:var(--space-4);">
+      <label class="form-label" for="workspaceName">Workspace Name</label>
+      <input class="form-input" id="workspaceName" placeholder="e.g., Q1 Training Team" oninput="onWorkspaceChange()">
+    </div>
+    <button class="btn btn-primary" onclick="saveWorkspace()" style="margin-top:var(--space-3);">Save Workspace</button>
+    <span id="workspaceStatus" style="margin-left:var(--space-3);font-size:var(--text-sm);color:#059669;display:none;">✅ Saved</span>
+  </div>
+
+  <!-- Members -->
+  <div class="admin-card" id="tab-members" style="display:none;" role="tabpanel" aria-label="Members">
+    <h2>Team Members</h2>
+    <p>Add learners who will receive this deployment. Each member selects their identity locally — no accounts or passwords needed.</p>
+    <div class="flex-row" style="margin-top:var(--space-4);">
+      <div class="flex-1">
+        <label class="form-label" for="memberName">Display Name</label>
+        <input class="form-input" id="memberName" placeholder="e.g., Alice" style="margin-bottom:0;">
+      </div>
+      <div class="flex-1">
+        <label class="form-label" for="memberId">Local ID</label>
+        <input class="form-input" id="memberId" placeholder="auto-generated" style="margin-bottom:0;">
+      </div>
+      <button class="btn btn-primary" onclick="addMember()" style="margin-bottom:2px;">Add Member</button>
+    </div>
+    <div id="memberList" style="margin-top:var(--space-4);"></div>
+  </div>
+
+  <!-- Packages -->
+  <div class="admin-card" id="tab-packages" style="display:none;" role="tabpanel" aria-label="Packages">
+    <h2>Assign Training Packages</h2>
+    <p>Select packages to include in the deployment. Only training packs loaded in browser storage are shown.</p>
+    <div id="packageList" style="margin-top:var(--space-4);"></div>
+  </div>
+
+  <!-- Deploy -->
+  <div class="admin-card" id="tab-deploy" style="display:none;" role="tabpanel" aria-label="Deploy">
+    <h2>Deploy</h2>
+    <p>Generate a deployment JSON file to share with your learners.</p>
+    <div class="admin-grid-3" style="margin-top:var(--space-4);">
+      <div class="admin-stat-box"><div class="admin-stat-num" id="deployMemberCount">0</div><div class="admin-stat-lbl">Members</div></div>
+      <div class="admin-stat-box"><div class="admin-stat-num" id="deployPkgCount">0</div><div class="admin-stat-lbl">Packages</div></div>
+      <div class="admin-stat-box"><div class="admin-stat-num" id="deployWorkspace">—</div><div class="admin-stat-lbl">Workspace</div></div>
+    </div>
+    <button class="btn btn-primary" onclick="generateDeployment()">Generate &amp; Download Deployment JSON</button>
+    <div class="preview-box" id="deployPreview" aria-live="polite">Configure workspace, members, and packages above, then generate the deployment.</div>
+  </div>
+
+  <!-- Results (Admin Import) -->
+  <div class="admin-card" id="tab-results" style="display:none;" role="tabpanel" aria-label="Results">
+    <h2>Learner Results</h2>
+    <p>Import result JSON files returned by learners to track completion.</p>
+    <div class="form-group" style="margin-top:var(--space-4);">
+      <label class="form-label" for="resultInput">Import Result File</label>
+      <input class="form-input" type="file" id="resultInput" accept=".json" onchange="handleResultImport(event)">
+    </div>
+    <div id="resultsDashboard"></div>
+  </div>
+
+  <div class="identity-note" role="note" style="display:flex;align-items:center;gap:var(--space-3);flex-wrap:wrap;">
+    <span class="source-chip">local workspace</span>
+    <span class="source-chip">no server</span>
+    <span class="source-chip">no auth</span>
+    <span style="font-size:var(--text-small);color:var(--color-ink-muted);">Local admin workspace only. No accounts, no passwords, no server.</span>
+  </div>
+</main>
+
+<script>
+const STORAGE_KEY = 'qapilot_admin';
+
+function gs() { try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || defaultState(); } catch { return defaultState(); } }
+function defaultState() { return { workspace:'', members:[], assignedPackages:[], created_at:new Date().toISOString() }; }
+function ss(s) { localStorage.setItem(STORAGE_KEY, JSON.stringify(s)); }
+
+function switchTab(name) {
+  document.querySelectorAll('.admin-tab').forEach(t => {
+    t.classList.remove('active');
+    t.setAttribute('aria-selected', 'false');
+    t.setAttribute('tabindex', '-1');
+  });
+  const activeTab = document.querySelector(`.admin-tab[data-tab="${name}"]`);
+  if (activeTab) {
+    activeTab.classList.add('active');
+    activeTab.setAttribute('aria-selected', 'true');
+    activeTab.setAttribute('tabindex', '0');
+  }
+  ['dashboard','workspace','members','packages','deploy','results'].forEach(t => {
+    const el = document.getElementById(`tab-${t}`);
+    if (el) el.style.display = t === name ? 'block' : 'none';
+  });
+  if (name === 'deploy') updateDeployStats();
+  if (name === 'results') renderResults();
+  if (name === 'dashboard') updateDashboard();
+}
+
+function updateDashboard() {
+  const s = gs();
+  const ws = s.workspace || '—';
+  document.getElementById('dashWorkspaceName').textContent = ws;
+  document.getElementById('dashWorkspacePill').textContent = ws !== '—' ? ws : 'No workspace';
+  document.getElementById('dashWorkspacePill').className = 'status-pill ' + (ws !== '—' ? 'ok' : '');
+  document.getElementById('dashMemberCount').textContent = s.members.length;
+  document.getElementById('dashPkgCount').textContent = (s.assignedPackages||[]).length;
+  document.getElementById('dashMemberBadge').textContent = s.members.length + ' members';
+  document.getElementById('dashMemberBadge').className = 'view-state-badge ' + (s.members.length > 0 ? 'ok' : 'info');
+  const deployCount = (s.assignedPackages||[]).length > 0 ? 1 : 0;
+  document.getElementById('dashDeployBadge').textContent = deployCount + ' deploy' + (deployCount !== 1 ? 's' : '');
+  document.getElementById('dashDeployBadge').className = 'view-state-badge ' + (deployCount > 0 ? 'ok' : 'info');
+  // Recent results
+  try {
+    const rdata = JSON.parse(localStorage.getItem('qapilot_imported_results')) || {imports:[]};
+    document.getElementById('dashResultBadge').textContent = rdata.imports.length + ' import' + (rdata.imports.length !== 1 ? 's' : '');
+    document.getElementById('dashResultBadge').className = 'view-state-badge ' + (rdata.imports.length > 0 ? 'ok' : 'info');
+    if (rdata.imports.length > 0) {
+      const all = rdata.imports.flatMap(i => i.results || []);
+      const names = [...new Set(all.map(r => r.learner_name))];
+      document.getElementById('dashRecentResults').innerHTML = '<p>Last import: ' + rdata.imports.length + ' file(s), ' + all.length + ' result(s), ' + names.length + ' learner(s).</p>';
+    }
+  } catch {
+    document.getElementById('dashResultBadge').textContent = '0 imports';
+    document.getElementById('dashResultBadge').className = 'view-state-badge info';
+  }
+}
+
+function loadWorkspace() {
+  const s = gs();
+  if (s.workspace) {
+    document.getElementById('workspaceName').value = s.workspace;
+    document.getElementById('workspaceIndicator').textContent = 'Workspace: ' + s.workspace;
+    document.getElementById('workspaceStatus').style.display = 'inline';
+    document.getElementById('workspaceStatus').textContent = '✅ ' + s.workspace;
+  }
+}
+function saveWorkspace() {
+  const name = document.getElementById('workspaceName').value.trim();
+  if (!name) { alert('Enter a workspace name.'); return; }
+  const s = gs(); s.workspace = name; ss(s);
+  document.getElementById('workspaceIndicator').textContent = 'Workspace: ' + name;
+  document.getElementById('workspaceStatus').style.display = 'inline';
+  document.getElementById('workspaceStatus').textContent = '✅ ' + name;
+}
+
+function loadMembers() {
+  const s = gs(); renderMemberList(s.members);
+}
+function renderMemberList(members) {
+  document.getElementById('memberCount').textContent = members.length;
+  const el = document.getElementById('memberList');
+  if (!members.length) { el.innerHTML = '<div class="empty-state"><div class="icon">👥</div><div>No members yet.</div></div>'; return; }
+  el.innerHTML = members.map((m,i) => `<div class="member-row"><div><div class="name">${esc(m.display_name)}</div><div class="id">${esc(m.local_id)}</div></div><span class="remove" onclick="removeMember(${i})">✕</span></div>`).join('');
+}
+function addMember() {
+  const name = document.getElementById('memberName').value.trim();
+  let id = document.getElementById('memberId').value.trim();
+  if (!name) { alert('Enter a display name.'); return; }
+  if (!id) id = 'user-' + Date.now().toString(36);
+  const s = gs();
+  if (s.members.find(m => m.local_id === id)) { alert('ID already exists: ' + id); return; }
+  s.members.push({ local_id: id, display_name: name }); ss(s);
+  renderMemberList(s.members);
+  document.getElementById('memberName').value = ''; document.getElementById('memberId').value = '';
+}
+function removeMember(i) { const s = gs(); s.members.splice(i,1); ss(s); renderMemberList(s.members); }
+
+function loadPackages() {
+  const s = gs(); const pkgs = discoverPackages(); const el = document.getElementById('packageList');
+  if (!pkgs.length) { el.innerHTML = '<div class="empty-state"><div class="icon">📚</div><div>No packages in browser storage. Load content first.</div></div>'; return; }
+  el.innerHTML = pkgs.map(p => {
+    const sel = (s.assignedPackages||[]).includes(p.id);
+    return `<div class="pkg-row ${sel?'selected':''}" onclick="togglePkg('${p.id}')">
+      <input type="checkbox" ${sel?'checked':''} style="width:auto;" onchange="event.stopPropagation();togglePkg('${p.id}')">
+      <div><div class="pkg-title">${esc(p.title)}</div><div class="pkg-id">${esc(p.id)} · ${esc(p.type||'training')}</div></div>
+    </div>`;
+  }).join('');
+}
+function discoverPackages() {
+  const pkgs = [];
+  try { const idx = JSON.parse(localStorage.getItem('qapilot_training_index')) || {packages:[]}; idx.packages.forEach(p => pkgs.push({id:p.pack_id, title:p.title, type:p.artifact_type})); } catch {}
+  return pkgs;
+}
+function togglePkg(id) {
+  const s = gs(); if (!s.assignedPackages) s.assignedPackages = [];
+  const idx = s.assignedPackages.indexOf(id);
+  idx >= 0 ? s.assignedPackages.splice(idx,1) : s.assignedPackages.push(id);
+  ss(s); loadPackages();
+}
+
+function updateDeployStats() {
+  const s = gs();
+  document.getElementById('deployMemberCount').textContent = s.members.length;
+  document.getElementById('deployPkgCount').textContent = (s.assignedPackages||[]).length;
+  document.getElementById('deployWorkspace').textContent = s.workspace || '—';
+}
+function generateDeployment() {
+  const s = gs();
+  if (!s.workspace) { alert('Set a workspace name first.'); return; }
+  if (!s.members.length) { alert('Add at least one member.'); return; }
+  if (!(s.assignedPackages||[]).length) { alert('Assign at least one package.'); return; }
+  const dep = {
+    deployment_schema:'deployment-v1', workspace_name:s.workspace, generated_at:new Date().toISOString(),
+    members:s.members,
+    assigned_packages:(s.assignedPackages||[]).map(pid => ({pack_id:pid, title:getPkgTitle(pid), assigned_to:s.members.map(m=>m.local_id)})),
+    advisory:true
+  };
+  const json = JSON.stringify(dep,null,2);
+  document.getElementById('deployPreview').textContent = json;
+  const blob = new Blob([json],{type:'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href = url; a.download = `deployment-${s.workspace.replace(/\s+/g,'-').toLowerCase()}.json`; a.click();
+  URL.revokeObjectURL(url);
+}
+function getPkgTitle(pid) {
+  try { const idx = JSON.parse(localStorage.getItem('qapilot_training_index'))||{packages:[]}; const p = idx.packages.find(p=>p.pack_id===pid); return p?p.title:pid; } catch { return pid; }
+}
+
+function renderResults() {
+  const data = (() => { try { return JSON.parse(localStorage.getItem('qapilot_imported_results'))||{imports:[]}; } catch { return {imports:[]}; } })();
+  const el = document.getElementById('resultsDashboard');
+  if (!data.imports.length) { el.innerHTML = '<div class="empty-state"><div class="icon">📥</div><div>No results imported. Import a learner result JSON file above.</div></div>'; return; }
+  const all = data.imports.flatMap(i=>i.results||[]);
+  const learners = [...new Set(all.map(r=>r.learner_name))];
+  el.innerHTML = `<div class="grid-3"><div class="stat-box"><div class="num">${data.imports.length}</div><div class="lbl">Import Files</div></div><div class="stat-box"><div class="num">${all.length}</div><div class="lbl">Results</div></div><div class="stat-box"><div class="num">${learners.length}</div><div class="lbl">Learners</div></div></div>`;
+  all.forEach(r => {
+    el.innerHTML += `<div class="member-row"><div><div class="name">${esc(r.learner_name||'Unknown')}</div><div class="id">${esc(r.title||r.pack_id)} · Completed: ${r.completed_at?new Date(r.completed_at).toLocaleDateString():'Unknown'}</div></div><span class="badge badge-success">Complete</span></div>`;
+  });
+  el.innerHTML += '<div class="view-data-footer" style="margin-top:var(--space-4);"><span>All results advisory</span><span>Trainer/Owner review required</span></div>';
+  updateDashboard();
+}
+function handleResultImport(event) {
+  const file = event.target.files[0]; if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      const r = JSON.parse(e.target.result);
+      if (r.result_schema !== 'result-v1') { alert('Invalid: expected result-v1 schema.'); return; }
+      if (r.advisory !== true) { alert('Invalid: advisory must be true.'); return; }
+      const data = (()=>{try{return JSON.parse(localStorage.getItem('qapilot_imported_results'))||{imports:[]};}catch{return{imports:[]};}})();
+      data.imports.push({imported_at:new Date().toISOString(),learner_id:r.learner_id,learner_name:r.learner_name,results:r.results||[]});
+      localStorage.setItem('qapilot_imported_results', JSON.stringify(data));
+      renderResults();
+      alert('✅ Imported '+(r.results?.length||0)+' result(s) from '+(r.learner_name||'Unknown'));
+    } catch(err) { alert('Error: ' + err.message); }
+  };
+  reader.readAsText(file);
+}
+
+function esc(s) { const d=document.createElement('div'); d.textContent=s||''; return d.innerHTML; }
+
+document.addEventListener('DOMContentLoaded', () => { loadWorkspace(); loadMembers(); loadPackages(); updateDashboard(); });
+</script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  if (typeof renderLangToggle !== 'undefined') {
+    renderLangToggle('lang-toggle-container');
+  }
+});
+</script>
+</body>
+</html>

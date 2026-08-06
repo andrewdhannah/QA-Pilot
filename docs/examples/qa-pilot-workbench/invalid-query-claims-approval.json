@@ -1,0 +1,18 @@
+{
+  "qa_item_id": "QA-BAD-0401",
+  "title": "Item that would appear in a query but claims it is approved and verified",
+  "source": "manual",
+  "status": "open",
+  "severity": "high",
+  "category": "functional",
+  "description": "This item claims approval and verification authority in its title, violating WB-5. Query results must not surface items that claim authority.",
+  "evidence_refs": [],
+  "evidence_links": [],
+  "lifecycle_history": [
+    {"from_status": "__init__", "to_status": "open", "transition_reason": "Item created", "actor": "agent", "timestamp": "2026-07-08T00:00:00Z", "advisory_only": true}
+  ],
+  "owner_decision_state": "pending",
+  "created_at": "2026-07-08T00:00:00Z",
+  "updated_at": "2026-07-08T00:00:00Z",
+  "advisory_only": true, "custody": "qa-pilot-local", "librarian_impact": "none"
+}

@@ -1,0 +1,81 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://qa-pilot.carbideframe/schemas/qa-workbench-evidence-link-v1",
+  "title": "QA Workbench Evidence Link",
+  "description": "Schema for a structured evidence reference attached to a QA workbench item. Each link records which evidence artifact supports or relates to the QA finding, what produced it, and why it was attached. Evidence links are advisory-only — they do not prove defect validity, imply Owner approval, or confer seal authority.",
+  "type": "object",
+  "required": [
+    "evidence_link_id",
+    "evidence_type",
+    "evidence_ref",
+    "custody",
+    "advisory_only",
+    "attached_at"
+  ],
+  "properties": {
+    "evidence_link_id": {
+      "type": "string",
+      "pattern": "^EL-[A-Z]+-[0-9]{4,6}-[0-9]{3,6}$",
+      "description": "Unique evidence link identifier (e.g. EL-FUNC-0001-001)."
+    },
+    "evidence_type": {
+      "type": "string",
+      "enum": [
+        "validator_output",
+        "arp_packet",
+        "evidence_packet",
+        "test_result",
+        "epic_regression_suite",
+        "train_sim_result",
+        "result_packet",
+        "checklist_item",
+        "owner_decision_receipt",
+        "manual_observation"
+      ],
+      "description": "Type of evidence being linked."
+    },
+    "evidence_ref": {
+      "type": "string",
+      "pattern": "^(EP-|EPIC-|QR-|TC-|ARP-|OD-|EL-|TS-)",
+      "description": "Reference to the evidence artifact (packet ID, receipt ID, etc.)."
+    },
+    "source_path": {
+      "type": "string",
+      "description": "Optional filesystem path to the evidence artifact within the QA Pilot project."
+    },
+    "producing_validator": {
+      "type": "string",
+      "description": "Name of the validator script that produced or validated this evidence."
+    },
+    "producing_command": {
+      "type": "string",
+      "description": "CLI command used to produce this evidence."
+    },
+    "attachment_reason": {
+      "type": "string",
+      "maxLength": 1000,
+      "description": "Short rationale for why this evidence is linked to the QA item."
+    },
+    "custody": {
+      "type": "string",
+      "const": "qa-pilot-local",
+      "description": "Must always be qa-pilot-local. Evidence links cannot claim cross-project or Librarian custody."
+    },
+    "advisory_only": {
+      "type": "boolean",
+      "const": true,
+      "description": "Must always be true. Evidence links are advisory-only and never confer seal or approval authority."
+    },
+    "authority_note": {
+      "type": "string",
+      "const": "Evidence attachment does not prove defect validity or imply Owner approval.",
+      "description": "Standard authority disclaimer attached to every evidence link."
+    },
+    "attached_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp when this evidence link was attached."
+    }
+  },
+  "additionalProperties": false
+}

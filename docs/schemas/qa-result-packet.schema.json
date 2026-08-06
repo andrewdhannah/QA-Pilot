@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://qa-pilot.carbideframe/schemas/qa-result-packet-v1",
+  "title": "QA Result Packet",
+  "description": "Advisory QA result packet exported from QA Pilot for Owner review. Carries no approve/seal/mutate authority.",
+  "type": "object",
+  "required": [
+    "result_id", "sprint_ids", "summary", "advisory",
+    "owner_action_required", "findings", "exported_at"
+  ],
+  "properties": {
+    "result_id": { "type": "string", "pattern": "^QR-" },
+    "sprint_ids": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 1
+    },
+    "epic_ref": { "type": "string" },
+    "summary": {
+      "type": "object",
+      "required": ["tests_passed", "tests_failed", "defects_found"],
+      "properties": {
+        "tests_passed": { "type": "integer", "minimum": 0 },
+        "tests_failed": { "type": "integer", "minimum": 0 },
+        "defects_found": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "advisory": { "type": "boolean", "const": true },
+    "owner_action_required": { "type": "boolean", "const": true },
+    "findings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "finding_id": { "type": "string" },
+          "type": { "enum": ["defect", "regression", "improvement", "observation", "violation"] },
+          "description": { "type": "string", "maxLength": 1000 },
+          "severity": { "enum": ["low", "medium", "high", "critical"] }
+        },
+        "required": ["finding_id", "type", "description"]
+      }
+    },
+    "defect_list": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "learning_records": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "record_id": { "type": "string" },
+          "lesson": { "type": "string" },
+          "recommendation": { "type": "string" }
+        }
+      }
+    },
+    "recommendation": { "type": "string" },
+    "exported_at": { "type": "string", "format": "date-time" },
+    "provenance": {
+      "type": "object",
+      "properties": {
+        "source": { "type": "string" },
+        "qa_pilot_version": { "type": "string" }
+      }
+    }
+  }
+}

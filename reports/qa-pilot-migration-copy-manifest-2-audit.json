@@ -1,0 +1,41 @@
+{
+  "$schema": "qa-pilot-migration-copy-manifest-2-audit-v1",
+  "epic": "EPIC-QA-PILOT-OPENWORK-TO-CARBIDEFRAME-MIGRATION-1",
+  "sprint": "QA-PILOT-OPENWORK-APP-COPY-1",
+  "started_at": "2026-07-10T19:17:26.891416+00:00",
+  "finished_at": "2026-07-10T19:17:27.121625+00:00",
+  "approval_token": "apt_3ed7340e",
+  "work_packet": "wp-qa-pilot-20260710-2",
+  "dispatch": "spd-qa-pilot-20260710-2",
+  "owner_decision_id": "OD-qa-pilot-20260710-260710-2",
+  "manifest_sha256": "c85fda640f617ef2dc2b6162496e2d05c09a409206b1382f0479aa7c57406ef0",
+  "result": {
+    "expected_count": 123,
+    "copied_count": 123,
+    "pre_source_mismatches": 0,
+    "post_dest_mismatches": 0,
+    "failures": 0,
+    "total_bytes_copied": 9014064,
+    "verdict": "PASS"
+  },
+  "overwrite_protection": {
+    "destination_root_empty_before": true,
+    "files_in_browser_app_now": 123,
+    "governance_check": "delegated",
+    "governance_report_path": "reports/qa-pilot-migration-governance-protection-2.json",
+    "verdict": "see delegated report (governance_check2.py)"
+  },
+  "path_risks": {
+    "html_files_scanned": 43,
+    "html_files_with_broken_refs": 7
+  },
+  "app_open": {
+    "verdict": "FAIL",
+    "checked": [
+      "index.html",
+      "portal.html",
+      "course-view.html",
+      "certificate.html"
+    ]
+  }
+}

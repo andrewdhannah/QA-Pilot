@@ -10,7 +10,7 @@
 | `status` | active |
 | `created_at` | 2026-07-02 |
 | `init_sprint` | QA-PILOT-PROJECT-INIT-1 |
-| `canonical_repo` | /Users/andrew/Desktop/CarbideFrame/qa-pilot |
+| `canonical_repo` | /Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app |
 | `workspace_path` | /Users/andrew/Desktop/CarbideFrame/active/qa-pilot |
 | `governance_profile` | lightweight-custody |
 | `supersedes` | — |

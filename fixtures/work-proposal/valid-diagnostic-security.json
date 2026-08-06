@@ -1,0 +1,30 @@
+{
+  "report_id": "DIAG-SEC-0002",
+  "generated_at": "2026-07-24T11:00:00Z",
+  "test_id": "test-broker-audit-trail-integrity",
+  "domain": "security",
+  "severity": "CRITICAL",
+  "failure": {
+    "expected": "Broker audit trail should contain all 15 BA rules with zero gaps",
+    "actual": "BA-9 missing from audit trail — receipt store did not record the validation step for entry #003",
+    "reproduction": "Run: python3 scripts/validate-qa-pilot-broker-audit-store.py",
+    "contract_ref": "qa-pilot-broker-audit-receipt.schema.json",
+    "evidence_refs": ["evidence/ba-run-20260724.json"]
+  },
+  "affected_area": {
+    "component": "broker_audit_store",
+    "file_scope": ["scripts/qa_pilot_broker_audit_store.py"],
+    "contract_scope": ["qa-pilot-broker-audit-receipt.schema.json"]
+  },
+  "constraints": {
+    "must_not_modify": ["active/librarian/Sources/", "active/librarian/receipts/"],
+    "required_validation": ["python3 scripts/validate-qa-pilot-broker-audit-store.py", "python3 scripts/validate-qa-pilot-broker-audit-receipt.py"]
+  },
+  "provenance": {
+    "advisory": true,
+    "no_authority_conferred": true,
+    "detected_by": "qa-pilot-broker-audit-store",
+    "validation_run": "ba-run-20260724",
+    "pipeline_run": "pipeline-20260724-002"
+  }
+}

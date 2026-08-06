@@ -1,0 +1,43 @@
+{
+  "receipt_type": "owner_decision_seal",
+  "decision_id": "OD-QA-PILOT-STARTUP-LIBRARIAN-PARITY-MATRIX-1-SEAL",
+  "project_id": "qa-pilot",
+  "sprint_id": "QA-PILOT-STARTUP-LIBRARIAN-PARITY-MATRIX-1",
+  "ledger_number": 20,
+  "decision": "APPROVE_AND_SEAL",
+  "approved_by": "Andrew Hannah (Owner)",
+  "approved_at": "2026-07-06T01:44:15Z",
+  "decision_basis": [
+    "79 startup dimensions compared across QA Pilot and Librarian",
+    "Required / divergent / gap areas classified with status markers",
+    "G-1 through G-6 recorded with priorities and proposed actions",
+    "8 intentional divergences documented with rationales",
+    "All 13 parity matrix validator rules (PM-1 through PM-12) pass",
+    "All existing QA Pilot validators pass with zero regressions",
+    "No parity claim made without checked matrix dimension",
+    "No Librarian files modified or referenced in mutation context",
+    "Boundary clean: all hard constraints preserved",
+    "Sprint does not close gaps — it establishes the checked basis for follow-up implementation"
+  ],
+  "seal_conditions": [
+    "Parity gaps G-1 through G-6 remain open for follow-up sprint resolution",
+    "Do not claim full startup parity until gaps are resolved or formally classified",
+    "Parity matrix must be re-evaluated when either project's startup contract changes",
+    "Do not mutate Librarian from QA Pilot parity gap closure sprints"
+  ],
+  "boundary_assertion": {
+    "project_boundary": "qa-pilot",
+    "lane": "parallel_planning",
+    "librarian_impact": "none",
+    "cross_project_registration": false,
+    "runtime_mutation_authorized": false,
+    "implementation_authorized": false
+  },
+  "evidence": [
+    "docs/governance/QA-PILOT-STARTUP-LIBRARIAN-PARITY-MATRIX.md (14 sections, 79 parity dimensions)",
+    "scripts/validate-qa-pilot-startup-parity-matrix.py (13 rules PM-1 through PM-12)",
+    "docs/sprints/QA-PILOT-STARTUP-LIBRARIAN-PARITY-MATRIX-1.md",
+    "project-state/sprint-ledger.json (entry #20)"
+  ],
+  "authorized_next_sprint": "QA-PILOT-STARTUP-PARITY-GAP-CLOSURE-1"
+}

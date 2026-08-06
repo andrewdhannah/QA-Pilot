@@ -1,0 +1,24 @@
+{
+  "schema": "learning-object-v1",
+  "id": "LO-MISSING-SOURCE-001",
+  "title": "Invalid: Missing Source Reference",
+  "learning": {
+    "objective": "Invalid object - no source evidence reference",
+    "explanation": "This learning object does not reference any governed evidence finding, which violates the invariant that learning objects must derive from evidence."
+  },
+  "assessment": {
+    "quiz_refs": ["l1-q1"],
+    "scoring_model": "quiz_only"
+  },
+  "certification": {
+    "criteria": [
+      {
+        "id": "LO-CERT-001",
+        "description": "Invalid - missing source block"
+      }
+    ],
+    "passing_score": 80
+  },
+  "advisory_only": true,
+  "no_seal_authority": true
+}

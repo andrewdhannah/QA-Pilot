@@ -1,0 +1,30 @@
+{
+  "report_id": "DIAG-REG-0001",
+  "generated_at": "2026-07-24T10:00:00Z",
+  "test_id": "test-pipeline-health-regression",
+  "domain": "regression",
+  "severity": "HIGH",
+  "failure": {
+    "expected": "All 12 PH rules should pass with zero failures",
+    "actual": "PH-7 failed: layer order mismatch at position 3 — expected evidence_intake but got test_composition",
+    "reproduction": "Run: python3 scripts/validate-qa-pilot-pipeline-health-regression.py",
+    "contract_ref": "qa-pilot-pipeline-layer-registry.schema.json",
+    "evidence_refs": ["evidence/ph-run-20260724.json"]
+  },
+  "affected_area": {
+    "component": "pipeline_health_validator",
+    "file_scope": ["scripts/validate-qa-pilot-pipeline-health-regression.py"],
+    "contract_scope": ["qa-pilot-pipeline-layer-registry.schema.json"]
+  },
+  "constraints": {
+    "must_not_modify": ["active/librarian/Sources/", "active/librarian/project-state/sprint-ledger.json"],
+    "required_validation": ["python3 scripts/validate-qa-pilot-pipeline-health-regression.py", "python3 scripts/validate-qa-pilot-pipeline-layer-registry.py"]
+  },
+  "provenance": {
+    "advisory": true,
+    "no_authority_conferred": true,
+    "detected_by": "qa-pilot-pipeline-health-regression",
+    "validation_run": "ph-run-20260724",
+    "pipeline_run": "pipeline-20260724-001"
+  }
+}

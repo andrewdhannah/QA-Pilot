@@ -1,0 +1,41 @@
+{
+  "sdk_version": "qa-pilot-evidence-sdk-v1",
+  "generated_at": "2026-07-24T02:30:00Z",
+  "run_id": "eval-20260724-020456",
+  "finding_count": 2,
+  "findings": [
+    {
+      "schema": "diagnostic-finding-v1",
+      "finding_id": "F-0001",
+      "code": "EV-GOV-002",
+      "category": "CURSOR",
+      "status": "CONFIRMED",
+      "detected_at": "2026-07-24T02:04:56.162684Z",
+      "finding": "Lifecycle cursor stale \u2014 exceeds freshness threshold.",
+      "evidence_class": "AUTHORITATIVE",
+      "severity": "MEDIUM",
+      "confidence": "ESTIMATED",
+      "impact_scope": "lifecycle_state",
+      "affected_components": ["agent-bridge"],
+      "resolution_state": "OPEN"
+    },
+    {
+      "schema": "diagnostic-finding-v1",
+      "finding_id": "F-0002",
+      "code": "EV-GOV-001",
+      "category": "CURSOR",
+      "status": "CONFIRMED",
+      "detected_at": "2026-07-24T02:04:56.162684Z",
+      "finding": "Lifecycle cursor absent for registered project.",
+      "evidence_class": "AUTHORITATIVE",
+      "severity": "MEDIUM",
+      "confidence": "VERIFIED",
+      "impact_scope": "lifecycle_state",
+      "affected_components": ["claude-conversation-ingestion"],
+      "resolution_state": "OPEN"
+    }
+  ],
+  "severity_counts": { "MEDIUM": 8, "LOW": 4, "HIGH": 1 },
+  "confidence_counts": { "ESTIMATED": 7, "VERIFIED": 1, "DIRECT": 5 },
+  "category_counts": { "CURSOR": 9, "RECONCILIATION": 1, "EPIC": 1, "RUNTIME_PROVENANCE": 1, "PROJECTION_PROVENANCE": 1 }
+}

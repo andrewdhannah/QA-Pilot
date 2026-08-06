@@ -1,0 +1,30 @@
+{
+  "pipeline_version": "qa-pilot-continuous-pipeline-v1",
+  "run_id": "pipe-20260724-060119",
+  "generated_at": "2026-07-24T06:01:19Z",
+  "duration_seconds": 0,
+  "project": "qa-pilot",
+  "overall": "PASS",
+  "quick_mode": true,
+  "phases": {
+    "contract_compatibility": "PASS",
+    "sdk_health": "PASS",
+    "test_execution": {
+      "total": 0,
+      "passed": 0,
+      "failed": 0,
+      "by_domain": {}
+    }
+  },
+  "domains": {},
+  "tests_executed": 0,
+  "tests_passed": 0,
+  "tests_failed": 0,
+  "output_path": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/validation-package/pipe-20260724-060119",
+  "provenance": {
+    "advisory": true,
+    "no_authority_conferred": true,
+    "reports_validation_status": true,
+    "does_not_approve_releases": true
+  }
+}

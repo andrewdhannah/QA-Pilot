@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://qa-pilot.carbideframe/schemas/qa-pilot-review-depth-thresholds-decision-packet-startup-surface-v1",
+  "title": "QA Pilot Review Depth Thresholds Decision Packet Startup Surface",
+  "description": "Schema for the decision packet startup surface. Reports decision packet posture (count, latest packet, state, references) without creating, accepting, rejecting, verifying, or sealing packets. Read-only/advisory-only. Owner is the only decision authority.",
+  "type": "object",
+  "required": [
+    "timestamp", "advisory_only", "custody", "librarian_impact", "source_project",
+    "dp_surface"
+  ],
+  "properties": {
+    "timestamp": { "type": "string", "format": "date-time" },
+    "advisory_only": { "type": "boolean", "const": true },
+    "custody": { "type": "string", "const": "qa-pilot-local" },
+    "librarian_impact": { "type": "string", "const": "none" },
+    "source_project": { "type": "string", "const": "qa-pilot" },
+    "advisory_notice": {
+      "type": "string",
+      "const": "This startup surface reports decision packet posture only. It does not create packets, make Owner decisions, accept/reject results, authorize execution, verify evidence, close reviews, mutate evidence/result packets, or create seal authority."
+    },
+    "dp_surface": {
+      "type": "object",
+      "required": [
+        "packet_count", "dp_status", "classification"
+      ],
+      "properties": {
+        "packet_count": { "type": "integer", "minimum": 0 },
+        "dp_status": { "type": "string", "enum": ["present", "empty", "absent"] },
+        "classification": { "type": "string", "enum": ["ready", "degraded", "blocked", "unknown"] },
+        "latest_packet_id": { "type": "string" },
+        "latest_packet_state": { "type": "string", "enum": ["prepared", "needs_owner_review", "deferred", "closed_by_owner"] },
+        "latest_threshold_id": { "type": "string" },
+        "latest_threshold_state": { "type": "string", "enum": ["sufficient", "needs_more_context", "blocked"] },
+        "latest_evidence_bundle_ref": { "type": "string" },
+        "latest_result_packet_ref": { "type": "string" },
+        "latest_consistency_guard_refs": { "type": "array", "items": { "type": "string" } },
+        "latest_timestamp": { "type": "string", "format": "date-time" },
+        "by_packet_state": { "type": "object" },
+        "by_threshold_state": { "type": "object" }
+      }
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,56 @@
+{
+  "guard_id": "MG-INVALID-NO-STOP-001",
+  "session_id": "ses_no_stop_reason_001",
+  "title": "Invalid — No Stop Reason Documented",
+  "description": "Agent made 3 startup MCP calls, received -32602 on all, but did not document any stop reason. The session proceeded without recording why it stopped calling MCP tools.",
+  "mcp_calls": [
+    {
+      "call_number": 1,
+      "tool": "project_get_profile",
+      "params_summary": "profile_id=qa-pilot-full-governance",
+      "result": "not_found",
+      "result_detail": "MCP error -32602.",
+      "phase": "startup",
+      "retry": false,
+      "stop_reason": null
+    },
+    {
+      "call_number": 2,
+      "tool": "project_get_cursor",
+      "params_summary": "project_id=qa-pilot",
+      "result": "not_found",
+      "result_detail": "MCP error -32602.",
+      "phase": "startup",
+      "retry": false,
+      "stop_reason": null
+    },
+    {
+      "call_number": 3,
+      "tool": "project_get_allowed_transitions",
+      "params_summary": "project_id=qa-pilot",
+      "result": "not_found",
+      "result_detail": "MCP error -32602.",
+      "phase": "startup",
+      "retry": false,
+      "stop_reason": null
+    }
+  ],
+  "aggregate": {
+    "total_calls": 3,
+    "unique_tools": 3,
+    "repeated_identical_calls": 0,
+    "repeated_health_checks": 0,
+    "stop_reason_present": false,
+    "cross_lane_detected": false,
+    "bounded": true,
+    "no_auto_retry_loop": true,
+    "terminal_result_recognized": false,
+    "cross_lane_calls": []
+  },
+  "advisory_only": true,
+  "custody": "qa-pilot-local",
+  "librarian_impact": "none",
+  "not_seal_authority": "This test fixture does not confer sealing authority.",
+  "not_librarian_mutation_authority": "This test fixture does not authorize Librarian mutation.",
+  "created_at": "2026-07-07T17:53:00Z"
+}

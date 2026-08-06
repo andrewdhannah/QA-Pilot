@@ -1,0 +1,38 @@
+{
+  "packet_id": "XPK-EVID-0002",
+  "packet_type": "snapshot",
+  "created_at": "2026-07-08T01:00:00Z",
+  "item_ids": ["QA-REGR-0020"],
+  "included_items": [
+    {
+      "qa_item_id": "QA-REGR-0020",
+      "title": "Pipeline regression item with evidence",
+      "source": "result_export",
+      "status": "evidence_attached",
+      "severity": "medium",
+      "category": "regression",
+      "description": "Has multiple evidence links.",
+      "evidence_refs": [],
+      "evidence_links": [
+        {"evidence_link_id":"EL-REGR-0001-001","evidence_type":"validator_output","evidence_ref":"EP-REGR-001","attachment_reason":"Validator output","custody":"qa-pilot-local","advisory_only":true,"authority_note":"Evidence attachment does not prove defect validity or imply Owner approval.","attached_at":"2026-07-08T00:00:00Z"},
+        {"evidence_link_id":"EL-REGR-0001-002","evidence_type":"result_packet","evidence_ref":"QR-REGR-001","attachment_reason":"Result packet","custody":"qa-pilot-local","advisory_only":true,"authority_note":"Evidence attachment does not prove defect validity or imply Owner approval.","attached_at":"2026-07-08T00:05:00Z"}
+      ],
+      "lifecycle_history": [
+        {"from_status":"__init__","to_status":"open","transition_reason":"Created","actor":"agent","timestamp":"2026-07-08T00:00:00Z","advisory_only":true},
+        {"from_status":"open","to_status":"triaged","transition_reason":"Triaged","actor":"agent","timestamp":"2026-07-08T00:05:00Z","advisory_only":true},
+        {"from_status":"triaged","to_status":"evidence_attached","transition_reason":"Evidence linked","actor":"agent","timestamp":"2026-07-08T00:10:00Z","advisory_only":true}
+      ],
+      "owner_decision_state": "pending",
+      "created_at": "2026-07-08T00:00:00Z",
+      "updated_at": "2026-07-08T00:10:00Z",
+      "advisory_only": true, "custody": "qa-pilot-local", "librarian_impact": "none"
+    }
+  ],
+  "evidence_links_aggregate": {"total_links": 2, "by_type": {"validator_output": 1, "result_packet": 1}},
+  "lifecycle_summary": {"total_transitions": 3, "by_status": {"evidence_attached": 1}},
+  "validator_summary": null,
+  "authority_disclaimer": "This export packet is advisory-only. It does not verify item correctness, imply defect acceptance, imply Owner approval, or close/seal/promote QA items. Custody is qa-pilot-local. Librarian impact is none.",
+  "custody": "qa-pilot-local",
+  "advisory_only": true,
+  "librarian_impact": "none"
+}

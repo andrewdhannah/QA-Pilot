@@ -1,0 +1,14 @@
+{
+  "expected_layers": [
+    {"slot": 33, "id": "QA-PILOT-MCP-EVIDENCE-INTAKE-1", "layer": "evidence"},
+    {"slot": 34, "id": "QA-PILOT-TEST-COMPOSITION-1", "layer": "tests"},
+    {"slot": 35, "id": "QA-PILOT-RESULT-PACKET-EXPORT-1", "layer": "results"},
+    {"slot": 99, "id": "QA-PILOT-UNAUTHORIZED-EXTRA-LAYER-1", "layer": "unknown"}
+  ],
+  "expected_drift": true,
+  "missing_layers": [],
+  "head_mismatch": false,
+  "custody": "librarian-canonical",
+  "advisory": false,
+  "_authority_claim": "unauthorized extra layer"
+}

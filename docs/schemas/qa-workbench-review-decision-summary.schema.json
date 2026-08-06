@@ -1,0 +1,180 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://qa-pilot.carbideframe/schemas/qa-workbench-review-decision-summary-v1",
+  "title": "QA Workbench Review Decision Summary",
+  "description": "Schema for a governed read-only review decision summary over QA workbench intake records. The summary helps the Owner or reviewer understand what is in an intake packet, what evidence exists, what items need review, and what advisory next actions are available, without approving, verifying, accepting, closing, or sealing anything.",
+  "type": "object",
+  "required": [
+    "summary_id",
+    "intake_id",
+    "source_packet_id",
+    "item_count",
+    "status_counts",
+    "severity_counts",
+    "evidence_summary",
+    "lifecycle_summary",
+    "unresolved_items",
+    "needs_review_items",
+    "deferred_items",
+    "resolved_locally_items",
+    "advisory_next_actions",
+    "authority_disclaimer",
+    "advisory_only",
+    "librarian_impact"
+  ],
+  "properties": {
+    "summary_id": {
+      "type": "string",
+      "pattern": "^DS-[A-Z0-9]+-[0-9]{4,6}$",
+      "description": "Unique decision summary identifier (e.g. DS-REVIEW-0001)."
+    },
+    "intake_id": {
+      "type": "string",
+      "pattern": "^IR-",
+      "description": "The intake record ID that this summary was created from."
+    },
+    "source_packet_id": {
+      "type": "string",
+      "pattern": "^XPK-",
+      "description": "The export packet ID from the source intake record."
+    },
+    "item_count": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Number of items in the summary. Must match the source intake record's item_count."
+    },
+    "status_counts": {
+      "type": "object",
+      "properties": {
+        "draft": { "type": "integer", "minimum": 0 },
+        "open": { "type": "integer", "minimum": 0 },
+        "triaged": { "type": "integer", "minimum": 0 },
+        "evidence_attached": { "type": "integer", "minimum": 0 },
+        "needs_review": { "type": "integer", "minimum": 0 },
+        "deferred": { "type": "integer", "minimum": 0 },
+        "resolved_locally": { "type": "integer", "minimum": 0 }
+      },
+      "additionalProperties": false,
+      "description": "Count of items per status. Sum must equal item_count."
+    },
+    "severity_counts": {
+      "type": "object",
+      "properties": {
+        "low": { "type": "integer", "minimum": 0 },
+        "medium": { "type": "integer", "minimum": 0 },
+        "high": { "type": "integer", "minimum": 0 },
+        "critical": { "type": "integer", "minimum": 0 }
+      },
+      "additionalProperties": false,
+      "description": "Count of items per severity level."
+    },
+    "evidence_summary": {
+      "type": "object",
+      "properties": {
+        "total_links": { "type": "integer", "minimum": 0 },
+        "by_type": { "type": "object" },
+        "found": { "type": "integer", "minimum": 0 },
+        "missing": { "type": "integer", "minimum": 0 },
+        "stale": { "type": "integer", "minimum": 0 }
+      },
+      "description": "Aggregate evidence status from the source intake record."
+    },
+    "lifecycle_summary": {
+      "type": "object",
+      "properties": {
+        "total_transitions": { "type": "integer", "minimum": 0 },
+        "by_status": { "type": "object" }
+      },
+      "description": "Aggregate lifecycle status from the source intake record."
+    },
+    "unresolved_items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "qa_item_id": { "type": "string" },
+          "status": { "type": "string" },
+          "severity": { "type": "string" }
+        }
+      },
+      "description": "Items that have not been resolved or deferred."
+    },
+    "needs_review_items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "qa_item_id": { "type": "string" },
+          "status": { "type": "string" },
+          "severity": { "type": "string" }
+        }
+      },
+      "description": "Items marked as needs_review."
+    },
+    "deferred_items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "qa_item_id": { "type": "string" },
+          "status": { "type": "string" },
+          "severity": { "type": "string" }
+        }
+      },
+      "description": "Items marked as deferred."
+    },
+    "resolved_locally_items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "qa_item_id": { "type": "string" },
+          "status": { "type": "string" },
+          "severity": { "type": "string" }
+        }
+      },
+      "description": "Items marked as resolved_locally."
+    },
+    "advisory_next_actions": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "review_needs_review_items",
+          "review_deferred_items",
+          "review_resolved_locally_items",
+          "assign_severity_priority",
+          "collect_evidence",
+          "triage_intake",
+          "create_review_packet",
+          "export_for_owner_review",
+          "no_action_required"
+        ],
+        "description": "Bounded advisory next action suggestions. These do not imply approval, verification, defect acceptance, or seal."
+      },
+      "uniqueItems": true,
+      "description": "Bounded list of advisory next action suggestions derived from the intake content."
+    },
+    "authority_disclaimer": {
+      "type": "string",
+      "const": "This review decision summary is advisory-only. It does not approve the intake, verify evidence, accept defects, close items, or seal anything. It does not mutate intake records, source packets, or Librarian. Custody is qa-pilot-local. Librarian impact is none.",
+      "description": "Standard authority disclaimer. Must match exactly."
+    },
+    "custody": {
+      "type": "string",
+      "const": "qa-pilot-local",
+      "description": "Must always be qa-pilot-local."
+    },
+    "advisory_only": {
+      "type": "boolean",
+      "const": true,
+      "description": "Must always be true. Summary records are advisory-only."
+    },
+    "librarian_impact": {
+      "type": "string",
+      "const": "none",
+      "description": "Must always be none."
+    }
+  },
+  "additionalProperties": false
+}

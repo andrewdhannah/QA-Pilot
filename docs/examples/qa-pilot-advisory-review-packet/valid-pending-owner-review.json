@@ -1,0 +1,35 @@
+{
+  "packet_id": "ARP-PENDING-REVIEW-001",
+  "sprint_id": "QA-PILOT-HYPOTHETICAL-NEXT-SPRINT-1",
+  "ledger_number": 62,
+  "prior_sealed_head": "#61 QA-PILOT-POST-SEAL-SNAPSHOT-REFRESH-2",
+  "claimed_posture": "Implementation complete, awaiting Owner seal.",
+  "completion_summary": "Hypothetical sprint #62 completed implementation. All validators pass. Pending Owner review for seal. No Librarian mutation.",
+  "posture_sections": {
+    "sealed_head": "#61 QA-PILOT-POST-SEAL-SNAPSHOT-REFRESH-2",
+    "sealed_number": 61,
+    "registry_layer_count": 28,
+    "registry_classification": "ready",
+    "rcr_receipts_found": 12,
+    "rcr_status": "pass",
+    "rcg_coverage_gap": 0,
+    "rcg_status": "pass",
+    "srs_captured_at": 60,
+    "srs_current": false
+  },
+  "validator_results": [
+    {"validator": "startup_surface_validate", "status": "pass", "summary": "ALL CHECKS PASS"},
+    {"validator": "SRS_snapshot", "status": "degraded", "summary": "SRS at #60, latest #62"},
+    {"validator": "SUG_update_gate", "status": "degraded", "summary": "Update pending"},
+    {"validator": "RCR", "status": "pass", "summary": "ALL CHECKS PASS"},
+    {"validator": "RCG_closeout_gate", "status": "pass", "summary": "ALL CHECKS PASS"},
+    {"validator": "PLR_registry", "status": "pass", "summary": "ALL CHECKS PASS"},
+    {"validator": "MG_loop_guard", "status": "pass", "summary": "ALL CHECKS PASS"}
+  ],
+  "librarian_impact": "none",
+  "pending_owner_decision": "awaiting_seal",
+  "advisory_only": true,
+  "defines_new_authority": false,
+  "mode_owner": "librarian",
+  "created_at": "2026-07-07T22:31:00Z"
+}

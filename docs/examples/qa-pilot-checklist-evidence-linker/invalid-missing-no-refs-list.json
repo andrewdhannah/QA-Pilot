@@ -1,0 +1,26 @@
+{
+  "linker_id": "EL-INVALID-MISSING-NO-LIST-001",
+  "source_checklist_id": "EC-PIPELINE-EVIDENCE-001",
+  "title": "Invalid — missing > 0 but missing_refs empty",
+  "description": "This linker has missing=1 but missing_refs is empty, violating EL-10.",
+  "links": [
+    {
+      "item_id": "ECI-TEST-COMPOSITION-001",
+      "pipeline_layer": "test_composition",
+      "ref": "test-case-index.json",
+      "status": "missing",
+      "detail": "Not found."
+    }
+  ],
+  "aggregate": {
+    "total_links": 1, "found": 0, "missing": 1, "stale": 0, "all_found": false,
+    "missing_refs": [],
+    "stale_refs": []
+  },
+  "advisory_only": true,
+  "custody": "qa-pilot-local",
+  "librarian_impact": "none",
+  "not_seal_authority": "No sealing authority claimed.",
+  "not_librarian_mutation_authority": "No Librarian mutation claimed.",
+  "created_at": "2026-07-07T17:22:00Z"
+}

@@ -4,7 +4,7 @@
 **Lane:** `parallel_planning`
 **Boundary:** `qa_pilot_local`
 **Librarian impact:** `none`
-**Status:** `planned`
+**Status:** `sealed` **— Owner-approved 2026-07-08 as governed planning baseline.**
 **Design authority:** Owner Andrew Hannah — design direction DD-PROJECT-SANDBOX-MODEL-1 (2026-07-05)
 
 ---
@@ -297,17 +297,17 @@ Builds `/local/training-sim` from imported packets. Outputs:
 
 | Gate | Status |
 |------|--------|
-| Packet custody schema drafted | 🔍 Pending |
-| Librarian export tools defined | 🔍 Pending |
-| QA Pilot submit tools defined | 🔍 Pending |
-| Packet type registry enumerated | 🔍 Pending |
-| Cross-project protocol flow documented | 🔍 Pending |
-| Training sim /local structure defined | 🔍 Pending |
-| Sandbox onboarding model described | 🔍 Pending |
-| Sprint breakdown sequenced | 🔍 Pending |
-| Boundary rules enumerated and scoped | 🔍 Pending |
-| No Librarian files referenced in mutation paths | 🔍 Pending |
-| QA Pilot startup checks pass | 🔍 Pending |
+| Packet custody schema drafted | ✅ Complete |
+| Librarian export tools defined | ✅ Complete |
+| QA Pilot submit tools defined | ✅ Complete |
+| Packet type registry enumerated | ✅ Complete |
+| Cross-project protocol flow documented | ✅ Complete |
+| Training sim /local structure defined | ✅ Complete |
+| Sandbox onboarding model described | ✅ Complete |
+| Sprint breakdown sequenced | ✅ Complete |
+| Boundary rules enumerated and scoped | ✅ Complete |
+| No Librarian files referenced in mutation paths | ✅ Complete |
+| QA Pilot startup checks pass | ✅ Complete |
 
 ## Design Authority References
 

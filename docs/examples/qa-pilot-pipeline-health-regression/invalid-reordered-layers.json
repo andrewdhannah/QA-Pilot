@@ -1,0 +1,12 @@
+{
+  "expected_layers": [
+    {"slot": 33, "id": "QA-PILOT-MCP-EVIDENCE-INTAKE-1", "layer": "evidence"},
+    {"slot": 36, "id": "QA-PILOT-EPIC-REGRESSION-BUILDER-1", "layer": "epic"},
+    {"slot": 35, "id": "QA-PILOT-RESULT-PACKET-EXPORT-1", "layer": "results"},
+    {"slot": 34, "id": "QA-PILOT-TEST-COMPOSITION-1", "layer": "tests"},
+    {"slot": 37, "id": "QA-PILOT-EPIC-REGRESSION-STARTUP-SURFACE-1", "layer": "startup_surface"}
+  ],
+  "expected_custody": "qa-pilot-local",
+  "expected_advisory": true,
+  "expected_mutation": false
+}

@@ -1,0 +1,41 @@
+{
+  "decision_id": "ODR-PROMOTE-TO-CANONICAL-0001",
+  "decision": "PROMOTE_TO_CANONICAL_WITH_NOTES",
+  "recorded_at": "2026-07-20",
+  "recorded_by": "Andrew Hannah",
+  "basis": {
+    "transition_package": "QA-PILOT-CANONICAL-TRANSITION-PACKAGE-1",
+    "migration_evidence": {
+      "epic": "EPIC-QA-PILOT-OPENWORK-TO-CARBIDEFRAME-MIGRATION-1",
+      "sprints": [156, 157, 158, 159, 160],
+      "status": "all sealed"
+    },
+    "independent_baseline": {
+      "sprint": "QA-PILOT-CANONICAL-BASELINE-AUDIT-1",
+      "ledger": 166,
+      "outcome": "REFERENCE_VALID",
+      "findings": "6 PASS, 2 OBSERVATION, 0 KNOWN LIMITATION, 0 OWNER DECISION REQUIRED"
+    }
+  },
+  "canonical_path": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app/",
+  "notes": [
+    {
+      "id": "KL-001",
+      "limitation": "Visual Parity Correction re-scoped; Sprints 4–5 paused",
+      "action": "Re-plan via QA-PILOT-VISUAL-PARITY-REASSESSMENT-1"
+    },
+    {
+      "id": "KL-002",
+      "limitation": "I18N Wiring seam unverified against complete app; 5 sprints run, none sealed",
+      "action": "Re-validate via QA-PILOT-I18N-REASSESSMENT-1"
+    }
+  ],
+  "historical_reference": "/Users/andrew/Desktop/OpenWork/QA Pilot/",
+  "post_promotion_work": [
+    "DWR-005: Canonical identity metadata correction",
+    "DWR-004: Governance validator repair",
+    "DWR-001: Visual parity re-plan",
+    "DWR-002: I18N re-validation",
+    "DWR-003: Librarian QA packet export evaluation (joint)"
+  ]
+}

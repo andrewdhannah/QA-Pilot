@@ -1,0 +1,6 @@
+{
+  "label": "Invalid wrong layer count fixture",
+  "snapshot_id": "SRS-FIXTURE-COUNT-001",
+  "expected_registry_layer_count": 5,
+  "advisory_only": true
+}

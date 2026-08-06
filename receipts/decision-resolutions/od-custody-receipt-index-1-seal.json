@@ -1,0 +1,57 @@
+{
+  "receipt_type": "owner_decision_seal",
+  "decision_id": "OD-CUSTODY-RECEIPT-INDEX-1-SEAL",
+  "project_id": "qa-pilot",
+  "sprint_id": "CUSTODY-RECEIPT-INDEX-1",
+  "ledger_number": 27,
+  "decision": "APPROVE_AND_SEAL",
+  "approved_by": "Andrew Hannah (Owner)",
+  "approved_at": "2026-07-06T01:44:15Z",
+  "decision_basis": [
+    "read-only custody receipt index created",
+    "query by custody source supported",
+    "query by decision type supported",
+    "query by violation code supported",
+    "query by mutation status supported",
+    "query by Owner approval provenance supported",
+    "query by linked sprint ID supported",
+    "query by ledger reference supported",
+    "query by sealed-contract reference supported",
+    "deterministic output ordering",
+    "stable summary counts",
+    "missing receipt directory returns degraded/read-unavailable status",
+    "empty receipt directory returns valid zero-count index",
+    "non-deterministic index generation rejected",
+    "malformed receipt records detected without repair",
+    "duplicate receipt IDs detected",
+    "receipt scan does not mutate receipts",
+    "#23 project-wide write custody remains green at 16/16",
+    "#24 live custody remains green at 19/19",
+    "#25 lifecycle custody remains green at 24/24",
+    "#26 Owner decision custody receipts remains green at 36/36",
+    "index runner passed 38/38",
+    "full sweep passed 176+ rules with zero regressions",
+    "startup managed and MCP reachable"
+  ],
+  "seal_conditions": [
+    "CUSTODY-RECEIPT-INDEX-1 is accepted as QA Pilot-local read-only receipt indexing",
+    "This seal adds Owner-review query visibility over custody receipts only",
+    "It does not grant write, lifecycle, approval, receipt mutation, seal, execution, cross-project index, or cross-project receipt authority"
+  ],
+  "boundary_assertion": {
+    "project_boundary": "qa-pilot",
+    "lane": "parallel_planning",
+    "librarian_impact": "none",
+    "cross_project_registration": false,
+    "runtime_mutation_authorized": false,
+    "implementation_authorized": true
+  },
+  "evidence": [
+    "scripts/custody-receipt-index.py (index/query/status/dry-run modes)",
+    "scripts/test-custody-receipt-index.sh (38 tests, 38/38 pass)",
+    "docs/governance/CUSTODY-RECEIPT-INDEX.md (7 sections)",
+    "docs/sprints/CUSTODY-RECEIPT-INDEX-1.md",
+    "project-state/sprint-ledger.json (entry #27)"
+  ],
+  "authorized_next_sprint": "CUSTODY-RECEIPT-SUMMARY-SURFACE-1 — expose the read-only index as an Owner-review summary surface, preserving the same non-authority boundary"
+}

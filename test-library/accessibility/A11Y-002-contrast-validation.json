@@ -1,0 +1,37 @@
+{
+  "test_id": "A11Y-002",
+  "domain": "accessibility",
+  "title": "Color contrast — text meets WCAG 2.2 AA contrast ratios",
+  "objective": "Verify that text and UI elements meet minimum contrast ratios against their backgrounds: 4.5:1 for normal text, 3:1 for large text and UI components.",
+  "source": {
+    "type": "contract",
+    "reference": "QA-PILOT-VISUAL-INTEGRATION-CONTRACT-1, theme.css",
+    "description": "Design tokens in theme.css define color pairs that must meet WCAG contrast thresholds — status badges and accent colors are common failure points"
+  },
+  "execution": {
+    "type": "validator",
+    "criteria": "Check all text/background color pairs from theme.css against WCAG 2.2 AA contrast ratio requirements. Focus on status badges, accent text, muted text, and text-on-elevated-background",
+    "expected_outcome": "Primary text on primary background >= 4.5:1, status badge text on badge background >= 3:1"
+  },
+  "pass_criteria": [
+    {
+      "id": "A11Y-002-A",
+      "description": "color-text-primary on color-bg-primary meets 4.5:1",
+      "evidence_required": ["Contrast ratio calculation for #e8e2d8 on #121214"]
+    },
+    {
+      "id": "A11Y-002-B",
+      "description": "Status indicator text on status background meets 3:1 minimum",
+      "evidence_required": ["Status badge contrast ratios"]
+    },
+    {
+      "id": "A11Y-002-C",
+      "description": "Accent color links on background meet 3:1",
+      "evidence_required": ["color-text-link on background contrast check"]
+    }
+  ],
+  "contract_refs": [],
+  "status": "active",
+  "advisory_only": true,
+  "no_seal_authority": true
+}

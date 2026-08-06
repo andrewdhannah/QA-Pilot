@@ -1,0 +1,24 @@
+{
+  "linker_id": "EL-INVALID-ADVISORY-001",
+  "source_checklist_id": "EC-PIPELINE-EVIDENCE-001",
+  "title": "Invalid — advisory_only not true",
+  "description": "This linker claims approval authority, violating EL-2.",
+  "links": [
+    {
+      "item_id": "ECI-EVIDENCE-INTAKE-001",
+      "pipeline_layer": "evidence_intake",
+      "ref": "evidence-index.json",
+      "status": "found"
+    }
+  ],
+  "aggregate": {
+    "total_links": 1, "found": 1, "missing": 0, "stale": 0, "all_found": true,
+    "missing_refs": [], "stale_refs": []
+  },
+  "advisory_only": false,
+  "custody": "qa-pilot-local",
+  "librarian_impact": "none",
+  "not_seal_authority": "No sealing authority claimed.",
+  "not_librarian_mutation_authority": "No Librarian mutation claimed.",
+  "created_at": "2026-07-07T17:22:00Z"
+}

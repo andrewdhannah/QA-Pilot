@@ -1,0 +1,132 @@
+{
+  "sealed_head": "#54 QA-PILOT-REGISTRY-CHANGE-RECEIPT-BACKFILL-1",
+  "sealed_number": 54,
+  "active_sprint": null,
+  "next_authorized": "none",
+  "pipeline_layers": [
+    {"layer": "evidence", "sprint": "#33 QA-PILOT-MCP-EVIDENCE-INTAKE-1", "id_prefix": "EP-", "description": "Bounded evidence packet ingest/validate/list/read", "advisory": true},
+    {"layer": "tests", "sprint": "#34 QA-PILOT-TEST-COMPOSITION-1", "id_prefix": "TC-", "description": "Evidence -> advisory test case composition", "advisory": true},
+    {"layer": "results", "sprint": "#35 QA-PILOT-RESULT-PACKET-EXPORT-1", "id_prefix": "QR-", "description": "Evidence + tests -> advisory result packet export", "advisory": true},
+    {"layer": "epic", "sprint": "#36 QA-PILOT-EPIC-REGRESSION-BUILDER-1", "id_prefix": "ERS-", "description": "EP + TC + QR -> advisory Epic regression suites", "advisory": true}
+  ],
+  "custody": "qa-pilot-local",
+  "librarian_mutation_authority": false,
+  "advisory": true,
+  "evidence_count": 0,
+  "test_case_count": 0,
+  "result_packet_count": 0,
+  "epic_suite_count": 0,
+  "total_qa_packets": 0,
+  "registry_posture": {
+    "registry_layer_count": 21,
+    "latest_registry_layer": "#53 QA-PILOT-REGISTRY-CHANGE-RECEIPT-CLOSEOUT-GATE-1",
+    "ph_12_status": "pass",
+    "dr_3_4_status": "degraded",
+    "plr_status": "pass",
+    "sr_8_status": "pass",
+    "classification": "degraded",
+    "rcr_posture": {
+      "receipts_found": 7,
+      "latest_receipt": "RCR-NO-IMPACT-054",
+      "latest_impact": "no_registry_impact",
+      "latest_before_layers": 21,
+      "latest_after_layers": 21,
+      "rcr_status": "pass",
+      "classification": "ready"
+    },
+    "rcg_posture": {
+      "latest_sealed_ledger": 54,
+      "latest_sealed_sprint": "QA-PILOT-REGISTRY-CHANGE-RECEIPT-BACKFILL-1",
+      "latest_rcr_ledger": 54,
+      "latest_rcr_receipt": "RCR-NO-IMPACT-054",
+      "coverage_gap": 0,
+      "rcg_status": "pass",
+      "classification": "ready"
+    },
+    "sug_posture": {
+      "active_snapshot_id": "SRS-BASELINE-001",
+      "active_snapshot_sealed": 56,
+      "latest_sealed_ledger": 56,
+      "snapshot_current": true,
+      "update_pending": false,
+      "sug_status": "pass",
+      "classification": "ready"
+    },
+    "ds_posture": {
+      "summary_count": 2,
+      "latest_summary_id": "DS-REVIEW-0002",
+      "latest_intake_id": "IR-REVIEW-0002",
+      "latest_packet_id": "XPK-QUERY-0708-3",
+      "latest_item_count": 3,
+      "covered_item_ids": ["QA-QUERY-1000", "QA-QUERY-2000", "QA-QUERY-3000"],
+      "latest_timestamp": "2026-07-08T02:00:00Z",
+      "advisory_next_actions": ["collect_evidence", "triage_intake"],
+      "ds_status": "present",
+      "classification": "ready"
+    },
+    "wdr_posture": {
+      "receipt_count": 2,
+      "latest_receipt_id": "WDR-ACTION-0001",
+      "latest_decision": "accepted_for_action",
+      "latest_summary_id": "DS-REVIEW-0003",
+      "latest_intake_id": "IR-REVIEW-0003",
+      "latest_timestamp": "2026-07-08T02:30:00Z",
+      "wdr_status": "present",
+      "classification": "ready"
+    },
+    "ap_posture": {
+      "packet_count": 2,
+      "latest_packet_id": "AP-AUTHORIZED-0001",
+      "latest_state": "owner_authorized",
+      "latest_decision": "authorized",
+      "latest_receipt_id": "WDR-AUTH-0001",
+      "latest_summary_id": "DS-REVIEW-0001",
+      "latest_timestamp": "2026-07-08T02:46:00Z",
+      "ap_status": "present",
+      "classification": "ready"
+    },
+    "axp_posture": {
+      "export_count": 2,
+      "latest_export_id": "AXPK-CUSTOM-0001",
+      "latest_packet_id": "AP-EXPORT-SRC-0001",
+      "latest_state": "proposed",
+      "latest_timestamp": "2026-07-08T03:00:00Z",
+      "axp_status": "present",
+      "classification": "ready"
+    },
+    "hi_posture": {
+      "intake_count": 2,
+      "latest_handoff_id": "HI-CUSTOM-0001",
+      "latest_export_id": "AXPK-HI-SRC-0002",
+      "latest_packet_id": "AP-HI-SRC-0001",
+      "latest_state": "proposed",
+      "hi_status": "present",
+      "classification": "ready"
+    },
+    "hro_posture": {
+      "outcome_count": 2,
+      "latest_outcome_id": "HO-READY-0001",
+      "latest_state": "ready_for_owner_action",
+      "latest_handoff_id": "HI-ACTION-0001",
+      "latest_export_id": "AXPK-ACTION-0001",
+      "latest_packet_id": "AP-ACTION-0001",
+      "hro_status": "present",
+      "classification": "ready"
+    },
+    "rd_posture": {
+      "readiness_count": 2,
+      "latest_readiness_id": "RD-READY-0001",
+      "latest_state": "ready_for_owner_decision",
+      "latest_outcome_id": "HO-READY-0001",
+      "rd_status": "present",
+      "classification": "ready"
+    },
+    "td_posture": {
+      "threshold_count": 2,
+      "latest_threshold_id": "TD-SUFF-0001",
+      "latest_state": "sufficient",
+      "td_status": "present",
+      "classification": "ready"
+    }
+  }
+}

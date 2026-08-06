@@ -1,0 +1,49 @@
+{
+  "record_id": "QR-PROPRV-0001",
+  "qualification_type": "process",
+  "target_id": "SPRINT-156",
+  "target_type": "sprint",
+  "qualification_level": "peer_reviewed",
+  "qualification_criteria": {
+    "required_level": "peer_reviewed",
+    "pass_rate_threshold": 0.90,
+    "evidence_count_min": 2,
+    "authority_check_required": true
+  },
+  "evidence_refs": [
+    {
+      "evidence_id": "PH-20260710-001",
+      "evidence_type": "pipeline_health",
+      "evidence_source": "docs/examples/qa-pilot-qualification/valid/process-peer-reviewed.json",
+      "verification_status": "verified",
+      "verified_at": "2026-07-16T12:00:00Z"
+    },
+    {
+      "evidence_id": "DR-20260710-001",
+      "evidence_type": "drift_check",
+      "evidence_source": "docs/examples/qa-pilot-qualification/valid/process-peer-reviewed.json",
+      "verification_status": "verified",
+      "verified_at": "2026-07-16T12:00:00Z"
+    }
+  ],
+  "sub_dimension_scores": {
+    "schema_compliance": 0.95,
+    "evidence_freshness": 1.0,
+    "evidence_diversity": 0.50,
+    "authority_boundary": 1.0,
+    "provenance_quality": 0.90
+  },
+  "overall_score": 0.91,
+  "lifecycle_state": "completed",
+  "provenance": {
+    "assessor_id": "OpenWork-DeepSeek-V4-Flash",
+    "session_id": "qual-schema-1-session",
+    "tool_call_log": "validate-qa-pilot-qualification.py fixture mode"
+  },
+  "expiry_date": "2026-10-14",
+  "advisory_only": true,
+  "custody": "qa-pilot-local",
+  "librarian_impact": "none",
+  "assessed_at": "2026-07-16T12:00:00Z",
+  "assessed_by": "OpenWork (DeepSeek V4 Flash)"
+}

@@ -1,0 +1,42 @@
+{
+  "test_id": "REG-003",
+  "domain": "regression",
+  "title": "Evidence composition graph topology integrity",
+  "objective": "Verify that the evidence composition graph produced by the evidence plane maintains topological integrity: node counts match, edge counts match, root cause candidates are identified, and dependency levels form a valid DAG.",
+  "source": {
+    "type": "epic",
+    "reference": "EVIDENCE-PLANE-OE-003",
+    "description": "The composition graph defines relationships between diagnostic findings"
+  },
+  "execution": {
+    "type": "sdk_query",
+    "criteria": "getCompositionGraph() returns valid graph with matching node/edge counts and topological levels",
+    "expected_outcome": "node_count == len(nodes), edge_count == len(edges), dependency_levels form valid ordering"
+  },
+  "pass_criteria": [
+    {
+      "id": "REG-003-A",
+      "description": "Composition graph node_count matches actual nodes array length",
+      "evidence_required": ["getCompositionGraph().node_count == len(nodes)"]
+    },
+    {
+      "id": "REG-003-B",
+      "description": "Composition graph edge_count matches actual edges array length",
+      "evidence_required": ["getCompositionGraph().edge_count == len(edges)"]
+    },
+    {
+      "id": "REG-003-C",
+      "description": "Root cause candidates are identified",
+      "evidence_required": ["root_cause_candidates is non-empty array"]
+    },
+    {
+      "id": "REG-003-D",
+      "description": "All edges reference valid node finding_ids",
+      "evidence_required": ["Every edge.source and edge.target exists in nodes"]
+    }
+  ],
+  "contract_refs": ["qa-pilot-sdk-integration"],
+  "status": "active",
+  "advisory_only": true,
+  "no_seal_authority": true
+}

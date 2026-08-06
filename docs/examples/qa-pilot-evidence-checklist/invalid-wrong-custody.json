@@ -1,0 +1,20 @@
+{
+  "checklist_id": "EC-INVALID-CUSTODY-001",
+  "title": "Invalid — wrong custody boundary",
+  "description": "This checklist claims Librarian-level custody, violating EC-3.",
+  "evidence_class": "required",
+  "items": [
+    {
+      "item_id": "ECI-INVALID-CUSTODY-001",
+      "description": "Claiming cross-project custody.",
+      "state": "ready",
+      "rationale": "This should be rejected."
+    }
+  ],
+  "pipeline_refs": [
+    { "layer_id": "layer_1", "layer_name": "Evidence Intake", "sprint_id": "QA-PILOT-MCP-EVIDENCE-INTAKE-1", "sealed_number": 33 }
+  ],
+  "advisory_only": true,
+  "custody": "librarian-managed",
+  "librarian_impact": "none"
+}

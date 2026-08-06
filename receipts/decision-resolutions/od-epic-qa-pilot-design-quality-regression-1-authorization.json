@@ -1,0 +1,31 @@
+{
+  "$schema": "owner-decision-v1",
+  "decision_id": "OD-EPIC-QA-PILOT-DESIGN-QUALITY-REGRESSION-1-AUTHORIZATION",
+  "date": "2026-07-09",
+  "owner": "Andrew Hannah",
+  "epic": "EPIC-QA-PILOT-DESIGN-QUALITY-REGRESSION-1",
+  "decision": "AUTHORIZE_EPIC_WITH_BOUNDED_CONTINUATION",
+  "basis": "Authorize a bounded post-refresh quality pass for the sealed QA Pilot design-language refresh. Verify visual consistency, accessibility, responsive behavior, EN/FR language behavior, and static-browser custody boundaries across all QA Pilot browser asset pages. Prior epic EPIC-QA-PILOT-DESIGN-LANGUAGE-REFRESH-1 sealed at #136-#142. This is a new epic, not a continuation.",
+  "epic_sequence": [
+    {"sprint": "QA-PILOT-DESIGN-QUALITY-REGRESSION-BASELINE-1", "purpose": "Inventory all QA Pilot browser asset pages. Identify visual, accessibility, responsive, i18n, and custody-risk areas. Document validation gaps."},
+    {"sprint": "QA-PILOT-ACCESSIBILITY-REGRESSION-1", "purpose": "Validate and remediate keyboard nav, focus, semantics, headings, form labels, contrast, status messaging, lang toggle accessibility."},
+    {"sprint": "QA-PILOT-VISUAL-REGRESSION-HARNESS-1", "purpose": "Create repeatable visual/page-state validation checklist or lightweight static harness covering all pages and core UI states."},
+    {"sprint": "QA-PILOT-RESPONSIVE-I18N-REGRESSION-1", "purpose": "Validate narrow/default/wide viewport behavior. Validate EN/FR language behavior across all pages. Remediate regressions."},
+    {"sprint": "QA-PILOT-DESIGN-QUALITY-ROUNDTRIP-VALIDATION-1", "purpose": "Final whole-epic validation. Confirm design quality, accessibility, responsive, i18n, custody boundaries. Epic completion report."}
+  ],
+  "bounded_continuation": true,
+  "stop_conditions": {
+    "scope_exceeded": false,
+    "backend_required": false,
+    "auth_required": false,
+    "install_required": false,
+    "cross_project_write": false,
+    "librarian_mutation": false,
+    "autonomous_publication": false,
+    "sealed_epic_mutated": false
+  },
+  "classification": "epic_authorization_design_quality_regression",
+  "authority": "Owner",
+  "status": "authorized",
+  "authorized_at": "2026-07-09T22:30:00Z"
+}

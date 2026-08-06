@@ -1,0 +1,40 @@
+{
+  "suite_version": "qa-pilot-epic-scenario-suite-v1",
+  "generated_at": "2026-07-24T02:50:51Z",
+  "sdk_version": "qa-pilot-evidence-sdk-v1",
+  "scenario_id": "EP-BOUND-001",
+  "title": "SDK Mutation Boundary Enforcement",
+  "type": "mutation_boundary",
+  "target_epic": "QA-PILOT-SDK-INTEGRATION-1 boundary",
+  "overall": "PASS",
+  "details": [
+    {
+      "check_id": "EVIDENCE_AVAILABLE",
+      "description": "Evidence is available",
+      "expected": true,
+      "observed": true,
+      "passed": true,
+      "detail": "Evidence Plane data is reachable through SDK"
+    },
+    {
+      "check_id": "MUTATION_BOUNDARY_ALL_QUERIES",
+      "description": "All 5 SDK queries enforce no-mutation boundary",
+      "expected": true,
+      "observed": true,
+      "passed": true,
+      "detail": "All queries enforce no_mutation_path=True"
+    }
+  ],
+  "learning_artifact": {
+    "scenario_id": "EP-BOUND-001",
+    "title": "SDK Mutation Boundary Enforcement",
+    "type": "mutation_boundary",
+    "summary": "PASS",
+    "areas_of_attention": [],
+    "strengths": [],
+    "explanation": "The SDK is read-only by design.",
+    "teachable_moment": "All 5 SDK queries enforce no-mutation boundary."
+  },
+  "read_only": true,
+  "no_authority_conferred": true
+}

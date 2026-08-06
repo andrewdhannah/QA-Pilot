@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://qa-pilot.carbideframe/schemas/qa-workbench-handoff-review-outcome-v1",
+  "title": "QA Workbench Handoff Review Outcome",
+  "description": "Schema for a bounded handoff review outcome. Records downstream review posture for an ingested handoff intake. Outcome does not execute work, authorize execution, approve intake, verify evidence, close items, mutate the handoff/source chain, or seal anything.",
+  "type": "object",
+  "required": [
+    "outcome_id",
+    "source_handoff_id",
+    "source_export_id",
+    "source_action_packet_id",
+    "source_receipt_id",
+    "source_summary_id",
+    "source_intake_id",
+    "source_item_ids",
+    "outcome_state",
+    "review_summary",
+    "recorded_at",
+    "authority_disclaimer",
+    "advisory_only",
+    "custody",
+    "librarian_impact"
+  ],
+  "properties": {
+    "outcome_id": { "type": "string", "pattern": "^HO-[A-Z0-9]+-[0-9]{4,6}$" },
+    "source_handoff_id": { "type": "string", "pattern": "^HI-" },
+    "source_export_id": { "type": "string", "pattern": "^AXPK-" },
+    "source_action_packet_id": { "type": "string", "pattern": "^AP-" },
+    "source_receipt_id": { "type": "string", "pattern": "^WDR-" },
+    "source_summary_id": { "type": "string", "pattern": "^DS-" },
+    "source_intake_id": { "type": "string", "pattern": "^IR-" },
+    "source_item_ids": { "type": "array", "items": { "type": "string", "pattern": "^QA-" }, "minItems": 1 },
+    "outcome_state": {
+      "type": "string",
+      "enum": ["ready_for_owner_action", "needs_revision", "blocked", "rejected"],
+      "description": "Downstream review outcome. ready_for_owner_action = reviewed and ready for Owner decision. needs_revision = changes required before proceeding. blocked = dependency or issue prevents progress. rejected = declined."
+    },
+    "review_summary": { "type": "string", "minLength": 3, "maxLength": 2000 },
+    "recorded_at": { "type": "string", "format": "date-time" },
+    "authority_disclaimer": {
+      "type": "string",
+      "const": "This handoff review outcome records downstream review posture only. It does not execute work, authorize execution, approve intake, verify evidence, close workbench items, mutate the handoff/source chain, or seal anything. Custody is qa-pilot-local. Librarian impact is none."
+    },
+    "custody": { "type": "string", "const": "qa-pilot-local" },
+    "advisory_only": { "type": "boolean", "const": true },
+    "librarian_impact": { "type": "string", "const": "none" }
+  },
+  "additionalProperties": false
+}

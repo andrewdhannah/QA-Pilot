@@ -1,0 +1,19 @@
+{
+  "schema": "owner-decision-custody-receipt-fixture-v1",
+  "fixture_type": "invalid",
+  "description": "Broad project-root receipt approval rejected",
+  "input": {
+    "custody_source": "write",
+    "source_contract": "#23",
+    "decision": "ALLOW",
+    "project_id": "qa-pilot",
+    "sprint_id": "SPRINT-1",
+    "file_path": "everything.md",
+    "reason": "Approve all",
+    "owner_approval_present": true,
+    "owner_approval_ref": "OD-BROAD",
+    "owner_approval_is_broad": true,
+    "mode": "live"
+  },
+  "expected_error": "broad"
+}

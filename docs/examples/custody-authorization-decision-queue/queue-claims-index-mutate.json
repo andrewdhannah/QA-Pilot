@@ -1,0 +1,22 @@
+{
+  "entry_id": "CDQ-20260706-104",
+  "queued_at": "2026-07-06T17:45:00Z",
+  "status": "pending",
+  "source": "startup_report",
+  "finding_type": "degraded_custody",
+  "description": "This entry claims to mutate the custody index",
+  "custody_context": {
+    "contract_id": "#27",
+    "receipt_count": 5,
+    "detail": "Index mutation claim test"
+  },
+  "advisory": true,
+  "owner_required": true,
+  "owner_decision": null,
+  "index_mutated": true,
+  "claims": {
+    "index_mutated": true,
+    "detail": "index would be rebuilt"
+  },
+  "cross_project": false
+}

@@ -1,0 +1,56 @@
+{
+  "$schema": "planning-sprint-seal-v1",
+  "seal_id": "SS-QA-PILOT-QUALIFICATION-FOUNDATION-PLANNING-1",
+  "sprint_id": "QA-PILOT-QUALIFICATION-FOUNDATION-PLANNING-1",
+  "project": "qa-pilot",
+  "sprint_type": "planning",
+  "sealed_at": "2026-07-16T18:00:00Z",
+  "sealed_by": "Andrew Hannah (Owner)",
+  "status": "sealed",
+  "classification": "architecture_and_planning",
+  "assessment": {
+    "ownership_boundary": "correct — Librarian owns truth, QA Pilot executes qualification",
+    "registry_model": "correct — extends Node Profile, no duplicate identity system",
+    "evidence_lineage": "correct — qualification artifacts inherit existing evidence patterns",
+    "test_generation": "correct — structural/behavioral/adversarial/domain separation",
+    "coverage_model": "correct — informational/advisory/required levels avoid unsafe blanket gates",
+    "regeneration_model": "correct — stable IDs with versioned revisions",
+    "repository_authority": "correct — generated tests remain QA Pilot artifacts unless separately authorized",
+    "event_model": "correct — MCP/event push aligns with existing custody patterns",
+    "security_scope": "correct — security is a qualification domain, not the entire architecture"
+  },
+  "invariants_preserved": [
+    "No second registry created",
+    "No second receipt chain created",
+    "No implicit authority granted to generated artifacts",
+    "No forced universal coverage gate",
+    "No polling-based drift detection replacing ledger events",
+    "Truth ownership: Librarian",
+    "Execution ownership: QA Pilot",
+    "Evidence custody: Librarian",
+    "Test generation: QA Pilot",
+    "Source modification: Owner-authorized only"
+  ],
+  "deliverables": [
+    "docs/planning/QA-PILOT-QUALIFICATION-ARCHITECTURE.md",
+    "docs/planning/QA-PILOT-SECURITY-TAXONOMY.md",
+    "docs/planning/QA-PILOT-COVERAGE-MODEL.md",
+    "docs/planning/QA-PILOT-SECURITY-QUALIFICATION-ROADMAP.md",
+    "docs/planning/QA-PILOT-PUSH-INTEGRATION.md",
+    "docs/contracts/QA-PILOT-COMPONENT-EVIDENCE-CONTRACT.md",
+    "docs/schemas/qualification-receipt.schema.json"
+  ],
+  "upstream_consumer": "PLATFORM-DEPLOYMENT-READINESS-ROADMAP-PLANNING-1",
+  "upstream_relationship": "qualification contracts (domains, providers, evidence requirements, lifecycle) consumed by deployment readiness planning",
+  "authorization_constraints_applied": [
+    "Qualification manifest must extend Node Profile",
+    "No duplicate registry or identity system created",
+    "Qualification receipts inherit existing Evidence Receipt patterns",
+    "Test identities use stable base IDs with versioned revisions",
+    "Generated tests are qualification artifacts, not source changes",
+    "Push-based triggering through existing MCP/event patterns",
+    "Planning only — no implementation changes"
+  ],
+  "authority": "Owner-authorized",
+  "boundary": "qa-pilot"
+}

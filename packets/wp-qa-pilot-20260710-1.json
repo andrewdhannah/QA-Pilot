@@ -1,0 +1,140 @@
+{
+  "acceptance_gates" : [
+    {
+      "description" : "Browser-assets archive produced with SHA-256 recorded",
+      "id" : "AG-PREP-1",
+      "pass_criteria" : "Snapshot of \/Users\/andrew\/Desktop\/CarbideFrame\/active\/qa-pilot\/docs\/schemas\/browser-assets\/ created as tar.gz under reports\/ or receipts\/ with SHA-256 recorded."
+    },
+    {
+      "description" : "Final copy manifest produced for Sprint 2",
+      "id" : "AG-PREP-2",
+      "pass_criteria" : "reports\/qa-pilot-migration-copy-manifest-1.json contains every file from \/Users\/andrew\/Desktop\/OpenWork\/QA Pilot with relative source path, relative destination path under active\/qa-pilot\/browser-app\/, SHA-256, and a 'overwrites_existing' boolean that is false for every file because browser-app\/ is new."
+    },
+    {
+      "description" : "Status surfaces corrected",
+      "id" : "AG-PREP-3",
+      "pass_criteria" : "FEATURE-STATUS.md visual-parity row corrected from Sprint 3\/5 to Sprint 2\/5 complete, and I18N row no longer claims '5\/5 sprints complete' for the I18N epic. SESSION-HANDOFF aligned."
+    },
+    {
+      "description" : "No-overwrite verification of CarbideFrame governance files",
+      "id" : "AG-PREP-4",
+      "pass_criteria" : "Proof that no file in scripts\/, docs\/governance\/, docs\/schemas\/*.schema.json, fixtures\/, project-state\/, receipts\/, data\/, config\/ would be overwritten by the Sprint 2 copy step."
+    },
+    {
+      "description" : "CarbideFrame validators remain green",
+      "id" : "AG-PREP-5",
+      "pass_criteria" : "Startup checks still managed after snapshot. No script\/doc\/schema\/fixture\/ledger\/receipt change."
+    },
+    {
+      "description" : "No OpenWork file copy executed",
+      "id" : "AG-PREP-6",
+      "pass_criteria" : "No copy from \/Users\/andrew\/Desktop\/OpenWork\/QA Pilot into active\/qa-pilot\/browser-app\/ performed during Sprint 1."
+    }
+  ],
+  "authority_basis" : "Owner authorization 'Approve Option A from QA-PILOT-SOURCE-OF-TRUTH-RECONCILIATION-1' received 2026-07-10; approval token apt_bb2995d2 recorded; Sprint 1 (QA-PILOT-MIGRATION-PREP-AND-SNAPSHOT-1) authorized as bounded prep + snapshot. No copy from OpenWork into browser-app\/ during Sprint 1.",
+  "authority_envelope" : {
+    "agent_role" : "qa-pilot-migration-worker",
+    "allowed_actions" : [
+      "read_openwork_qa_pilot_source_for_inventory",
+      "read_carbideframe_qa_pilot_governance_files",
+      "create_browser_app_directory_under_active_qa_pilot",
+      "write_sprint_governance_doc_to_docs_governance",
+      "write_sprint_doc_to_docs_sprints",
+      "update_status_surfaces_feature_status_session_handoff_startup_state_with_corrections",
+      "produce_copy_manifest_artifact_in_reports_or_receipts",
+      "register_approval_for_sprint_creation_via_librarian"
+    ],
+    "forbidden_actions" : [
+      "mutate_carbideframe_governance_files",
+      "mutate_carbideframe_librarian_files",
+      "mutate_openwork_qa_pilot_source",
+      "add_backend_auth_telemetry_external_dependencies",
+      "continue_visual_parity_or_i18n_wiring_work",
+      "archive_or_supersede_openwork_source",
+      "seal_epic_without_owner_decision"
+    ],
+    "forbidden_paths" : [
+      "\/Users\/andrew\/Desktop\/OpenWork\/**",
+      "\/Users\/andrew\/Desktop\/CarbideFrame\/active\/librarian\/**",
+      "\/Users\/andrew\/Desktop\/CarbideFrame\/active\/qa-pilot\/scripts\/**",
+      "\/Users\/andrew\/Desktop\/CarbideFrame\/active\/qa-pilot\/docs\/governance\/**",
+      "\/Users\/andrew\/Desktop\/CarbideFrame\/active\/qa-pilot\/docs\/schemas\/**\/*.schema.json",
+      "\/Users\/andrew\/Desktop\/CarbideFrame\/active\/qa-pilot\/docs\/sprints\/**",
+      "\/Users\/andrew\/Desktop\/CarbideFrame\/active\/qa-pilot\/fixtures\/**",
+      "\/Users\/andrew\/Desktop\/CarbideFrame\/active\/qa-pilot\/project-state\/sprint-ledger.json",
+      "\/Users\/andrew\/Desktop\/CarbideFrame\/active\/qa-pilot\/receipts\/**",
+      "\/Users\/andrew\/Desktop\/CarbideFrame\/active\/qa-pilot\/data\/**",
+      "\/Users\/andrew\/Desktop\/CarbideFrame\/active\/qa-pilot\/config\/**",
+      "\/Users\/andrew\/Desktop\/CarbideFrame\/active\/qa-pilot\/PROJECT-IDENTITY.md",
+      "\/Users\/andrew\/Desktop\/CarbideFrame\/active\/qa-pilot\/PROJECT-PROFILE.json",
+      "\/Users\/andrew\/Desktop\/CarbideFrame\/active\/qa-pilot\/startup-contract.json",
+      "\/Users\/andrew\/Desktop\/CarbideFrame\/active\/qa-pilot\/CLAUDE.md"
+    ],
+    "may_authorize_continuation" : false,
+    "read_paths" : [
+      "\/Users\/andrew\/Desktop\/OpenWork\/QA Pilot\/**",
+      "\/Users\/andrew\/Desktop\/CarbideFrame\/active\/qa-pilot\/**",
+      "\/Users\/andrew\/Desktop\/CarbideFrame\/reports\/QA-PILOT-SOURCE-OF-TRUTH-RECONCILIATION-1.md"
+    ],
+    "requires_receipt" : true,
+    "write_paths" : [
+      "\/Users\/andrew\/Desktop\/CarbideFrame\/active\/qa-pilot\/browser-app\/.gitkeep",
+      "\/Users\/andrew\/Desktop\/CarbideFrame\/active\/qa-pilot\/docs\/governance\/EPIC-QA-PILOT-OPENWORK-TO-CARBIDEFRAME-MIGRATION-1.md",
+      "\/Users\/andrew\/Desktop\/CarbideFrame\/active\/qa-pilot\/docs\/sprints\/QA-PILOT-MIGRATION-PREP-AND-SNAPSHOT-1.md",
+      "\/Users\/andrew\/Desktop\/CarbideFrame\/active\/qa-pilot\/FEATURE-STATUS.md",
+      "\/Users\/andrew\/Desktop\/CarbideFrame\/active\/qa-pilot\/SESSION-HANDOFF.md",
+      "\/Users\/andrew\/Desktop\/CarbideFrame\/active\/qa-pilot\/STARTUP-STATE.md",
+      "\/Users\/andrew\/Desktop\/CarbideFrame\/active\/qa-pilot\/reports\/qa-pilot-migration-copy-manifest-1.json",
+      "\/Users\/andrew\/Desktop\/CarbideFrame\/active\/qa-pilot\/reports\/qa-pilot-migration-prep-snapshot-1.md",
+      "\/Users\/andrew\/Desktop\/CarbideFrame\/active\/qa-pilot\/receipts\/migration-prep-snapshot-1.json"
+    ]
+  },
+  "authorized_at" : "2026-07-10T18:54:24Z",
+  "context_packet_id" : "ctx-qa-pilot-20260710-1",
+  "created_at" : "2026-07-10T18:54:17Z",
+  "expected_output" : {
+    "description" : "Sprint 1 completion report covering: (1) exact paths inspected; (2) snapshot\/archive actions performed with SHA-256; (3) files\/directories protected from overwrite; (4) final copy manifest for the migration; (5) status corrections made; (6) risks; (7) validation performed; (8) Owner review posture. No file copy from OpenWork into browser-app\/ yet.",
+    "format" : "documentation_plus_manifest_artifact"
+  },
+  "non_goals" : [
+    "Copying any OpenWork file into browser-app\/ during Sprint 1",
+    "Re-applying Librarian visual design or I18N wiring",
+    "Archiving or superseding OpenWork QA Pilot source",
+    "Sealing the epic",
+    "Touching CarbideFrame governance files outside status surfaces and the new docs\/reports\/receipts artifacts explicitly listed"
+  ],
+  "owner_decision_id" : "OD-qa-pilot-20260710-260710-1",
+  "packet_id" : "wp-qa-pilot-20260710-1",
+  "packet_status" : "authorized",
+  "project_id" : "qa-pilot",
+  "project_name" : "Qa Pilot",
+  "scope" : [
+    "Capture and verify Owner authorization for Option A migration (apr_e18aa164 \/ apt_bb2995d2)",
+    "Inspect exact paths in both sources (read-only) for Sprint 1 inventory",
+    "Snapshot current CarbideFrame QA Pilot state and archive docs\/schemas\/browser-assets\/ as design reference",
+    "Verify no governance files will be overwritten by the future copy step",
+    "Produce final copy manifest at reports\/qa-pilot-migration-copy-manifest-1.json",
+    "Correct overstated status in FEATURE-STATUS.md and SESSION-HANDOFF.md (visual parity 3\/5 -> 2\/5; I18N '5\/5 complete' -> paused\/unsealed)",
+    "Re-scope in-flight visual parity and paused I18N epics in SESSION-HANDOFF.md",
+    "Create the epic governance doc and the Sprint 1 doc",
+    "Run startup checks; confirm managed; confirm no governance regression",
+    "Emit Sprint 1 completion report and stop for Owner direction"
+  ],
+  "status" : "created",
+  "verification_plan" : {
+    "evidence_required" : [
+      "startup_state_checksum_before_after",
+      "browser_assets_snapshot_archive_path_and_sha256",
+      "copy_manifest_json_file_list_with_sha256_and_destination_paths",
+      "overwrite_protection_verification_log",
+      "status_correction_diff_for_feature_status_and_session_handoff"
+    ],
+    "validators_required" : [
+      "qa-pilot-delegation",
+      "qa-pilot-startup-regression",
+      "qa-pilot-startup-parity-matrix"
+    ]
+  },
+  "work_id" : "QA-PILOT-MIGRATION-PREP-AND-SNAPSHOT-1",
+  "work_type" : "implementation"
+}

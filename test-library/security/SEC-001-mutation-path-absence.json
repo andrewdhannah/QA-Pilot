@@ -1,0 +1,42 @@
+{
+  "test_id": "SEC-001",
+  "domain": "security",
+  "title": "SDK mutation path absence",
+  "objective": "Verify that the EvidenceProvider SDK enforces read-only access across all 5 query methods. No mutation path, no authority grant, no receipt creation should exist through any SDK query.",
+  "source": {
+    "type": "contract",
+    "reference": "QPSDK-005",
+    "description": "QA-PILOT-SDK-INTEGRATION-1 acceptance gate: No mutation path exists through SDK"
+  },
+  "execution": {
+    "type": "validator",
+    "criteria": "All 5 SDK query methods (getEvidenceSnapshot, getFindings, getCompositionGraph, getProvenanceChain, getValidationArtifacts) return no_mutation_path=True",
+    "expected_outcome": "Every query returns read_only_validation.no_mutation_path=True with zero warnings"
+  },
+  "pass_criteria": [
+    {
+      "id": "SEC-001-A",
+      "description": "getEvidenceSnapshot returns no_mutation_path=True",
+      "evidence_required": ["read_only_validation.no_mutation_path == True"]
+    },
+    {
+      "id": "SEC-001-B",
+      "description": "getFindings returns read_only_validation with clean=True",
+      "evidence_required": ["read_only_validation.warnings is empty"]
+    },
+    {
+      "id": "SEC-001-C",
+      "description": "No query response contains authority, seal, approve, mutate, write, apply keys at top level",
+      "evidence_required": ["Zero mutation authority key matches across all 5 query responses"]
+    },
+    {
+      "id": "SEC-001-D",
+      "description": "SDK status explicitly reports no_mutation_paths=True",
+      "evidence_required": ["qa_pilot_evidence_sdk.py status command returns no_mutation_paths: true"]
+    }
+  ],
+  "contract_refs": ["qa-pilot-sdk-integration"],
+  "status": "active",
+  "advisory_only": true,
+  "no_seal_authority": true
+}

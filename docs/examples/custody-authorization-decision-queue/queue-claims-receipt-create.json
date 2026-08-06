@@ -1,0 +1,22 @@
+{
+  "entry_id": "CDQ-20260706-105",
+  "queued_at": "2026-07-06T17:45:00Z",
+  "status": "pending",
+  "source": "startup_report",
+  "finding_type": "degraded_custody",
+  "description": "This entry claims to create a custody receipt",
+  "custody_context": {
+    "contract_id": "#23",
+    "receipt_count": 5,
+    "detail": "Receipt creation claim test"
+  },
+  "advisory": true,
+  "owner_required": true,
+  "owner_decision": null,
+  "receipt_created": true,
+  "claims": {
+    "receipt_created": true,
+    "receipt_id": "CD-20260706-TEST"
+  },
+  "cross_project": false
+}

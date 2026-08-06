@@ -1,0 +1,37 @@
+{
+  "test_id": "SEC-003",
+  "domain": "security",
+  "title": "Certification criteria does not claim seal authority",
+  "objective": "Verify that certification criteria in learning objects and qualification results describe understanding evaluation — never system correctness or seal authority. Certification must not imply that QA-Pilot can seal or approve.",
+  "source": {
+    "type": "contract",
+    "reference": "LO-005, VIS-005",
+    "description": "QA-PILOT-LEARNING-OBJECT-CONTRACT-1 + QA-PILOT-VISUAL-INTEGRATION-CONTRACT-1: Certification evaluates understanding, not system correctness"
+  },
+  "execution": {
+    "type": "contract_check",
+    "criteria": "All learning objects and qualification results have certification criteria descriptions that avoid forbidden authority keywords (seal, approve, merge, authorize as action verbs)",
+    "expected_outcome": "Zero certification criteria contain prohibited authority language"
+  },
+  "pass_criteria": [
+    {
+      "id": "SEC-003-A",
+      "description": "All learning object certification criteria pass LO-12",
+      "evidence_required": ["validate-learning-object.py LO-12 passes for all fixtures"]
+    },
+    {
+      "id": "SEC-003-B",
+      "description": "Qualification results declare no_authority_conferred=True",
+      "evidence_required": ["ai-qualification results contain provenance.no_authority_conferred=True"]
+    },
+    {
+      "id": "SEC-003-C",
+      "description": "Certification criteria describe understanding, not system approval",
+      "evidence_required": ["Criteria say 'learner can explain' not 'system is approved'"]
+    }
+  ],
+  "contract_refs": ["learning-object-v1"],
+  "status": "active",
+  "advisory_only": true,
+  "no_seal_authority": true
+}

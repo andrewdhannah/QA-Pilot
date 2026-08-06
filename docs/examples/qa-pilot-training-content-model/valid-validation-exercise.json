@@ -1,0 +1,44 @@
+{
+  "schema_version": "training-content-v1",
+  "pack_id": "TC-VALID-07",
+  "title": "Validation Exercise",
+  "artifact_type": "validation_exercise",
+  "intended_audience": "all",
+  "generated_at": "2026-07-08T22:00:00Z",
+  "content": {
+    "sections": [
+      {
+        "id": "config-validation",
+        "title": "Configuration Validation Exercise",
+        "body": "Hands-on exercise to validate system configuration against best practices.",
+        "sources": [
+          "docs/validation/config-checks.md"
+        ],
+        "exercises": [
+          {
+            "prompt": "Run the configuration validator against the sample deployment and report any violations.",
+            "expected_outcome": "All configuration violations identified and documented."
+          }
+        ]
+      }
+    ]
+  },
+  "provenance": {
+    "librarian_sources": [
+      {
+        "path": "docs/validation/config-checks.md",
+        "revision": "stu901"
+      }
+    ],
+    "generator": "qa-pilot-content-model-test",
+    "generator_version": "1.0.0",
+    "source_hash": "7aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+  },
+  "governance": {
+    "authority_posture": "advisory",
+    "owner_decision_required_for_publish": true,
+    "validation_status": "draft",
+    "source_coverage_pct": 85,
+    "ownership_state": "owned_by_librarian"
+  }
+}

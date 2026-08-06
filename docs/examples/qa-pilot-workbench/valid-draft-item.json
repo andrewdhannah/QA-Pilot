@@ -1,0 +1,27 @@
+{
+  "qa_item_id": "QA-LIFE-0100",
+  "title": "Draft QA item not yet assessed",
+  "source": "manual",
+  "status": "draft",
+  "severity": "low",
+  "category": "documentation",
+  "description": "A newly drafted QA observation awaiting initial assessment.",
+  "evidence_refs": [],
+  "evidence_links": [],
+  "lifecycle_history": [
+    {
+      "from_status": "__init__",
+      "to_status": "draft",
+      "transition_reason": "Item created as draft",
+      "actor": "agent",
+      "timestamp": "2026-07-08T00:00:00Z",
+      "advisory_only": true
+    }
+  ],
+  "owner_decision_state": "pending",
+  "created_at": "2026-07-08T00:00:00Z",
+  "updated_at": "2026-07-08T00:00:00Z",
+  "advisory_only": true,
+  "custody": "qa-pilot-local",
+  "librarian_impact": "none"
+}

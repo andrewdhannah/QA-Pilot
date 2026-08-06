@@ -12,7 +12,7 @@
   "owner_decision_path": "receipts/decision-resolutions/",
   "governance_profile": "qa-pilot-full-governance",
   "lifecycle_cursor_phase": 1,
-  "active_sprint": "QA-PILOT-TRAINING-SIM-ADVISORY-REVIEW-1",
+  "active_sprint": null,
   "sandbox_boundary": "harness_governed",
   "allowed_mutation_paths": [
     "docs/",
@@ -20,6 +20,7 @@
     "fixtures/",
     "project-state/",
     "receipts/",
+    "browser-app/",
     "PROJECT-IDENTITY.md",
     "PROJECT-PROFILE.json",
     "FEATURE-STATUS.md",

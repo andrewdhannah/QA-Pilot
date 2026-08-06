@@ -1,0 +1,31 @@
+{
+  "qa_item_id": "QA-QUERY-1000",
+  "title": "Item with evidence that appears in evidence queries",
+  "source": "evidence_intake",
+  "status": "evidence_attached",
+  "severity": "high",
+  "category": "functional",
+  "description": "This item has evidence links and should appear in has_evidence=true queries.",
+  "evidence_refs": [],
+  "evidence_links": [
+    {
+      "evidence_link_id": "EL-QUERY-1000-001",
+      "evidence_type": "validator_output",
+      "evidence_ref": "EP-TEST-001",
+      "attachment_reason": "Evidence packet showing intake results",
+      "custody": "qa-pilot-local",
+      "advisory_only": true,
+      "authority_note": "Evidence attachment does not prove defect validity or imply Owner approval.",
+      "attached_at": "2026-07-08T00:00:00Z"
+    }
+  ],
+  "lifecycle_history": [
+    {"from_status": "__init__", "to_status": "open", "transition_reason": "Item created", "actor": "agent", "timestamp": "2026-07-08T00:00:00Z", "advisory_only": true},
+    {"from_status": "open", "to_status": "triaged", "transition_reason": "Triaged as high severity", "actor": "agent", "timestamp": "2026-07-08T00:05:00Z", "advisory_only": true},
+    {"from_status": "triaged", "to_status": "evidence_attached", "transition_reason": "Evidence linked", "actor": "agent", "timestamp": "2026-07-08T00:10:00Z", "advisory_only": true}
+  ],
+  "owner_decision_state": "pending",
+  "created_at": "2026-07-08T00:00:00Z",
+  "updated_at": "2026-07-08T00:10:00Z",
+  "advisory_only": true, "custody": "qa-pilot-local", "librarian_impact": "none"
+}

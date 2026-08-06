@@ -1,0 +1,1288 @@
+{
+  "$schema": "qa-pilot-migration-copy-manifest-v1",
+  "epic": "EPIC-QA-PILOT-OPENWORK-TO-CARBIDEFRAME-MIGRATION-1",
+  "sprint": "QA-PILOT-MIGRATION-PREP-AND-SNAPSHOT-1",
+  "source_root": "/Users/andrew/Desktop/OpenWork/QA Pilot",
+  "destination_root": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app",
+  "destination_root_relative": "browser-app/",
+  "file_count": 123,
+  "total_bytes": 9014064,
+  "exclusions": {
+    "path_tokens": [
+      "/.git/",
+      "/.git"
+    ],
+    "filenames": [
+      ".DS_Store",
+      ".gitattributes",
+      ".gitignore",
+      "Thumbs.db"
+    ]
+  },
+  "forbidden_governance_dirs": [
+    "scripts",
+    "docs/governance",
+    "docs/schemas",
+    "fixtures",
+    "project-state",
+    "receipts",
+    "data",
+    "config"
+  ],
+  "forbidden_governance_files": [
+    "CLAUDE.md",
+    "FEATURE-STATUS.md",
+    "PROJECT-IDENTITY.md",
+    "PROJECT-PROFILE.json",
+    "PROJECT-STARTUP.md",
+    "SESSION-HANDOFF.md",
+    "STARTUP-STATE.md",
+    "startup-contract.json"
+  ],
+  "overwrite_collisions": [],
+  "governance_collisions": [],
+  "files": [
+    {
+      "source_absolute": "/Users/andrew/Desktop/OpenWork/QA Pilot/ARCHITECTURE.md",
+      "source_relative": "ARCHITECTURE.md",
+      "destination_absolute": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app/ARCHITECTURE.md",
+      "destination_relative": "browser-app/ARCHITECTURE.md",
+      "sha256": "75b1702b9cbe354cbc660fb82abb719fd789907984b13e18a55c7959842f24da",
+      "size_bytes": 10587,
+      "overwrites_existing": false,
+      "notes": []
+    },
+    {
+      "source_absolute": "/Users/andrew/Desktop/OpenWork/QA Pilot/LOCAL-AI-ARCHITECTURE.md",
+      "source_relative": "LOCAL-AI-ARCHITECTURE.md",
+      "destination_absolute": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app/LOCAL-AI-ARCHITECTURE.md",
+      "destination_relative": "browser-app/LOCAL-AI-ARCHITECTURE.md",
+      "sha256": "9f13562457f73f40a06daabd865f88dcba876b457ce250fdfd740d20893812c3",
+      "size_bytes": 22338,
+      "overwrites_existing": false,
+      "notes": []
+    },
+    {
+      "source_absolute": "/Users/andrew/Desktop/OpenWork/QA Pilot/QA Pilot Docs/FEATURE-SCOPE.md",
+      "source_relative": "QA Pilot Docs/FEATURE-SCOPE.md",
+      "destination_absolute": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app/QA Pilot Docs/FEATURE-SCOPE.md",
+      "destination_relative": "browser-app/QA Pilot Docs/FEATURE-SCOPE.md",
+      "sha256": "23c6c2f8cd52de04940bb88da117873b0c4ad79f972289472d4df764a709e0bb",
+      "size_bytes": 15556,
+      "overwrites_existing": false,
+      "notes": []
+    },
+    {
+      "source_absolute": "/Users/andrew/Desktop/OpenWork/QA Pilot/QA Pilot Docs/QA-DEBUGGER-DESIGN.md",
+      "source_relative": "QA Pilot Docs/QA-DEBUGGER-DESIGN.md",
+      "destination_absolute": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app/QA Pilot Docs/QA-DEBUGGER-DESIGN.md",
+      "destination_relative": "browser-app/QA Pilot Docs/QA-DEBUGGER-DESIGN.md",
+      "sha256": "3b19e46558668fdd5c255bf25a1bd90123f26fea031b3f2295a7a44309e25aa3",
+      "size_bytes": 20905,
+      "overwrites_existing": false,
+      "notes": []
+    },
+    {
+      "source_absolute": "/Users/andrew/Desktop/OpenWork/QA Pilot/QA Pilot Docs/SCENARIO-LLM-PROMPTS.md",
+      "source_relative": "QA Pilot Docs/SCENARIO-LLM-PROMPTS.md",
+      "destination_absolute": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app/QA Pilot Docs/SCENARIO-LLM-PROMPTS.md",
+      "destination_relative": "browser-app/QA Pilot Docs/SCENARIO-LLM-PROMPTS.md",
+      "sha256": "d83d6e3b214d6b350180788b16838baecaebf9994c5a803f455a3d923a71ffc2",
+      "size_bytes": 9620,
+      "overwrites_existing": false,
+      "notes": []
+    },
+    {
+      "source_absolute": "/Users/andrew/Desktop/OpenWork/QA Pilot/QA-Pilot-Session.html",
+      "source_relative": "QA-Pilot-Session.html",
+      "destination_absolute": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app/QA-Pilot-Session.html",
+      "destination_relative": "browser-app/QA-Pilot-Session.html",
+      "sha256": "d3ad36ef6725f698cc4b24fff88fde11a439b53801dc1ea87f87e797b211c63b",
+      "size_bytes": 7826,
+      "overwrites_existing": false,
+      "notes": []
+    },
+    {
+      "source_absolute": "/Users/andrew/Desktop/OpenWork/QA Pilot/QASimulator.html",
+      "source_relative": "QASimulator.html",
+      "destination_absolute": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app/QASimulator.html",
+      "destination_relative": "browser-app/QASimulator.html",
+      "sha256": "ad7246f9649cfdf309846eefff0ebc9ffadff0ed6f1a90e86937c0cd0d22c037",
+      "size_bytes": 813893,
+      "overwrites_existing": false,
+      "notes": []
+    },
+    {
+      "source_absolute": "/Users/andrew/Desktop/OpenWork/QA Pilot/QASimulator.ico",
+      "source_relative": "QASimulator.ico",
+      "destination_absolute": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app/QASimulator.ico",
+      "destination_relative": "browser-app/QASimulator.ico",
+      "sha256": "97cbb7b48e9bfb5887c699ee7dbd1ffc822dbd136b45c6b7e03548688cbdb7b8",
+      "size_bytes": 643,
+      "overwrites_existing": false,
+      "notes": []
+    },
+    {
+      "source_absolute": "/Users/andrew/Desktop/OpenWork/QA Pilot/README.md",
+      "source_relative": "README.md",
+      "destination_absolute": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app/README.md",
+      "destination_relative": "browser-app/README.md",
+      "sha256": "cfb37f6150cdf1626260bea2c0ec87b156e4b2c7704f0d036939f396404dc037",
+      "size_bytes": 9550,
+      "overwrites_existing": false,
+      "notes": []
+    },
+    {
+      "source_absolute": "/Users/andrew/Desktop/OpenWork/QA Pilot/START_Me_Up.html",
+      "source_relative": "START_Me_Up.html",
+      "destination_absolute": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app/START_Me_Up.html",
+      "destination_relative": "browser-app/START_Me_Up.html",
+      "sha256": "37e5915b8e5c41c5d07b73ee867585b0ec8e5c3433ac25ad6990d8ac6955b4c2",
+      "size_bytes": 1785,
+      "overwrites_existing": false,
+      "notes": []
+    },
+    {
+      "source_absolute": "/Users/andrew/Desktop/OpenWork/QA Pilot/admin/assign.html",
+      "source_relative": "admin/assign.html",
+      "destination_absolute": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app/admin/assign.html",
+      "destination_relative": "browser-app/admin/assign.html",
+      "sha256": "61f83d74ddf4e9c9ce705ee4a7c443c49c3e38d8b54bce9f8a1e8c8be155968d",
+      "size_bytes": 27988,
+      "overwrites_existing": false,
+      "notes": []
+    },
+    {
+      "source_absolute": "/Users/andrew/Desktop/OpenWork/QA Pilot/admin/bugs.html",
+      "source_relative": "admin/bugs.html",
+      "destination_absolute": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app/admin/bugs.html",
+      "destination_relative": "browser-app/admin/bugs.html",
+      "sha256": "061f26c2096f0812f79e9764063f04cfe59b4f0acbdc660d295889dc162d2e57",
+      "size_bytes": 6375,
+      "overwrites_existing": false,
+      "notes": []
+    },
+    {
+      "source_absolute": "/Users/andrew/Desktop/OpenWork/QA Pilot/admin/dashboard.html",
+      "source_relative": "admin/dashboard.html",
+      "destination_absolute": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app/admin/dashboard.html",
+      "destination_relative": "browser-app/admin/dashboard.html",
+      "sha256": "809697810afb0c2ddecaf60c436dcec4bfbc3290bd54873ede904afca5c886d8",
+      "size_bytes": 214291,
+      "overwrites_existing": false,
+      "notes": []
+    },
+    {
+      "source_absolute": "/Users/andrew/Desktop/OpenWork/QA Pilot/admin/editor.html",
+      "source_relative": "admin/editor.html",
+      "destination_absolute": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app/admin/editor.html",
+      "destination_relative": "browser-app/admin/editor.html",
+      "sha256": "82db32224a3fb13dadd980aff32bd8c522021acff10337a9947246e07c762438",
+      "size_bytes": 7694,
+      "overwrites_existing": false,
+      "notes": []
+    },
+    {
+      "source_absolute": "/Users/andrew/Desktop/OpenWork/QA Pilot/admin/index.html",
+      "source_relative": "admin/index.html",
+      "destination_absolute": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app/admin/index.html",
+      "destination_relative": "browser-app/admin/index.html",
+      "sha256": "8697d979027fb251342c857cdecac87da7c03c0559165329d4bf1a6b41c089fd",
+      "size_bytes": 14868,
+      "overwrites_existing": false,
+      "notes": []
+    },
+    {
+      "source_absolute": "/Users/andrew/Desktop/OpenWork/QA Pilot/admin/simple.html",
+      "source_relative": "admin/simple.html",
+      "destination_absolute": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app/admin/simple.html",
+      "destination_relative": "browser-app/admin/simple.html",
+      "sha256": "f27434efb3c9426a466e8a83b9e9c04ecaa0224f8c745a417821c818bd43249a",
+      "size_bytes": 28930,
+      "overwrites_existing": false,
+      "notes": []
+    },
+    {
+      "source_absolute": "/Users/andrew/Desktop/OpenWork/QA Pilot/ado-lab.html",
+      "source_relative": "ado-lab.html",
+      "destination_absolute": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app/ado-lab.html",
+      "destination_relative": "browser-app/ado-lab.html",
+      "sha256": "b5404eb707c037e672c452aecd4b48bc8f04019648f61448cf7d23db82ebb2e0",
+      "size_bytes": 45952,
+      "overwrites_existing": false,
+      "notes": []
+    },
+    {
+      "source_absolute": "/Users/andrew/Desktop/OpenWork/QA Pilot/apps/_stub.html",
+      "source_relative": "apps/_stub.html",
+      "destination_absolute": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app/apps/_stub.html",
+      "destination_relative": "browser-app/apps/_stub.html",
+      "sha256": "ea70603a3e8d55ba845c9324e7b37024cc92147a7da16fac10dad9519191c02e",
+      "size_bytes": 1483,
+      "overwrites_existing": false,
+      "notes": []
+    },
+    {
+      "source_absolute": "/Users/andrew/Desktop/OpenWork/QA Pilot/apps/ac.html",
+      "source_relative": "apps/ac.html",
+      "destination_absolute": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app/apps/ac.html",
+      "destination_relative": "browser-app/apps/ac.html",
+      "sha256": "904a2026e02a5947cad0275554e286bb48b099c0dcdf95e8d98288b18aa04426",
+      "size_bytes": 16756,
+      "overwrites_existing": false,
+      "notes": []
+    },
+    {
+      "source_absolute": "/Users/andrew/Desktop/OpenWork/QA Pilot/apps/ado.html",
+      "source_relative": "apps/ado.html",
+      "destination_absolute": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app/apps/ado.html",
+      "destination_relative": "browser-app/apps/ado.html",
+      "sha256": "4ff2c87a4b230d2b289c3188559d68e4acc910b781af21b1429b974950a94d82",
+      "size_bytes": 60022,
+      "overwrites_existing": false,
+      "notes": []
+    },
+    {
+      "source_absolute": "/Users/andrew/Desktop/OpenWork/QA Pilot/apps/browser.html",
+      "source_relative": "apps/browser.html",
+      "destination_absolute": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app/apps/browser.html",
+      "destination_relative": "browser-app/apps/browser.html",
+      "sha256": "e369d0b5a72898e60ae0905a17af58f5ae4cf9122ab0311453514a0171a95d98",
+      "size_bytes": 35471,
+      "overwrites_existing": false,
+      "notes": []
+    },
+    {
+      "source_absolute": "/Users/andrew/Desktop/OpenWork/QA Pilot/apps/dynamics.html",
+      "source_relative": "apps/dynamics.html",
+      "destination_absolute": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app/apps/dynamics.html",
+      "destination_relative": "browser-app/apps/dynamics.html",
+      "sha256": "a7ccba7be055c5e47688465cba0fe9883babde7a1fec5a221f54dfd62762a5cd",
+      "size_bytes": 115212,
+      "overwrites_existing": false,
+      "notes": []
+    },
+    {
+      "source_absolute": "/Users/andrew/Desktop/OpenWork/QA Pilot/apps/excel.html",
+      "source_relative": "apps/excel.html",
+      "destination_absolute": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app/apps/excel.html",
+      "destination_relative": "browser-app/apps/excel.html",
+      "sha256": "1471f6581b7095d9a5ad3ea9379177214fd0b3acfc1923404e42c6b5708d7ac8",
+      "size_bytes": 10104,
+      "overwrites_existing": false,
+      "notes": []
+    },
+    {
+      "source_absolute": "/Users/andrew/Desktop/OpenWork/QA Pilot/apps/inspector.html",
+      "source_relative": "apps/inspector.html",
+      "destination_absolute": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app/apps/inspector.html",
+      "destination_relative": "browser-app/apps/inspector.html",
+      "sha256": "f1610dfa9b54c8ec9584c74b517ff1099d91e9021b5e21fb103dbdcb1278867b",
+      "size_bytes": 8974,
+      "overwrites_existing": false,
+      "notes": []
+    },
+    {
+      "source_absolute": "/Users/andrew/Desktop/OpenWork/QA Pilot/apps/powerpoint.html",
+      "source_relative": "apps/powerpoint.html",
+      "destination_absolute": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app/apps/powerpoint.html",
+      "destination_relative": "browser-app/apps/powerpoint.html",
+      "sha256": "afccbf2c3ab31a992fd59707febad4038f4f199fb472635404b2198a56a11982",
+      "size_bytes": 7422,
+      "overwrites_existing": false,
+      "notes": []
+    },
+    {
+      "source_absolute": "/Users/andrew/Desktop/OpenWork/QA Pilot/apps/qapache.html",
+      "source_relative": "apps/qapache.html",
+      "destination_absolute": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app/apps/qapache.html",
+      "destination_relative": "browser-app/apps/qapache.html",
+      "sha256": "cfeaa9b2e3de47a9ae7734c5ca2c38cd213e02e6ad398f6aad5b3d823628b34f",
+      "size_bytes": 2814,
+      "overwrites_existing": false,
+      "notes": []
+    },
+    {
+      "source_absolute": "/Users/andrew/Desktop/OpenWork/QA Pilot/apps/qoutlook.html",
+      "source_relative": "apps/qoutlook.html",
+      "destination_absolute": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app/apps/qoutlook.html",
+      "destination_relative": "browser-app/apps/qoutlook.html",
+      "sha256": "396fab2b0f37188aa18dfa23b3905020769c694835ecfdb8149c388ddb14e319",
+      "size_bytes": 52726,
+      "overwrites_existing": false,
+      "notes": []
+    },
+    {
+      "source_absolute": "/Users/andrew/Desktop/OpenWork/QA Pilot/apps/qtube.html",
+      "source_relative": "apps/qtube.html",
+      "destination_absolute": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app/apps/qtube.html",
+      "destination_relative": "browser-app/apps/qtube.html",
+      "sha256": "be7e486935b43b00801e2ee080217df2b43d525dff2603b92ec110d19e75486d",
+      "size_bytes": 3670,
+      "overwrites_existing": false,
+      "notes": []
+    },
+    {
+      "source_absolute": "/Users/andrew/Desktop/OpenWork/QA Pilot/apps/reports.html",
+      "source_relative": "apps/reports.html",
+      "destination_absolute": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app/apps/reports.html",
+      "destination_relative": "browser-app/apps/reports.html",
+      "sha256": "ab4f0036fc8bb20e259139fe783fe4b91f344a491b9e7d9c3c3d235b089818fd",
+      "size_bytes": 20298,
+      "overwrites_existing": false,
+      "notes": []
+    },
+    {
+      "source_absolute": "/Users/andrew/Desktop/OpenWork/QA Pilot/apps/settings.html",
+      "source_relative": "apps/settings.html",
+      "destination_absolute": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app/apps/settings.html",
+      "destination_relative": "browser-app/apps/settings.html",
+      "sha256": "0502feede24a6038641cd3712f699f7974c1083129d0e13270fb5fc1b08ab71e",
+      "size_bytes": 25587,
+      "overwrites_existing": false,
+      "notes": []
+    },
+    {
+      "source_absolute": "/Users/andrew/Desktop/OpenWork/QA Pilot/apps/teams.html",
+      "source_relative": "apps/teams.html",
+      "destination_absolute": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app/apps/teams.html",
+      "destination_relative": "browser-app/apps/teams.html",
+      "sha256": "68d915ed870a91d6144c4d881bec38ec944ed6a48a6834f66d98c5d1b9bff8b4",
+      "size_bytes": 86739,
+      "overwrites_existing": false,
+      "notes": []
+    },
+    {
+      "source_absolute": "/Users/andrew/Desktop/OpenWork/QA Pilot/apps/training.html",
+      "source_relative": "apps/training.html",
+      "destination_absolute": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app/apps/training.html",
+      "destination_relative": "browser-app/apps/training.html",
+      "sha256": "d98547799e60897a5886697aca027d5d5596b3e12ca306ecc8414f49150319d4",
+      "size_bytes": 47449,
+      "overwrites_existing": false,
+      "notes": []
+    },
+    {
+      "source_absolute": "/Users/andrew/Desktop/OpenWork/QA Pilot/apps/word.html",
+      "source_relative": "apps/word.html",
+      "destination_absolute": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app/apps/word.html",
+      "destination_relative": "browser-app/apps/word.html",
+      "sha256": "244dd35760c6a74f770fe836ade446531e6ffecbea966b84008355ab9a6ac3f6",
+      "size_bytes": 6656,
+      "overwrites_existing": false,
+      "notes": []
+    },
+    {
+      "source_absolute": "/Users/andrew/Desktop/OpenWork/QA Pilot/build.bat",
+      "source_relative": "build.bat",
+      "destination_absolute": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app/build.bat",
+      "destination_relative": "browser-app/build.bat",
+      "sha256": "8f86b03e6bad52705886fa7cf37d6ccb46aefdd3dd9adf128257ce34cf79e07b",
+      "size_bytes": 3442,
+      "overwrites_existing": false,
+      "notes": []
+    },
+    {
+      "source_absolute": "/Users/andrew/Desktop/OpenWork/QA Pilot/build.command",
+      "source_relative": "build.command",
+      "destination_absolute": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app/build.command",
+      "destination_relative": "browser-app/build.command",
+      "sha256": "84a4b7c9f9654309b955aab98548c557fb19b2d076064ee1954c64802cec7772",
+      "size_bytes": 564,
+      "overwrites_existing": false,
+      "notes": []
+    },
+    {
+      "source_absolute": "/Users/andrew/Desktop/OpenWork/QA Pilot/build.js",
+      "source_relative": "build.js",
+      "destination_absolute": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app/build.js",
+      "destination_relative": "browser-app/build.js",
+      "sha256": "1a320b042943343c8d910b69d4eaf8d2c155e35a573cb6c0acdd36720db86c4e",
+      "size_bytes": 15633,
+      "overwrites_existing": false,
+      "notes": []
+    },
+    {
+      "source_absolute": "/Users/andrew/Desktop/OpenWork/QA Pilot/build.sh",
+      "source_relative": "build.sh",
+      "destination_absolute": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app/build.sh",
+      "destination_relative": "browser-app/build.sh",
+      "sha256": "3375927fb2bcce3e5dbd39f8d37a79a4afd88d24ba7fdc4758279e37c66cb367",
+      "size_bytes": 167,
+      "overwrites_existing": false,
+      "notes": []
+    },
+    {
+      "source_absolute": "/Users/andrew/Desktop/OpenWork/QA Pilot/capstone-2.html",
+      "source_relative": "capstone-2.html",
+      "destination_absolute": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app/capstone-2.html",
+      "destination_relative": "browser-app/capstone-2.html",
+      "sha256": "74093915ea32a842d4cd1ca2bb98b32481009f62068523bd8d028dc1ba86ab29",
+      "size_bytes": 913815,
+      "overwrites_existing": false,
+      "notes": []
+    },
+    {
+      "source_absolute": "/Users/andrew/Desktop/OpenWork/QA Pilot/capstone-2.html.bak",
+      "source_relative": "capstone-2.html.bak",
+      "destination_absolute": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app/capstone-2.html.bak",
+      "destination_relative": "browser-app/capstone-2.html.bak",
+      "sha256": "f590bf45e06239e3f25159013ea283c0d8bbd973673202726809fc0d58898882",
+      "size_bytes": 914362,
+      "overwrites_existing": false,
+      "notes": []
+    },
+    {
+      "source_absolute": "/Users/andrew/Desktop/OpenWork/QA Pilot/capstone-lab.html",
+      "source_relative": "capstone-lab.html",
+      "destination_absolute": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app/capstone-lab.html",
+      "destination_relative": "browser-app/capstone-lab.html",
+      "sha256": "fd372df695fae24044c24c856c0270d2c612c2a0fde6f917234ff1152bddf89b",
+      "size_bytes": 30299,
+      "overwrites_existing": false,
+      "notes": []
+    },
+    {
+      "source_absolute": "/Users/andrew/Desktop/OpenWork/QA Pilot/capstone.html",
+      "source_relative": "capstone.html",
+      "destination_absolute": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app/capstone.html",
+      "destination_relative": "browser-app/capstone.html",
+      "sha256": "92078a07e0f2e2e0d6c3ab24f5db6305fff7121b7a80dcc030bf8f5f016bf299",
+      "size_bytes": 841129,
+      "overwrites_existing": false,
+      "notes": []
+    },
+    {
+      "source_absolute": "/Users/andrew/Desktop/OpenWork/QA Pilot/certificate.html",
+      "source_relative": "certificate.html",
+      "destination_absolute": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app/certificate.html",
+      "destination_relative": "browser-app/certificate.html",
+      "sha256": "4aae66693a784b9567ae5be71b3f0f837d03539e36634bfd53995faec931efdd",
+      "size_bytes": 52749,
+      "overwrites_existing": false,
+      "notes": []
+    },
+    {
+      "source_absolute": "/Users/andrew/Desktop/OpenWork/QA Pilot/chrome-extension/README.md",
+      "source_relative": "chrome-extension/README.md",
+      "destination_absolute": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app/chrome-extension/README.md",
+      "destination_relative": "browser-app/chrome-extension/README.md",
+      "sha256": "0d862644dc4cf917ca3d5e8ffd3854be39d72b484d154d2b91ef545ced2981c6",
+      "size_bytes": 2056,
+      "overwrites_existing": false,
+      "notes": []
+    },
+    {
+      "source_absolute": "/Users/andrew/Desktop/OpenWork/QA Pilot/chrome-extension/manifest.json",
+      "source_relative": "chrome-extension/manifest.json",
+      "destination_absolute": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app/chrome-extension/manifest.json",
+      "destination_relative": "browser-app/chrome-extension/manifest.json",
+      "sha256": "f252230c8906290048213a30e6e6dec0f708c28c34185ae19677a135954274bf",
+      "size_bytes": 410,
+      "overwrites_existing": false,
+      "notes": []
+    },
+    {
+      "source_absolute": "/Users/andrew/Desktop/OpenWork/QA Pilot/chrome-extension/popup.html",
+      "source_relative": "chrome-extension/popup.html",
+      "destination_absolute": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app/chrome-extension/popup.html",
+      "destination_relative": "browser-app/chrome-extension/popup.html",
+      "sha256": "b1516481239c86bb200c3d17966438a3dde9529beef84a68623f7651e8ebb2e5",
+      "size_bytes": 21607,
+      "overwrites_existing": false,
+      "notes": []
+    },
+    {
+      "source_absolute": "/Users/andrew/Desktop/OpenWork/QA Pilot/confirm.html",
+      "source_relative": "confirm.html",
+      "destination_absolute": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app/confirm.html",
+      "destination_relative": "browser-app/confirm.html",
+      "sha256": "c12a888952f7c47bfa5012a8e2c47c30f2e4c50f0be4b11cdc2e35d2a3e2514b",
+      "size_bytes": 5876,
+      "overwrites_existing": false,
+      "notes": []
+    },
+    {
+      "source_absolute": "/Users/andrew/Desktop/OpenWork/QA Pilot/course-view.html",
+      "source_relative": "course-view.html",
+      "destination_absolute": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app/course-view.html",
+      "destination_relative": "browser-app/course-view.html",
+      "sha256": "935fd5233932eae7a560509f3f6735685f30aaba10c6b167af4958b4d2ad0cb6",
+      "size_bytes": 120954,
+      "overwrites_existing": false,
+      "notes": []
+    },
+    {
+      "source_absolute": "/Users/andrew/Desktop/OpenWork/QA Pilot/crm-lab.html",
+      "source_relative": "crm-lab.html",
+      "destination_absolute": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app/crm-lab.html",
+      "destination_relative": "browser-app/crm-lab.html",
+      "sha256": "38c8d87febb3db0332c84ff95532316037282422823006d187a80e984e9f07ad",
+      "size_bytes": 50099,
+      "overwrites_existing": false,
+      "notes": []
+    },
+    {
+      "source_absolute": "/Users/andrew/Desktop/OpenWork/QA Pilot/css/ado-mock.css",
+      "source_relative": "css/ado-mock.css",
+      "destination_absolute": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app/css/ado-mock.css",
+      "destination_relative": "browser-app/css/ado-mock.css",
+      "sha256": "ed1602704077bc082ff6a7605944ab9ee7286e54bc5a6280bff8366dc429ca4b",
+      "size_bytes": 5568,
+      "overwrites_existing": false,
+      "notes": []
+    },
+    {
+      "source_absolute": "/Users/andrew/Desktop/OpenWork/QA Pilot/css/dynamics-mock.css",
+      "source_relative": "css/dynamics-mock.css",
+      "destination_absolute": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app/css/dynamics-mock.css",
+      "destination_relative": "browser-app/css/dynamics-mock.css",
+      "sha256": "1610b56be1d13da1627f41ba9792018757ddf257af603e213c76c97e2d1820bb",
+      "size_bytes": 6713,
+      "overwrites_existing": false,
+      "notes": []
+    },
+    {
+      "source_absolute": "/Users/andrew/Desktop/OpenWork/QA Pilot/css/main.css",
+      "source_relative": "css/main.css",
+      "destination_absolute": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app/css/main.css",
+      "destination_relative": "browser-app/css/main.css",
+      "sha256": "9147c765d3c608107a1cbf09d9b89d13be844daf65786e53fd3aefde1005d173",
+      "size_bytes": 28995,
+      "overwrites_existing": false,
+      "notes": []
+    },
+    {
+      "source_absolute": "/Users/andrew/Desktop/OpenWork/QA Pilot/data/assignments.js",
+      "source_relative": "data/assignments.js",
+      "destination_absolute": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app/data/assignments.js",
+      "destination_relative": "browser-app/data/assignments.js",
+      "sha256": "559bbb57b34aa5828dac9a51f646e209d0a089045b2dda3fb9f8e02c275b19ea",
+      "size_bytes": 7314,
+      "overwrites_existing": false,
+      "notes": [
+        "first segment 'data' shadows a CarbideFrame governance dir name, but destination is browser-app/data/... which is intentionally distinct per Owner direction (R5)."
+      ]
+    },
+    {
+      "source_absolute": "/Users/andrew/Desktop/OpenWork/QA Pilot/data/bug-keys.js",
+      "source_relative": "data/bug-keys.js",
+      "destination_absolute": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app/data/bug-keys.js",
+      "destination_relative": "browser-app/data/bug-keys.js",
+      "sha256": "0a7a1c9a26f308188f57d23446d13650ebb353b6af9b683baab38f17dc01927a",
+      "size_bytes": 5004,
+      "overwrites_existing": false,
+      "notes": [
+        "first segment 'data' shadows a CarbideFrame governance dir name, but destination is browser-app/data/... which is intentionally distinct per Owner direction (R5)."
+      ]
+    },
+    {
+      "source_absolute": "/Users/andrew/Desktop/OpenWork/QA Pilot/data/content.js",
+      "source_relative": "data/content.js",
+      "destination_absolute": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app/data/content.js",
+      "destination_relative": "browser-app/data/content.js",
+      "sha256": "b57c2e905593491cf5cbe9d8d28c0fa50acb641ec3b5d5295dbea8f54dd28458",
+      "size_bytes": 530782,
+      "overwrites_existing": false,
+      "notes": [
+        "first segment 'data' shadows a CarbideFrame governance dir name, but destination is browser-app/data/... which is intentionally distinct per Owner direction (R5)."
+      ]
+    },
+    {
+      "source_absolute": "/Users/andrew/Desktop/OpenWork/QA Pilot/data/progress.js",
+      "source_relative": "data/progress.js",
+      "destination_absolute": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app/data/progress.js",
+      "destination_relative": "browser-app/data/progress.js",
+      "sha256": "348514a2cdc3c4eb670f3637c345a73ebd797c61a78e6197210441e7a9d64f40",
+      "size_bytes": 9835,
+      "overwrites_existing": false,
+      "notes": [
+        "first segment 'data' shadows a CarbideFrame governance dir name, but destination is browser-app/data/... which is intentionally distinct per Owner direction (R5)."
+      ]
+    },
+    {
+      "source_absolute": "/Users/andrew/Desktop/OpenWork/QA Pilot/data/quiz-questions.js",
+      "source_relative": "data/quiz-questions.js",
+      "destination_absolute": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app/data/quiz-questions.js",
+      "destination_relative": "browser-app/data/quiz-questions.js",
+      "sha256": "61f5064f693d26af8010ff0b1c652efa16afef28ec97ea08d6fb89c513ba7e78",
+      "size_bytes": 50426,
+      "overwrites_existing": false,
+      "notes": [
+        "first segment 'data' shadows a CarbideFrame governance dir name, but destination is browser-app/data/... which is intentionally distinct per Owner direction (R5)."
+      ]
+    },
+    {
+      "source_absolute": "/Users/andrew/Desktop/OpenWork/QA Pilot/data/students.js",
+      "source_relative": "data/students.js",
+      "destination_absolute": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app/data/students.js",
+      "destination_relative": "browser-app/data/students.js",
+      "sha256": "82d5e1a974b2f510af1244cc696f7ea5899db22db388c5eb2f115ee62f5d0fd1",
+      "size_bytes": 9933,
+      "overwrites_existing": false,
+      "notes": [
+        "first segment 'data' shadows a CarbideFrame governance dir name, but destination is browser-app/data/... which is intentionally distinct per Owner direction (R5)."
+      ]
+    },
+    {
+      "source_absolute": "/Users/andrew/Desktop/OpenWork/QA Pilot/debug/debug-board.js",
+      "source_relative": "debug/debug-board.js",
+      "destination_absolute": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app/debug/debug-board.js",
+      "destination_relative": "browser-app/debug/debug-board.js",
+      "sha256": "a854219ad9c76d31b31c0d2c1e4a2be1e83d37f38500fa7cacf59129158a523e",
+      "size_bytes": 6110,
+      "overwrites_existing": false,
+      "notes": []
+    },
+    {
+      "source_absolute": "/Users/andrew/Desktop/OpenWork/QA Pilot/debug/debug-filters.js",
+      "source_relative": "debug/debug-filters.js",
+      "destination_absolute": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app/debug/debug-filters.js",
+      "destination_relative": "browser-app/debug/debug-filters.js",
+      "sha256": "966dafa18e6ff49b0281cdb2ce0021e5db4f7824a8bc733914dbc171c73c9d73",
+      "size_bytes": 13110,
+      "overwrites_existing": false,
+      "notes": []
+    },
+    {
+      "source_absolute": "/Users/andrew/Desktop/OpenWork/QA Pilot/debug/debug-import-export.js",
+      "source_relative": "debug/debug-import-export.js",
+      "destination_absolute": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app/debug/debug-import-export.js",
+      "destination_relative": "browser-app/debug/debug-import-export.js",
+      "sha256": "193c1e3463fc02ab67b001fe44cacb8abde5c63670303a0fdfa362b721248d02",
+      "size_bytes": 29214,
+      "overwrites_existing": false,
+      "notes": []
+    },
+    {
+      "source_absolute": "/Users/andrew/Desktop/OpenWork/QA Pilot/debug/debug-panel.js",
+      "source_relative": "debug/debug-panel.js",
+      "destination_absolute": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app/debug/debug-panel.js",
+      "destination_relative": "browser-app/debug/debug-panel.js",
+      "sha256": "3465b582489cbf365df03568383b8f298e9e987338469cbdaebd736d9b1e7215",
+      "size_bytes": 23560,
+      "overwrites_existing": false,
+      "notes": []
+    },
+    {
+      "source_absolute": "/Users/andrew/Desktop/OpenWork/QA Pilot/debug/debug.css",
+      "source_relative": "debug/debug.css",
+      "destination_absolute": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app/debug/debug.css",
+      "destination_relative": "browser-app/debug/debug.css",
+      "sha256": "d2a2cfe6bcef3578cd9fc252c0b70b8f11a9ad0c7ac72f6f389edcd27144cd2e",
+      "size_bytes": 28393,
+      "overwrites_existing": false,
+      "notes": []
+    },
+    {
+      "source_absolute": "/Users/andrew/Desktop/OpenWork/QA Pilot/debug/debug.js",
+      "source_relative": "debug/debug.js",
+      "destination_absolute": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app/debug/debug.js",
+      "destination_relative": "browser-app/debug/debug.js",
+      "sha256": "3965378c5785c26d11be6ac3124b6e58d4cd7e22846c21e4a2019344b476e911",
+      "size_bytes": 17794,
+      "overwrites_existing": false,
+      "notes": []
+    },
+    {
+      "source_absolute": "/Users/andrew/Desktop/OpenWork/QA Pilot/debug/index.html",
+      "source_relative": "debug/index.html",
+      "destination_absolute": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app/debug/index.html",
+      "destination_relative": "browser-app/debug/index.html",
+      "sha256": "2ddfc3474319cdfc09a3a5c243e202238dadf01f08a85cfacb94cf963bc2e41f",
+      "size_bytes": 21509,
+      "overwrites_existing": false,
+      "notes": []
+    },
+    {
+      "source_absolute": "/Users/andrew/Desktop/OpenWork/QA Pilot/debug/local-qa-debugger-prompt-pack.md",
+      "source_relative": "debug/local-qa-debugger-prompt-pack.md",
+      "destination_absolute": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app/debug/local-qa-debugger-prompt-pack.md",
+      "destination_relative": "browser-app/debug/local-qa-debugger-prompt-pack.md",
+      "sha256": "c1c4390d2a68b20ddb6b9c4f63a0869c09a81e9804a9713811abffa837b0f0da",
+      "size_bytes": 26758,
+      "overwrites_existing": false,
+      "notes": []
+    },
+    {
+      "source_absolute": "/Users/andrew/Desktop/OpenWork/QA Pilot/desktop/IMPLEMENTATION-PLAN.md",
+      "source_relative": "desktop/IMPLEMENTATION-PLAN.md",
+      "destination_absolute": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app/desktop/IMPLEMENTATION-PLAN.md",
+      "destination_relative": "browser-app/desktop/IMPLEMENTATION-PLAN.md",
+      "sha256": "7d34952be9ef377c7c815dac71034dc3488891057ad0322d12fe4e21e074275c",
+      "size_bytes": 27599,
+      "overwrites_existing": false,
+      "notes": []
+    },
+    {
+      "source_absolute": "/Users/andrew/Desktop/OpenWork/QA Pilot/desktop/LICENSE",
+      "source_relative": "desktop/LICENSE",
+      "destination_absolute": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app/desktop/LICENSE",
+      "destination_relative": "browser-app/desktop/LICENSE",
+      "sha256": "8af1e76f97098f42d891abb9fcf9020eb9dd52c30656a2859ad294ab4a11740e",
+      "size_bytes": 2728,
+      "overwrites_existing": false,
+      "notes": []
+    },
+    {
+      "source_absolute": "/Users/andrew/Desktop/OpenWork/QA Pilot/desktop/README.md",
+      "source_relative": "desktop/README.md",
+      "destination_absolute": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app/desktop/README.md",
+      "destination_relative": "browser-app/desktop/README.md",
+      "sha256": "ed1e401185c687e01229be51f41c07d00790b5667a4fd3e23981bf76d9d9ca40",
+      "size_bytes": 4710,
+      "overwrites_existing": false,
+      "notes": []
+    },
+    {
+      "source_absolute": "/Users/andrew/Desktop/OpenWork/QA Pilot/desktop/dist.html",
+      "source_relative": "desktop/dist.html",
+      "destination_absolute": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app/desktop/dist.html",
+      "destination_relative": "browser-app/desktop/dist.html",
+      "sha256": "a535b4d79f51067315c6059caf3f4f75f4e204116a4f12b5db065cb4b29fc0e8",
+      "size_bytes": 813896,
+      "overwrites_existing": false,
+      "notes": []
+    },
+    {
+      "source_absolute": "/Users/andrew/Desktop/OpenWork/QA Pilot/desktop/index.html",
+      "source_relative": "desktop/index.html",
+      "destination_absolute": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app/desktop/index.html",
+      "destination_relative": "browser-app/desktop/index.html",
+      "sha256": "ffe98df56c6a12f259afeb883027d7c39d1440377da205a15b9846b22233bf9e",
+      "size_bytes": 23425,
+      "overwrites_existing": false,
+      "notes": []
+    },
+    {
+      "source_absolute": "/Users/andrew/Desktop/OpenWork/QA Pilot/desktop/os.bundle.js",
+      "source_relative": "desktop/os.bundle.js",
+      "destination_absolute": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app/desktop/os.bundle.js",
+      "destination_relative": "browser-app/desktop/os.bundle.js",
+      "sha256": "d5293340cdd6740fbc740eb564d468af4c424ece4289c269632e1f4f880c7dc5",
+      "size_bytes": 786746,
+      "overwrites_existing": false,
+      "notes": []
+    },
+    {
+      "source_absolute": "/Users/andrew/Desktop/OpenWork/QA Pilot/desktop/tools/gen-sprites.js",
+      "source_relative": "desktop/tools/gen-sprites.js",
+      "destination_absolute": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app/desktop/tools/gen-sprites.js",
+      "destination_relative": "browser-app/desktop/tools/gen-sprites.js",
+      "sha256": "e4c18d1933bba92c99c4636a8afb7316e9e48aed2d6eade5d8fedbad03f48a78",
+      "size_bytes": 3992,
+      "overwrites_existing": false,
+      "notes": []
+    },
+    {
+      "source_absolute": "/Users/andrew/Desktop/OpenWork/QA Pilot/desktop/videos/ai_influencer_strip.png",
+      "source_relative": "desktop/videos/ai_influencer_strip.png",
+      "destination_absolute": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app/desktop/videos/ai_influencer_strip.png",
+      "destination_relative": "browser-app/desktop/videos/ai_influencer_strip.png",
+      "sha256": "bb00697ee1edaeedaa7fdeb99e773a5460a491b3a69d701f621cfda79abec0d3",
+      "size_bytes": 3940,
+      "overwrites_existing": false,
+      "notes": []
+    },
+    {
+      "source_absolute": "/Users/andrew/Desktop/OpenWork/QA Pilot/desktop/videos/corporate_ai_demo_strip.png",
+      "source_relative": "desktop/videos/corporate_ai_demo_strip.png",
+      "destination_absolute": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app/desktop/videos/corporate_ai_demo_strip.png",
+      "destination_relative": "browser-app/desktop/videos/corporate_ai_demo_strip.png",
+      "sha256": "fa25449e69aead31ace2d96dad476c1dfc54f0232aca4b1cf694e357d3c479e1",
+      "size_bytes": 4128,
+      "overwrites_existing": false,
+      "notes": []
+    },
+    {
+      "source_absolute": "/Users/andrew/Desktop/OpenWork/QA Pilot/desktop/videos/infinite_buffering_strip.png",
+      "source_relative": "desktop/videos/infinite_buffering_strip.png",
+      "destination_absolute": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app/desktop/videos/infinite_buffering_strip.png",
+      "destination_relative": "browser-app/desktop/videos/infinite_buffering_strip.png",
+      "sha256": "ea313e768105540c6e24d9d65def27ac3c428c4feb4054ddd092f22d95443fb0",
+      "size_bytes": 3947,
+      "overwrites_existing": false,
+      "notes": []
+    },
+    {
+      "source_absolute": "/Users/andrew/Desktop/OpenWork/QA Pilot/desktop/videos/tutorial_guy_strip.png",
+      "source_relative": "desktop/videos/tutorial_guy_strip.png",
+      "destination_absolute": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app/desktop/videos/tutorial_guy_strip.png",
+      "destination_relative": "browser-app/desktop/videos/tutorial_guy_strip.png",
+      "sha256": "c778bfe075e6207f6820706a5db338ddb201ed3d1b889a8ae15ec323bf7f40a9",
+      "size_bytes": 4051,
+      "overwrites_existing": false,
+      "notes": []
+    },
+    {
+      "source_absolute": "/Users/andrew/Desktop/OpenWork/QA Pilot/favicon.png",
+      "source_relative": "favicon.png",
+      "destination_absolute": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app/favicon.png",
+      "destination_relative": "browser-app/favicon.png",
+      "sha256": "58b9fcaafdad6ccdd84171b7f508e0330202a21933eb17cc4fa86c892fa32045",
+      "size_bytes": 3093,
+      "overwrites_existing": false,
+      "notes": []
+    },
+    {
+      "source_absolute": "/Users/andrew/Desktop/OpenWork/QA Pilot/favicon.svg",
+      "source_relative": "favicon.svg",
+      "destination_absolute": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app/favicon.svg",
+      "destination_relative": "browser-app/favicon.svg",
+      "sha256": "974d424ade826a7202cab6c1e2b44bed7c917839daea8dff895a874732831d6c",
+      "size_bytes": 864,
+      "overwrites_existing": false,
+      "notes": []
+    },
+    {
+      "source_absolute": "/Users/andrew/Desktop/OpenWork/QA Pilot/guide-facilitator.html",
+      "source_relative": "guide-facilitator.html",
+      "destination_absolute": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app/guide-facilitator.html",
+      "destination_relative": "browser-app/guide-facilitator.html",
+      "sha256": "443325592800fbd1c647c8012d7dd050fb53063996909ae2be722fda287ed063",
+      "size_bytes": 16368,
+      "overwrites_existing": false,
+      "notes": []
+    },
+    {
+      "source_absolute": "/Users/andrew/Desktop/OpenWork/QA Pilot/guide-student.html",
+      "source_relative": "guide-student.html",
+      "destination_absolute": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app/guide-student.html",
+      "destination_relative": "browser-app/guide-student.html",
+      "sha256": "716a0e1e7beee537b725d4cf5fb3cf315fa33ab72cc2b060f45c05fc0460f032",
+      "size_bytes": 16191,
+      "overwrites_existing": false,
+      "notes": []
+    },
+    {
+      "source_absolute": "/Users/andrew/Desktop/OpenWork/QA Pilot/index.html",
+      "source_relative": "index.html",
+      "destination_absolute": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app/index.html",
+      "destination_relative": "browser-app/index.html",
+      "sha256": "6c17d50a692d3f71a433aa5241ff5bacbbfb3f4469eeaa99831fe33bbeccb641",
+      "size_bytes": 35678,
+      "overwrites_existing": false,
+      "notes": []
+    },
+    {
+      "source_absolute": "/Users/andrew/Desktop/OpenWork/QA Pilot/js/app.js",
+      "source_relative": "js/app.js",
+      "destination_absolute": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app/js/app.js",
+      "destination_relative": "browser-app/js/app.js",
+      "sha256": "fb9b9c2c2af167aa5922e46b918bf941393ad7dda5f2bd3c22d4b3abdf20be2d",
+      "size_bytes": 18020,
+      "overwrites_existing": false,
+      "notes": []
+    },
+    {
+      "source_absolute": "/Users/andrew/Desktop/OpenWork/QA Pilot/js/clippy-guide.js",
+      "source_relative": "js/clippy-guide.js",
+      "destination_absolute": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app/js/clippy-guide.js",
+      "destination_relative": "browser-app/js/clippy-guide.js",
+      "sha256": "5b7a843efc5fbd7da55cc71a82223d00bc3271f2595ab7873123f83e05627055",
+      "size_bytes": 39074,
+      "overwrites_existing": false,
+      "notes": []
+    },
+    {
+      "source_absolute": "/Users/andrew/Desktop/OpenWork/QA Pilot/js/db.js",
+      "source_relative": "js/db.js",
+      "destination_absolute": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app/js/db.js",
+      "destination_relative": "browser-app/js/db.js",
+      "sha256": "b18546583fd1f6e58099ccd9cb8a0367e0d7e2137c451677c6120d3213711cfa",
+      "size_bytes": 36438,
+      "overwrites_existing": false,
+      "notes": []
+    },
+    {
+      "source_absolute": "/Users/andrew/Desktop/OpenWork/QA Pilot/js/i18n.js",
+      "source_relative": "js/i18n.js",
+      "destination_absolute": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app/js/i18n.js",
+      "destination_relative": "browser-app/js/i18n.js",
+      "sha256": "eb4f6f69e2783fa9bef739d27d02e4f539003a23e1a863b5824aed85ae4a097e",
+      "size_bytes": 11452,
+      "overwrites_existing": false,
+      "notes": []
+    },
+    {
+      "source_absolute": "/Users/andrew/Desktop/OpenWork/QA Pilot/js/lang-en.js",
+      "source_relative": "js/lang-en.js",
+      "destination_absolute": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app/js/lang-en.js",
+      "destination_relative": "browser-app/js/lang-en.js",
+      "sha256": "bc6007f04833ba9c6c799c27a8a6d85296889d3deca701399750ad4df9029a8f",
+      "size_bytes": 9132,
+      "overwrites_existing": false,
+      "notes": []
+    },
+    {
+      "source_absolute": "/Users/andrew/Desktop/OpenWork/QA Pilot/js/lang-fr.js",
+      "source_relative": "js/lang-fr.js",
+      "destination_absolute": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app/js/lang-fr.js",
+      "destination_relative": "browser-app/js/lang-fr.js",
+      "sha256": "bae698f69d64577efdb1b02efd608bc585791fb9c4a0e3f4ac4b361b8bcebd78",
+      "size_bytes": 242998,
+      "overwrites_existing": false,
+      "notes": []
+    },
+    {
+      "source_absolute": "/Users/andrew/Desktop/OpenWork/QA Pilot/js/pdf-lib.js",
+      "source_relative": "js/pdf-lib.js",
+      "destination_absolute": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app/js/pdf-lib.js",
+      "destination_relative": "browser-app/js/pdf-lib.js",
+      "sha256": "cc7a743ec7b117814f5b57c1f40ea5acf9616e6b2dd825d377bfee8eddb05346",
+      "size_bytes": 2477,
+      "overwrites_existing": false,
+      "notes": []
+    },
+    {
+      "source_absolute": "/Users/andrew/Desktop/OpenWork/QA Pilot/launch.bat",
+      "source_relative": "launch.bat",
+      "destination_absolute": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app/launch.bat",
+      "destination_relative": "browser-app/launch.bat",
+      "sha256": "1f7009582683b8d0ec85698756e3fbc54fd0d66c38e4f9da593d4bfe80a493f9",
+      "size_bytes": 493,
+      "overwrites_existing": false,
+      "notes": []
+    },
+    {
+      "source_absolute": "/Users/andrew/Desktop/OpenWork/QA Pilot/launch.command",
+      "source_relative": "launch.command",
+      "destination_absolute": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app/launch.command",
+      "destination_relative": "browser-app/launch.command",
+      "sha256": "6a9ab2dc9755aeb53047dba4038ecd59f6b80c52d6a66ef5e476399af0bdfebb",
+      "size_bytes": 500,
+      "overwrites_existing": false,
+      "notes": []
+    },
+    {
+      "source_absolute": "/Users/andrew/Desktop/OpenWork/QA Pilot/make_icon_win.py",
+      "source_relative": "make_icon_win.py",
+      "destination_absolute": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app/make_icon_win.py",
+      "destination_relative": "browser-app/make_icon_win.py",
+      "sha256": "92639236d4d7f4aa95b1120a7449e183df31f62aadf5f7b81792bc67d68c226c",
+      "size_bytes": 4264,
+      "overwrites_existing": false,
+      "notes": []
+    },
+    {
+      "source_absolute": "/Users/andrew/Desktop/OpenWork/QA Pilot/mock.html",
+      "source_relative": "mock.html",
+      "destination_absolute": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app/mock.html",
+      "destination_relative": "browser-app/mock.html",
+      "sha256": "99580e53ca261599438983e6fd76c16c98585b1ec3cd37952f8e5b176732f5c9",
+      "size_bytes": 40963,
+      "overwrites_existing": false,
+      "notes": []
+    },
+    {
+      "source_absolute": "/Users/andrew/Desktop/OpenWork/QA Pilot/os.bundle.js",
+      "source_relative": "os.bundle.js",
+      "destination_absolute": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app/os.bundle.js",
+      "destination_relative": "browser-app/os.bundle.js",
+      "sha256": "d5293340cdd6740fbc740eb564d468af4c424ece4289c269632e1f4f880c7dc5",
+      "size_bytes": 786746,
+      "overwrites_existing": false,
+      "notes": []
+    },
+    {
+      "source_absolute": "/Users/andrew/Desktop/OpenWork/QA Pilot/os.css",
+      "source_relative": "os.css",
+      "destination_absolute": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app/os.css",
+      "destination_relative": "browser-app/os.css",
+      "sha256": "c3c6f67e6bd856db706010632adbfa83b27b4a4bd2754678231fd9c78d38f25a",
+      "size_bytes": 40220,
+      "overwrites_existing": false,
+      "notes": []
+    },
+    {
+      "source_absolute": "/Users/andrew/Desktop/OpenWork/QA Pilot/package.json",
+      "source_relative": "package.json",
+      "destination_absolute": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app/package.json",
+      "destination_relative": "browser-app/package.json",
+      "sha256": "b95081527dcc3366c41f34de6fd8d613c1c915968c0deb869b6180be904c6a26",
+      "size_bytes": 666,
+      "overwrites_existing": false,
+      "notes": []
+    },
+    {
+      "source_absolute": "/Users/andrew/Desktop/OpenWork/QA Pilot/portal.html",
+      "source_relative": "portal.html",
+      "destination_absolute": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app/portal.html",
+      "destination_relative": "browser-app/portal.html",
+      "sha256": "81f75b63c22ddf461d324b06379f1ddd7b1e29f09fb72dc278489114151e7242",
+      "size_bytes": 140665,
+      "overwrites_existing": false,
+      "notes": []
+    },
+    {
+      "source_absolute": "/Users/andrew/Desktop/OpenWork/QA Pilot/qa/qa-db.js",
+      "source_relative": "qa/qa-db.js",
+      "destination_absolute": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app/qa/qa-db.js",
+      "destination_relative": "browser-app/qa/qa-db.js",
+      "sha256": "bc7b63baf251d88ac70b8de7067ad92faa942ab546e3b0321da47b3b955828a1",
+      "size_bytes": 16458,
+      "overwrites_existing": false,
+      "notes": []
+    },
+    {
+      "source_absolute": "/Users/andrew/Desktop/OpenWork/QA Pilot/qa/qa-export-json.js",
+      "source_relative": "qa/qa-export-json.js",
+      "destination_absolute": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app/qa/qa-export-json.js",
+      "destination_relative": "browser-app/qa/qa-export-json.js",
+      "sha256": "a496230899b94c6e74f4060110a667c938feeb564de62a3e8adfa306a355c079",
+      "size_bytes": 6673,
+      "overwrites_existing": false,
+      "notes": []
+    },
+    {
+      "source_absolute": "/Users/andrew/Desktop/OpenWork/QA Pilot/qa/qa-export-md.js",
+      "source_relative": "qa/qa-export-md.js",
+      "destination_absolute": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app/qa/qa-export-md.js",
+      "destination_relative": "browser-app/qa/qa-export-md.js",
+      "sha256": "a205ff955c46ec4be8825906ac1f1f069a987111b9b2ce5dc6cdf2bdd573e843",
+      "size_bytes": 14162,
+      "overwrites_existing": false,
+      "notes": []
+    },
+    {
+      "source_absolute": "/Users/andrew/Desktop/OpenWork/QA Pilot/qa/qa-import-json.js",
+      "source_relative": "qa/qa-import-json.js",
+      "destination_absolute": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app/qa/qa-import-json.js",
+      "destination_relative": "browser-app/qa/qa-import-json.js",
+      "sha256": "72352f6fcf4fdffc02a4130d45d6e07e05dbe49d3a0a2fef0a51fd1bc805fcf9",
+      "size_bytes": 11067,
+      "overwrites_existing": false,
+      "notes": []
+    },
+    {
+      "source_absolute": "/Users/andrew/Desktop/OpenWork/QA Pilot/qa/qa-page-register.js",
+      "source_relative": "qa/qa-page-register.js",
+      "destination_absolute": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app/qa/qa-page-register.js",
+      "destination_relative": "browser-app/qa/qa-page-register.js",
+      "sha256": "64a5383d2c0c6bf47e24a947bcf8bb12fdaa48d5ca13e24d528992a23b036e0b",
+      "size_bytes": 7689,
+      "overwrites_existing": false,
+      "notes": []
+    },
+    {
+      "source_absolute": "/Users/andrew/Desktop/OpenWork/QA Pilot/qa/qa-queries.js",
+      "source_relative": "qa/qa-queries.js",
+      "destination_absolute": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app/qa/qa-queries.js",
+      "destination_relative": "browser-app/qa/qa-queries.js",
+      "sha256": "ff134bfd01ba6365f35bc87ec21df0ccbf01521ade31cad46e68c1a8855d2e38",
+      "size_bytes": 8511,
+      "overwrites_existing": false,
+      "notes": []
+    },
+    {
+      "source_absolute": "/Users/andrew/Desktop/OpenWork/QA Pilot/qa/qa-schema.js",
+      "source_relative": "qa/qa-schema.js",
+      "destination_absolute": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app/qa/qa-schema.js",
+      "destination_relative": "browser-app/qa/qa-schema.js",
+      "sha256": "49cf778e25e212da0d316665db25928616c0f3345000f135343db9f4dba30cab",
+      "size_bytes": 9173,
+      "overwrites_existing": false,
+      "notes": []
+    },
+    {
+      "source_absolute": "/Users/andrew/Desktop/OpenWork/QA Pilot/qa/qa-templates.js",
+      "source_relative": "qa/qa-templates.js",
+      "destination_absolute": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app/qa/qa-templates.js",
+      "destination_relative": "browser-app/qa/qa-templates.js",
+      "sha256": "e855d51970ed462892c7022f37a3c3ce6322a110143af9a481061b8dea16c23b",
+      "size_bytes": 6229,
+      "overwrites_existing": false,
+      "notes": []
+    },
+    {
+      "source_absolute": "/Users/andrew/Desktop/OpenWork/QA Pilot/qa/qa-workitem-api.js",
+      "source_relative": "qa/qa-workitem-api.js",
+      "destination_absolute": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app/qa/qa-workitem-api.js",
+      "destination_relative": "browser-app/qa/qa-workitem-api.js",
+      "sha256": "b67097ab58b7f29c65793c805e0e6291d203d713c4522ead4ddb21482745aa26",
+      "size_bytes": 14130,
+      "overwrites_existing": false,
+      "notes": []
+    },
+    {
+      "source_absolute": "/Users/andrew/Desktop/OpenWork/QA Pilot/scenarios/capstone-scenario-2.js",
+      "source_relative": "scenarios/capstone-scenario-2.js",
+      "destination_absolute": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app/scenarios/capstone-scenario-2.js",
+      "destination_relative": "browser-app/scenarios/capstone-scenario-2.js",
+      "sha256": "892a4881646a0d4dce7a1d4c96c62dae60160925369a6a56435ffa2e66de0c01",
+      "size_bytes": 16451,
+      "overwrites_existing": false,
+      "notes": []
+    },
+    {
+      "source_absolute": "/Users/andrew/Desktop/OpenWork/QA Pilot/scenarios/capstone-scenario.js",
+      "source_relative": "scenarios/capstone-scenario.js",
+      "destination_absolute": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app/scenarios/capstone-scenario.js",
+      "destination_relative": "browser-app/scenarios/capstone-scenario.js",
+      "sha256": "e6dd97807ed739c61918f651aa6210be36ed5bcd006cf931ae44327e33a1d3ba",
+      "size_bytes": 3899,
+      "overwrites_existing": false,
+      "notes": []
+    },
+    {
+      "source_absolute": "/Users/andrew/Desktop/OpenWork/QA Pilot/scenarios/case-002.js",
+      "source_relative": "scenarios/case-002.js",
+      "destination_absolute": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app/scenarios/case-002.js",
+      "destination_relative": "browser-app/scenarios/case-002.js",
+      "sha256": "d6446033a35084a57199e100b3710378cc8659dfeaf76f259a6fe1954e654ab8",
+      "size_bytes": 9310,
+      "overwrites_existing": false,
+      "notes": []
+    },
+    {
+      "source_absolute": "/Users/andrew/Desktop/OpenWork/QA Pilot/scenarios/scenario-case-003.js",
+      "source_relative": "scenarios/scenario-case-003.js",
+      "destination_absolute": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app/scenarios/scenario-case-003.js",
+      "destination_relative": "browser-app/scenarios/scenario-case-003.js",
+      "sha256": "2b0955d5b07b08479a7b152c44d14db529ad68b2c4ec36ef7ad1403558f0fe14",
+      "size_bytes": 8536,
+      "overwrites_existing": false,
+      "notes": []
+    },
+    {
+      "source_absolute": "/Users/andrew/Desktop/OpenWork/QA Pilot/scenarios/scenarios-bug-001.js",
+      "source_relative": "scenarios/scenarios-bug-001.js",
+      "destination_absolute": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app/scenarios/scenarios-bug-001.js",
+      "destination_relative": "browser-app/scenarios/scenarios-bug-001.js",
+      "sha256": "c180874bafb981a579487a6657e67da1ea4a567cdc8ee79264c4ac6623f4f353",
+      "size_bytes": 831,
+      "overwrites_existing": false,
+      "notes": []
+    },
+    {
+      "source_absolute": "/Users/andrew/Desktop/OpenWork/QA Pilot/scenarios/scenarios-case-001.js",
+      "source_relative": "scenarios/scenarios-case-001.js",
+      "destination_absolute": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app/scenarios/scenarios-case-001.js",
+      "destination_relative": "browser-app/scenarios/scenarios-case-001.js",
+      "sha256": "3bc98cd12431305fff04c4f2efa3ba4d2d44f6d88679535edf5ef56e13d767ac",
+      "size_bytes": 7493,
+      "overwrites_existing": false,
+      "notes": []
+    },
+    {
+      "source_absolute": "/Users/andrew/Desktop/OpenWork/QA Pilot/serve.js",
+      "source_relative": "serve.js",
+      "destination_absolute": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app/serve.js",
+      "destination_relative": "browser-app/serve.js",
+      "sha256": "ef3b0b37223163f7ff19b8e770aefe9b246f7a3321b21b690ffb807a5b4ddec9",
+      "size_bytes": 3420,
+      "overwrites_existing": false,
+      "notes": []
+    },
+    {
+      "source_absolute": "/Users/andrew/Desktop/OpenWork/QA Pilot/setup_launcher.ps1",
+      "source_relative": "setup_launcher.ps1",
+      "destination_absolute": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app/setup_launcher.ps1",
+      "destination_relative": "browser-app/setup_launcher.ps1",
+      "sha256": "504215bd4970e8e29fc5495fa0d67a687091bb0496645da0f9a16b5ff4d0fd22",
+      "size_bytes": 4734,
+      "overwrites_existing": false,
+      "notes": []
+    },
+    {
+      "source_absolute": "/Users/andrew/Desktop/OpenWork/QA Pilot/setup_launcher.sh",
+      "source_relative": "setup_launcher.sh",
+      "destination_absolute": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app/setup_launcher.sh",
+      "destination_relative": "browser-app/setup_launcher.sh",
+      "sha256": "496b52e8f15781551fa63f9816bfe422ce39a6e4af1ab456a28ab5fa160bec73",
+      "size_bytes": 4045,
+      "overwrites_existing": false,
+      "notes": []
+    },
+    {
+      "source_absolute": "/Users/andrew/Desktop/OpenWork/QA Pilot/simple-login.html",
+      "source_relative": "simple-login.html",
+      "destination_absolute": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app/simple-login.html",
+      "destination_relative": "browser-app/simple-login.html",
+      "sha256": "f32d91310a822c29e8eae791fff866a354674cbf2fb214f81c26ffd31ed8274d",
+      "size_bytes": 19491,
+      "overwrites_existing": false,
+      "notes": []
+    },
+    {
+      "source_absolute": "/Users/andrew/Desktop/OpenWork/QA Pilot/src/compositor.js",
+      "source_relative": "src/compositor.js",
+      "destination_absolute": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app/src/compositor.js",
+      "destination_relative": "browser-app/src/compositor.js",
+      "sha256": "2a59e99f50fe4d5c102d245060aefef7c2e73d6b39d32ccb3335822510f441c3",
+      "size_bytes": 8418,
+      "overwrites_existing": false,
+      "notes": []
+    },
+    {
+      "source_absolute": "/Users/andrew/Desktop/OpenWork/QA Pilot/src/custody/custody.js",
+      "source_relative": "src/custody/custody.js",
+      "destination_absolute": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app/src/custody/custody.js",
+      "destination_relative": "browser-app/src/custody/custody.js",
+      "sha256": "905b3d3f766528e41ba7a1e9a567137c1de02bff9149ce468b60fda6066d4597",
+      "size_bytes": 3894,
+      "overwrites_existing": false,
+      "notes": []
+    },
+    {
+      "source_absolute": "/Users/andrew/Desktop/OpenWork/QA Pilot/src/event-bus.js",
+      "source_relative": "src/event-bus.js",
+      "destination_absolute": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app/src/event-bus.js",
+      "destination_relative": "browser-app/src/event-bus.js",
+      "sha256": "8ccb0fd634537f1c4f323308962368085406a61a411ba6db28f239a9a6413cec",
+      "size_bytes": 3378,
+      "overwrites_existing": false,
+      "notes": []
+    },
+    {
+      "source_absolute": "/Users/andrew/Desktop/OpenWork/QA Pilot/src/health-checks.js",
+      "source_relative": "src/health-checks.js",
+      "destination_absolute": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app/src/health-checks.js",
+      "destination_relative": "browser-app/src/health-checks.js",
+      "sha256": "624c3a84fad8cfaecd742a45d8310a24aadbf8b1f6d2926a9026b552eaa35210",
+      "size_bytes": 16176,
+      "overwrites_existing": false,
+      "notes": []
+    },
+    {
+      "source_absolute": "/Users/andrew/Desktop/OpenWork/QA Pilot/src/keyboard-shortcuts.js",
+      "source_relative": "src/keyboard-shortcuts.js",
+      "destination_absolute": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app/src/keyboard-shortcuts.js",
+      "destination_relative": "browser-app/src/keyboard-shortcuts.js",
+      "sha256": "89e5ef2140a5490ce37a86434add40c5cb62aec96b2b2fc9ad4d81dd615c5265",
+      "size_bytes": 7057,
+      "overwrites_existing": false,
+      "notes": []
+    },
+    {
+      "source_absolute": "/Users/andrew/Desktop/OpenWork/QA Pilot/src/os-core.js",
+      "source_relative": "src/os-core.js",
+      "destination_absolute": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app/src/os-core.js",
+      "destination_relative": "browser-app/src/os-core.js",
+      "sha256": "b5cdd896428ff7aa26a29bcf280af9ffdadec12b26d7e85c78f20d53c55f5009",
+      "size_bytes": 114204,
+      "overwrites_existing": false,
+      "notes": []
+    },
+    {
+      "source_absolute": "/Users/andrew/Desktop/OpenWork/QA Pilot/src/scoring.js",
+      "source_relative": "src/scoring.js",
+      "destination_absolute": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app/src/scoring.js",
+      "destination_relative": "browser-app/src/scoring.js",
+      "sha256": "4a1cf5d433df3a10e697a3dcd37a1e308f5c81f20290695101fa941a262fceef",
+      "size_bytes": 4478,
+      "overwrites_existing": false,
+      "notes": []
+    },
+    {
+      "source_absolute": "/Users/andrew/Desktop/OpenWork/QA Pilot/src/workspaces.js",
+      "source_relative": "src/workspaces.js",
+      "destination_absolute": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app/src/workspaces.js",
+      "destination_relative": "browser-app/src/workspaces.js",
+      "sha256": "2c6d0235fb654277a5309da62f65d73baaefcff4569abbc1f4529b160544481a",
+      "size_bytes": 4329,
+      "overwrites_existing": false,
+      "notes": []
+    }
+  ]
+}

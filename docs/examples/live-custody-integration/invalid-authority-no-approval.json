@@ -1,0 +1,22 @@
+{
+  "schema": "live-custody-integration-v1",
+  "fixture_type": "invalid",
+  "description": "Authority file write without approval blocked with REQUIRES_OWNER_APPROVAL",
+  "mode": "live",
+  "request": {
+    "project_id": "qa-pilot",
+    "sprint_id": "SPRINT-1",
+    "file_path": "startup-contract.json",
+    "content": "{}",
+    "requested_action": "Modify contract",
+    "sprint_allowlisted": false,
+    "custody_class": "OWNER_APPROVAL_REQUIRED",
+    "release_state": "pre_release",
+    "sealed_evidence": false,
+    "generated_by_tool": false,
+    "owner_approval_present": false
+  },
+  "expected_decision": "REQUIRES_OWNER_APPROVAL",
+  "expected_write_executed": false,
+  "expected_warning": true
+}

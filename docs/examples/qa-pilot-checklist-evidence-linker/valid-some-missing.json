@@ -1,0 +1,52 @@
+{
+  "linker_id": "EL-STANDALONE-MISSING-001",
+  "source_checklist_id": "EC-STANDALONE-REVIEW-001",
+  "title": "Standalone Review Link Check — Some Missing",
+  "description": "Link validation for the standalone sprint review checklist. 2 of 3 refs found, 1 missing from the result export store.",
+  "links": [
+    {
+      "item_id": "ECI-SPRINT-RESULTS-001",
+      "pipeline_layer": "result_export",
+      "ref": "QR-SPRINT-REVIEW-001",
+      "status": "missing",
+      "detail": "Result packet QR-SPRINT-REVIEW-001 not found in data/result-packets/result-packet-index.json. Sprint may not have completed result export.",
+      "expected_path": "data/result-packets/QR-SPRINT-REVIEW-001.json"
+    },
+    {
+      "item_id": "ECI-OWNER-DECISION-001",
+      "pipeline_layer": "owner_decision_receipt",
+      "ref": "data/owner-decisions/",
+      "status": "found",
+      "expected_path": "data/owner-decisions/"
+    },
+    {
+      "item_id": "ECI-BOUNDARY-001",
+      "pipeline_layer": "pipeline_health",
+      "ref": "PH-BOUNDARY-CHECK-001",
+      "status": "found",
+      "detail": "Boundary check passed — no Librarian files modified during sprint."
+    }
+  ],
+  "aggregate": {
+    "total_links": 3,
+    "found": 2,
+    "missing": 1,
+    "stale": 0,
+    "all_found": false,
+    "missing_refs": ["QR-SPRINT-REVIEW-001"],
+    "stale_refs": []
+  },
+  "advisory_only": true,
+  "custody": "qa-pilot-local",
+  "librarian_impact": "none",
+  "not_seal_authority": "This evidence linker does not confer sealing authority. Sealing requires explicit Owner action.",
+  "not_librarian_mutation_authority": "This evidence linker does not authorize any Librarian file mutation. All data is QA Pilot-local.",
+  "created_at": "2026-07-07T17:21:00Z",
+  "created_by": "QA-PILOT-CHECKLIST-EVIDENCE-LINKER-1",
+  "pipeline_refs": [
+    { "layer_id": "layer_3", "layer_name": "Result Export", "sprint_id": "QA-PILOT-RESULT-PACKET-EXPORT-1", "sealed_number": 35 },
+    { "layer_id": "layer_10", "layer_name": "Owner Decision Receipt", "sprint_id": "QA-PILOT-OWNER-REVIEW-DECISION-RECEIPT-1", "sealed_number": 42 },
+    { "layer_id": "layer_6", "layer_name": "Pipeline Health", "sprint_id": "QA-PILOT-PIPELINE-HEALTH-REGRESSION-1", "sealed_number": 38 },
+    { "layer_id": "layer_12", "layer_name": "Evidence Checklist", "sprint_id": "QA-PILOT-EVIDENCE-CHECKLIST-1", "sealed_number": 44 }
+  ]
+}

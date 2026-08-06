@@ -1,0 +1,50 @@
+{
+  "receipt_type": "owner_decision_seal",
+  "decision_id": "OD-PROJECT-WIDE-WRITE-CUSTODY-ENFORCEMENT-1-SEAL",
+  "project_id": "qa-pilot",
+  "sprint_id": "PROJECT-WIDE-WRITE-CUSTODY-ENFORCEMENT-1",
+  "ledger_number": 23,
+  "decision": "APPROVE_AND_SEAL",
+  "approved_by": "Andrew Hannah (Owner)",
+  "approved_at": "2026-07-06T01:44:15Z",
+  "decision_basis": [
+    "write outside sprint allowlist rejected with WRITE_SCOPE_VIOLATION",
+    "authority file writes warn and require Owner approval",
+    "sealed evidence immutable",
+    "post-release writes require patch order",
+    "generated state restricted to deterministic tooling",
+    "broad project-root approval rejected",
+    "enforcement test runner passed 16/16",
+    "regression passed 15/15",
+    "parity matrix passed 13/13",
+    "existing validators passed 14/14",
+    "startup managed and MCP reachable",
+    "no unrelated files modified"
+  ],
+  "seal_conditions": [
+    "Project-wide write custody enforcement is accepted as QA Pilot-local governance",
+    "Writes outside the sprint allowlist are rejected as WRITE_SCOPE_VIOLATION",
+    "Authority files require Owner approval",
+    "Sealed evidence remains immutable",
+    "Post-release changes require patch order",
+    "Generated state remains deterministic-tool-only",
+    "Broad project-root approvals are invalid"
+  ],
+  "boundary_assertion": {
+    "project_boundary": "qa-pilot",
+    "lane": "parallel_planning",
+    "librarian_impact": "none",
+    "cross_project_registration": false,
+    "runtime_mutation_authorized": false,
+    "implementation_authorized": true
+  },
+  "evidence": [
+    "scripts/enforce-project-wide-write-custody.py (15 EC rules, 6 decision codes)",
+    "scripts/test-project-wide-write-custody-enforcement.sh (16 tests, 16/16 pass)",
+    "docs/governance/PROJECT-WIDE-WRITE-CUSTODY-ENFORCEMENT.md (8 sections)",
+    "docs/examples/project-wide-write-custody-enforcement/ (8 fixtures: 3 valid + 5 invalid)",
+    "docs/sprints/PROJECT-WIDE-WRITE-CUSTODY-ENFORCEMENT-1.md",
+    "project-state/sprint-ledger.json (entry #23)"
+  ],
+  "authorized_next_sprint": "LIVE-CUSTODY-INTEGRATION-1 or Owner direction"
+}

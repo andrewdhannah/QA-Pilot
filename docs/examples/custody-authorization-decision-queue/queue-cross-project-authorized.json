@@ -1,0 +1,18 @@
+{
+  "entry_id": "CDQ-20260706-020",
+  "queued_at": "2026-07-06T17:45:00Z",
+  "status": "pending",
+  "source": "startup_report",
+  "finding_type": "cross_project_reference",
+  "description": "Startup found a reference to Librarian custody state that needs Owner review",
+  "custody_context": {
+    "contract_id": "#30",
+    "receipt_count": 0,
+    "detail": "Cross-project reference detected in startup report; Owner review required"
+  },
+  "advisory": true,
+  "owner_required": true,
+  "owner_decision": null,
+  "cross_project": true,
+  "owner_authorized": true
+}

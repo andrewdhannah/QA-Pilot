@@ -1,0 +1,14 @@
+{
+  "$schema": "qa-pilot-migration-overwrite-protection-v1",
+  "destination_root": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app",
+  "destination_root_exists": true,
+  "files_total": 123,
+  "governance_collisions": 0,
+  "verdict": "PASS",
+  "notes": [
+    "Refresh of Sprint 1 verdict.",
+    "All copies landed under active/qa-pilot/browser-app/.",
+    "No CarbideFrame governance root was written to."
+  ],
+  "manifest_match": "verified"
+}

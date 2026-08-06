@@ -1,0 +1,15 @@
+{
+  "review_id": "qa-pilot-review-advisory-summary-001",
+  "source_sim_id": "qa-pilot-sim-valid-claim-registry-001",
+  "review_type": "summary",
+  "summary": "Advisory review of claim registry sim: sim consumed Librarian claim-registry packet as evidence. No claims were promoted to authority. No write path was created. Sim passed — advisory-only behavior confirmed.",
+  "advisory": true,
+  "no_apply_path": true,
+  "no_train_behavior": true,
+  "no_bridge_behavior": true,
+  "no_mutation_authorized": true,
+  "no_cross_project_write": true,
+  "owner_decision_required": true,
+  "generated_at": "2026-07-05T23:20:00Z",
+  "notes": "Valid advisory review: claim registry sim summary, all safeguards confirmed."
+}

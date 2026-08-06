@@ -1,0 +1,28 @@
+{
+  "registry_id": "PLR-TEST-FULL-CHAIN-001",
+  "title": "Test: Full Sealed Chain #33-#47",
+  "description": "Valid test fixture representing the full sealed QA Pilot pipeline chain from evidence intake (#33) through MCP call loop guard (#47). All fields conform to schema and business rules.",
+  "layers": [
+    {"slot": 33, "sprint_id": "QA-PILOT-MCP-EVIDENCE-INTAKE-1", "sprint_title": "Evidence Intake", "layer_type": "pipeline", "status": "sealed", "advisory": true, "custody": "qa-pilot-local", "librarian_mutation": false},
+    {"slot": 34, "sprint_id": "QA-PILOT-TEST-COMPOSITION-1", "sprint_title": "Test Composition", "layer_type": "pipeline", "status": "sealed", "advisory": true, "custody": "qa-pilot-local", "librarian_mutation": false},
+    {"slot": 35, "sprint_id": "QA-PILOT-RESULT-PACKET-EXPORT-1", "sprint_title": "Result Export", "layer_type": "pipeline", "status": "sealed", "advisory": true, "custody": "qa-pilot-local", "librarian_mutation": false},
+    {"slot": 36, "sprint_id": "QA-PILOT-EPIC-REGRESSION-BUILDER-1", "sprint_title": "Epic Regression", "layer_type": "pipeline", "status": "sealed", "advisory": true, "custody": "qa-pilot-local", "librarian_mutation": false},
+    {"slot": 37, "sprint_id": "QA-PILOT-EPIC-REGRESSION-STARTUP-SURFACE-1", "sprint_title": "Startup Surface", "layer_type": "pipeline", "status": "sealed", "advisory": true, "custody": "qa-pilot-local", "librarian_mutation": false},
+    {"slot": 38, "sprint_id": "QA-PILOT-PIPELINE-HEALTH-REGRESSION-1", "sprint_title": "Health Regression", "layer_type": "validation", "status": "sealed", "advisory": true, "custody": "qa-pilot-local", "librarian_mutation": false},
+    {"slot": 39, "sprint_id": "QA-PILOT-PIPELINE-DRIFT-DETECTION-1", "sprint_title": "Drift Detection", "layer_type": "validation", "status": "sealed", "advisory": true, "custody": "qa-pilot-local", "librarian_mutation": false},
+    {"slot": 40, "sprint_id": "QA-PILOT-PIPELINE-RECOVERY-DIAGNOSTICS-1", "sprint_title": "Recovery Diagnostics", "layer_type": "validation", "status": "sealed", "advisory": true, "custody": "qa-pilot-local", "librarian_mutation": false},
+    {"slot": 41, "sprint_id": "QA-PILOT-PIPELINE-OWNER-REVIEW-PACKET-1", "sprint_title": "Owner Review Packet", "layer_type": "governance", "status": "sealed", "advisory": true, "custody": "qa-pilot-local", "librarian_mutation": false},
+    {"slot": 42, "sprint_id": "QA-PILOT-OWNER-REVIEW-DECISION-RECEIPT-1", "sprint_title": "Owner Decision Receipt", "layer_type": "governance", "status": "sealed", "advisory": true, "custody": "qa-pilot-local", "librarian_mutation": false},
+    {"slot": 43, "sprint_id": "QA-PILOT-OWNER-DECISION-RECEIPT-STARTUP-SURFACE-1", "sprint_title": "ODR Startup Surface", "layer_type": "governance", "status": "sealed", "advisory": true, "custody": "qa-pilot-local", "librarian_mutation": false},
+    {"slot": 44, "sprint_id": "QA-PILOT-EVIDENCE-CHECKLIST-1", "sprint_title": "Evidence Checklist", "layer_type": "governance", "status": "sealed", "advisory": true, "custody": "qa-pilot-local", "librarian_mutation": false},
+    {"slot": 45, "sprint_id": "QA-PILOT-CHECKLIST-REVIEW-PACKET-1", "sprint_title": "Checklist Review Packet", "layer_type": "governance", "status": "sealed", "advisory": true, "custody": "qa-pilot-local", "librarian_mutation": false},
+    {"slot": 46, "sprint_id": "QA-PILOT-CHECKLIST-EVIDENCE-LINKER-1", "sprint_title": "Evidence Linker", "layer_type": "governance", "status": "sealed", "advisory": true, "custody": "qa-pilot-local", "librarian_mutation": false},
+    {"slot": 47, "sprint_id": "QA-PILOT-MCP-CALL-LOOP-GUARD-1", "sprint_title": "MCP Call Loop Guard", "layer_type": "governance", "status": "sealed", "advisory": true, "custody": "qa-pilot-local", "librarian_mutation": false}
+  ],
+  "advisory_only": true,
+  "custody": "qa-pilot-local",
+  "librarian_impact": "none",
+  "not_seal_authority": "This test fixture does not confer sealing authority.",
+  "not_librarian_mutation_authority": "This test fixture does not authorize Librarian mutation.",
+  "created_at": "2026-07-07T18:15:00Z"
+}

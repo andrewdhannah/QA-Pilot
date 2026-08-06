@@ -1,0 +1,46 @@
+{
+  "schema": "learning-object-v1",
+  "id": "LO-EV-PROJ-001",
+  "title": "Projection Provenance Certification",
+  "source": {
+    "finding_code": "EV-PROJ-001",
+    "evidence_refs": [
+      {
+        "type": "evidence_snapshot",
+        "ref": "eval-20260724-020456",
+        "description": "Evidence plane evaluation showing missing projection receipt"
+      }
+    ],
+    "confidence": "DERIVED"
+  },
+  "learning": {
+    "objective": "The learner will understand the projection provenance chain: runtime receipts feed into projections, which feed into surfaces. A missing link at any level invalidates surface trust.",
+    "explanation": "Projection provenance is the final validation layer. It checks that what a user sees (the surface) matches what the evidence says (the projection). A missing projection receipt means the surface might be displaying stale or incorrect state. This is like a dashboard gauge that is not connected to the actual sensor \u2014 the needle moves, but you cannot trust the reading. The absence is diagnosable and classifiable, which is the first step toward repair."
+  },
+  "assessment": {
+    "quiz_refs": ["l1-q4", "l2-q3", "l3-q2"],
+    "scoring_model": "quiz_only"
+  },
+  "certification": {
+    "criteria": [
+      {
+        "id": "LO-CERT-001",
+        "description": "Learner can explain the three-layer projection model: runtime → projection → surface",
+        "required": true
+      },
+      {
+        "id": "LO-CERT-002",
+        "description": "Learner can identify a missing projection receipt from evidence output",
+        "required": true
+      },
+      {
+        "id": "LO-CERT-003",
+        "description": "Learner can explain why missing provenance invalidates surface trust without claiming repair authority",
+        "required": true
+      }
+    ],
+    "passing_score": 85
+  },
+  "advisory_only": true,
+  "no_seal_authority": true
+}

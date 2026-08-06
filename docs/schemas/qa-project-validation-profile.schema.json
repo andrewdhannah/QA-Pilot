@@ -1,0 +1,102 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/andrewdhannah/QA-Pilot/schemas/qa-project-validation-profile.schema.json",
+  "title": "QA Pilot Project Validation Profile",
+  "description": "Binds a governed project to its applicable QA-Pilot validation domains. Resolved at startup to determine what testing, which contracts, and what review gates apply to a project. The startup contract announces QA-Pilot availability; this profile explains what that means for the specific project.",
+  "type": "object",
+  "required": [
+    "profile_schema",
+    "project_id",
+    "validation_profile",
+    "enabled_domains",
+    "required_reviews"
+  ],
+  "properties": {
+    "profile_schema": {
+      "type": "string",
+      "const": "qa-project-validation-profile-v1",
+      "description": "Profile schema version"
+    },
+    "profile_id": {
+      "type": "string",
+      "description": "Unique profile identifier"
+    },
+    "project_id": {
+      "type": "string",
+      "description": "The governed project this profile applies to"
+    },
+    "project_type": {
+      "type": "string",
+      "enum": ["governance", "mcp_bridge", "add_on", "extension", "runtime", "tracker", "external"],
+      "description": "Project type — determines default domain availability"
+    },
+    "validation_profile": {
+      "type": "string",
+      "description": "Profile name (e.g. 'release-validation-v1', 'continuous-validation-v1', 'qualification-v1')"
+    },
+    "qa_pilot_version": {
+      "type": "string",
+      "description": "Minimum QA-Pilot version required"
+    },
+    "enabled_domains": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": ["regression", "security", "uat", "accessibility", "performance", "ai", "compliance"]
+      },
+      "minItems": 1,
+      "description": "Test domains enabled for this project"
+    },
+    "required_reviews": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": ["owner", "peer", "automated_only"]
+      },
+      "minItems": 1,
+      "description": "Required review gates before validation results can be acted upon"
+    },
+    "contract_refs": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "QA-Pilot contracts applicable to this project"
+    },
+    "evidence_source": {
+      "type": "string",
+      "description": "Where this project's evidence comes from (SDK, filesystem, project adapter)"
+    },
+    "adapter_ref": {
+      "type": "string",
+      "description": "Optional reference to a project adapter configuration"
+    },
+    "startup_routing": {
+      "type": "object",
+      "properties": {
+        "resolved_by": {
+          "type": "string",
+          "description": "How this profile was resolved (startup plugin, project configuration, adapter)"
+        },
+        "available": {
+          "type": "boolean",
+          "description": "Whether QA-Pilot validation is available at startup"
+        },
+        "next_pipeline_action": {
+          "type": "string",
+          "description": "Recommended next action (e.g. 'run-pipeline', 'review-last', 'configure-adapter')"
+        }
+      },
+      "description": "Startup routing context — how this profile connects to the project's startup flow"
+    },
+    "advisory_only": {
+      "type": "boolean",
+      "const": true,
+      "description": "Validation profiles are advisory — they do not confer authority"
+    },
+    "no_seal_authority": {
+      "type": "boolean",
+      "const": true,
+      "description": "Profile does not confer seal authority"
+    }
+  },
+  "additionalProperties": false
+}

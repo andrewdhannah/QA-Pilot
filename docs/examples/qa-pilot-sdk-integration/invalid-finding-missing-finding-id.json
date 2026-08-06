@@ -1,0 +1,16 @@
+{
+  "sdk_version": "qa-pilot-evidence-sdk-v1",
+  "generated_at": "2026-07-24T02:30:00Z",
+  "finding_count": 1,
+  "findings": [
+    {
+      "schema": "diagnostic-finding-v1",
+      "code": "EV-GOV-002",
+      "category": "CURSOR",
+      "status": "CONFIRMED",
+      "severity": "MEDIUM"
+    }
+  ],
+  "severity_counts": {},
+  "category_counts": {}
+}

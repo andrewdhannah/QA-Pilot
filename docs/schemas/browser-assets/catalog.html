@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QA Pilot Academy — Training Portal</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="stylesheet" href="css/main.css">
+  <script src="js/i18n.js"></script>
+  <script src="i18n/lang-en.js"></script>
+  <script src="i18n/lang-fr.js"></script>
+  <style>
+    /* Catalog page-specific styles — base from main.css */
+    .cat-topbar { display:flex; align-items:center; justify-content:space-between; padding:0 var(--space-6); height:56px; background:var(--color-surface); border-bottom:1px solid var(--color-border); position:sticky; top:0; z-index:10; }
+    .source-chip { display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:var(--radius-sm);font-size:9px;font-family:var(--font-mono);color:var(--color-ink-muted);background:var(--color-bg);border:1px solid var(--color-border);white-space:nowrap; }
+    .source-chip::before { content:"";width:5px;height:5px;border-radius:50%;background:var(--color-success);flex-shrink:0; }
+    .cat-hero { background:var(--color-surface); padding:var(--space-6) var(--space-6); border-bottom:1px solid var(--color-border); }
+    .cat-hero h1 { color:var(--color-ink); font-size:var(--text-heading-lg); font-weight:var(--weight-semibold); letter-spacing:var(--ls-tight); margin-bottom:var(--space-1); }
+    .cat-hero p { color:var(--color-ink-soft); font-size:var(--text-body); max-width:540px; }
+    .cat-content { max-width:1200px; margin:0 auto; padding:var(--space-6); }
+    .cat-section-title { font-size:18px; font-weight:700; color:var(--color-ink); margin-bottom:var(--space-5); margin-top:var(--space-8); }
+    .cat-section-title:first-of-type { margin-top:0; }
+    .course-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(340px,1fr)); gap:var(--space-4); }
+    .course-card { background:var(--color-surface); border:1px solid var(--color-border); border-radius:var(--radius-lg); overflow:hidden; transition:box-shadow var(--motion-fast), border-color var(--motion-fast); cursor:pointer; box-shadow:var(--shadow-sm); }
+    .course-card:hover { box-shadow:var(--shadow-md); border-color:#d1d5db; }
+    .course-card .accent { height:4px; }
+    .course-card .accent-blue { background:var(--color-primary); }
+    .course-card .accent-green { background:var(--color-success); }
+    .course-card .accent-orange { background:var(--color-warning); }
+    .course-card .accent-purple { background:var(--color-info); }
+    .course-card .body { padding:var(--space-5); }
+    .course-card .title { font-size:15px; font-weight:700; color:var(--color-ink); margin-bottom:var(--space-1); }
+    .course-card .meta { font-size:12px; color:var(--color-ink-muted); margin-bottom:var(--space-3); }
+    .course-card .desc { font-size:13px; color:var(--color-ink-soft); line-height:1.5; margin-bottom:var(--space-3); }
+    .course-card .progress-row { display:flex; align-items:center; gap:var(--space-3); margin-top:var(--space-3); }
+    .course-card .progress-bar { flex:1; height:6px; background:var(--color-border); border-radius:9999px; overflow:hidden; }
+    .course-card .progress-bar .fill { height:100%; background:var(--color-primary); border-radius:9999px; transition:width var(--motion-normal); }
+    .course-card .pct { font-size:12px; font-weight:600; color:var(--color-ink-muted); min-width:32px; }
+    .cat-note { margin-top:var(--space-6); padding:var(--space-4); background:var(--color-warning-light); border:1px solid var(--color-warning-border); border-radius:var(--radius-md); font-size:13px; color:#92400e; }
+    .back-link { color:var(--color-ink-muted); text-decoration:none; font-size:13px; display:flex; align-items:center; gap:var(--space-2); }
+    .back-link:hover { color:var(--color-ink); }
+    @media (max-width:720px) { .course-grid { grid-template-columns:1fr; } }
+  </style>
+</head>
+<body>
+<a href="#main-content" class="skip-link">Skip to main content</a>
+<header role="banner" class="cat-topbar">
+  <div class="cat-topbar-brand" style="display:flex;align-items:center;gap:var(--space-3);font-size:15px;font-weight:600;color:#1D1D1F;letter-spacing:-0.01em;">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2L2 7v10l10 5 10-5V7l-10-5z" fill="#2563eb"/><path d="M12 12l-7-3.5v7L12 19l7-3.5v-7L12 12z" fill="#fff"/></svg>
+    QA Pilot Academy
+  </div>
+  <div class="cat-topbar-user" style="display:flex;align-items:center;gap:var(--space-4);font-size:13px;color:var(--color-ink-muted);">
+    <div id="lang-toggle-container"></div>
+    <span id="learnerName">Loading...</span>
+    <a href="index.html" class="back-link">← Home</a>
+  </div>
+</div>
+
+<main id="main-content" role="main">
+<div class="cat-hero">
+  <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:var(--space-3);">
+    <div>
+      <div class="panel-purpose-label">LEARNER PORTAL</div>
+      <h1>My Training</h1>
+      <p>Complete your assigned training packages. Progress is saved automatically in your browser.</p>
+    </div>
+    <div style="display:flex;align-items:center;gap:var(--space-2);">
+      <span class="source-chip">local browser</span>
+      <span class="source-chip">learner identity</span>
+    </div>
+  </div>
+</div>
+
+<div class="cat-content">
+  <div id="completedSection" style="display:none;">
+    <div class="cat-section-title" id="completedTitle">Completed</div>
+    <div class="course-grid" id="completedGrid"></div>
+  </div>
+
+  <div class="cat-section-title">In Progress</div>
+  <div class="course-grid" id="inProgressGrid" aria-live="polite">
+    <div class="empty-state"><div class="icon">📚</div><div>No training packages assigned yet. If you joined via team deployment, ensure the file included packages.</div></div>
+  </div>
+
+  <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:var(--space-3);padding:var(--space-4);background:var(--color-bg);border:1px solid var(--color-border);border-radius:var(--radius-md);font-size:var(--text-small);color:var(--color-ink-muted);">
+    <div style="display:flex;align-items:center;gap:var(--space-2);">
+      <span class="source-chip">local browser</span>
+      <span class="source-chip">learner identity</span>
+    </div>
+    <span>You are <strong id="learnerIdentityDisplay">not signed in</strong>. Local learner identity — no accounts, no passwords.</span>
+  </div>
+  <div class="view-data-footer" style="margin-top:var(--space-4);">
+    <span class="source-chip">source: local browser</span>
+    <span class="source-chip">identity: learner profile</span>
+    <span class="source-chip">all data advisory</span>
+  </div>
+</main>
+
+<script>
+function gs() { try { return JSON.parse(localStorage.getItem('qapilot_state')); } catch { return null; } }
+
+function load() {
+  const state = gs();
+  if (!state?.profile) {
+    document.getElementById('learnerName').textContent = 'Not signed in';
+    document.getElementById('learnerIdentityDisplay').textContent = 'not signed in';
+    document.getElementById('inProgressGrid').innerHTML = '<div class="empty-state"><div class="icon">🚀</div><div>No profile found. Start from the home screen first.</div></div>';
+    document.getElementById('completedSection').style.display = 'none';
+    return;
+  }
+
+  document.getElementById('learnerName').textContent = state.profile.name || 'Learner';
+  document.getElementById('learnerIdentityDisplay').textContent = (state.profile.name || 'Learner') + ' · ' + (state.profile.from_deployment || 'Solo');
+
+  const inProgress = state.inProgress || [];
+  const completed = state.completed || [];
+
+  // Completed section
+  if (completed.length > 0) {
+    document.getElementById('completedSection').style.display = 'block';
+    document.getElementById('completedTitle').textContent = 'Completed (' + completed.length + ')';
+    document.getElementById('completedGrid').innerHTML = completed.map(p => renderCard(p, 'complete', 100)).join('');
+  } else {
+    document.getElementById('completedSection').style.display = 'none';
+  }
+
+  // In-progress
+  if (inProgress.length === 0 && completed.length === 0) {
+    // Keep empty state
+  } else if (inProgress.length === 0) {
+    document.getElementById('inProgressGrid').innerHTML = '<div class="empty-state"><div class="icon">🎉</div><div>All training complete! Check the completed section above.</div></div>';
+  } else {
+    document.getElementById('inProgressGrid').innerHTML = inProgress.map((p,i) => renderCard(p, 'in-progress', p.progress || 0, i)).join('');
+  }
+}
+
+function renderCard(p, status, pct, index) {
+  const colors = ['accent-blue','accent-green','accent-orange','accent-purple'];
+  const color = colors[(index || 0) % colors.length];
+  const st = status === 'complete' ? 'complete' : (pct > 0 ? 'progress' : 'assigned');
+  const label = {assigned:'Assigned', progress:'In Progress', complete:'Complete'}[st];
+  const badgeClass = {assigned:'status-assigned', progress:'status-progress', complete:'status-complete'}[st];
+  const onClick = status === 'complete' ? `onclick="window.location.href='certificate.html?pack=${encodeURIComponent(p.pack_id||p.title)}'"` : `onclick="openPkg('${p.pack_id||p.title}',${index})"`;
+  return `<div class="course-card" ${onClick}>
+    <div class="accent ${color}"></div>
+    <div class="body">
+      <div class="title">${esc(p.title || p.pack_id || 'Untitled')}</div>
+      <div class="meta">${esc(p.pack_id || '')}</div>
+      <div class="desc">${status === 'complete' ? 'Completed successfully.' : 'Continue working through this training package.'}</div>
+      <div class="progress-row">
+        <div class="progress-bar"><div class="fill" style="width:${pct}%"></div></div>
+        <span class="pct">${pct}%</span>
+        <span class="status-badge ${badgeClass}">${label}</span>
+      </div>
+    </div>
+  </div>`;
+}
+
+function openPkg(packId, index) {
+  const state = gs();
+  if (state?.inProgress?.[index]) {
+    state.inProgress[index].lastUrl = 'course-view.html?pack=' + encodeURIComponent(packId);
+    localStorage.setItem('qapilot_state', JSON.stringify(state));
+  }
+  window.location.href = 'course-view.html?pack=' + encodeURIComponent(packId);
+}
+
+function esc(s) { const d=document.createElement('div'); d.textContent=s||''; return d.innerHTML; }
+document.addEventListener('DOMContentLoaded', load);
+</script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  if (typeof renderLangToggle !== 'undefined') {
+    renderLangToggle('lang-toggle-container');
+  }
+});
+</script>
+</body>
+</html>

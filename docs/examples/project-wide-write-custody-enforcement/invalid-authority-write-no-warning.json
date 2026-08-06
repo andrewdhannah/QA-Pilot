@@ -1,0 +1,21 @@
+{
+  "schema": "project-wide-write-custody-v1",
+  "project_id": "qa-pilot",
+  "sprint_id": "SOME-SPRINT-1",
+  "file_path": "PROJECT-PROFILE.json",
+  "requested_action": "Update sandbox boundary",
+  "custody_class": "OWNER_APPROVAL_REQUIRED",
+  "write_authority_source": "none",
+  "sprint_allowlisted": false,
+  "release_state": "pre_release",
+  "sealed_evidence": false,
+  "generated_by_tool": false,
+  "owner_approval_required": true,
+  "owner_approval_present": false,
+  "warning_required": true,
+  "warning_present": false,
+  "expected_decision": "REQUIRES_OWNER_APPROVAL",
+  "expected_blocker_code": "OWNER_APPROVAL_MISSING",
+  "expected_warning": true,
+  "description": "Authority file write attempted without warning or Owner approval"
+}

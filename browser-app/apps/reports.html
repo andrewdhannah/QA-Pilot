@@ -1,0 +1,565 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Reports — QA Pilot</title>
+        <style>
+            /* ── STYLE: CORE LAYOUT ────────────────────────────────────────────────── */
+            body {
+                font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+                margin: 0;
+                padding: 0;
+                background-color: #f3f3f3;
+                color: #333;
+                display: flex;
+                height: 100vh;
+                overflow: hidden;
+            }
+
+            /* Sidebar navigation matching settings.html pattern */
+            .sidebar {
+                width: 260px;
+                background-color: #ffffff;
+                border-right: 1px solid #ddd;
+                display: flex;
+                flex-direction: column;
+                padding: 20px 0;
+            }
+
+            .sidebar-header {
+                padding: 0 20px 20px 20px;
+                font-weight: 600;
+                font-size: 1.2rem;
+                border-bottom: 1px solid #eee;
+                margin-bottom: 10px;
+            }
+
+            .nav-item {
+                padding: 12px 20px;
+                cursor: pointer;
+                transition: background 0.2s;
+                font-size: 0.9rem;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            }
+
+            .nav-item:hover {
+                background-color: #f0f0f0;
+            }
+
+            .nav-item.active {
+                background-color: #e8e8e8;
+                font-weight: 600;
+            }
+
+            /* Main Content Area */
+            .main-content {
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+                overflow-y: auto;
+                background-color: #fafafa;
+            }
+
+            .toolbar {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 20px 30px;
+                background: white;
+                border-bottom: 1px solid #ddd;
+            }
+
+            .toolbar h1 {
+                margin: 0;
+                font-size: 1.4rem;
+                font-weight: 500;
+            }
+
+            .btn-refresh {
+                padding: 6px 12px;
+                cursor: pointer;
+                background: #eee;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+                font-size: 0.8rem;
+            }
+
+            .btn-refresh:hover {
+                background: #ddd;
+            }
+
+            /* Summary Stat Tiles */
+            .summary-container {
+                display: grid;
+                grid-template-columns: repeat(4, 1fr);
+                gap: 20px;
+                padding: 30px;
+            }
+
+            .stat-card {
+                background: white;
+                padding: 20px;
+                border-radius: 8px;
+                border: 1px solid #ddd;
+                text-align: center;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            }
+
+            .stat-value {
+                font-size: 2rem;
+                font-weight: 700;
+                display: block;
+                margin-bottom: 5px;
+            }
+
+            .stat-label {
+                font-size: 0.8rem;
+                color: #666;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+            }
+
+            /* Score Colors */
+            .color-green {
+                color: #28a745;
+            }
+            .color-amber {
+                color: #f39c12;
+            }
+            .color-red {
+                color: #dc3545;
+            }
+
+            /* Results Table */
+            .table-section {
+                padding: 0 30px 30px 30px;
+            }
+
+            .section-title {
+                font-size: 1.1rem;
+                font-weight: 600;
+                margin-bottom: 15px;
+                display: block;
+            }
+
+            .results-table {
+                width: 100%;
+                border-collapse: collapse;
+                background: white;
+                border-radius: 8px;
+                overflow: hidden;
+                border: 1px solid #ddd;
+            }
+
+            .results-table th {
+                text-align: left;
+                background: #f8f9fa;
+                padding: 12px 15px;
+                font-size: 0.85rem;
+                color: #666;
+                border-bottom: 1px solid #ddd;
+            }
+
+            .results-table td {
+                padding: 12px 15px;
+                font-size: 0.9rem;
+                border-bottom: 1px solid #eee;
+                cursor: pointer;
+            }
+
+            .results-table tr:hover {
+                background-color: #fdfdfd;
+            }
+
+            .results-table tr.selected {
+                background-color: #eef6ff;
+            }
+
+            /* Detail Panel */
+            #detail-panel {
+                margin: 0 30px 30px 30px;
+                padding: 20px;
+                background: #fcfcfc;
+                border: 1px solid #ddd;
+                border-radius: 8px;
+                display: none;
+            }
+
+            .detail-header {
+                font-family: monospace;
+                font-weight: 700;
+                border-bottom: 2px solid #eee;
+                padding-bottom: 10px;
+                margin-bottom: 15px;
+                font-size: 1.1rem;
+            }
+
+            .detail-row {
+                margin-bottom: 8px;
+                font-size: 0.95rem;
+            }
+
+            .detail-label {
+                font-weight: 600;
+                width: 100px;
+                display: inline-block;
+            }
+
+            .detail-group {
+                margin-top: 20px;
+            }
+
+            .group-title {
+                font-weight: 600;
+                margin-bottom: 10px;
+                display: block;
+                text-decoration: underline;
+            }
+
+            .status-icon {
+                font-weight: bold;
+                margin-right: 5px;
+            }
+
+            /* Empty State */
+            #message-area {
+                padding: 20px;
+                text-align: center;
+                color: #666;
+                font-style: italic;
+                display: none;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="sidebar">
+            <div class="sidebar-header">Analytics</div>
+            <div class="nav-item active">📊 Performance Reports</div>
+            <div class="nav-item">🎓 Trainee Overview</div>
+            <div class="nav-item">⚙️ Report Settings</div>
+        </div>
+
+        <div class="main-content">
+            <div class="toolbar">
+                <h1>Reports</h1>
+                <button class="btn-refresh" onclick="loadResults()">
+                    Refresh Data
+                </button>
+            </div>
+
+            <div id="message-area"></div>
+
+            <div id="app-content">
+                <div class="summary-container">
+                    <div class="stat-card">
+                        <span id="stat-total" class="stat-value">0</span>
+                        <span class="stat-label">Sessions</span>
+                    </div>
+                    <div class="stat-card">
+                        <span id="stat-passed" class="stat-value">0</span>
+                        <span class="stat-label">Passed</span>
+                    </div>
+                    <div class="stat-card">
+                        <span id="stat-failed" class="stat-value">0</span>
+                        <span class="stat-label">Failed</span>
+                    </div>
+                    <div class="stat-card">
+                        <span id="stat-avg" class="stat-value">0%</span>
+                        <span class="stat-label">Avg Score</span>
+                    </div>
+                </div>
+
+                <div class="table-section">
+                    <span class="section-title">Session Results</span>
+                    <table class="results-table">
+                        <thead>
+                            <tr>
+                                <th>Case ID</th>
+                                <th>Scenario</th>
+                                <th>Score</th>
+                                <th>Result</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody id="results-body">
+                            <!-- Rows injected here -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <div id="detail-panel">
+                    <!-- Detail content injected here -->
+                </div>
+            </div>
+        </div>
+
+        <script>
+            /**
+             * reports.html — Page Logic
+             * ==========================
+             * WHAT THIS PAGE DOES:
+             * - Reads capstone assessment results from IndexedDB.
+             * - Calculates high-level performance analytics (Pass/Fail/Avg).
+             * - Lists all submissions in a sortable table.
+             * - Provides a detailed breakdown of bugs missed and ADO report quality.
+             *
+             * FLOW:
+             * 1. Page loads or APP_BOOT message received.
+             * 2. loadResults() queries the 'results' store in IndexedDB.
+             * 3. buildSummary() processes the record set for the stat tiles.
+             * 4. renderResults() populates the session table.
+             * 5. User clicks a row to populate the detail panel.
+             *
+             * READS FROM:   IndexedDB ('results' store)
+             * WRITES TO:    None (Read-only analytics)
+             */
+
+            // ── SECTION 1: PAGE STATE ──────────────────────────────────────────────────
+
+            var allRecords = []; // Cached results from DB
+            var selectedRecord = null;
+
+            // Map for converting bug IDs to human-readable labels
+            var BUG_LABELS = {
+                "status-junior-escalated":
+                    "Case Status: Escalated (Junior role violation)",
+                "escalation-reason-blank":
+                    "Escalation Reason: blank when Status is Escalated",
+                "future-date-allowed": "Created Date: set to a future date",
+            };
+
+            // ── SECTION 2: DATA LOADING ─────────────────────────────────────────────────
+
+            /**
+             * loadResults()
+             * Opens the QA Pilot IndexedDB and reads all records from the results store.
+             * Handles empty states and DB errors.
+             */
+            function loadResults() {
+                var dbName = "qa_onboarding_db"; // Matches db.js
+                var storeName = "results";
+
+                var req = indexedDB.open(dbName);
+
+                req.onerror = function () {
+                    showMessage("Could not open the results database.");
+                };
+
+                req.onsuccess = function (e) {
+                    var db = e.target.result;
+
+                    // The results store is created by the scoring engine (SPRINT-C10)
+                    if (!db.objectStoreNames.contains(storeName)) {
+                        showMessage(
+                            "No results found. Complete a capstone assessment to generate data.",
+                        );
+                        db.close();
+                        return;
+                    }
+
+                    var tx = db.transaction(storeName, "readonly");
+                    var store = tx.objectStore(storeName);
+                    var all = store.getAll();
+
+                    all.onsuccess = function () {
+                        var records = all.result || [];
+                        if (records.length === 0) {
+                            showMessage(
+                                "No results found. Complete a capstone assessment to generate data.",
+                            );
+                        } else {
+                            allRecords = records;
+                            hideMessage();
+                            buildSummary(allRecords);
+                            renderResults(allRecords);
+                        }
+                        db.close();
+                    };
+
+                    all.onerror = function () {
+                        showMessage("Error reading results.");
+                        db.close();
+                    };
+                };
+            }
+
+            // ── SECTION 3: RENDERING ────────────────────────────────────────────────────
+
+            /**
+             * buildSummary(records)
+             * Calculates aggregate stats from all result records.
+             *
+             * @param {Array} records - All result objects from IndexedDB.
+             */
+            function buildSummary(records) {
+                var total = records.length;
+                var passed = records.filter(function (r) {
+                    return r.passed;
+                }).length;
+                var failed = total - passed;
+                var avgPct =
+                    total > 0
+                        ? Math.round(
+                              records.reduce(function (sum, r) {
+                                  return sum + (r.percentage || 0);
+                              }, 0) / total,
+                          )
+                        : 0;
+
+                document.getElementById("stat-total").textContent = total;
+                document.getElementById("stat-passed").textContent = passed;
+                document.getElementById("stat-failed").textContent = failed;
+
+                var avgEl = document.getElementById("stat-avg");
+                avgEl.textContent = avgPct + "%";
+
+                // Color the average score based on performance thresholds
+                avgEl.className = "stat-value";
+                if (avgPct >= 70) avgEl.classList.add("color-green");
+                else if (avgPct >= 50) avgEl.classList.add("color-amber");
+                else avgEl.classList.add("color-red");
+            }
+
+            /**
+             * renderResults(records)
+             * Renders the results table, sorted by most recent first.
+             *
+             * @param {Array} records - All result objects from IndexedDB.
+             */
+            function renderResults(records) {
+                var body = document.getElementById("results-body");
+                body.innerHTML = "";
+
+                // Sort by startedAt descending (newest first)
+                var sorted = records.slice().sort(function (a, b) {
+                    return (b.startedAt || 0) - (a.startedAt || 0);
+                });
+
+                sorted.forEach(function (r) {
+                    var row = document.createElement("tr");
+
+                    // Format date: "May 14 2026"
+                    var dateObj = new Date(r.startedAt);
+                    var dateStr = dateObj.toLocaleDateString("en-US", {
+                        month: "short",
+                        day: "numeric",
+                        year: "numeric",
+                    });
+
+                    row.innerHTML = `
+          <td>${r.caseId.substring(0, 20)}...</td>
+          <td>${r.scenarioId}</td>
+          <td>${r.score} / ${r.maxScore}</td>
+          <td>${r.passed ? "✅ Pass" : "❌ Fail"}</td>
+          <td>${dateStr}</td>
+        `;
+
+                    row.onclick = function () {
+                        selectRow(this, r);
+                    };
+
+                    body.appendChild(row);
+                });
+            }
+
+            /**
+             * selectRow(element, record)
+             * Handles row selection visual state and triggers detail panel.
+             *
+             * @param {HTMLElement} element - The clicked table row.
+             * @param {Object} record - The result record associated with the row.
+             */
+            function selectRow(element, record) {
+                // UI: Clear existing selection
+                var rows = document.querySelectorAll(".results-table tr");
+                rows.forEach(function (r) {
+                    r.classList.remove("selected");
+                });
+                element.classList.add("selected");
+
+                selectedRecord = record;
+                renderDetail(record);
+            }
+
+            /**
+             * renderDetail(r)
+             * Populates the detail panel with a breakdown of a specific session.
+             *
+             * @param {Object} r - The result record.
+             */
+            function renderDetail(r) {
+                var panel = document.getElementById("detail-panel");
+                panel.style.display = "block";
+
+                var dateObj = new Date(r.startedAt);
+                var dateStr = dateObj.toLocaleString();
+
+                // Build Bugs List
+                var bugHtml = "";
+                var allBugs = Object.keys(BUG_LABELS);
+                allBugs.forEach(function (bugId) {
+                    var found = r.bugsFound && r.bugsFound.includes(bugId);
+                    var label = BUG_LABELS[bugId] || bugId;
+                    bugHtml += `<div class="detail-row"><span class="status-icon">${found ? "✅" : "❌"}</span> ${label}</div>`;
+                });
+
+                // Build ADO Reports List
+                var reportHtml = "";
+                if (r.badReports && r.badReports.length > 0) {
+                    r.badReports.forEach(function (report) {
+                        reportHtml += `<div class="detail-row"><span class="status-icon">⚠️</span> "${report.title}" — ${report.reason}</div>`;
+                    });
+                } else {
+                    reportHtml = `<div class="detail-row">✅ All filed reports were complete and correct.</div>`;
+                }
+
+                panel.innerHTML = `
+        <div class="detail-header">Detail — ${r.caseId}</div>
+        <div class="detail-row"><span class="detail-label">Scenario:</span> ${r.scenarioId}</div>
+        <div class="detail-row"><span class="detail-label">Score:</span> ${r.score} / ${r.maxScore} (${r.percentage}%) ${r.passed ? "✅ PASS" : "❌ FAIL"}</div>
+        <div class="detail-row"><span class="detail-label">Started:</span> ${dateStr}</div>
+
+        <div class="detail-group">
+          <span class="group-title">Bugs found in CRM:</span>
+          ${bugHtml}
+        </div>
+
+        <div class="detail-group">
+          <span class="group-title">ADO Reports filed:</span>
+          ${reportHtml}
+        </div>
+      `;
+            }
+
+            // ── SECTION 4: HELPERS & MESSAGING ─────────────────────────────────────────
+
+            function showMessage(msg) {
+                document.getElementById("app-content").style.display = "none";
+                var area = document.getElementById("message-area");
+                area.style.display = "block";
+                area.textContent = msg;
+            }
+
+            function hideMessage() {
+                document.getElementById("app-content").style.display = "block";
+                document.getElementById("message-area").style.display = "none";
+            }
+
+            /**
+             * window.addEventListener("message", ...)
+             * Handles communication from the OS shell.
+             * APP_BOOT triggers the initial data load.
+             */
+            window.addEventListener("message", function (e) {
+                if (e.data && e.data.type === "APP_BOOT") {
+                    loadResults();
+                }
+            });
+
+            // Initial load trigger for non-iframe testing
+            window.onload = loadResults;
+        </script>
+    </body>
+</html>

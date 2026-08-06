@@ -1,0 +1,66 @@
+{
+  "sdk_version": "qa-pilot-evidence-sdk-v1",
+  "generated_at": "2026-07-24T02:30:00Z",
+  "run_id": "eval-20260724-020456",
+  "provenance_count": 18,
+  "provenance_records": [
+    {
+      "source_id": "agent-bridge",
+      "category": "LIFECYCLE_STATE",
+      "evidence_status": "STALE",
+      "governance_confidence": "ESTIMATED",
+      "age_hours": 95.97,
+      "last_reconciled_at": "2026-07-20T02:06:52Z"
+    },
+    {
+      "source_id": "git_workspace",
+      "category": "SOURCE_STATE",
+      "evidence_status": "CURRENT",
+      "governance_confidence": "DIRECT",
+      "age_hours": 0.0,
+      "last_reconciled_at": "2026-07-24T02:04:56Z"
+    }
+  ],
+  "by_category": {
+    "runtime": {
+      "count": 4,
+      "records": [
+        {
+          "source_id": "git_workspace",
+          "category": "SOURCE_STATE",
+          "evidence_status": "CURRENT",
+          "governance_confidence": "DIRECT",
+          "age_hours": 0.0,
+          "last_reconciled_at": "2026-07-24T02:04:56Z"
+        }
+      ]
+    },
+    "projection": {
+      "count": 3,
+      "records": []
+    },
+    "lifecycle": {
+      "count": 8,
+      "records": [
+        {
+          "source_id": "agent-bridge",
+          "category": "LIFECYCLE_STATE",
+          "evidence_status": "STALE",
+          "governance_confidence": "ESTIMATED",
+          "age_hours": 95.97,
+          "last_reconciled_at": "2026-07-20T02:06:52Z"
+        }
+      ]
+    },
+    "reconciliation": {
+      "count": 3,
+      "records": []
+    }
+  },
+  "freshness_summary": {
+    "current": 8,
+    "stale": 7,
+    "absent": 3,
+    "total": 18
+  }
+}

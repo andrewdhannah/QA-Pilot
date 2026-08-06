@@ -1,0 +1,85 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/andrewdhannah/QA-Pilot/schemas/qa-work-queue-item.schema.json",
+  "title": "QA Pilot Work Queue Item",
+  "description": "A work queue item created from a diagnostic report. The queue is the organizational memory of detected issues. Items remain OPEN until repaired, verified, and closed by human review. The queue is not a bug tracker — it is a governed maintenance queue with traceability back to the validation finding.",
+  "type": "object",
+  "required": [
+    "item_id", "status", "diagnostic_ref", "severity",
+    "created_at", "provenance"
+  ],
+  "properties": {
+    "item_id": {
+      "type": "string",
+      "pattern": "^QA-[A-Z]+-[0-9]{4,}$",
+      "description": "Unique queue item identifier"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["OPEN", "TRIAGED", "APPROVED", "IN_PROGRESS", "FIXED", "VERIFIED", "CLOSED", "REJECTED"],
+      "description": "Work queue lifecycle status"
+    },
+    "diagnostic_ref": {
+      "type": "string",
+      "description": "Reference to the originating diagnostic report"
+    },
+    "severity": {
+      "type": "string",
+      "enum": ["LOW", "MEDIUM", "HIGH", "CRITICAL"]
+    },
+    "title": {
+      "type": "string",
+      "minLength": 5,
+      "description": "Human-readable title"
+    },
+    "description": {
+      "type": "string",
+      "description": "Extended description of the issue"
+    },
+    "domain": {
+      "type": "string",
+      "enum": ["regression", "security", "uat", "accessibility", "performance", "ai", "compliance"]
+    },
+    "assigned_to": {
+      "type": "string",
+      "description": "Who or what is assigned to address this item"
+    },
+    "created_at": { "type": "string", "format": "date-time" },
+    "updated_at": { "type": "string", "format": "date-time" },
+    "closed_at": { "type": "string", "format": "date-time" },
+    "resolution": {
+      "type": "string",
+      "enum": ["fixed", "won_t_fix", "duplicate", "not_reproducible", "deferred"],
+      "description": "How this item was resolved"
+    },
+    "work_packet_ref": {
+      "type": "string",
+      "description": "Reference to the authorized work packet (set when status becomes APPROVED)"
+    },
+    "constraints": {
+      "type": "object",
+      "properties": {
+        "must_not_modify": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "required_validation": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "required": ["advisory", "no_authority_conferred"],
+      "properties": {
+        "advisory": { "type": "boolean", "const": true },
+        "no_authority_conferred": { "type": "boolean", "const": true },
+        "detected_by": { "type": "string" },
+        "validated_by": { "type": "string" },
+        "approved_by": { "type": "string" }
+      }
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,52 @@
+{
+  "summary_id": "DS-REVIEW-0005",
+  "intake_id": "IR-REVIEW-0005",
+  "source_packet_id": "XPK-DOCS-0708-4",
+  "item_count": 2,
+  "status_counts": {
+    "resolved_locally": 2
+  },
+  "severity_counts": {
+    "low": 2
+  },
+  "evidence_summary": {
+    "total_links": 0,
+    "by_type": {},
+    "found": 0,
+    "missing": 0,
+    "stale": 0
+  },
+  "lifecycle_summary": {
+    "total_transitions": 10,
+    "by_status": {
+      "open": 2,
+      "triaged": 2,
+      "evidence_attached": 2,
+      "needs_review": 2,
+      "resolved_locally": 2
+    }
+  },
+  "unresolved_items": [],
+  "needs_review_items": [],
+  "deferred_items": [],
+  "resolved_locally_items": [
+    {
+      "qa_item_id": "QA-DOCS-0100",
+      "status": "resolved_locally",
+      "severity": "low"
+    },
+    {
+      "qa_item_id": "QA-DOCS-0101",
+      "status": "resolved_locally",
+      "severity": "low"
+    }
+  ],
+  "advisory_next_actions": [
+    "no_action_required",
+    "review_resolved_locally_items"
+  ],
+  "authority_disclaimer": "This review decision summary is advisory-only. It does not approve the intake, verify evidence, accept defects, close items, or seal anything. It does not mutate intake records, source packets, or Librarian. Custody is qa-pilot-local. Librarian impact is none.",
+  "custody": "qa-pilot-local",
+  "advisory_only": true,
+  "librarian_impact": "none"
+}

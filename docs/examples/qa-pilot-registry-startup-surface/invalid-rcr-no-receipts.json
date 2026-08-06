@@ -1,0 +1,13 @@
+{
+  "registry_posture": {
+    "rcr_posture": {
+      "receipts_found": 0,
+      "latest_receipt": null,
+      "latest_impact": null,
+      "latest_before_layers": null,
+      "latest_after_layers": null,
+      "rcr_status": "no_receipts",
+      "classification": "degraded"
+    }
+  }
+}

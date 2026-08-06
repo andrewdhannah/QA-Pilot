@@ -1,0 +1,36 @@
+{
+  "qa_item_id": "QA-GOV-0030",
+  "title": "RCR closeout gate validates coverage gap",
+  "source": "advisory_review",
+  "status": "needs_review",
+  "severity": "info",
+  "category": "governance",
+  "description": "RCR closeout gate correctly reports coverage gap when a sprint is missing its registry change receipt.",
+  "evidence_refs": [
+    "ARP-QA-PILOT-CONSUMER-001"
+  ],
+  "validator_refs": [
+    "RCG-1",
+    "RCG-2",
+    "RCG-3"
+  ],
+  "evidence_links": [
+    {
+      "evidence_link_id": "EL-GOV-0030-001",
+      "evidence_type": "validator_output",
+      "evidence_ref": "EP-HEALTH-REGRESSION-001",
+      "producing_validator": "validate-qa-pilot-rcr-closeout-gate.py",
+      "attachment_reason": "RCR closeout gate validator output confirming coverage gap detection for missing receipt.",
+      "custody": "qa-pilot-local",
+      "advisory_only": true,
+      "authority_note": "Evidence attachment does not prove defect validity or imply Owner approval.",
+      "attached_at": "2026-07-08T00:00:00Z"
+    }
+  ],
+  "owner_decision_state": "pending",
+  "created_at": "2026-07-08T00:00:00Z",
+  "updated_at": "2026-07-08T00:00:00Z",
+  "advisory_only": true,
+  "custody": "qa-pilot-local",
+  "librarian_impact": "none"
+}

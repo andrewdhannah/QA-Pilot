@@ -1,0 +1,16 @@
+{
+  "registry_id": "PLR-TEST-MINIMAL-001",
+  "title": "Test: Minimal Sealed Chain #33-#35",
+  "description": "Valid test fixture with a minimal contiguous chain. All entries conform to schema and business rules.",
+  "layers": [
+    {"slot": 33, "sprint_id": "QA-PILOT-MCP-EVIDENCE-INTAKE-1", "sprint_title": "Evidence Intake", "layer_type": "pipeline", "status": "sealed", "advisory": true, "custody": "qa-pilot-local", "librarian_mutation": false},
+    {"slot": 34, "sprint_id": "QA-PILOT-TEST-COMPOSITION-1", "sprint_title": "Test Composition", "layer_type": "pipeline", "status": "sealed", "advisory": true, "custody": "qa-pilot-local", "librarian_mutation": false},
+    {"slot": 35, "sprint_id": "QA-PILOT-RESULT-PACKET-EXPORT-1", "sprint_title": "Result Export", "layer_type": "pipeline", "status": "sealed", "advisory": true, "custody": "qa-pilot-local", "librarian_mutation": false}
+  ],
+  "advisory_only": true,
+  "custody": "qa-pilot-local",
+  "librarian_impact": "none",
+  "not_seal_authority": "This test fixture does not confer sealing authority.",
+  "not_librarian_mutation_authority": "This test fixture does not authorize Librarian mutation.",
+  "created_at": "2026-07-07T18:16:00Z"
+}

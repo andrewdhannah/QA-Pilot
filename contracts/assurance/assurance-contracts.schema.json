@@ -1,0 +1,158 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "assurance-contracts-v1",
+  "title": "Assurance Contracts Schema",
+  "description": "Schema for the 5 assurance contracts extracted from adoption baselines #207-#210",
+  "definitions": {
+    "evidence": {
+      "type": "object",
+      "required": ["evidence_id", "timestamp", "source", "evidence_class"],
+      "properties": {
+        "evidence_id": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" },
+        "source": { "type": "string" },
+        "evidence_class": {
+          "type": "string",
+          "enum": ["record", "snapshot"]
+        },
+        "observed_state": { "type": "string" },
+        "artifact_refs": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "freshness": {
+          "type": "object",
+          "properties": {
+            "captured_at": { "type": "string", "format": "date-time" },
+            "validated_at": { "type": "string", "format": "date-time" },
+            "refresh_expected_at": { "type": "string", "format": "date-time" },
+            "confidence_label": {
+              "type": "string",
+              "enum": ["current", "historical", "archived", "stale", "unknown"]
+            }
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "evidence_class": { "const": "snapshot" } } },
+          "then": { "required": ["freshness"] }
+        }
+      ]
+    },
+    "finding": {
+      "type": "object",
+      "required": ["finding_id", "source", "evidence_refs", "contract_ref", "classification"],
+      "properties": {
+        "finding_id": { "type": "string" },
+        "source": { "type": "string" },
+        "severity": {
+          "type": "string",
+          "enum": ["info", "advisory", "violation"]
+        },
+        "evidence_refs": {
+          "type": "array",
+          "items": { "type": "string" },
+          "minItems": 1
+        },
+        "contract_ref": {
+          "type": "string",
+          "minLength": 1
+        },
+        "classification": {
+          "type": "string",
+          "enum": ["pass", "advisory", "fail"]
+        },
+        "recommendation": {
+          "type": "object",
+          "properties": {
+            "advisory_only": { "const": true },
+            "description": { "type": "string" },
+            "proposed_action": { "type": "string" },
+            "owner_decision_required": { "type": "boolean" }
+          },
+          "required": ["advisory_only"]
+        }
+      },
+      "not": {
+        "anyOf": [
+          { "required": ["authorization"] },
+          { "required": ["dispatch"] }
+        ]
+      }
+    },
+    "owner_decision": {
+      "type": "object",
+      "required": ["decision_id", "decision_type", "rationale", "decided_by", "decision_boundary"],
+      "properties": {
+        "decision_id": { "type": "string" },
+        "finding_ref": { "type": "string" },
+        "remediation_ref": { "type": "string" },
+        "decision_type": {
+          "type": "string",
+          "enum": [
+            "accept_risk", "authorize_remediation", "defer_remediation",
+            "reject_finding", "set_priority", "promote_canonical",
+            "direct_new_work", "close"
+          ]
+        },
+        "rationale": { "type": "string", "minLength": 1 },
+        "decided_by": { "const": "owner" },
+        "decision_boundary": { "type": "string", "minLength": 1 },
+        "evidence_consumed": {
+          "type": "object",
+          "properties": {
+            "records": { "type": "array", "items": { "type": "string" } },
+            "snapshots": { "type": "array", "items": { "type": "string" } },
+            "classification": {
+              "type": "string",
+              "enum": ["record_only", "snapshot_only", "both"]
+            }
+          },
+          "required": ["classification"]
+        }
+      }
+    },
+    "remediation": {
+      "type": "object",
+      "required": ["remediation_id", "finding_ref", "evidence_refs", "state"],
+      "properties": {
+        "remediation_id": { "type": "string" },
+        "finding_ref": { "type": "string" },
+        "evidence_refs": {
+          "type": "array",
+          "items": { "type": "string" },
+          "minItems": 1
+        },
+        "proposal": {
+          "type": "object",
+          "properties": {
+            "owner_decision_required": { "const": true }
+          }
+        },
+        "state": {
+          "type": "string",
+          "enum": [
+            "detected", "proposed", "authorized", "deferred",
+            "rejected", "in_progress", "verified", "regression_guard", "closed"
+          ]
+        },
+        "owner_decision": {
+          "type": "object",
+          "properties": {
+            "decision": {
+              "type": "string",
+              "enum": ["authorized", "deferred", "rejected"]
+            },
+            "rationale": { "type": "string", "minLength": 1 },
+            "decided_by": { "const": "owner" }
+          }
+        }
+      },
+      "if": {
+        "properties": { "state": { "enum": ["authorized", "deferred", "rejected"] } }
+      },
+      "then": { "required": ["owner_decision"] }
+    }
+  }
+}

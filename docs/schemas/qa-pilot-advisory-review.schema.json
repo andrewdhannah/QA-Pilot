@@ -1,0 +1,87 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/andrewdhannah/QA-Pilot/schemas/qa-pilot-advisory-review.schema.json",
+  "title": "QA Pilot Training Sim Advisory Review",
+  "description": "Schema for a read-only advisory review summary of a training simulation case/result. Reviews are advisory-only, carry no authority, expose no apply/train/bridge behavior, and require Owner decision for any downstream action.",
+  "type": "object",
+  "required": [
+    "review_id",
+    "source_sim_id",
+    "review_type",
+    "summary",
+    "advisory",
+    "no_apply_path",
+    "no_train_behavior",
+    "no_bridge_behavior",
+    "no_mutation_authorized",
+    "no_cross_project_write",
+    "owner_decision_required",
+    "generated_at"
+  ],
+  "properties": {
+    "review_id": {
+      "type": "string",
+      "pattern": "^qa-pilot-review-[a-z0-9-]+$",
+      "description": "Unique advisory review identifier."
+    },
+    "source_sim_id": {
+      "type": "string",
+      "pattern": "^qa-pilot-sim-[a-z0-9-]+$",
+      "description": "References the training sim case this review summarizes."
+    },
+    "review_type": {
+      "type": "string",
+      "enum": ["summary", "detailed"],
+      "description": "Type of advisory review."
+    },
+    "summary": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Read-only advisory summary of sim case and result observations."
+    },
+    "advisory": {
+      "type": "boolean",
+      "const": true,
+      "description": "Must be true — review output is advisory-only."
+    },
+    "no_apply_path": {
+      "type": "boolean",
+      "const": true,
+      "description": "Must be true — no packet application path exists in review output."
+    },
+    "no_train_behavior": {
+      "type": "boolean",
+      "const": true,
+      "description": "Must be true — no model-training behavior exists in review output."
+    },
+    "no_bridge_behavior": {
+      "type": "boolean",
+      "const": true,
+      "description": "Must be true — no MCP bridge behavior exists in review output."
+    },
+    "no_mutation_authorized": {
+      "type": "boolean",
+      "const": true,
+      "description": "Must be true — packet mutation is not authorized by review output."
+    },
+    "no_cross_project_write": {
+      "type": "boolean",
+      "const": true,
+      "description": "Must be true — cross-project write is not authorized by review output."
+    },
+    "owner_decision_required": {
+      "type": "boolean",
+      "const": true,
+      "description": "Must be true — Owner decision required for any downstream action."
+    },
+    "generated_at": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$",
+      "description": "ISO 8601 UTC timestamp of review generation."
+    },
+    "notes": {
+      "type": "string",
+      "description": "Optional governance or custody notes."
+    }
+  }
+}

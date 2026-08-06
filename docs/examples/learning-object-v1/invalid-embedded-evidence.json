@@ -1,0 +1,40 @@
+{
+  "schema": "learning-object-v1",
+  "id": "LO-EV-EMBEDDED-001",
+  "title": "Invalid: Embedded Evidence",
+  "source": {
+    "finding_code": "EV-GOV-001",
+    "evidence_refs": [
+      {
+        "type": "cursor_file",
+        "ref": "active/project/lifecycle-cursor.json"
+      }
+    ],
+    "confidence": "VERIFIED"
+  },
+  "learning": {
+    "objective": "Invalid object - embedded evidence",
+    "explanation": "This learning object embeds inline evidence instead of referencing it."
+  },
+  "evidence": {
+    "finding_id": "F-9999",
+    "code": "EV-GOV-001",
+    "severity": "HIGH",
+    "finding": "This is a duplicate finding embedded in the learning object. Violates the reference-not-create invariant."
+  },
+  "assessment": {
+    "quiz_refs": ["l1-q1"],
+    "scoring_model": "quiz_only"
+  },
+  "certification": {
+    "criteria": [
+      {
+        "id": "LO-CERT-001",
+        "description": "Invalid - this should not be allowed"
+      }
+    ],
+    "passing_score": 80
+  },
+  "advisory_only": true,
+  "no_seal_authority": true
+}

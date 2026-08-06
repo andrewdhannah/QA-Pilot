@@ -1,0 +1,37 @@
+{
+  "schema": "qa-pilot-startup-regression-v1",
+  "fixture_type": "valid",
+  "description": "Baseline — all 15 SR rules expected to pass on a clean QA Pilot startup",
+  "expected_sr_results": {
+    "SR-1": "PASS",
+    "SR-2": "PASS",
+    "SR-3": "PASS",
+    "SR-3b": "PASS",
+    "SR-4": "PASS",
+    "SR-5": "PASS",
+    "SR-6": "PASS",
+    "SR-7": "PASS",
+    "SR-8": "PASS",
+    "SR-9": "PASS",
+    "SR-10": "PASS",
+    "SR-11": "PASS",
+    "SR-11b": "PASS",
+    "SR-12": "PASS",
+    "SR-13": "PASS"
+  },
+  "startup_chain": {
+    "selector": "start qa-pilot resolves from project-index.json",
+    "pointer": "current-project.json points to project_id=qa-pilot",
+    "contract": "startup-contract.json with all parity blocks",
+    "checks": "run-startup-checks.sh reports managed mode",
+    "mcp": "check-mcp-health.sh exits 0, 8/8 tools",
+    "parity": "validate-qa-pilot-startup-parity-matrix.py 13/13 pass",
+    "validators": "all 15 existing QA Pilot validators pass",
+    "ledger": "sprint-ledger.json valid with ≥20 sealed entries"
+  },
+  "boundary": {
+    "librarian_mutation": false,
+    "cross_project_write": false,
+    "runtime_registration": false
+  }
+}

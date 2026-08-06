@@ -1,0 +1,37 @@
+{
+  "test_id": "SEC-002",
+  "domain": "security",
+  "title": "Learning object does not embed evidence",
+  "objective": "Verify that learning objects reference evidence through source.evidence_refs but do not embed evidence inline. A learning object must never become a second evidence store.",
+  "source": {
+    "type": "contract",
+    "reference": "LO-001",
+    "description": "QA-PILOT-LEARNING-OBJECT-CONTRACT-1: Learning object references evidence — does not become evidence"
+  },
+  "execution": {
+    "type": "contract_check",
+    "criteria": "All valid learning-object-v1 fixtures lack evidence creation fields (findings, evidence, seal, approve) at top level",
+    "expected_outcome": "Zero learning objects contain inline evidence fields"
+  },
+  "pass_criteria": [
+    {
+      "id": "SEC-002-A",
+      "description": "No learning object has top-level 'findings' field",
+      "evidence_required": ["All LO fixtures pass validate-learning-object.py LO-13"]
+    },
+    {
+      "id": "SEC-002-B",
+      "description": "All learning objects reference source.evidence_refs",
+      "evidence_required": ["source.evidence_refs is non-empty array"]
+    },
+    {
+      "id": "SEC-002-C",
+      "description": "All generated learning objects validate against schema",
+      "evidence_required": ["Lesson generator outputs pass validate-learning-object.py"]
+    }
+  ],
+  "contract_refs": ["learning-object-v1"],
+  "status": "active",
+  "advisory_only": true,
+  "no_seal_authority": true
+}

@@ -1,0 +1,31 @@
+{
+  "$schema": "owner-decision-v1",
+  "decision_id": "OD-EPIC-QA-PILOT-LIBRARIAN-VISUAL-PARITY-CORRECTION-1-AUTHORIZATION",
+  "date": "2026-07-09",
+  "owner": "Andrew Hannah",
+  "epic": "EPIC-QA-PILOT-LIBRARIAN-VISUAL-PARITY-CORRECTION-1",
+  "decision": "AUTHORIZE_EPIC_WITH_BOUNDED_CONTINUATION",
+  "basis": "Correct QA Pilot visual implementation by using the current Librarian frontend from CarbideFrame as the read-only design reference. QA Pilot landing page still presents a blue marketing hero with emoji CTA cards, not the Librarian-derived workbench/bento layout. Prior design-language epic used older OpenWork reference instead of current CarbideFrame Librarian source.",
+  "epic_sequence": [
+    {"sprint": "QA-PILOT-LIBRARIAN-VISUAL-PARITY-REFERENCE-AUDIT-1", "purpose": "Inspect current Librarian reference files from CarbideFrame. Extract design primitives. Produce page-by-page mismatch matrix."},
+    {"sprint": "QA-PILOT-LANDING-SHELL-PARITY-REMEDIATION-1", "purpose": "Replace generic landing page with Librarian-aligned shell. Remove blue marketing hero, remove emoji CTA icons. Add bento/workbench layout."},
+    {"sprint": "QA-PILOT-ADMIN-LEARNER-PARITY-REMEDIATION-1", "purpose": "Remediate admin, catalog, identity, and course runtime pages using extracted Librarian primitives."},
+    {"sprint": "QA-PILOT-EXPORT-IMPORT-CERTIFICATE-PARITY-REMEDIATION-1", "purpose": "Remediate export, import, and certificate pages."},
+    {"sprint": "QA-PILOT-LIBRARIAN-VISUAL-PARITY-VALIDATION-1", "purpose": "Validate all 8 pages against Librarian reference matrix. Confirm no regressions. Final report."}
+  ],
+  "bounded_continuation": true,
+  "stop_conditions": {
+    "backend_required": false,
+    "auth_required": false,
+    "install_required": false,
+    "cross_project_write": false,
+    "librarian_mutation": false,
+    "sealed_epic_mutated": false,
+    "reference_unavailable": false
+  },
+  "design_reference": "Current CarbideFrame Librarian frontend: active/librarian/Public/index.html, styles.css, theme.css. Governance: docs/governance/V1X-DESIGN-LANGUAGE.md, CarbideFrame/docs/governance/UI-OVERVIEW-BENTO-ELEVATION-MOTION-SPEC.md",
+  "classification": "epic_authorization_visual_parity_correction",
+  "authority": "Owner",
+  "status": "authorized",
+  "authorized_at": "2026-07-09T23:45:00Z"
+}

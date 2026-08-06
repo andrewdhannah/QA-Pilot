@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QA Pilot Academy — Trainer Dashboard</title>
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+  <link rel="stylesheet" href="../css/main.css">
+
+  <style>
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: var(--space-4) var(--space-6);
+      background: linear-gradient(90deg, #ffffff 0%, #f9fafb 100%);
+      border-bottom: 2px solid #e5e7eb;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    }
+    .topbar-brand {
+      font-size: var(--text-base);
+      font-weight: var(--weight-bold);
+      color: var(--color-ink);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .topbar-brand .badge {
+      background: #2563eb;
+      color: #fff;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 6px;
+    }
+    .topbar-right {
+      font-size: var(--text-sm);
+      color: var(--color-ink-muted);
+    }
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+    }
+    .topbar-right a {
+      color: var(--color-ink-muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .topbar-right a:hover { color: var(--color-primary); }
+
+    .btn-logout {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      font-size: var(--text-sm);
+      font-weight: var(--weight-bold);
+      color: #dc2626;
+      background: #fef2f2;
+      border: 2px solid #fca5a5;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      transition: all 0.2s;
+      text-decoration: none;
+    }
+    .btn-logout:hover {
+      background: #fee2e2;
+      border-color: #ef4444;
+      color: #b91c1c;
+      transform: translateY(-1px);
+    }
+
+    .btn-switch-dash {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 6px 14px;
+      font-size: var(--text-sm);
+      font-weight: var(--weight-bold);
+      color: var(--color-primary);
+      background: var(--color-primary-light);
+      border: 2px solid #93c5fd;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      transition: all 0.2s;
+      text-decoration: none;
+    }
+    .btn-switch-dash:hover {
+      background: #dbeafe;
+      border-color: var(--color-primary);
+      color: #1e40af;
+      transform: translateY(-1px);
+    }
+
+    .main-content {
+      max-width: 900px;
+      margin: var(--space-8) auto;
+      padding: 0 var(--space-6);
+    }
+
+    .page-title {
+      font-size: var(--text-xl);
+      font-weight: var(--weight-bold);
+      color: var(--color-ink);
+      margin-bottom: var(--space-6);
+    }
+
+    .card {
+      background: var(--color-surface);
+      border: 2px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      padding: var(--space-6);
+      margin-bottom: var(--space-6);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    }
+    .card-title {
+      font-size: var(--text-sm);
+      font-weight: var(--weight-bold);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--color-ink-muted);
+      margin-bottom: var(--space-4);
+    }
+
+    .card-step {
+      border-left: 3px solid var(--color-primary);
+    }
+    .card-step .card-title { color: var(--color-primary); }
+
+    textarea {
+      width: 100%;
+      border: 2px solid var(--color-border);
+      border-radius: var(--radius-md);
+      padding: var(--space-3);
+      font-size: var(--text-sm);
+      font-family: 'SF Mono', 'Menlo', monospace;
+      resize: vertical;
+      min-height: 120px;
+      transition: border-color 0.2s;
+    }
+    textarea:focus {
+      outline: none;
+      border-color: var(--color-primary);
+      box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
+    }
+
+    .form-row {
+      display: flex;
+      gap: var(--space-4);
+      flex-wrap: wrap;
+      align-items: center;
+      margin-top: var(--space-3);
+    }
+    .form-group label {
+      font-size: var(--text-xs);
+      font-weight: var(--weight-bold);
+      color: var(--color-ink-soft);
+      display: block;
+      margin-bottom: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .form-group select,
+    .form-group input {
+      border: 2px solid var(--color-border);
+      border-radius: var(--radius-md);
+      padding: 8px 12px;
+      font-size: var(--text-sm);
+      transition: border-color 0.2s;
+    }
+    .form-group select:focus,
+    .form-group input:focus {
+      outline: none;
+      border-color: var(--color-primary);
+    }
+
+    .course-checkboxes {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-2);
+      margin-top: var(--space-2);
+    }
+    .course-checkboxes label {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: var(--text-xs);
+      cursor: pointer;
+      padding: 6px 12px;
+      border-radius: var(--radius-md);
+      background: var(--color-bg);
+      border: 1px solid var(--color-border);
+      transition: all 0.2s;
+      user-select: none;
+    }
+    .course-checkboxes label:hover {
+      border-color: var(--color-primary);
+      background: var(--color-primary-light);
+    }
+    .course-checkboxes input { accent-color: var(--color-primary); }
+
+    .student-list {
+      margin-top: var(--space-4);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+    }
+    .student-row {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      padding: var(--space-3) var(--space-4);
+      border-bottom: 1px solid var(--color-border);
+      font-size: var(--text-sm);
+      transition: background 0.15s;
+    }
+    .student-row:last-child { border-bottom: none; }
+    .student-row:hover { background: var(--color-bg); }
+
+    .empty-state {
+      text-align: center;
+      padding: var(--space-6);
+      color: var(--color-ink-muted);
+      font-size: var(--text-sm);
+    }
+
+    .download-card {
+      border: 2px solid var(--color-primary);
+      background: var(--color-primary-light);
+      text-align: center;
+      padding: var(--space-8);
+    }
+    .download-card .card-title { color: var(--color-primary); }
+
+    .btn-download {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 36px;
+      background: linear-gradient(135deg, #16a34a 0%, #22c55e 100%);
+      color: #fff;
+      border: none;
+      border-radius: var(--radius-md);
+      font-size: var(--text-base);
+      font-weight: var(--weight-bold);
+      cursor: pointer;
+      transition: all 0.2s;
+      box-shadow: 0 4px 14px rgba(22,163,74,0.3);
+    }
+    .btn-download:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(22,163,74,0.4); }
+    .btn-download:disabled { opacity: 0.4; cursor: not-allowed; transform: none; box-shadow: none; }
+
+    .unlock-row {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      margin: var(--space-3) 0;
+    }
+    .unlock-row input {
+      flex: 1;
+      border: 2px solid var(--color-border);
+      border-radius: var(--radius-md);
+      padding: 8px 12px;
+      font-size: var(--text-sm);
+      font-family: 'SF Mono', 'Menlo', monospace;
+      letter-spacing: 0.08em;
+      transition: border-color 0.2s;
+    }
+    .unlock-row input:focus {
+      outline: none;
+      border-color: var(--color-primary);
+    }
+    .btn-gen {
+      padding: 8px 14px;
+      background: #f3f4f6;
+      border: 2px solid #d1d5db;
+      border-radius: var(--radius-md);
+      font-size: var(--text-xs);
+      font-weight: var(--weight-bold);
+      cursor: pointer;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .btn-gen:hover { background: #e5e7eb; border-color: #9ca3af; }
+    .unlock-hint {
+      font-size: 11px;
+      color: var(--color-ink-muted);
+      margin-top: 2px;
+    }
+
+    .btn-email {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 20px;
+      background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%);
+      color: #fff;
+      border: none;
+      border-radius: var(--radius-md);
+      font-size: var(--text-sm);
+      font-weight: var(--weight-bold);
+      cursor: pointer;
+      transition: all 0.2s;
+      margin-top: var(--space-2);
+    }
+    .btn-email:hover { transform: translateY(-1px); box-shadow: 0 4px 14px rgba(37,99,235,0.3); }
+    .btn-email:disabled { opacity: 0.4; cursor: not-allowed; transform: none; box-shadow: none; }
+
+    .instructions ol {
+      margin: var(--space-3) 0 0 var(--space-5);
+      font-size: var(--text-sm);
+      line-height: 2.2;
+      color: var(--color-ink-soft);
+    }
+    .instructions ol li strong { color: var(--color-primary); }
+    .instructions .file-code {
+      background: var(--color-bg);
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-family: monospace;
+      font-size: 12px;
+      border: 1px solid var(--color-border);
+    }
+
+    .toast {
+      position: fixed;
+      bottom: var(--space-6);
+      right: var(--space-6);
+      padding: var(--space-3) var(--space-5);
+      border-radius: var(--radius-md);
+      font-size: var(--text-sm);
+      font-weight: var(--weight-bold);
+      color: #fff;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+      animation: fadeIn 0.3s ease;
+      z-index: 999;
+    }
+    .toast.success { background: var(--color-success); }
+    .toast.error { background: var(--color-error); }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.45);
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
+      padding: var(--space-6);
+    }
+    .overlay.open { display: flex; }
+    .modal {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      padding: var(--space-8);
+      max-width: 420px;
+      width: 100%;
+      text-align: center;
+      box-shadow: var(--shadow-lg);
+    }
+    .modal h3 { font-size: var(--text-lg); color: var(--color-error); margin-bottom: var(--space-3); }
+    .modal p { font-size: var(--text-sm); color: var(--color-ink-soft); margin-bottom: var(--space-6); line-height: 1.6; }
+    .modal .btns { display: flex; gap: var(--space-3); justify-content: center; }
+
+    .student-count {
+      font-size: var(--text-xs);
+      color: var(--color-ink-muted);
+    }
+  </style>
+</head>
+<body>
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div class="topbar-brand">
+      <span class="badge">QA Pilot</span>
+      Trainer Dashboard
+    </div>
+    <div class="topbar-right">
+      <div id="lang-toggle-container"></div>
+      <a href="dashboard.html" class="btn-switch-dash">⚙ Full Dashboard</a>
+      <a href="../simple-login.html" class="btn-logout">🚪 Log out</a>
+    </div>
+  </div>
+
+  <div class="main-content">
+    <h1 class="page-title">👩‍🏫 Trainer Dashboard</h1>
+
+    <!-- STEP 1 -->
+    <div class="card card-step">
+      <div class="card-title">1. Add Students</div>
+      <p style="font-size:var(--text-sm);color:var(--color-ink-soft);margin-bottom:var(--space-3);">
+        Paste one student per line. Format: <strong>Name, email</strong> (email is optional).
+      </p>
+      <textarea id="student-input" placeholder="Alice Smith, alice@example.com&#10;Bob Jones&#10;Charlie Lee, charlie@example.com"></textarea>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Default Password</label>
+          <input type="text" id="default-password" value="qapilot123" style="width:160px;">
+        </div>
+        <div class="form-group">
+          <label>Role</label>
+          <select id="student-role" style="width:140px;">
+            <option value="junior">Junior QA</option>
+            <option value="senior">Senior QA</option>
+          </select>
+        </div>
+      </div>
+
+      <div style="margin-top:var(--space-3);">
+        <div style="font-size:var(--text-xs);font-weight:var(--weight-bold);color:var(--color-ink-soft);margin-bottom:var(--space-2);text-transform:uppercase;letter-spacing:0.04em;">
+          Courses to enroll them in
+        </div>
+        <div class="course-checkboxes" id="course-list"></div>
+      </div>
+
+      <div style="display:flex;gap:var(--space-3);align-items:center;margin-top:var(--space-4);">
+        <button class="btn btn-primary" onclick="addStudents()">➕ Add Students</button>
+        <span class="student-count" id="student-count"></span>
+      </div>
+
+      <div class="student-list" id="student-entries">
+        <div class="empty-state">No students added yet.</div>
+      </div>
+    </div>
+
+    <!-- STEP 2 -->
+    <div class="card download-card">
+      <div class="card-title">2. Protect &amp; Download Class File</div>
+      <p style="font-size:var(--text-sm);color:var(--color-ink-soft);margin-bottom:var(--space-3);">
+        You've added <strong id="download-count" style="color:var(--color-primary);">0</strong> student(s).
+      </p>
+
+      <div style="margin-bottom:var(--space-3);">
+        <label style="display:flex;align-items:center;gap:8px;font-size:var(--text-sm);font-weight:var(--weight-bold);color:var(--color-ink);cursor:pointer;margin-bottom:8px;">
+          <input type="checkbox" id="enable-unlock" onchange="toggleUnlockField()">
+          🔒 Require unlock code to open the file
+        </label>
+        <div id="unlock-fields" style="display:none;">
+          <div class="unlock-row">
+            <input type="text" id="unlock-code" placeholder="e.g. Elyse2026">
+            <button type="button" class="btn-gen" onclick="generateUnlockCode()">🎲 Generate</button>
+          </div>
+          <div class="unlock-hint">Students will need this code to use the file. Share it separately (e.g. via Teams or email).</div>
+        </div>
+      </div>
+
+      <div style="display:flex;gap:var(--space-3);flex-wrap:wrap;align-items:center;">
+        <button class="btn-download" id="download-btn" disabled onclick="downloadClassFile()">
+          ⬇ Download Class File
+        </button>
+        <button class="btn-email" id="email-btn" disabled onclick="emailStudents()">
+          📧 Email to Students
+        </button>
+      </div>
+    </div>
+
+    <!-- STEP 3 -->
+    <div class="card instructions">
+      <div class="card-title">3. Share with Your Team</div>
+      <ol>
+        <li><strong>Send</strong> the downloaded <span class="file-code">.json</span> file to your students (email, Teams, shared drive).</li>
+        <li>If you set an <strong>unlock code</strong>, share it separately — send it in the same email, a Teams message, or however you coordinate.</li>
+        <li>Your team goes to <strong>simple-login.html</strong> — they <strong>upload the file</strong>, enter the <strong>unlock code</strong> (if required), type their <strong>name</strong>, and click <strong>Login</strong>.</li>
+        <li>No passwords needed on their end. The file + unlock code links them to their account.</li>
+        <li>Once logged in, they'll see their courses and can start training immediately.</li>
+        <li>When they finish, they can export their progress and send it back to you for review.</li>
+      </ol>
+    </div>
+
+    <!-- CLEAR -->
+    <div class="card" style="border-color:var(--color-error-border);">
+      <div class="card-title" style="color:var(--color-error);">Clear All Data</div>
+      <p style="font-size:var(--text-sm);color:var(--color-ink-soft);margin-bottom:var(--space-4);">
+        Deletes ALL students, progress, and enrollments from the local database. Only do this to start fresh.
+      </p>
+      <button class="btn btn-danger" onclick="confirmClear()">🗑 Clear All Student Data</button>
+    </div>
+  </div>
+
+  <!-- CONFIRM MODAL -->
+  <div class="overlay" id="confirm-modal">
+    <div class="modal">
+      <h3>🗑 Clear All Data?</h3>
+      <p>This cannot be undone. All students, progress records, and enrollments will be permanently deleted from this device.</p>
+      <div class="btns">
+        <button class="btn btn-ghost" onclick="closeModal()">Cancel</button>
+        <button class="btn btn-danger" onclick="clearAllData()">Yes, Clear Everything</button>
+      </div>
+    </div>
+  </div>
+
+<script src="../js/i18n.js"></script>
+<script src="../js/lang-en.js"></script>
+<script src="../js/lang-fr.js"></script>
+<script src="../js/db.js"></script>
+<script data-cfasync="false">
+// Initialise i18n (language) before anything else
+initI18n();
+renderLangToggle('lang-toggle-container');
+
+function translateSimplePage() {
+  var el;
+  // Page title
+  el = document.querySelector('.page-title');
+  if (el) el.innerHTML = __('admin_trainer_dashboard');
+
+  // Topbar brand
+  el = document.querySelector('.topbar-brand');
+  if (el) el.innerHTML = '<span class="badge">' + __('app_name_short') + '</span> ' + __('admin_trainer_dashboard');
+
+  // Full Dashboard link
+  el = document.querySelector('.btn-switch-dash');
+  if (el) el.innerHTML = '\u2699 ' + __('admin_full_dashboard');
+
+  // Step titles
+  var cardTitles = document.querySelectorAll('.card-title');
+  cardTitles.forEach(function(title) {
+    if (title.textContent.includes('Add Students')) {
+      title.textContent = '1. ' + __('admin_add_students');
+    }
+    if (title.textContent.includes('Protect')) {
+      title.textContent = '2. ' + __('admin_protect_download');
+    }
+    if (title.textContent.includes('Share with Your Team')) {
+      title.textContent = '3. ' + __('admin_share_team');
+    }
+  });
+
+  // Default Password label
+  var labels = document.querySelectorAll('.form-group label');
+  labels.forEach(function(label) {
+    if (label.textContent.includes('Default Password')) {
+      label.textContent = __('admin_default_password');
+    }
+  });
+
+  // Download button
+  el = document.querySelector('#download-btn');
+  if (el) el.innerHTML = '\u2B07 ' + __('admin_download_class_file');
+
+  // Email button
+  el = document.querySelector('#email-btn');
+  if (el) el.innerHTML = '\u{1F4E7} ' + __('admin_email_students');
+}
+translateSimplePage();
+
+var ACTIVE_COURSES = [
+  { id: 'qa-onboarding', title: 'QA Onboarding Training' },
+  { id: 'qa-onboarding-advanced', title: 'QA Onboarding — Advanced' },
+  { id: 'capstone-1', title: 'Capstone 1: QA Investigation' },
+  { id: 'capstone-2', title: 'Advanced Capstone 2' },
+  { id: 'dynamics-crm-basics', title: 'Introduction to Dynamics CRM' },
+  { id: 'acceptance-criteria-basics', title: 'Acceptance Criteria Fundamentals' },
+  { id: 'teams-for-qa', title: 'Microsoft Teams for QA' },
+  { id: 'scenario-deep-dive', title: 'Scenario Deep Dive — Customer Portal' },
+];
+
+var _addedStudents = [];
+
+function renderCourses() {
+  var html = '';
+  ACTIVE_COURSES.forEach(function(c, i) {
+    html += '<label><input type="checkbox" value="' + c.id + '"' + (i === 0 ? ' checked' : '') + '><span>' + c.title + '</span></label>';
+  });
+  document.getElementById('course-list').innerHTML = html;
+}
+
+async function addStudents() {
+  var raw = document.getElementById('student-input').value.trim();
+  if (!raw) { showToast('Paste at least one student name.', 'error'); return; }
+
+  var lines = raw.split('\n').filter(function(l) { return l.trim(); });
+  var password = document.getElementById('default-password').value.trim() || 'qapilot123';
+  var role = document.getElementById('student-role').value;
+
+  var courseIds = [];
+  document.querySelectorAll('#course-list input:checked').forEach(function(cb) { courseIds.push(cb.value); });
+  if (courseIds.length === 0) { showToast('Select at least one course.', 'error'); return; }
+
+  var added = 0;
+  lines.forEach(function(line) {
+    var parts = line.split(',').map(function(s) { return s.trim(); });
+    var name = parts[0];
+    if (!name) return;
+    var email = parts.length > 1 ? parts[1] : (name.toLowerCase().replace(/\s+/g, '.') + '@student.local');
+    var caseNum = 10000 + _addedStudents.length + added + 1;
+    var caseId = 'CASE-' + String(caseNum).padStart(5, '0');
+    _addedStudents.push({ caseId: caseId, name: name, email: email, password: password, role: role, courseIds: courseIds.slice() });
+    added++;
+  });
+
+  document.getElementById('student-input').value = '';
+  renderStudentList();
+  updateDownloadBtn();
+  showToast('Added ' + added + ' student' + (added !== 1 ? 's' : '') + '.', 'success');
+}
+
+function renderStudentList() {
+  var container = document.getElementById('student-entries');
+  if (_addedStudents.length === 0) {
+    container.innerHTML = '<div class="empty-state">No students added yet. Paste names above and click Add Students.</div>';
+    document.getElementById('student-count').textContent = '';
+    return;
+  }
+  var html = '';
+  _addedStudents.forEach(function(s, idx) {
+    html += '<div class="student-row">' +
+      '<span class="badge badge-primary" style="font-family:monospace;font-size:10px;">' + s.caseId + '</span>' +
+      '<strong>' + escapeHtml(s.name) + '</strong>' +
+      '<span style="color:var(--color-ink-muted);font-size:var(--text-xs);">' + escapeHtml(s.email) + '</span>' +
+      '<span style="margin-left:auto;font-size:var(--text-xs);color:var(--color-ink-soft);text-transform:capitalize;">' + s.role + '</span>' +
+      '<button class="btn btn-ghost" style="padding:2px 8px;font-size:12px;line-height:1.4;" onclick="removeStudent(' + idx + ')">✕</button>' +
+    '</div>';
+  });
+  container.innerHTML = html;
+  document.getElementById('student-count').textContent = _addedStudents.length + ' student' + (_addedStudents.length !== 1 ? 's' : '') + ' in list';
+}
+
+function removeStudent(idx) {
+  _addedStudents.splice(idx, 1);
+  renderStudentList();
+  updateDownloadBtn();
+}
+
+function updateDownloadBtn() {
+  var btn = document.getElementById('download-btn');
+  document.getElementById('download-count').textContent = _addedStudents.length;
+  btn.disabled = _addedStudents.length === 0;
+}
+
+async function clearAllData() {
+  closeModal();
+  try {
+    var req = indexedDB.deleteDatabase('qa_onboarding_db');
+    req.onsuccess = function() {
+      _addedStudents = [];
+      renderStudentList();
+      updateDownloadBtn();
+      document.getElementById('student-input').value = '';
+      showToast('✓ All data cleared. Refresh the page to start fresh.', 'success');
+    };
+    req.onerror = function() { showToast('Error clearing database.', 'error'); };
+    req.onblocked = function() { showToast('Close other tabs first, then try again.', 'error'); };
+  } catch(e) { showToast('Failed to clear data.', 'error'); }
+}
+
+function confirmClear() { document.getElementById('confirm-modal').classList.add('open'); }
+function closeModal() { document.getElementById('confirm-modal').classList.remove('open'); }
+
+function showToast(msg, type) {
+  var t = document.createElement('div');
+  t.className = 'toast ' + (type || 'success');
+  t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(function() { t.remove(); }, 3500);
+}
+
+function escapeHtml(text) {
+  var d = document.createElement('div');
+  d.appendChild(document.createTextNode(text));
+  return d.innerHTML;
+}
+
+/* ── UNLOCK CODE ─────────────────────────────────────── */
+
+function toggleUnlockField() {
+  var enabled = document.getElementById('enable-unlock').checked;
+  document.getElementById('unlock-fields').style.display = enabled ? '' : 'none';
+  if (enabled && !document.getElementById('unlock-code').value.trim()) {
+    generateUnlockCode();
+  }
+}
+
+function generateUnlockCode() {
+  var words = ['Sunset', 'Bluebird', 'Tuna', 'Falcon', 'Maple', 'Raven', 'Copper', 'Willow',
+               'Pixel', 'Anchor', 'Tempo', 'Coral', 'Ember', 'Pivot', 'Apex', 'Lunar'];
+  var word1 = words[Math.floor(Math.random() * words.length)];
+  var word2 = words[Math.floor(Math.random() * words.length)];
+  var num = Math.floor(Math.random() * 99) + 10;
+  document.getElementById('unlock-code').value = word1 + '-' + word2 + '-' + num;
+}
+
+/* ── SHA-256 (pure JS, works everywhere) ─────────────── */
+
+function sha256(s) {
+  var chrsz = 8, hexcase = 0;
+  function safe_add(x, y) { var lsw = (x & 0xFFFF) + (y & 0xFFFF); return (x >> 16) + (y >> 16) + (lsw >> 16) << 16 | lsw & 0xFFFF; }
+  function S(X, n) { return X >>> n | X << (32 - n); }
+  function R(X, n) { return X >>> n; }
+  function Ch(x, y, z) { return x & y ^ ~x & z; }
+  function Maj(x, y, z) { return x & y ^ x & z ^ y & z; }
+  function Sigma0256(x) { return S(x, 2) ^ S(x, 13) ^ S(x, 22); }
+  function Sigma1256(x) { return S(x, 6) ^ S(x, 11) ^ S(x, 25); }
+  function Gamma0256(x) { return S(x, 7) ^ S(x, 18) ^ R(x, 3); }
+  function Gamma1256(x) { return S(x, 17) ^ S(x, 19) ^ R(x, 10); }
+  function core_sha256(m, l) {
+    var K = [0x428A2F98,0x71374491,0xB5C0FBCF,0xE9B5DBA5,0x3956C25B,0x59F111F1,0x923F82A4,0xAB1C5ED5,0xD807AA98,0x12835B01,0x243185BE,0x550C7DC3,0x72BE5D74,0x80DEB1FE,0x9BDC06A7,0xC19BF174,0xE49B69C1,0xEFBE4786,0xFC19DC6,0x240CA1CC,0x2DE92C6F,0x4A7484AA,0x5CB0A9DC,0x76F988DA,0x983E5152,0xA831C66D,0xB00327C8,0xBF597FC7,0xC6E00BF3,0xD5A79147,0x6CA6351,0x14292967,0x27B70A85,0x2E1B2138,0x4D2C6DFC,0x53380D13,0x650A7354,0x766A0ABB,0x81C2C92E,0x92722C85,0xA2BFE8A1,0xA81A664B,0xC24B8B70,0xC76C51A3,0xD192E819,0xD6990624,0xF40E3585,0x106AA070,0x19A4C116,0x1E376C08,0x2748774C,0x34B0BCB5,0x391C0CB3,0x4ED8AA4A,0x5B9CCA4F,0x682E6FF3,0x748F82EE,0x78A5636F,0x84C87814,0x8CC70208,0x90BEFFFA,0xA4506CEB,0xBEF9A3F7,0xC67178F2];
+    var H = [0x6A09E667,0xBB67AE85,0x3C6EF372,0xA54FF53A,0x510E527F,0x9B05688C,0x1F83D9AB,0x5BE0CD19];
+    var W = new Array(64), a, b, c, d, e, f, g, h, i, j, T1, T2;
+    m[l >> 5] |= 0x80 << (24 - l % 32); m[((l + 64 >> 9) << 4) + 15] = l;
+    for (i = 0; i < m.length; i += 16) {
+      a = H[0]; b = H[1]; c = H[2]; d = H[3]; e = H[4]; f = H[5]; g = H[6]; h = H[7];
+      for (j = 0; j < 64; j++) {
+        if (j < 16) W[j] = m[j + i]; else W[j] = safe_add(safe_add(safe_add(Gamma1256(W[j - 2]), W[j - 7]), Gamma0256(W[j - 15])), W[j - 16]);
+        T1 = safe_add(safe_add(safe_add(safe_add(h, Sigma1256(e)), Ch(e, f, g)), K[j]), W[j]);
+        T2 = safe_add(Sigma0256(a), Maj(a, b, c));
+        h = g; g = f; f = e; e = safe_add(d, T1); d = c; c = b; b = a; a = safe_add(T1, T2);
+      }
+      H[0] = safe_add(a, H[0]); H[1] = safe_add(b, H[1]); H[2] = safe_add(c, H[2]); H[3] = safe_add(d, H[3]);
+      H[4] = safe_add(e, H[4]); H[5] = safe_add(f, H[5]); H[6] = safe_add(g, H[6]); H[7] = safe_add(h, H[7]);
+    }
+    return H;
+  }
+  function str2binb(str) { var bin = [], mask = (1 << chrsz) - 1, i; for (i = 0; i < str.length * chrsz; i += chrsz) bin[i >> 5] |= (str.charCodeAt(i / chrsz) & mask) << (24 - i % 32); return bin; }
+  function binb2hex(binarray) { var hex_tab = hexcase ? '0123456789ABCDEF' : '0123456789abcdef', str = '', i; for (i = 0; i < binarray.length * 4; i++) str += hex_tab.charAt(binarray[i >> 2] >> (3 - i % 4) * 8 + 4 & 0xF) + hex_tab.charAt(binarray[i >> 2] >> (3 - i % 4) * 8 & 0xF); return str; }
+  return binb2hex(core_sha256(str2binb(s), s.length * chrsz));
+}
+
+/* ── DOWNLOAD CLASS FILE ─────────────────────────────── */
+
+function downloadClassFile() {
+  if (_addedStudents.length === 0) { showToast('Add at least one student first.', 'error'); return; }
+
+  var students = _addedStudents.map(function(s) {
+    return { caseId: s.caseId, name: s.name, email: s.email, role: s.role };
+  });
+  var courseIds = _addedStudents[0].courseIds;
+  var payload = {
+    setupVersion: '2.0-simple',
+    generatedDate: new Date().toISOString(),
+    students: students,
+    courseIds: courseIds,
+  };
+
+  // Add passphrase hash if unlock code is enabled
+  if (document.getElementById('enable-unlock').checked) {
+    var code = document.getElementById('unlock-code').value.trim();
+    if (code) {
+      payload.passphraseHash = sha256(code.toLowerCase().trim());
+    }
+  }
+
+  var date = new Date().toISOString().split('T')[0];
+  var fileName = 'qa-pilot-class-cohort-' + date + '.json';
+  var blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+  var url = URL.createObjectURL(blob);
+  var link = document.createElement('a');
+  link.href = url; link.download = fileName;
+  document.body.appendChild(link); link.click();
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
+  showToast('✓ Downloaded ' + fileName + ' (' + _addedStudents.length + ' students)', 'success');
+}
+
+/* ── EMAIL STUDENTS ──────────────────────────────────── */
+
+function emailStudents() {
+  if (_addedStudents.length === 0) { showToast('Add at least one student first.', 'error'); return; }
+
+  var emails = _addedStudents.map(function(s) { return s.email; }).filter(function(e) { return e; });
+  if (emails.length === 0) {
+    showToast('No student emails to send to. Add email addresses when pasting student names.', 'error');
+    return;
+  }
+
+  var hasCode = document.getElementById('enable-unlock').checked;
+  var code = document.getElementById('unlock-code').value.trim();
+
+  var subject = encodeURIComponent('QA Pilot Academy — Your Class File');
+  var body = encodeURIComponent(
+    "Hi team,\n\n" +
+    "Here's your QA Pilot Academy class file to get started.\n\n" +
+    "➡ 1. Open simple-login.html in your browser\n" +
+    "➡ 2. Upload the attached .json file\n" +
+    (hasCode && code ? "➡ 3. Enter the unlock code: " + code + "\n➡ 4. Type your name and click Login\n\n" : "➡ 3. Type your name and click Login\n\n") +
+    "Your account will be created automatically — no password to remember.\n\n" +
+    "Once logged in, you'll see your courses and can start training right away.\n" +
+    "When you finish, use the Export button to send me your progress.\n\n" +
+    "Happy testing!\n— Your Trainer"
+  );
+
+  var mailto = 'mailto:?bcc=' + encodeURIComponent(emails.join(',')) + '&subject=' + subject + '&body=' + body;
+  window.open(mailto);
+  showToast('📧 Email client opened with ' + emails.length + ' recipient(s). Attach the .json file before sending!', 'success');
+}
+
+/* ── UPDATE BUTTONS ──────────────────────────────────── */
+
+function updateDownloadBtn() {
+  var count = _addedStudents.length;
+  document.getElementById('download-count').textContent = count;
+  document.getElementById('download-btn').disabled = count === 0;
+  document.getElementById('email-btn').disabled = count === 0;
+}
+
+renderCourses();
+renderStudentList();
+updateDownloadBtn();
+</script>
+</body>
+</html>

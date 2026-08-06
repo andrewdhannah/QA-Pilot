@@ -1,0 +1,15 @@
+{
+  "review_id": "qa-pilot-review-invalid-mutates-001",
+  "source_sim_id": "qa-pilot-sim-valid-project-state-001",
+  "review_type": "summary",
+  "summary": "INVALID: review output claims mutation is authorized",
+  "advisory": true,
+  "no_apply_path": true,
+  "no_train_behavior": true,
+  "no_bridge_behavior": true,
+  "no_mutation_authorized": false,
+  "no_cross_project_write": true,
+  "owner_decision_required": true,
+  "generated_at": "2026-07-05T23:33:00Z",
+  "notes": "INVALID: no_mutation_authorized=false — should be rejected"
+}

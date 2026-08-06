@@ -1,0 +1,47 @@
+{
+  "summary_id": "DS-REVIEW-0004",
+  "intake_id": "IR-REVIEW-0004",
+  "source_packet_id": "XPK-PERF-0708-2",
+  "item_count": 1,
+  "status_counts": {
+    "deferred": 1
+  },
+  "severity_counts": {
+    "medium": 1
+  },
+  "evidence_summary": {
+    "total_links": 0,
+    "by_type": {},
+    "found": 0,
+    "missing": 0,
+    "stale": 0
+  },
+  "lifecycle_summary": {
+    "total_transitions": 5,
+    "by_status": {
+      "open": 1,
+      "triaged": 1,
+      "evidence_attached": 1,
+      "needs_review": 1,
+      "deferred": 1
+    }
+  },
+  "unresolved_items": [],
+  "needs_review_items": [],
+  "deferred_items": [
+    {
+      "qa_item_id": "QA-PERF-0005",
+      "status": "deferred",
+      "severity": "medium"
+    }
+  ],
+  "resolved_locally_items": [],
+  "advisory_next_actions": [
+    "export_for_owner_review",
+    "review_deferred_items"
+  ],
+  "authority_disclaimer": "This review decision summary is advisory-only. It does not approve the intake, verify evidence, accept defects, close items, or seal anything. It does not mutate intake records, source packets, or Librarian. Custody is qa-pilot-local. Librarian impact is none.",
+  "custody": "qa-pilot-local",
+  "advisory_only": true,
+  "librarian_impact": "none"
+}

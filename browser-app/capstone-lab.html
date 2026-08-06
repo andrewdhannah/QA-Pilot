@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Capstone Assessment — QA Pilot</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+
+  <style>
+    /* ═══════════════════════════════════════════════════════════════════════
+       Capstone Lab — Landing Page & OS Launcher
+       ═══════════════════════════════════════════════════════════════════════ */
+
+    :root {
+      --cl-bg: #f8fafc;
+      --cl-surface: #ffffff;
+      --cl-border: #e2e8f0;
+      --cl-text: #0f172a;
+      --cl-text-muted: #64748b;
+      --cl-primary: #3b82f6;
+      --cl-primary-dark: #2563eb;
+      --cl-primary-glow: rgba(59, 130, 246, 0.4);
+      --cl-success: #10b981;
+      --cl-warning: #f59e0b;
+      --cl-error: #ef4444;
+      --cl-accent: #8b5cf6;
+      --cl-card-shadow: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04);
+      --cl-radius: 12px;
+      --cl-font: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      margin: 0;
+      font-family: var(--cl-font);
+      font-size: 15px;
+      background: var(--cl-bg);
+      color: var(--cl-text);
+      min-height: 100vh;
+    }
+
+    /* ── LANDING VIEW ──────────────────────────────────────────────── */
+    .cl-landing {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 24px 24px 36px;
+    }
+
+    /* Skip intro link */
+    .cl-skip-intro {
+      display: inline-block;
+      margin-bottom: 16px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--cl-primary);
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+      background: none;
+      padding: 4px 0;
+      transition: color 0.15s;
+    }
+    .cl-skip-intro:hover { color: var(--cl-primary-dark); text-decoration: underline; }
+
+    /* Header badge */
+    .cl-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #fef3c7;
+      color: #92400e;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: 20px;
+      margin-bottom: 12px;
+    }
+
+    /* Title */
+    .cl-title {
+      font-size: 26px;
+      font-weight: 800;
+      line-height: 1.2;
+      margin-bottom: 8px;
+      color: var(--cl-text);
+    }
+
+    .cl-title span { color: var(--cl-primary); }
+
+    .cl-subtitle {
+      font-size: 14px;
+      color: var(--cl-text-muted);
+      line-height: 1.5;
+      margin-bottom: 20px;
+    }
+
+    /* Cards */
+    .cl-card {
+      background: var(--cl-surface);
+      border: 1px solid var(--cl-border);
+      border-radius: var(--cl-radius);
+      padding: 16px 18px;
+      margin-bottom: 12px;
+      box-shadow: var(--cl-card-shadow);
+    }
+
+    .cl-card-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      margin-bottom: 10px;
+    }
+
+    .cl-card-title {
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .cl-card-desc {
+      font-size: 13px;
+      color: var(--cl-text-muted);
+      line-height: 1.5;
+    }
+
+    .cl-card-desc strong { color: var(--cl-text); }
+
+    /* Work path steps */
+    .cl-path-steps {
+      list-style: none;
+      padding: 0;
+      counter-reset: path-step;
+    }
+
+    .cl-path-step {
+      display: flex;
+      gap: 10px;
+      padding: 8px 0;
+      border-bottom: 1px solid var(--cl-border);
+    }
+    .cl-path-step:last-child { border-bottom: none; }
+
+    .cl-path-num {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: var(--cl-primary);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .cl-path-content {
+      flex: 1;
+      padding-top: 2px;
+    }
+
+    .cl-path-label {
+      font-weight: 600;
+      font-size: 13px;
+      margin-bottom: 1px;
+    }
+
+    .cl-path-desc {
+      font-size: 12px;
+      color: var(--cl-text-muted);
+      line-height: 1.4;
+    }
+
+    /* Launch button — with glow/underglow effect */
+    .cl-launch-wrap {
+      text-align: center;
+      margin: 20px 0 12px;
+    }
+
+    .cl-launch-btn {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 32px;
+      font-size: 15px;
+      font-weight: 700;
+      font-family: var(--cl-font);
+      color: #fff;
+      background: linear-gradient(135deg, var(--cl-primary), var(--cl-accent));
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: transform 0.15s, box-shadow 0.2s;
+      box-shadow:
+        0 4px 14px rgba(59, 130, 246, 0.35),
+        0 0 0 1px rgba(255,255,255,0.1) inset;
+    }
+
+    .cl-launch-btn::after {
+      content: '';
+      position: absolute;
+      inset: -4px;
+      border-radius: 16px;
+      background: linear-gradient(135deg, var(--cl-primary), var(--cl-accent));
+      opacity: 0.3;
+      filter: blur(12px);
+      z-index: -1;
+      transition: opacity 0.3s;
+    }
+
+    .cl-launch-btn:hover {
+      transform: translateY(-2px);
+      box-shadow:
+        0 8px 24px rgba(59, 130, 246, 0.45),
+        0 0 0 1px rgba(255,255,255,0.15) inset;
+    }
+
+    .cl-launch-btn:hover::after {
+      opacity: 0.5;
+      filter: blur(16px);
+    }
+
+    .cl-launch-btn:active {
+      transform: translateY(0);
+    }
+
+    .cl-launch-btn-icon {
+      font-size: 18px;
+    }
+
+    /* ── OS VIEW (shown after launch) ──────────────────────────────── */
+    .cl-os-view {
+      display: none;
+      width: 100%;
+      height: 100vh;
+      position: relative;
+      background: #050a14;
+    }
+
+    .cl-os-view.active {
+      display: block;
+    }
+
+    .cl-os-iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    .cl-os-loading {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: #050a14;
+      color: #94a3b8;
+      font-size: 14px;
+      gap: 16px;
+      z-index: 1;
+    }
+
+    .cl-os-loading.hidden {
+      display: none;
+    }
+
+    .cl-os-spinner {
+      width: 36px;
+      height: 36px;
+      border: 3px solid rgba(255,255,255,0.1);
+      border-top-color: var(--cl-primary);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* ── COMPLETION OVERLAY ────────────────────────────────────────── */
+    .cl-complete-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      z-index: 9999;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(4px);
+    }
+    .cl-complete-overlay.active { display: flex; }
+
+    .cl-complete-panel {
+      background: var(--cl-surface);
+      border-radius: 16px;
+      padding: 40px;
+      max-width: 440px;
+      text-align: center;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    }
+
+    .cl-complete-icon {
+      font-size: 48px;
+      margin-bottom: 16px;
+    }
+
+    .cl-complete-title {
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .cl-complete-desc {
+      font-size: 14px;
+      color: var(--cl-text-muted);
+      line-height: 1.6;
+      margin-bottom: 24px;
+    }
+
+    .cl-complete-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 28px;
+      font-size: 15px;
+      font-weight: 600;
+      font-family: var(--cl-font);
+      color: #fff;
+      background: var(--cl-primary);
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.15s;
+    }
+    .cl-complete-btn:hover { background: var(--cl-primary-dark); }
+
+    /* ── MARK COMPLETE BUTTON (bypass) ─────────────────────────────── */
+    .cl-mark-complete-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 24px;
+      font-size: 14px;
+      font-weight: 600;
+      font-family: var(--cl-font);
+      color: #92400e;
+      background: #fef3c7;
+      border: 1px solid #f59e0b;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background 0.15s, transform 0.1s;
+    }
+    .cl-mark-complete-btn:hover {
+      background: #fde68a;
+      transform: translateY(-1px);
+    }
+    .cl-mark-complete-btn:active {
+      transform: translateY(0);
+    }
+
+    /* ── RESPONSIVE ────────────────────────────────────────────────── */
+    @media (max-width: 640px) {
+      .cl-landing { padding: 24px 16px 40px; }
+      .cl-title { font-size: 24px; }
+      .cl-subtitle { font-size: 14px; }
+      .cl-card { padding: 18px; }
+      .cl-launch-btn { padding: 14px 28px; font-size: 15px; width: 100%; justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── LANDING VIEW ────────────────────────────────────────────────── -->
+  <div class="cl-landing" id="cl-landing">
+
+    <button class="cl-skip-intro" onclick="launchCapstone()">Skip Intro →</button>
+
+    <div class="cl-badge">🎓 Final Assessment</div>
+
+    <h1 class="cl-title">Capstone <span>Assessment</span></h1>
+    <p class="cl-subtitle">
+      This is your final challenge — a hands-on scenario that brings together everything
+      you've learned: testing methodology, acceptance criteria, CRM investigation, and
+      professional bug reporting in Azure DevOps.
+    </p>
+
+    <!-- What it is -->
+    <div class="cl-card">
+      <div class="cl-card-icon" style="background:#dbeafe;color:#2563eb;">📋</div>
+      <h2 class="cl-card-title">What Is the Capstone?</h2>
+      <div class="cl-card-desc">
+        You will step into the role of a <strong>QA Tester</strong> working on a real-world case
+        investigation. Using the simulated Windows desktop environment, you'll switch between
+        <strong>Dynamics 365</strong> (to investigate a case) and <strong>Azure DevOps</strong>
+        (to file professional bug reports), just like a real QA analyst.
+      </div>
+    </div>
+
+    <!-- Environment overview -->
+    <div class="cl-card">
+      <div class="cl-card-icon" style="background:#ede9fe;color:#7c3aed;">🖥️</div>
+      <h2 class="cl-card-title">The Desktop Environment</h2>
+      <div class="cl-card-desc">
+        When you launch the assessment, a <strong>Windows 11-style desktop</strong> will load.
+        On the desktop and taskbar you'll find:
+        <br><br>
+        <strong>🟦 Dynamics 365</strong> — Investigate your assigned case. Switch between
+        Junior/Senior roles to verify role-based permissions. Reference the Acceptance Criteria
+        panel to check expected behaviour.
+        <br><br>
+        <strong>🐞 Azure DevOps</strong> — File bugs with complete repro steps, expected/actual
+        results, and AC references. Track your bugs through the board.
+        <br><br>
+        <strong>📊 Reports</strong> — Review your submission before finalising.
+        <br><br>
+        <strong>💬 Teams</strong> — Receive instructions and context from the team.
+      </div>
+    </div>
+
+    <!-- Work path -->
+    <div class="cl-card">
+      <div class="cl-card-icon" style="background:#fef3c7;color:#d97706;">🗺️</div>
+      <h2 class="cl-card-title">Your Work Path</h2>
+      <div class="cl-card-desc">
+        Follow these steps in order. Each one builds on the last.
+      </div>
+      <ol class="cl-path-steps">
+        <li class="cl-path-step">
+          <span class="cl-path-num">1</span>
+          <div class="cl-path-content">
+            <div class="cl-path-label">Open the Brief</div>
+            <div class="cl-path-desc">Read the scenario instructions in Teams. Understand the case you've been assigned and what you're testing for.</div>
+          </div>
+        </li>
+        <li class="cl-path-step">
+          <span class="cl-path-num">2</span>
+          <div class="cl-path-content">
+            <div class="cl-path-label">Investigate in Dynamics 365</div>
+            <div class="cl-path-desc">Open the case. Switch between Junior and Senior roles. Check each field against the Acceptance Criteria. Identify discrepancies.</div>
+          </div>
+        </li>
+        <li class="cl-path-step">
+          <span class="cl-path-num">3</span>
+          <div class="cl-path-content">
+            <div class="cl-path-label">File Bugs in Azure DevOps</div>
+            <div class="cl-path-desc">For each defect you find, create a professional bug report in ADO. Include numbered repro steps, expected result (with AC reference), and actual result.</div>
+          </div>
+        </li>
+        <li class="cl-path-step">
+          <span class="cl-path-num">4</span>
+          <div class="cl-path-content">
+            <div class="cl-path-label">Review &amp; Submit</div>
+            <div class="cl-path-desc">Open Reports to review your submitted bugs. When you're satisfied, click <strong>Submit for Certification</strong> to complete the assessment.</div>
+          </div>
+        </li>
+      </ol>
+    </div>
+
+    <div class="cl-card" style="background:#f0fdf4;border-color:#86efac;">
+      <div style="display:flex;align-items:flex-start;gap:12px;">
+        <span style="font-size:20px;flex-shrink:0;">💡</span>
+        <div class="cl-card-desc" style="color:var(--cl-text);">
+          <strong style="color:#16a34a;">Before you begin:</strong> Make sure you've completed all
+          previous modules (Testing 101, Acceptance Criteria, Dynamics 365, Azure DevOps, and
+          Test Planning). The capstone assumes you are familiar with all the tools and concepts.
+        </div>
+      </div>
+    </div>
+
+    <!-- Launch button -->
+    <div class="cl-launch-wrap">
+      <button class="cl-launch-btn" id="cl-launch-btn" onclick="launchCapstone()">
+        <span class="cl-launch-btn-icon">🚀</span>
+        Launch Capstone Assessment
+      </button>
+      <p style="margin-top:12px;font-size:13px;color:var(--cl-text-muted);">
+        The desktop simulator will load in full screen. Estimated time: 45 minutes.
+      </p>
+    </div>
+
+    <!-- Mark Complete alternative -->
+    <div class="cl-card" style="background:#fefce8;border-color:#fde68a;margin-top:28px;">
+      <div style="display:flex;align-items:flex-start;gap:12px;">
+        <span style="font-size:20px;flex-shrink:0;">⏭️</span>
+        <div class="cl-card-desc" style="color:var(--cl-text);">
+          <strong style="color:#a16207;">Already completed the assessment elsewhere?</strong>
+          <br>
+          You can mark this capstone as complete without launching the simulator.
+          This will record completion and award your certificate.
+        </div>
+      </div>
+      <div style="margin-top:14px;text-align:right;">
+        <button class="cl-mark-complete-btn" id="cl-mark-complete-btn" onclick="markCapstoneComplete()">
+          Mark Assessment Complete
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── OS VIEW (hidden until launch) ───────────────────────────────── -->
+  <div class="cl-os-view" id="cl-os-view">
+    <div class="cl-os-loading" id="cl-os-loading">
+      <div class="cl-os-spinner"></div>
+      <span>Booting the assessment environment…</span>
+    </div>
+    <iframe class="cl-os-iframe" id="cl-os-iframe" sandbox="allow-scripts allow-same-origin allow-forms allow-modals"></iframe>
+  </div>
+
+  <!-- ── COMPLETION OVERLAY ──────────────────────────────────────────── -->
+  <div class="cl-complete-overlay" id="cl-complete-overlay">
+    <div class="cl-complete-panel">
+      <div class="cl-complete-icon">🎉</div>
+      <div class="cl-complete-title">Assessment Complete!</div>
+      <div class="cl-complete-desc">
+        Your results have been saved. Click the button below to
+        view your certificate with your final score.
+      </div>
+      <button class="cl-complete-btn" onclick="viewCertificateAfterCapstone()">
+        View Certificate →
+      </button>
+    </div>
+  </div>
+
+  <script src="js/clippy-guide.js"></script>
+  <script>
+    (function() {
+      'use strict';
+
+      var caseId = '';
+      var studentName = 'Trainee';
+      var courseId = '';
+      var osLoaded = false;
+
+      // ── Capstone 1 Tips ─────────────────────────────────────────────
+      // Shown AFTER the intro sequence, one at a time in the bottom-right
+      // corner. Each tip maps to a specific action in the OS. The student
+      // clicks Next to advance, or Clip auto-advances every 45 seconds.
+      var capstoneTips = [
+        "Step 1 of 6 — Open Teams on the desktop. Your QA Lead Pete has left a briefing about this case. Start there! 💬",
+        "Step 2 of 6 — Open Dynamics 365. Case CASE-00247 is pre-loaded. Read every field carefully — something doesn't look right. 🔍",
+        "Step 3 of 6 — Open the AC Panel (the green ✓ icon). It tells you what the system SHOULD do. Compare each field to what you see in Dynamics. 📋",
+        "Step 4 of 6 — Switch roles! Open the Start menu and toggle to Senior Investigator. Some bugs only appear when you check permission differences. 👤",
+        "Step 5 of 6 — Found a bug? Open Azure DevOps and file a report. Include numbered repro steps, the expected result, and the AC reference (e.g. AC-2.1). 🐞",
+        "Step 6 of 6 — There are 4 bugs in total. Once you've filed them all, come back here and click my Submit button below to complete the assessment! 🏆"
+      ];
+
+      // ── URL PARAMS ──────────────────────────────────────────────────
+      function getParams() {
+        var p = new URLSearchParams(window.location.search);
+        caseId = p.get('caseId') || 'CASE-00000';
+        studentName = p.get('name') || 'Trainee';
+        courseId = p.get('courseId') || '';
+      }
+
+      // ── LAUNCH CAPSTONE ────────────────────────────────────────────
+      function launchCapstone() {
+        // Hide landing, show OS view
+        document.getElementById('cl-landing').style.display = 'none';
+        document.getElementById('cl-os-view').classList.add('active');
+
+        // Write the capstone session to localStorage so the OS can read it
+        var session = {
+          caseId: caseId,
+          role: 'junior',
+          scenarioId: 'capstone-001',
+          bugToggles: {}
+        };
+        try {
+          localStorage.setItem('qa-capstone-session', JSON.stringify(session));
+        } catch (e) {
+          console.warn('capstone-lab: could not write session', e);
+        }
+
+        // Create the iframe loading dist.html (the built OS desktop)
+        var iframe = document.getElementById('cl-os-iframe');
+        // Step 1 — Hide the loading spinner once the OS iframe finishes loading.
+        // We do NOT start Clip here because the lock screen is still visible.
+        iframe.addEventListener('load', function() {
+          var loading = document.getElementById('cl-os-loading');
+          if (loading) loading.classList.add('hidden');
+        });
+
+        // Step 2 — Wait for the OS to signal that the lock screen has been
+        // dismissed (OS posts OS_UNLOCKED via postMessage when unlock() fires).
+        // Only then launch Clip's guided intro so it doesn't compete with the lock.
+        // Guard flag prevents the intro from firing more than once if the message
+        // is somehow received multiple times.
+        var introFired = false;
+        window.addEventListener('message', function onOSUnlocked(event) {
+          var msg = event.data;
+          if (!msg || msg.type !== 'OS_UNLOCKED') return;
+          if (introFired) return;
+          introFired = true;
+
+          if (window.ClippyGuide) {
+            var name = studentName || 'Investigator';
+            ClippyGuide.runIntro({
+              steps: [
+                {
+                  text: "Hi " + name + "! I'm Clip — your QA guide. I'll walk you through this assessment step by step. 🐛",
+                  position: 'center'
+                },
+                {
+                  text: "Your mission: A payment processing failure at Northgate Logistics. Case CASE-00247 is loaded in Dynamics. Time to investigate! 📋",
+                  position: 'center'
+                },
+                {
+                  text: "First stop — Teams. Double-click it on the desktop. Your QA Lead Pete has left you a briefing to start with. 💬",
+                  position: 'taskbar-mid'
+                },
+                {
+                  text: "Next — open Dynamics 365 (blue CRM icon). The case is pre-loaded. Compare every field to the AC Panel to spot defects. 🔍",
+                  position: 'taskbar-left'
+                },
+                {
+                  text: "When you find a bug, open Azure DevOps and file a report. Include the AC number — that's what makes a great bug report! 🐞",
+                  position: 'taskbar-right'
+                },
+                {
+                  text: "There are 4 bugs to find. Once you've filed them all, click my Submit button here. I'll be in the bottom-right corner. Let's go! 🚀",
+                  position: 'home'
+                }
+              ],
+              onComplete: function () {
+                ClippyGuide.enableSubmit(true);
+              }
+            });
+          }
+        });
+        // Fallback: hide spinner after 5s regardless (in case load already fired)
+        setTimeout(function() {
+          var loading = document.getElementById('cl-os-loading');
+          if (loading) loading.classList.add('hidden');
+        }, 5000);
+        // Clear any stale window state from a previous session before the OS boots.
+        // Without this, windows left open last time would reappear on the desktop.
+        try { localStorage.removeItem('qaSimulatorDesktop'); } catch(e) {}
+
+        iframe.src = 'desktop/dist.html';
+
+        // Listen for CAPSTONE_COMPLETE from the OS
+        window.addEventListener('message', handleOSMessage);
+      }
+
+      // ── HANDLE OS MESSAGES ─────────────────────────────────────────
+      function handleOSMessage(event) {
+        var msg = event.data;
+        if (!msg || msg.type !== 'CAPSTONE_COMPLETE') return;
+
+        // Clear the session
+        try { localStorage.removeItem('qa-capstone-session'); } catch (e) {}
+
+        // Show completion overlay
+        document.getElementById('cl-complete-overlay').classList.add('active');
+
+        // Hide the guide when complete
+        if (window.ClippyGuide) window.ClippyGuide.hideBubble();
+
+        // Tell the parent course-view.html to mark the capstone module complete
+        // This fires into course-view.html's message listener which advances
+        // the containing module's progress in IndexedDB.
+        try {
+          window.parent.postMessage({ type: 'MARK_MODULE_COMPLETE', subModuleId: 'capstone', bypassed: false }, '*');
+        } catch (e) {
+          console.warn('capstone-lab: could not send MARK_MODULE_COMPLETE', e);
+        }
+      }
+
+      // ── VIEW CERTIFICATE AFTER CAPSTONE ────────────────────────────
+      // Instead of opening certificate.html in a new tab (target="_blank"),
+      // we ask the parent course-view.html to navigate to the certificate
+      // with confetti. This keeps the window-in-window clean.
+      function viewCertificateAfterCapstone() {
+        try {
+          window.parent.postMessage({
+            type: 'CAPSTONE_FINISHED',
+            courseId: courseId
+          }, '*');
+        } catch (e) {
+          // Fallback: navigate directly if parent isn't available
+          var certUrl = 'certificate.html';
+          if (courseId) certUrl += '?course=' + encodeURIComponent(courseId) + '&confetti=true';
+          window.location.href = certUrl;
+        }
+      }
+
+      // ── MARK COMPLETE (bypass the simulator) ────────────────────────
+      function markCapstoneComplete() {
+        if (!confirm('Mark the capstone assessment as complete? You can retake it later if needed.')) {
+          return;
+        }
+
+        // Post MARK_MODULE_COMPLETE to parent so course-view.html can
+        // mark all sub-modules in this module as complete and award the certificate.
+        // Include bypassed flag so the admin dashboard can surface this.
+        try {
+          window.parent.postMessage({ type: 'MARK_MODULE_COMPLETE', subModuleId: 'capstone', bypassed: true }, '*');
+        } catch (e) {
+          console.warn('capstone-lab: could not send MARK_MODULE_COMPLETE', e);
+        }
+
+        // Mark the button as complete and show overlay
+        document.getElementById('cl-complete-overlay').classList.add('active');
+
+        var btn = document.getElementById('cl-mark-complete-btn');
+        if (btn) {
+          btn.disabled = true;
+          btn.textContent = '✓ Assessment Marked Complete';
+          btn.style.opacity = '0.6';
+          btn.style.cursor = 'default';
+        }
+      }
+
+      // ── AUTO-LAUNCH ─────────────────────────────────────────────────
+      // When ?autoLaunch=true is set (used by course-view.html to skip
+      // the landing page), immediately launch the OS simulator.
+      function checkAutoLaunch() {
+        var p = new URLSearchParams(window.location.search);
+        if (p.get('autoLaunch') === 'true') {
+          launchCapstone();
+        }
+      }
+
+      // ── BOOT ────────────────────────────────────────────────────────
+      getParams();
+      checkAutoLaunch();
+
+      // Store student info where the OS iframe can read it synchronously
+      // (window.parent.__capstoneStudentInfo). This lets the OS pre-fill
+      // the Dynamics CRM username and validate login without waiting for
+      // IndexedDB (which may not be available in the standalone OS context).
+      window.__capstoneStudentInfo = {
+        name: studentName,
+        caseId: caseId,
+        role: 'junior'
+      };
+
+      // Initialise the Clippy guide.
+      // expectedBugs: 4 — Clip warns if the student tries to submit
+      // before all 4 bugs in the capstone have been filed in ADO.
+      // The intro sequence is triggered separately in the iframe load
+      // handler below (after the OS finishes booting).
+      if (window.ClippyGuide) {
+        ClippyGuide.init({
+          tips:         capstoneTips,
+          expectedBugs: 4,      // Capstone 1 seeds exactly 4 bugs
+          autoStart:    false,  // intro replaces autoStart — see iframe load handler
+          onSubmit: function() {
+            // Bug count check is handled inside clippy-guide.js.
+            // We only reach this callback once the student is cleared to submit.
+            var iframe = document.getElementById('cl-os-iframe');
+            if (iframe && iframe.contentWindow) {
+              try {
+                var btn = iframe.contentWindow.document.getElementById('qa-submit-btn');
+                if (btn) { btn.click(); return; }
+              } catch (e) {}
+            }
+            // Fallback if OS submit button isn't reachable
+            ClippyGuide.say("Click the 'Submit for Certification' button in the OS taskbar to finish! 🎯");
+          },
+          // Clip reacts to events posted from the OS apps via postMessage.
+          // BUG_LOGGED is auto-counted in clippy-guide.js (bugCount++).
+          events: {
+            'BUG_LOGGED': function(msg) {
+              // bugCount is already incremented by the time this fires
+              var count = window.ClippyGuide ? ClippyGuide.getBugCount() : '?';
+              var reactions = [
+                'Bug filed! That\'s ' + count + ' of 4 — keep hunting! 🐛',
+                'Great report! ' + count + ' down, ' + (4 - count) + ' to go. 📝',
+                'Logged! The dev team has been notified 😏 (' + count + '/4)',
+                'Nice find! ' + count + ' bug' + (count === 1 ? '' : 's') + ' filed so far. 🎯'
+              ];
+              return reactions[Math.floor(Math.random() * reactions.length)];
+            },
+            'OS_NOTIFICATION': function(msg) {
+              var text = msg.text || '';
+              if (text.indexOf('Role') !== -1 || text.indexOf('Senior') !== -1 || text.indexOf('Junior') !== -1) {
+                return 'Role switched! Notice anything different? Some bugs only show with the right role. 🔄';
+              }
+              return null; // ignore other notifications silently
+            }
+          }
+        });
+      }
+
+      // Expose to inline onclick
+      window.launchCapstone = launchCapstone;
+      window.markCapstoneComplete = markCapstoneComplete;
+      window.viewCertificateAfterCapstone = viewCertificateAfterCapstone;
+
+    })();
+  </script>
+
+</body>
+</html>

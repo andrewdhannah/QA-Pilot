@@ -1,0 +1,1316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Azure DevOps — Bug Report Lab</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+
+  <style>
+    /* ═══════════════════════════════════════════════════════════════════════
+       ADO Lab — Azure DevOps Bug Report Simulation
+       Designed to mimic Azure DevOps (dev.azure.com) cloud UI.
+       ═══════════════════════════════════════════════════════════════════════ */
+
+    :root {
+      --ado-header-bg: #11100f;
+      --ado-header-fg: #ffffff;
+      --ado-nav-bg: #f8f8f8;
+      --ado-nav-active: #0078d4;
+      --ado-nav-text: #242424;
+      --ado-page-bg: #f3f2f1;
+      --ado-surface: #ffffff;
+      --ado-border: #d1d1d1;
+      --ado-primary: #0078d4;
+      --ado-primary-dark: #005a9e;
+      --ado-text: #242424;
+      --ado-text-muted: #616161;
+      --ado-field-bg: #ffffff;
+      --ado-tag-bg: #e8f4fd;
+      --ado-error: #d13438;
+      --ado-success: #107c10;
+      --ado-warning: #b45309;
+      --ado-font: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      --ado-radius: 2px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      margin: 0;
+      font-family: var(--ado-font);
+      font-size: 14px;
+      background: var(--ado-page-bg);
+      color: var(--ado-text);
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* ── HEADER ─────────────────────────────────────────────────────── */
+    .ado-header {
+      height: 48px;
+      background: var(--ado-header-bg);
+      color: var(--ado-header-fg);
+      display: flex;
+      align-items: center;
+      padding: 0 16px;
+      gap: 12px;
+      flex-shrink: 0;
+    }
+
+    .ado-hamburger {
+      display: none;
+      background: none;
+      border: none;
+      color: var(--ado-header-fg);
+      font-size: 20px;
+      cursor: pointer;
+      padding: 4px;
+    }
+
+    .ado-logo {
+      font-weight: 600;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .ado-logo-icon {
+      width: 20px;
+      height: 20px;
+      background: var(--ado-primary);
+      border-radius: 3px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .ado-header-nav {
+      display: flex;
+      gap: 4px;
+      margin-left: 24px;
+    }
+
+    .ado-header-tab {
+      padding: 4px 12px;
+      font-size: 13px;
+      color: rgba(255,255,255,0.8);
+      background: none;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-family: var(--ado-font);
+    }
+    .ado-header-tab:hover { background: rgba(255,255,255,0.1); color: #fff; }
+
+    .ado-header-right {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .ado-avatar {
+      width: 24px;
+      height: 24px;
+      background: var(--ado-primary);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .ado-student-name {
+      font-size: 12px;
+      color: rgba(255,255,255,0.7);
+    }
+
+    /* ── LAYOUT ─────────────────────────────────────────────────────── */
+    .ado-layout {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    /* ── LEFT NAV ───────────────────────────────────────────────────── */
+    .ado-left-nav {
+      width: 220px;
+      background: var(--ado-nav-bg);
+      border-right: 1px solid var(--ado-border);
+      overflow-y: auto;
+      flex-shrink: 0;
+      padding-bottom: 16px;
+    }
+
+    .ado-left-nav.collapsed {
+      display: none;
+    }
+
+    .ado-nav-heading {
+      font-size: 11px;
+      text-transform: uppercase;
+      font-weight: 600;
+      color: var(--ado-text-muted);
+      padding: 16px 16px 4px 20px;
+      letter-spacing: 0.04em;
+    }
+
+    .ado-nav-link {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 16px 7px 20px;
+      font-size: 13px;
+      color: var(--ado-nav-text);
+      text-decoration: none;
+      border-left: 3px solid transparent;
+      cursor: pointer;
+      transition: background 0.1s;
+    }
+
+    .ado-nav-link:hover { background: rgba(0,0,0,0.03); }
+    .ado-nav-link.active {
+      border-left-color: var(--ado-nav-active);
+      color: var(--ado-primary);
+      background: rgba(0,120,212,0.06);
+      font-weight: 600;
+    }
+
+    .ado-nav-icon { font-size: 15px; width: 20px; text-align: center; }
+
+    /* ── MAIN CONTENT ───────────────────────────────────────────────── */
+    .ado-main {
+      flex: 1;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .ado-breadcrumb {
+      padding: 8px 24px;
+      font-size: 12px;
+      color: var(--ado-text-muted);
+      background: var(--ado-surface);
+      border-bottom: 1px solid var(--ado-border);
+      flex-shrink: 0;
+    }
+
+    .ado-breadcrumb-sep { margin: 0 6px; color: var(--ado-border); }
+
+    /* ── VIEW TOOLBAR ───────────────────────────────────────────────── */
+    .ado-view-toolbar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 24px;
+      background: var(--ado-surface);
+      border-bottom: 1px solid var(--ado-border);
+      flex-shrink: 0;
+    }
+
+    .ado-view-btn {
+      padding: 5px 14px;
+      font-size: 13px;
+      font-family: var(--ado-font);
+      background: none;
+      border: 1px solid transparent;
+      border-radius: var(--ado-radius);
+      cursor: pointer;
+      color: var(--ado-text-muted);
+      font-weight: 500;
+    }
+    .ado-view-btn:hover { background: rgba(0,0,0,0.03); }
+    .ado-view-btn.active {
+      border-color: var(--ado-border);
+      background: var(--ado-surface);
+      color: var(--ado-text);
+      font-weight: 600;
+    }
+
+    .ado-view-btn-primary {
+      margin-left: auto;
+      padding: 5px 14px;
+      font-size: 13px;
+      font-family: var(--ado-font);
+      background: var(--ado-primary);
+      border: none;
+      border-radius: var(--ado-radius);
+      cursor: pointer;
+      color: #fff;
+      font-weight: 600;
+    }
+    .ado-view-btn-primary:hover { background: var(--ado-primary-dark); }
+
+    /* ── VIEW: BOARD ────────────────────────────────────────────────── */
+    .ado-board-view { padding: 16px 24px; display: none; }
+    .ado-board-view.active { display: block; }
+
+    .ado-board {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      min-height: 400px;
+    }
+
+    .ado-board-column {
+      background: var(--ado-nav-bg);
+      border: 1px solid var(--ado-border);
+      border-radius: 4px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .ado-col-header {
+      padding: 10px 14px;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      border-bottom: 1px solid var(--ado-border);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .ado-col-count {
+      font-size: 11px;
+      font-weight: 400;
+      color: var(--ado-text-muted);
+    }
+
+    .ado-col-body {
+      padding: 8px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .ado-board-card {
+      background: var(--ado-surface);
+      border: 1px solid var(--ado-border);
+      border-radius: 4px;
+      padding: 10px 12px;
+      cursor: pointer;
+      transition: box-shadow 0.15s, border-color 0.15s;
+    }
+    .ado-board-card:hover {
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      border-color: var(--ado-primary);
+    }
+
+    .ado-card-type {
+      font-size: 10px;
+      color: var(--ado-text-muted);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      margin-bottom: 4px;
+    }
+
+    .ado-card-title {
+      font-size: 13px;
+      font-weight: 600;
+      line-height: 1.4;
+      margin-bottom: 6px;
+      color: var(--ado-text);
+    }
+
+    .ado-card-meta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 10px;
+    }
+
+    .ado-card-priority {
+      padding: 1px 6px;
+      border-radius: 3px;
+      font-weight: 600;
+    }
+    .prio-critical { background: #fde8e8; color: #a80000; }
+    .prio-high     { background: #fff4e0; color: #b45309; }
+    .prio-medium   { background: #e8f4fd; color: #0078d4; }
+    .prio-low      { background: #f3f2f1; color: #616161; }
+
+    .ado-card-ac {
+      color: var(--ado-text-muted);
+    }
+
+    /* ── VIEW: NEW BUG FORM ─────────────────────────────────────────── */
+    .ado-form-view { padding: 16px 24px; display: none; }
+    .ado-form-view.active { display: block; }
+
+    .ado-work-item {
+      max-width: 900px;
+      background: var(--ado-surface);
+      border: 1px solid var(--ado-border);
+      border-radius: 4px;
+    }
+
+    .ado-work-item-header {
+      padding: 14px 20px;
+      border-bottom: 1px solid var(--ado-border);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: #fef2f2;
+      border-radius: 4px 4px 0 0;
+    }
+
+    .ado-type-icon { font-size: 18px; }
+
+    .ado-wi-title {
+      font-size: 16px;
+      font-weight: 700;
+      flex: 1;
+      color: var(--ado-text);
+    }
+
+    .ado-state-badge {
+      padding: 2px 12px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+    .state-new      { background: #e5f1fb; color: #0078d4; }
+    .state-active   { background: #fff4e0; color: #b45309; }
+    .state-resolved { background: #e6f4ea; color: #16a34a; }
+    .state-closed   { background: #f3f2f1; color: #616161; }
+
+    .ado-work-item-body {
+      display: grid;
+      grid-template-columns: 1fr 260px;
+    }
+
+    .ado-wi-main {
+      padding: 20px;
+      border-right: 1px solid var(--ado-border);
+    }
+
+    .ado-wi-sidebar {
+      padding: 16px 20px;
+      background: var(--ado-nav-bg);
+      font-size: 13px;
+    }
+
+    .ado-field {
+      margin-bottom: 18px;
+    }
+
+    .ado-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--ado-text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    .ado-label-required::after {
+      content: " *";
+      color: var(--ado-error);
+    }
+
+    .ado-input,
+    .ado-select,
+    .ado-textarea {
+      width: 100%;
+      padding: 6px 10px;
+      border: 1px solid var(--ado-border);
+      border-radius: var(--ado-radius);
+      font-family: var(--ado-font);
+      font-size: 14px;
+      background: var(--ado-field-bg);
+      box-sizing: border-box;
+    }
+
+    .ado-input:focus,
+    .ado-select:focus,
+    .ado-textarea:focus {
+      outline: none;
+      border-color: var(--ado-primary);
+      box-shadow: 0 0 0 1px var(--ado-primary);
+    }
+
+    .ado-textarea {
+      min-height: 60px;
+      resize: vertical;
+    }
+
+    .ado-input.is-invalid,
+    .ado-select.is-invalid,
+    .ado-textarea.is-invalid {
+      border-color: var(--ado-error) !important;
+      box-shadow: 0 0 0 1px var(--ado-error) !important;
+    }
+
+    .ado-field-error {
+      font-size: 12px;
+      color: var(--ado-error);
+      margin-top: 4px;
+      display: none;
+    }
+    .ado-field-error.visible { display: block; }
+
+    /* ── REPRO STEPS ────────────────────────────────────────────────── */
+    .ado-repro-steps { list-style: none; padding: 0; margin-bottom: 8px; }
+
+    .ado-repro-step {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 8px;
+      align-items: flex-start;
+    }
+
+    .ado-repro-step-num {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: var(--ado-primary);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .ado-repro-step-input {
+      flex: 1;
+      padding: 6px 10px;
+      border: 1px solid var(--ado-border);
+      border-radius: var(--ado-radius);
+      font-family: var(--ado-font);
+      font-size: 14px;
+    }
+    .ado-repro-step-input:focus {
+      outline: none;
+      border-color: var(--ado-primary);
+    }
+    .ado-repro-step-input.is-invalid {
+      border-color: var(--ado-error);
+    }
+
+    .ado-repro-remove {
+      background: none;
+      border: none;
+      color: var(--ado-error);
+      cursor: pointer;
+      font-size: 16px;
+      padding: 4px;
+      line-height: 1;
+    }
+    .ado-repro-remove:hover { opacity: 0.7; }
+
+    .ado-add-step-btn {
+      background: none;
+      border: 1px dashed var(--ado-border);
+      color: var(--ado-primary);
+      font-size: 12px;
+      padding: 6px 12px;
+      cursor: pointer;
+      border-radius: var(--ado-radius);
+      font-family: var(--ado-font);
+      margin-top: 4px;
+    }
+    .ado-add-step-btn:hover { background: rgba(0,120,212,0.04); }
+
+    /* ── FORM ACTIONS ───────────────────────────────────────────────── */
+    .ado-form-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 24px;
+      padding-top: 16px;
+      border-top: 1px solid var(--ado-border);
+    }
+
+    .ado-save-btn {
+      background: var(--ado-primary);
+      color: #fff;
+      padding: 7px 20px;
+      border: none;
+      border-radius: var(--ado-radius);
+      font-family: var(--ado-font);
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .ado-save-btn:hover { background: var(--ado-primary-dark); }
+
+    .ado-discard-btn {
+      background: none;
+      color: var(--ado-text);
+      padding: 7px 20px;
+      border: 1px solid var(--ado-border);
+      border-radius: var(--ado-radius);
+      font-family: var(--ado-font);
+      font-size: 13px;
+      cursor: pointer;
+    }
+    .ado-discard-btn:hover { background: rgba(0,0,0,0.03); }
+
+    /* ── TOAST NOTIFICATIONS ────────────────────────────────────────── */
+    #ado-toast-container {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      pointer-events: none;
+    }
+
+    .ado-toast {
+      padding: 12px 20px;
+      border-radius: 4px;
+      font-size: 13px;
+      font-weight: 500;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      animation: toastIn 0.25s ease-out;
+      pointer-events: auto;
+      max-width: 380px;
+    }
+
+    .ado-toast-success {
+      background: #e6f4ea;
+      border: 1px solid #b7dfb9;
+      color: #107c10;
+    }
+
+    .ado-toast-error {
+      background: #fde8e8;
+      border: 1px solid #f5b1b1;
+      color: #a80000;
+    }
+
+    .ado-toast-info {
+      background: #e5f1fb;
+      border: 1px solid #b3d6f2;
+      color: #0078d4;
+    }
+
+    @keyframes toastIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── WORK ITEM DETAIL OVERLAY ───────────────────────────────────── */
+    .ado-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.4);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+    }
+    .ado-overlay.active { display: flex; }
+
+    .ado-overlay-panel {
+      background: var(--ado-surface);
+      border-radius: 6px;
+      width: 600px;
+      max-width: 90vw;
+      max-height: 80vh;
+      overflow-y: auto;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+    }
+
+    .ado-overlay-header {
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--ado-border);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .ado-overlay-close {
+      margin-left: auto;
+      background: none;
+      border: none;
+      font-size: 20px;
+      cursor: pointer;
+      color: var(--ado-text-muted);
+      padding: 4px;
+      line-height: 1;
+    }
+
+    .ado-overlay-body {
+      padding: 20px;
+      font-size: 13px;
+    }
+
+    .ado-overlay-body .ado-field { margin-bottom: 14px; }
+    .ado-overlay-body .ado-label {
+      font-size: 11px;
+      color: var(--ado-text-muted);
+      margin-bottom: 3px;
+    }
+    .ado-overlay-body .ado-field-value {
+      font-size: 13px;
+      color: var(--ado-text);
+      line-height: 1.5;
+    }
+
+    /* ── RESPONSIVE ─────────────────────────────────────────────────── */
+    @media (max-width: 900px) {
+      .ado-board { grid-template-columns: repeat(2, 1fr); }
+      .ado-work-item-body { grid-template-columns: 1fr; }
+      .ado-wi-sidebar { border-top: 1px solid var(--ado-border); border-left: none; }
+      .ado-left-nav { width: 180px; }
+    }
+
+    @media (max-width: 640px) {
+      .ado-board { grid-template-columns: 1fr; }
+      .ado-hamburger { display: block; }
+      .ado-left-nav {
+        position: fixed;
+        top: 48px;
+        left: 0;
+        bottom: 0;
+        width: 240px;
+        z-index: 500;
+        box-shadow: 4px 0 12px rgba(0,0,0,0.15);
+        transform: translateX(-100%);
+        transition: transform 0.2s;
+      }
+      .ado-left-nav.open { transform: translateX(0); }
+      .ado-student-name { display: none; }
+      .ado-header-tab { font-size: 12px; padding: 4px 8px; }
+      .ado-form-view { padding: 12px; }
+      .ado-board-view { padding: 12px; }
+      .ado-wi-main { padding: 14px; }
+      .ado-wi-sidebar { padding: 14px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── HEADER ──────────────────────────────────────────────────────── -->
+  <header class="ado-header">
+    <button class="ado-hamburger" id="ado-hamburger" onclick="toggleNav()" aria-label="Toggle navigation">☰</button>
+    <div class="ado-logo">
+      <div class="ado-logo-icon">▼</div>
+      <span>Azure DevOps</span>
+    </div>
+    <nav class="ado-header-nav">
+      <button class="ado-header-tab" onclick="switchView('board')">Boards</button>
+      <button class="ado-header-tab" onclick="switchView('form')">New Bug</button>
+    </nav>
+    <div class="ado-header-right">
+      <span class="ado-student-name" id="ado-student-label">Trainee</span>
+      <div class="ado-avatar" id="ado-avatar">T</div>
+    </div>
+  </header>
+
+  <!-- ── LAYOUT ──────────────────────────────────────────────────────── -->
+  <div class="ado-layout">
+    <!-- Left Nav -->
+    <nav class="ado-left-nav" id="ado-left-nav">
+      <div class="ado-nav-heading">Boards</div>
+      <a class="ado-nav-link active" onclick="switchView('board')">
+        <span class="ado-nav-icon">📋</span> Board
+      </a>
+      <a class="ado-nav-link" onclick="switchView('form')">
+        <span class="ado-nav-icon">🐛</span> New Bug
+      </a>
+      <div class="ado-nav-heading" style="margin-top:12px;">Queries</div>
+      <a class="ado-nav-link"><span class="ado-nav-icon">🔍</span> My Bugs</a>
+      <a class="ado-nav-link"><span class="ado-nav-icon">📊</span> All Bugs</a>
+      <a class="ado-nav-link"><span class="ado-nav-icon">📌</span> Assigned to Me</a>
+      <div class="ado-nav-heading" style="margin-top:12px;">Repos</div>
+      <a class="ado-nav-link"><span class="ado-nav-icon">📁</span> Files</a>
+      <a class="ado-nav-link"><span class="ado-nav-icon">🌿</span> Pull Requests</a>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="ado-main">
+
+      <!-- Breadcrumb -->
+      <div class="ado-breadcrumb">
+        <span>QA Onboarding Team</span>
+        <span class="ado-breadcrumb-sep">›</span>
+        <span id="ado-breadcrumb-sprint">Sprint 6</span>
+        <span class="ado-breadcrumb-sep">›</span>
+        <span id="ado-breadcrumb-view" style="font-weight:600;color:var(--ado-text);">Board</span>
+      </div>
+
+      <!-- Toolbar -->
+      <div class="ado-view-toolbar">
+        <button class="ado-view-btn active" id="view-btn-board" onclick="switchView('board')">📋 Board</button>
+        <button class="ado-view-btn" id="view-btn-form" onclick="switchView('form')">🐛 New Bug</button>
+        <button class="ado-view-btn-primary" onclick="switchView('form')">+ New Bug</button>
+      </div>
+
+      <!-- ══ BOARD VIEW ══ -->
+      <div class="ado-board-view active" id="ado-board-view">
+        <div class="ado-board" id="ado-board">
+          <!-- Board columns injected by JS -->
+        </div>
+      </div>
+
+      <!-- ══ NEW BUG FORM VIEW ══ -->
+      <div class="ado-form-view" id="ado-form-view">
+        <div class="ado-work-item">
+          <!-- Header -->
+          <div class="ado-work-item-header">
+            <span class="ado-type-icon">🐛</span>
+            <span class="ado-wi-title">New Bug</span>
+            <span class="ado-state-badge state-new">New</span>
+          </div>
+
+          <!-- Body: Main + Sidebar -->
+          <div class="ado-work-item-body">
+            <!-- Main Fields -->
+            <div class="ado-wi-main">
+              <!-- Title -->
+              <div class="ado-field">
+                <label class="ado-label ado-label-required">Title</label>
+                <input class="ado-input" id="ado-field-title" type="text" placeholder="Enter a descriptive title…" maxlength="200">
+                <div class="ado-field-error" id="ado-err-title">Title is required.</div>
+              </div>
+
+              <!-- Repro Steps -->
+              <div class="ado-field">
+                <label class="ado-label ado-label-required">Repro Steps</label>
+                <ol class="ado-repro-steps" id="ado-repro-list">
+                  <!-- Injected by JS -->
+                </ol>
+                <button class="ado-add-step-btn" onclick="addReproStep()">+ Add step</button>
+                <div class="ado-field-error" id="ado-err-repro">At least one repro step is required.</div>
+              </div>
+
+              <!-- Expected Result -->
+              <div class="ado-field">
+                <label class="ado-label ado-label-required">Expected Result</label>
+                <textarea class="ado-textarea" id="ado-field-expected" placeholder="What should happen?" rows="3"></textarea>
+                <div class="ado-field-error" id="ado-err-expected">Expected result is required.</div>
+              </div>
+
+              <!-- Actual Result -->
+              <div class="ado-field">
+                <label class="ado-label ado-label-required">Actual Result</label>
+                <textarea class="ado-textarea" id="ado-field-actual" placeholder="What actually happened?" rows="3"></textarea>
+                <div class="ado-field-error" id="ado-err-actual">Actual result is required.</div>
+              </div>
+
+              <!-- AC Reference -->
+              <div class="ado-field">
+                <label class="ado-label">AC Reference</label>
+                <input class="ado-input" id="ado-field-ac" type="text" placeholder="e.g. AC-2.1, AC-3.4">
+              </div>
+            </div>
+
+            <!-- Sidebar Fields -->
+            <div class="ado-wi-sidebar">
+              <div class="ado-field">
+                <label class="ado-label">Priority</label>
+                <select class="ado-select" id="ado-field-priority">
+                  <option value="Critical">Critical</option>
+                  <option value="High" selected>High</option>
+                  <option value="Medium">Medium</option>
+                  <option value="Low">Low</option>
+                </select>
+              </div>
+
+              <div class="ado-field">
+                <label class="ado-label">Area Path</label>
+                <select class="ado-select" id="ado-field-area">
+                  <option value="CRM Module">CRM Module</option>
+                  <option value="Authentication">Authentication</option>
+                  <option value="Case Management" selected>Case Management</option>
+                  <option value="Reporting">Reporting</option>
+                </select>
+              </div>
+
+              <div class="ado-field">
+                <label class="ado-label">Assigned To</label>
+                <select class="ado-select" id="ado-field-assigned">
+                  <option value="Dev Team">Dev Team</option>
+                  <option value="Dev Lead" selected>Dev Lead</option>
+                  <option value="Frontend Team">Frontend Team</option>
+                  <option value="Backend Team">Backend Team</option>
+                </select>
+              </div>
+
+              <div class="ado-field">
+                <label class="ado-label">System Info</label>
+                <div id="ado-field-system" style="font-size:13px;color:var(--ado-text);line-height:1.5;padding:6px 0;">
+                  Loading…
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Form Actions -->
+          <div style="padding:14px 20px;border-top:1px solid var(--ado-border);">
+            <div class="ado-form-actions" style="border-top:none;padding-top:0;margin-top:0;">
+              <button class="ado-save-btn" onclick="handleSave()">Save &amp; Close</button>
+              <button class="ado-discard-btn" onclick="handleDiscard()">Discard</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- ── TOAST CONTAINER ─────────────────────────────────────────────── -->
+  <div id="ado-toast-container"></div>
+
+  <!-- ── WORK ITEM DETAIL OVERLAY ────────────────────────────────────── -->
+  <div class="ado-overlay" id="ado-overlay">
+    <div class="ado-overlay-panel">
+      <div class="ado-overlay-header">
+        <span class="ado-type-icon">🐛</span>
+        <span style="font-weight:600;font-size:15px;" id="ado-detail-title">Bug #0000</span>
+        <button class="ado-overlay-close" onclick="closeDetail()">✕</button>
+      </div>
+      <div class="ado-overlay-body" id="ado-detail-body">
+        <!-- Injected by JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SCRIPTS ─────────────────────────────────────────────────────── -->
+  <script src="data/content.js"></script>
+  <script>
+    (function() {
+      'use strict';
+
+      var studentName = 'Trainee';
+      var caseId = '';
+
+      // ── URL PARAMS ──────────────────────────────────────────────────
+      function getParams() {
+        var p = new URLSearchParams(window.location.search);
+        caseId = p.get('caseId') || 'CASE-00000';
+        studentName = p.get('name') || 'Trainee';
+      }
+
+      // ── INIT ────────────────────────────────────────────────────────
+      function init() {
+        getParams();
+
+        // Update header
+        var nameLabel = document.getElementById('ado-student-label');
+        if (nameLabel) nameLabel.textContent = studentName;
+        var avatar = document.getElementById('ado-avatar');
+        if (avatar) avatar.textContent = studentName.charAt(0).toUpperCase();
+
+        // Update system info
+        var sysInfo = document.getElementById('ado-field-system');
+        if (sysInfo) {
+          sysInfo.innerHTML =
+            '<div><strong>Browser:</strong> ' + detectBrowser() + '</div>' +
+            '<div style="margin-top:4px;"><strong>Case ID:</strong> ' + caseId + '</div>' +
+            '<div style="margin-top:4px;"><strong>Role:</strong> Trainee</div>';
+        }
+
+        // Load the board
+        renderBoard();
+
+        // Initialize repro steps with 2 default steps
+        renderReproSteps();
+      }
+
+      // ── BROWSER DETECTION ──────────────────────────────────────────
+      function detectBrowser() {
+        var ua = navigator.userAgent;
+        if (ua.indexOf('Chrome') !== -1) return 'Chrome';
+        if (ua.indexOf('Firefox') !== -1) return 'Firefox';
+        if (ua.indexOf('Safari') !== -1) return 'Safari';
+        if (ua.indexOf('Edge') !== -1) return 'Edge';
+        return 'Unknown';
+      }
+
+      // ── BOARD DATA ─────────────────────────────────────────────────
+      var BOARD_ITEMS = [
+        { id: 1042, title: 'Junior can set Status to Closed', priority: 'High', ac: 'AC-2.1', column: 'new', severity: 'high' },
+        { id: 1041, title: 'Duplicate warning not displayed', priority: 'Medium', ac: 'AC-4.2', column: 'new', severity: 'medium' },
+        { id: 1039, title: 'Outcome field visible to Junior role', priority: 'Critical', ac: 'AC-2.1', column: 'active', severity: 'critical' },
+        { id: 1037, title: 'Case ID not auto-gen\'d on save', priority: 'High', ac: 'AC-1.1', column: 'resolved', severity: 'high' },
+        { id: 1035, title: 'Date picker accepts future dates', priority: 'Medium', ac: 'AC-3.2', column: 'resolved', severity: 'medium' },
+        { id: 1031, title: 'Validation error on special characters', priority: 'Low', ac: 'AC-1.3', column: 'closed', severity: 'low' },
+      ];
+
+      var COLUMNS = [
+        { id: 'new',     label: 'New',     color: '#0078d4', bg: '#e5f1fb' },
+        { id: 'active',  label: 'Active',  color: '#b45309', bg: '#fff4e0' },
+        { id: 'resolved',label: 'Resolved',color: '#16a34a', bg: '#e6f4ea' },
+        { id: 'closed',  label: 'Closed',  color: '#616161', bg: '#f3f2f1' },
+      ];
+
+      var PRIORITY_CLASS = {
+        'Critical': 'prio-critical',
+        'High': 'prio-high',
+        'Medium': 'prio-medium',
+        'Low': 'prio-low'
+      };
+
+      // ── RENDER BOARD ───────────────────────────────────────────────
+      function renderBoard() {
+        var board = document.getElementById('ado-board');
+        if (!board) return;
+
+        var html = '';
+        COLUMNS.forEach(function(col) {
+          var items = BOARD_ITEMS.filter(function(item) { return item.column === col.id; });
+          html +=
+            '<div class="ado-board-column">' +
+              '<div class="ado-col-header" style="background:' + col.bg + ';color:' + col.color + ';">' +
+                col.label +
+                ' <span class="ado-col-count">(' + items.length + ')</span>' +
+              '</div>' +
+              '<div class="ado-col-body">';
+          items.forEach(function(item) {
+            html +=
+              '<div class="ado-board-card" onclick="openDetail(' + item.id + ')">' +
+                '<div class="ado-card-type">🐛 Bug #' + item.id + '</div>' +
+                '<div class="ado-card-title">' + escapeHtml(item.title) + '</div>' +
+                '<div class="ado-card-meta">' +
+                  '<span class="ado-card-priority ' + (PRIORITY_CLASS[item.priority] || '') + '">' + item.priority + '</span>' +
+                  '<span class="ado-card-ac">' + item.ac + '</span>' +
+                '</div>' +
+              '</div>';
+          });
+          html += '</div></div>';
+        });
+
+        board.innerHTML = html;
+      }
+
+      // ── REPRO STEPS ─────────────────────────────────────────────────
+      var reproStepCount = 0;
+
+      function renderReproSteps() {
+        var list = document.getElementById('ado-repro-list');
+        if (!list) return;
+        if (reproStepCount === 0) {
+          // Start with 2 default steps
+          reproStepCount = 2;
+        }
+        var html = '';
+        for (var i = 0; i < reproStepCount; i++) {
+          html +=
+            '<li class="ado-repro-step">' +
+              '<span class="ado-repro-step-num">' + (i + 1) + '</span>' +
+              '<input class="ado-repro-step-input" id="ado-repro-input-' + i + '" type="text" placeholder="Step ' + (i + 1) + '…" data-idx="' + i + '">' +
+              (reproStepCount > 1 ? '<button class="ado-repro-remove" onclick="removeReproStep(' + i + ')" title="Remove step">✕</button>' : '') +
+            '</li>';
+        }
+        list.innerHTML = html;
+      }
+
+      function addReproStep() {
+        reproStepCount++;
+        renderReproSteps();
+        // Focus the new step
+        var lastInput = document.getElementById('ado-repro-input-' + (reproStepCount - 1));
+        if (lastInput) setTimeout(function() { lastInput.focus(); }, 50);
+      }
+
+      function removeReproStep(idx) {
+        if (reproStepCount <= 1) return;
+        reproStepCount--;
+        renderReproSteps();
+      }
+
+      // ── GET REPRO VALUES ────────────────────────────────────────────
+      function getReproSteps() {
+        var steps = [];
+        for (var i = 0; i < reproStepCount; i++) {
+          var input = document.getElementById('ado-repro-input-' + i);
+          var val = input ? input.value.trim() : '';
+          steps.push(val);
+        }
+        return steps;
+      }
+
+      // ── VIEW SWITCHING ─────────────────────────────────────────────
+      function switchView(view) {
+        var boardView = document.getElementById('ado-board-view');
+        var formView = document.getElementById('ado-form-view');
+        var btnBoard = document.getElementById('view-btn-board');
+        var btnForm = document.getElementById('view-btn-form');
+        var breadcrumb = document.getElementById('ado-breadcrumb-view');
+        var navLinks = document.querySelectorAll('.ado-nav-link');
+
+        if (view === 'board') {
+          boardView.classList.add('active');
+          formView.classList.remove('active');
+          btnBoard.classList.add('active');
+          btnForm.classList.remove('active');
+          if (breadcrumb) breadcrumb.textContent = 'Board';
+        } else {
+          boardView.classList.remove('active');
+          formView.classList.add('active');
+          btnBoard.classList.remove('active');
+          btnForm.classList.add('active');
+          if (breadcrumb) breadcrumb.textContent = 'New Bug';
+        }
+
+        // Update left nav active state
+        navLinks.forEach(function(link, idx) {
+          link.classList.remove('active');
+          if ((view === 'board' && idx === 0) || (view === 'form' && idx === 1)) {
+            link.classList.add('active');
+          }
+        });
+
+        // Close nav on mobile
+        var leftNav = document.getElementById('ado-left-nav');
+        if (leftNav) leftNav.classList.remove('open');
+      }
+
+      // ── TOGGLE NAV (mobile) ────────────────────────────────────────
+      function toggleNav() {
+        var nav = document.getElementById('ado-left-nav');
+        if (nav) nav.classList.toggle('open');
+      }
+
+      // ── FORM VALIDATION ─────────────────────────────────────────────
+      function validateForm() {
+        var valid = true;
+        var title = document.getElementById('ado-field-title');
+        var reproSteps = getReproSteps();
+        var expected = document.getElementById('ado-field-expected');
+        var actual = document.getElementById('ado-field-actual');
+
+        // Title
+        var titleVal = title.value.trim();
+        var errTitle = document.getElementById('ado-err-title');
+        if (!titleVal) {
+          title.classList.add('is-invalid');
+          errTitle.classList.add('visible');
+          valid = false;
+        } else {
+          title.classList.remove('is-invalid');
+          errTitle.classList.remove('visible');
+        }
+
+        // Repro steps — at least one non-empty
+        var hasRepro = reproSteps.some(function(s) { return s.length > 0; });
+        var errRepro = document.getElementById('ado-err-repro');
+        if (!hasRepro) {
+          // Mark all empty inputs
+          for (var i = 0; i < reproStepCount; i++) {
+            var inp = document.getElementById('ado-repro-input-' + i);
+            if (inp && !inp.value.trim()) inp.classList.add('is-invalid');
+          }
+          errRepro.classList.add('visible');
+          valid = false;
+        } else {
+          for (var i = 0; i < reproStepCount; i++) {
+            var inp = document.getElementById('ado-repro-input-' + i);
+            if (inp) inp.classList.remove('is-invalid');
+          }
+          errRepro.classList.remove('visible');
+        }
+
+        // Expected
+        var expectedVal = expected.value.trim();
+        var errExpected = document.getElementById('ado-err-expected');
+        if (!expectedVal) {
+          expected.classList.add('is-invalid');
+          errExpected.classList.add('visible');
+          valid = false;
+        } else {
+          expected.classList.remove('is-invalid');
+          errExpected.classList.remove('visible');
+        }
+
+        // Actual
+        var actualVal = actual.value.trim();
+        var errActual = document.getElementById('ado-err-actual');
+        if (!actualVal) {
+          actual.classList.add('is-invalid');
+          errActual.classList.add('visible');
+          valid = false;
+        } else {
+          actual.classList.remove('is-invalid');
+          errActual.classList.remove('visible');
+        }
+
+        return valid;
+      }
+
+      // ── SAVE & DISCARD ─────────────────────────────────────────────
+      function handleSave() {
+        if (!validateForm()) {
+          showToast('Please fix the validation errors before saving.', 'error');
+          return;
+        }
+
+        var title = document.getElementById('ado-field-title').value.trim();
+        var reproSteps = getReproSteps().filter(function(s) { return s.length > 0; });
+        var expected = document.getElementById('ado-field-expected').value.trim();
+        var actual = document.getElementById('ado-field-actual').value.trim();
+        var acRef = document.getElementById('ado-field-ac').value.trim();
+        var priority = document.getElementById('ado-field-priority').value;
+        var area = document.getElementById('ado-field-area').value;
+        var assigned = document.getElementById('ado-field-assigned').value;
+
+        // Log the bug report (in a real app, this would save to a database)
+        console.log('Bug Report Saved:', {
+          title: title,
+          reproSteps: reproSteps,
+          expected: expected,
+          actual: actual,
+          acReference: acRef,
+          priority: priority,
+          area: area,
+          assignedTo: assigned,
+          caseId: caseId,
+          submittedBy: studentName
+        });
+
+        showToast('Bug report "' + title + '" saved successfully! ✓', 'success');
+
+        // Add the new bug to the board
+        var newId = 1100 + BOARD_ITEMS.length;
+        BOARD_ITEMS.unshift({
+          id: newId,
+          title: title,
+          priority: priority,
+          ac: acRef || '—',
+          column: 'new',
+          severity: priority.toLowerCase()
+        });
+        renderBoard();
+      }
+
+      function handleDiscard() {
+        // Reset form
+        document.getElementById('ado-field-title').value = '';
+        document.getElementById('ado-field-expected').value = '';
+        document.getElementById('ado-field-actual').value = '';
+        document.getElementById('ado-field-ac').value = '';
+        document.getElementById('ado-field-priority').value = 'High';
+        document.getElementById('ado-field-area').value = 'Case Management';
+        document.getElementById('ado-field-assigned').value = 'Dev Lead';
+
+        // Clear validation states
+        document.querySelectorAll('.is-invalid').forEach(function(el) {
+          el.classList.remove('is-invalid');
+        });
+        document.querySelectorAll('.ado-field-error.visible').forEach(function(el) {
+          el.classList.remove('visible');
+        });
+
+        // Reset repro steps to 2 empty
+        reproStepCount = 0;
+        renderReproSteps();
+
+        showToast('Form discarded.', 'info');
+      }
+
+      // ── TOAST NOTIFICATIONS ─────────────────────────────────────────
+      function showToast(message, type) {
+        type = type || 'info';
+        var container = document.getElementById('ado-toast-container');
+        if (!container) return;
+
+        var toast = document.createElement('div');
+        toast.className = 'ado-toast ado-toast-' + type;
+        toast.textContent = message;
+
+        container.appendChild(toast);
+
+        // Auto-remove after 4 seconds
+        setTimeout(function() {
+          if (toast.parentNode) {
+            toast.style.opacity = '0';
+            toast.style.transition = 'opacity 0.3s';
+            setTimeout(function() {
+              if (toast.parentNode) toast.parentNode.removeChild(toast);
+            }, 300);
+          }
+        }, 4000);
+      }
+
+      // ── WORK ITEM DETAIL OVERLAY ───────────────────────────────────
+      function openDetail(itemId) {
+        var item = BOARD_ITEMS.find(function(i) { return i.id === itemId; });
+        if (!item) return;
+
+        document.getElementById('ado-detail-title').textContent = 'Bug #' + item.id;
+
+        var acInfo = item.ac && item.ac !== '—' ? item.ac : 'Not specified';
+        var detailHtml =
+          '<div class="ado-field">' +
+            '<div class="ado-label">Title</div>' +
+            '<div class="ado-field-value">' + escapeHtml(item.title) + '</div>' +
+          '</div>' +
+          '<div class="ado-field">' +
+            '<div class="ado-label">Priority</div>' +
+            '<div class="ado-field-value">' + item.priority + '</div>' +
+          '</div>' +
+          '<div class="ado-field">' +
+            '<div class="ado-label">AC Reference</div>' +
+            '<div class="ado-field-value">' + acInfo + '</div>' +
+          '</div>' +
+          '<div class="ado-field">' +
+            '<div class="ado-label">Status</div>' +
+            '<div class="ado-field-value">' + (item.column.charAt(0).toUpperCase() + item.column.slice(1)) + '</div>' +
+          '</div>';
+
+        document.getElementById('ado-detail-body').innerHTML = detailHtml;
+        document.getElementById('ado-overlay').classList.add('active');
+      }
+
+      function closeDetail() {
+        document.getElementById('ado-overlay').classList.remove('active');
+      }
+
+      // Close overlay on background click
+      document.addEventListener('click', function(e) {
+        var overlay = document.getElementById('ado-overlay');
+        if (overlay && overlay.classList.contains('active') && e.target === overlay) {
+          closeDetail();
+        }
+      });
+
+      // ── ESCAPE HTML ─────────────────────────────────────────────────
+      function escapeHtml(str) {
+        if (!str) return '';
+        return String(str)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#39;');
+      }
+
+      // ── EXPOSE GLOBALS (for inline onclick) ────────────────────────
+      window.switchView      = switchView;
+      window.toggleNav       = toggleNav;
+      window.addReproStep    = addReproStep;
+      window.removeReproStep = removeReproStep;
+      window.handleSave      = handleSave;
+      window.handleDiscard   = handleDiscard;
+      window.openDetail      = openDetail;
+      window.closeDetail     = closeDetail;
+
+      // ── BOOT ────────────────────────────────────────────────────────
+      init();
+
+    })();
+  </script>
+
+</body>
+</html>

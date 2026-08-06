@@ -1,0 +1,25 @@
+{
+  "profile_schema": "qa-project-validation-profile-v1",
+  "profile_id": "VP-AGENT-BRIDGE-001",
+  "project_id": "agent-bridge",
+  "project_type": "mcp_bridge",
+  "validation_profile": "continuous-validation-v1",
+  "qa_pilot_version": ">=1.0.0",
+  "enabled_domains": [
+    "regression",
+    "security"
+  ],
+  "required_reviews": ["owner"],
+  "contract_refs": [
+    "qa-pilot-sdk-integration"
+  ],
+  "evidence_source": "project_adapter",
+  "adapter_ref": "active/qa-pilot/adapters/project-adapter-agent-bridge.json",
+  "startup_routing": {
+    "resolved_by": "project adapter",
+    "available": true,
+    "next_pipeline_action": "configure-adapter"
+  },
+  "advisory_only": true,
+  "no_seal_authority": true
+}

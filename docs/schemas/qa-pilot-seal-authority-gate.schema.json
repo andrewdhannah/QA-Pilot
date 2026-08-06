@@ -1,0 +1,87 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://qa-pilot.carbideframe/schemas/qa-pilot-seal-authority-gate-v1",
+  "title": "QA Pilot Seal Authority Gate",
+  "description": "Governed regression gate preventing unauthorized seal transitions. Every sprint must have explicit Owner seal evidence before the ledger status may be set to 'sealed'. Agent-authored seal assertions, epic-implied seal, validator-implied seal, and session handoff 'sealed' entries without Owner evidence are all rejected.",
+  "type": "object",
+  "required": [
+    "gate_id",
+    "sprint_id",
+    "ledger_number",
+    "current_status",
+    "has_owner_seal_evidence",
+    "seal_evidence_type",
+    "advisory_only",
+    "custody",
+    "librarian_impact"
+  ],
+  "properties": {
+    "gate_id": {
+      "type": "string",
+      "pattern": "^SG-[A-Z0-9]+-[0-9]{4,6}$",
+      "description": "Seal gate entry identifier (e.g. SG-AUDIT-0001)."
+    },
+    "sprint_id": {
+      "type": "string",
+      "description": "The sprint ID being checked."
+    },
+    "ledger_number": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Ledger number of the sprint."
+    },
+    "current_status": {
+      "type": "string",
+      "enum": ["draft", "complete_pending_owner_review", "sealed"],
+      "description": "Current lifecycle status of the sprint."
+    },
+    "has_owner_seal_evidence": {
+      "type": "boolean",
+      "description": "Whether explicit Owner seal evidence exists for this sprint."
+    },
+    "seal_evidence_type": {
+      "type": "string",
+      "enum": ["owner_seal_command", "owner_decision_receipt", "none"],
+      "description": "Type of seal evidence: explicit 'seal sprint N' command, Owner decision receipt, or none."
+    },
+    "seal_evidence_ref": {
+      "type": "string",
+      "description": "Reference to the seal evidence (e.g. 'Owner command at YYYY-MM-DD HH:MM', OD receipt ID)."
+    },
+    "seal_eligible": {
+      "type": "boolean",
+      "description": "Whether the sprint is implementation-complete and eligibile for Owner seal review."
+    },
+    "proposed_correction": {
+      "type": "string",
+      "enum": ["none_needed", "restore_to_pending", "create_owner_receipt"],
+      "description": "Recommended action if seal authority is violated."
+    },
+    "audit_finding": {
+      "type": "string",
+      "enum": ["clean", "unauthorized_self_seal", "no_seal_evidence", "valid_owner_seal"],
+      "description": "Classification of the seal authority audit finding."
+    },
+    "advisory_only": {
+      "type": "boolean",
+      "const": true,
+      "description": "Must always be true. Gate entries are advisory-only."
+    },
+    "custody": {
+      "type": "string",
+      "const": "qa-pilot-local",
+      "description": "Must always be qa-pilot-local."
+    },
+    "librarian_impact": {
+      "type": "string",
+      "const": "none",
+      "description": "Must always be none."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When this gate entry was created."
+    }
+  },
+  "additionalProperties": false
+}

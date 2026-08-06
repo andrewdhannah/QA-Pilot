@@ -1,0 +1,25 @@
+{
+  "suite_id": "ERS-20260706-a1b2",
+  "epic_id": "EPIC-QA-PILOT-V1",
+  "sprint_ids": ["QA-PILOT-MCP-EVIDENCE-INTAKE-1", "QA-PILOT-TEST-COMPOSITION-1", "QA-PILOT-RESULT-PACKET-EXPORT-1"],
+  "tests": [
+    {"test_id": "TC-20260706-001", "sprint_id": "QA-PILOT-MCP-EVIDENCE-INTAKE-1", "status": "composed", "source_artifact": "EP-20260706-010"},
+    {"test_id": "TC-20260706-002", "sprint_id": "QA-PILOT-TEST-COMPOSITION-1", "status": "composed", "source_artifact": "EP-20260706-010"}
+  ],
+  "status": "ready",
+  "advisory": true,
+  "result": {
+    "passed": 2,
+    "failed": 0,
+    "summary": "2/2 tests passed, 0 failed"
+  },
+  "provenance": {
+    "evidence_packets": [
+      {"packet_id": "EP-20260706-010", "sprint_id": "QA-PILOT-MCP-EVIDENCE-INTAKE-1"}
+    ],
+    "result_packets": [
+      {"result_id": "QR-20260706-0001", "sprint_ids": ["QA-PILOT-MCP-EVIDENCE-INTAKE-1"]}
+    ]
+  },
+  "created_at": "2026-07-06T23:30:00Z"
+}

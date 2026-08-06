@@ -1,0 +1,102 @@
+{
+  "$schema": "qa-pilot-migration-app-copy-2-receipt-v1",
+  "epic": "EPIC-QA-PILOT-OPENWORK-TO-CARBIDEFRAME-MIGRATION-1",
+  "sprint": "QA-PILOT-OPENWORK-APP-COPY-1",
+  "owner_authorization": {
+    "approval_request_id": "apr_952575e5",
+    "approval_token_id": "apt_3ed7340e",
+    "approved_by": "Andrew Hannah (Owner)",
+    "approved_at": "2026-07-10T19:05:20Z",
+    "expires_at": "2026-07-11T19:05:20Z",
+    "basis": "Owner decision 2026-07-10: 'Approve completion of QA-PILOT-MIGRATION-PREP-AND-SNAPSHOT-1. Proceed to Sprint 2 only: QA-PILOT-OPENWORK-APP-COPY-1.'"
+  },
+  "work_packet": {
+    "packet_id": "wp-qa-pilot-20260710-2",
+    "packet_status": "authorized",
+    "dispatch_id": "spd-qa-pilot-20260710-2",
+    "authority_basis": "Owner decision 2026-07-10: 'Approve completion of QA-PILOT-MIGRATION-PREP-AND-SNAPSHOT-1. Proceed to Sprint 2 only: QA-PILOT-OPENWORK-APP-COPY-1.' Approval token apt_3ed7340e recorded; use reports/qa-pilot-migration-copy-manifest-1.json as source of truth; keep browser-app/data/ distinct from root data/; preserve all governance files and docs/schemas/browser-assets/; do not mutate OpenWork source or CarbideFrame Librarian; do not resume visual parity or I18N.",
+    "owner_decision_id": "OD-qa-pilot-20260710-260710-2"
+  },
+  "manifest_of_record": {
+    "path": "reports/qa-pilot-migration-copy-manifest-1.json",
+    "sprint1_artifact_sha256": "c85fda640f617ef2dc2b6162496e2d05c09a409206b1382f0479aa7c57406ef0",
+    "sprint2_audit_path": "reports/qa-pilot-migration-copy-manifest-2-audit.json",
+    "sprint2_audit_sha256": "9bf98cfbda1b4e86c94922808c5e08a3f62eba74c93b258db63ef33fdf6c880b"
+  },
+  "copy_result": {
+    "expected_count": 123,
+    "copied_count": 123,
+    "pre_source_mismatches": 0,
+    "post_dest_mismatches": 0,
+    "failures": 0,
+    "total_bytes_copied": 9014064,
+    "verdict": "PASS",
+    "result_artifact_sha256": "90a1955659142e2fccd01797bed3f07b221ce2d428db650ab95a3580b2d05500"
+  },
+  "overwrite_protection": {
+    "verdict": "PASS",
+    "report_sha256": "bea9263e937c6a59546ed538944f121f31d9e12e6d25ef56656d3838a7af48c0",
+    "destination_root": "active/qa-pilot/browser-app/",
+    "files_written_outside_browser_app": 0
+  },
+  "governance_protection": {
+    "verdict": "PASS",
+    "passes": 13,
+    "drift_ok": 3,
+    "violations": 0,
+    "report_sha256": "397fa8de50f901a32a358b27b731b4eafcd8317ee0c8eeb702bf90618bb96812",
+    "browser_assets_content_hash": "a273b029d883de8dda783e54196ea1d369cb38f0f048747cd7a8db63ca218d0a",
+    "browser_assets_archive_raw_sha256": "ad86d395c7e37c1ca84da3a48e67d81a2efb3073f743b827f5b8f93f6bfa603a",
+    "expected_drift_files": ["FEATURE-STATUS.md", "SESSION-HANDOFF.md", "STARTUP-STATE.md"]
+  },
+  "path_risks": {
+    "html_files_scanned": 43,
+    "html_files_with_broken_refs": 7,
+    "auto_rewrites_performed": 0,
+    "report_sha256": "c874e96bf476a1f078adad7572e04f13de5d082a44712662389b15b953f96f26"
+  },
+  "app_open_check": {
+    "landing_pages_checked": ["index.html", "portal.html", "course-view.html", "certificate.html"],
+    "open_cleanly_count": 2,
+    "open_with_broken_refs_count": 2,
+    "browser_launched": false,
+    "audit_type": "read-only",
+    "report_sha256": "b2f721af7e4413c86ac16ca9609e89266019d94dfaecf474c910caf478c8dd85"
+  },
+  "openwork_untouched": {
+    "mtimes_before_sha256": "48f1708ff4bd972c385a2fd967a837fb31579660628920e818f314d998a67066",
+    "mtimes_after_sha256": "48f1708ff4bd972c385a2fd967a837fb31579660628920e818f314d998a67066",
+    "verdict": "PASS"
+  },
+  "working_tree_delta": {
+    "tracked_copies_in_browser_app": 124,
+    "manifest_files_added": 123,
+    "gitkeep_carried_from_sprint1": 1,
+    "expected_sprint2_writes_count": 8,
+    "expected_sprint2_writes": [
+      "docs/sprints/QA-PILOT-OPENWORK-APP-COPY-1.md",
+      "reports/qa-pilot-migration-copy-result-2.json",
+      "reports/qa-pilot-migration-copy-manifest-2-audit.json",
+      "reports/qa-pilot-migration-overwrite-protection-2.json",
+      "reports/qa-pilot-migration-path-risks-2.json",
+      "reports/qa-pilot-migration-app-open-2.json",
+      "reports/qa-pilot-migration-governance-protection-2.json",
+      "receipts/migration-app-copy-2.json"
+    ]
+  },
+  "carried_forward_advisory": [
+    {
+      "from": "Sprint 1",
+      "issue": "project_work_result_intake MCP tool returned 'MCP error -32602: ...missing' for every payload shape; server-side intake record was not registered for Sprint 1.",
+      "owner_directive": "Carry forward as advisory integration gap, not a blocker. Local artifacts remain canonical evidence.",
+      "sprint2_status": "Same MCP error observed when attempting to record Sprint 2 intake. Local artifacts (this receipt, copy-result, copy-audit, overwrite-protection, path-risks, app-open, governance-protection) are the canonical Sprint 2 evidence."
+    }
+  ],
+  "unresolved_issues": [
+    {"id": "U1", "issue": "7 pages with pre-existing OpenWork path bugs (QASimulator.html, capstone.html, capstone-2.html use ../favicon.svg; certificate.html refs missing course.html; index.html refs missing about.html; desktop/index.html refs os.css; desktop/dist.html refs data/bug-keys.js).", "severity": "medium", "owner_decision_needed": false, "resolution_sprint": "Surface in Sprint 3 smoke validation; any fix must re-validate against migrated app."},
+    {"id": "U2", "issue": "Approval token apt_3ed7340e expires 2026-07-11T19:05:20Z.", "severity": "medium", "owner_decision_needed": true, "resolution_sprint": "Owner re-authorizes before Sprint 3 if not within 24h."}
+  ],
+  "owner_review_posture": "Agent work complete. Awaiting Owner direction. Sprint 3 will not begin without explicit Owner decision.",
+  "created_at": "2026-07-10T19:11:00Z",
+  "agent": "OpenWork-Claude"
+}

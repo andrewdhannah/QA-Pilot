@@ -8,5 +8,14 @@
 # Environment
 .env
 .env.local
+
+# Python cache
 scripts/__pycache__/
+__pycache__/
+*.pyc
+
+# Generated operational data
 data/
+
+# Generated test-runner artifacts (recursive generation bug)
+docs/examples/*/test-runs/

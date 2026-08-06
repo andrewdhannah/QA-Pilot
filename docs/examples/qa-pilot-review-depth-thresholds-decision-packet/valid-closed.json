@@ -1,0 +1,15 @@
+{
+  "packet_id": "DP-CLOSED-0001",
+  "source_threshold_id": "TD-BLOCK-0001",
+  "source_evidence_bundle_ref": "E4-BUNDLE-001",
+  "source_result_packet_ref": "",
+  "source_consistency_guard_refs": ["RC-01"],
+  "threshold_state": "blocked",
+  "packet_state": "closed_by_owner",
+  "review_summary": "Owner reviewed and determined findings are non-actionable. Packet finalized by Owner decision. Owner remains the only decision authority.",
+  "created_at": "2026-07-08T04:13:00Z",
+  "authority_disclaimer": "This decision packet connects evidence-depth posture to Owner review. It does not auto-accept evidence, auto-reject findings, approve intake, verify evidence, close workbench items, execute work, seal anything, or create autonomous authority. Owner is the only decision authority. Custody is qa-pilot-local. Librarian impact is none.",
+  "custody": "qa-pilot-local",
+  "advisory_only": true,
+  "librarian_impact": "none"
+}

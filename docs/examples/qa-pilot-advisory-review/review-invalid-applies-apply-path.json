@@ -1,0 +1,15 @@
+{
+  "review_id": "qa-pilot-review-invalid-applies-001",
+  "source_sim_id": "qa-pilot-sim-valid-claim-registry-001",
+  "review_type": "summary",
+  "summary": "INVALID: review output claims apply path exists",
+  "advisory": false,
+  "no_apply_path": false,
+  "no_train_behavior": true,
+  "no_bridge_behavior": true,
+  "no_mutation_authorized": true,
+  "no_cross_project_write": true,
+  "owner_decision_required": true,
+  "generated_at": "2026-07-05T23:30:00Z",
+  "notes": "INVALID: advisory=false, no_apply_path=false — should be rejected"
+}

@@ -1,0 +1,21 @@
+{
+  "gate_id": "SUG-INVALID-STALE-001",
+  "update_class": "no_snapshot_update_required",
+  "previous_snapshot_id": "SRS-BASELINE-001",
+  "proposed_snapshot_id": "SRS-BASELINE-001",
+  "previous_sealed_head": "#56 QA-PILOT-STARTUP-SURFACE-REGRESSION-SNAPSHOT-1",
+  "proposed_sealed_head": "#60 QA-PILOT-SEVERAL-SPRINTS-LATER-1",
+  "previous_layer_count": 23,
+  "proposed_layer_count": 27,
+  "previous_rcr_count": 8,
+  "proposed_rcr_count": 12,
+  "previous_rcg_gap": 0,
+  "proposed_rcg_gap": 3,
+  "rationale": "Claiming no snapshot update required despite layer count changing from 23 to 27, RCR count from 8 to 12, and RCG gap growing to 3. This would mask a stale baseline.",
+  "advisory_only": true,
+  "custody": "qa-pilot-local",
+  "librarian_impact": "none",
+  "not_seal_authority": "No sealing authority claimed.",
+  "not_librarian_mutation_authority": "No Librarian mutation claimed.",
+  "created_at": "2026-07-07T21:12:00Z"
+}

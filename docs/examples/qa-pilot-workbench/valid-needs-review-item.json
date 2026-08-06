@@ -1,0 +1,63 @@
+{
+  "qa_item_id": "QA-LIFE-0500",
+  "title": "Item ready for Owner review",
+  "source": "advisory_review",
+  "status": "needs_review",
+  "severity": "critical",
+  "category": "security",
+  "description": "A critical security finding with full evidence. Ready for Owner review consideration.",
+  "evidence_refs": ["EP-SECURITY-001", "QR-SEC-001"],
+  "evidence_links": [
+    {
+      "evidence_link_id": "EL-LIFE-0500-001",
+      "evidence_type": "validator_output",
+      "evidence_ref": "EP-SECURITY-001",
+      "producing_validator": "validate-qa-pilot-pipeline-health-regression.py",
+      "attachment_reason": "Security validator output for this finding.",
+      "custody": "qa-pilot-local",
+      "advisory_only": true,
+      "authority_note": "Evidence attachment does not prove defect validity or imply Owner approval.",
+      "attached_at": "2026-07-08T00:15:00Z"
+    }
+  ],
+  "lifecycle_history": [
+    {
+      "from_status": "__init__",
+      "to_status": "open",
+      "transition_reason": "Item created from advisory review",
+      "actor": "agent",
+      "timestamp": "2026-07-08T00:00:00Z",
+      "advisory_only": true
+    },
+    {
+      "from_status": "open",
+      "to_status": "triaged",
+      "transition_reason": "Triaged as critical security finding",
+      "actor": "agent",
+      "timestamp": "2026-07-08T00:05:00Z",
+      "advisory_only": true
+    },
+    {
+      "from_status": "triaged",
+      "to_status": "evidence_attached",
+      "transition_reason": "Security evidence packet linked",
+      "actor": "agent",
+      "timestamp": "2026-07-08T00:10:00Z",
+      "advisory_only": true
+    },
+    {
+      "from_status": "evidence_attached",
+      "to_status": "needs_review",
+      "transition_reason": "All evidence collected. Flagged for Owner review.",
+      "actor": "agent",
+      "timestamp": "2026-07-08T00:15:00Z",
+      "advisory_only": true
+    }
+  ],
+  "owner_decision_state": "pending",
+  "created_at": "2026-07-08T00:00:00Z",
+  "updated_at": "2026-07-08T00:15:00Z",
+  "advisory_only": true,
+  "custody": "qa-pilot-local",
+  "librarian_impact": "none"
+}

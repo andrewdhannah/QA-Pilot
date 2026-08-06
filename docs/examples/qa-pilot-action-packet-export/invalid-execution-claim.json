@@ -1,0 +1,19 @@
+{
+  "export_id": "AXPK-EXEC-0001",
+  "source_action_packet_id": "AP-ACTION-0001",
+  "source_receipt_id": "WDR-ACTION-0001",
+  "source_summary_id": "DS-REVIEW-0003",
+  "source_intake_id": "IR-REVIEW-0003",
+  "source_item_ids": ["QA-SEC-0001"],
+  "source_evidence_ids": [],
+  "action_state": "proposed",
+  "decision": "accepted_for_action",
+  "rationale": "Action executed from this export packet.",
+  "exported_at": "2026-07-08T03:02:00Z",
+  "authority_disclaimer": "This action packet export packages the intended action path for downstream handoff only. It does not execute work, authorize execution, approve intake, verify evidence, close workbench items, mutate packets, mutate source records, seal anything, or create autonomous authority. Custody is qa-pilot-local. Librarian impact is none.",
+  "custody": "qa-pilot-local",
+  "advisory_only": true,
+  "librarian_impact": "none",
+  "executed": true,
+  "execution_result": "done"
+}

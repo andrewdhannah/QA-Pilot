@@ -1,0 +1,23 @@
+{
+  "adapter_version": "knowledge-adapter-v1",
+  "generated_at": "2026-07-08T21:00:00Z",
+  "operation": "scan",
+  "result": {
+    "total_sources": 1,
+    "by_type": {
+      "governance": 1
+    },
+    "sources": [
+      {
+        "path": "docs/governance/QA-PILOT-PROJECT-GOVERNANCE.md",
+        "revision": "abc1234",
+        "source_type": "governance",
+        "accessible": true,
+        "title": "QA Pilot Project Governance",
+        "content_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "last_modified": "2026-07-08T12:00:00Z",
+        "referenced_at": "2026-07-08T21:00:00Z"
+      }
+    ]
+  }
+}

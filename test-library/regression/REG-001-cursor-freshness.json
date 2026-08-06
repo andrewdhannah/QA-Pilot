@@ -1,0 +1,37 @@
+{
+  "test_id": "REG-001",
+  "domain": "regression",
+  "title": "Lifecycle cursor freshness validation",
+  "objective": "Verify that the evidence plane correctly detects stale and absent lifecycle cursors, and that staleness classification matches governed thresholds.",
+  "source": {
+    "type": "work_order",
+    "reference": "EVIDENCE-PLANE-OE-001",
+    "description": "Evidence freshness is the first OE layer — all downstream evidence depends on current cursor state"
+  },
+  "execution": {
+    "type": "sdk_query",
+    "criteria": "getEvidenceSnapshot() returns status_summary with CURRENT, STALE, and ABSENT counts matching expected freshness thresholds",
+    "expected_outcome": "evidence_summary.all_current is false when any cursor exceeds 1-hour freshness threshold"
+  },
+  "pass_criteria": [
+    {
+      "id": "REG-001-A",
+      "description": "Evidence plane is reachable through SDK",
+      "evidence_required": ["getEvidenceSnapshot() returns evidence_available=True"]
+    },
+    {
+      "id": "REG-001-B",
+      "description": "status_summary contains CURRENT, STALE, and ABSENT categories",
+      "evidence_required": ["status_summary has expected keys"]
+    },
+    {
+      "id": "REG-001-C",
+      "description": "Stale cursors correctly identified with age_hours exceeding max_age_hours",
+      "evidence_required": ["Per-source age_hours > max_age_hours for STALE sources"]
+    }
+  ],
+  "contract_refs": ["qa-pilot-sdk-integration"],
+  "status": "active",
+  "advisory_only": true,
+  "no_seal_authority": true
+}

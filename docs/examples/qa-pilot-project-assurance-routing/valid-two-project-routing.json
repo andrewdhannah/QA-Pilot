@@ -1,0 +1,33 @@
+{
+  "routing_id": "R-20260720T120000",
+  "generated_at": "2026-07-20T12:00:00Z",
+  "invariant": "Multiple projects, one assurance language, separate sources of truth.",
+  "cross_project": {
+    "total_projects": 2,
+    "total_findings": 25
+  },
+  "projects": {
+    "project-a": {
+      "findings": {
+        "total": 10
+      },
+      "risk": {
+        "total": 8
+      },
+      "registry": {
+        "layers": 50
+      }
+    },
+    "project-b": {
+      "findings": {
+        "total": 15
+      },
+      "risk": {
+        "total": 12
+      },
+      "registry": {
+        "layers": 30
+      }
+    }
+  }
+}

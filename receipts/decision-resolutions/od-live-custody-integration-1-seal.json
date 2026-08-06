@@ -1,0 +1,52 @@
+{
+  "receipt_type": "owner_decision_seal",
+  "decision_id": "OD-LIVE-CUSTODY-INTEGRATION-1-SEAL",
+  "project_id": "qa-pilot",
+  "sprint_id": "LIVE-CUSTODY-INTEGRATION-1",
+  "ledger_number": 24,
+  "decision": "APPROVE_AND_SEAL",
+  "approved_by": "Andrew Hannah (Owner)",
+  "approved_at": "2026-07-06T01:44:15Z",
+  "decision_basis": [
+    "live write path invokes custody before mutation",
+    "WRITE_SCOPE_VIOLATION blocks mutation",
+    "authority file writes warn and require Owner approval",
+    "sealed evidence remains immutable",
+    "post-release writes require patch order",
+    "generated state remains deterministic-tool-only",
+    "broad project-root approval rejected",
+    "dry-run produces custody decision without writing",
+    "denied writes produce evidence receipts",
+    "approved writes preserve approval provenance",
+    "PROJECT-WIDE-WRITE-CUSTODY-ENFORCEMENT-1 fixtures remain green at 16/16",
+    "live custody integration runner passed 19/19",
+    "startup regression passed 15/15",
+    "parity matrix passed 13/13",
+    "existing validators passed 14/14",
+    "startup managed and MCP reachable",
+    "no unrelated QA Pilot files modified",
+    "no Librarian files modified"
+  ],
+  "seal_conditions": [
+    "LIVE-CUSTODY-INTEGRATION-1 is accepted as QA Pilot-local live write custody integration",
+    "The sealed #23 custody enforcement contract remains intact and is now applied at live write boundaries",
+    "This seal does not grant lifecycle custody expansion, Librarian mutation authority, cross-project write authority, auto-approval, auto-seal, or auto-execution"
+  ],
+  "boundary_assertion": {
+    "project_boundary": "qa-pilot",
+    "lane": "parallel_planning",
+    "librarian_impact": "none",
+    "cross_project_registration": false,
+    "runtime_mutation_authorized": false,
+    "implementation_authorized": true
+  },
+  "evidence": [
+    "scripts/live-custody-integration.py (live/dry-run modes, audit receipts)",
+    "scripts/test-live-custody-integration.sh (19 tests, 19/19 pass)",
+    "docs/governance/LIVE-CUSTODY-INTEGRATION.md (6 sections)",
+    "docs/examples/live-custody-integration/ (7 fixtures: 3 valid + 4 invalid)",
+    "docs/sprints/LIVE-CUSTODY-INTEGRATION-1.md",
+    "project-state/sprint-ledger.json (entry #24)"
+  ],
+  "authorized_next_sprint": "LIFECYCLE-CUSTODY-EXTENSION-1 — extend custody rules across lifecycle transitions without changing the live write contract"
+}

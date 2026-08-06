@@ -1,0 +1,108 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://qa-pilot.carbideframe/schemas/qa-workbench-export-packet-v1",
+  "title": "QA Workbench Export Packet",
+  "description": "Schema for a governed QA workbench export packet. Packages one or more QA workbench items with structured evidence links, lifecycle history, query metadata, and advisory-only authority disclaimers. Export packets are governed review artifacts — they do not verify item correctness, imply defect acceptance, imply Owner approval, or close/seal/promote QA items.",
+  "type": "object",
+  "required": [
+    "packet_id",
+    "packet_type",
+    "created_at",
+    "included_items",
+    "authority_disclaimer",
+    "custody",
+    "advisory_only",
+    "librarian_impact"
+  ],
+  "properties": {
+    "packet_id": {
+      "type": "string",
+      "pattern": "^XPK-[A-Z0-9]+-[A-Za-z0-9-]+$",
+      "description": "Unique export packet identifier (e.g. XPK-EXPORT-0001)."
+    },
+    "packet_type": {
+      "type": "string",
+      "enum": ["single_item", "query_result", "bulk", "snapshot"],
+      "description": "How this packet was produced: single item export, query result, bulk export, or snapshot."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp when the packet was generated."
+    },
+    "source_query": {
+      "type": "object",
+      "properties": {
+        "command": { "type": "string", "description": "The CLI command used to generate this packet." },
+        "filters": { "type": "object", "description": "The filters applied (status, severity, etc.)" },
+        "item_count": { "type": "integer", "minimum": 0 }
+      },
+      "description": "Metadata about how this packet was generated. Read-only audit trail."
+    },
+    "item_ids": {
+      "type": "array",
+      "items": { "type": "string", "pattern": "^QA-" },
+      "description": "List of QA item IDs included in this packet."
+    },
+    "included_items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "description": "QA workbench item conforming to qa-workbench-item.schema.json."
+      },
+      "minItems": 1,
+      "description": "The QA items included in this export packet."
+    },
+    "evidence_links_aggregate": {
+      "type": "object",
+      "properties": {
+        "total_links": { "type": "integer" },
+        "by_type": { "type": "object" }
+      },
+      "description": "Aggregate count of evidence links across all included items."
+    },
+    "lifecycle_summary": {
+      "type": "object",
+      "properties": {
+        "total_transitions": { "type": "integer" },
+        "by_status": { "type": "object" }
+      },
+      "description": "Summary of lifecycle transitions across all included items."
+    },
+    "validator_summary": {
+      "oneOf": [
+        { "type": "null" },
+        {
+          "type": "object",
+          "properties": {
+            "items_validated": { "type": "integer" },
+            "items_with_issues": { "type": "integer" },
+            "validation_passed": { "type": "boolean" }
+          }
+        }
+      ],
+      "description": "Summary of validator results for the included items (may be null if not yet validated)."
+    },
+    "authority_disclaimer": {
+      "type": "string",
+      "const": "This export packet is advisory-only. It does not verify item correctness, imply defect acceptance, imply Owner approval, or close/seal/promote QA items. Custody is qa-pilot-local. Librarian impact is none.",
+      "description": "Standard authority disclaimer. Must match exactly."
+    },
+    "custody": {
+      "type": "string",
+      "const": "qa-pilot-local",
+      "description": "Must always be qa-pilot-local. Export packets cannot claim cross-project or Librarian custody."
+    },
+    "advisory_only": {
+      "type": "boolean",
+      "const": true,
+      "description": "Must always be true. Export packets are advisory-only review artifacts."
+    },
+    "librarian_impact": {
+      "type": "string",
+      "const": "none",
+      "description": "Must always be none. Export packets do not mutate Librarian state."
+    }
+  },
+  "additionalProperties": false
+}

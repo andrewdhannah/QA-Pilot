@@ -1,0 +1,3720 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QA Pilot Academy — Training Portal</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="stylesheet" href="css/main.css">
+
+  <style>
+    /* ── PORTAL-SPECIFIC STYLES ─────────────────────────────────────────
+     * These extend the existing main.css design tokens. All colours,
+     * spacing, and typography use the same CSS variables as the rest
+     * of the platform for visual consistency.
+     */
+
+    /* ── TOPBAR — Apple-style frosted glass ────────────────────────── */
+    .portal-topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 var(--space-6);
+      height: 56px;
+      background: rgba(255,255,255,0.80);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(0,0,0,0.06);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .portal-topbar-brand {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      font-size: 15px;
+      font-weight: 600;
+      color: #1D1D1F;
+      letter-spacing: -0.01em;
+    }
+
+    .portal-topbar-brand svg {
+      width: 30px;
+      height: 30px;
+      flex-shrink: 0;
+    }
+
+    .portal-topbar-logo {
+      display: inline-flex;
+      align-items: center;
+    }
+    .portal-topbar-logo svg {
+      width: 24px;
+      height: 24px;
+      flex-shrink: 0;
+    }
+
+    .portal-topbar-user {
+      display: flex;
+      align-items: center;
+      gap: var(--space-4);
+      font-size: 13px;
+      color: var(--color-ink-muted);
+    }
+
+    /* ── HERO — Welcome banner (Apple-style: single deep gradient, no purple jolt) ── */
+    .portal-hero {
+      background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 60%, #3b82f6 100%);
+      padding: var(--space-8) var(--space-6) var(--space-10);
+      margin-bottom: 0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .portal-hero::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -20%;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+
+    .portal-hero-inner {
+      max-width: 820px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    .portal-welcome {
+      font-size: 36px;
+      font-weight: 800;
+      color: #ffffff;
+      margin-bottom: var(--space-2);
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+    }
+
+    .portal-welcome-sub {
+      font-size: 16px;
+      color: rgba(255, 255, 255, 0.9);
+      margin-bottom: 0;
+      font-weight: 500;
+    }
+
+    /* ── MAIN CONTENT ────────────────────────────────────────────────── */
+    .portal-main {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: var(--space-6) var(--space-6) var(--space-8);
+    }
+
+    /* ── SECTION TITLES ─────────────────────────────────────────────── */
+    .portal-section-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: #1f2937;
+      margin-bottom: var(--space-6);
+      padding-bottom: var(--space-3);
+      padding-left: var(--space-4);
+      border-bottom: 2px solid #e5e7eb;
+      border-left: 5px solid #2563eb;
+      letter-spacing: -0.5px;
+    }
+
+    /* ── MY LEARNING — Trays group enrolled cards by category ──────── */
+    #my-learning-section,
+    #catalog-section {
+      background: white;
+      border-radius: 16px;
+      padding: var(--space-6);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    }
+
+    .portal-learning-tray {
+      border-radius: var(--radius-xl, 16px);
+      padding: var(--space-5);
+      margin-bottom: var(--space-6);
+    }
+
+    /* Category-specific tray colours — each course type gets its own track */
+    .portal-learning-tray.tray-qa {
+      background: rgba(37, 99, 235, 0.06);
+      border: 2px solid rgba(37, 99, 235, 0.15);
+      border-radius: 12px;
+    }
+    .portal-learning-tray.tray-qa .portal-section-title {
+      border-left-color: #2563eb;
+    }
+
+    .portal-learning-tray.tray-development {
+      background: rgba(124, 58, 237, 0.06);
+      border: 2px solid rgba(124, 58, 237, 0.15);
+      border-radius: 12px;
+    }
+    .portal-learning-tray.tray-development .portal-section-title {
+      border-left-color: #7c3aed;
+    }
+
+    .portal-learning-tray.tray-general {
+      background: rgba(59, 130, 246, 0.05);
+      border: 2px solid rgba(59, 130, 246, 0.12);
+      border-radius: 12px;
+    }
+    .portal-learning-tray.tray-general .portal-section-title {
+      border-left-color: #3b82f6;
+    }
+
+    .portal-trays-wrapper {
+      display: flex;
+      flex-direction: row;
+      gap: var(--space-5);
+      flex-wrap: wrap;
+      margin-bottom: var(--space-12);
+    }
+
+    .portal-learning-tray {
+      flex: 1;
+      min-width: 280px;
+    }
+
+     /* ── MY LEARNING — Enrollment cards ─────────────────────────────── */
+     .portal-enrolled-grid {
+       display: grid;
+       grid-template-columns: repeat(2, 1fr);
+       gap: var(--space-4);
+       margin-bottom: 0;   /* tray provides the bottom margin */
+     }
+
+    /* Enrolled card — same visual language as the catalog tile.
+       Thin 3px left accent keys it to its category without shouting. */
+    .portal-enrolled-card {
+      background: #ffffff;
+      border: 1px solid rgba(15, 23, 42, 0.08);
+      border-radius: 16px;
+      padding: var(--space-4) var(--space-4) var(--space-3) var(--space-5);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-3);
+      transition: transform 0.25s cubic-bezier(0.2, 0.7, 0.3, 1),
+                  box-shadow 0.25s ease,
+                  border-color 0.2s ease;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      user-select: none;
+      box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04),
+                  0 4px 16px rgba(15, 23, 42, 0.04);
+      min-height: 180px;
+    }
+
+    .portal-enrolled-card:hover {
+      border-color: rgba(15, 23, 42, 0.12);
+      box-shadow: 0 2px 4px rgba(15, 23, 42, 0.05),
+                  0 12px 28px rgba(15, 23, 42, 0.10);
+      transform: translateY(-2px);
+    }
+
+    .portal-enrolled-card:active {
+      transform: translateY(-1px);
+    }
+
+    /* Thin left accent rail — quieter than the 5px bar it replaces */
+    .portal-enrolled-card::before {
+      content: '';
+      position: absolute;
+      top: 12px;
+      bottom: 12px;
+      left: 0;
+      width: 3px;
+      border-radius: 0 2px 2px 0;
+    }
+
+    .portal-enrolled-card.accent-blue::before   { background: #2563eb; }
+    .portal-enrolled-card.accent-orange::before { background: #ea580c; }
+    .portal-enrolled-card.accent-green::before  { background: #16a34a; }
+    .portal-enrolled-card.accent-purple::before { background: #7c3aed; }
+
+    .portal-enrolled-header {
+      display: flex;
+      align-items: center;
+      gap: var(--space-4);
+    }
+
+    .portal-enrolled-icon {
+      flex-shrink: 0;
+      width: 40px;
+      height: 40px;
+    }
+
+    .portal-enrolled-icon svg {
+      width: 48px;
+      height: 48px;
+      display: block;
+      border-radius: var(--radius-md);
+    }
+
+    .portal-enrolled-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .portal-enrolled-title {
+      font-size: 13px;
+      font-weight: var(--weight-bold);
+      color: var(--color-ink);
+      margin-bottom: 2px;
+      letter-spacing: -0.01em;
+      line-height: 1.2;
+    }
+
+    .portal-enrolled-meta {
+      font-size: 11px;
+      color: var(--color-ink-muted);
+      letter-spacing: 0.01em;
+    }
+
+    .portal-enrolled-progress {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-1);
+    }
+
+    .portal-enrolled-progress-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+      color: var(--color-ink-muted);
+      font-weight: var(--weight-medium);
+    }
+
+    .portal-enrolled-pct {
+      font-weight: var(--weight-bold);
+      font-size: 12px;
+      color: var(--color-ink);
+    }
+
+    .portal-enrolled-bar {
+      width: 100%;
+      height: 6px;
+      background: var(--color-border);
+      border-radius: var(--radius-full);
+      overflow: hidden;
+    }
+
+    .portal-enrolled-bar-fill {
+      height: 100%;
+      border-radius: var(--radius-full);
+      background: linear-gradient(90deg, #2563eb, #3b82f6);
+      transition: width 0.5s ease;
+    }
+
+    .portal-enrolled-bar-fill.complete {
+      background: linear-gradient(90deg, #16a34a, #22c55e);
+    }
+
+    /* ── ENROLLED CTA STRIP — bottom bar matching card category colour ── */
+    .portal-enrolled-cta {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: var(--space-2);
+      padding: var(--space-4) var(--space-5);
+      font-size: var(--text-sm);
+      font-weight: var(--weight-bold);
+      letter-spacing: 0.02em;
+      margin-top: auto;
+      transition: background 0.2s ease, color 0.2s ease;
+      flex-wrap: wrap;
+      min-height: 44px;
+    }
+
+    .portal-enrolled-card:hover .portal-enrolled-cta.cta-continue {
+      padding: var(--space-4) var(--space-5);
+    }
+
+    .portal-enrolled-cta.cta-continue {
+      background: rgba(37, 99, 235, 0.06);
+      color: #2563eb;
+      border-top: 1px solid rgba(37, 99, 235, 0.12);
+    }
+    .portal-enrolled-card:hover .portal-enrolled-cta.cta-continue {
+      background: #2563eb;
+      color: #ffffff;
+    }
+
+    .portal-enrolled-cta.cta-complete {
+      background: rgba(22, 163, 74, 0.06);
+      color: #16a34a;
+      border-top: 1px solid rgba(22, 163, 74, 0.12);
+    }
+    .portal-enrolled-card:hover .portal-enrolled-cta.cta-complete {
+      background: #16a34a;
+      color: #ffffff;
+      padding: var(--space-4) var(--space-5);
+    }
+
+    .portal-enrolled-cta a {
+      color: inherit;
+      text-decoration: none;
+    }
+    .portal-enrolled-cta a:hover {
+      text-decoration: underline;
+    }
+
+    /* ═══════════════════════════════════════════════════════════════════
+       AVAILABLE COURSES — Apple-style catalog layout (v0.3 design language)
+       ═══════════════════════════════════════════════════════════════════
+       Layout model:
+         #catalog-cards .portal-catalog-stack   ← vertical stack of category groups
+           └─ .portal-category-group              ← one per category (QA, Development, …)
+                 └─ .portal-catalog-grid          ← 2-col grid of course cards
+                       └─ .portal-catalog-card    ← individual course tile
+
+       Why a stack at the outer level:
+         The previous build put .portal-catalog-grid (2 cols) on #catalog-cards,
+         which forced the category groups themselves to sit side-by-side at 50%
+         width — crushing the cards inside into skinny columns. The stack lets
+         each category own a full row, so its inner 2-col grid breathes properly.
+       ─────────────────────────────────────────────────────────────────── */
+
+    /* Outer stack — categories flow vertically */
+    .portal-catalog-stack {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-5);
+      margin-bottom: var(--space-6);
+    }
+
+    /* Inner 2-col grid for cards within a single category */
+    .portal-catalog-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-4);
+    }
+
+    /* ── Course card (Apple-style "tile") ───────────────────────────────
+       Quiet white surface, hairline border, soft layered shadow.
+       Hover lifts gently — no scale, no aggressive colour shift. */
+    .portal-catalog-card {
+      background: #ffffff;
+      border: 1px solid rgba(15, 23, 42, 0.08);
+      border-radius: 16px;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.25s cubic-bezier(0.2, 0.7, 0.3, 1),
+                  box-shadow 0.25s ease,
+                  border-color 0.2s ease;
+      box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04),
+                  0 4px 16px rgba(15, 23, 42, 0.04);
+      cursor: pointer;
+      overflow: hidden;
+      min-height: 200px;
+      user-select: none;
+    }
+
+    .portal-catalog-card:hover {
+      border-color: rgba(15, 23, 42, 0.12);
+      box-shadow: 0 2px 4px rgba(15, 23, 42, 0.05),
+                  0 12px 28px rgba(15, 23, 42, 0.10);
+      transform: translateY(-2px);
+    }
+
+    .portal-catalog-card:active {
+      transform: translateY(-1px);
+    }
+
+    .portal-catalog-header {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--space-3);
+      padding: var(--space-5) var(--space-5) var(--space-2) var(--space-5);
+    }
+
+    .portal-catalog-icon {
+      flex-shrink: 0;
+      width: 44px;
+      height: 44px;
+    }
+
+    .portal-catalog-icon svg {
+      width: 44px;
+      height: 44px;
+      display: block;
+      border-radius: 10px;
+    }
+
+    .portal-catalog-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    /* Bigger, calmer title — letter-spacing tightened, weight 700 not 800.
+       Closer to SF Pro Display "Title 3" specimen. */
+    .portal-catalog-title {
+      font-size: 17px;
+      font-weight: 700;
+      color: #0f172a;
+      margin-bottom: 6px;
+      letter-spacing: -0.015em;
+      line-height: 1.25;
+    }
+
+    .portal-catalog-meta {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: var(--space-2);
+      font-size: 12px;
+      color: #64748b;
+    }
+
+    /* Description with consistent reading rhythm */
+    .portal-catalog-desc {
+      font-size: 13px;
+      color: #475569;
+      line-height: 1.5;
+      padding: 0 var(--space-5) var(--space-4) var(--space-5);
+      flex: 1;
+      overflow: hidden;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+    }
+
+    /* ── CTA STRIP at bottom of every catalog card ─────────────────────
+       Quiet by default (tinted background, coloured ink). On hover the
+       strip fills with the category accent for a clear "I am about to
+       do something" affordance. No padding jump on hover — that was
+       making the layout twitch. */
+    .portal-catalog-cta {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: var(--space-2);
+      padding: var(--space-3) var(--space-5);
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      transition: background 0.2s ease, color 0.2s ease;
+      margin-top: auto;
+      border-top: 1px solid rgba(15, 23, 42, 0.06);
+    }
+
+    /* Category-specific CTA colours */
+    .portal-catalog-cta.cta-enroll {
+      background: rgba(37, 99, 235, 0.05);
+      color: #1d4ed8;
+    }
+    .portal-catalog-card:hover .portal-catalog-cta.cta-enroll {
+      background: #2563eb;
+      color: #ffffff;
+    }
+
+    .portal-catalog-cta.cta-start {
+      background: rgba(234, 88, 12, 0.05);
+      color: #c2410c;
+    }
+    .portal-catalog-card:hover .portal-catalog-cta.cta-start {
+      background: #ea580c;
+      color: #ffffff;
+    }
+
+    /* ── CATEGORY GROUP ────────────────────────────────────────────────
+       The chrome-y coloured boxes are gone. Each category is now a
+       quiet section with a small accent rule, a heading, and a soft
+       subtitle. Visual rhythm — not visual noise. */
+    .portal-category-group {
+      padding: var(--space-3) 0 var(--space-2) 0;
+    }
+
+    /* Subtle 2px accent rule keyed to the category — replaces the
+       coloured background pane. */
+    .portal-category-heading {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      color: #334155;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: var(--space-1);
+      padding: 4px 0;
+      border-bottom: 2px solid currentColor;
+    }
+    .portal-category-group.group-qa             .portal-category-heading { color: #2563eb; }
+    .portal-category-group.group-fundamentals   .portal-category-heading { color: #2563eb; }
+    .portal-category-group.group-tools-process  .portal-category-heading { color: #8b5cf6; }
+    .portal-category-group.group-scenarios      .portal-category-heading { color: #dc2626; }
+    .portal-category-group.group-development    .portal-category-heading { color: #ea580c; }
+    .portal-category-group.group-general        .portal-category-heading { color: #16a34a; }
+
+    .portal-category-sub {
+      font-size: 13px;
+      color: #64748b;
+      margin-bottom: var(--space-4);
+      line-height: 1.5;
+      max-width: 60ch;
+    }
+
+    /* ── CATEGORY BADGE ─────────────────────────────────────────────── */
+    .portal-category-badge {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: var(--weight-bold);
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      padding: 3px 9px;
+      border-radius: var(--radius-full);
+      background: var(--color-primary-light);
+      color: var(--color-primary);
+    }
+
+    /* ── ADMIN LINK ─────────────────────────────────────────────────── */
+    .portal-admin-link {
+      display: block;
+      text-align: center;
+      margin-top: var(--space-8);
+      padding: var(--space-5);
+      border-top: 1px solid var(--color-border);
+    }
+
+    .portal-admin-link a {
+      font-size: var(--text-sm);
+      font-weight: var(--weight-medium);
+      color: var(--color-ink-muted);
+      text-decoration: none;
+      transition: color 0.15s ease;
+    }
+
+    .portal-admin-link a:hover {
+      color: var(--color-primary);
+    }
+
+    /* ── STATUS MESSAGES ────────────────────────────────────────────── */
+    .portal-empty {
+      text-align: center;
+      color: var(--color-ink-muted);
+      font-size: var(--text-sm);
+      padding: var(--space-10) 0;
+    }
+
+    .portal-loading {
+      text-align: center;
+      color: var(--color-ink-muted);
+      font-size: var(--text-sm);
+      padding: var(--space-10) 0;
+    }
+
+    .portal-error {
+      background: var(--color-error-light);
+      border: 1px solid var(--color-error-border);
+      border-radius: var(--radius-md);
+      color: var(--color-error);
+      font-size: var(--text-sm);
+      padding: var(--space-4);
+      margin-bottom: var(--space-6);
+      display: none;
+    }
+
+    .portal-error.visible { display: block; }
+
+    /* ── HIGHLIGHT NEWLY UNLOCKED COURSES ───────────────────────────── */
+    .portal-catalog-card.highlight-course,
+    .portal-enrolled-card.highlight-course {
+      animation: highlight-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+      border-color: #2563eb !important;
+      box-shadow: 0 0 20px rgba(37, 99, 235, 0.4), 0 8px 20px rgba(37, 99, 235, 0.15) !important;
+    }
+
+    @keyframes highlight-pulse {
+      0%, 100% {
+        box-shadow: 0 0 20px rgba(37, 99, 235, 0.4), 0 8px 20px rgba(37, 99, 235, 0.15);
+      }
+      50% {
+        box-shadow: 0 0 30px rgba(37, 99, 235, 0.6), 0 8px 30px rgba(37, 99, 235, 0.25);
+      }
+    }
+
+    .portal-catalog-card.highlight-course::after,
+    .portal-enrolled-card.highlight-course::after {
+      content: '✨ NEW';
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: linear-gradient(135deg, #2563eb, #3b82f6);
+      color: white;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      z-index: 5;
+    }
+
+    /* ── STUDENT INFO CARD ───────────────────────────────────────────── */
+    .student-info-card {
+      background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 50%, #1e3a8a 100%);
+      border-radius: 16px;
+      padding: var(--space-8) var(--space-6);
+      margin-bottom: var(--space-10);
+      color: white;
+      box-shadow: 0 8px 24px rgba(30, 58, 138, 0.25);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .student-info-card::before {
+      content: '';
+      position: absolute;
+      top: -40%;
+      right: -10%;
+      width: 300px;
+      height: 300px;
+      background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+
+    .student-info-content {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      gap: var(--space-6);
+    }
+
+    .student-info-avatar {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 36px;
+      font-weight: 800;
+      flex-shrink: 0;
+      border: 3px solid rgba(255, 255, 255, 0.4);
+    }
+
+    .student-info-text {
+      flex: 1;
+    }
+
+    .student-info-name {
+      font-size: 28px;
+      font-weight: 800;
+      margin-bottom: var(--space-1);
+      letter-spacing: -0.02em;
+    }
+
+    .student-info-email {
+      font-size: 14px;
+      opacity: 0.9;
+      margin-bottom: var(--space-3);
+    }
+
+    .student-info-stats {
+      display: flex;
+      gap: var(--space-6);
+      margin-top: var(--space-4);
+      font-size: 14px;
+    }
+
+    .student-info-stat {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .student-info-stat-label {
+      opacity: 0.8;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      font-weight: 600;
+    }
+
+    .student-info-stat-value {
+      font-size: 20px;
+      font-weight: 700;
+    }
+
+    /* ── FOOTER SECTIONS (COLLAPSIBLE) ──────────────────────────────── */
+    /* ── SITE FOOTER — Dark bottom section ────────────────────────────── */
+    .site-footer-wrap {
+      margin-top: var(--space-12);
+      background: #1D1D1F;
+      color: rgba(255,255,255,0.75);
+      padding: var(--space-10) var(--space-8) var(--space-8);
+    }
+
+    .site-footer-inner {
+      max-width: 1040px;
+      margin: 0 auto;
+    }
+
+    .site-footer-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-8);
+    }
+
+    .site-footer-section-title {
+      font-size: 11px;
+      font-weight: 600;
+      color: rgba(255,255,255,0.4);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: var(--space-4);
+    }
+
+    .site-footer-links {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-2);
+    }
+
+    .site-footer-link {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      padding: var(--space-2) var(--space-3);
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 10px;
+      text-decoration: none;
+      color: rgba(255,255,255,0.8);
+      transition: all 0.2s ease;
+    }
+
+    .site-footer-link:hover {
+      background: rgba(255,255,255,0.08);
+      border-color: rgba(255,255,255,0.12);
+      transform: translateY(-1px);
+    }
+
+    .site-footer-link-title {
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    .site-footer-link-desc {
+      font-size: 11px;
+      color: rgba(255,255,255,0.45);
+      line-height: 1.4;
+    }
+
+    .site-footer-credits {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-2);
+    }
+
+    .site-footer-credit-item {
+      font-size: 12px;
+      color: rgba(255,255,255,0.5);
+      padding: var(--space-1) var(--space-3);
+    }
+
+    .site-footer-credit-role {
+      color: rgba(255,255,255,0.7);
+      font-weight: 500;
+    }
+
+    .site-footer-bottom {
+      margin-top: var(--space-8);
+      padding-top: var(--space-5);
+      border-top: 1px solid rgba(255,255,255,0.08);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      color: rgba(255,255,255,0.35);
+    }
+
+    .site-footer-bottom a {
+      color: rgba(255,255,255,0.5);
+      text-decoration: none;
+      margin-left: var(--space-4);
+    }
+
+    .site-footer-bottom a:hover {
+      color: rgba(255,255,255,0.8);
+    }
+
+    /* ── PORTAL LAYOUT — Three-column: left info, center courses, right profile ──── */
+    .portal-layout-wrapper {
+      display: grid;
+      grid-template-columns: 220px 1fr 280px;
+      gap: var(--space-5);
+      align-items: start;
+    }
+
+    .portal-left-sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-4);
+    }
+
+    .portal-content-column {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-6);
+    }
+
+    .portal-profile-column {
+      position: sticky;
+      top: var(--space-6);
+    }
+
+    /* ── PORTAL LEFT SIDEBAR — Apple-style ──────────────────────────── */
+    .portal-sidebar-card {
+      background: #FFFFFF;
+      border: 1px solid rgba(0,0,0,0.06);
+      border-radius: 14px;
+      padding: var(--space-5);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .portal-sidebar-title {
+      font-size: 11px;
+      font-weight: 600;
+      color: #86868B;
+      margin-bottom: var(--space-3);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .portal-sidebar-content {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .portal-sidebar-link {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      padding: var(--space-2) var(--space-3);
+      color: #1D1D1F;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 500;
+      border-radius: 8px;
+      transition: all 0.2s ease;
+    }
+
+    .portal-sidebar-link:hover {
+      background: #F5F5F7;
+      color: #007AFF;
+    }
+
+    .portal-sidebar-link .link-icon {
+      flex-shrink: 0;
+      width: 18px;
+      height: 18px;
+      opacity: 0.5;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .portal-sidebar-link:hover .link-icon {
+      opacity: 0.8;
+    }
+
+    /* ── CERTIFICATE LIST IN SIDEBAR ────────────────────────────────── */
+    .sidebar-divider {
+      height: 1px;
+      background: rgba(0,0,0,0.06);
+      margin: var(--space-3) 0;
+    }
+
+    .sidebar-cert-list {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .sidebar-cert-link {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      padding: var(--space-2) var(--space-3);
+      color: #1D1D1F;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 500;
+      border-radius: 8px;
+      transition: all 0.2s ease;
+    }
+
+    .sidebar-cert-link:hover {
+      background: #F5F5F7;
+      color: #007AFF;
+    }
+
+    .sidebar-cert-check {
+      flex-shrink: 0;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: #34C759;
+      color: white;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      font-weight: 700;
+    }
+
+    .sidebar-cert-name {
+      flex: 1;
+      line-height: 1.3;
+    }
+
+    .sidebar-cert-empty {
+      font-size: 12px;
+      color: #86868B;
+      padding: var(--space-2) var(--space-3);
+      line-height: 1.4;
+    }
+
+    /* ── Graduation celebration ──────────────────────────────────────── */
+    @keyframes grad-confetti {
+      0% { transform: translateY(-10px) rotate(0deg); opacity: 0; }
+      20% { opacity: 1; }
+      100% { transform: translateY(60px) rotate(360deg); opacity: 0; }
+    }
+    .sidebar-graduation {
+      text-align: center;
+      padding: 16px 12px;
+      margin-bottom: 8px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%);
+      border: 1px solid #bbf7d0;
+      position: relative;
+      overflow: hidden;
+    }
+    .sidebar-graduation-icon {
+      font-size: 32px;
+      line-height: 1;
+      margin-bottom: 6px;
+      display: block;
+    }
+    .sidebar-graduation-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: #16a34a;
+      margin-bottom: 2px;
+    }
+    .sidebar-graduation-sub {
+      font-size: 11px;
+      color: #6b7280;
+      line-height: 1.4;
+    }
+    .sidebar-graduation-link {
+      display: inline-block;
+      margin-top: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #2563eb;
+      text-decoration: none;
+      padding: 4px 14px;
+      border-radius: 100px;
+      background: rgba(37,99,235,0.1);
+      transition: all 0.2s;
+    }
+    .sidebar-graduation-link:hover {
+      background: rgba(37,99,235,0.18);
+    }
+    .sidebar-graduation-confetti {
+      position: absolute;
+      font-size: 10px;
+      pointer-events: none;
+      animation: grad-confetti 2s ease-out infinite;
+    }
+    .sidebar-graduation-confetti:nth-child(1) { left: 10%; animation-delay: 0s; }
+    .sidebar-graduation-confetti:nth-child(2) { left: 30%; animation-delay: 0.3s; }
+    .sidebar-graduation-confetti:nth-child(3) { left: 50%; animation-delay: 0.6s; }
+    .sidebar-graduation-confetti:nth-child(4) { left: 70%; animation-delay: 0.9s; }
+    .sidebar-graduation-confetti:nth-child(5) { left: 90%; animation-delay: 1.2s; }
+
+    /* ── PORTAL PROFILE CARD ─────────────────────────────────────────── */
+    .portal-profile-card {
+      background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 50%, #1e3a8a 100%);
+      border-radius: 16px;
+      padding: var(--space-6);
+      color: white;
+      box-shadow: 0 8px 24px rgba(30, 58, 138, 0.25);
+      position: relative;
+      overflow: hidden;
+      cursor: default;
+    }
+
+    /* Mouse-tracking glow overlay — positioned absolutely, updated by JS */
+    .portal-profile-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: radial-gradient(600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255,255,255,0.08) 0%, transparent 40%);
+      border-radius: 16px;
+      pointer-events: none;
+      z-index: 0;
+      transition: background 0.1s ease;
+    }
+
+    /* Static backdrop glow (visible on load) */
+    .portal-profile-card::after {
+      content: '';
+      position: absolute;
+      top: -40%;
+      right: -10%;
+      width: 200px;
+      height: 200px;
+      background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .portal-profile-header {
+      text-align: center;
+      margin-bottom: var(--space-6);
+      position: relative;
+      z-index: 1;
+    }
+
+    .portal-profile-avatar {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.25);
+      font-size: 36px;
+      font-weight: 800;
+      border: 3px solid rgba(255, 255, 255, 0.4);
+      position: relative;
+      z-index: 1;
+    }
+
+    .portal-profile-info {
+      text-align: center;
+      margin-bottom: var(--space-6);
+      position: relative;
+      z-index: 1;
+    }
+
+    .portal-profile-name {
+      font-size: 20px;
+      font-weight: 800;
+      margin-bottom: 4px;
+      letter-spacing: -0.01em;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+      word-break: break-word;
+    }
+
+    .portal-profile-email {
+      font-size: 12px;
+      opacity: 0.9;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+      word-break: break-all;
+    }
+
+    .portal-profile-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-4);
+      margin-bottom: var(--space-6);
+      padding: var(--space-4);
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .portal-profile-stat {
+      text-align: center;
+    }
+
+    .portal-profile-stat-label {
+      font-size: 11px;
+      opacity: 0.85;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .portal-profile-stat-value {
+      font-size: 24px;
+      font-weight: 700;
+    }
+
+    .portal-profile-actions {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-2);
+      position: relative;
+      z-index: 1;
+    }
+
+    .btn-block {
+      width: 100%;
+      font-size: 13px;
+      padding: 9px var(--space-4);
+      border-radius: 9999px;
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.15);
+      color: white;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      transition: all 0.2s ease;
+      font-weight: 500;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.25);
+      border-color: rgba(255, 255, 255, 0.3);
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: rgba(255, 255, 255, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 9999px;
+      transition: all 0.2s ease;
+      font-weight: 500;
+      padding: 9px var(--space-4);
+      font-size: 13px;
+      font-family: inherit;
+      cursor: pointer;
+    }
+
+    .btn-ghost:hover {
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+    }
+
+    /* ── RESPONSIVE ─────────────────────────────────────────────────── */
+    @media (max-width: 1080px) {
+      /* Collapse left sidebar on medium screens */
+      .portal-layout-wrapper {
+        grid-template-columns: 1fr 260px;
+      }
+
+      .portal-left-sidebar {
+        display: none;
+      }
+    }
+
+    @media (max-width: 820px) {
+      /* On tablet: hide left sidebar, stack profile below */
+      .portal-layout-wrapper {
+        grid-template-columns: 1fr;
+      }
+
+      .portal-left-sidebar {
+        display: none;
+      }
+
+      .portal-profile-column {
+        position: static;
+      }
+    }
+
+    @media (max-width: 640px) {
+      /* Mobile topbar: collapse text labels */
+      .portal-topbar {
+        padding: 0 var(--space-4);
+      }
+      .portal-topbar-download span:last-child {
+        display: none;
+      }
+      .portal-topbar-brand-text {
+        display: none;
+      }
+    }
+
+    @media (max-width: 560px) {
+      /* Stack everything on phones */
+      .portal-topbar {
+        padding: 0 var(--space-3);
+      }
+      .portal-learning-tray {
+        padding: var(--space-4);
+      }
+      .portal-welcome {
+        font-size: var(--text-xl);
+      }
+      .portal-hero {
+        padding: var(--space-6) var(--space-4) var(--space-8);
+      }
+    }
+
+    /* ── TOPBAR BUTTONS — Apple-style pill buttons ─────────────────────── */
+    .topbar-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 14px;
+      font-size: 13px;
+      font-weight: 500;
+      font-family: inherit;
+      border: 1px solid #E5E5EA;
+      border-radius: 9999px;
+      background: #FFFFFF;
+      color: #1D1D1F;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .topbar-btn:hover {
+      background: #F5F5F7;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    }
+
+    .topbar-btn:active {
+      transform: scale(0.97);
+    }
+
+    .topbar-btn-icon {
+      width: 14px;
+      height: 14px;
+      flex-shrink: 0;
+      opacity: 0.6;
+    }
+
+    .topbar-btn.primary {
+      background: #007AFF;
+      border-color: #007AFF;
+      color: #FFFFFF;
+    }
+
+    .topbar-btn.primary:hover {
+      background: #0066D6;
+      border-color: #0066D6;
+      box-shadow: 0 2px 8px rgba(0, 122, 255, 0.25);
+    }
+
+    .portal-topbar-download {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 14px;
+      font-size: 13px;
+      font-weight: 500;
+      border: 1px solid #E5E5EA;
+      background: #FFFFFF;
+      color: #1D1D1F;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-decoration: none;
+    }
+
+    .portal-topbar-download:hover {
+      background: #F5F5F7;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    }
+
+    .portal-topbar-download:active {
+      transform: scale(0.97);
+    }
+
+    .portal-topbar-download-icon {
+      display: inline-flex;
+      align-items: center;
+      line-height: 1;
+    }
+
+    .portal-topbar-download-icon svg {
+      width: 14px;
+      height: 14px;
+      opacity: 0.6;
+    }
+
+    .portal-logout-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 14px;
+      background: #007AFF;
+      color: #FFFFFF;
+      border: 1px solid #007AFF;
+      border-radius: 9999px;
+      font-weight: 500;
+      font-size: 13px;
+      font-family: inherit;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-decoration: none;
+    }
+
+    .portal-logout-btn:hover {
+      background: #0066D6;
+      border-color: #0066D6;
+      box-shadow: 0 2px 8px rgba(0, 122, 255, 0.25);
+    }
+
+    .portal-logout-btn:active {
+      transform: scale(0.97);
+    }
+
+    /* ── USER AVATAR & DROPDOWN ──────────────────────────────────────── */
+    .user-menu {
+      position: relative;
+      display: inline-flex;
+    }
+
+    .user-avatar-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: 1px solid var(--color-border);
+      background: #007AFF;
+      color: #fff;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 13px;
+      font-family: inherit;
+      transition: opacity 0.2s ease;
+      padding: 0;
+      line-height: 1;
+    }
+
+    .user-avatar-btn:hover {
+      opacity: 0.8;
+    }
+
+    .user-avatar {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
+    }
+
+    /* ── DROPDOWN ──────────────────────────────────────────────────────── */
+    .user-dropdown {
+      position: absolute;
+      top: calc(100% + 8px);
+      right: 0;
+      width: 240px;
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-lg);
+      z-index: 100;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-4px);
+      transition: opacity var(--transition-fast), transform var(--transition-fast), visibility var(--transition-fast);
+    }
+
+    .user-dropdown.open {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+
+    .user-dropdown-header {
+      padding: var(--space-4) var(--space-4) var(--space-3);
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .user-dropdown-name {
+      display: block;
+      font-weight: var(--weight-bold);
+      font-size: var(--text-sm);
+      color: var(--color-ink);
+    }
+
+    .user-dropdown-email {
+      display: block;
+      font-size: var(--text-xs);
+      color: var(--color-ink-muted);
+      margin-top: 2px;
+      word-break: break-all;
+    }
+
+    .user-dropdown-body {
+      padding: var(--space-2);
+    }
+
+    .user-dropdown-item {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      width: 100%;
+      padding: var(--space-2) var(--space-3);
+      font-size: var(--text-sm);
+      color: var(--color-ink);
+      background: none;
+      border: none;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      text-decoration: none;
+      transition: background var(--transition-fast);
+    }
+
+    .user-dropdown-item:hover {
+      background: var(--color-bg);
+    }
+
+    .user-dropdown-item svg {
+      flex-shrink: 0;
+      color: var(--color-ink-muted);
+    }
+
+    .user-dropdown-divider {
+      height: 1px;
+      background: var(--color-border);
+      margin: var(--space-1) 0;
+    }
+
+    /* ── PROFILE SLIDE-OVER PANEL ──────────────────────────────────────── */
+    .profile-panel-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.3);
+      z-index: 200;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity var(--transition-base), visibility var(--transition-base);
+    }
+
+    .profile-panel-overlay.open {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .profile-panel {
+      position: fixed;
+      top: 0;
+      right: 0;
+      width: 380px;
+      max-width: 100vw;
+      height: 100vh;
+      background: var(--color-surface);
+      border-left: 1px solid var(--color-border);
+      box-shadow: var(--shadow-xl);
+      z-index: 201;
+      display: flex;
+      flex-direction: column;
+      transform: translateX(100%);
+      transition: transform 0.25s ease;
+    }
+
+    .profile-panel.open {
+      transform: translateX(0);
+    }
+
+    .profile-panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: var(--space-5) var(--space-6);
+      border-bottom: 1px solid var(--color-border);
+      flex-shrink: 0;
+    }
+
+    .profile-panel-title {
+      font-size: var(--text-lg);
+      font-weight: var(--weight-bold);
+      color: var(--color-ink);
+      margin: 0;
+    }
+
+    .profile-panel-close {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: var(--radius-sm);
+      border: none;
+      background: none;
+      color: var(--color-ink-muted);
+      font-size: var(--text-lg);
+      cursor: pointer;
+      transition: background var(--transition-fast), color var(--transition-fast);
+    }
+
+    .profile-panel-close:hover {
+      background: var(--color-bg);
+      color: var(--color-ink);
+    }
+
+    .profile-panel-body {
+      flex: 1;
+      overflow-y: auto;
+      padding: var(--space-6);
+    }
+
+    .profile-avatar-section {
+      display: flex;
+      justify-content: center;
+      margin-bottom: var(--space-6);
+    }
+
+    .profile-avatar-lg {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      background: var(--color-primary);
+      color: #fff;
+      font-size: var(--text-2xl);
+      font-weight: var(--weight-bold);
+      border: 3px solid var(--color-primary-light, rgba(37, 99, 235, 0.15));
+    }
+
+    .profile-panel-actions {
+      display: flex;
+      gap: var(--space-3);
+      margin-top: var(--space-6);
+    }
+
+    .profile-panel-actions .btn {
+      flex: 1;
+    }
+
+    /* ── MODAL OVERLAY (shared pattern with admin dashboard) ────────────── */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.45);
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
+      padding: var(--space-6);
+    }
+
+    .modal-overlay.open { display: flex; }
+
+    .modal-panel {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-lg);
+      width: 100%;
+      max-width: 480px;
+      padding: var(--space-8);
+      position: relative;
+    }
+
+    /* ── STUDENT WALKTHROUGH WIZARD ──────────────────────────────────── */
+    .swiz-step { min-height: 200px; }
+
+    .swiz-dot {
+      display: inline-block;
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.4);
+      transition: background 0.2s;
+    }
+    .swiz-dot-active { background: rgba(255,255,255,0.95); }
+  </style>
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       TOPBAR — Same visual style as course.html
+       ═══════════════════════════════════════════════════════════════ -->
+  <nav class="portal-topbar">
+    <div class="portal-topbar-brand">
+      <svg viewBox="0 0 48 48" fill="none">
+        <rect width="48" height="48" rx="10" fill="#2563eb"/>
+        <path d="M14 24L20 30L34 16" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="24" cy="24" r="10" stroke="white" stroke-width="2" fill="none" opacity="0.3"/>
+      </svg>
+      <span class="portal-topbar-brand-text">QA Pilot Academy</span>
+      <span id="topbar-logo" class="portal-topbar-logo" style="display:none;"></span>
+    </div>
+    <div class="portal-topbar-user">
+      <div id="lang-toggle-container"></div>
+      <button class="portal-topbar-download" onclick="exportStudentData()" id="topbar-download-btn" title="Download your data and progress">
+        <span class="portal-topbar-download-icon">
+          <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M10 3v10m0 0l-4-4m4 4l4-4M3 15v2a1 1 0 001 1h12a1 1 0 001-1v-2"/>
+          </svg>
+        </span>
+        <span>Download Student Data</span>
+      </button>
+      <button class="portal-logout-btn" onclick="console.log('Logout click detected'); handleLogout();" title="Sign out of your account">
+        🚪 Sign Out
+      </button>
+      <div class="user-menu" id="user-menu">
+        <button class="user-avatar-btn" id="user-avatar-btn" onclick="toggleUserDropdown()" aria-label="User menu" title="Your profile">
+          <span class="user-avatar" id="user-avatar">?</span>
+        </button>
+        <div class="user-dropdown" id="user-dropdown">
+          <div class="user-dropdown-header" id="user-dropdown-header">
+            <span class="user-dropdown-name" id="user-dropdown-name">Loading…</span>
+            <span class="user-dropdown-email" id="user-dropdown-email"></span>
+          </div>
+          <div class="user-dropdown-body">
+            <button class="user-dropdown-item" onclick="showProfilePanel()">
+              <svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16"><path d="M10 2a4 4 0 100 8 4 4 0 000-8zM3 16.5c0-2.5 4-4 7-4s7 1.5 7 4V18H3v-1.5z"/></svg>
+              My Profile
+            </button>
+            <button class="user-dropdown-item" onclick="showPasswordPanel()">
+              <svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16"><path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"/></svg>
+              Change Password
+            </button>
+            <button class="user-dropdown-item" onclick="exportStudentData()">
+              <svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16"><path d="M2 6a2 2 0 012-2h12a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2V6zm14 0H4v8h12V6z"/></svg>
+              Download Student Data
+            </button>
+            <button class="user-dropdown-item" onclick="openStudentWizard()">
+              <svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd"/></svg>
+              Getting Started
+            </button>
+            <div class="user-dropdown-divider"></div>
+            <button class="user-dropdown-item" onclick="handleLogout(); return false;">
+              <svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16"><path fill-rule="evenodd" d="M3 3a1 1 0 00-1 1v12a1 1 0 001 1h5a1 1 0 100-2H4V5h4a1 1 0 100-2H3zm11.707 3.293a1 1 0 010 1.414L12.414 10l2.293 2.293a1 1 0 01-1.414 1.414l-3-3a1 1 0 010-1.414l3-3a1 1 0 011.414 0z"/></svg>
+              Sign Out
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ── HERO BANNER — sits outside portal-main so it's full-width ── -->
+  <div class="portal-hero">
+    <div class="portal-hero-inner">
+      <h1 class="portal-welcome" id="welcome-heading">Welcome back!</h1>
+      <p class="portal-welcome-sub" id="welcome-sub">Loading your courses…</p>
+    </div>
+  </div>
+
+   <main class="portal-main">
+    <div id="portal-error" class="portal-error" role="alert"></div>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         PORTAL LAYOUT — Two column: main content on left, profile on right
+         ═══════════════════════════════════════════════════════════════ -->
+    <div class="portal-layout-wrapper">
+      <!-- Left sidebar — Apple-style nav -->
+      <aside class="portal-left-sidebar">
+        <div class="portal-sidebar-card">
+          <div class="portal-sidebar-title">Quick Links</div>
+          <div class="portal-sidebar-content">
+            <a href="#my-learning-section" class="portal-sidebar-link">
+              <span class="link-icon">
+                <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="18" height="18">
+                  <path d="M7 3H4a1 1 0 00-1 1v3m0 0V5a1 1 0 011-1h3m0 0V4a1 1 0 011-1h2a1 1 0 011 1v1m0 0h3a1 1 0 011 1v2m0 0V5a1 1 0 00-1-1h-3m0 0v2M7 17H4a1 1 0 01-1-1v-3m0 0v3a1 1 0 001 1h3m0 0v-2m0 2h2a1 1 0 001-1v-2m0 0v2a1 1 0 01-1 1h-2m6-10h3a1 1 0 011 1v3m0 0V5a1 1 0 00-1-1h-3m0 2v10m0 0h3a1 1 0 001-1v-3m0 0v3a1 1 0 01-1 1h-3"/>
+                </svg>
+              </span>
+              My Courses
+            </a>
+            <a href="#catalog-section" class="portal-sidebar-link">
+              <span class="link-icon">
+                <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="18" height="18">
+                  <path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12M9 4.804V12"/>
+                </svg>
+              </span>
+              All Courses
+            </a>
+          </div>
+
+          <div class="sidebar-divider"></div>
+
+          <div class="portal-sidebar-title">Certificates</div>
+          <div class="sidebar-cert-list" id="certificates-list">
+            <div class="sidebar-cert-empty">Complete a course to earn your first certificate</div>
+          </div>
+
+          <div class="sidebar-divider"></div>
+
+          <div class="portal-sidebar-title">Resources</div>
+          <div class="portal-sidebar-content">
+            <a href="guide-student.html" class="portal-sidebar-link">
+              <span class="link-icon">
+                <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="18" height="18">
+                  <path d="M10 18a8 8 0 100-16 8 8 0 000 16z"/><path d="M10 14a1 1 0 01-1-1V9a1 1 0 012 0v4a1 1 0 01-1 1z"/><circle cx="10" cy="7" r="1" fill="currentColor"/>
+                </svg>
+              </span>
+              Student Guide
+            </a>
+            <a href="guide-facilitator.html" class="portal-sidebar-link">
+              <span class="link-icon">
+                <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="18" height="18">
+                  <path d="M7 4v16M7 4l8 4-8 4"/>
+                </svg>
+              </span>
+              Facilitator Guide
+            </a>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Main content column (center) -->
+      <div class="portal-content-column">
+        <!-- ─────────────────────────────────────────────────────────
+             MY LEARNING — Courses the student is enrolled in
+             ───────────────────────────────────────────────────────── -->
+        <section id="my-learning-section" style="display:none;">
+      <h2 class="portal-section-title" id="my-learning-title">My Learning</h2>
+      <!-- Tray containers are rendered by JavaScript — one per category -->
+      <div id="enrolled-trays"></div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         AVAILABLE COURSES — Courses the student can enroll in
+         ═══════════════════════════════════════════════════════════════ -->
+    <section id="catalog-section" style="display:none;">
+      <h2 class="portal-section-title" id="available-courses-title">Available Courses</h2>
+      <!--
+        Container stacks category groups VERTICALLY (one per row, full width).
+        Each category group internally uses .portal-catalog-grid (2-col) for its cards.
+        DO NOT put .portal-catalog-grid on this container — that nested 2-col-in-2-col
+        was the bug that crushed cards into skinny columns. — Ash, May 22 2026
+      -->
+      <div id="catalog-cards" class="portal-catalog-stack"></div>
+    </section>
+
+        <!-- Admin link (shown if admin session is active) -->
+        <div id="admin-link-container" class="portal-admin-link" style="display:none;">
+          <a href="admin/dashboard.html" id="admin-dashboard-link">Go to Admin Dashboard →</a>
+        </div>
+      </div>
+
+      <!-- Profile card column (right) -->
+      <aside class="portal-profile-column">
+        <div class="portal-profile-card">
+          <!-- Profile header with avatar -->
+          <div class="portal-profile-header">
+            <div class="portal-profile-avatar" id="portal-profile-avatar">?</div>
+          </div>
+
+          <!-- Profile info -->
+          <div class="portal-profile-info">
+            <div class="portal-profile-name" id="portal-profile-name">Loading…</div>
+            <div class="portal-profile-email" id="portal-profile-email"></div>
+          </div>
+
+          <!-- Stats section -->
+          <div class="portal-profile-stats">
+            <div class="portal-profile-stat">
+              <div class="portal-profile-stat-label">Enrolled</div>
+              <div class="portal-profile-stat-value" id="portal-stat-enrolled">0</div>
+            </div>
+            <div class="portal-profile-stat">
+              <div class="portal-profile-stat-label">Completed</div>
+              <div class="portal-profile-stat-value" id="portal-stat-completed">0</div>
+            </div>
+          </div>
+
+          <!-- Profile actions -->
+          <div class="portal-profile-actions">
+            <button class="btn btn-secondary btn-block" onclick="showProfilePanel()" style="margin-bottom:var(--space-2);">📋 My Profile</button>
+            <button class="btn btn-secondary btn-block" onclick="showPasswordPanel()" style="margin-bottom:var(--space-2);">🔑 Change Password</button>
+            <button class="btn btn-ghost btn-block" onclick="logout();">Sign Out</button>
+          </div>
+        </div>
+      </aside>
+    </div>
+
+  </main>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       SITE FOOTER — Dark section with Help & Credits
+       ═══════════════════════════════════════════════════════════════ -->
+  <footer class="site-footer-wrap">
+    <div class="site-footer-inner">
+      <div class="site-footer-grid">
+        <!-- Help & Documentation -->
+        <div>
+          <div class="site-footer-section-title">Help &amp; Documentation</div>
+          <div class="site-footer-links">
+            <a href="guide-student.html" class="site-footer-link">
+              <span class="site-footer-link-title">Student Quick Start</span>
+              <span class="site-footer-link-desc">Get up and running with the essentials in minutes.</span>
+            </a>
+            <a href="guide-facilitator.html" class="site-footer-link">
+              <span class="site-footer-link-title">Facilitator Guide</span>
+              <span class="site-footer-link-desc">Comprehensive guide for instructors and facilitators.</span>
+            </a>
+          </div>
+        </div>
+        <!-- Built With Care -->
+        <div>
+          <div class="site-footer-section-title">Built With Care</div>
+          <div class="site-footer-credits">
+            <div class="site-footer-credit-item">
+              <span class="site-footer-credit-role">Visionary &amp; Lead Tester:</span> Elyse Henry
+            </div>
+            <div class="site-footer-credit-item">
+              <span class="site-footer-credit-role">Lead Software Orchestrator:</span> Andrew Hannah
+            </div>
+            <div class="site-footer-credit-item">
+              <span class="site-footer-credit-role">AI Development &amp; Implementation:</span> Claude (Ash)
+            </div>
+            <div class="site-footer-credit-item">
+              <span class="site-footer-credit-role">AI Support &amp; Collaboration:</span> All Helper AI Assistants
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="site-footer-bottom">
+        <span>&copy; 2026 QA Pilot Academy</span>
+        <div>
+          <a href="#" onclick="showToast('About QA Pilot Academy'); return false;">About</a>
+          <a href="#" onclick="showToast('Your data is stored locally on this device.'); return false;">Privacy</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <!-- ── USER PROFILE SLIDE-OVER PANEL ────────────────────────────────── -->
+  <div class="profile-panel-overlay" id="profile-panel-overlay" onclick="closeProfilePanel()"></div>
+  <div class="profile-panel" id="profile-panel">
+    <div class="profile-panel-header">
+      <h2 class="profile-panel-title" id="profile-panel-title">My Profile</h2>
+      <button class="profile-panel-close" onclick="closeProfilePanel()" aria-label="Close panel">✕</button>
+    </div>
+    <div class="profile-panel-body">
+      <!-- Profile pane (default) -->
+      <div id="profile-pane">
+        <div class="profile-avatar-section">
+          <div class="profile-avatar-lg" id="profile-avatar-lg">?</div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="profile-name">Name</label>
+          <input type="text" id="profile-name" class="form-control" placeholder="Your full name">
+          <span class="field-error" id="profile-name-error"></span>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="profile-email">Email</label>
+          <input type="email" id="profile-email" class="form-control" placeholder="email@example.com">
+          <span class="field-error" id="profile-email-error"></span>
+        </div>
+        <div class="profile-panel-actions">
+          <button class="btn btn-primary" onclick="saveProfile()">Save Changes</button>
+        </div>
+      </div>
+
+      <!-- Password pane (shown via toggle) -->
+      <div id="password-pane" style="display:none;">
+        <p class="text-sm text-muted" style="margin-bottom:var(--space-4);">Enter your current password and a new password below.</p>
+        <div class="form-group">
+          <label class="form-label" for="profile-current-password">Current password</label>
+          <input type="password" id="profile-current-password" class="form-control" placeholder="Current password" autocomplete="current-password">
+          <span class="field-error" id="profile-current-password-error"></span>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="profile-new-password">New password</label>
+          <input type="password" id="profile-new-password" class="form-control" placeholder="New password (min 6 characters)" autocomplete="new-password">
+          <span class="field-error" id="profile-new-password-error"></span>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="profile-confirm-password">Confirm new password</label>
+          <input type="password" id="profile-confirm-password" class="form-control" placeholder="Confirm new password" autocomplete="new-password">
+          <span class="field-error" id="profile-confirm-password-error"></span>
+        </div>
+        <div class="profile-panel-actions">
+          <button class="btn btn-primary" onclick="changePassword()">Update Password</button>
+          <button class="btn btn-ghost" onclick="showProfilePanel()">Back to Profile</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── STUDENT GETTING STARTED WIZARD ────────────────────────────────────── -->
+  <!-- 3-step walkthrough. Auto-shows on first portal load.                    -->
+  <!-- Can be re-opened at any time via the wizard trigger button in topbar.   -->
+  <div class="modal-overlay" id="student-wizard-modal" role="dialog" aria-modal="true" aria-labelledby="student-wizard-title">
+    <div class="modal-panel" style="max-width:540px;padding:0;overflow:hidden;">
+
+      <!-- WIZARD HEADER -->
+      <div style="background:linear-gradient(135deg,#1e3a8a 0%,#3b82f6 100%);padding:var(--space-6) var(--space-8);color:white;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:var(--space-4);">
+          <span style="font-size:var(--text-xs);font-weight:var(--weight-bold);letter-spacing:0.08em;text-transform:uppercase;opacity:0.8;">
+            Welcome
+          </span>
+          <button id="student-wizard-close"
+            style="background:rgba(255,255,255,0.15);border:none;color:white;cursor:pointer;border-radius:6px;padding:4px 10px;font-size:var(--text-sm);line-height:1;"
+            aria-label="Close walkthrough"
+          >✕</button>
+        </div>
+        <!-- Step indicator dots -->
+        <div id="student-wizard-dots" style="display:flex;gap:8px;margin-bottom:var(--space-4);">
+          <span class="swiz-dot swiz-dot-active"></span>
+          <span class="swiz-dot"></span>
+          <span class="swiz-dot"></span>
+        </div>
+        <h2 id="student-wizard-title" style="font-size:var(--text-lg);font-weight:var(--weight-bold);margin:0;line-height:1.2;">
+          Welcome to QA Pilot Academy
+        </h2>
+        <p id="student-wizard-subtitle" style="font-size:var(--text-sm);opacity:0.85;margin:var(--space-2) 0 0;">
+          Let's get you oriented in 3 quick steps.
+        </p>
+      </div>
+
+      <!-- WIZARD BODY -->
+      <div style="padding:var(--space-6) var(--space-8);">
+
+        <!-- ── STEP 1: WELCOME ── -->
+        <div id="student-wizard-step-1" class="swiz-step">
+          <p style="font-size:var(--text-sm);color:var(--color-ink-soft);line-height:1.6;margin-bottom:var(--space-5);">
+            Welcome to <strong>QA Pilot Academy</strong> — your interactive QA training platform.
+          </p>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-4);margin-bottom:var(--space-4);">
+            <div style="background:var(--color-bg);border:1px solid var(--color-border);border-radius:var(--radius-md);padding:var(--space-4);">
+              <div style="font-size:20px;margin-bottom:var(--space-2);">📚</div>
+              <strong style="font-size:var(--text-sm);">Structured Courses</strong>
+              <p style="font-size:var(--text-xs);color:var(--color-ink-muted);margin-top:4px;">Work through modules with reading, exercises, and quizzes.</p>
+            </div>
+            <div style="background:var(--color-bg);border:1px solid var(--color-border);border-radius:var(--radius-md);padding:var(--space-4);">
+              <div style="font-size:20px;margin-bottom:var(--space-2);">🖥️</div>
+              <strong style="font-size:var(--text-sm);">Real Simulated Tools</strong>
+              <p style="font-size:var(--text-xs);color:var(--color-ink-muted);margin-top:4px;">Practice in realistic Dynamics CRM, ADO, Teams, and Outlook simulators.</p>
+            </div>
+            <div style="background:var(--color-bg);border:1px solid var(--color-border);border-radius:var(--radius-md);padding:var(--space-4);">
+              <div style="font-size:20px;margin-bottom:var(--space-2);">🏆</div>
+              <strong style="font-size:var(--text-sm);;">Certificates</strong>
+              <p style="font-size:var(--text-xs);color:var(--color-ink-muted);margin-top:4px;">Earn a certificate for each completed course with your name and score.</p>
+            </div>
+            <div style="background:var(--color-bg);border:1px solid var(--color-border);border-radius:var(--radius-md);padding:var(--space-4);">
+              <div style="font-size:20px;margin-bottom:var(--space-2);">📤</div>
+              <strong style="font-size:var(--text-sm);">Report Progress</strong>
+              <p style="font-size:var(--text-xs);color:var(--color-ink-muted);margin-top:4px;">Send your results to your instructor with one click.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── STEP 2: HOW COURSES WORK ── -->
+        <div id="student-wizard-step-2" class="swiz-step" style="display:none;">
+          <p style="font-size:var(--text-sm);color:var(--color-ink-soft);line-height:1.6;margin-bottom:var(--space-5);">
+            Here's how your training works:
+          </p>
+          <div style="background:var(--color-bg);border:1px solid var(--color-border);border-radius:var(--radius-md);padding:var(--space-5);margin-bottom:var(--space-4);">
+            <ol style="margin:0 0 0 var(--space-4);font-size:var(--text-sm);color:var(--color-ink-soft);line-height:2;">
+              <li><strong>Browse courses</strong> in the catalog below — each is made up of modules with lessons and quizzes.</li>
+              <li><strong>Click a course</strong> to open it. Work through each module step by step. Your progress saves automatically.</li>
+              <li><strong>Complete all modules</strong> and pass the quizzes to earn your certificate with your name and score.</li>
+              <li>Some courses include a <strong>capstone assessment</strong> — a hands-on scenario in a simulated Windows desktop environment.</li>
+            </ol>
+          </div>
+          <p style="font-size:var(--text-xs);color:var(--color-ink-muted);">
+            Your progress is saved locally in your browser. You can close the page and come back anytime.
+          </p>
+        </div>
+
+        <!-- ── STEP 3: EXPORT & COMPLETION ── -->
+        <div id="student-wizard-step-3" class="swiz-step" style="display:none;">
+          <p style="font-size:var(--text-sm);color:var(--color-ink-soft);line-height:1.6;margin-bottom:var(--space-5);">
+            When you're done with your training, here's how to share your results:
+          </p>
+          <div style="background:var(--color-bg);border:1px solid var(--color-border);border-radius:var(--radius-md);padding:var(--space-5);margin-bottom:var(--space-4);">
+            <ol style="margin:0 0 0 var(--space-4);font-size:var(--text-sm);color:var(--color-ink-soft);line-height:2;">
+              <li><strong>Complete your courses</strong> — work through all modules and quizzes at your own pace.</li>
+              <li>Click <strong>Download Student Data</strong> in the top bar — a file with your progress will download.</li>
+              <li>If your instructor's email is configured, your Outlook will open with the file ready to attach.</li>
+              <li><strong>Send the file</strong> to your instructor. They can import your results into their dashboard.</li>
+            </ol>
+          </div>
+          <div style="background:#f0f9ff;border:1px solid #93c5fd;border-radius:var(--radius-md);padding:var(--space-4);font-size:var(--text-xs);color:#1e40af;">
+            💡 <strong>Tip:</strong> You can re-open this walkthrough anytime from the user menu (click your avatar in the top-right corner).
+          </div>
+        </div>
+
+      </div><!-- end wizard body -->
+
+      <!-- WIZARD FOOTER -->
+      <div style="padding:var(--space-4) var(--space-8) var(--space-6);border-top:1px solid var(--color-border);display:flex;justify-content:space-between;align-items:center;gap:var(--space-3);">
+        <button id="student-wizard-back" class="btn btn-ghost" style="display:none;">← Back</button>
+        <span></span>
+        <div style="display:flex;gap:var(--space-3);">
+          <button id="student-wizard-skip" class="btn btn-ghost" style="font-size:var(--text-xs);">Skip</button>
+          <button id="student-wizard-next" class="btn btn-primary">Next →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="data/content.js"></script>
+  <script src="data/quiz-questions.js"></script>
+  <script src="js/db.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/i18n.js"></script>
+  <script src="js/lang-en.js"></script>
+  <script src="js/lang-fr.js"></script>
+
+  <script>
+    /**
+     * portal.html — Course Portal / Catalog Page
+     * ============================================
+     * WHAT THIS PAGE DOES:
+     * - Acts as the landing page after login (replaces course.html as default redirect).
+     * - Shows "My Learning" section: enrolled courses with progress bars.
+     * - Shows "Available Courses" section: catalog of all courses with Enroll buttons.
+     * - Seeds course definitions from content.js into IndexedDB on first load.
+     * - Handles enrollment: creates enrollment record + initialises progress tracking.
+     *
+     * FLOW:
+     * 1. initDB() + seedCourses() — ensure courses exist in IndexedDB
+     * 2. requireLogin() — verify student session
+     * 3. Load student + enrollments + all courses
+     * 4. Render enrolled courses with progress
+     * 5. Render available (non-enrolled) courses
+     *
+     * READS FROM:   IndexedDB via db.js (students, courses, enrollments, progress)
+     * WRITES TO:    IndexedDB via db.js (enrollments, progress)
+     * REDIRECTS TO: index.html if no session; course-view.html or course.html on course click
+     */
+
+
+    // ── SECTION 1: PAGE STATE ──────────────────────────────────────────────────
+
+    var currentSession  = null;   // Set by requireLogin() — contains caseId and role
+    var currentStudent  = null;   // Full student record from IndexedDB
+    var currentEnrollments = [];  // All enrollment records for this student
+    var allCourses      = [];     // All course definitions from IndexedDB
+    var currentProgress = null;   // Student's full progress record (used across renders)
+
+
+    // ── SECTION 2: INITIALISE ─────────────────────────────────────────────────
+
+    // Initialise i18n (language) before anything else
+    initI18n();
+
+    // Render the language toggle
+    renderLangToggle('lang-toggle-container');
+
+    // Translate static UI elements
+    translatePortalPage();
+
+    /**
+     * translatePortalPage()
+     * Applies __() translations to static text elements on the portal.
+     */
+    function translatePortalPage() {
+      var el;
+      el = document.getElementById('my-learning-title');
+      if (el) el.textContent = __('portal_my_learning');
+      el = document.getElementById('available-courses-title');
+      if (el) el.textContent = __('portal_available_courses');
+      el = document.getElementById('welcome-sub');
+      if (el) el.textContent = __('portal_loading');
+      el = document.querySelector('.user-dropdown-item[href="index.html"]');
+      if (el) el.textContent = __('portal_sign_out');
+      el = document.getElementById('admin-dashboard-link');
+      if (el) el.textContent = __('portal_admin_dashboard');
+      el = document.querySelector('.portal-topbar-brand-text');
+      if (el) el.textContent = __('app_name');
+
+      // Sidebar section titles
+      var sidebarTitles = document.querySelectorAll('.portal-sidebar-title');
+      if (sidebarTitles.length >= 3) {
+        sidebarTitles[0].textContent = __('portal_sidebar_quick_links');
+        sidebarTitles[1].textContent = __('portal_sidebar_certificates');
+        sidebarTitles[2].textContent = __('portal_sidebar_resources');
+      }
+
+      // Profile stat labels
+      var statLabels = document.querySelectorAll('.portal-profile-stat-label');
+      if (statLabels.length >= 2) {
+        statLabels[0].textContent = __('portal_stat_enrolled');
+        statLabels[1].textContent = __('portal_stat_completed');
+      }
+
+      // Download button
+      el = document.querySelector('.portal-profile-actions .btn-ghost');
+      if (el && el.textContent.includes('Download')) {
+        el.textContent = __('portal_btn_download_data');
+      }
+
+      // Footer quick start link
+      el = document.querySelector('.site-footer-link-title');
+      if (el && el.textContent.includes('Quick Start')) {
+        el.textContent = __('portal_footer_quick_start');
+      }
+
+      // Render custom topbar logo from content config (if configured)
+      renderTopbarLogo();
+    }
+
+    /**
+     * renderTopbarLogo()
+     * Reads the optional topbarLogo SVG from content.js config and injects it
+     * into the #topbar-logo element. If no logo is configured, the element
+     * stays hidden (display:none).
+     */
+    function renderTopbarLogo() {
+      var logoEl = document.getElementById('topbar-logo');
+      if (!logoEl) return;
+      var content = (typeof loadContent !== 'undefined') ? loadContent() : {};
+      var logoConfig = content.topbarLogo;
+      if (logoConfig && logoConfig.svg) {
+        logoEl.innerHTML = logoConfig.svg;
+        if (logoConfig.title) logoEl.title = logoConfig.title;
+        if (logoConfig.ariaLabel) logoEl.setAttribute('aria-label', logoConfig.ariaLabel);
+        logoEl.style.display = '';
+      } else {
+        logoEl.style.display = 'none';
+      }
+    }
+
+    initDB()
+      .then(function() {
+        return seedCourses();  // Ensure courses from content.js exist in IndexedDB
+      })
+      .then(function() {
+        currentSession = requireLogin();
+        if (!currentSession) return;  // Stop here — redirect already fired
+        return getStudent(currentSession.caseId);
+      })
+      .then(function(student) {
+        if (!student) {
+          handleLogout();
+          return;
+        }
+        currentStudent = student;
+
+        // Load enrollments and all courses in parallel
+        return Promise.all([
+          getEnrollments(currentSession.caseId),
+          getAllCourses(),
+          getProgress(currentSession.caseId),
+        ]);
+      })
+      .then(function(results) {
+        if (!currentStudent) return;
+
+        currentEnrollments = results[0] || [];
+        allCourses         = results[1] || [];
+        currentProgress    = results[2] || null;
+
+        // Populate the UI
+        renderWelcome();
+        renderEnrolledCourses(currentProgress);
+        renderCertificatesSidebar(currentProgress);
+        initProfileGlow();
+        checkAdminSession();
+
+        // renderAvailableCourses is now async to handle demo account filtering
+        return renderAvailableCourses(currentProgress);
+      })
+      .then(function() {
+        // Initialize demo banner after rendering is complete
+        return initDemoBanner();
+      })
+      .then(function() {
+        // Apply highlighting to newly unlocked courses
+        applyHighlighting();
+      })
+      .then(function() {
+        // If this is a first login (set by processSetupFile),
+        // prompt the student to change their password
+        checkFirstLogin();
+      })
+      .then(function() {
+        // Show the Getting Started walkthrough on first portal visit
+        maybeShowStudentWizard();
+      })
+      .catch(function(error) {
+        console.error('portal.html: Failed to load page data.', error);
+        showError(__('portal_error'));
+      });
+
+
+    // ── SECTION 3: RENDER HELPERS ─────────────────────────────────────────────
+
+    /**
+     * renderWelcome()
+     * Fills in the avatar initial, dropdown name/email, and welcome heading
+     * with the student's name. Shows a different sub-message based on whether
+     * the student has enrolled courses.
+     */
+    function renderWelcome() {
+      // Avatar initial = first letter of name
+      var initial = currentStudent.name ? currentStudent.name.charAt(0).toUpperCase() : '?';
+      document.getElementById('user-avatar').textContent = initial;
+      document.getElementById('profile-avatar-lg').textContent = initial;
+      document.getElementById('user-dropdown-name').textContent = currentStudent.name;
+      document.getElementById('user-dropdown-email').textContent = currentStudent.email || '';
+      document.getElementById('welcome-heading').textContent = __('portal_welcome', currentStudent.name);
+
+      // Show contextual sub-message: returning vs first-time
+      var hasEnrollments = currentEnrollments && currentEnrollments.length > 0;
+      if (hasEnrollments) {
+        document.getElementById('welcome-sub').textContent = __('portal_welcome_sub');
+      } else {
+        document.getElementById('welcome-sub').textContent = __('portal_welcome_sub_first');
+      }
+
+      // Populate student info card on main page
+      renderStudentInfoCard();
+    }
+
+    /**
+     * renderStudentInfoCard()
+     * Updates the right-side profile card with student info.
+     * Shows name, email, and course statistics (enrolled + completed).
+     */
+    function renderStudentInfoCard() {
+      var initial = currentStudent.name ? currentStudent.name.charAt(0).toUpperCase() : '?';
+
+      // Update profile card (right sidebar)
+      var avatarEl = document.getElementById('portal-profile-avatar');
+      if (avatarEl) avatarEl.textContent = initial;
+
+      var nameEl = document.getElementById('portal-profile-name');
+      if (nameEl) nameEl.textContent = currentStudent.name || 'Student';
+
+      var emailEl = document.getElementById('portal-profile-email');
+      if (emailEl) emailEl.textContent = currentStudent.email || '';
+
+      // Count enrolled and completed courses
+      var enrolledCount = currentEnrollments ? currentEnrollments.length : 0;
+      var completedCount = 0;
+
+      if (currentEnrollments && currentEnrollments.length > 0) {
+        completedCount = currentEnrollments.filter(function(e) {
+          return e.status === 'completed';
+        }).length;
+      }
+
+      // Also count courses with certificate earned that may not have enrollment records
+      if (currentProgress && currentProgress.courses) {
+        Object.keys(currentProgress.courses).forEach(function(cpId) {
+          var cp = currentProgress.courses[cpId];
+          if (cp.certificateEarned || cp.certificateAwarded) {
+            // Check if there's already a matching enrollment (don't double-count)
+            var hasEnrollment = currentEnrollments && currentEnrollments.some(function(e) {
+              return e.courseId === cpId && e.status === 'completed';
+            });
+            if (!hasEnrollment) {
+              completedCount++;
+              enrolledCount = Math.max(enrolledCount, completedCount);
+            }
+          }
+        });
+      }
+
+      var enrolledStat = document.getElementById('portal-stat-enrolled');
+      if (enrolledStat) enrolledStat.textContent = enrolledCount;
+
+      var completedStat = document.getElementById('portal-stat-completed');
+      if (completedStat) completedStat.textContent = completedCount;
+    }
+
+    /**
+     * renderEnrolledCourses(progress)
+     * Renders the "My Learning" section with course cards and progress bars.
+     *
+     * Three sources of enrollment:
+     * 1. Official enrollments from the enrollments IndexedDB store.
+     * 2. Courses with new-style progress (progress.courses[courseId] subModulesComplete)
+     *    but no enrollment record — synthetic enrollment created on the fly.
+     * 3. Legacy QA Onboarding progress (old lessonsComplete, placementSurvey,
+     *    certificateEarned fields) — shown if no enrollment/progress.courses entry exists.
+     *
+     * My Learning is always visible — shows an empty state message if no enrollments.
+     *
+     * @param {Object|null} progress - The student's full progress record from IndexedDB.
+     */
+    function renderEnrolledCourses(progress) {
+      var section = document.getElementById('my-learning-section');
+      var traysContainer = document.getElementById('enrolled-trays');
+      traysContainer.innerHTML = '';
+
+      // Build combined list of enrollments:
+      // 1. Official enrollments from the enrollments store
+      var displayEnrollments = currentEnrollments.slice();
+
+      // 2. Check for course progress NOT backed by an enrollment record.
+      //    This handles legacy QA Onboarding AND any course the student started
+      //    before the unified enrollment system was in place.
+      var enrolledCourseIds = {};
+      displayEnrollments.forEach(function(e) { enrolledCourseIds[e.courseId] = true; });
+
+      // Walk all courses with progress and create synthetic enrollments for any
+      // that don't already have one (e.g. legacy students, direct course-view navigations)
+      if (progress) {
+        // Check old-style legacy fields
+        var hasOldLegacyProgress = (
+          (progress.lessonsComplete && progress.lessonsComplete.length > 0) ||
+          (progress.placementSurvey && progress.placementSurvey.completed) ||
+          progress.certificateEarned
+        );
+
+        // Check new-style course progress for ANY course not in enrollments
+        var courseProgressIds = progress.courses ? Object.keys(progress.courses) : [];
+
+        courseProgressIds.forEach(function(cpId) {
+          var cp = progress.courses[cpId];
+          if (!enrolledCourseIds[cpId] && (cp.subModulesComplete || cp.certificateEarned)) {
+            displayEnrollments.push({
+              enrollmentId: currentSession.caseId + '::' + cpId + '::synthetic',
+              caseId:       currentSession.caseId,
+              courseId:     cpId,
+              enrolledDate: cp.enrolledDate || progress.lastActivity || new Date().toISOString(),
+              status:       cp.certificateEarned ? 'completed' : 'active',
+            });
+            enrolledCourseIds[cpId] = true;
+          }
+        });
+
+        // Also handle old-style legacy progress for QA Onboarding specifically
+        if (hasOldLegacyProgress && !enrolledCourseIds['qa-onboarding']) {
+          displayEnrollments.push({
+            enrollmentId: currentSession.caseId + '::qa-onboarding::legacy',
+            caseId:       currentSession.caseId,
+            courseId:     'qa-onboarding',
+            enrolledDate: progress.lastActivity || new Date().toISOString(),
+            status:       progress.certificateEarned ? 'completed' : 'active',
+          });
+        }
+      }
+
+      // Always show My Learning — empty state message for first-time students
+      section.style.display = 'block';
+
+      if (displayEnrollments.length === 0) {
+        traysContainer.innerHTML = '<div class="portal-empty-state">' +
+          __('portal_my_learning_empty') +
+          '</div>';
+        return;
+      }
+
+      // ── Group enrollments by category ─────────────────────────────
+      var categoryGroups = {};
+      displayEnrollments.forEach(function(enrollment) {
+        var course = allCourses.find(function(c) { return c.courseId === enrollment.courseId; });
+        if (!course) return;
+        var cat = course.category || 'General';
+        if (!categoryGroups[cat]) categoryGroups[cat] = [];
+        categoryGroups[cat].push({ enrollment: enrollment, course: course });
+      });
+
+      // ── Sort courses within each category by courseId priority ──────────────────
+      // Display order for enrolled courses inside each category tray.
+      // Any course not listed here sorts last (orderValue 999).
+      var courseIdOrder = {
+        'qa-onboarding':              1,
+        'qa-onboarding-advanced':     2,
+        'acceptance-criteria-basics': 3,
+        'dynamics-crm-basics':        4,
+        'ado-bug-reports':            5,
+        'teams-for-qa':               6,
+        'agile-scrum-qa':             7,
+        'scenario-deep-dive':         8,
+        'bug-lifecycle':              9,
+        'capstone-1':                10,
+        'capstone-2':                11,
+      };
+      Object.keys(categoryGroups).forEach(function(cat) {
+        categoryGroups[cat].sort(function(a, b) {
+          var orderA = courseIdOrder[a.course.courseId] || 999;
+          var orderB = courseIdOrder[b.course.courseId] || 999;
+          return orderA - orderB;
+        });
+      });
+
+      // Ordered category keys for consistent display
+      var catOrder = ['QA', 'Fundamentals', 'Tools & Process', 'Development', 'Scenarios'];
+      var sortedCats = catOrder.filter(function(k) { return categoryGroups[k]; });
+      Object.keys(categoryGroups).forEach(function(k) {
+        if (sortedCats.indexOf(k) === -1) sortedCats.push(k);
+      });
+
+      // ── Category-specific heading + tray class mapping ────────────
+      var trayClassForCat = {
+        'QA':          'tray-qa',
+        'Development': 'tray-development',
+        'General':     'tray-general',
+      };
+
+      // ── Render one tray per category ──────────────────────────────
+      sortedCats.forEach(function(cat) {
+        var entries = categoryGroups[cat];
+        var trayClass = trayClassForCat[cat] || 'tray-general';
+        var catLabelKey = 'portal_cat_' + cat + '_title';
+        var catLabel = __(catLabelKey);
+
+        // Create tray container
+        var tray = document.createElement('div');
+        tray.className = 'portal-learning-tray ' + trayClass;
+
+        // Category sub-heading inside the tray
+        var heading = document.createElement('h3');
+        heading.style.cssText =
+          'font-size:var(--text-sm);font-weight:var(--weight-bold);' +
+          'color:var(--color-ink-muted);text-transform:uppercase;' +
+          'letter-spacing:0.06em;margin-bottom:var(--space-4);' +
+          'padding-left:var(--space-1);';
+        heading.textContent = catLabel;
+        tray.appendChild(heading);
+
+        // Grid inside the tray
+        var grid = document.createElement('div');
+        grid.className = 'portal-enrolled-grid';
+        tray.appendChild(grid);
+
+        entries.forEach(function(entry) {
+          var enrollment = entry.enrollment;
+          var course = entry.course;
+
+          var isComplete = enrollment.status === 'completed';
+          var pct = isComplete ? 100 : calculateCourseProgress(enrollment.courseId, course, progress);
+
+          // Accent colour based on category, not courseId hash
+          var accentClass = getAccentClass(cat);
+
+          var card = document.createElement('div');
+          card.className = 'portal-enrolled-card ' + accentClass;
+
+          // Course icon
+          var iconHtml = course.imageSvg || '<svg width="48" height="48" viewBox="0 0 48 48" fill="none"><rect width="48" height="48" rx="10" fill="#8892a4"/><text x="24" y="30" text-anchor="middle" fill="white" font-size="20" font-weight="bold">?</text></svg>';
+
+          card.innerHTML =
+            '<div class="portal-enrolled-header">' +
+              '<div class="portal-enrolled-icon">' + iconHtml + '</div>' +
+              '<div class="portal-enrolled-info">' +
+                '<div class="portal-enrolled-title">' + escapeHtml(course.title) + '</div>' +
+                '<div class="portal-enrolled-meta">' + __('portal_modules', course.modules.length) + (isComplete ? ' · ' + __('portal_completed') : '') + '</div>' +
+              '</div>' +
+            '</div>' +
+            '<div class="portal-enrolled-progress">' +
+              '<div class="portal-enrolled-progress-row">' +
+                '<span>' + __('portal_progress') + '</span>' +
+                '<span class="portal-enrolled-pct">' + pct + '%</span>' +
+              '</div>' +
+              '<div class="portal-enrolled-bar">' +
+                '<div class="portal-enrolled-bar-fill' + (isComplete ? ' complete' : '') + '" style="width:' + pct + '%"></div>' +
+              '</div>' +
+            '</div>' +
+            // Bottom CTA strip — clean and simple.
+            // Incomplete: "Continue →" with category colour.
+            // Complete: "✅ Completed →" (certificate accessible from sidebar)
+            '<div class="portal-enrolled-cta ' + (isComplete ? 'cta-complete' : 'cta-continue') + '">' +
+              (isComplete
+                ? '<span>✅ ' + __('portal_completed') + ' →</span>'
+                : '<span>' + __('portal_continue_hint') + ' →</span>'
+              ) +
+            '</div>';
+
+          card.setAttribute('data-courseid', enrollment.courseId);
+          if (!isComplete) {
+            card.addEventListener('click', function() {
+              navigateToCourse(this.getAttribute('data-courseid'));
+            });
+          } else {
+            // For completed courses, make the whole card navigate to review lessons
+            card.style.cursor = 'pointer';
+            card.addEventListener('click', function(e) {
+              // Don't navigate if they clicked a link directly
+              if (e.target.tagName !== 'A') {
+                window.location.href = 'course-view.html?courseId=' + encodeURIComponent(this.getAttribute('data-courseid'));
+              }
+            });
+          }
+
+          grid.appendChild(card);
+        });
+
+        traysContainer.appendChild(tray);
+      });
+    }
+
+    /**
+     * renderAvailableCourses(progress)
+     * Renders the "Available Courses" catalog section.
+     * Shows courses the student is NOT already enrolled in.
+     * DEMO ACCOUNTS: Shows a CTA encouraging sign-up for more courses.
+     *
+     * @param {Object|null} progress - The student's full progress record.
+     * @returns {Promise<void>}
+     */
+    async function renderAvailableCourses(progress) {
+      var section = document.getElementById('catalog-section');
+      var container = document.getElementById('catalog-cards');
+
+      // Demo accounts: show CTA instead of available courses
+      var isDemo = await isDemoAccount(currentSession.caseId);
+      if (isDemo) {
+        console.log('[Demo] Demo account detected — showing sign-up CTA');
+        section.style.display = 'block';
+        container.innerHTML =
+          '<div style="padding:var(--space-6);text-align:center;background:linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);border-radius:12px;border:2px dashed #3b82f6;">' +
+            '<div style="font-size:32px;margin-bottom:var(--space-3);">🎓</div>' +
+            '<h3 style="color:#1e40af;margin:0 0 var(--space-2) 0;font-size:var(--text-lg);">Want to Access All Courses?</h3>' +
+            '<p style="color:#1e3a8a;margin:0 0 var(--space-4) 0;font-size:var(--text-sm);line-height:1.5;">You\'re trying the demo. To unlock all courses and continue learning, create a student account or contact your instructor for enrollment.</p>' +
+            '<div style="display:flex;gap:var(--space-2);justify-content:center;flex-wrap:wrap;">' +
+              '<button class="btn btn-primary" onclick="handleLogout();">← Back to Login</button>' +
+              '<!-- Future: Add Sign Up button here -->' +
+            '</div>' +
+          '</div>';
+        return;
+      }
+
+      container.innerHTML = '';
+
+      // Build a set of enrolled courseIds for fast lookup
+      var enrolledIds = {};
+      currentEnrollments.forEach(function(e) { enrolledIds[e.courseId] = true; });
+
+      // QA Onboarding uses the legacy assignment system (not enrollment store).
+      // Show it in the catalog only if the student has NO existing progress.
+      var hasQaProgress = progress && (
+        (progress.lessonsComplete && progress.lessonsComplete.length > 0) ||
+        (progress.placementSurvey && progress.placementSurvey.completed)
+      );
+      var showQaOnboarding = !hasQaProgress;
+
+      var available = allCourses.filter(function(c) {
+        if (c.isActive === false) return false;
+
+        // Legacy QA Onboarding: show in catalog only if NOT enrolled
+        // AND has no existing progress (already completed or in-progress).
+        // This prevents showing QA in both My Learning and Available Courses.
+        if (c.isLegacy) {
+          return showQaOnboarding && !enrolledIds[c.courseId];
+        }
+
+        // New courses: show only if not enrolled
+        return !enrolledIds[c.courseId];
+      });
+
+      // Get demo account status for later use
+      var isDemo = await isDemoAccount(currentSession.caseId);
+      var demoCourseMode = null;
+
+      if (isDemo) {
+        demoCourseMode = await getSetting('demoCourseMode');
+        demoCourseMode = demoCourseMode || 'first-only';
+      }
+
+      if (available.length === 0) {
+        // Also show a message if there are no available courses
+        section.style.display = 'block';
+        container.innerHTML = '<div class="portal-empty">' + __('portal_no_courses') + '</div>';
+        return;
+      }
+
+      section.style.display = 'block';
+
+      // ── Group available courses by category ──────────────────────────
+      var groups = {};
+      available.forEach(function(c) {
+        var cat = c.category || 'General';
+        if (!groups[cat]) groups[cat] = [];
+        groups[cat].push(c);
+      });
+
+      // Sort courses within each category by courseId priority
+      var courseIdOrder = {
+        'qa-onboarding':              1,
+        'qa-onboarding-advanced':     2,
+        'acceptance-criteria-basics': 3,
+        'dynamics-crm-basics':        4,
+        'ado-bug-reports':            5,
+        'teams-for-qa':               6,
+        'agile-scrum-qa':             7,
+        'scenario-deep-dive':         8,
+        'bug-lifecycle':              9,
+        'capstone-1':                10,
+        'capstone-2':                11,
+      };
+      Object.keys(groups).forEach(function(cat) {
+        groups[cat].sort(function(a, b) {
+          var orderA = courseIdOrder[a.courseId] || 999;
+          var orderB = courseIdOrder[b.courseId] || 999;
+          return orderA - orderB;
+        });
+      });
+
+      // ── Apply demo 'first-only' filtering AFTER sorting ──────────────────
+      console.log('[Demo] isDemo:', isDemo, 'demoCourseMode:', demoCourseMode);
+      console.log('[Demo] Available courses before filtering:', available.map(function(c) { return c.courseId; }));
+
+       if (isDemo && demoCourseMode === 'first-only') {
+         console.log('[Demo] Applying first-only filtering...');
+         // Find the first course across all sorted categories
+         var firstCourse = null;
+         var categoryOrder = ['QA', 'Fundamentals', 'Tools & Process', 'Development', 'Scenarios'];
+         for (var i = 0; i < categoryOrder.length; i++) {
+           if (groups[categoryOrder[i]] && groups[categoryOrder[i]].length > 0) {
+             firstCourse = groups[categoryOrder[i]][0];
+             console.log('[Demo] Found first course:', firstCourse.courseId);
+             break;
+           }
+         }
+         // Reset groups to only show the first course
+         groups = {};
+         if (firstCourse) {
+           var cat = firstCourse.category || 'General';
+           groups[cat] = [firstCourse];
+           console.log('[Demo] Groups after filtering:', Object.keys(groups));
+         }
+       }
+
+       // Ordered category keys for consistent display
+       var categoryOrder = ['QA', 'Fundamentals', 'Tools & Process', 'Development', 'Scenarios'];
+       var sortedCats = categoryOrder.filter(function(k) { return groups[k]; });
+       // Any remaining categories not in the order list
+       Object.keys(groups).forEach(function(k) {
+         if (sortedCats.indexOf(k) === -1) sortedCats.push(k);
+       });
+
+      sortedCats.forEach(function(cat) {
+        var coursesInGroup = groups[cat];
+
+        // Category header with i18n title + description (if available)
+        var catTitleKey = 'portal_cat_' + cat + '_title';
+        var catDescKey = 'portal_cat_' + cat + '_desc';
+        var catTitle = __(catTitleKey);
+        var catDesc = __(catDescKey);
+
+        // If the i18n key doesn't resolve to a real translated string (i.e.
+        // it falls back to the raw key), fall back to the category name.
+        if (catTitle === catTitleKey) catTitle = cat;
+        if (catDesc === catDescKey) catDesc = '';
+
+         var groupClass = 'group-qa';
+         if (cat === 'Fundamentals') groupClass = 'group-fundamentals';
+         else if (cat === 'Tools & Process') groupClass = 'group-tools-process';
+         else if (cat === 'Development') groupClass = 'group-development';
+         else if (cat === 'Scenarios') groupClass = 'group-scenarios';
+         else if (cat === 'General') groupClass = 'group-general';
+
+        var groupEl = document.createElement('div');
+        groupEl.className = 'portal-category-group ' + groupClass;
+        groupEl.innerHTML =
+          '<div class="portal-category-heading">' + escapeHtml(catTitle) + '</div>' +
+          (catDesc ? '<div class="portal-category-sub">' + escapeHtml(catDesc) + '</div>' : '') +
+          '<div class="portal-catalog-grid"></div>';
+
+        var grid = groupEl.querySelector('.portal-catalog-grid');
+        container.appendChild(groupEl);
+
+        coursesInGroup.forEach(function(course, courseIndex) {
+          var totalSubModules = 0;
+          var totalEstimatedMin = 0;
+          course.modules.forEach(function(mod) {
+            totalSubModules += mod.subModules.length;
+            mod.subModules.forEach(function(sm) {
+              totalEstimatedMin += sm.estimatedMins || 0;
+            });
+          });
+
+          var card = document.createElement('div');
+          card.className = 'portal-catalog-card';
+
+          // Demo account course visibility: if grey-out mode and this is NOT the first course, disable it
+          var isFirstCourse = (cat === sortedCats[0]) && (courseIndex === 0);
+          var isDisabledForDemo = isDemo && demoCourseMode === 'grey-out' && !isFirstCourse;
+
+          // Prerequisite check: disable enrollment if prerequisites not met
+          var prereqCheck = isPrerequisiteMet(course.courseId, currentProgress);
+          var isDisabledForPrereq = !prereqCheck.met;
+          var isDisabled = isDisabledForDemo || isDisabledForPrereq;
+
+          // Debug logging for grey-out mode
+          if (isDemo && demoCourseMode === 'grey-out') {
+            console.log('[Demo grey-out] Course:', course.courseId, 'cat:', cat, 'courseIndex:', courseIndex, 'sortedCats[0]:', sortedCats[0], 'isFirstCourse:', isFirstCourse, 'isDisabledForDemo:', isDisabledForDemo);
+          }
+
+          var iconHtml = course.imageSvg || '';
+
+          // All courses use "Start" / "Enroll" label based on legacy flag,
+          // but both go through handleEnroll() which creates enrollment + navigates.
+          var isLegacy = course.isLegacy === true;
+          var actionLabel = isLegacy ? __('portal_start_course') : __('portal_enroll_free');
+          var ctaClass = isLegacy ? 'cta-start' : 'cta-enroll';
+
+          card.innerHTML =
+            '<div class="portal-catalog-header">' +
+              '<div class="portal-catalog-icon">' + iconHtml + '</div>' +
+              '<div class="portal-catalog-info">' +
+                '<div class="portal-catalog-title">' + escapeHtml(course.title) + '</div>' +
+                '<div class="portal-catalog-meta">' +
+                  '<span class="portal-category-badge">' + escapeHtml(course.category || __('portal_category_general')) + '</span>' +
+                  '<span>' + __('portal_modules', course.modules.length) + (totalSubModules > 0 ? ' · ' + __('portal_lessons', totalSubModules) : '') + '</span>' +
+                  (totalEstimatedMin > 0 ? '<span>' + __('portal_estimated_min', totalEstimatedMin) + '</span>' : '') +
+                '</div>' +
+              '</div>' +
+            '</div>' +
+            '<div class="portal-catalog-desc">' + escapeHtml(course.description) + '</div>' +
+            // CTA strip — part of the card layout, not a separate interactive element
+            // (actionLabel already includes the arrow from i18n)
+            '<div class="portal-catalog-cta ' + ctaClass + '">' +
+              actionLabel +
+            '</div>';
+
+          // Apply greying if this course is disabled (demo or prerequisite)
+          if (isDisabled) {
+            card.style.opacity = '0.5';
+            card.style.cursor = 'not-allowed';
+            if (isDisabledForDemo) {
+              card.setAttribute('title', 'Demo mode: Only the first course is available');
+            } else if (isDisabledForPrereq) {
+              card.setAttribute('title', 'Complete ' + prereqCheck.missingCourse + ' to unlock this course');
+            }
+          }
+
+          grid.appendChild(card);
+
+          // The entire card is clickable — enrolls the student (which creates
+          // both enrollment record + initial progress), then navigates directly
+          // into the course viewer. One click, done — for ALL course types.
+          // For disabled courses, show a helpful message instead.
+          if (!isDisabled) {
+            card.addEventListener('click', function() {
+              handleEnroll(course.courseId, this);
+            });
+          } else if (isDisabledForPrereq) {
+            // Add click handler to show prerequisite message if disabled
+            card.addEventListener('click', function(e) {
+              e.preventDefault();
+              showToast('Complete ' + prereqCheck.missingCourse + ' to unlock this course', 'error');
+            });
+          }
+        });
+      });
+    }
+
+    /**
+     * renderCertificatesSidebar(progress)
+     * Populates the sidebar Certificates section with earned certificates.
+     * Each certificate links to the certificate view page.
+     */
+    function renderCertificatesSidebar(progress) {
+      var container = document.getElementById('certificates-list');
+      if (!container) return;
+
+      var earned = [];
+
+      allCourses.forEach(function(course) {
+        // Check if this course has been completed with a certificate
+        var isComplete = false;
+
+        // Legacy course (qa-onboarding): top-level certificateEarned
+        if (course.isLegacy && progress && progress.certificateEarned) {
+          isComplete = true;
+        }
+        // New courses: nested in progress.courses[courseId]
+        else if (progress && progress.courses && progress.courses[course.courseId]) {
+          var cp = progress.courses[course.courseId];
+          isComplete = cp.certificateEarned || cp.certificateAwarded;
+        }
+
+        if (isComplete) {
+          earned.push(course);
+        }
+      });
+
+      if (earned.length === 0) {
+        container.innerHTML = '<div class="sidebar-cert-empty">Complete a course to earn your first certificate</div>';
+        return;
+      }
+
+      // Count active courses (exclude any that are not real courses)
+      var totalCourses = allCourses.filter(function(c) { return c.isActive; }).length;
+      var allComplete = (earned.length >= totalCourses);
+
+      var html = '';
+
+      // Graduation celebration when ALL courses are completed
+      if (allComplete) {
+        html += '<div class="sidebar-graduation">' +
+          '<div class="sidebar-graduation-confetti">✦</div>' +
+          '<div class="sidebar-graduation-confetti">✦</div>' +
+          '<div class="sidebar-graduation-confetti">✦</div>' +
+          '<div class="sidebar-graduation-confetti">✦</div>' +
+          '<div class="sidebar-graduation-confetti">✦</div>' +
+          '<span class="sidebar-graduation-icon">🎓</span>' +
+          '<div class="sidebar-graduation-title">QA Pilot Graduate</div>' +
+          '<div class="sidebar-graduation-sub">All ' + totalCourses + ' courses completed</div>' +
+          '<a href="certificate.html?course=' + encodeURIComponent('qa-onboarding') + '" class="sidebar-graduation-link">View Certificates →</a>' +
+        '</div>';
+      }
+
+      earned.forEach(function(course) {
+        var label = course.title || course.courseId;
+        html += '<a href="certificate.html?course=' + encodeURIComponent(course.courseId) +
+                '" class="sidebar-cert-link">' +
+          '<span class="sidebar-cert-check">✓</span>' +
+          '<span class="sidebar-cert-name">' + escapeHtml(label) + '</span>' +
+        '</a>';
+      });
+      container.innerHTML = html;
+    }
+
+    /**
+     * initProfileGlow()
+     * Adds a mouse-tracking radial gradient glow to the right profile card.
+     * The glow follows the cursor position smoothly using CSS custom properties.
+     */
+    function initProfileGlow() {
+      var card = document.querySelector('.portal-profile-card');
+      if (!card) return;
+
+      card.addEventListener('mousemove', function(e) {
+        var rect = card.getBoundingClientRect();
+        var x = ((e.clientX - rect.left) / rect.width) * 100;
+        var y = ((e.clientY - rect.top) / rect.height) * 100;
+        card.style.setProperty('--mouse-x', x + '%');
+        card.style.setProperty('--mouse-y', y + '%');
+      });
+
+      card.addEventListener('mouseleave', function() {
+        card.style.setProperty('--mouse-x', '50%');
+        card.style.setProperty('--mouse-y', '50%');
+      });
+    }
+
+    /**
+     * applyHighlighting()
+     * Highlights newly unlocked courses to draw attention.
+     *
+     * Scenarios:
+     * 1. URL has ?highlight=courseId (returning from certificate after unlocking a course)
+     * 2. First-time login: highlight beginner courses (qa-onboarding, agile-scrum-dev)
+     */
+    function applyHighlighting() {
+      var urlParams = new URLSearchParams(window.location.search);
+      var highlightCourseId = urlParams.get('highlight');
+
+      // If URL specifies a course to highlight, use that
+      if (highlightCourseId) {
+        var highlightCard = document.querySelector('[data-courseid="' + highlightCourseId + '"]');
+        if (highlightCard) {
+          highlightCard.classList.add('highlight-course');
+          // Smooth scroll into view
+          setTimeout(function() {
+            highlightCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }, 200);
+        }
+      } else if (currentEnrollments.length === 0) {
+        // First-time login: highlight beginner courses
+        var beginnerCourses = ['qa-onboarding', 'agile-scrum-dev'];
+        beginnerCourses.forEach(function(courseId) {
+          var card = document.querySelector('[data-courseid="' + courseId + '"]');
+          if (card) {
+            card.classList.add('highlight-course');
+          }
+        });
+      }
+
+      // Clean up the URL so the highlight doesn't persist on refresh
+      if (highlightCourseId) {
+        var cleanUrl = window.location.pathname + window.location.hash;
+        window.history.replaceState({}, document.title, cleanUrl);
+      }
+    }
+
+    /**
+     * checkAdminSession()
+     * Shows the admin dashboard link if the user has an active admin session.
+     * Admin session is stored in sessionStorage by admin/index.html.
+     */
+    function checkAdminSession() {
+      var isAdmin = sessionStorage.getItem('qa_admin');
+      if (isAdmin) {
+        document.getElementById('admin-link-container').style.display = 'block';
+      }
+    }
+
+
+    // ── SECTION 4: ENROLLMENT LOGIC ───────────────────────────────────────────
+
+    /**
+     * isPrerequisiteMet(courseId, progress)
+     * Checks if a course's prerequisites have been completed by the student.
+     * If the course has a prerequisiteId, that course must be completed.
+     *
+     * Handles both legacy and new course progress formats:
+     * - Legacy (qa-onboarding): certificateEarned at top-level progress object
+     * - New courses: certificateEarned nested in progress.courses[courseId]
+     *
+     * @param {string} courseId - The course to check.
+     * @param {Object} progress - The student's progress record.
+     * @returns {Object} { met: boolean, missingCourse: string (or null) }
+     */
+    function isPrerequisiteMet(courseId, progress) {
+      var course = COURSE_DEFINITIONS.find(function(c) { return c.courseId === courseId; });
+      if (!course || !course.prerequisiteId) {
+        return { met: true, missingCourse: null };
+      }
+
+      var prereqId = course.prerequisiteId;
+      var prereqCourse = COURSE_DEFINITIONS.find(function(c) { return c.courseId === prereqId; });
+      var prereqTitle = (prereqCourse && prereqCourse.title) || prereqId;
+
+      // Check if prerequisite course is completed
+      // Handle BOTH legacy (top-level certificateEarned) and new courses (nested in courses[courseId])
+      var isCompleted = false;
+
+      if (progress) {
+        // For legacy courses like qa-onboarding: check top-level certificateEarned
+        if (prereqId === 'qa-onboarding' && progress.certificateEarned) {
+          isCompleted = true;
+        }
+        // For new courses: check nested progress.courses[prereqId]
+        else if (progress.courses && progress.courses[prereqId]) {
+          var prereqProgress = progress.courses[prereqId];
+          isCompleted = prereqProgress.certificateEarned || prereqProgress.isComplete;
+        }
+      }
+
+      if (!isCompleted) {
+        return { met: false, missingCourse: prereqTitle };
+      }
+
+      return { met: true, missingCourse: null };
+    }
+
+    /**
+     * handleEnroll(courseId, cardEl)
+     * Enrolls the current student in the specified course, then
+     * navigates directly to the course viewer — one click, done.
+     *
+     * First checks that all prerequisite courses have been completed.
+     * If prerequisites are not met, shows an error and does not enroll.
+     *
+     * @param {string} courseId    - The course to enroll in.
+     * @param {HTMLElement} cardEl - The card that was clicked (disabled briefly for UX).
+     */
+    function handleEnroll(courseId, cardEl) {
+      // Check prerequisites first
+      var prereqCheck = isPrerequisiteMet(courseId, currentProgress);
+      if (!prereqCheck.met) {
+        var errorMsg = 'To enroll in this course, you must first complete: ' + prereqCheck.missingCourse;
+        showToast(errorMsg, 'error');
+        return;
+      }
+
+      // Briefly disable pointer events on the card to prevent double-clicks
+      cardEl.style.pointerEvents = 'none';
+      cardEl.style.opacity = '0.7';
+
+      enrollStudent(currentSession.caseId, courseId)
+        .then(function(wasEnrolled) {
+          // Check if this is a capstone course — if so, route to capstone-2.html instead of course-view.html
+          var course = COURSE_DEFINITIONS.find(function(c) { return c.courseId === courseId; });
+          var targetPage = (course && course.isCapstone) ? 'capstone-2.html' : 'course-view.html';
+          window.location.href = targetPage + '?courseId=' + encodeURIComponent(courseId);
+        })
+        .catch(function(error) {
+          console.error('Enrollment failed:', error);
+          showToast(__('portal_enrolled_fail'), 'error');
+          cardEl.style.pointerEvents = '';
+          cardEl.style.opacity = '';
+        });
+    }
+
+
+    // ── SECTION 5: NAVIGATION ─────────────────────────────────────────────────
+
+    /**
+     * navigateToCourse(courseId)
+     * Routes the student to the appropriate course page.
+     * Capstone courses (isCapstone: true) route to capstone-2.html.
+     * All other courses use course-view.html with the courseId parameter.
+     *
+     * @param {string} courseId - The course to navigate to.
+     */
+    function navigateToCourse(courseId) {
+      var course = allCourses.find(function(c) { return c.courseId === courseId; });
+      if (!course) {
+        showToast(__('portal_course_not_found'), 'error');
+        return;
+      }
+
+      // Route capstone courses to capstone-2.html, others to course-view.html
+      var targetPage = course.isCapstone ? 'capstone-2.html' : 'course-view.html';
+      window.location.href = targetPage + '?courseId=' + encodeURIComponent(courseId);
+    }
+
+
+    // ── SECTION 6: UTILITY FUNCTIONS ──────────────────────────────────────────
+
+    /**
+     * calculateCourseProgress(courseId, course, progress)
+     * Calculates the student's completion percentage for a course.
+     *
+     * For legacy courses: counts completed lessons vs total assigned lessons
+     * from the lessonsComplete array, OR from the new-style
+     * progress.courses[courseId].subModulesComplete (used by course-view.html).
+     *
+     * For new courses: counts completed sub-modules vs total sub-modules
+     * from progress.courses[courseId].subModulesComplete.
+     *
+     * @param {string}   courseId - The course ID.
+     * @param {Object}   course   - The course definition object.
+     * @param {Object|null} progress - The student's full progress record.
+     * @returns {number} Percentage 0-100.
+     */
+    function calculateCourseProgress(courseId, course, progress) {
+      if (course.isLegacy && progress) {
+        // If certificate is earned at any level, course is complete — show 100%
+        if (progress.certificateEarned ||
+            (progress.courses && progress.courses[courseId] && progress.courses[courseId].certificateEarned)) {
+          return 100;
+        }
+
+        // Legacy: check BOTH old-style and new-style progress sources
+        var completed = 0;
+
+        // New-style course progress (used by course-view.html)
+        if (progress.courses && progress.courses[courseId] && progress.courses[courseId].subModulesComplete) {
+          completed = progress.courses[courseId].subModulesComplete.length;
+        }
+
+        // Fall back to old-style legacy fields if no new-style progress
+        if (completed === 0 && progress.lessonsComplete) {
+          completed = progress.lessonsComplete.length;
+        }
+
+        // Total = all non-quiz sub-modules across all modules
+        var total = 1;
+        if (course.modules && course.modules.length > 0) {
+          total = 0;
+          course.modules.forEach(function(mod) {
+            if (mod.subModules) {
+              mod.subModules.forEach(function(sm) {
+                if (sm.type !== 'quiz') total++;
+              });
+            }
+          });
+        }
+        return Math.min(100, Math.round((completed / total) * 100));
+      }
+
+      if (!progress || !progress.courses || !progress.courses[courseId]) return 0;
+
+      var cp = progress.courses[courseId];
+
+      // If certificate is earned, course is complete — show 100%
+      if (cp.certificateEarned || cp.certificateAwarded) return 100;
+
+      // Count total sub-modules (excluding only quizzes, not final-exams)
+      // Final exams are exercises and should count toward course completion
+      var total = 0;
+      course.modules.forEach(function(mod) {
+        mod.subModules.forEach(function(sm) {
+          if (sm.type !== 'quiz') total++;  // Include final-exam, exercises, readings
+        });
+      });
+
+      if (total === 0) return 0;
+
+      var done = cp.subModulesComplete ? cp.subModulesComplete.length : 0;
+      return Math.min(100, Math.round((done / total) * 100));
+    }
+
+    /**
+     * getAccentClass(category)
+     * Returns an accent colour class for a course card based on its category.
+     * All courses in the same category share the same accent colour,
+     * creating visual tracks that distinguish course types.
+     *
+     * @param {string} category - The course category (e.g. 'QA', 'Development').
+     * @returns {string} CSS class name. e.g. 'accent-blue'
+     */
+    function getAccentClass(category) {
+      var colourMap = {
+        'QA':          'accent-blue',
+        'Development': 'accent-orange',
+      };
+      return colourMap[category] || 'accent-blue';
+    }
+
+    /**
+     * escapeHtml(str)
+     * Escapes HTML special characters in a string to prevent XSS.
+     * Used when rendering user-provided or dynamic text into innerHTML.
+     *
+     * @param {string} str - The string to escape.
+     * @returns {string} Escaped string safe for innerHTML.
+     */
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    /**
+     * showError(message)
+     * Displays an error banner at the top of the page content area.
+     *
+     * @param {string} message - The error message to show.
+     */
+    function showError(message) {
+      var el = document.getElementById('portal-error');
+      el.textContent = message;
+      el.classList.add('visible');
+    }
+
+    /**
+     * exportStudentData()
+     * Exports the current student's progress, enrollments, and quiz results as JSON.
+     *
+     * HOW IT WORKS:
+     * 1. Always downloads a .json file to the student's device (the importable record).
+     * 2. If an instructor email has been configured by the admin (Settings tab →
+     *    Platform Settings → "Instructor Email"), it also opens Outlook (or the
+     *    default mail client) with a pre-filled email — the student just attaches
+     *    the downloaded file and hits Send.
+     *
+     * WHY TWO STEPS (file + email) instead of putting JSON in the email body:
+     * JSON blobs in mailto: body text can be corrupted by Outlook's auto-formatting
+     * (smart quotes, line breaks, etc). Keeping the JSON as a file attachment ensures
+     * the admin can cleanly import it. The email carries a human-readable summary only.
+     */
+    async function exportStudentData() {
+      try {
+        // ── GET STUDENT & PLATFORM SETTINGS ─────────────────────────────────────
+        var student = await getStudent(currentSession.caseId);
+        if (!student) {
+          showToast('No student session found. Please log in first.', 'error');
+          return;
+        }
+
+        // instructorEmail and orgName are set by admin in Settings → Platform Settings.
+        // Both are optional — if not set, plain file download runs as before.
+        var instructorEmail = await getSetting('instructorEmail');
+        var orgName         = await getSetting('orgName') || 'QA Pilot Academy';
+
+        // ── BUILD EXPORT PAYLOAD ─────────────────────────────────────────────────
+        var progressRecord = await getProgress(currentSession.caseId);
+        var enrollments    = await getEnrollments(currentSession.caseId);
+
+        var quizResults      = {};
+        var certificates     = {};
+        var completedCourses = [];
+
+        if (progressRecord && progressRecord.courses) {
+          Object.keys(progressRecord.courses).forEach(function(courseId) {
+            var cp = progressRecord.courses[courseId];
+            if (cp.quizResults) quizResults[courseId] = cp.quizResults;
+            if (cp.certificateEarned || cp.certificateAwarded) {
+              certificates[courseId] = {
+                courseId: courseId,
+                date:     cp.certificateDate || cp.completedDate,
+                earned:   true
+              };
+              completedCourses.push(courseId);
+            }
+          });
+        }
+
+        var exportData = {
+          exportDate:   new Date().toISOString(),
+          version:      '1.0',
+          student:      student,
+          progress:     progressRecord,
+          enrollments:  enrollments,
+          quizResults:  quizResults,
+          certificates: certificates
+        };
+
+        var jsonStr  = JSON.stringify(exportData, null, 2);
+        var today    = new Date().toISOString().split('T')[0];
+        var fileName = 'qa-pilot-data-' + student.caseId + '-' + today + '.json';
+
+        // ── STEP 1: ALWAYS DOWNLOAD THE FILE ────────────────────────────────────
+        // Download happens first so the file is ready before Outlook opens.
+        var blob = new Blob([jsonStr], { type: 'application/json' });
+        var url  = URL.createObjectURL(blob);
+        var link = document.createElement('a');
+        link.href     = url;
+        link.download = fileName;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+
+        // ── STEP 2: OPEN OUTLOOK (only when instructor email is configured) ──────
+        if (instructorEmail) {
+          // Build a human-readable summary. The JSON file (downloaded above) is what
+          // the admin imports — this text gives context at a glance in the inbox.
+          var enrolledList = enrollments.length
+            ? enrollments.map(function(e) { return '  * ' + e.courseId + ' (' + e.status + ')'; }).join('\n')
+            : '  (none recorded)';
+
+          var certList = completedCourses.length
+            ? completedCourses.map(function(c) { return '  * ' + c; }).join('\n')
+            : '  (none yet)';
+
+          var emailSubject = encodeURIComponent(
+            '[' + orgName + '] Progress Report — ' + student.name +
+            ' (' + student.caseId + ') — ' + today
+          );
+
+          // Short lines — some mail clients truncate very long mailto: body strings.
+          var bodyLines = [
+            'Hello,',
+            '',
+            'Please find my QA Pilot Academy progress report attached.',
+            '',
+            '--- Student Details ---',
+            'Name:    ' + student.name,
+            'Case ID: ' + student.caseId,
+            'Email:   ' + student.email,
+            'Role:    ' + (student.role || 'N/A'),
+            'Cohort:  ' + orgName,
+            '',
+            '--- Enrolled Courses ---',
+            enrolledList,
+            '',
+            '--- Certificates Earned ---',
+            certList,
+            '',
+            '--- How to Import ---',
+            'Admin Dashboard -> Settings -> Import Student Data.',
+            'Upload the attached file: ' + fileName,
+            '',
+            'Exported: ' + today,
+            '(Generated automatically by QA Pilot Academy.)',
+          ];
+
+          var emailBody = encodeURIComponent(bodyLines.join('\n'));
+
+          // Fire after a short delay so the file download has time to trigger first.
+          setTimeout(function() {
+            window.location.href = 'mailto:' + encodeURIComponent(instructorEmail)
+              + '?subject=' + emailSubject
+              + '&body='    + emailBody;
+          }, 400);
+
+          showToast('✓ File downloaded — attach it to the email opening in Outlook.', 'success');
+
+        } else {
+          // Instructor email not configured — plain file download only.
+          showToast('✓ Progress data downloaded successfully!', 'success');
+        }
+
+        // Close the account dropdown menu
+        var dropdown = document.getElementById('user-dropdown');
+        if (dropdown) dropdown.classList.remove('open');
+
+      } catch (error) {
+        console.error('Export failed:', error);
+        showToast('Failed to export data. Check console for details.', 'error');
+      }
+    }
+
+    /**
+     * handleLogout()
+     * Clears the student session and redirects to the login page.
+     * If the user is a demo account, resets their data per demoResetMode setting.
+     * Matches the pattern used in course.html for consistency.
+     */
+    function handleLogout() {
+      console.log('[Logout] Logging out user:', currentSession ? currentSession.caseId : 'unknown');
+      try {
+        // End the session
+        endSession();
+        console.log('[Logout] Session ended, redirecting to login');
+
+        // Redirect to login page
+        window.location.href = 'index.html';
+      } catch (error) {
+        console.error('[Logout] Error during logout:', error);
+        // Force logout even if there's an error
+        try {
+          endSession();
+        } catch (e) {
+          console.error('[Logout] endSession() also failed:', e);
+        }
+        window.location.href = 'index.html';
+      }
+    }
+
+    // ── SECTION N: USER AVATAR DROPDOWN ─────────────────────────────────────────
+
+    /**
+     * toggleUserDropdown()
+     * Toggles the visibility of the user dropdown menu.
+     */
+    function toggleUserDropdown() {
+      var dd = document.getElementById('user-dropdown');
+      dd.classList.toggle('open');
+    }
+
+    // Close dropdown on click outside
+    document.addEventListener('click', function(event) {
+      var dd = document.getElementById('user-dropdown');
+      var btn = document.getElementById('user-avatar-btn');
+      if (dd.classList.contains('open') && !dd.contains(event.target) && !btn.contains(event.target)) {
+        dd.classList.remove('open');
+      }
+    });
+
+    // Close dropdown on Escape
+    document.addEventListener('keydown', function(event) {
+      if (event.key === 'Escape') {
+        var dd = document.getElementById('user-dropdown');
+        dd.classList.remove('open');
+        closeProfilePanel();
+      }
+    });
+
+    // ── SECTION N+1: PROFILE SLIDE-OVER PANEL ────────────────────────────────────
+
+    /**
+     * showProfilePanel()
+     * Opens the slide-over panel for viewing/editing profile details.
+     * Populates fields from the current student data.
+     */
+    function showProfilePanel() {
+      // Close the dropdown first
+      document.getElementById('user-dropdown').classList.remove('open');
+
+      // Populate fields
+      document.getElementById('profile-panel-title').textContent = 'My Profile';
+      document.getElementById('profile-name').value = currentStudent.name || '';
+      document.getElementById('profile-email').value = currentStudent.email || '';
+      var initial = currentStudent.name ? currentStudent.name.charAt(0).toUpperCase() : '?';
+      document.getElementById('profile-avatar-lg').textContent = initial;
+
+      // Clear errors
+      clearFieldError(document.getElementById('profile-name'), document.getElementById('profile-name-error'));
+      clearFieldError(document.getElementById('profile-email'), document.getElementById('profile-email-error'));
+
+      // Show profile pane, hide password pane
+      document.getElementById('profile-pane').style.display = 'block';
+      document.getElementById('password-pane').style.display = 'none';
+
+      document.getElementById('profile-panel-overlay').classList.add('open');
+      document.getElementById('profile-panel').classList.add('open');
+    }
+
+    /**
+     * showPasswordPanel()
+     * Switches the slide-over to show the change-password form.
+     */
+    function showPasswordPanel() {
+      document.getElementById('user-dropdown').classList.remove('open');
+      document.getElementById('profile-panel-title').textContent = 'Change Password';
+
+      // Clear password fields and errors
+      document.getElementById('profile-current-password').value = '';
+      document.getElementById('profile-new-password').value = '';
+      document.getElementById('profile-confirm-password').value = '';
+      clearFieldError(document.getElementById('profile-current-password'), document.getElementById('profile-current-password-error'));
+      clearFieldError(document.getElementById('profile-new-password'), document.getElementById('profile-new-password-error'));
+      clearFieldError(document.getElementById('profile-confirm-password'), document.getElementById('profile-confirm-password-error'));
+
+      // Show password pane, hide profile pane
+      document.getElementById('profile-pane').style.display = 'none';
+      document.getElementById('password-pane').style.display = 'block';
+
+      document.getElementById('profile-panel-overlay').classList.add('open');
+      document.getElementById('profile-panel').classList.add('open');
+    }
+
+    /**
+     * closeProfilePanel()
+     * Closes the slide-over panel.
+     */
+    function closeProfilePanel() {
+      document.getElementById('profile-panel-overlay').classList.remove('open');
+      document.getElementById('profile-panel').classList.remove('open');
+    }
+
+    /**
+     * logout()
+     * Clears the session and redirects to the login page.
+     */
+    /**
+     * checkFirstLogin()
+     * If the student has firstLogin = true (set by processSetupFile),
+     * automatically opens the password-change panel with a welcoming message.
+     */
+    function checkFirstLogin() {
+      if (!currentStudent || !currentStudent.firstLogin) return;
+      // Update the password pane hint text for the first-login context
+      var hint = document.querySelector('#password-pane .text-sm.text-muted');
+      if (hint) {
+        hint.textContent = 'Welcome! Please set a new password to continue. Your current password was set by your instructor.';
+      }
+      // Small delay so the page finishes rendering before the slide-over appears
+      setTimeout(showPasswordPanel, 400);
+    }
+
+    function logout() {
+      clearSession();
+      window.location.href = 'index.html';
+    }
+
+    /**
+     * toggleCollapsible(headerElement)
+     * Toggles a collapsible section open/closed.
+     * @param {HTMLElement} headerElement - The .collapsible-header element that was clicked
+     */
+    function toggleCollapsible(headerElement) {
+      var section = headerElement.closest('.collapsible-section');
+      if (section) {
+        section.classList.toggle('open');
+      }
+    }
+
+    /**
+     * saveProfile()
+     * Saves the student's name and email changes to IndexedDB.
+     * Validates inputs before saving. Updates the UI on success.
+     */
+    function saveProfile() {
+      var nameEl = document.getElementById('profile-name');
+      var emailEl = document.getElementById('profile-email');
+      var nameErrorEl = document.getElementById('profile-name-error');
+      var emailErrorEl = document.getElementById('profile-email-error');
+
+      clearFieldError(nameEl, nameErrorEl);
+      clearFieldError(emailEl, emailErrorEl);
+
+      var name = nameEl.value.trim();
+      var email = emailEl.value.trim();
+      var valid = true;
+
+      if (!name) { showFieldError(nameEl, nameErrorEl, 'Name is required.'); valid = false; }
+      if (!email) { showFieldError(emailEl, emailErrorEl, 'Email is required.'); valid = false; }
+      else if (email.indexOf('@') === -1) { showFieldError(emailEl, emailErrorEl, 'Enter a valid email address.'); valid = false; }
+      if (!valid) return;
+
+      // Update the student record in memory
+      currentStudent.name = name;
+      currentStudent.email = email;
+
+      // Save to IndexedDB
+      saveStudent(currentStudent).then(function() {
+        // Update the UI
+        renderWelcome();
+        showToast('Profile updated successfully.', 'success');
+        closeProfilePanel();
+      }).catch(function(error) {
+        console.error('Failed to save profile:', error);
+        showToast('Error saving profile.', 'error');
+      });
+    }
+
+    /**
+     * changePassword()
+     * Verifies the current password and updates to the new password.
+     * Uses hashPassword() (from db.js) to hash the new password before storing.
+     */
+    function changePassword() {
+      var currentEl = document.getElementById('profile-current-password');
+      var newEl = document.getElementById('profile-new-password');
+      var confirmEl = document.getElementById('profile-confirm-password');
+      var currentErrorEl = document.getElementById('profile-current-password-error');
+      var newErrorEl = document.getElementById('profile-new-password-error');
+      var confirmErrorEl = document.getElementById('profile-confirm-password-error');
+
+      clearFieldError(currentEl, currentErrorEl);
+      clearFieldError(newEl, newErrorEl);
+      clearFieldError(confirmEl, confirmErrorEl);
+
+      var currentPass = currentEl.value;
+      var newPass = newEl.value;
+      var confirmPass = confirmEl.value;
+      var valid = true;
+
+      if (!currentPass) { showFieldError(currentEl, currentErrorEl, 'Enter your current password.'); valid = false; }
+      if (!newPass || newPass.length < 6) { showFieldError(newEl, newErrorEl, 'New password must be at least 6 characters.'); valid = false; }
+      if (newPass !== confirmPass) { showFieldError(confirmEl, confirmErrorEl, 'Passwords do not match.'); valid = false; }
+      if (!valid) return;
+
+      // Verify current password by hashing and comparing
+      hashPassword(currentPass).then(function(currentHash) {
+        if (currentHash !== currentStudent.password) {
+          showFieldError(currentEl, currentErrorEl, 'Current password is incorrect.');
+          throw new Error('WRONG_PASSWORD');
+        }
+        // Hash the new password and save
+        return hashPassword(newPass).then(function(newHash) {
+          currentStudent.password = newHash;
+          currentStudent.firstLogin = false;  // Clear first-login flag
+          return saveStudent(currentStudent);
+        });
+      }).then(function() {
+        showToast('Password updated successfully.', 'success');
+        closeProfilePanel();
+      }).catch(function(error) {
+        if (error && error.message === 'WRONG_PASSWORD') return; // Already handled
+        if (error) {
+          console.error('Failed to change password:', error);
+          showToast('Error changing password.', 'error');
+        }
+      });
+    }
+
+    // ── STUDENT GETTING STARTED WIZARD ───────────────────────────────────────
+    //
+    // A 3-step walkthrough shown on first portal load. Explains the training
+    // platform, how courses work, and how to export results.
+    //
+    // Auto-shows once (dismissed flag saved to settings). Re-opened via the
+    // user dropdown menu.
+
+    var STUDENT_WIZARD_TOTAL_STEPS = 3;
+    var _studentWizardStep = 1;
+
+    /**
+     * openStudentWizard()
+     * Opens the walkstarting from step 1.
+     */
+    function openStudentWizard() {
+      _studentWizardStep = 1;
+      renderStudentWizardStep();
+      document.getElementById('student-wizard-modal').classList.add('open');
+    }
+
+    /**
+     * closeStudentWizard()
+     * Closes the wizard and saves a flag so it won't auto-show again.
+     */
+    async function closeStudentWizard() {
+      document.getElementById('student-wizard-modal').classList.remove('open');
+      await saveSetting('studentWalkthroughDone', 'true');
+    }
+
+    /**
+     * nextStudentWizardStep()
+     * Advances to the next step. On the last step, closes the wizard.
+     */
+    async function nextStudentWizardStep() {
+      if (_studentWizardStep === STUDENT_WIZARD_TOTAL_STEPS) {
+        await closeStudentWizard();
+        return;
+      }
+      _studentWizardStep++;
+      renderStudentWizardStep();
+    }
+
+    /**
+     * backStudentWizardStep()
+     * Goes back one step.
+     */
+    function backStudentWizardStep() {
+      if (_studentWizardStep > 1) {
+        _studentWizardStep--;
+        renderStudentWizardStep();
+      }
+    }
+
+    /**
+     * skipStudentWizardStep()
+     * Skips the current step. On last step, closes wizard.
+     */
+    async function skipStudentWizardStep() {
+      if (_studentWizardStep === STUDENT_WIZARD_TOTAL_STEPS) {
+        await closeStudentWizard();
+        return;
+      }
+      _studentWizardStep++;
+      renderStudentWizardStep();
+    }
+
+    /**
+     * renderStudentWizardStep()
+     * Updates the wizard UI to show the current step panel.
+     */
+    function renderStudentWizardStep() {
+      var step = _studentWizardStep;
+
+      // Show/hide step panels
+      for (var i = 1; i <= STUDENT_WIZARD_TOTAL_STEPS; i++) {
+        var panel = document.getElementById('student-wizard-step-' + i);
+        if (panel) panel.style.display = (i === step) ? 'block' : 'none';
+      }
+
+      // Update step indicator dots
+      var dots = document.querySelectorAll('#student-wizard-modal .swiz-dot');
+      for (var j = 0; j < dots.length; j++) {
+        dots[j].classList.toggle('swiz-dot-active', j < step);
+      }
+
+      // Step titles
+      var titles = [
+        'Welcome to QA Pilot Academy',
+        'How Your Courses Work',
+        'Completing Your Training',
+      ];
+      var subtitles = [
+        'Here\u2019s what you can do on the platform.',
+        'Courses are made of modules with lessons and quizzes.',
+        'Share your progress with your instructor when you\u2019re done.',
+      ];
+      document.getElementById('student-wizard-title').textContent = titles[step - 1] || '';
+      document.getElementById('student-wizard-subtitle').textContent = subtitles[step - 1] || '';
+
+      // Back button visibility
+      document.getElementById('student-wizard-back').style.display = (step > 1) ? '' : 'none';
+
+      // Next button label
+      var nextBtn = document.getElementById('student-wizard-next');
+      nextBtn.textContent = (step === STUDENT_WIZARD_TOTAL_STEPS) ? 'Done \u2192' : 'Next \u2192';
+
+      // Skip button label
+      var skipBtn = document.getElementById('student-wizard-skip');
+      skipBtn.textContent = (step === STUDENT_WIZARD_TOTAL_STEPS) ? 'Close' : 'Skip';
+    }
+
+    /**
+     * maybeShowStudentWizard()
+     * Shows the walkthrough on first portal load if not previously dismissed.
+     * Called after all rendering is complete.
+     */
+    async function maybeShowStudentWizard() {
+      // Don't show if student needs to change password first
+      if (currentStudent && currentStudent.firstLogin) return;
+
+      var done = await getSetting('studentWalkthroughDone');
+      if (done === 'true') return;
+
+      // Small delay so the page finishes rendering
+      setTimeout(openStudentWizard, 600);
+    }
+
+    // Wire student wizard button events (DOM already parsed — script is at end of body)
+    (function() {
+      var closeBtn = document.getElementById('student-wizard-close');
+      if (closeBtn) closeBtn.onclick = closeStudentWizard;
+
+      var nextBtn = document.getElementById('student-wizard-next');
+      if (nextBtn) nextBtn.onclick = nextStudentWizardStep;
+
+      var backBtn = document.getElementById('student-wizard-back');
+      if (backBtn) backBtn.onclick = backStudentWizardStep;
+
+      var skipBtn = document.getElementById('student-wizard-skip');
+      if (skipBtn) skipBtn.onclick = skipStudentWizardStep;
+    })();
+
+  </script>
+</body>
+</html>

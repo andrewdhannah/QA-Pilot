@@ -1,0 +1,17 @@
+{
+  "export_id": "AXPK-AUTH-0001",
+  "source_action_packet_id": "AP-AUTHORIZED-0001",
+  "source_receipt_id": "WDR-AUTH-0001",
+  "source_summary_id": "DS-REVIEW-0001",
+  "source_intake_id": "IR-REVIEW-0001",
+  "source_item_ids": ["QA-FUNC-0001"],
+  "source_evidence_ids": [],
+  "action_state": "owner_authorized",
+  "decision": "authorized",
+  "rationale": "Owner authorized triage and evidence collection. Export created for downstream execution planning.",
+  "exported_at": "2026-07-08T03:01:00Z",
+  "authority_disclaimer": "This action packet export packages the intended action path for downstream handoff only. It does not execute work, authorize execution, approve intake, verify evidence, close workbench items, mutate packets, mutate source records, seal anything, or create autonomous authority. Custody is qa-pilot-local. Librarian impact is none.",
+  "custody": "qa-pilot-local",
+  "advisory_only": true,
+  "librarian_impact": "none"
+}

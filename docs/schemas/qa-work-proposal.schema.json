@@ -1,0 +1,161 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/andrewdhannah/QA-Pilot/schemas/qa-work-proposal.schema.json",
+  "title": "QA Pilot Work Proposal",
+  "description": "A governed repair proposal produced by QA-Pilot from a diagnostic finding. The proposal is advisory-only: it contains no owner approval, no execution permission, and no mutation authority. It is consumed by the Librarian (via human review) to create a work packet draft. QA-Pilot does not call Librarian work packet tools directly. The proposal preserves the full provenance chain from diagnostic report through test definition.",
+  "type": "object",
+  "required": [
+    "proposal_id",
+    "source_diagnostic_id",
+    "source_test_id",
+    "failure_summary",
+    "severity",
+    "affected_domain",
+    "suggested_objective",
+    "constraints",
+    "verification_requirements",
+    "compliance_mappings",
+    "limitations",
+    "provenance"
+  ],
+  "properties": {
+    "proposal_id": {
+      "type": "string",
+      "pattern": "^WP-QA-[A-Z]+-[0-9]{4,}$",
+      "description": "Unique work proposal identifier"
+    },
+    "source_diagnostic_id": {
+      "type": "string",
+      "pattern": "^DIAG-[A-Z]+-[0-9]{4,}$",
+      "description": "Reference to the originating diagnostic report (qa-diagnostic-report.schema.json report_id)"
+    },
+    "source_test_id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "The test definition that failed (qa-diagnostic-report.schema.json test_id)"
+    },
+    "failure_summary": {
+      "type": "object",
+      "required": ["expected", "actual"],
+      "properties": {
+        "expected": { "type": "string", "minLength": 10 },
+        "actual": { "type": "string", "minLength": 10 },
+        "reproduction": { "type": "string" },
+        "contract_ref": { "type": "string" },
+        "evidence_refs": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      },
+      "description": "Summarized failure context from the diagnostic report"
+    },
+    "severity": {
+      "type": "string",
+      "enum": ["LOW", "MEDIUM", "HIGH", "CRITICAL"],
+      "description": "Severity inherited from the diagnostic report"
+    },
+    "affected_domain": {
+      "type": "string",
+      "enum": ["regression", "security", "uat", "accessibility", "performance", "ai", "compliance"],
+      "description": "Domain inherited from the diagnostic report"
+    },
+    "suggested_objective": {
+      "type": "string",
+      "minLength": 10,
+      "description": "Suggested work objective for the Librarian work packet. Advisory — the Owner may revise."
+    },
+    "constraints": {
+      "type": "object",
+      "required": ["must_not_modify", "required_validation"],
+      "properties": {
+        "must_not_modify": {
+          "type": "array",
+          "items": { "type": "string" },
+          "minItems": 1,
+          "description": "Paths, records, or systems the repair must not touch"
+        },
+        "required_validation": {
+          "type": "array",
+          "items": { "type": "string" },
+          "minItems": 1,
+          "description": "Tests that must pass after repair"
+        }
+      },
+      "description": "Execution boundaries inherited from the diagnostic report"
+    },
+    "verification_requirements": {
+      "type": "object",
+      "required": ["rerun_tests", "pass_criteria"],
+      "properties": {
+        "rerun_tests": {
+          "type": "array",
+          "items": { "type": "string" },
+          "minItems": 1,
+          "description": "Concrete test commands or test IDs that must be rerun"
+        },
+        "pass_criteria": {
+          "type": "string",
+          "minLength": 10,
+          "description": "What constitutes a passing verification"
+        },
+        "regression_test_proposed": {
+          "type": "boolean",
+          "default": false,
+          "description": "Whether a new regression test is proposed (handled by QA-PILOT-REGRESSION-LEARNING-LOOP-1, not this sprint)"
+        }
+      },
+      "description": "Verification requirements for the work packet. Must be concrete — no empty or missing values."
+    },
+    "compliance_mappings": {
+      "type": "object",
+      "properties": {
+        "diagnostic_to_proposal": {
+          "type": "string",
+          "description": "Mapping from diagnostic report field to proposal field"
+        },
+        "proposal_to_work_packet": {
+          "type": "string",
+          "description": "Suggested mapping from proposal field to Librarian work packet field"
+        },
+        "status_mapping": {
+          "type": "object",
+          "properties": {
+            "proposal_status": { "type": "string" },
+            "librarian_equivalent": { "type": "string" }
+          },
+          "description": "Observational status mapping — QA-Pilot does not control Librarian states"
+        }
+      },
+      "description": "Compliance and mapping metadata for the Librarian consumption specification"
+    },
+    "limitations": {
+      "type": "object",
+      "required": ["advisory_only", "no_execution_authority", "no_mutation_authority"],
+      "properties": {
+        "advisory_only": { "type": "boolean", "const": true },
+        "no_execution_authority": { "type": "boolean", "const": true },
+        "no_mutation_authority": { "type": "boolean", "const": true },
+        "requires_owner_approval": { "type": "boolean", "const": true },
+        "requires_librarian_draft": { "type": "boolean", "const": true },
+        "notes": { "type": "string" }
+      },
+      "description": "Explicit limitations — the proposal confers no authority"
+    },
+    "provenance": {
+      "type": "object",
+      "required": ["advisory", "no_authority_conferred", "compiled_by", "compiled_from"],
+      "properties": {
+        "advisory": { "type": "boolean", "const": true },
+        "no_authority_conferred": { "type": "boolean", "const": true },
+        "compiled_by": { "type": "string" },
+        "compiled_from": { "type": "string" },
+        "detected_by": { "type": "string" },
+        "validation_run": { "type": "string" },
+        "pipeline_run": { "type": "string" },
+        "compiled_at": { "type": "string", "format": "date-time" }
+      },
+      "description": "Provenance chain preserving the full diagnostic to proposal trace"
+    }
+  },
+  "additionalProperties": false
+}

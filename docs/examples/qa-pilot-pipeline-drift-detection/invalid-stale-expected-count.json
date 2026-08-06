@@ -1,0 +1,6 @@
+{
+  "label": "Invalid: stale expected layer count (registry has 31 but manual says 30)",
+  "test_type": "dr4_stale_expectation",
+  "expected_drift": true,
+  "advisory_only": true
+}

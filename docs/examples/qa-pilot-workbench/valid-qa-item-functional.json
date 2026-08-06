@@ -1,0 +1,17 @@
+{
+  "qa_item_id": "QA-FUNC-0001",
+  "title": "Evidence intake rejects malformed evidence packets",
+  "source": "evidence_intake",
+  "status": "open",
+  "severity": "high",
+  "category": "functional",
+  "description": "Evidence intake validator correctly rejects packets with missing required fields. This is validated by EM-4 through EM-9 in the intake validation suite.",
+  "evidence_refs": ["EP-EVIDENCE-INTAKE-001", "EP-EVIDENCE-INTAKE-002"],
+  "validator_refs": ["EM-4", "EM-5", "EM-6", "EM-7", "EM-8", "EM-9"],
+  "owner_decision_state": "pending",
+  "created_at": "2026-07-07T22:56:00Z",
+  "updated_at": "2026-07-07T22:56:00Z",
+  "advisory_only": true,
+  "custody": "qa-pilot-local",
+  "librarian_impact": "none"
+}

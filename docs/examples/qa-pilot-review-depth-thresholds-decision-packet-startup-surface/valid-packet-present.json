@@ -1,0 +1,30 @@
+{
+  "source_project": "qa-pilot",
+  "custody": "qa-pilot-local",
+  "librarian_impact": "none",
+  "advisory_only": true,
+  "advisory_notice": "This startup surface reports decision packet posture only. It does not create packets, make Owner decisions, accept/reject results, authorize execution, verify evidence, close reviews, mutate evidence/result packets, or create seal authority.",
+  "timestamp": "2026-07-08T07:30:00Z",
+  "dp_surface": {
+    "packet_count": 3,
+    "dp_status": "present",
+    "classification": "ready",
+    "latest_packet_id": "DP-CUSTOM-0001",
+    "latest_packet_state": "needs_owner_review",
+    "latest_threshold_id": "TD-SRC-DP-0001",
+    "latest_threshold_state": "sufficient",
+    "latest_evidence_bundle_ref": "E4-BUNDLE-001",
+    "latest_result_packet_ref": "QR-EPIC-001-001",
+    "latest_consistency_guard_refs": ["CG-TD-001", "CG-TD-002"],
+    "latest_timestamp": "2026-07-08T06:30:00Z",
+    "by_packet_state": {
+      "prepared": 1,
+      "needs_owner_review": 1,
+      "closed_by_owner": 1
+    },
+    "by_threshold_state": {
+      "sufficient": 2,
+      "needs_more_context": 1
+    }
+  }
+}

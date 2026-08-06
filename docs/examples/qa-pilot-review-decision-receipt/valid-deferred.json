@@ -1,0 +1,13 @@
+{
+  "receipt_id": "WDR-DEFER-0001",
+  "source_summary_id": "DS-REVIEW-0004",
+  "source_intake_id": "IR-REVIEW-0004",
+  "relevant_item_ids": ["QA-PERF-0005"],
+  "decision": "deferred",
+  "rationale": "Performance finding deferred pending planned infrastructure upgrade. Revisit when capacity is available.",
+  "recorded_at": "2026-07-08T02:32:00Z",
+  "authority_disclaimer": "A workbench review decision receipt records an Owner review disposition over a decision summary. It does not approve intake, verify evidence, close workbench items, seal work, mutate source records, or create autonomous authority. Custody is qa-pilot-local. Librarian impact is none.",
+  "custody": "qa-pilot-local",
+  "advisory_only": true,
+  "librarian_impact": "none"
+}

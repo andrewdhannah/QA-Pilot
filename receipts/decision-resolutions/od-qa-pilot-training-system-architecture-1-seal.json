@@ -1,0 +1,28 @@
+{
+  "$schema": "owner-decision-v1",
+  "decision_id": "OD-QA-PILOT-TRAINING-SYSTEM-ARCHITECTURE-1-SEAL",
+  "date": "2026-07-08",
+  "owner": "Andrew Hannah",
+  "sprint": "QA-PILOT-TRAINING-SYSTEM-ARCHITECTURE-1",
+  "epic": "EPIC-QA-PILOT-TRAINING-SYSTEM-1",
+  "decision": "APPROVE_AND_SEAL",
+  "ledger_number": 94,
+  "basis": "Architecture sprint complete. 7 isolated components defined with layer boundaries. Librarian interaction limited to 5 read-only patterns with no-write rules. V2 JSON course-pack schema adopted with governance extensions. 7-state artifact lifecycle with transition evidence. Provenance integrity chain: hash → embed → recompute → verify. Validation flow with PASS/FAIL/WARN and 6 blocking authority patterns. Simulator confirmed as optional downstream consumer only. No implementation, migration, or authority expansion performed.",
+  "deliverables": {
+    "architecture_document": "docs/planning/QA-PILOT-TRAINING-SYSTEM-ARCHITECTURE-1.md",
+    "epic_packet": "docs/governance/EPIC-QA-PILOT-TRAINING-SYSTEM-1.md",
+    "sprint_doc": "docs/sprints/QA-PILOT-TRAINING-SYSTEM-ARCHITECTURE-1.md"
+  },
+  "validation": {
+    "components_defined": 7,
+    "architecture_sections": 8,
+    "no_implementation_performed": true,
+    "no_migration_performed": true,
+    "no_authority_expansion": true,
+    "librarian_canonical_preserved": true
+  },
+  "classification": "architecture_planning",
+  "authority": "Owner",
+  "status": "sealed",
+  "sealed_at": "2026-07-08T21:30:00Z"
+}

@@ -1,0 +1,36 @@
+{
+  "review_packet_id": "CRP-BLOCKED-REVIEW-001",
+  "source_checklist_id": "EC-STANDALONE-REVIEW-001",
+  "title": "Standalone Sprint Review — Blocked Items",
+  "description": "Owner review packet for a standalone sprint with blocked evidence items requiring attention.",
+  "item_summary": {
+    "total": 3,
+    "blocked": 1,
+    "degraded": 1,
+    "ready": 1
+  },
+  "overall_state": "blocked",
+  "source_evidence_refs": [
+    { "pipeline_layer": "result_export", "packet_type": "QR-", "ref": "QR-SPRINT-REVIEW-001" },
+    { "pipeline_layer": "pipeline_health", "packet_type": "PH-", "ref": "PH-BOUNDARY-CHECK-001" }
+  ],
+  "blocked_items": [
+    {
+      "item_id": "ECI-SPRINT-RESULTS-001",
+      "description": "Sprint receipt must document all deliverables and acceptance gate results.",
+      "rationale": "Sprint receipt QR-SPRINT-REVIEW-001 is missing acceptance gate results for 3 of 5 gates. Cannot proceed to review without complete gate data."
+    }
+  ],
+  "advisory_only": true,
+  "custody": "qa-pilot-local",
+  "librarian_impact": "none",
+  "not_seal_authority": "This review packet does not confer sealing authority. Sealing requires explicit Owner action.",
+  "not_librarian_mutation_authority": "This review packet does not authorize any Librarian file mutation. All data is QA Pilot-local.",
+  "created_at": "2026-07-07T03:31:00Z",
+  "created_by": "QA-PILOT-CHECKLIST-REVIEW-PACKET-1",
+  "pipeline_refs": [
+    { "layer_id": "layer_4", "layer_name": "Epic Regression", "sprint_id": "QA-PILOT-EPIC-REGRESSION-BUILDER-1", "sealed_number": 36 },
+    { "layer_id": "layer_9", "layer_name": "Owner Review Packet", "sprint_id": "QA-PILOT-PIPELINE-OWNER-REVIEW-PACKET-1", "sealed_number": 41 },
+    { "layer_id": "layer_12", "layer_name": "Evidence Checklist", "sprint_id": "QA-PILOT-EVIDENCE-CHECKLIST-1", "sealed_number": 44 }
+  ]
+}

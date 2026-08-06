@@ -1,0 +1,21 @@
+{
+  "gate_id": "SUG-INVALID-UPDATE-DOWN-001",
+  "update_class": "legitimate_surface_change",
+  "previous_snapshot_id": "SRS-BASELINE-001",
+  "proposed_snapshot_id": "SRS-BASELINE-002",
+  "previous_sealed_head": "#56 QA-PILOT-STARTUP-SURFACE-REGRESSION-SNAPSHOT-1",
+  "proposed_sealed_head": "#57 QA-PILOT-HYPOTHETICAL-2",
+  "previous_layer_count": 23,
+  "proposed_layer_count": 22,
+  "previous_rcr_count": 8,
+  "proposed_rcr_count": 8,
+  "previous_rcg_gap": 0,
+  "proposed_rcg_gap": 0,
+  "rationale": "Layer count decreased from 23 to 22 but rationale does not explain the removal. This is an unjustified downgrade needing explicit explanation.",
+  "advisory_only": false,
+  "custody": "librarian-canonical",
+  "librarian_impact": "none",
+  "not_seal_authority": "No",
+  "not_librarian_mutation_authority": "No",
+  "created_at": "2026-07-07T21:15:00Z"
+}

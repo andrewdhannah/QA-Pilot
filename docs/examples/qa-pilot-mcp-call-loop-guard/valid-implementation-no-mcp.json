@@ -1,0 +1,57 @@
+{
+  "guard_id": "MG-IMPL-NO-MCP-001",
+  "session_id": "ses_impl_local_only_001",
+  "title": "MCP Call Loop Guard — Implementation Phase with Zero MCP Calls",
+  "description": "Session where agent made 3 startup MCP calls, got expected -32602 results, stopped with documented reason, then completed 3 implementation sprints with zero additional Librarian MCP calls. All work used QA Pilot local validators and test runners only.",
+  "mcp_calls": [
+    {
+      "call_number": 1,
+      "tool": "project_get_profile",
+      "params_summary": "profile_id=qa-pilot-full-governance",
+      "result": "not_found",
+      "result_detail": "MCP error -32602.",
+      "phase": "startup",
+      "retry": false,
+      "stop_reason": "STARTUP-PROTOCOL.md §3.2: -32602 expected for add-on project."
+    },
+    {
+      "call_number": 2,
+      "tool": "project_get_cursor",
+      "params_summary": "project_id=qa-pilot",
+      "result": "not_found",
+      "result_detail": "MCP error -32602.",
+      "phase": "startup",
+      "retry": false,
+      "stop_reason": "STARTUP-PROTOCOL.md §3.2."
+    },
+    {
+      "call_number": 3,
+      "tool": "project_get_allowed_transitions",
+      "params_summary": "project_id=qa-pilot",
+      "result": "not_found",
+      "result_detail": "MCP error -32602.",
+      "phase": "startup",
+      "retry": false,
+      "stop_reason": "STARTUP-PROTOCOL.md §3.2. Agent proceeded to implementation using QA Pilot local tools only."
+    }
+  ],
+  "aggregate": {
+    "total_calls": 3,
+    "unique_tools": 3,
+    "repeated_identical_calls": 0,
+    "repeated_health_checks": 0,
+    "stop_reason_present": true,
+    "cross_lane_detected": false,
+    "bounded": true,
+    "no_auto_retry_loop": true,
+    "terminal_result_recognized": true,
+    "cross_lane_calls": []
+  },
+  "advisory_only": true,
+  "custody": "qa-pilot-local",
+  "librarian_impact": "none",
+  "not_seal_authority": "This MCP call loop guard does not confer sealing authority. Sealing requires explicit Owner action.",
+  "not_librarian_mutation_authority": "This guard does not authorize any Librarian file mutation. All data is QA Pilot-local.",
+  "created_at": "2026-07-07T17:51:00Z",
+  "created_by": "QA-PILOT-MCP-CALL-LOOP-GUARD-1"
+}

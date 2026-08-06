@@ -1,0 +1,16 @@
+{
+  "gate_id": "SG-AUDIT-0066",
+  "sprint_id": "QA-PILOT-WORKBENCH-CAPABILITY-FOUNDATION-1",
+  "ledger_number": 66,
+  "current_status": "sealed",
+  "has_owner_seal_evidence": true,
+  "seal_evidence_type": "owner_seal_command",
+  "seal_evidence_ref": "Owner command at 2026-07-07T22:59: 'seal sprint 66'",
+  "seal_eligible": true,
+  "proposed_correction": "none_needed",
+  "audit_finding": "valid_owner_seal",
+  "advisory_only": true,
+  "custody": "qa-pilot-local",
+  "librarian_impact": "none",
+  "created_at": "2026-07-08T01:15:00Z"
+}

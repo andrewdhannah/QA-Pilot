@@ -1,0 +1,20 @@
+{
+  "schema": "lifecycle-custody-extension-v1",
+  "fixture_type": "invalid",
+  "description": "Unknown lifecycle transition blocked",
+  "mode": "dry-run",
+  "request": {
+    "project_id": "qa-pilot",
+    "current_phase": "1",
+    "target_phase": "9",
+    "transition_reason": "Skip ahead",
+    "owner_approval_present": false,
+    "owner_approval_is_broad": false,
+    "sealed_evidence_affected": false,
+    "generated_state": false,
+    "tool_is_deterministic": false,
+    "is_patch_order": false,
+    "is_auto_promotion": false
+  },
+  "expected_decision": "LIFECYCLE_CUSTODY_VIOLATION"
+}

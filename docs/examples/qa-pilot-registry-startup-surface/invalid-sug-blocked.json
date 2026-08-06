@@ -1,0 +1,16 @@
+{
+  "sealed_head": "#99 QA-PILOT-VERY-STALE-1",
+  "sealed_number": 99,
+  "registry_posture": {
+    "sug_posture": {
+      "active_snapshot_id": "SRS-BASELINE-001",
+      "active_snapshot_sealed": 56,
+      "latest_sealed_ledger": 99,
+      "snapshot_current": false,
+      "update_pending": true,
+      "sug_status": "fail",
+      "classification": "blocked",
+      "_authority_claim": "seal without updating"
+    }
+  }
+}

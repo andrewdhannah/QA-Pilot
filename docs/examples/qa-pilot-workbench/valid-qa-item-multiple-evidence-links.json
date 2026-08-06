@@ -1,0 +1,52 @@
+{
+  "qa_item_id": "QA-REGR-0020",
+  "title": "Pipeline health regression detects stale registry state",
+  "source": "result_export",
+  "status": "triaged",
+  "severity": "medium",
+  "category": "regression",
+  "description": "PH-12 detects when pipeline layer registry does not match the sealed sprint ledger.",
+  "evidence_refs": ["EP-HEALTH-REGRESSION-001", "QR-PH-VALIDATION-001"],
+  "validator_refs": ["PH-12", "PH-7", "PH-8"],
+  "evidence_links": [
+    {
+      "evidence_link_id": "EL-REGR-0020-001",
+      "evidence_type": "validator_output",
+      "evidence_ref": "EP-HEALTH-REGRESSION-001",
+      "producing_validator": "validate-qa-pilot-pipeline-health-regression.py",
+      "attachment_reason": "Shows pipeline health regression validator output confirming PH-12 detection of stale registry.",
+      "custody": "qa-pilot-local",
+      "advisory_only": true,
+      "authority_note": "Evidence attachment does not prove defect validity or imply Owner approval.",
+      "attached_at": "2026-07-08T00:00:00Z"
+    },
+    {
+      "evidence_link_id": "EL-REGR-0020-002",
+      "evidence_type": "result_packet",
+      "evidence_ref": "QR-PH-VALIDATION-001",
+      "producing_command": "python3 scripts/qa_pilot_result_packet_export.py export QA-PILOT-PH-HEALTH",
+      "attachment_reason": "Result packet from pipeline health regression run showing pass/fail counts.",
+      "custody": "qa-pilot-local",
+      "advisory_only": true,
+      "authority_note": "Evidence attachment does not prove defect validity or imply Owner approval.",
+      "attached_at": "2026-07-08T00:00:00Z"
+    },
+    {
+      "evidence_link_id": "EL-REGR-0020-003",
+      "evidence_type": "checklist_item",
+      "evidence_ref": "EP-HEALTH-REGRESSION-001",
+      "producing_validator": "validate-qa-pilot-evidence-checklist.py",
+      "attachment_reason": "Checklist item verifying evidence exists for pipeline health regression.",
+      "custody": "qa-pilot-local",
+      "advisory_only": true,
+      "authority_note": "Evidence attachment does not prove defect validity or imply Owner approval.",
+      "attached_at": "2026-07-08T00:00:00Z"
+    }
+  ],
+  "owner_decision_state": "pending",
+  "created_at": "2026-07-08T00:00:00Z",
+  "updated_at": "2026-07-08T00:01:00Z",
+  "advisory_only": true,
+  "custody": "qa-pilot-local",
+  "librarian_impact": "none"
+}

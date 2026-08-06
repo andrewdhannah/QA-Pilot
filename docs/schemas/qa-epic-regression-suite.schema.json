@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://qa-pilot.carbideframe/schemas/qa-epic-regression-suite-v1",
+  "title": "QA Epic Regression Suite",
+  "description": "An Epic-level regression suite composed from sprint-level tests by QA Pilot.",
+  "type": "object",
+  "required": [
+    "suite_id", "epic_id", "sprint_ids",
+    "tests", "status", "advisory"
+  ],
+  "properties": {
+    "suite_id": { "type": "string", "pattern": "^ERS-" },
+    "epic_id": { "type": "string" },
+    "sprint_ids": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 1
+    },
+    "tests": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "test_id": { "type": "string" },
+          "sprint_id": { "type": "string" },
+          "status": { "enum": ["composed", "ready", "passed", "failed", "blocked"] }
+        },
+        "required": ["test_id", "sprint_id"]
+      },
+      "minItems": 1
+    },
+    "last_run_at": { "type": "string", "format": "date-time" },
+    "result": {
+      "type": "object",
+      "properties": {
+        "passed": { "type": "integer", "minimum": 0 },
+        "failed": { "type": "integer", "minimum": 0 },
+        "summary": { "type": "string" }
+      }
+    },
+    "status": {
+      "type": "string",
+      "enum": ["building", "ready", "running", "completed", "failed"]
+    },
+    "advisory": { "type": "boolean", "const": true }
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "sdk_version": "qa-pilot-evidence-sdk-v1",
+  "contract_version": "evidence-plane-contract-v1",
+  "generated_at": "2026-07-24T02:30:00Z",
+  "evidence_generated_at": "2026-07-24T02:04:56.162684Z",
+  "run_id": "eval-20260724-020456",
+  "operational_mode": "LIMITED",
+  "evidence_summary": {
+    "all_current": false,
+    "any_stale": true,
+    "any_unavailable": false,
+    "any_absent": true,
+    "critical_unavailable": true,
+    "authority_lost": false
+  },
+  "source_count": 18,
+  "status_summary": {
+    "STALE": 7,
+    "ABSENT": 3,
+    "CURRENT": 8
+  },
+  "confidence_summary": {
+    "ESTIMATED": 7,
+    "null": 3,
+    "DERIVED": 2,
+    "VERIFIED": 1,
+    "DIRECT": 5
+  },
+  "evidence_available": true
+}

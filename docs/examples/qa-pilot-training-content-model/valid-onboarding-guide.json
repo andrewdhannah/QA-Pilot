@@ -1,0 +1,38 @@
+{
+  "schema_version": "training-content-v1",
+  "pack_id": "TC-VALID-01",
+  "title": "Onboarding Guide",
+  "artifact_type": "onboarding_guide",
+  "intended_audience": "onboarding",
+  "generated_at": "2026-07-08T22:00:00Z",
+  "content": {
+    "sections": [
+      {
+        "id": "intro",
+        "title": "Introduction to the System",
+        "body": "This section covers the foundational concepts required to begin working with the platform.",
+        "sources": [
+          "docs/onboarding/intro.md"
+        ]
+      }
+    ]
+  },
+  "provenance": {
+    "librarian_sources": [
+      {
+        "path": "docs/onboarding/intro.md",
+        "revision": "abc123"
+      }
+    ],
+    "generator": "qa-pilot-content-model-test",
+    "generator_version": "1.0.0",
+    "source_hash": "1aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+  },
+  "governance": {
+    "authority_posture": "advisory",
+    "owner_decision_required_for_publish": true,
+    "validation_status": "draft",
+    "source_coverage_pct": 85,
+    "ownership_state": "owned_by_librarian"
+  }
+}

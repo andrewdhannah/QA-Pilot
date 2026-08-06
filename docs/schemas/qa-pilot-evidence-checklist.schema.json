@@ -1,0 +1,223 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://qa-pilot.carbideframe/schemas/qa-pilot-evidence-checklist-v1",
+  "title": "QA Pilot Evidence Checklist",
+  "description": "Schema for QA Pilot evidence checklist packets. Defines what evidence must exist before a QA claim is reviewable. Each checklist enumerates evidence requirements with classes (required/optional), states (blocked/degraded/ready), and pipeline-layer references to the sealed #33-#43 advisory chain.",
+  "type": "object",
+  "required": [
+    "checklist_id",
+    "title",
+    "description",
+    "items",
+    "advisory_only",
+    "custody",
+    "librarian_impact",
+    "pipeline_refs"
+  ],
+  "properties": {
+    "checklist_id": {
+      "type": "string",
+      "pattern": "^EC-[A-Z0-9-]+$",
+      "description": "Unique evidence checklist identifier (e.g. EC-EVIDENCE-REQUIREMENTS-001)."
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Human-readable title for this checklist."
+    },
+    "description": {
+      "type": "string",
+      "minLength": 10,
+      "description": "What QA claim or scope this checklist covers."
+    },
+    "evidence_class": {
+      "type": "string",
+      "enum": ["required", "optional"],
+      "description": "Whether this entire checklist is required or optional. Individual items may override via their own class."
+    },
+    "items": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["item_id", "description", "state"],
+        "properties": {
+          "item_id": {
+            "type": "string",
+            "pattern": "^ECI-[A-Z0-9-]+$",
+            "description": "Unique item identifier within this checklist."
+          },
+          "description": {
+            "type": "string",
+            "minLength": 1,
+            "description": "What evidence is required for this checklist item."
+          },
+          "evidence_class": {
+            "type": "string",
+            "enum": ["required", "optional"],
+            "description": "Whether this item is required or optional. Overrides the checklist-level class if set."
+          },
+          "state": {
+            "type": "string",
+            "enum": ["blocked", "degraded", "ready"],
+            "description": "Current readiness state of this evidence requirement."
+          },
+          "rationale": {
+            "type": "string",
+            "minLength": 10,
+            "description": "Why this evidence is required for the QA claim."
+          },
+          "evidence_refs": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["pipeline_layer", "ref"],
+              "properties": {
+                "pipeline_layer": {
+                  "type": "string",
+                  "enum": [
+                    "evidence_intake",
+                    "test_composition",
+                    "result_export",
+                    "epic_regression",
+                    "pipeline_health",
+                    "drift_detection",
+                    "recovery_diagnostics",
+                    "owner_review_packet",
+                    "owner_decision_receipt",
+                    "odr_startup_surface"
+                  ],
+                  "description": "The sealed pipeline layer this evidence references."
+                },
+                "packet_type": {
+                  "type": "string",
+                  "description": "Type of packet referenced (e.g. EP-, TC-, QR-, ERS-, PH-, DR-, RD-, OR-, ODR-)."
+                },
+                "ref": {
+                  "type": "string",
+                  "description": "Specific evidence packet or receipt identifier."
+                }
+              },
+              "additionalProperties": false
+            },
+            "description": "References to evidence within the sealed pipeline layers."
+          }
+        },
+        "additionalProperties": false
+      },
+      "description": "The individual evidence requirement items in this checklist."
+    },
+    "pipeline_refs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["layer_id", "layer_name", "sprint_id", "sealed_number"],
+        "properties": {
+          "layer_id": {
+            "type": "string",
+            "description": "Pipeline layer identifier (e.g. layer_1, layer_2)."
+          },
+          "layer_name": {
+            "type": "string",
+            "description": "Human-readable layer name."
+          },
+          "sprint_id": {
+            "type": "string",
+            "description": "Sprint ID that sealed this layer."
+          },
+          "sealed_number": {
+            "type": "integer",
+            "minimum": 33,
+            "description": "Ledger sealed number."
+          }
+        },
+        "additionalProperties": false
+      },
+      "minItems": 1,
+      "description": "References to the sealed pipeline layers this checklist links to."
+    },
+    "advisory_only": {
+      "type": "boolean",
+      "const": true,
+      "description": "All QA Pilot evidence checklists are advisory. Must be true."
+    },
+    "custody": {
+      "type": "string",
+      "pattern": "^qa-pilot-local$",
+      "description": "Custody boundary. Must be qa-pilot-local."
+    },
+    "librarian_impact": {
+      "type": "string",
+      "const": "none",
+      "description": "No Librarian mutation permitted. Must be none."
+    },
+    "metadata": {
+      "type": "object",
+      "properties": {
+        "created_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "ISO 8601 creation timestamp."
+        },
+        "created_by": {
+          "type": "string",
+          "description": "Agent or tool that created this checklist."
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "ISO 8601 last-updated timestamp."
+        },
+        "status": {
+          "type": "string",
+          "enum": ["draft", "active", "superseded"],
+          "description": "Lifecycle status of this checklist."
+        }
+      },
+      "additionalProperties": false
+    },
+    "accepted_gates": {
+      "type": "object",
+      "properties": {
+        "total_checks": { "type": "integer", "minimum": 0 },
+        "passed": { "type": "integer", "minimum": 0 }
+      },
+      "additionalProperties": false,
+      "description": "Acceptance gate results for this checklist."
+    }
+  },
+  "allOf": [
+    {
+      "description": "If any item state is blocked, rationale must be present.",
+      "if": {
+        "properties": {
+          "items": {
+            "type": "array",
+            "contains": {
+              "properties": { "state": { "const": "blocked" } },
+              "required": ["state"]
+            }
+          }
+        },
+        "required": ["items"]
+      },
+      "then": {
+        "properties": {
+          "items": {
+            "type": "array",
+            "allOf": [
+              {
+                "contains": {
+                  "allOf": [
+                    { "properties": { "state": { "const": "blocked" } }, "required": ["state"] },
+                    { "required": ["rationale"] }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

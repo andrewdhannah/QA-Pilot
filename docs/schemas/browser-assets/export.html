@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>QA Pilot Academy — Export Results</title>
+<link rel="icon" href="favicon.svg" />
+<style>
+  :root { --bg:#f9fafb; --surface:#fff; --border:#e5e7eb; --text:#1f2937; --muted:#6b7280; --accent:#5b8def; --success:#34d399; --radius:12px; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif; background:var(--bg); color:var(--text); min-height:100vh; }
+  .container { max-width:600px; margin:0 auto; padding:24px; }
+  .card { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:24px; margin-bottom:16px; }
+  h1 { font-size:20px; } h1 span { color:var(--accent); }
+  .back-link { color:var(--muted); text-decoration:none; font-size:14px; display:block; margin-bottom:16px; }
+  .btn { padding:10px 24px; border:none; border-radius:8px; font-weight:600; cursor:pointer; font-size:14px; }
+  .btn-success { background:var(--success); color:#000; }
+  .btn-outline { background:transparent; border:1px solid var(--border); color:var(--text); }
+  .completed-item { display:flex; justify-content:space-between; align-items:center; padding:12px 16px; background:var(--bg); border-radius:8px; margin-bottom:8px; }
+  .preview { background:#f3f4f6; border:1px solid var(--border); border-radius:8px; padding:16px; font-family:monospace; font-size:12px; white-space:pre-wrap; max-height:250px; overflow:auto; margin-top:12px; }
+  .empty { text-align:center; padding:40px; color:var(--muted); }
+  .note { margin-top:16px; padding:12px; background:#fffbeb; border-radius:8px; font-size:13px; color:#92400e; border-left:3px solid #f59e0b; }
+  @media (max-width: 767px) { .container { padding:16px; } h1 { font-size:18px; } }
+</style>
+<link rel="stylesheet" href="css/main.css">
+<script src="js/i18n.js"></script>
+<script src="i18n/lang-en.js"></script>
+<script src="i18n/lang-fr.js"></script>
+</head>
+<body>
+<a href="#main-content" class="skip-link">Skip to main content</a>
+<main id="main-content" role="main" class="container">
+  <div style="display:flex;align-items:center;margin-bottom:16px;">
+    <a href="catalog.html" class="back-link" style="margin-bottom:0;">← Back to Training</a>
+    <div id="lang-toggle-container" style="margin-left:auto;"></div>
+  </div>
+  <div class="card">
+    <h1>QA Pilot <span>Academy</span> — Export Results</h1>
+    <p style="color:var(--muted);font-size:13px;margin:8px 0 16px;">Export your completed training as a result JSON file to send to your trainer.</p>
+    <div id="completedList"></div>
+    <div id="previewArea" style="display:none;">
+      <button class="btn btn-success" onclick="downloadResult()" style="margin-top:12px;">Download Result JSON</button>
+      <div class="preview" id="resultPreview"></div>
+    </div>
+    <div class="note"><strong>📤 Result JSON.</strong> This file contains your training evidence. It is advisory only — not an approval, not a certification. Your trainer must review it.</div>
+  </div>
+</div>
+<script>
+function gs(key) { try { return JSON.parse(localStorage.getItem(key)); } catch { return null; } }
+function load() {
+  const state = gs('qapilot_state');
+  const completed = state?.completed || [];
+  const list = document.getElementById('completedList');
+  if (completed.length === 0) {
+    list.innerHTML = '<div class="empty">📭 No completed training to export yet.</div>';
+    return;
+  }
+  list.innerHTML = completed.map((c, i) => `
+    <div class="completed-item">
+      <div><strong>${esc(c.title || c.pack_id)}</strong><br><span style="font-size:12px;color:var(--muted)">${esc(c.pack_id)} · ${c.completed_at ? new Date(c.completed_at).toLocaleDateString() : ''}</span></div>
+      <input type="checkbox" onchange="toggleExport(${i})">
+    </div>
+  `).join('');
+}
+const selected = new Set();
+function toggleExport(i) { selected.has(i) ? selected.delete(i) : selected.add(i); updatePreview(); }
+function updatePreview() {
+  const state = gs('qapilot_state');
+  const completed = state?.completed || [];
+  if (selected.size === 0) { document.getElementById('previewArea').style.display = 'none'; return; }
+  const exports = Array.from(selected).map(i => ({
+    pack_id: completed[i].pack_id,
+    title: completed[i].title,
+    completed_at: completed[i].completed_at,
+    learner_id: state?.profile?.id || 'unknown',
+    learner_name: state?.profile?.name || 'Unknown'
+  }));
+  const result = { result_schema: 'result-v1', exported_at: new Date().toISOString(), learner_id: state?.profile?.id, learner_name: state?.profile?.name, results: exports, advisory: true };
+  document.getElementById('resultPreview').textContent = JSON.stringify(result, null, 2);
+  window._resultData = result;
+  document.getElementById('previewArea').style.display = 'block';
+}
+function downloadResult() {
+  if (!window._resultData) return;
+  const blob = new Blob([JSON.stringify(window._resultData, null, 2)], { type:'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href = url; a.download = 'qa-pilot-results.json'; a.click();
+  URL.revokeObjectURL(url);
+}
+function esc(s) { const d=document.createElement('div'); d.textContent=s||''; return d.innerHTML; }
+document.addEventListener('DOMContentLoaded', load);
+</script>
+<div class="view-data-footer" style="margin-top:var(--space-4);">
+  <span>Data source: local browser</span>
+  <span>Schema: result-v1</span>
+  <span>Advisory only</span>
+</div>
+</main>
+<script>
+if (typeof renderLangToggle !== 'undefined') {
+  renderLangToggle('lang-toggle-container');
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,2118 @@
+{
+  "$schema": "qa-pilot-migration-copy-result-v1",
+  "epic": "EPIC-QA-PILOT-OPENWORK-TO-CARBIDEFRAME-MIGRATION-1",
+  "sprint": "QA-PILOT-OPENWORK-APP-COPY-1",
+  "source_root": "/Users/andrew/Desktop/OpenWork/QA Pilot",
+  "destination_root": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/browser-app",
+  "manifest_sha256": "c85fda640f617ef2dc2b6162496e2d05c09a409206b1382f0479aa7c57406ef0",
+  "manifest_path": "reports/qa-pilot-migration-copy-manifest-1.json",
+  "started_at": "2026-07-10T19:17:26.891416+00:00",
+  "finished_at": "2026-07-10T19:17:27.121625+00:00",
+  "expected_file_count": 123,
+  "copy_count": 123,
+  "pre_source_mismatches_count": 0,
+  "post_dest_mismatches_count": 0,
+  "failures_count": 0,
+  "skipped_outside_manifest_count": 0,
+  "added_outside_manifest_count": 0,
+  "total_bytes_copied": 9014064,
+  "pre_source_mismatches": [],
+  "post_dest_mismatches": [],
+  "failures": [],
+  "skipped_outside_manifest": [],
+  "added_outside_manifest": [],
+  "copies": [
+    {
+      "rel": "ARCHITECTURE.md",
+      "size_bytes": 10587,
+      "sha256": "75b1702b9cbe354cbc660fb82abb719fd789907984b13e18a55c7959842f24da",
+      "source_meta_pre": {
+        "size_bytes": 10587,
+        "mtime_epoch": 1779950150,
+        "mtime_iso": "2026-05-28T06:35:50.302573+00:00",
+        "mode_oct": "0o644"
+      },
+      "dest_meta_post": {
+        "size_bytes": 10587,
+        "mtime_epoch": 1783711046,
+        "mtime_iso": "2026-07-10T19:17:26.892357+00:00",
+        "mode_oct": "0o644"
+      }
+    },
+    {
+      "rel": "LOCAL-AI-ARCHITECTURE.md",
+      "size_bytes": 22338,
+      "sha256": "9f13562457f73f40a06daabd865f88dcba876b457ce250fdfd740d20893812c3",
+      "source_meta_pre": {
+        "size_bytes": 22338,
+        "mtime_epoch": 1779913975,
+        "mtime_iso": "2026-05-27T20:32:55.087271+00:00",
+        "mode_oct": "0o644"
+      },
+      "dest_meta_post": {
+        "size_bytes": 22338,
+        "mtime_epoch": 1783711046,
+        "mtime_iso": "2026-07-10T19:17:26.893738+00:00",
+        "mode_oct": "0o644"
+      }
+    },
+    {
+      "rel": "QA Pilot Docs/FEATURE-SCOPE.md",
+      "size_bytes": 15556,
+      "sha256": "23c6c2f8cd52de04940bb88da117873b0c4ad79f972289472d4df764a709e0bb",
+      "source_meta_pre": {
+        "size_bytes": 15556,
+        "mtime_epoch": 1779913975,
+        "mtime_iso": "2026-05-27T20:32:55.147007+00:00",
+        "mode_oct": "0o644"
+      },
+      "dest_meta_post": {
+        "size_bytes": 15556,
+        "mtime_epoch": 1783711046,
+        "mtime_iso": "2026-07-10T19:17:26.895394+00:00",
+        "mode_oct": "0o644"
+      }
+    },
+    {
+      "rel": "QA Pilot Docs/QA-DEBUGGER-DESIGN.md",
+      "size_bytes": 20905,
+      "sha256": "3b19e46558668fdd5c255bf25a1bd90123f26fea031b3f2295a7a44309e25aa3",
+      "source_meta_pre": {
+        "size_bytes": 20905,
+        "mtime_epoch": 1779913975,
+        "mtime_iso": "2026-05-27T20:32:55.147875+00:00",
+        "mode_oct": "0o644"
+      },
+      "dest_meta_post": {
+        "size_bytes": 20905,
+        "mtime_epoch": 1783711046,
+        "mtime_iso": "2026-07-10T19:17:26.896417+00:00",
+        "mode_oct": "0o644"
+      }
+    },
+    {
+      "rel": "QA Pilot Docs/SCENARIO-LLM-PROMPTS.md",
+      "size_bytes": 9620,
+      "sha256": "d83d6e3b214d6b350180788b16838baecaebf9994c5a803f455a3d923a71ffc2",
+      "source_meta_pre": {
+        "size_bytes": 9620,
+        "mtime_epoch": 1779913975,
+        "mtime_iso": "2026-05-27T20:32:55.146170+00:00",
+        "mode_oct": "0o644"
+      },
+      "dest_meta_post": {
+        "size_bytes": 9620,
+        "mtime_epoch": 1783711046,
+        "mtime_iso": "2026-07-10T19:17:26.897035+00:00",
+        "mode_oct": "0o644"
+      }
+    },
+    {
+      "rel": "QA-Pilot-Session.html",
+      "size_bytes": 7826,
+      "sha256": "d3ad36ef6725f698cc4b24fff88fde11a439b53801dc1ea87f87e797b211c63b",
+      "source_meta_pre": {
+        "size_bytes": 7826,
+        "mtime_epoch": 1779913975,
+        "mtime_iso": "2026-05-27T20:32:55.659275+00:00",
+        "mode_oct": "0o644"
+      },
+      "dest_meta_post": {
+        "size_bytes": 7826,
+        "mtime_epoch": 1783711046,
+        "mtime_iso": "2026-07-10T19:17:26.897666+00:00",
+        "mode_oct": "0o644"
+      }
+    },
+    {
+      "rel": "QASimulator.html",
+      "size_bytes": 813893,
+      "sha256": "ad7246f9649cfdf309846eefff0ebc9ffadff0ed6f1a90e86937c0cd0d22c037",
+      "source_meta_pre": {
+        "size_bytes": 813893,
+        "mtime_epoch": 1779913974,
+        "mtime_iso": "2026-05-27T20:32:54.938151+00:00",
+        "mode_oct": "0o644"
+      },
+      "dest_meta_post": {
+        "size_bytes": 813893,
+        "mtime_epoch": 1783711046,
+        "mtime_iso": "2026-07-10T19:17:26.901114+00:00",
+        "mode_oct": "0o644"
+      }
+    },
+    {
+      "rel": "QASimulator.ico",
+      "size_bytes": 643,
+      "sha256": "97cbb7b48e9bfb5887c699ee7dbd1ffc822dbd136b45c6b7e03548688cbdb7b8",
+      "source_meta_pre": {
+        "size_bytes": 643,
+        "mtime_epoch": 1779913974,
+        "mtime_iso": "2026-05-27T20:32:54.932461+00:00",
+        "mode_oct": "0o644"
+      },
+      "dest_meta_post": {
+        "size_bytes": 643,
+        "mtime_epoch": 1783711046,
+        "mtime_iso": "2026-07-10T19:17:26.906400+00:00",
+        "mode_oct": "0o644"
+      }
+    },
+    {
+      "rel": "README.md",
+      "size_bytes": 9550,
+      "sha256": "cfb37f6150cdf1626260bea2c0ec87b156e4b2c7704f0d036939f396404dc037",
+      "source_meta_pre": {
+        "size_bytes": 9550,
+        "mtime_epoch": 1779913975,
+        "mtime_iso": "2026-05-27T20:32:55.089212+00:00",
+        "mode_oct": "0o644"
+      },
+      "dest_meta_post": {
+        "size_bytes": 9550,
+        "mtime_epoch": 1783711046,
+        "mtime_iso": "2026-07-10T19:17:26.906896+00:00",
+        "mode_oct": "0o644"
+      }
+    },
+    {
+      "rel": "START_Me_Up.html",
+      "size_bytes": 1785,
+      "sha256": "37e5915b8e5c41c5d07b73ee867585b0ec8e5c3433ac25ad6990d8ac6955b4c2",
+      "source_meta_pre": {
+        "size_bytes": 1785,
+        "mtime_epoch": 1779913975,
+        "mtime_iso": "2026-05-27T20:32:55.143697+00:00",
+        "mode_oct": "0o644"
+      },
+      "dest_meta_post": {
+        "size_bytes": 1785,
+        "mtime_epoch": 1783711046,
+        "mtime_iso": "2026-07-10T19:17:26.907594+00:00",
+        "mode_oct": "0o644"
+      }
+    },
+    {
+      "rel": "admin/assign.html",
+      "size_bytes": 27988,
+      "sha256": "61f83d74ddf4e9c9ce705ee4a7c443c49c3e38d8b54bce9f8a1e8c8be155968d",
+      "source_meta_pre": {
+        "size_bytes": 27988,
+        "mtime_epoch": 1779913975,
+        "mtime_iso": "2026-05-27T20:32:55.006672+00:00",
+        "mode_oct": "0o755"
+      },
+      "dest_meta_post": {
+        "size_bytes": 27988,
+        "mtime_epoch": 1783711046,
+        "mtime_iso": "2026-07-10T19:17:26.908146+00:00",
+        "mode_oct": "0o755"
+      }
+    },
+    {
+      "rel": "admin/bugs.html",
+      "size_bytes": 6375,
+      "sha256": "061f26c2096f0812f79e9764063f04cfe59b4f0acbdc660d295889dc162d2e57",
+      "source_meta_pre": {
+        "size_bytes": 6375,
+        "mtime_epoch": 1779913975,
+        "mtime_iso": "2026-05-27T20:32:55.012502+00:00",
+        "mode_oct": "0o755"
+      },
+      "dest_meta_post": {
+        "size_bytes": 6375,
+        "mtime_epoch": 1783711046,
+        "mtime_iso": "2026-07-10T19:17:26.908783+00:00",
+        "mode_oct": "0o755"
+      }
+    },
+    {
+      "rel": "admin/dashboard.html",
+      "size_bytes": 214291,
+      "sha256": "809697810afb0c2ddecaf60c436dcec4bfbc3290bd54873ede904afca5c886d8",
+      "source_meta_pre": {
+        "size_bytes": 214291,
+        "mtime_epoch": 1779913975,
+        "mtime_iso": "2026-05-27T20:32:55.011188+00:00",
+        "mode_oct": "0o755"
+      },
+      "dest_meta_post": {
+        "size_bytes": 214291,
+        "mtime_epoch": 1783711046,
+        "mtime_iso": "2026-07-10T19:17:26.909936+00:00",
+        "mode_oct": "0o755"
+      }
+    },
+    {
+      "rel": "admin/editor.html",
+      "size_bytes": 7694,
+      "sha256": "82db32224a3fb13dadd980aff32bd8c522021acff10337a9947246e07c762438",
+      "source_meta_pre": {
+        "size_bytes": 7694,
+        "mtime_epoch": 1779913975,
+        "mtime_iso": "2026-05-27T20:32:55.004499+00:00",
+        "mode_oct": "0o755"
+      },
+      "dest_meta_post": {
+        "size_bytes": 7694,
+        "mtime_epoch": 1783711046,
+        "mtime_iso": "2026-07-10T19:17:26.911700+00:00",
+        "mode_oct": "0o755"
+      }
+    },
+    {
+      "rel": "admin/index.html",
+      "size_bytes": 14868,
+      "sha256": "8697d979027fb251342c857cdecac87da7c03c0559165329d4bf1a6b41c089fd",
+      "source_meta_pre": {
+        "size_bytes": 14868,
+        "mtime_epoch": 1779913975,
+        "mtime_iso": "2026-05-27T20:32:55.003163+00:00",
+        "mode_oct": "0o755"
+      },
+      "dest_meta_post": {
+        "size_bytes": 14868,
+        "mtime_epoch": 1783711046,
+        "mtime_iso": "2026-07-10T19:17:26.912564+00:00",
+        "mode_oct": "0o755"
+      }
+    },
+    {
+      "rel": "admin/simple.html",
+      "size_bytes": 28930,
+      "sha256": "f27434efb3c9426a466e8a83b9e9c04ecaa0224f8c745a417821c818bd43249a",
+      "source_meta_pre": {
+        "size_bytes": 28930,
+        "mtime_epoch": 1779913975,
+        "mtime_iso": "2026-05-27T20:32:55.014749+00:00",
+        "mode_oct": "0o644"
+      },
+      "dest_meta_post": {
+        "size_bytes": 28930,
+        "mtime_epoch": 1783711046,
+        "mtime_iso": "2026-07-10T19:17:26.913625+00:00",
+        "mode_oct": "0o644"
+      }
+    },
+    {
+      "rel": "ado-lab.html",
+      "size_bytes": 45952,
+      "sha256": "b5404eb707c037e672c452aecd4b48bc8f04019648f61448cf7d23db82ebb2e0",
+      "source_meta_pre": {
+        "size_bytes": 45952,
+        "mtime_epoch": 1779913974,
+        "mtime_iso": "2026-05-27T20:32:54.953932+00:00",
+        "mode_oct": "0o644"
+      },
+      "dest_meta_post": {
+        "size_bytes": 45952,
+        "mtime_epoch": 1783711046,
+        "mtime_iso": "2026-07-10T19:17:26.914431+00:00",
+        "mode_oct": "0o644"
+      }
+    },
+    {
+      "rel": "apps/_stub.html",
+      "size_bytes": 1483,
+      "sha256": "ea70603a3e8d55ba845c9324e7b37024cc92147a7da16fac10dad9519191c02e",
+      "source_meta_pre": {
+        "size_bytes": 1483,
+        "mtime_epoch": 1779913975,
+        "mtime_iso": "2026-05-27T20:32:55.690012+00:00",
+        "mode_oct": "0o755"
+      },
+      "dest_meta_post": {
+        "size_bytes": 1483,
+        "mtime_epoch": 1783711046,
+        "mtime_iso": "2026-07-10T19:17:26.915147+00:00",
+        "mode_oct": "0o755"
+      }
+    },
+    {
+      "rel": "apps/ac.html",
+      "size_bytes": 16756,
+      "sha256": "904a2026e02a5947cad0275554e286bb48b099c0dcdf95e8d98288b18aa04426",
+      "source_meta_pre": {
+        "size_bytes": 16756,
+        "mtime_epoch": 1779913975,
+        "mtime_iso": "2026-05-27T20:32:55.679237+00:00",
+        "mode_oct": "0o755"
+      },
+      "dest_meta_post": {
+        "size_bytes": 16756,
+        "mtime_epoch": 1783711046,
+        "mtime_iso": "2026-07-10T19:17:26.915629+00:00",
+        "mode_oct": "0o755"
+      }
+    },
+    {
+      "rel": "apps/ado.html",
+      "size_bytes": 60022,
+      "sha256": "4ff2c87a4b230d2b289c3188559d68e4acc910b781af21b1429b974950a94d82",
+      "source_meta_pre": {
+        "size_bytes": 60022,
+        "mtime_epoch": 1779913975,
+        "mtime_iso": "2026-05-27T20:32:55.677083+00:00",
+        "mode_oct": "0o755"
+      },
+      "dest_meta_post": {
+        "size_bytes": 60022,
+        "mtime_epoch": 1783711046,
+        "mtime_iso": "2026-07-10T19:17:26.916532+00:00",
+        "mode_oct": "0o755"
+      }
+    },
+    {
+      "rel": "apps/browser.html",
+      "size_bytes": 35471,
+      "sha256": "e369d0b5a72898e60ae0905a17af58f5ae4cf9122ab0311453514a0171a95d98",
+      "source_meta_pre": {
+        "size_bytes": 35471,
+        "mtime_epoch": 1779913975,
+        "mtime_iso": "2026-05-27T20:32:55.675755+00:00",
+        "mode_oct": "0o755"
+      },
+      "dest_meta_post": {
+        "size_bytes": 35471,
+        "mtime_epoch": 1783711046,
+        "mtime_iso": "2026-07-10T19:17:26.917584+00:00",
+        "mode_oct": "0o755"
+      }
+    },
+    {
+      "rel": "apps/dynamics.html",
+      "size_bytes": 115212,
+      "sha256": "a7ccba7be055c5e47688465cba0fe9883babde7a1fec5a221f54dfd62762a5cd",
+      "source_meta_pre": {
+        "size_bytes": 115212,
+        "mtime_epoch": 1779913975,
+        "mtime_iso": "2026-05-27T20:32:55.685504+00:00",
+        "mode_oct": "0o755"
+      },
+      "dest_meta_post": {
+        "size_bytes": 115212,
+        "mtime_epoch": 1783711046,
+        "mtime_iso": "2026-07-10T19:17:26.919183+00:00",
+        "mode_oct": "0o755"
+      }
+    },
+    {
+      "rel": "apps/excel.html",
+      "size_bytes": 10104,
+      "sha256": "1471f6581b7095d9a5ad3ea9379177214fd0b3acfc1923404e42c6b5708d7ac8",
+      "source_meta_pre": {
+        "size_bytes": 10104,
+        "mtime_epoch": 1779913975,
+        "mtime_iso": "2026-05-27T20:32:55.691460+00:00",
+        "mode_oct": "0o644"
+      },
+      "dest_meta_post": {
+        "size_bytes": 10104,
+        "mtime_epoch": 1783711046,
+        "mtime_iso": "2026-07-10T19:17:26.920700+00:00",
+        "mode_oct": "0o644"
+      }
+    },
+    {
+      "rel": "apps/inspector.html",
+      "size_bytes": 8974,
+      "sha256": "f1610dfa9b54c8ec9584c74b517ff1099d91e9021b5e21fb103dbdcb1278867b",
+      "source_meta_pre": {
+        "size_bytes": 8974,
+        "mtime_epoch": 1779913975,
+        "mtime_iso": "2026-05-27T20:32:55.680047+00:00",
+        "mode_oct": "0o755"
+      },
+      "dest_meta_post": {
+        "size_bytes": 8974,
+        "mtime_epoch": 1783711046,
+        "mtime_iso": "2026-07-10T19:17:26.921578+00:00",
+        "mode_oct": "0o755"
+      }
+    },
+    {
+      "rel": "apps/powerpoint.html",
+      "size_bytes": 7422,
+      "sha256": "afccbf2c3ab31a992fd59707febad4038f4f199fb472635404b2198a56a11982",
+      "source_meta_pre": {
+        "size_bytes": 7422,
+        "mtime_epoch": 1779913975,
+        "mtime_iso": "2026-05-27T20:32:55.674163+00:00",
+        "mode_oct": "0o644"
+      },
+      "dest_meta_post": {
+        "size_bytes": 7422,
+        "mtime_epoch": 1783711046,
+        "mtime_iso": "2026-07-10T19:17:26.922428+00:00",
+        "mode_oct": "0o644"
+      }
+    },
+    {
+      "rel": "apps/qapache.html",
+      "size_bytes": 2814,
+      "sha256": "cfeaa9b2e3de47a9ae7734c5ca2c38cd213e02e6ad398f6aad5b3d823628b34f",
+      "source_meta_pre": {
+        "size_bytes": 2814,
+        "mtime_epoch": 1779913975,
+        "mtime_iso": "2026-05-27T20:32:55.677674+00:00",
+        "mode_oct": "0o644"
+      },
+      "dest_meta_post": {
+        "size_bytes": 2814,
+        "mtime_epoch": 1783711046,
+        "mtime_iso": "2026-07-10T19:17:26.923186+00:00",
+        "mode_oct": "0o644"
+      }
+    },
+    {
+      "rel": "apps/qoutlook.html",
+      "size_bytes": 52726,
+      "sha256": "396fab2b0f37188aa18dfa23b3905020769c694835ecfdb8149c388ddb14e319",
+      "source_meta_pre": {
+        "size_bytes": 52726,
+        "mtime_epoch": 1779913975,
+        "mtime_iso": "2026-05-27T20:32:55.683293+00:00",
+        "mode_oct": "0o644"
+      },
+      "dest_meta_post": {
+        "size_bytes": 52726,
+        "mtime_epoch": 1783711046,
+        "mtime_iso": "2026-07-10T19:17:26.924186+00:00",
+        "mode_oct": "0o644"
+      }
+    },
+    {
+      "rel": "apps/qtube.html",
+      "size_bytes": 3670,
+      "sha256": "be7e486935b43b00801e2ee080217df2b43d525dff2603b92ec110d19e75486d",
+      "source_meta_pre": {
+        "size_bytes": 3670,
+        "mtime_epoch": 1779913975,
+        "mtime_iso": "2026-05-27T20:32:55.686203+00:00",
+        "mode_oct": "0o644"
+      },
+      "dest_meta_post": {
+        "size_bytes": 3670,
+        "mtime_epoch": 1783711046,
+        "mtime_iso": "2026-07-10T19:17:26.925199+00:00",
+        "mode_oct": "0o644"
+      }
+    },
+    {
+      "rel": "apps/reports.html",
+      "size_bytes": 20298,
+      "sha256": "ab4f0036fc8bb20e259139fe783fe4b91f344a491b9e7d9c3c3d235b089818fd",
+      "source_meta_pre": {
+        "size_bytes": 20298,
+        "mtime_epoch": 1779913975,
+        "mtime_iso": "2026-05-27T20:32:55.692480+00:00",
+        "mode_oct": "0o755"
+      },
+      "dest_meta_post": {
+        "size_bytes": 20298,
+        "mtime_epoch": 1783711046,
+        "mtime_iso": "2026-07-10T19:17:26.926362+00:00",
+        "mode_oct": "0o755"
+      }
+    },
+    {
+      "rel": "apps/settings.html",
+      "size_bytes": 25587,
+      "sha256": "0502feede24a6038641cd3712f699f7974c1083129d0e13270fb5fc1b08ab71e",
+      "source_meta_pre": {
+        "size_bytes": 25587,
+        "mtime_epoch": 1779913975,
+        "mtime_iso": "2026-05-27T20:32:55.689270+00:00",
+        "mode_oct": "0o755"
+      },
+      "dest_meta_post": {
+        "size_bytes": 25587,
+        "mtime_epoch": 1783711046,
+        "mtime_iso": "2026-07-10T19:17:26.927615+00:00",
+        "mode_oct": "0o755"
+      }
+    },
+    {
+      "rel": "apps/teams.html",
+      "size_bytes": 86739,
+      "sha256": "68d915ed870a91d6144c4d881bec38ec944ed6a48a6834f66d98c5d1b9bff8b4",
+      "source_meta_pre": {
+        "size_bytes": 86739,
+        "mtime_epoch": 1779913975,
+        "mtime_iso": "2026-05-27T20:32:55.681182+00:00",
+        "mode_oct": "0o644"
+      },
+      "dest_meta_post": {
+        "size_bytes": 86739,
+        "mtime_epoch": 1783711046,
+        "mtime_iso": "2026-07-10T19:17:26.929246+00:00",
+        "mode_oct": "0o644"
+      }
+    },
+    {
+      "rel": "apps/training.html",
+      "size_bytes": 47449,
+      "sha256": "d98547799e60897a5886697aca027d5d5596b3e12ca306ecc8414f49150319d4",
+      "source_meta_pre": {
+        "size_bytes": 47449,
+        "mtime_epoch": 1779913975,
+        "mtime_iso": "2026-05-27T20:32:55.687170+00:00",
+        "mode_oct": "0o755"
+      },
+      "dest_meta_post": {
+        "size_bytes": 47449,
+        "mtime_epoch": 1783711046,
+        "mtime_iso": "2026-07-10T19:17:26.931092+00:00",
+        "mode_oct": "0o755"
+      }
+    },
+    {
+      "rel": "apps/word.html",
+      "size_bytes": 6656,
+      "sha256": "244dd35760c6a74f770fe836ade446531e6ffecbea966b84008355ab9a6ac3f6",
+      "source_meta_pre": {
+        "size_bytes": 6656,
+        "mtime_epoch": 1779913975,
+        "mtime_iso": "2026-05-27T20:32:55.678535+00:00",
+        "mode_oct": "0o644"
+      },
+      "dest_meta_post": {
+        "size_bytes": 6656,
+        "mtime_epoch": 1783711046,
+        "mtime_iso": "2026-07-10T19:17:26.932318+00:00",
+        "mode_oct": "0o644"
+      }
+    },
+    {
+      "rel": "build.bat",
+      "size_bytes": 3442,
+      "sha256": "8f86b03e6bad52705886fa7cf37d6ccb46aefdd3dd9adf128257ce34cf79e07b",
+      "source_meta_pre": {
+        "size_bytes": 3442,
+        "mtime_epoch": 1779913975,
+        "mtime_iso": "2026-05-27T20:32:55.090254+00:00",
+        "mode_oct": "0o644"
+      },
+      "dest_meta_post": {
+        "size_bytes": 3442,
+        "mtime_epoch": 1783711046,
+        "mtime_iso": "2026-07-10T19:17:26.933200+00:00",
+        "mode_oct": "0o644"
+      }
+    },
+    {
+      "rel": "build.command",
+      "size_bytes": 564,
+      "sha256": "84a4b7c9f9654309b955aab98548c557fb19b2d076064ee1954c64802cec7772",
+      "source_meta_pre": {
+        "size_bytes": 564,
+        "mtime_epoch": 1779913974,
+        "mtime_iso": "2026-05-27T20:32:54.979149+00:00",
+        "mode_oct": "0o755"
+      },
+      "dest_meta_post": {
+        "size_bytes": 564,
+        "mtime_epoch": 1783711046,
+        "mtime_iso": "2026-07-10T19:17:26.933908+00:00",
+        "mode_oct": "0o755"
+      }
+    },
+    {
+      "rel": "build.js",
+      "size_bytes": 15633,
+      "sha256": "1a320b042943343c8d910b69d4eaf8d2c155e35a573cb6c0acdd36720db86c4e",
+      "source_meta_pre": {
+        "size_bytes": 15633,
+        "mtime_epoch": 1779913975,
+        "mtime_iso": "2026-05-27T20:32:55.000309+00:00",
+        "mode_oct": "0o755"
+      },
+      "dest_meta_post": {
+        "size_bytes": 15633,
+        "mtime_epoch": 1783711046,
+        "mtime_iso": "2026-07-10T19:17:26.934879+00:00",
+        "mode_oct": "0o755"
+      }
+    },
+    {
+      "rel": "build.sh",
+      "size_bytes": 167,
+      "sha256": "3375927fb2bcce3e5dbd39f8d37a79a4afd88d24ba7fdc4758279e37c66cb367",
+      "source_meta_pre": {
+        "size_bytes": 167,
+        "mtime_epoch": 1779913975,
+        "mtime_iso": "2026-05-27T20:32:55.127120+00:00",
+        "mode_oct": "0o755"
+      },
+      "dest_meta_post": {
+        "size_bytes": 167,
+        "mtime_epoch": 1783711046,
+        "mtime_iso": "2026-07-10T19:17:26.935942+00:00",
+        "mode_oct": "0o755"
+      }
+    },
+    {
+      "rel": "capstone-2.html",
+      "size_bytes": 913815,
+      "sha256": "74093915ea32a842d4cd1ca2bb98b32481009f62068523bd8d028dc1ba86ab29",
+      "source_meta_pre": {
+        "size_bytes": 913815,
+        "mtime_epoch": 1779913975,
+        "mtime_iso": "2026-05-27T20:32:55.068318+00:00",
+        "mode_oct": "0o644"
+      },
+      "dest_meta_post": {
+        "size_bytes": 913815,
+        "mtime_epoch": 1783711046,
+        "mtime_iso": "2026-07-10T19:17:26.942233+00:00",
+        "mode_oct": "0o644"
+      }
+    },
+    {
+      "rel": "capstone-2.html.bak",
+      "size_bytes": 914362,
+      "sha256": "f590bf45e06239e3f25159013ea283c0d8bbd973673202726809fc0d58898882",
+      "source_meta_pre": {
+        "size_bytes": 914362,
+        "mtime_epoch": 1779913974,
+        "mtime_iso": "2026-05-27T20:32:54.968214+00:00",
+        "mode_oct": "0o644"
+      },
+      "dest_meta_post": {
+        "size_bytes": 914362,
+        "mtime_epoch": 1783711046,
+        "mtime_iso": "2026-07-10T19:17:26.954770+00:00",
+        "mode_oct": "0o644"
+      }
+    },
+    {
+      "rel": "capstone-lab.html",
+      "size_bytes": 30299,
+      "sha256": "fd372df695fae24044c24c856c0270d2c612c2a0fde6f917234ff1152bddf89b",
+      "source_meta_pre": {
+        "size_bytes": 30299,
+        "mtime_epoch": 1779913975,
+        "mtime_iso": "2026-05-27T20:32:55.658591+00:00",
+        "mode_oct": "0o644"
+      },
+      "dest_meta_post": {
+        "size_bytes": 30299,
+        "mtime_epoch": 1783711046,
+        "mtime_iso": "2026-07-10T19:17:26.962988+00:00",
+        "mode_oct": "0o644"
+      }
+    },
+    {
+      "rel": "capstone.html",
+      "size_bytes": 841129,
+      "sha256": "92078a07e0f2e2e0d6c3ab24f5db6305fff7121b7a80dcc030bf8f5f016bf299",
+      "source_meta_pre": {
+        "size_bytes": 841129,
+        "mtime_epoch": 1779913974,
+        "mtime_iso": "2026-05-27T20:32:54.925770+00:00",
+        "mode_oct": "0o755"
+      },
+      "dest_meta_post": {
+        "size_bytes": 841129,
+        "mtime_epoch": 1783711046,
+        "mtime_iso": "2026-07-10T19:17:26.968342+00:00",
+        "mode_oct": "0o755"
+      }
+    },
+    {
+      "rel": "certificate.html",
+      "size_bytes": 52749,
+      "sha256": "4aae66693a784b9567ae5be71b3f0f837d03539e36634bfd53995faec931efdd",
+      "source_meta_pre": {
+        "size_bytes": 52749,
+        "mtime_epoch": 1779913975,
+        "mtime_iso": "2026-05-27T20:32:55.015947+00:00",
+        "mode_oct": "0o755"
+      },
+      "dest_meta_post": {
+        "size_bytes": 52749,
+        "mtime_epoch": 1783711046,
+        "mtime_iso": "2026-07-10T19:17:26.975539+00:00",
+        "mode_oct": "0o755"
+      }
+    },
+    {
+      "rel": "chrome-extension/README.md",
+      "size_bytes": 2056,
+      "sha256": "0d862644dc4cf917ca3d5e8ffd3854be39d72b484d154d2b91ef545ced2981c6",
+      "source_meta_pre": {
+        "size_bytes": 2056,
+        "mtime_epoch": 1779948739,
+        "mtime_iso": "2026-05-28T06:12:19.758093+00:00",
+        "mode_oct": "0o644"
+      },
+      "dest_meta_post": {
+        "size_bytes": 2056,
+        "mtime_epoch": 1783711046,
+        "mtime_iso": "2026-07-10T19:17:26.977126+00:00",
+        "mode_oct": "0o644"
+      }
+    },
+    {
+      "rel": "chrome-extension/manifest.json",
+      "size_bytes": 410,
+      "sha256": "f252230c8906290048213a30e6e6dec0f708c28c34185ae19677a135954274bf",
+      "source_meta_pre": {
+        "size_bytes": 410,
+        "mtime_epoch": 1779913974,
+        "mtime_iso": "2026-05-27T20:32:54.997988+00:00",
+        "mode_oct": "0o644"
+      },
+      "dest_meta_post": {
+        "size_bytes": 410,
+        "mtime_epoch": 1783711046,
+        "mtime_iso": "2026-07-10T19:17:26.978020+00:00",
+        "mode_oct": "0o644"
+      }
+    },
+    {
+      "rel": "chrome-extension/popup.html",
+      "size_bytes": 21607,
+      "sha256": "b1516481239c86bb200c3d17966438a3dde9529beef84a68623f7651e8ebb2e5",
+      "source_meta_pre": {
+        "size_bytes": 21607,
+        "mtime_epoch": 1779913974,
+        "mtime_iso": "2026-05-27T20:32:54.996181+00:00",
+        "mode_oct": "0o644"
+      },
+      "dest_meta_post": {
+        "size_bytes": 21607,
+        "mtime_epoch": 1783711046,
+        "mtime_iso": "2026-07-10T19:17:26.978950+00:00",
+        "mode_oct": "0o644"
+      }
+    },
+    {
+      "rel": "confirm.html",
+      "size_bytes": 5876,
+      "sha256": "c12a888952f7c47bfa5012a8e2c47c30f2e4c50f0be4b11cdc2e35d2a3e2514b",
+      "source_meta_pre": {
+        "size_bytes": 5876,
+        "mtime_epoch": 1779913974,
+        "mtime_iso": "2026-05-27T20:32:54.944195+00:00",
+        "mode_oct": "0o644"
+      },
+      "dest_meta_post": {
+        "size_bytes": 5876,
+        "mtime_epoch": 1783711046,
+        "mtime_iso": "2026-07-10T19:17:26.979944+00:00",
+        "mode_oct": "0o644"
+      }
+    },
+    {
+      "rel": "course-view.html",
+      "size_bytes": 120954,
+      "sha256": "935fd5233932eae7a560509f3f6735685f30aaba10c6b167af4958b4d2ad0cb6",
+      "source_meta_pre": {
+        "size_bytes": 120954,
+        "mtime_epoch": 1779913974,
+        "mtime_iso": "2026-05-27T20:32:54.950747+00:00",
+        "mode_oct": "0o644"
+      },
+      "dest_meta_post": {
+        "size_bytes": 120954,
+        "mtime_epoch": 1783711046,
+        "mtime_iso": "2026-07-10T19:17:26.981256+00:00",
+        "mode_oct": "0o644"
+      }
+    },
+    {
+      "rel": "crm-lab.html",
+      "size_bytes": 50099,
+      "sha256": "38c8d87febb3db0332c84ff95532316037282422823006d187a80e984e9f07ad",
+      "source_meta_pre": {
+        "size_bytes": 50099,
+        "mtime_epoch": 1779913974,
+        "mtime_iso": "2026-05-27T20:32:54.945530+00:00",
+        "mode_oct": "0o644"
+      },
+      "dest_meta_post": {
+        "size_bytes": 50099,
+        "mtime_epoch": 1783711046,
+        "mtime_iso": "2026-07-10T19:17:26.982501+00:00",
+        "mode_oct": "0o644"
+      }
+    },
+    {
+      "rel": "css/ado-mock.css",
+      "size_bytes": 5568,
+      "sha256": "ed1602704077bc082ff6a7605944ab9ee7286e54bc5a6280bff8366dc429ca4b",
+      "source_meta_pre": {
+        "size_bytes": 5568,
+        "mtime_epoch": 1779913974,
+        "mtime_iso": "2026-05-27T20:32:54.975987+00:00",
+        "mode_oct": "0o755"
+      },
+      "dest_meta_post": {
+        "size_bytes": 5568,
+        "mtime_epoch": 1783711046,
+        "mtime_iso": "2026-07-10T19:17:26.983262+00:00",
+        "mode_oct": "0o755"
+      }
+    },
+    {
+      "rel": "css/dynamics-mock.css",
+      "size_bytes": 6713,
+      "sha256": "1610b56be1d13da1627f41ba9792018757ddf257af603e213c76c97e2d1820bb",
+      "source_meta_pre": {
+        "size_bytes": 6713,
+        "mtime_epoch": 1779913974,
+        "mtime_iso": "2026-05-27T20:32:54.978057+00:00",
+        "mode_oct": "0o755"
+      },
+      "dest_meta_post": {
+        "size_bytes": 6713,
+        "mtime_epoch": 1783711046,
+        "mtime_iso": "2026-07-10T19:17:26.983846+00:00",
+        "mode_oct": "0o755"
+      }
+    },
+    {
+      "rel": "css/main.css",
+      "size_bytes": 28995,
+      "sha256": "9147c765d3c608107a1cbf09d9b89d13be844daf65786e53fd3aefde1005d173",
+      "source_meta_pre": {
+        "size_bytes": 28995,
+        "mtime_epoch": 1779913974,
+        "mtime_iso": "2026-05-27T20:32:54.976999+00:00",
+        "mode_oct": "0o755"
+      },
+      "dest_meta_post": {
+        "size_bytes": 28995,
+        "mtime_epoch": 1783711046,
+        "mtime_iso": "2026-07-10T19:17:26.984658+00:00",
+        "mode_oct": "0o755"
+      }
+    },
+    {
+      "rel": "data/assignments.js",
+      "size_bytes": 7314,
+      "sha256": "559bbb57b34aa5828dac9a51f646e209d0a089045b2dda3fb9f8e02c275b19ea",
+      "source_meta_pre": {
+        "size_bytes": 7314,
+        "mtime_epoch": 1779913975,
+        "mtime_iso": "2026-05-27T20:32:55.670679+00:00",
+        "mode_oct": "0o755"
+      },
+      "dest_meta_post": {
+        "size_bytes": 7314,
+        "mtime_epoch": 1783711046,
+        "mtime_iso": "2026-07-10T19:17:26.985403+00:00",
+        "mode_oct": "0o755"
+      }
+    },
+    {
+      "rel": "data/bug-keys.js",
+      "size_bytes": 5004,
+      "sha256": "0a7a1c9a26f308188f57d23446d13650ebb353b6af9b683baab38f17dc01927a",
+      "source_meta_pre": {
+        "size_bytes": 5004,
+        "mtime_epoch": 1779913975,
+        "mtime_iso": "2026-05-27T20:32:55.662835+00:00",
+        "mode_oct": "0o644"
+      },
+      "dest_meta_post": {
+        "size_bytes": 5004,
+        "mtime_epoch": 1783711046,
+        "mtime_iso": "2026-07-10T19:17:26.986094+00:00",
+        "mode_oct": "0o644"
+      }
+    },
+    {
+      "rel": "data/content.js",
+      "size_bytes": 530782,
+      "sha256": "b57c2e905593491cf5cbe9d8d28c0fa50acb641ec3b5d5295dbea8f54dd28458",
+      "source_meta_pre": {
+        "size_bytes": 530782,
+        "mtime_epoch": 1779913975,
+        "mtime_iso": "2026-05-27T20:32:55.668432+00:00",
+        "mode_oct": "0o755"
+      },
+      "dest_meta_post": {
+        "size_bytes": 530782,
+        "mtime_epoch": 1783711046,
+        "mtime_iso": "2026-07-10T19:17:26.989719+00:00",
+        "mode_oct": "0o755"
+      }
+    },
+    {
+      "rel": "data/progress.js",
+      "size_bytes": 9835,
+      "sha256": "348514a2cdc3c4eb670f3637c345a73ebd797c61a78e6197210441e7a9d64f40",
+      "source_meta_pre": {
+        "size_bytes": 9835,
+        "mtime_epoch": 1779913975,
+        "mtime_iso": "2026-05-27T20:32:55.664563+00:00",
+        "mode_oct": "0o755"
+      },
+      "dest_meta_post": {
+        "size_bytes": 9835,
+        "mtime_epoch": 1783711046,
+        "mtime_iso": "2026-07-10T19:17:26.993541+00:00",
+        "mode_oct": "0o755"
+      }
+    },
+    {
+      "rel": "data/quiz-questions.js",
+      "size_bytes": 50426,
+      "sha256": "61f5064f693d26af8010ff0b1c652efa16afef28ec97ea08d6fb89c513ba7e78",
+      "source_meta_pre": {
+        "size_bytes": 50426,
+        "mtime_epoch": 1779913975,
+        "mtime_iso": "2026-05-27T20:32:55.661978+00:00",
+        "mode_oct": "0o755"
+      },
+      "dest_meta_post": {
+        "size_bytes": 50426,
+        "mtime_epoch": 1783711046,
+        "mtime_iso": "2026-07-10T19:17:26.995307+00:00",
+        "mode_oct": "0o755"
+      }
+    },
+    {
+      "rel": "data/students.js",
+      "size_bytes": 9933,
+      "sha256": "82d5e1a974b2f510af1244cc696f7ea5899db22db388c5eb2f115ee62f5d0fd1",
+      "source_meta_pre": {
+        "size_bytes": 9933,
+        "mtime_epoch": 1779913975,
+        "mtime_iso": "2026-05-27T20:32:55.663600+00:00",
+        "mode_oct": "0o755"
+      },
+      "dest_meta_post": {
+        "size_bytes": 9933,
+        "mtime_epoch": 1783711046,
+        "mtime_iso": "2026-07-10T19:17:26.996517+00:00",
+        "mode_oct": "0o755"
+      }
+    },
+    {
+      "rel": "debug/debug-board.js",
+      "size_bytes": 6110,
+      "sha256": "a854219ad9c76d31b31c0d2c1e4a2be1e83d37f38500fa7cacf59129158a523e",
+      "source_meta_pre": {
+        "size_bytes": 6110,
+        "mtime_epoch": 1779913975,
+        "mtime_iso": "2026-05-27T20:32:55.701414+00:00",
+        "mode_oct": "0o644"
+      },
+      "dest_meta_post": {
+        "size_bytes": 6110,
+        "mtime_epoch": 1783711046,
+        "mtime_iso": "2026-07-10T19:17:26.997425+00:00",
+        "mode_oct": "0o644"
+      }
+    },
+    {
+      "rel": "debug/debug-filters.js",
+      "size_bytes": 13110,
+      "sha256": "966dafa18e6ff49b0281cdb2ce0021e5db4f7824a8bc733914dbc171c73c9d73",
+      "source_meta_pre": {
+        "size_bytes": 13110,
+        "mtime_epoch": 1779913975,
+        "mtime_iso": "2026-05-27T20:32:55.702364+00:00",
+        "mode_oct": "0o644"
+      },
+      "dest_meta_post": {
+        "size_bytes": 13110,
+        "mtime_epoch": 1783711046,
+        "mtime_iso": "2026-07-10T19:17:26.998216+00:00",
+        "mode_oct": "0o644"
+      }
+    },
+    {
+      "rel": "debug/debug-import-export.js",
+      "size_bytes": 29214,
+      "sha256": "193c1e3463fc02ab67b001fe44cacb8abde5c63670303a0fdfa362b721248d02",
+      "source_meta_pre": {
+        "size_bytes": 29214,
+        "mtime_epoch": 1779913975,
+        "mtime_iso": "2026-05-27T20:32:55.697394+00:00",
+        "mode_oct": "0o644"
+      },
+      "dest_meta_post": {
+        "size_bytes": 29214,
+        "mtime_epoch": 1783711046,
+        "mtime_iso": "2026-07-10T19:17:26.999392+00:00",
+        "mode_oct": "0o644"
+      }
+    },
+    {
+      "rel": "debug/debug-panel.js",
+      "size_bytes": 23560,
+      "sha256": "3465b582489cbf365df03568383b8f298e9e987338469cbdaebd736d9b1e7215",
+      "source_meta_pre": {
+        "size_bytes": 23560,
+        "mtime_epoch": 1779913975,
+        "mtime_iso": "2026-05-27T20:32:55.698146+00:00",
+        "mode_oct": "0o644"
+      },
+      "dest_meta_post": {
+        "size_bytes": 23560,
+        "mtime_epoch": 1783711047,
+        "mtime_iso": "2026-07-10T19:17:27.000238+00:00",
+        "mode_oct": "0o644"
+      }
+    },
+    {
+      "rel": "debug/debug.css",
+      "size_bytes": 28393,
+      "sha256": "d2a2cfe6bcef3578cd9fc252c0b70b8f11a9ad0c7ac72f6f389edcd27144cd2e",
+      "source_meta_pre": {
+        "size_bytes": 28393,
+        "mtime_epoch": 1779913975,
+        "mtime_iso": "2026-05-27T20:32:55.696507+00:00",
+        "mode_oct": "0o644"
+      },
+      "dest_meta_post": {
+        "size_bytes": 28393,
+        "mtime_epoch": 1783711047,
+        "mtime_iso": "2026-07-10T19:17:27.001506+00:00",
+        "mode_oct": "0o644"
+      }
+    },
+    {
+      "rel": "debug/debug.js",
+      "size_bytes": 17794,
+      "sha256": "3965378c5785c26d11be6ac3124b6e58d4cd7e22846c21e4a2019344b476e911",
+      "source_meta_pre": {
+        "size_bytes": 17794,
+        "mtime_epoch": 1779913975,
+        "mtime_iso": "2026-05-27T20:32:55.703106+00:00",
+        "mode_oct": "0o644"
+      },
+      "dest_meta_post": {
+        "size_bytes": 17794,
+        "mtime_epoch": 1783711047,
+        "mtime_iso": "2026-07-10T19:17:27.002685+00:00",
+        "mode_oct": "0o644"
+      }
+    },
+    {
+      "rel": "debug/index.html",
+      "size_bytes": 21509,
+      "sha256": "2ddfc3474319cdfc09a3a5c243e202238dadf01f08a85cfacb94cf963bc2e41f",
+      "source_meta_pre": {
+        "size_bytes": 21509,
+        "mtime_epoch": 1779913975,
+        "mtime_iso": "2026-05-27T20:32:55.695645+00:00",
+        "mode_oct": "0o644"
+      },
+      "dest_meta_post": {
+        "size_bytes": 21509,
+        "mtime_epoch": 1783711047,
+        "mtime_iso": "2026-07-10T19:17:27.003702+00:00",
+        "mode_oct": "0o644"
+      }
+    },
+    {
+      "rel": "debug/local-qa-debugger-prompt-pack.md",
+      "size_bytes": 26758,
+      "sha256": "c1c4390d2a68b20ddb6b9c4f63a0869c09a81e9804a9713811abffa837b0f0da",
+      "source_meta_pre": {
+        "size_bytes": 26758,
+        "mtime_epoch": 1779913975,
+        "mtime_iso": "2026-05-27T20:32:55.700253+00:00",
+        "mode_oct": "0o644"
+      },
+      "dest_meta_post": {
+        "size_bytes": 26758,
+        "mtime_epoch": 1783711047,
+        "mtime_iso": "2026-07-10T19:17:27.004732+00:00",
+        "mode_oct": "0o644"
+      }
+    },
+    {
+      "rel": "desktop/IMPLEMENTATION-PLAN.md",
+      "size_bytes": 27599,
+      "sha256": "7d34952be9ef377c7c815dac71034dc3488891057ad0322d12fe4e21e074275c",
+      "source_meta_pre": {
+        "size_bytes": 27599,
+        "mtime_epoch": 1779950273,
+        "mtime_iso": "2026-05-28T06:37:53.666955+00:00",
+        "mode_oct": "0o644"
+      },
+      "dest_meta_post": {
+        "size_bytes": 27599,
+        "mtime_epoch": 1783711047,
+        "mtime_iso": "2026-07-10T19:17:27.005761+00:00",
+        "mode_oct": "0o644"
+      }
+    },
+    {
+      "rel": "desktop/LICENSE",
+      "size_bytes": 2728,
+      "sha256": "8af1e76f97098f42d891abb9fcf9020eb9dd52c30656a2859ad294ab4a11740e",
+      "source_meta_pre": {
+        "size_bytes": 2728,
+        "mtime_epoch": 1779913975,
+        "mtime_iso": "2026-05-27T20:32:55.023757+00:00",
+        "mode_oct": "0o755"
+      },
+      "dest_meta_post": {
+        "size_bytes": 2728,
+        "mtime_epoch": 1783711047,
+        "mtime_iso": "2026-07-10T19:17:27.006565+00:00",
+        "mode_oct": "0o755"
+      }
+    },
+    {
+      "rel": "desktop/README.md",
+      "size_bytes": 4710,
+      "sha256": "ed1e401185c687e01229be51f41c07d00790b5667a4fd3e23981bf76d9d9ca40",
+      "source_meta_pre": {
+        "size_bytes": 4710,
+        "mtime_epoch": 1779913975,
+        "mtime_iso": "2026-05-27T20:32:55.042516+00:00",
+        "mode_oct": "0o755"
+      },
+      "dest_meta_post": {
+        "size_bytes": 4710,
+        "mtime_epoch": 1783711047,
+        "mtime_iso": "2026-07-10T19:17:27.007215+00:00",
+        "mode_oct": "0o755"
+      }
+    },
+    {
+      "rel": "desktop/dist.html",
+      "size_bytes": 813896,
+      "sha256": "a535b4d79f51067315c6059caf3f4f75f4e204116a4f12b5db065cb4b29fc0e8",
+      "source_meta_pre": {
+        "size_bytes": 813896,
+        "mtime_epoch": 1779913975,
+        "mtime_iso": "2026-05-27T20:32:55.037989+00:00",
+        "mode_oct": "0o755"
+      },
+      "dest_meta_post": {
+        "size_bytes": 813896,
+        "mtime_epoch": 1783711047,
+        "mtime_iso": "2026-07-10T19:17:27.012993+00:00",
+        "mode_oct": "0o755"
+      }
+    },
+    {
+      "rel": "desktop/index.html",
+      "size_bytes": 23425,
+      "sha256": "ffe98df56c6a12f259afeb883027d7c39d1440377da205a15b9846b22233bf9e",
+      "source_meta_pre": {
+        "size_bytes": 23425,
+        "mtime_epoch": 1779913975,
+        "mtime_iso": "2026-05-27T20:32:55.022894+00:00",
+        "mode_oct": "0o755"
+      },
+      "dest_meta_post": {
+        "size_bytes": 23425,
+        "mtime_epoch": 1783711047,
+        "mtime_iso": "2026-07-10T19:17:27.020076+00:00",
+        "mode_oct": "0o755"
+      }
+    },
+    {
+      "rel": "desktop/os.bundle.js",
+      "size_bytes": 786746,
+      "sha256": "d5293340cdd6740fbc740eb564d468af4c424ece4289c269632e1f4f880c7dc5",
+      "source_meta_pre": {
+        "size_bytes": 786746,
+        "mtime_epoch": 1779913975,
+        "mtime_iso": "2026-05-27T20:32:55.030295+00:00",
+        "mode_oct": "0o644"
+      },
+      "dest_meta_post": {
+        "size_bytes": 786746,
+        "mtime_epoch": 1783711047,
+        "mtime_iso": "2026-07-10T19:17:27.025139+00:00",
+        "mode_oct": "0o644"
+      }
+    },
+    {
+      "rel": "desktop/tools/gen-sprites.js",
+      "size_bytes": 3992,
+      "sha256": "e4c18d1933bba92c99c4636a8afb7316e9e48aed2d6eade5d8fedbad03f48a78",
+      "source_meta_pre": {
+        "size_bytes": 3992,
+        "mtime_epoch": 1779913975,
+        "mtime_iso": "2026-05-27T20:32:55.021473+00:00",
+        "mode_oct": "0o644"
+      },
+      "dest_meta_post": {
+        "size_bytes": 3992,
+        "mtime_epoch": 1783711047,
+        "mtime_iso": "2026-07-10T19:17:27.032092+00:00",
+        "mode_oct": "0o644"
+      }
+    },
+    {
+      "rel": "desktop/videos/ai_influencer_strip.png",
+      "size_bytes": 3940,
+      "sha256": "bb00697ee1edaeedaa7fdeb99e773a5460a491b3a69d701f621cfda79abec0d3",
+      "source_meta_pre": {
+        "size_bytes": 3940,
+        "mtime_epoch": 1779913975,
+        "mtime_iso": "2026-05-27T20:32:55.049304+00:00",
+        "mode_oct": "0o644"
+      },
+      "dest_meta_post": {
+        "size_bytes": 3940,
+        "mtime_epoch": 1783711047,
+        "mtime_iso": "2026-07-10T19:17:27.033042+00:00",
+        "mode_oct": "0o644"
+      }
+    },
+    {
+      "rel": "desktop/videos/corporate_ai_demo_strip.png",
+      "size_bytes": 4128,
+      "sha256": "fa25449e69aead31ace2d96dad476c1dfc54f0232aca4b1cf694e357d3c479e1",
+      "source_meta_pre": {
+        "size_bytes": 4128,
+        "mtime_epoch": 1779913975,
+        "mtime_iso": "2026-05-27T20:32:55.048452+00:00",
+        "mode_oct": "0o644"
+      },
+      "dest_meta_post": {
+        "size_bytes": 4128,
+        "mtime_epoch": 1783711047,
+        "mtime_iso": "2026-07-10T19:17:27.033823+00:00",
+        "mode_oct": "0o644"
+      }
+    },
+    {
+      "rel": "desktop/videos/infinite_buffering_strip.png",
+      "size_bytes": 3947,
+      "sha256": "ea313e768105540c6e24d9d65def27ac3c428c4feb4054ddd092f22d95443fb0",
+      "source_meta_pre": {
+        "size_bytes": 3947,
+        "mtime_epoch": 1779913975,
+        "mtime_iso": "2026-05-27T20:32:55.047400+00:00",
+        "mode_oct": "0o644"
+      },
+      "dest_meta_post": {
+        "size_bytes": 3947,
+        "mtime_epoch": 1783711047,
+        "mtime_iso": "2026-07-10T19:17:27.035063+00:00",
+        "mode_oct": "0o644"
+      }
+    },
+    {
+      "rel": "desktop/videos/tutorial_guy_strip.png",
+      "size_bytes": 4051,
+      "sha256": "c778bfe075e6207f6820706a5db338ddb201ed3d1b889a8ae15ec323bf7f40a9",
+      "source_meta_pre": {
+        "size_bytes": 4051,
+        "mtime_epoch": 1779913975,
+        "mtime_iso": "2026-05-27T20:32:55.050529+00:00",
+        "mode_oct": "0o644"
+      },
+      "dest_meta_post": {
+        "size_bytes": 4051,
+        "mtime_epoch": 1783711047,
+        "mtime_iso": "2026-07-10T19:17:27.035825+00:00",
+        "mode_oct": "0o644"
+      }
+    },
+    {
+      "rel": "favicon.png",
+      "size_bytes": 3093,
+      "sha256": "58b9fcaafdad6ccdd84171b7f508e0330202a21933eb17cc4fa86c892fa32045",
+      "source_meta_pre": {
+        "size_bytes": 3093,
+        "mtime_epoch": 1779913975,
+        "mtime_iso": "2026-05-27T20:32:55.123042+00:00",
+        "mode_oct": "0o644"
+      },
+      "dest_meta_post": {
+        "size_bytes": 3093,
+        "mtime_epoch": 1783711047,
+        "mtime_iso": "2026-07-10T19:17:27.036589+00:00",
+        "mode_oct": "0o644"
+      }
+    },
+    {
+      "rel": "favicon.svg",
+      "size_bytes": 864,
+      "sha256": "974d424ade826a7202cab6c1e2b44bed7c917839daea8dff895a874732831d6c",
+      "source_meta_pre": {
+        "size_bytes": 864,
+        "mtime_epoch": 1779913975,
+        "mtime_iso": "2026-05-27T20:32:55.694247+00:00",
+        "mode_oct": "0o644"
+      },
+      "dest_meta_post": {
+        "size_bytes": 864,
+        "mtime_epoch": 1783711047,
+        "mtime_iso": "2026-07-10T19:17:27.037274+00:00",
+        "mode_oct": "0o644"
+      }
+    },
+    {
+      "rel": "guide-facilitator.html",
+      "size_bytes": 16368,
+      "sha256": "443325592800fbd1c647c8012d7dd050fb53063996909ae2be722fda287ed063",
+      "source_meta_pre": {
+        "size_bytes": 16368,
+        "mtime_epoch": 1779913975,
+        "mtime_iso": "2026-05-27T20:32:55.136073+00:00",
+        "mode_oct": "0o644"
+      },
+      "dest_meta_post": {
+        "size_bytes": 16368,
+        "mtime_epoch": 1783711047,
+        "mtime_iso": "2026-07-10T19:17:27.038030+00:00",
+        "mode_oct": "0o644"
+      }
+    },
+    {
+      "rel": "guide-student.html",
+      "size_bytes": 16191,
+      "sha256": "716a0e1e7beee537b725d4cf5fb3cf315fa33ab72cc2b060f45c05fc0460f032",
+      "source_meta_pre": {
+        "size_bytes": 16191,
+        "mtime_epoch": 1779913975,
+        "mtime_iso": "2026-05-27T20:32:55.693507+00:00",
+        "mode_oct": "0o644"
+      },
+      "dest_meta_post": {
+        "size_bytes": 16191,
+        "mtime_epoch": 1783711047,
+        "mtime_iso": "2026-07-10T19:17:27.039266+00:00",
+        "mode_oct": "0o644"
+      }
+    },
+    {
+      "rel": "index.html",
+      "size_bytes": 35678,
+      "sha256": "6c17d50a692d3f71a433aa5241ff5bacbbfb3f4469eeaa99831fe33bbeccb641",
+      "source_meta_pre": {
+        "size_bytes": 35678,
+        "mtime_epoch": 1779913974,
+        "mtime_iso": "2026-05-27T20:32:54.948104+00:00",
+        "mode_oct": "0o755"
+      },
+      "dest_meta_post": {
+        "size_bytes": 35678,
+        "mtime_epoch": 1783711047,
+        "mtime_iso": "2026-07-10T19:17:27.040603+00:00",
+        "mode_oct": "0o755"
+      }
+    },
+    {
+      "rel": "js/app.js",
+      "size_bytes": 18020,
+      "sha256": "fb9b9c2c2af167aa5922e46b918bf941393ad7dda5f2bd3c22d4b3abdf20be2d",
+      "source_meta_pre": {
+        "size_bytes": 18020,
+        "mtime_epoch": 1779913974,
+        "mtime_iso": "2026-05-27T20:32:54.994168+00:00",
+        "mode_oct": "0o755"
+      },
+      "dest_meta_post": {
+        "size_bytes": 18020,
+        "mtime_epoch": 1783711047,
+        "mtime_iso": "2026-07-10T19:17:27.041532+00:00",
+        "mode_oct": "0o755"
+      }
+    },
+    {
+      "rel": "js/clippy-guide.js",
+      "size_bytes": 39074,
+      "sha256": "5b7a843efc5fbd7da55cc71a82223d00bc3271f2595ab7873123f83e05627055",
+      "source_meta_pre": {
+        "size_bytes": 39074,
+        "mtime_epoch": 1779913974,
+        "mtime_iso": "2026-05-27T20:32:54.992404+00:00",
+        "mode_oct": "0o644"
+      },
+      "dest_meta_post": {
+        "size_bytes": 39074,
+        "mtime_epoch": 1783711047,
+        "mtime_iso": "2026-07-10T19:17:27.042585+00:00",
+        "mode_oct": "0o644"
+      }
+    },
+    {
+      "rel": "js/db.js",
+      "size_bytes": 36438,
+      "sha256": "b18546583fd1f6e58099ccd9cb8a0367e0d7e2137c451677c6120d3213711cfa",
+      "source_meta_pre": {
+        "size_bytes": 36438,
+        "mtime_epoch": 1779913974,
+        "mtime_iso": "2026-05-27T20:32:54.988457+00:00",
+        "mode_oct": "0o755"
+      },
+      "dest_meta_post": {
+        "size_bytes": 36438,
+        "mtime_epoch": 1783711047,
+        "mtime_iso": "2026-07-10T19:17:27.044119+00:00",
+        "mode_oct": "0o755"
+      }
+    },
+    {
+      "rel": "js/i18n.js",
+      "size_bytes": 11452,
+      "sha256": "eb4f6f69e2783fa9bef739d27d02e4f539003a23e1a863b5824aed85ae4a097e",
+      "source_meta_pre": {
+        "size_bytes": 11452,
+        "mtime_epoch": 1779913974,
+        "mtime_iso": "2026-05-27T20:32:54.993437+00:00",
+        "mode_oct": "0o644"
+      },
+      "dest_meta_post": {
+        "size_bytes": 11452,
+        "mtime_epoch": 1783711047,
+        "mtime_iso": "2026-07-10T19:17:27.045282+00:00",
+        "mode_oct": "0o644"
+      }
+    },
+    {
+      "rel": "js/lang-en.js",
+      "size_bytes": 9132,
+      "sha256": "bc6007f04833ba9c6c799c27a8a6d85296889d3deca701399750ad4df9029a8f",
+      "source_meta_pre": {
+        "size_bytes": 9132,
+        "mtime_epoch": 1779913974,
+        "mtime_iso": "2026-05-27T20:32:54.986012+00:00",
+        "mode_oct": "0o644"
+      },
+      "dest_meta_post": {
+        "size_bytes": 9132,
+        "mtime_epoch": 1783711047,
+        "mtime_iso": "2026-07-10T19:17:27.046544+00:00",
+        "mode_oct": "0o644"
+      }
+    },
+    {
+      "rel": "js/lang-fr.js",
+      "size_bytes": 242998,
+      "sha256": "bae698f69d64577efdb1b02efd608bc585791fb9c4a0e3f4ac4b361b8bcebd78",
+      "source_meta_pre": {
+        "size_bytes": 242998,
+        "mtime_epoch": 1779913974,
+        "mtime_iso": "2026-05-27T20:32:54.982726+00:00",
+        "mode_oct": "0o644"
+      },
+      "dest_meta_post": {
+        "size_bytes": 242998,
+        "mtime_epoch": 1783711047,
+        "mtime_iso": "2026-07-10T19:17:27.049013+00:00",
+        "mode_oct": "0o644"
+      }
+    },
+    {
+      "rel": "js/pdf-lib.js",
+      "size_bytes": 2477,
+      "sha256": "cc7a743ec7b117814f5b57c1f40ea5acf9616e6b2dd825d377bfee8eddb05346",
+      "source_meta_pre": {
+        "size_bytes": 2477,
+        "mtime_epoch": 1779913974,
+        "mtime_iso": "2026-05-27T20:32:54.989689+00:00",
+        "mode_oct": "0o755"
+      },
+      "dest_meta_post": {
+        "size_bytes": 2477,
+        "mtime_epoch": 1783711047,
+        "mtime_iso": "2026-07-10T19:17:27.051409+00:00",
+        "mode_oct": "0o755"
+      }
+    },
+    {
+      "rel": "launch.bat",
+      "size_bytes": 493,
+      "sha256": "1f7009582683b8d0ec85698756e3fbc54fd0d66c38e4f9da593d4bfe80a493f9",
+      "source_meta_pre": {
+        "size_bytes": 493,
+        "mtime_epoch": 1779913974,
+        "mtime_iso": "2026-05-27T20:32:54.994858+00:00",
+        "mode_oct": "0o644"
+      },
+      "dest_meta_post": {
+        "size_bytes": 493,
+        "mtime_epoch": 1783711047,
+        "mtime_iso": "2026-07-10T19:17:27.052134+00:00",
+        "mode_oct": "0o644"
+      }
+    },
+    {
+      "rel": "launch.command",
+      "size_bytes": 500,
+      "sha256": "6a9ab2dc9755aeb53047dba4038ecd59f6b80c52d6a66ef5e476399af0bdfebb",
+      "source_meta_pre": {
+        "size_bytes": 500,
+        "mtime_epoch": 1779913975,
+        "mtime_iso": "2026-05-27T20:32:55.072813+00:00",
+        "mode_oct": "0o755"
+      },
+      "dest_meta_post": {
+        "size_bytes": 500,
+        "mtime_epoch": 1783711047,
+        "mtime_iso": "2026-07-10T19:17:27.052858+00:00",
+        "mode_oct": "0o755"
+      }
+    },
+    {
+      "rel": "make_icon_win.py",
+      "size_bytes": 4264,
+      "sha256": "92639236d4d7f4aa95b1120a7449e183df31f62aadf5f7b81792bc67d68c226c",
+      "source_meta_pre": {
+        "size_bytes": 4264,
+        "mtime_epoch": 1779913975,
+        "mtime_iso": "2026-05-27T20:32:55.144696+00:00",
+        "mode_oct": "0o644"
+      },
+      "dest_meta_post": {
+        "size_bytes": 4264,
+        "mtime_epoch": 1783711047,
+        "mtime_iso": "2026-07-10T19:17:27.053760+00:00",
+        "mode_oct": "0o644"
+      }
+    },
+    {
+      "rel": "mock.html",
+      "size_bytes": 40963,
+      "sha256": "99580e53ca261599438983e6fd76c16c98585b1ec3cd37952f8e5b176732f5c9",
+      "source_meta_pre": {
+        "size_bytes": 40963,
+        "mtime_epoch": 1779913975,
+        "mtime_iso": "2026-05-27T20:32:55.672671+00:00",
+        "mode_oct": "0o644"
+      },
+      "dest_meta_post": {
+        "size_bytes": 40963,
+        "mtime_epoch": 1783711047,
+        "mtime_iso": "2026-07-10T19:17:27.054994+00:00",
+        "mode_oct": "0o644"
+      }
+    },
+    {
+      "rel": "os.bundle.js",
+      "size_bytes": 786746,
+      "sha256": "d5293340cdd6740fbc740eb564d468af4c424ece4289c269632e1f4f880c7dc5",
+      "source_meta_pre": {
+        "size_bytes": 786746,
+        "mtime_epoch": 1779913974,
+        "mtime_iso": "2026-05-27T20:32:54.959764+00:00",
+        "mode_oct": "0o644"
+      },
+      "dest_meta_post": {
+        "size_bytes": 786746,
+        "mtime_epoch": 1783711047,
+        "mtime_iso": "2026-07-10T19:17:27.071058+00:00",
+        "mode_oct": "0o644"
+      }
+    },
+    {
+      "rel": "os.css",
+      "size_bytes": 40220,
+      "sha256": "c3c6f67e6bd856db706010632adbfa83b27b4a4bd2754678231fd9c78d38f25a",
+      "source_meta_pre": {
+        "size_bytes": 40220,
+        "mtime_epoch": 1779913975,
+        "mtime_iso": "2026-05-27T20:32:55.111660+00:00",
+        "mode_oct": "0o755"
+      },
+      "dest_meta_post": {
+        "size_bytes": 40220,
+        "mtime_epoch": 1783711047,
+        "mtime_iso": "2026-07-10T19:17:27.079225+00:00",
+        "mode_oct": "0o755"
+      }
+    },
+    {
+      "rel": "package.json",
+      "size_bytes": 666,
+      "sha256": "b95081527dcc3366c41f34de6fd8d613c1c915968c0deb869b6180be904c6a26",
+      "source_meta_pre": {
+        "size_bytes": 666,
+        "mtime_epoch": 1779913975,
+        "mtime_iso": "2026-05-27T20:32:55.134969+00:00",
+        "mode_oct": "0o755"
+      },
+      "dest_meta_post": {
+        "size_bytes": 666,
+        "mtime_epoch": 1783711047,
+        "mtime_iso": "2026-07-10T19:17:27.080886+00:00",
+        "mode_oct": "0o755"
+      }
+    },
+    {
+      "rel": "portal.html",
+      "size_bytes": 140665,
+      "sha256": "81f75b63c22ddf461d324b06379f1ddd7b1e29f09fb72dc278489114151e7242",
+      "source_meta_pre": {
+        "size_bytes": 140665,
+        "mtime_epoch": 1779913975,
+        "mtime_iso": "2026-05-27T20:32:55.018076+00:00",
+        "mode_oct": "0o644"
+      },
+      "dest_meta_post": {
+        "size_bytes": 140665,
+        "mtime_epoch": 1783711047,
+        "mtime_iso": "2026-07-10T19:17:27.084096+00:00",
+        "mode_oct": "0o644"
+      }
+    },
+    {
+      "rel": "qa/qa-db.js",
+      "size_bytes": 16458,
+      "sha256": "bc7b63baf251d88ac70b8de7067ad92faa942ab546e3b0321da47b3b955828a1",
+      "source_meta_pre": {
+        "size_bytes": 16458,
+        "mtime_epoch": 1779913975,
+        "mtime_iso": "2026-05-27T20:32:55.060658+00:00",
+        "mode_oct": "0o644"
+      },
+      "dest_meta_post": {
+        "size_bytes": 16458,
+        "mtime_epoch": 1783711047,
+        "mtime_iso": "2026-07-10T19:17:27.087224+00:00",
+        "mode_oct": "0o644"
+      }
+    },
+    {
+      "rel": "qa/qa-export-json.js",
+      "size_bytes": 6673,
+      "sha256": "a496230899b94c6e74f4060110a667c938feeb564de62a3e8adfa306a355c079",
+      "source_meta_pre": {
+        "size_bytes": 6673,
+        "mtime_epoch": 1779913975,
+        "mtime_iso": "2026-05-27T20:32:55.056172+00:00",
+        "mode_oct": "0o644"
+      },
+      "dest_meta_post": {
+        "size_bytes": 6673,
+        "mtime_epoch": 1783711047,
+        "mtime_iso": "2026-07-10T19:17:27.088578+00:00",
+        "mode_oct": "0o644"
+      }
+    },
+    {
+      "rel": "qa/qa-export-md.js",
+      "size_bytes": 14162,
+      "sha256": "a205ff955c46ec4be8825906ac1f1f069a987111b9b2ce5dc6cdf2bdd573e843",
+      "source_meta_pre": {
+        "size_bytes": 14162,
+        "mtime_epoch": 1779913975,
+        "mtime_iso": "2026-05-27T20:32:55.062509+00:00",
+        "mode_oct": "0o644"
+      },
+      "dest_meta_post": {
+        "size_bytes": 14162,
+        "mtime_epoch": 1783711047,
+        "mtime_iso": "2026-07-10T19:17:27.089887+00:00",
+        "mode_oct": "0o644"
+      }
+    },
+    {
+      "rel": "qa/qa-import-json.js",
+      "size_bytes": 11067,
+      "sha256": "72352f6fcf4fdffc02a4130d45d6e07e05dbe49d3a0a2fef0a51fd1bc805fcf9",
+      "source_meta_pre": {
+        "size_bytes": 11067,
+        "mtime_epoch": 1779913975,
+        "mtime_iso": "2026-05-27T20:32:55.052546+00:00",
+        "mode_oct": "0o644"
+      },
+      "dest_meta_post": {
+        "size_bytes": 11067,
+        "mtime_epoch": 1783711047,
+        "mtime_iso": "2026-07-10T19:17:27.091290+00:00",
+        "mode_oct": "0o644"
+      }
+    },
+    {
+      "rel": "qa/qa-page-register.js",
+      "size_bytes": 7689,
+      "sha256": "64a5383d2c0c6bf47e24a947bcf8bb12fdaa48d5ca13e24d528992a23b036e0b",
+      "source_meta_pre": {
+        "size_bytes": 7689,
+        "mtime_epoch": 1779913975,
+        "mtime_iso": "2026-05-27T20:32:55.059585+00:00",
+        "mode_oct": "0o644"
+      },
+      "dest_meta_post": {
+        "size_bytes": 7689,
+        "mtime_epoch": 1783711047,
+        "mtime_iso": "2026-07-10T19:17:27.092898+00:00",
+        "mode_oct": "0o644"
+      }
+    },
+    {
+      "rel": "qa/qa-queries.js",
+      "size_bytes": 8511,
+      "sha256": "ff134bfd01ba6365f35bc87ec21df0ccbf01521ade31cad46e68c1a8855d2e38",
+      "source_meta_pre": {
+        "size_bytes": 8511,
+        "mtime_epoch": 1779913975,
+        "mtime_iso": "2026-05-27T20:32:55.061443+00:00",
+        "mode_oct": "0o644"
+      },
+      "dest_meta_post": {
+        "size_bytes": 8511,
+        "mtime_epoch": 1783711047,
+        "mtime_iso": "2026-07-10T19:17:27.094207+00:00",
+        "mode_oct": "0o644"
+      }
+    },
+    {
+      "rel": "qa/qa-schema.js",
+      "size_bytes": 9173,
+      "sha256": "49cf778e25e212da0d316665db25928616c0f3345000f135343db9f4dba30cab",
+      "source_meta_pre": {
+        "size_bytes": 9173,
+        "mtime_epoch": 1779913975,
+        "mtime_iso": "2026-05-27T20:32:55.053903+00:00",
+        "mode_oct": "0o644"
+      },
+      "dest_meta_post": {
+        "size_bytes": 9173,
+        "mtime_epoch": 1783711047,
+        "mtime_iso": "2026-07-10T19:17:27.095679+00:00",
+        "mode_oct": "0o644"
+      }
+    },
+    {
+      "rel": "qa/qa-templates.js",
+      "size_bytes": 6229,
+      "sha256": "e855d51970ed462892c7022f37a3c3ce6322a110143af9a481061b8dea16c23b",
+      "source_meta_pre": {
+        "size_bytes": 6229,
+        "mtime_epoch": 1779913975,
+        "mtime_iso": "2026-05-27T20:32:55.055147+00:00",
+        "mode_oct": "0o644"
+      },
+      "dest_meta_post": {
+        "size_bytes": 6229,
+        "mtime_epoch": 1783711047,
+        "mtime_iso": "2026-07-10T19:17:27.096922+00:00",
+        "mode_oct": "0o644"
+      }
+    },
+    {
+      "rel": "qa/qa-workitem-api.js",
+      "size_bytes": 14130,
+      "sha256": "b67097ab58b7f29c65793c805e0e6291d203d713c4522ead4ddb21482745aa26",
+      "source_meta_pre": {
+        "size_bytes": 14130,
+        "mtime_epoch": 1779913975,
+        "mtime_iso": "2026-05-27T20:32:55.057521+00:00",
+        "mode_oct": "0o644"
+      },
+      "dest_meta_post": {
+        "size_bytes": 14130,
+        "mtime_epoch": 1783711047,
+        "mtime_iso": "2026-07-10T19:17:27.098197+00:00",
+        "mode_oct": "0o644"
+      }
+    },
+    {
+      "rel": "scenarios/capstone-scenario-2.js",
+      "size_bytes": 16451,
+      "sha256": "892a4881646a0d4dce7a1d4c96c62dae60160925369a6a56435ffa2e66de0c01",
+      "source_meta_pre": {
+        "size_bytes": 16451,
+        "mtime_epoch": 1779913975,
+        "mtime_iso": "2026-05-27T20:32:55.140474+00:00",
+        "mode_oct": "0o644"
+      },
+      "dest_meta_post": {
+        "size_bytes": 16451,
+        "mtime_epoch": 1783711047,
+        "mtime_iso": "2026-07-10T19:17:27.100017+00:00",
+        "mode_oct": "0o644"
+      }
+    },
+    {
+      "rel": "scenarios/capstone-scenario.js",
+      "size_bytes": 3899,
+      "sha256": "e6dd97807ed739c61918f651aa6210be36ed5bcd006cf931ae44327e33a1d3ba",
+      "source_meta_pre": {
+        "size_bytes": 3899,
+        "mtime_epoch": 1779913975,
+        "mtime_iso": "2026-05-27T20:32:55.139366+00:00",
+        "mode_oct": "0o755"
+      },
+      "dest_meta_post": {
+        "size_bytes": 3899,
+        "mtime_epoch": 1783711047,
+        "mtime_iso": "2026-07-10T19:17:27.101077+00:00",
+        "mode_oct": "0o755"
+      }
+    },
+    {
+      "rel": "scenarios/case-002.js",
+      "size_bytes": 9310,
+      "sha256": "d6446033a35084a57199e100b3710378cc8659dfeaf76f259a6fe1954e654ab8",
+      "source_meta_pre": {
+        "size_bytes": 9310,
+        "mtime_epoch": 1779913975,
+        "mtime_iso": "2026-05-27T20:32:55.138501+00:00",
+        "mode_oct": "0o644"
+      },
+      "dest_meta_post": {
+        "size_bytes": 9310,
+        "mtime_epoch": 1783711047,
+        "mtime_iso": "2026-07-10T19:17:27.102184+00:00",
+        "mode_oct": "0o644"
+      }
+    },
+    {
+      "rel": "scenarios/scenario-case-003.js",
+      "size_bytes": 8536,
+      "sha256": "2b0955d5b07b08479a7b152c44d14db529ad68b2c4ec36ef7ad1403558f0fe14",
+      "source_meta_pre": {
+        "size_bytes": 8536,
+        "mtime_epoch": 1779913975,
+        "mtime_iso": "2026-05-27T20:32:55.141678+00:00",
+        "mode_oct": "0o644"
+      },
+      "dest_meta_post": {
+        "size_bytes": 8536,
+        "mtime_epoch": 1783711047,
+        "mtime_iso": "2026-07-10T19:17:27.103741+00:00",
+        "mode_oct": "0o644"
+      }
+    },
+    {
+      "rel": "scenarios/scenarios-bug-001.js",
+      "size_bytes": 831,
+      "sha256": "c180874bafb981a579487a6657e67da1ea4a567cdc8ee79264c4ac6623f4f353",
+      "source_meta_pre": {
+        "size_bytes": 831,
+        "mtime_epoch": 1779913975,
+        "mtime_iso": "2026-05-27T20:32:55.137498+00:00",
+        "mode_oct": "0o755"
+      },
+      "dest_meta_post": {
+        "size_bytes": 831,
+        "mtime_epoch": 1783711047,
+        "mtime_iso": "2026-07-10T19:17:27.105065+00:00",
+        "mode_oct": "0o755"
+      }
+    },
+    {
+      "rel": "scenarios/scenarios-case-001.js",
+      "size_bytes": 7493,
+      "sha256": "3bc98cd12431305fff04c4f2efa3ba4d2d44f6d88679535edf5ef56e13d767ac",
+      "source_meta_pre": {
+        "size_bytes": 7493,
+        "mtime_epoch": 1779913975,
+        "mtime_iso": "2026-05-27T20:32:55.142847+00:00",
+        "mode_oct": "0o755"
+      },
+      "dest_meta_post": {
+        "size_bytes": 7493,
+        "mtime_epoch": 1783711047,
+        "mtime_iso": "2026-07-10T19:17:27.106117+00:00",
+        "mode_oct": "0o755"
+      }
+    },
+    {
+      "rel": "serve.js",
+      "size_bytes": 3420,
+      "sha256": "ef3b0b37223163f7ff19b8e770aefe9b246f7a3321b21b690ffb807a5b4ddec9",
+      "source_meta_pre": {
+        "size_bytes": 3420,
+        "mtime_epoch": 1779913974,
+        "mtime_iso": "2026-05-27T20:32:54.955752+00:00",
+        "mode_oct": "0o644"
+      },
+      "dest_meta_post": {
+        "size_bytes": 3420,
+        "mtime_epoch": 1783711047,
+        "mtime_iso": "2026-07-10T19:17:27.107165+00:00",
+        "mode_oct": "0o644"
+      }
+    },
+    {
+      "rel": "setup_launcher.ps1",
+      "size_bytes": 4734,
+      "sha256": "504215bd4970e8e29fc5495fa0d67a687091bb0496645da0f9a16b5ff4d0fd22",
+      "source_meta_pre": {
+        "size_bytes": 4734,
+        "mtime_epoch": 1779913974,
+        "mtime_iso": "2026-05-27T20:32:54.955155+00:00",
+        "mode_oct": "0o644"
+      },
+      "dest_meta_post": {
+        "size_bytes": 4734,
+        "mtime_epoch": 1783711047,
+        "mtime_iso": "2026-07-10T19:17:27.108206+00:00",
+        "mode_oct": "0o644"
+      }
+    },
+    {
+      "rel": "setup_launcher.sh",
+      "size_bytes": 4045,
+      "sha256": "496b52e8f15781551fa63f9816bfe422ce39a6e4af1ab456a28ab5fa160bec73",
+      "source_meta_pre": {
+        "size_bytes": 4045,
+        "mtime_epoch": 1779913975,
+        "mtime_iso": "2026-05-27T20:32:55.063562+00:00",
+        "mode_oct": "0o644"
+      },
+      "dest_meta_post": {
+        "size_bytes": 4045,
+        "mtime_epoch": 1783711047,
+        "mtime_iso": "2026-07-10T19:17:27.109502+00:00",
+        "mode_oct": "0o644"
+      }
+    },
+    {
+      "rel": "simple-login.html",
+      "size_bytes": 19491,
+      "sha256": "f32d91310a822c29e8eae791fff866a354674cbf2fb214f81c26ffd31ed8274d",
+      "source_meta_pre": {
+        "size_bytes": 19491,
+        "mtime_epoch": 1779913975,
+        "mtime_iso": "2026-05-27T20:32:55.129031+00:00",
+        "mode_oct": "0o644"
+      },
+      "dest_meta_post": {
+        "size_bytes": 19491,
+        "mtime_epoch": 1783711047,
+        "mtime_iso": "2026-07-10T19:17:27.111153+00:00",
+        "mode_oct": "0o644"
+      }
+    },
+    {
+      "rel": "src/compositor.js",
+      "size_bytes": 8418,
+      "sha256": "2a59e99f50fe4d5c102d245060aefef7c2e73d6b39d32ccb3335822510f441c3",
+      "source_meta_pre": {
+        "size_bytes": 8418,
+        "mtime_epoch": 1779913975,
+        "mtime_iso": "2026-05-27T20:32:55.710553+00:00",
+        "mode_oct": "0o644"
+      },
+      "dest_meta_post": {
+        "size_bytes": 8418,
+        "mtime_epoch": 1783711047,
+        "mtime_iso": "2026-07-10T19:17:27.112407+00:00",
+        "mode_oct": "0o644"
+      }
+    },
+    {
+      "rel": "src/custody/custody.js",
+      "size_bytes": 3894,
+      "sha256": "905b3d3f766528e41ba7a1e9a567137c1de02bff9149ce468b60fda6066d4597",
+      "source_meta_pre": {
+        "size_bytes": 3894,
+        "mtime_epoch": 1779913975,
+        "mtime_iso": "2026-05-27T20:32:55.712602+00:00",
+        "mode_oct": "0o644"
+      },
+      "dest_meta_post": {
+        "size_bytes": 3894,
+        "mtime_epoch": 1783711047,
+        "mtime_iso": "2026-07-10T19:17:27.113883+00:00",
+        "mode_oct": "0o644"
+      }
+    },
+    {
+      "rel": "src/event-bus.js",
+      "size_bytes": 3378,
+      "sha256": "8ccb0fd634537f1c4f323308962368085406a61a411ba6db28f239a9a6413cec",
+      "source_meta_pre": {
+        "size_bytes": 3378,
+        "mtime_epoch": 1779913975,
+        "mtime_iso": "2026-05-27T20:32:55.706619+00:00",
+        "mode_oct": "0o644"
+      },
+      "dest_meta_post": {
+        "size_bytes": 3378,
+        "mtime_epoch": 1783711047,
+        "mtime_iso": "2026-07-10T19:17:27.114937+00:00",
+        "mode_oct": "0o644"
+      }
+    },
+    {
+      "rel": "src/health-checks.js",
+      "size_bytes": 16176,
+      "sha256": "624c3a84fad8cfaecd742a45d8310a24aadbf8b1f6d2926a9026b552eaa35210",
+      "source_meta_pre": {
+        "size_bytes": 16176,
+        "mtime_epoch": 1779913975,
+        "mtime_iso": "2026-05-27T20:32:55.705788+00:00",
+        "mode_oct": "0o644"
+      },
+      "dest_meta_post": {
+        "size_bytes": 16176,
+        "mtime_epoch": 1783711047,
+        "mtime_iso": "2026-07-10T19:17:27.115776+00:00",
+        "mode_oct": "0o644"
+      }
+    },
+    {
+      "rel": "src/keyboard-shortcuts.js",
+      "size_bytes": 7057,
+      "sha256": "89e5ef2140a5490ce37a86434add40c5cb62aec96b2b2fc9ad4d81dd615c5265",
+      "source_meta_pre": {
+        "size_bytes": 7057,
+        "mtime_epoch": 1779913975,
+        "mtime_iso": "2026-05-27T20:32:55.711487+00:00",
+        "mode_oct": "0o644"
+      },
+      "dest_meta_post": {
+        "size_bytes": 7057,
+        "mtime_epoch": 1783711047,
+        "mtime_iso": "2026-07-10T19:17:27.117027+00:00",
+        "mode_oct": "0o644"
+      }
+    },
+    {
+      "rel": "src/os-core.js",
+      "size_bytes": 114204,
+      "sha256": "b5cdd896428ff7aa26a29bcf280af9ffdadec12b26d7e85c78f20d53c55f5009",
+      "source_meta_pre": {
+        "size_bytes": 114204,
+        "mtime_epoch": 1779913975,
+        "mtime_iso": "2026-05-27T20:32:55.708405+00:00",
+        "mode_oct": "0o755"
+      },
+      "dest_meta_post": {
+        "size_bytes": 114204,
+        "mtime_epoch": 1783711047,
+        "mtime_iso": "2026-07-10T19:17:27.118760+00:00",
+        "mode_oct": "0o755"
+      }
+    },
+    {
+      "rel": "src/scoring.js",
+      "size_bytes": 4478,
+      "sha256": "4a1cf5d433df3a10e697a3dcd37a1e308f5c81f20290695101fa941a262fceef",
+      "source_meta_pre": {
+        "size_bytes": 4478,
+        "mtime_epoch": 1779913975,
+        "mtime_iso": "2026-05-27T20:32:55.704799+00:00",
+        "mode_oct": "0o755"
+      },
+      "dest_meta_post": {
+        "size_bytes": 4478,
+        "mtime_epoch": 1783711047,
+        "mtime_iso": "2026-07-10T19:17:27.120389+00:00",
+        "mode_oct": "0o755"
+      }
+    },
+    {
+      "rel": "src/workspaces.js",
+      "size_bytes": 4329,
+      "sha256": "2c6d0235fb654277a5309da62f65d73baaefcff4569abbc1f4529b160544481a",
+      "source_meta_pre": {
+        "size_bytes": 4329,
+        "mtime_epoch": 1779913975,
+        "mtime_iso": "2026-05-27T20:32:55.709357+00:00",
+        "mode_oct": "0o644"
+      },
+      "dest_meta_post": {
+        "size_bytes": 4329,
+        "mtime_epoch": 1783711047,
+        "mtime_iso": "2026-07-10T19:17:27.121252+00:00",
+        "mode_oct": "0o644"
+      }
+    }
+  ],
+  "verdict": "PASS"
+}

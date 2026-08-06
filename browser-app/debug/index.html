@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QA-Pilot Debugger</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%20viewBox=%220%200%20100%20100%22><text y=%22.9em%22 font-size=%2280%22>🐞</text></svg>">
+    <link rel="stylesheet" href="debug.css">
+</head>
+<body>
+    <div class="qd-app">
+        <!-- Header -->
+        <header class="qd-header">
+            <div class="qd-header-left">
+                <h1 class="qd-title">QA-Pilot Debugger</h1>
+                <div class="qd-subtitle">Azure DevOps-style Work Item Tracker</div>
+            </div>
+            <div class="qd-header-right">
+                <div class="qd-status-bar">
+                    <span class="qd-status-label">Storage:</span>
+                    <span class="qd-status-value qd-status-ok" id="qd-storage-status">Checking...</span>
+                </div>
+                <div class="qd-goose-scale">
+                    <span class="qd-goose-label">Goose Scale:</span>
+                    <span class="qd-goose-value" id="qd-goose-scale">🟢 CRUISING</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <div class="qd-main">
+            <!-- Sidebar Navigation -->
+            <nav class="qd-sidebar">
+                <div class="qd-nav-section">
+                    <h3 class="qd-nav-title">Work Items</h3>
+                    <ul class="qd-nav-list">
+                        <li class="qd-nav-item qd-nav-active" data-view="work-items">
+                            <span class="qd-nav-icon">📋</span>
+                            <span class="qd-nav-text">Work Items</span>
+                            <span class="qd-nav-badge" id="qd-work-item-count">0</span>
+                        </li>
+                        <li class="qd-nav-item" data-view="board">
+                            <span class="qd-nav-icon">📊</span>
+                            <span class="qd-nav-text">Board</span>
+                        </li>
+                        <li class="qd-nav-item" data-view="queries">
+                            <span class="qd-nav-icon">🔍</span>
+                            <span class="qd-nav-text">Queries</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="qd-nav-section">
+                    <h3 class="qd-nav-title">Actions</h3>
+                    <ul class="qd-nav-list">
+                        <li class="qd-nav-item" data-action="new-work-item">
+                            <span class="qd-nav-icon">➕</span>
+                            <span class="qd-nav-text">New Work Item</span>
+                        </li>
+                        <li class="qd-nav-item" data-action="import-json">
+                            <span class="qd-nav-icon">📥</span>
+                            <span class="qd-nav-text">Import JSON</span>
+                        </li>
+                        <li class="qd-nav-item" data-action="export-json">
+                            <span class="qd-nav-icon">📤</span>
+                            <span class="qd-nav-text">Export JSON</span>
+                        </li>
+                        <li class="qd-nav-item" data-action="export-md">
+                            <span class="qd-nav-icon">📄</span>
+                            <span class="qd-nav-text">Export Markdown</span>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+
+            <!-- Main Content Area -->
+            <div class="qd-content">
+                <!-- View Container -->
+                <div class="qd-view-container" id="qd-view-container">
+                    <!-- Loading State -->
+                    <div class="qd-loading" id="qd-loading">
+                        <div class="qd-spinner"></div>
+                        <p>Loading work items...</p>
+                    </div>
+                    
+                    <!-- Error State -->
+                    <div class="qd-error" id="qd-error">
+                        <p class="qd-error-message"></p>
+                        <button class="qd-btn qd-btn-secondary" id="qd-retry-btn">Retry</button>
+                    </div>
+                    
+                    <!-- Empty State -->
+                    <div class="qd-empty" id="qd-empty">
+                        <div class="qd-empty-icon">📭</div>
+                        <h3 class="qd-empty-title">No Work Items</h3>
+                        <p class="qd-empty-text">Click "New Work Item" to create your first bug, task, or test case.</p>
+                        <button class="qd-btn qd-btn-primary" id="qd-new-from-empty">New Work Item</button>
+                    </div>
+                    
+                    <!-- Work Items View -->
+                    <div class="qd-view qd-work-items-view" id="qd-work-items-view">
+                        <!-- Search and Filters -->
+                        <div class="qd-toolbar">
+                            <div class="qd-search-box">
+                                <input type="text" id="qd-search-input" placeholder="Search work items...">
+                                <button class="qd-btn qd-btn-icon" id="qd-search-clear">
+                                    <span>✕</span>
+                                </button>
+                            </div>
+                            <div class="qd-filter-group">
+                                <button class="qd-btn qd-btn-icon qd-filter-btn" id="qd-filter-btn">
+                                    <span>⚙️</span>
+                                    <span class="qd-filter-count">0</span>
+                                </button>
+                                <div class="qd-filter-dropdown" id="qd-filter-dropdown">
+                                    <div class="qd-filter-section">
+                                        <h4>State</h4>
+                                        <label class="qd-filter-option">
+                                            <input type="checkbox" class="qd-filter-checkbox" data-filter="state" value="New">
+                                            New
+                                        </label>
+                                        <label class="qd-filter-option">
+                                            <input type="checkbox" class="qd-filter-checkbox" data-filter="state" value="Active">
+                                            Active
+                                        </label>
+                                        <label class="qd-filter-option">
+                                            <input type="checkbox" class="qd-filter-checkbox" data-filter="state" value="Resolved">
+                                            Resolved
+                                        </label>
+                                        <label class="qd-filter-option">
+                                            <input type="checkbox" class="qd-filter-checkbox" data-filter="state" value="Closed">
+                                            Closed
+                                        </label>
+                                    </div>
+                                    <div class="qd-filter-section">
+                                        <h4>Type</h4>
+                                        <label class="qd-filter-option">
+                                            <input type="checkbox" class="qd-filter-checkbox" data-filter="type" value="Bug">
+                                            Bug
+                                        </label>
+                                        <label class="qd-filter-option">
+                                            <input type="checkbox" class="qd-filter-checkbox" data-filter="type" value="Task">
+                                            Task
+                                        </label>
+                                        <label class="qd-filter-option">
+                                            <input type="checkbox" class="qd-filter-checkbox" data-filter="type" value="Test Case">
+                                            Test Case
+                                        </label>
+                                    </div>
+                                    <div class="qd-filter-section">
+                                        <h4>Area Path</h4>
+                                        <input type="text" class="qd-filter-input" placeholder="Filter by area path" data-filter="areaPath">
+                                    </div>
+                                    <div class="qd-filter-section">
+                                        <h4>Assigned To</h4>
+                                        <input type="text" class="qd-filter-input" placeholder="Filter by assigned to" data-filter="assignedTo">
+                                    </div>
+                                    <div class="qd-filter-actions">
+                                        <button class="qd-btn qd-btn-sm qd-btn-outline" id="qd-filter-clear">Clear</button>
+                                        <button class="qd-btn qd-btn-sm qd-btn-primary" id="qd-filter-apply">Apply</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Work Items List -->
+                        <div class="qd-work-items-list" id="qd-work-items-list">
+                            <!-- Work items will be rendered here -->
+                        </div>
+                    </div>
+                    
+                    <!-- Board View -->
+                    <div class="qd-view qd-board-view" id="qd-board-view">
+                        <div class="qd-board-header">
+                            <h2 class="qd-board-title">Work Item Board</h2>
+                            <div class="qd-board-actions">
+                                <button class="qd-btn qd-btn-sm qd-btn-outline" id="qd-board-new-item">+ New Item</button>
+                                <button class="qd-btn qd-btn-sm qd-btn-outline" id="qd-board-refresh">⟳ Refresh</button>
+                            </div>
+                        </div>
+                        <div class="qd-board-container" id="qd-board-container">
+                            <!-- Board columns will be rendered here -->
+                        </div>
+                    </div>
+                    
+                    <!-- Queries View -->
+                    <div class="qd-view qd-queries-view" id="qd-queries-view">
+                        <div class="qd-queries-header">
+                            <h2 class="qd-queries-title">Saved Queries</h2>
+                            <div class="qd-queries-actions">
+                                <button class="qd-btn qd-btn-sm qd-btn-outline" id="qd-query-new">+ New Query</button>
+                                <button class="qd-btn qd-btn-sm qd-btn-outline" id="qd-query-refresh">⟳ Refresh</button>
+                            </div>
+                        </div>
+                        <div class="qd-queries-list" id="qd-queries-list">
+                            <!-- Queries will be rendered here -->
+                        </div>
+                    </div>
+                    
+                    <!-- Work Item Detail Panel -->
+                    <div class="qd-detail-panel" id="qd-detail-panel">
+                        <div class="qd-detail-header">
+                            <h2 class="qd-detail-title" id="qd-detail-title">Work Item Details</h2>
+                            <div class="qd-detail-actions">
+                                <button class="qd-btn qd-btn-icon qd-detail-close" id="qd-detail-close">
+                                    <span>✕</span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="qd-detail-tabs" id="qd-detail-tabs">
+                            <button class="qd-tab-btn qd-tab-active" data-tab="details">Details</button>
+                            <button class="qd-tab-btn" data-tab="discussion">Discussion</button>
+                            <button class="qd-tab-btn" data-tab="links">Links</button>
+                            <button class="qd-tab-btn" data-tab="acceptance">Acceptance Criteria</button>
+                        </div>
+                        <div class="qd-tab-content">
+                            <!-- Details Tab -->
+                            <div class="qd-tab-pane qd-tab-active" id="qd-tab-details">
+                                <form class="qd-work-item-form" id="qd-work-item-form">
+                                    <!-- Form fields will be generated dynamically -->
+                                </form>
+                            </div>
+                            <!-- Discussion Tab -->
+                            <div class="qd-tab-pane" id="qd-tab-discussion">
+                                <div class="qd-discussion-header">
+                                    <h3>Discussion</h3>
+                                    <div class="qd-discussion-actions">
+                                        <button class="qd-btn qd-btn-sm qd-btn-outline" id="qd-discussion-add">+ Add Comment</button>
+                                    </div>
+                                </div>
+                                <div class="qd-discussion-list" id="qd-discussion-list">
+                                    <!-- Comments will be rendered here -->
+                                </div>
+                                <div class="qd-discussion-form" id="qd-discussion-form">
+                                    <!-- Comment form will be rendered here -->
+                                </div>
+                            </div>
+                            <!-- Links Tab -->
+                            <div class="qd-tab-pane" id="qd-tab-links">
+                                <div class="qd-links-header">
+                                    <h3>Related Links</h3>
+                                    <div class="qd-links-actions">
+                                        <button class="qd-btn qd-btn-sm qd-btn-outline" id="qd-links-add">+ Add Link</button>
+                                    </div>
+                                </div>
+                                <div class="qd-links-list" id="qd-links-list">
+                                    <!-- Links will be rendered here -->
+                                </div>
+                            </div>
+                            <!-- Acceptance Criteria Tab -->
+                            <div class="qd-tab-pane" id="qd-tab-acceptance">
+                                <div class="qd-ac-header">
+                                    <h3>Acceptance Criteria</h3>
+                                    <div class="qd-ac-actions">
+                                        <button class="qd-btn qd-btn-sm qd-btn-outline" id="qd-ac-add">+ Add Criterion</button>
+                                    </div>
+                                </div>
+                                <div class="qd-ac-list" id="qd-ac-list">
+                                    <!-- Acceptance criteria will be rendered here -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modals -->
+    <div class="qd-modal" id="qd-modal-new-item">
+        <div class="qd-modal-content">
+            <div class="qd-modal-header">
+                <h3>New Work Item</h3>
+                <button class="qd-modal-close" id="qd-modal-new-item-close">✕</button>
+            </div>
+            <div class="qd-modal-body">
+                <!-- Template selection and form will go here -->
+            </div>
+            <div class="qd-modal-footer">
+                <button class="qd-btn qd-btn-outline" id="qd-modal-new-item-cancel">Cancel</button>
+                <button class="qd-btn qd-btn-primary" id="qd-modal-new-item-save">Create</button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="qd-modal" id="qd-modal-import-json">
+        <div class="qd-modal-content">
+            <div class="qd-modal-header">
+                <h3>Import Work Items</h3>
+                <button class="qd-modal-close" id="qd-modal-import-json-close">✕</button>
+            </div>
+            <div class="qd-modal-body">
+                <input type="file" id="qd-import-file-input" accept=".json">
+                <p class="qd-import-help">Select a JSON file exported from QA Debugger</p>
+                <div class="qd-import-options">
+                    <label class="qd-checkbox-label">
+                        <input type="checkbox" id="qd-import-overwrite">
+                        Overwrite existing items with same ID
+                    </label>
+                </div>
+            </div>
+            <div class="qd-modal-footer">
+                <button class="qd-btn qd-btn-outline" id="qd-modal-import-cancel">Cancel</button>
+                <button class="qd-btn qd-btn-primary" id="qd-modal-import-confirm">Import</button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="qd-modal" id="qd-modal-export-json">
+        <div class="qd-modal-content">
+            <div class="qd-modal-header">
+                <h3>Export Work Items</h3>
+                <button class="qd-modal-close" id="qd-modal-export-json-close">✕</button>
+            </div>
+            <div class="qd-modal-body">
+                <label class="qd-radio-label">
+                    <input type="radio" name="qd-export-type" value="all" checked>
+                    All Work Items
+                </label>
+                <label class="qd-radio-label">
+                    <input type="radio" name="qd-export-type" value="filtered">
+                    Filtered Work Items
+                </label>
+                <label class="qd-radio-label">
+                    <input type="radio" name="qd-export-type" value="ready">
+                    Ready for Agent (Resolved/Closed)
+                </label>
+                <label class="qd-radio-label">
+                    <input type="radio" name="qd-export-type" value="needs">
+                    Needs Clarification
+                </label>
+                <div class="qd-export-filters" id="qd-export-filters">
+                                    <!-- Filter controls will appear here when filtered is selected -->
+                </div>
+                <div class="qd-export-filename">
+                    <label>Filename:</label>
+                    <input type="text" id="qd-export-filename" placeholder="qa-workitems-YYYY-MM-DD-HHMM.json">
+                </div>
+            </div>
+            <div class="qd-modal-footer">
+                <button class="qd-btn qd-btn-outline" id="qd-modal-export-cancel">Cancel</button>
+                <button class="qd-btn qd-btn-primary" id="qd-modal-export-confirm">Export</button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="qd-modal" id="qd-modal-export-md">
+        <div class="qd-modal-content">
+            <div class="qd-modal-header">
+                <h3>Export to Markdown</h3>
+                <button class="qd-modal-close" id="qd-modal-export-md-close">✕</button>
+            </div>
+            <div class="qd-modal-body">
+                <label class="qd-radio-label">
+                    <input type="radio" name="qd-export-md-type" value="all" checked>
+                    All Work Items
+                </label>
+                <label class="qd-radio-label">
+                    <input type="radio" name="qd-export-md-type" value="ready">
+                    Ready for Agent
+                </label>
+                <label class="qd-radio-label">
+                    <input type="radio" name="qd-export-md-type" value="needs">
+                    Needs Clarification
+                </label>
+                <div class="qd-export-md-filters" id="qd-export-md-filters">
+                                    <!-- Filter controls will appear here -->
+                </div>
+                <div class="qd-export-md-filename">
+                    <label>Filename:</label>
+                    <input type="text" id="qd-export-md-filename" placeholder="qa-workitems-YYYY-MM-DD-HHMM.md">
+                </div>
+            </div>
+            <div class="qd-modal-footer">
+                <button class="qd-btn qd-btn-outline" id="qd-modal-export-md-cancel">Cancel</button>
+                <button class="qd-btn qd-btn-primary" id="qd-modal-export-md-confirm">Export</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../qa/qa-schema.js"></script>
+    <script src="../qa/qa-db.js"></script>
+    <script src="../qa/qa-workitem-api.js"></script>
+    <script src="../qa/qa-templates.js"></script>
+    <script src="../qa/qa-queries.js"></script>
+    <script src="../qa/qa-export-json.js"></script>
+    <script src="../qa/qa-import-json.js"></script>
+    <script src="../qa/qa-export-md.js"></script>
+    <script src="debug.js"></script>
+    <script src="debug-panel.js"></script>
+    <script src="debug-filters.js"></script>
+    <script src="debug-board.js"></script>
+    <script src="debug-import-export.js"></script>
+</body>
+</html>

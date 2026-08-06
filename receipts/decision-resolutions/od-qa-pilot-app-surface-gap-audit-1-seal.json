@@ -1,0 +1,15 @@
+{
+  "$schema": "owner-decision-v1",
+  "decision_id": "OD-QA-PILOT-APP-SURFACE-GAP-AUDIT-1-SEAL",
+  "date": "2026-07-08",
+  "owner": "Andrew Hannah",
+  "sprint": "QA-PILOT-APP-SURFACE-GAP-AUDIT-1",
+  "epic": "EPIC-QA-PILOT-APP-SURFACE-MIGRATION-1",
+  "decision": "APPROVE_AND_SEAL",
+  "ledger_number": 110,
+  "basis": "Gap audit complete. 4 versions compared (V1, V1.5, V2, Current). 8 focus areas verified against actual files on disk. Feature matrix produced. 6-sprint migration sequence recommended. No implementation performed. Group login correctly identified as requiring redesign, not direct port.",
+  "classification": "planning_audit",
+  "authority": "Owner",
+  "status": "sealed",
+  "sealed_at": "2026-07-08T23:40:00Z"
+}

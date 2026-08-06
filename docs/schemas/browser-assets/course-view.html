@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QA Pilot Academy — Course View</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="stylesheet" href="css/main.css">
+  <script src="js/i18n.js"></script>
+  <script src="i18n/lang-en.js"></script>
+  <script src="i18n/lang-fr.js"></script>
+  <style>
+    .source-chip { display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:var(--radius-sm);font-size:9px;font-family:var(--font-mono);color:var(--color-ink-muted);background:var(--color-bg);border:1px solid var(--color-border);white-space:nowrap; }
+    .source-chip::before { content:"";width:5px;height:5px;border-radius:50%;background:var(--color-success);flex-shrink:0; }
+    .cv-topbar { display:flex; align-items:center; justify-content:space-between; padding:0 var(--space-5); height:53px; background:rgba(255,255,255,0.85); backdrop-filter:blur(20px); border-bottom:1px solid var(--color-border); position:sticky; top:0; z-index:10; }
+    .cv-topbar-brand { display:flex; align-items:center; gap:var(--space-3); font-size:14px; font-weight:600; color:#1D1D1F; }
+    .cv-topbar-right { display:flex; align-items:center; gap:var(--space-4); font-size:13px; color:var(--color-ink-muted); }
+    .cv-topbar-bar { width:100px; height:6px; background:#e5e7eb; border-radius:9999px; overflow:hidden; }
+    .cv-topbar-bar-fill { height:100%; background:var(--color-primary); border-radius:9999px; transition:width 0.3s; }
+    .cv-layout { display:flex; height:calc(100vh - 53px); overflow:hidden; }
+    .cv-sidebar { width:300px; flex-shrink:0; overflow-y:auto; background:#f9fafb; border-right:2px solid #e5e7eb; padding:var(--space-3) 0; }
+    .cv-module-group { border-bottom:2px solid #e5e7eb; }
+    .cv-module-header { display:flex; align-items:center; justify-content:space-between; padding:var(--space-3) var(--space-5); cursor:pointer; font-weight:600; color:#1f2937; font-size:13px; transition:background 0.15s; }
+    .cv-module-header:hover { background:#f3f4f6; }
+    .cv-module-header .arrow { font-size:12px; color:var(--color-ink-muted); transition:transform 0.15s; }
+    .cv-module-header .arrow.open { transform:rotate(90deg); }
+    .cv-lesson-item { display:flex; align-items:center; gap:var(--space-2); padding:var(--space-2) var(--space-5) var(--space-2) var(--space-7); cursor:pointer; font-size:13px; color:#4b5563; transition:all 0.1s; }
+    .cv-lesson-item:hover { background:#f3f4f6; color:#1f2937; }
+    .cv-lesson-item.active { background:#eff6ff; color:var(--color-primary); font-weight:600; }
+    .cv-lesson-item .dot { width:6px; height:6px; border-radius:50%; flex-shrink:0; }
+    .cv-lesson-item .dot-done { background:#16a34a; }
+    .cv-lesson-item .dot-pending { background:#d1d5db; }
+    .cv-content { flex:1; overflow-y:auto; background:#fff; padding:var(--space-8); }
+    .cv-welcome { text-align:center; padding:var(--space-12) var(--space-6); color:var(--color-ink-muted); }
+    .cv-welcome h2 { font-size:20px; font-weight:700; color:var(--color-ink); margin-bottom:var(--space-3); }
+    .cv-lesson-content { display:none; max-width:720px; margin:0 auto; }
+    .cv-lesson-header { margin-bottom:var(--space-6); }
+    .cv-lesson-breadcrumb { font-size:12px; color:var(--color-ink-muted); margin-bottom:var(--space-2); }
+    .cv-lesson-title { font-size:24px; font-weight:800; color:var(--color-ink); letter-spacing:-0.3px; line-height:1.3; }
+    .cv-lesson-body { font-size:15px; line-height:1.8; color:#374151; }
+    .cv-lesson-body p { margin-bottom:var(--space-4); }
+    .cv-lesson-footer { display:flex; align-items:center; justify-content:space-between; margin-top:var(--space-8); padding-top:var(--space-6); border-top:2px solid #e5e7eb; }
+    .cv-lesson-nav { display:flex; gap:var(--space-3); }
+    .btn { display:inline-flex; align-items:center; gap:var(--space-2); padding:var(--space-3) var(--space-5); border:none; border-radius:var(--radius-md); font-size:var(--text-sm); font-weight:var(--weight-semibold); cursor:pointer; transition:all 0.15s; }
+    .btn-ghost { background:transparent; color:var(--color-ink); border:1.5px solid #e5e7eb; }
+    .btn-ghost:hover { border-color:#d1d5db; }
+    .btn-primary { background:var(--color-primary); color:#fff; }
+    .btn-primary:hover { background:var(--color-primary-hover); }
+    .cv-sources { margin-top:var(--space-6); padding:var(--space-4); background:#f9fafb; border-radius:var(--radius-md); font-size:12px; color:var(--color-ink-muted); border-left:3px solid var(--color-primary); }
+    .cv-sources strong { color:#4b5563; }
+    .cv-exercise { margin-top:var(--space-6); padding:var(--space-5); background:#f0fdf4; border:1px solid #bbf7d0; border-radius:var(--radius-md); }
+    .cv-exercise h3 { font-size:15px; font-weight:700; color:#166534; margin-bottom:var(--space-3); }
+    .cv-exercise .prompt { font-size:14px; color:#374151; margin-bottom:var(--space-4); line-height:1.6; }
+    .cv-exercise textarea { width:100%; padding:var(--space-3); border:1.5px solid #d1d5db; border-radius:var(--radius-md); font-size:14px; font-family:inherit; min-height:80px; resize:vertical; }
+    .cv-exercise textarea:focus { outline:none; border-color:var(--color-primary); box-shadow:0 0 0 3px rgba(37,99,235,0.1); }
+    .cv-exercise .btn-submit { margin-top:var(--space-3); padding:var(--space-2) var(--space-5); background:var(--color-primary); color:#fff; border:none; border-radius:var(--radius-md); font-size:13px; font-weight:600; cursor:pointer; }
+    .cv-exercise .btn-submit:hover { background:var(--color-primary-hover); }
+    .cv-exercise .feedback { margin-top:var(--space-3); padding:var(--space-3); border-radius:var(--radius-md); font-size:13px; display:none; }
+    .cv-exercise .feedback.show { display:block; }
+    .cv-exercise .feedback.correct { background:#d1fae5; color:#065f46; border:1px solid #a7f3d0; }
+    .cv-exercise .feedback.incorrect { background:#fef2f2; color:#991b1b; border:1px solid #fecaca; }
+    .cv-exercise .badge { display:inline-block; padding:2px 10px; border-radius:9999px; font-size:11px; font-weight:600; margin-bottom:var(--space-3); }
+    .cv-exercise .badge-quiz { background:#dbeafe; color:#1e40af; }
+    .cv-answer-label { font-size:12px; color:var(--color-ink-muted); margin-top:var(--space-3); }
+    .cv-code-block { background:#1f2937; color:#e5e7eb; padding:var(--space-4); border-radius:var(--radius-md); font-family:monospace; font-size:13px; overflow-x:auto; margin-bottom:var(--space-4); white-space:pre-wrap; }
+    .advisory-note { margin-top:var(--space-6); padding:var(--space-4); background:#fffbeb; border:1px solid #fde68a; border-radius:var(--radius-md); font-size:13px; color:#92400e; }
+    .back-link { color:var(--color-ink-muted); text-decoration:none; font-size:13px; }
+    .back-link:hover { color:var(--color-ink); }
+    @media (max-width:768px) { .cv-sidebar { width:240px; } .cv-content { padding:var(--space-5); } }
+  </style>
+</head>
+<body>
+<a href="#main-content" class="skip-link">Skip to main content</a>
+<header role="banner" class="cv-topbar">
+  <div class="cv-topbar-brand">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 2L2 7v10l10 5 10-5V7l-10-5z" fill="#2563eb"/><path d="M12 12l-7-3.5v7L12 19l7-3.5v-7L12 12z" fill="#fff"/></svg>
+    <a href="catalog.html" class="back-link">← Catalog</a>
+  </div>
+  <div class="cv-topbar-right">
+    <div id="lang-toggle-container"></div>
+    <span id="cv-progress-text">0% done</span>
+    <div class="cv-topbar-bar">
+      <div class="cv-topbar-bar-fill" id="cv-progress-bar" style="width:0%"></div>
+    </div>
+  </div>
+</header>
+
+<div class="cv-layout">
+  <aside class="cv-sidebar" id="cv-sidebar">
+    <!-- Dynamic section nav -->
+  </aside>
+
+  <main class="cv-content" id="cv-content">
+    <div class="cv-welcome" id="cv-welcome">
+      <h2 id="cv-welcome-title">Select a section to begin</h2>
+      <p id="cv-welcome-desc">Choose a section from the sidebar to start learning. Your progress is saved automatically.</p>
+    </div>
+
+    <div class="cv-lesson-content" id="cv-lesson-content" style="display:none;">
+      <div class="cv-lesson-header">
+        <div class="cv-lesson-breadcrumb" id="cv-breadcrumb">Section</div>
+        <h1 class="cv-lesson-title" id="cv-lesson-title"></h1>
+      </div>
+
+      <div class="cv-lesson-body" id="cv-lesson-body"></div>
+
+      <div id="cv-exercise-area"></div>
+
+      <div class="cv-sources" id="cv-sources">
+        <strong>Sources:</strong> <span id="cv-sources-list"></span>
+      </div>
+
+      <div class="advisory-note">
+        <strong>📖 Advisory training content.</strong> This material is generated from Librarian canonical sources but is advisory only. Always refer to source documents for authoritative guidance.
+      </div>
+
+      <div class="cv-lesson-footer">
+        <div class="cv-lesson-nav">
+          <button class="btn btn-ghost" id="cv-prev-btn" onclick="prevSection()">← Previous</button>
+          <button class="btn btn-ghost" id="cv-next-btn" onclick="nextSection()">Next →</button>
+        </div>
+        <button class="btn btn-primary" id="cv-complete-btn" onclick="markComplete()">Mark Complete ✓</button>
+      </div>
+    </div>
+  </main>
+  <div class="view-data-footer" style="margin:var(--space-2) var(--space-6) var(--space-3);">
+    <span class="source-chip" style="font-size:9px;">source: local browser</span>
+    <span class="source-chip" style="font-size:9px;">content: training module</span>
+    <span class="source-chip" style="font-size:9px;">progress: local</span>
+  </div>
+</div>
+
+<script>
+const URL_KEY = 'qapilot_training_content';
+let packData = null;
+let currentSection = 0;
+
+function gs() { try { return JSON.parse(localStorage.getItem('qapilot_state')); } catch { return null; } }
+function ss(s) { localStorage.setItem('qapilot_state', JSON.stringify(s)); }
+
+function load() {
+  const params = new URLSearchParams(window.location.search);
+  const packId = params.get('pack');
+  if (!packId) { document.getElementById('cv-lesson-title').textContent = 'No package specified'; return; }
+
+  // Load from browser storage
+  const allContent = (() => { try { return JSON.parse(localStorage.getItem(URL_KEY)); } catch { return null; } })();
+  packData = allContent?.[packId];
+
+  if (!packData) {
+    document.getElementById('cv-lesson-title').textContent = 'Package not found';
+    document.getElementById('cv-lesson-body').innerHTML = '<p>Run the content sync tool first, then reload this page.</p>';
+    return;
+  }
+
+  renderSidebar();
+  renderSection(0);
+  updateProgress();
+}
+
+function renderSidebar() {
+  const sections = packData?.content?.sections || [];
+  const sidebar = document.getElementById('cv-sidebar');
+  if (!sections.length) { sidebar.innerHTML = '<div style="padding:var(--space-4);color:var(--color-ink-muted);font-size:13px;">No sections</div>'; return; }
+
+  const state = gs();
+  const params = new URLSearchParams(window.location.search);
+  const packId = params.get('pack');
+  const prog = state?.inProgress?.find(p => p.pack_id === packId);
+  const completed = prog?.completedSections || [];
+
+  sidebar.innerHTML = `<div class="cv-module-group">
+    <div class="cv-module-header">${esc(packData.title || packId)} <span class="arrow open">▶</span></div>
+    ${sections.map((s, i) => {
+      const isActive = i === currentSection;
+      const isDone = completed.includes(i);
+      const dotClass = isDone ? 'dot-done' : 'dot-pending';
+      return `<div class="cv-lesson-item ${isActive?'active':''}" onclick="renderSection(${i})">
+        <span class="dot ${dotClass}"></span>${esc(s.title || 'Section '+(i+1))}
+      </div>`;
+    }).join('')}
+  </div>`;
+}
+
+function renderSection(index) {
+  const sections = packData?.content?.sections || [];
+  if (!sections.length) return;
+  currentSection = Math.max(0, Math.min(index, sections.length - 1));
+  const sec = sections[currentSection];
+
+  document.getElementById('cv-lesson-title').textContent = sec.title || 'Section ' + (currentSection + 1);
+  document.getElementById('cv-breadcrumb').textContent = 'Section ' + (currentSection + 1) + ' of ' + sections.length;
+  // Render body with content-type awareness
+  let bodyHtml = '';
+  const ct = sec.content_type || 'text';
+  if (ct === 'code' || ct === 'reference') {
+    bodyHtml = '<div class="cv-code-block">' + esc(sec.body || '') + '</div>';
+  } else if (ct === 'diagram') {
+    bodyHtml = '<p><em>[Diagram placeholder: ' + esc(sec.body || '') + ']</em></p>';
+  } else {
+    bodyHtml = '<p>' + (sec.body || '').replace(/\n/g, '</p><p>') + '</p>';
+  }
+  document.getElementById('cv-lesson-body').innerHTML = bodyHtml;
+
+  // Render exercises if present
+  const exercises = sec.exercises || [];
+  const exerciseArea = document.getElementById('cv-exercise-area');
+  if (exercises.length > 0) {
+    const badgeClass = sec.content_type === 'quiz' ? 'badge-quiz' : '';
+    const badgeLabel = sec.content_type === 'quiz' ? 'Quiz' : 'Exercise';
+    let exHtml = `<span class="badge ${badgeClass}">${badgeLabel}</span>`;
+    exercises.forEach((ex, i) => {
+      const exId = 'ex-' + currentSection + '-' + i;
+      const saved = getExerciseAnswer(exId);
+      exHtml += `<div class="cv-exercise" data-ex-id="${exId}">
+        <h3>${badgeLabel} ${i + 1}</h3>
+        <div class="prompt">${esc(ex.prompt || 'No prompt')}</div>
+        <textarea id="${exId}" placeholder="Type your answer here...">${saved || ''}</textarea>
+        <button class="btn-submit" onclick="checkExercise('${exId}', ${i})">Submit</button>
+        <div class="feedback" id="fb-${exId}"></div>
+        <div class="cv-answer-label">Expected: ${esc(ex.expected_outcome || 'Self-assess')}</div>
+      </div>`;
+    });
+    exerciseArea.innerHTML = exHtml;
+    exerciseArea.style.display = 'block';
+  } else {
+    exerciseArea.innerHTML = '';
+    exerciseArea.style.display = 'none';
+  }
+
+  document.getElementById('cv-sources-list').textContent = (sec.sources || []).join(', ') || 'No sources listed';
+
+  document.getElementById('cv-welcome').style.display = 'none';
+  document.getElementById('cv-lesson-content').style.display = 'block';
+  document.getElementById('cv-prev-btn').style.visibility = currentSection > 0 ? 'visible' : 'hidden';
+  document.getElementById('cv-next-btn').textContent = currentSection < sections.length - 1 ? 'Next →' : 'Finish ✓';
+
+  renderSidebar();
+  updateProgress();
+}
+
+function nextSection() {
+  const sections = packData?.content?.sections || [];
+  if (currentSection < sections.length - 1) renderSection(currentSection + 1);
+  else markComplete();
+}
+
+function prevSection() {
+  if (currentSection > 0) renderSection(currentSection - 1);
+}
+
+function markComplete() {
+  const params = new URLSearchParams(window.location.search);
+  const packId = params.get('pack');
+  const state = gs();
+  if (state && packId) {
+    const prog = (state.inProgress || []).find(p => p.pack_id === packId);
+    if (prog) {
+      const sections = packData?.content?.sections || [];
+      prog.completedSections = [...new Set([...(prog.completedSections || []), currentSection])];
+      prog.progress = Math.round((prog.completedSections.length / sections.length) * 100);
+      if (prog.completedSections.length >= sections.length) {
+        prog.status = 'completed';
+        state.completed = state.completed || [];
+        if (!state.completed.find(c => c.pack_id === packId))
+          state.completed.push({ pack_id: packId, title: packData?.title, completed_at: new Date().toISOString() });
+        state.inProgress = (state.inProgress || []).filter(p => p.pack_id !== packId);
+        ss(state);
+        // Redirect to certificate on full completion
+        window.location.href = 'certificate.html?pack=' + encodeURIComponent(packId);
+        return;
+      }
+      ss(state);
+      renderSidebar();
+      updateProgress();
+    }
+  }
+  if (currentSection < (packData?.content?.sections?.length || 0) - 1) nextSection();
+}
+
+function updateProgress() {
+  const params = new URLSearchParams(window.location.search);
+  const packId = params.get('pack');
+  const state = gs();
+  const prog = state?.inProgress?.find(p => p.pack_id === packId);
+  const sections = packData?.content?.sections || [];
+  const completed = prog?.completedSections?.length || 0;
+  const pct = sections.length ? Math.round((completed / sections.length) * 100) : 0;
+  document.getElementById('cv-progress-text').textContent = pct + '% done';
+  document.getElementById('cv-progress-bar').style.width = pct + '%';
+}
+
+function getExerciseAnswer(exId) {
+  try {
+    const data = JSON.parse(localStorage.getItem('qapilot_exercises') || '{}');
+    return data[exId] || '';
+  } catch { return ''; }
+}
+function saveExerciseAnswer(exId, value) {
+  try {
+    const data = JSON.parse(localStorage.getItem('qapilot_exercises') || '{}');
+    data[exId] = value;
+    localStorage.setItem('qapilot_exercises', JSON.stringify(data));
+  } catch {}
+}
+function checkExercise(exId, exIndex) {
+  const textarea = document.getElementById(exId);
+  const fb = document.getElementById('fb-' + exId);
+  if (!textarea || !fb) return;
+  const answer = textarea.value.trim();
+  saveExerciseAnswer(exId, answer);
+  const hasContent = answer.length > 10;
+  fb.className = 'feedback show ' + (hasContent ? 'correct' : 'incorrect');
+  fb.textContent = hasContent ? '✅ Recorded. Compare your answer against the expected outcome above.' : '❌ Please provide a more detailed answer before submitting.';
+  // Track exercise completion
+  const params = new URLSearchParams(window.location.search);
+  const packId = params.get('pack');
+  const state = gs();
+  const prog = state?.inProgress?.find(p => p.pack_id === packId);
+  if (prog) {
+    prog.exercisesDone = [...new Set([...(prog.exercisesDone || []), exId])];
+    ss(state);
+  }
+}
+
+function esc(s) { const d=document.createElement('div'); d.textContent=s||''; return d.innerHTML; }
+document.addEventListener('DOMContentLoaded', load);
+</script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  if (typeof renderLangToggle !== 'undefined') {
+    renderLangToggle('lang-toggle-container');
+  }
+});
+</script>
+</body>
+</html>

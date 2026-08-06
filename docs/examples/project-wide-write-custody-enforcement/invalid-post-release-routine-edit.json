@@ -1,0 +1,20 @@
+{
+  "schema": "project-wide-write-custody-v1",
+  "project_id": "librarian",
+  "sprint_id": "NONE",
+  "file_path": "Public/app.js",
+  "requested_action": "Fix typo in UI text",
+  "custody_class": "POST_RELEASE_PATCH_ONLY",
+  "write_authority_source": "none",
+  "sprint_allowlisted": false,
+  "release_state": "released",
+  "sealed_evidence": false,
+  "generated_by_tool": false,
+  "owner_approval_required": false,
+  "owner_approval_present": false,
+  "warning_required": false,
+  "warning_present": false,
+  "expected_decision": "FORBIDDEN_POST_RELEASE_ROUTINE_EDIT",
+  "expected_blocker_code": "POST_RELEASE_NO_PATCH_ORDER",
+  "description": "Attempt to edit released artifact without patch work order"
+}

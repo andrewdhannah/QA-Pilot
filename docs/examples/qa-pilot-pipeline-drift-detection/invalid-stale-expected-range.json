@@ -1,0 +1,9 @@
+{
+  "label": "Invalid: stale expected layer range (pre-pipeline sprints not dynamically derived)",
+  "test_type": "dr4_stale_range",
+  "ledger_sprints": [{"id": "QA-PILOT-PROJECT-INIT-1", "sealed_number": 1, "status": "sealed"}],
+  "registry_sprint_ids": [],
+  "expected_drift": false,
+  "advisory_only": true,
+  "note": "Pre-pipeline sprint #1 should be recognized without manual hardcoding"
+}

@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://qa-pilot.carbideframe/schemas/qa-pilot-snapshot-update-gate-v1",
+  "title": "QA Pilot Snapshot Update Gate",
+  "description": "Schema for governed snapshot update gate packets. Defines when and how the startup surface regression snapshot (SRS-BASELINE-001) may be updated after legitimate surface changes. Advisory-only, QA Pilot-local.",
+  "type": "object",
+  "required": [
+    "gate_id", "update_class", "previous_snapshot_id", "proposed_snapshot_id",
+    "previous_sealed_head", "proposed_sealed_head",
+    "previous_layer_count", "proposed_layer_count",
+    "previous_rcr_count", "proposed_rcr_count",
+    "previous_rcg_gap", "proposed_rcg_gap",
+    "rationale",
+    "advisory_only", "custody", "librarian_impact",
+    "not_seal_authority", "not_librarian_mutation_authority", "created_at"
+  ],
+  "properties": {
+    "gate_id": { "type": "string", "pattern": "^SUG-[A-Z0-9-]+$" },
+    "update_class": {
+      "type": "string",
+      "enum": ["legitimate_surface_change", "registry_layer_count_change",
+               "rcr_receipt_count_change", "rcg_coverage_change",
+               "no_snapshot_update_required"]
+    },
+    "previous_snapshot_id": { "type": "string", "pattern": "^SRS-" },
+    "proposed_snapshot_id": { "type": "string", "pattern": "^SRS-" },
+    "previous_sealed_head": { "type": "string" },
+    "proposed_sealed_head": { "type": "string" },
+    "previous_layer_count": { "type": "integer", "minimum": 0 },
+    "proposed_layer_count": { "type": "integer", "minimum": 0 },
+    "previous_rcr_count": { "type": "integer", "minimum": 0 },
+    "proposed_rcr_count": { "type": "integer", "minimum": 0 },
+    "previous_rcg_gap": { "type": "integer" },
+    "proposed_rcg_gap": { "type": "integer" },
+    "rationale": { "type": "string", "minLength": 20 },
+    "advisory_only": { "type": "boolean", "const": true },
+    "custody": { "type": "string", "pattern": "^qa-pilot-local$" },
+    "librarian_impact": { "type": "string", "const": "none" },
+    "not_seal_authority": { "type": "string", "minLength": 20 },
+    "not_librarian_mutation_authority": { "type": "string", "minLength": 20 },
+    "created_at": { "type": "string", "format": "date-time" },
+    "created_by": { "type": "string" }
+  }
+}

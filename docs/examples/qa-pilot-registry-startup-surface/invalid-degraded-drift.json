@@ -1,0 +1,15 @@
+{
+  "registry_posture": {
+    "registry_layer_count": 8,
+    "latest_registry_layer": "#40 QA-PILOT-PIPELINE-RECOVERY-DIAGNOSTICS-1",
+    "ph_12_status": "pass",
+    "dr_3_4_status": "degraded",
+    "plr_status": "pass",
+    "sr_8_status": "pass",
+    "ph_pass": true,
+    "dr_pass": false,
+    "plr_pass": true,
+    "sr_pass": true,
+    "classification": "degraded"
+  }
+}

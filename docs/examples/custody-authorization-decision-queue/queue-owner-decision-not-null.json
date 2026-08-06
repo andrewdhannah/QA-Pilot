@@ -1,0 +1,17 @@
+{
+  "entry_id": "CDQ-20260706-110",
+  "queued_at": "2026-07-06T17:45:00Z",
+  "status": "pending",
+  "source": "startup_report",
+  "finding_type": "degraded_custody",
+  "description": "This entry has owner_decision set on creation",
+  "custody_context": {
+    "contract_id": "#23",
+    "receipt_count": 5,
+    "detail": "Owner decision null test"
+  },
+  "advisory": true,
+  "owner_required": true,
+  "owner_decision": "accept",
+  "cross_project": false
+}

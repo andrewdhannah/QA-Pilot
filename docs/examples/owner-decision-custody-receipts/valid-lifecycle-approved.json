@@ -1,0 +1,19 @@
+{
+  "schema": "owner-decision-custody-receipt-fixture-v1",
+  "fixture_type": "valid",
+  "description": "Normalized lifecycle approved receipt with provenance",
+  "input": {
+    "custody_source": "lifecycle",
+    "source_contract": "#25",
+    "decision": "ALLOW",
+    "project_id": "qa-pilot",
+    "sprint_id": "SPRINT-1",
+    "transition": "1→2",
+    "reason": "Planning complete",
+    "owner_approval_present": true,
+    "owner_approval_ref": "OD-SEAL-001",
+    "mode": "live"
+  },
+  "expected_decision_type": "approved",
+  "expected_immutable": true
+}

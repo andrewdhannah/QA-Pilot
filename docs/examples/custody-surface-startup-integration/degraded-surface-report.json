@@ -1,0 +1,35 @@
+{
+  "report_metadata": {
+    "schema": "custody-surface-startup-integration-v1",
+    "deterministic": true,
+    "surface_status": "missing",
+    "report_type": "startup_custody_posture"
+  },
+  "custody_posture": {
+    "available": false,
+    "status": "degraded",
+    "detail": "Receipts directory missing — no custody data",
+    "total_receipts_in_index": 0
+  },
+  "summary": {
+    "by_custody_source": {},
+    "by_decision_type": {"approvals": 0, "denied": 0, "warning": 0, "dry_run": 0},
+    "by_violation_code": {},
+    "by_mutation_status": {},
+    "by_approval_provenance": {"owner_approval_present": 0, "owner_approval_absent": 0},
+    "by_sprint": {},
+    "by_ledger_reference": {},
+    "by_sealed_contract": {}
+  },
+  "sealed_contract_references": {
+    "#23": {"receipts_referencing": 0, "tracked_in_surface": false},
+    "#24": {"receipts_referencing": 0, "tracked_in_surface": false},
+    "#25": {"receipts_referencing": 0, "tracked_in_surface": false},
+    "#26": {"receipts_referencing": 0, "tracked_in_surface": false},
+    "#27": {"receipts_referencing": 0, "tracked_in_surface": false},
+    "#28": {"receipts_referencing": 0, "tracked_in_surface": false}
+  },
+  "review_items": [],
+  "review_item_summary": {"malformed_count": 0, "duplicate_count": 0, "total_review_items": 0},
+  "surface_controls": {"approve": false, "seal": false, "execute": false, "write": false}
+}

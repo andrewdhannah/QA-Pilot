@@ -1,0 +1,6 @@
+{
+  "label": "Valid snapshot match fixture",
+  "snapshot_id": "SRS-FIXTURE-VALID-001",
+  "expected_sealed_head": "#55 QA-PILOT-REGISTRY-CHANGE-RECEIPT-CLOSEOUT-SURFACE-1",
+  "advisory_only": true
+}

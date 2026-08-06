@@ -1,0 +1,41 @@
+{
+  "$schema": "owner-decision-v1",
+  "decision_id": "OD-EPIC-QA-PILOT-DESIGN-LANGUAGE-REFRESH-1-AUTHORIZATION",
+  "date": "2026-07-09",
+  "owner": "Andrew Hannah",
+  "epic": "EPIC-QA-PILOT-DESIGN-LANGUAGE-REFRESH-1",
+  "decision": "AUTHORIZE_EPIC_WITH_BOUNDED_CONTINUATION",
+  "basis": "Authorize the design-language convergence epic. The migrated QA Pilot frontend works functionally and has original QA Pilot assets restored, but should adopt the newer Librarian dashboard design quality standards — cleaner card hierarchy, bento-style layout, calmer spacing, native-feeling panels, clear readiness/status strips, restrained motion, readable typography, strong action hierarchy — while preserving QA Pilot's browser-only deployment, Academy/training identity, JSON import/export custody, local learner identity, and no backend/auth/install constraints.",
+  "epic_sequence": [
+    {"sprint": "QA-PILOT-DESIGN-LANGUAGE-BASELINE-1", "purpose": "Create design-language baseline comparing QA Pilot browser assets against Librarian dashboard design language. Define shared vs QA Pilot-specific rules. Fix two known validation defects as baseline hygiene."},
+    {"sprint": "QA-PILOT-DESIGN-TOKEN-AND-SHELL-REFRESH-1", "purpose": "Update shared CSS tokens, page shell, typography, spacing, header, and cards."},
+    {"sprint": "QA-PILOT-ADMIN-DASHBOARD-DESIGN-REFRESH-1", "purpose": "Redesign admin.html around a dashboard/bento layout."},
+    {"sprint": "QA-PILOT-LEARNER-PORTAL-DESIGN-REFRESH-1", "purpose": "Refresh catalog.html and identity.html for learner onboarding and course discovery."},
+    {"sprint": "QA-PILOT-COURSE-RUNTIME-DESIGN-REFRESH-1", "purpose": "Refresh course-view.html with better lesson navigation, source references, progress, and checkpoint surfaces."},
+    {"sprint": "QA-PILOT-EXPORT-IMPORT-CERTIFICATE-DESIGN-REFRESH-1", "purpose": "Refresh export.html, import.html, and certificate.html."},
+    {"sprint": "QA-PILOT-DESIGN-LANGUAGE-ROUNDTRIP-VALIDATION-1", "purpose": "Re-run full 22-step workflow and design/i18n validation."}
+  ],
+  "bounded_continuation": true,
+  "stop_conditions": {
+    "scope_exceeded": false,
+    "backend_required": false,
+    "auth_required": false,
+    "install_required": false,
+    "cross_project_write": false,
+    "librarian_mutation": false,
+    "autonomous_publication": false,
+    "design_replaces_academy_identity": false,
+    "browser_only_broken": false,
+    "json_custody_bypassed": false,
+    "sprint_order_changed": false
+  },
+  "design_direction": "Use the current Librarian dashboard design language as the quality reference: bento/card hierarchy, calmer spacing, native-feeling panels, clear readiness/status strips, restrained motion, readable typography, strong but not noisy action hierarchy, consistent light theme, polished Owner/Admin/Learner workflows. QA Pilot must retain Academy/training identity, browser-only static deployment, JSON import/export custody, local learner identity only.",
+  "defects_to_repair": [
+    "Defect #1 (medium): EN/FR language toggle does not render because renderLangToggle() is called with a DOM element object instead of the expected string container ID.",
+    "Defect #2 (low): export.html and import.html missing QA Pilot Academy title branding and favicon references."
+  ],
+  "classification": "epic_authorization_design_language_refresh",
+  "authority": "Owner",
+  "status": "authorized",
+  "authorized_at": "2026-07-09T21:00:00Z"
+}

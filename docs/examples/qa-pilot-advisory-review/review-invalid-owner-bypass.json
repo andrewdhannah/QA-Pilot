@@ -1,0 +1,15 @@
+{
+  "review_id": "qa-pilot-review-invalid-owner-bypass-001",
+  "source_sim_id": "qa-pilot-sim-valid-claim-registry-001",
+  "review_type": "summary",
+  "summary": "INVALID: review output bypasses Owner decision",
+  "advisory": true,
+  "no_apply_path": true,
+  "no_train_behavior": true,
+  "no_bridge_behavior": true,
+  "no_mutation_authorized": true,
+  "no_cross_project_write": true,
+  "owner_decision_required": false,
+  "generated_at": "2026-07-05T23:34:00Z",
+  "notes": "INVALID: owner_decision_required=false — should be rejected"
+}

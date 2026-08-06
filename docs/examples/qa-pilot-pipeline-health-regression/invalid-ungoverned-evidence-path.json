@@ -1,0 +1,8 @@
+{
+  "label": "Invalid: ungoverned alternate evidence path",
+  "test_type": "ph5_ungoverned_path",
+  "store_path": "/tmp/alternate-evidence-store.json",
+  "store_path_exists": false,
+  "expected_failure": true,
+  "advisory_only": true
+}

@@ -93,7 +93,7 @@ check_required_files() {
     "$PROFILE_FILE"
     "$SPRINT_LEDGER_FILE"
     "$SESSION_HANDOFF_FILE"
-    "FEATURE-STATUS.md"
+    "$PROJECT_ROOT/FEATURE-STATUS.md"
     "$CONTRACT_FILE"
   )
   for f in "${files[@]}"; do
@@ -122,19 +122,30 @@ count_test_runners() {
   echo "$count"
 }
 
+# ── Custody posture ──────────────────────────────────────────────────────
+CUSTODY_POSTURE=""
+if [[ -f "$PROJECT_ROOT/scripts/custody-surface-startup-integration.py" ]]; then
+  CUSTODY_POSTURE=$(python3 "$PROJECT_ROOT/scripts/custody-surface-startup-integration.py" report --format markdown 2>/dev/null || echo "")
+fi
+
 # ── Gather state ──────────────────────────────────────────────────────────
+required_missing=$(check_required_files)
 MCP_STATUS=$(check_mcp_health)
-if [[ "$MCP_STATUS" == "reachable" || "$MCP_STATUS" == "reachable (via Librarian)" ]]; then
+
+if [[ "$required_missing" -gt 0 ]]; then
+  operating_mode="blocked"
+elif [[ "$MCP_STATUS" == *"reachable"* ]]; then
   operating_mode="managed"
-else
+elif [[ "$MCP_STATUS" == *"partial"* ]]; then
   operating_mode="degraded"
+else
+  operating_mode="blocked"
 fi
 
 active_work_session="none"
 branch=$(git_field "git branch --show-current")
 last_commit=$(git_field "git log -1 --pretty=format:'%h %s'")
 working_tree=$(working_tree_status)
-required_missing=$(check_required_files)
 validator_count=$(count_validators)
 test_runner_count=$(count_test_runners)
 
@@ -150,6 +161,10 @@ fi
 blockers=""
 if [[ "$required_missing" -gt 0 ]]; then
   blockers="$required_missing required project files missing"
+elif [[ "$MCP_STATUS" == "unreachable" ]]; then
+  blockers="MCP unreachable"
+elif [[ "$MCP_STATUS" == "partial" ]]; then
+  blockers="MCP partial"
 fi
 
 # ── Write STARTUP-STATE.md ────────────────────────────────────────────────
@@ -173,6 +188,8 @@ cat > "$STARTUP_STATE_FILE" <<STATE
 - **Validators:** $validator_count
 - **Test runners:** $test_runner_count
 - **Blockers:** ${blockers:-none detected}
+
+${CUSTODY_POSTURE:-**Custody surface:** unavailable}
 
 ## QA Pilot Identity
 

@@ -1,0 +1,11 @@
+{
+  "review_id": "ORP-20260707-bad",
+  "advisory": false,
+  "custody": "librarian-canonical",
+  "librarian_mutation_authority": true,
+  "auto_repair": true,
+  "sections": {},
+  "owner_options": [],
+  "summary": {},
+  "_authority_claim": "seal and promote this review packet to canonical truth"
+}

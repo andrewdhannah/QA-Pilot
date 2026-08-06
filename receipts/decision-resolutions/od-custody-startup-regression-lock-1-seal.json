@@ -1,0 +1,48 @@
+{
+  "receipt_type": "owner_decision_seal",
+  "decision_id": "OD-CUSTODY-STARTUP-REGRESSION-LOCK-1-SEAL",
+  "project_id": "qa-pilot",
+  "sprint_id": "CUSTODY-STARTUP-REGRESSION-LOCK-1",
+  "ledger_number": 30,
+  "decision": "APPROVE_AND_SEAL",
+  "approved_by": "Andrew Hannah (Owner)",
+  "approved_at": "2026-07-06T17:42:00Z",
+  "decision_basis": [
+    "fixture validation: 11/11 pass (4 positive + 7 negative correctly classified)",
+    "live posture check: 7/7 pass (CRL-1-live through CRL-11-live)",
+    "external regression: 10/10 pass",
+    "startup regression: 15/15 pass",
+    "parity matrix: 13/13 pass",
+    "existing validators: 15/15 pass",
+    "custody chain #23-#29: all green",
+    "total acceptance gates: 28/28, 0 failures"
+  ],
+  "seal_conditions": [
+    "Startup may report custody posture from #29 surface only (read-only)",
+    "Startup may report degraded/missing/empty custody state without fabricating success",
+    "Startup may reference sealed custody contracts #23-#29 by contract ID",
+    "Startup must not create custody receipts in receipts/owner-decision-custody/",
+    "Startup must not mutate custody receipt index (#27) persistent state",
+    "Startup must not mutate summary surface (#28) or startup integration (#29) persistent state",
+    "Startup report must have no approve/seal/execute/write controls",
+    "Startup must not treat project startup (start qa-pilot) as sprint-start authorization",
+    "Startup must preserve explicit Owner authorization boundaries",
+    "Startup must not create cross-project authority via Librarian paths"
+  ],
+  "boundary_assertion": {
+    "project_boundary": "qa-pilot",
+    "lane": "parallel_planning",
+    "librarian_impact": "none",
+    "cross_project_registration": false,
+    "runtime_mutation_authorized": false,
+    "implementation_authorized": true
+  },
+  "evidence": [
+    "docs/governance/CUSTODY-STARTUP-REGRESSION-LOCK.md (8 sections, 12 CRL rules)",
+    "scripts/validate-custody-startup-regression-lock.py (live/fixture/validate modes)",
+    "scripts/test-custody-startup-regression-lock.sh (28 gates)",
+    "docs/examples/custody-startup-regression-lock/ (11 fixtures)",
+    "project-state/sprint-ledger.json (entry #30)"
+  ],
+  "authorized_next_sprint": null
+}

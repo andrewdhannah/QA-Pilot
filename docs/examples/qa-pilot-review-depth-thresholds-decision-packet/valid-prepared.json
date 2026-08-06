@@ -1,0 +1,15 @@
+{
+  "packet_id": "DP-PREP-0001",
+  "source_threshold_id": "TD-SUFF-0001",
+  "source_evidence_bundle_ref": "E4-BUNDLE-001",
+  "source_result_packet_ref": "RP-E4-001",
+  "source_consistency_guard_refs": ["RC-01","RC-02","RC-03","RC-04","RC-05","RC-06","RC-07","RC-08","RC-09","RC-10","RC-11"],
+  "threshold_state": "sufficient",
+  "packet_state": "prepared",
+  "review_summary": "Decision packet prepared from threshold TD-SUFF-0001. Evidence depth sufficient. Ready for Owner review queue.",
+  "created_at": "2026-07-08T04:10:00Z",
+  "authority_disclaimer": "This decision packet connects evidence-depth posture to Owner review. It does not auto-accept evidence, auto-reject findings, approve intake, verify evidence, close workbench items, execute work, seal anything, or create autonomous authority. Owner is the only decision authority. Custody is qa-pilot-local. Librarian impact is none.",
+  "custody": "qa-pilot-local",
+  "advisory_only": true,
+  "librarian_impact": "none"
+}

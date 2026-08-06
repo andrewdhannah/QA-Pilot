@@ -1,0 +1,11 @@
+{
+  "expected_layers": [
+    {"slot": 33, "id": "QA-PILOT-MCP-EVIDENCE-INTAKE-1", "layer": "evidence"},
+    {"slot": 35, "id": "QA-PILOT-RESULT-PACKET-EXPORT-1", "layer": "results"}
+  ],
+  "expected_drift": true,
+  "missing_layers": ["#34"],
+  "head_mismatch": false,
+  "custody": "qa-pilot-local",
+  "advisory": true
+}

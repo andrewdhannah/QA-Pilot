@@ -1,0 +1,16 @@
+{
+  "qa_item_id": "QA-BAD-0101",
+  "title": "Invalid item with missing evidence refs",
+  "source": "manual",
+  "status": "open",
+  "severity": "high",
+  "category": "functional",
+  "description": "This item has no evidence refs but claims high severity without support.",
+  "evidence_refs": ["invalid-ref-no-prefix", "also-bad"],
+  "owner_decision_state": "pending",
+  "created_at": "2026-07-07T22:56:00Z",
+  "updated_at": "2026-07-07T22:56:00Z",
+  "advisory_only": true,
+  "custody": "qa-pilot-local",
+  "librarian_impact": "none"
+}

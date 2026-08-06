@@ -1,0 +1,18 @@
+{
+  "packet_id": "DP-SEAL-0001",
+  "source_threshold_id": "TD-SUFF-0001",
+  "source_evidence_bundle_ref": "E4-BUNDLE-001",
+  "source_result_packet_ref": "RP-E4-001",
+  "source_consistency_guard_refs": ["RC-01"],
+  "threshold_state": "sufficient",
+  "packet_state": "prepared",
+  "review_summary": "Packet prepared for review.",
+  "created_at": "2026-07-08T04:15:00Z",
+  "authority_disclaimer": "This decision packet connects evidence-depth posture to Owner review. It does not auto-accept evidence, auto-reject findings, approve intake, verify evidence, close workbench items, execute work, seal anything, or create autonomous authority. Owner is the only decision authority. Custody is qa-pilot-local. Librarian impact is none.",
+  "custody": "qa-pilot-local",
+  "advisory_only": true,
+  "librarian_impact": "none",
+  "sealed": true,
+  "approval_status": "approved",
+  "executed": true
+}

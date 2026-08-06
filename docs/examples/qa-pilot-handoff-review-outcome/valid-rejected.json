@@ -1,0 +1,17 @@
+{
+  "outcome_id": "HO-REJECT-0001",
+  "source_handoff_id": "HI-ACTION-0001",
+  "source_export_id": "AXPK-ACTION-0001",
+  "source_action_packet_id": "AP-ACTION-0001",
+  "source_receipt_id": "WDR-ACTION-0001",
+  "source_summary_id": "DS-REVIEW-0003",
+  "source_intake_id": "IR-REVIEW-0003",
+  "source_item_ids": ["QA-SEC-0001"],
+  "outcome_state": "rejected",
+  "review_summary": "Downstream review rejected the action path. Finding determined to be non-actionable after detailed analysis.",
+  "recorded_at": "2026-07-08T03:28:00Z",
+  "authority_disclaimer": "This handoff review outcome records downstream review posture only. It does not execute work, authorize execution, approve intake, verify evidence, close workbench items, mutate the handoff/source chain, or seal anything. Custody is qa-pilot-local. Librarian impact is none.",
+  "custody": "qa-pilot-local",
+  "advisory_only": true,
+  "librarian_impact": "none"
+}

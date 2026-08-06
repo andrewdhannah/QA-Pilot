@@ -1,0 +1,23 @@
+{
+  "test_id": "TC-20260706-010001-001",
+  "sprint_id": "QA-PILOT-MCP-EVIDENCE-INTAKE-1",
+  "source_artifact": "EP-20260706-010",
+  "criteria": "Regression guard: evidence packet reports 25 passed, 0 failed. Ensure validation still passes.",
+  "expected": "Validation output matches: 25 passed, 0 failed",
+  "preconditions": ["Evidence packet EP-20260706-010 is ingested in QA Pilot store"],
+  "steps": [
+    "Retrieve evidence packet from QA Pilot store",
+    "Verify validation_output.tests_passed >= 25",
+    "Confirm no regressions"
+  ],
+  "postconditions": ["Validation state is preserved"],
+  "status": "composed",
+  "tags": ["regression-guard", "evidence-derived"],
+  "advisory_only": true,
+  "evidence_provenance": {
+    "source_packet_id": "EP-20260706-010",
+    "source_project": "qa-pilot",
+    "source_sprint_id": "QA-PILOT-MCP-EVIDENCE-INTAKE-1",
+    "advisory": true
+  }
+}

@@ -1,0 +1,143 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://qa-pilot.carbideframe/schemas/qa-pilot-registry-change-receipt-v1",
+  "title": "QA Pilot Registry Change Receipt",
+  "description": "Schema for governed QA Pilot registry change receipts. Every sprint that may affect the pipeline layer registry must produce a receipt declaring its registry impact class (adds_layer, updates_layer, no_registry_impact, deprecates_layer). Advisory-only, QA Pilot-local.",
+  "type": "object",
+  "required": [
+    "receipt_id",
+    "sprint_id",
+    "ledger_number",
+    "registry_impact",
+    "registry_before_summary",
+    "registry_after_summary",
+    "rationale",
+    "advisory_only",
+    "custody",
+    "librarian_impact",
+    "not_seal_authority",
+    "not_librarian_mutation_authority",
+    "created_at"
+  ],
+  "properties": {
+    "receipt_id": {
+      "type": "string",
+      "pattern": "^RCR-[A-Z0-9-]+$",
+      "description": "Unique registry change receipt identifier (e.g. RCR-ADD-LAYER-048)."
+    },
+    "sprint_id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "The sprint ID that produced this registry change."
+    },
+    "ledger_number": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Ledger number of the sprint."
+    },
+    "registry_impact": {
+      "type": "string",
+      "enum": ["adds_layer", "updates_layer", "no_registry_impact", "deprecates_layer"],
+      "description": "How this sprint affects the layer registry."
+    },
+    "registry_before_summary": {
+      "type": "string",
+      "minLength": 10,
+      "description": "Registry state summary before this sprint's change."
+    },
+    "registry_after_summary": {
+      "type": "string",
+      "minLength": 10,
+      "description": "Registry state summary after this sprint's change."
+    },
+    "layer_slot_added": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Slot number of the layer added (only when registry_impact=adds_layer)."
+    },
+    "layer_slot_deprecated": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Slot number of the layer deprecated (only when registry_impact=deprecates_layer)."
+    },
+    "rationale": {
+      "type": "string",
+      "minLength": 20,
+      "description": "Rationale for the registry impact classification. Must be >= 20 chars for no_registry_impact."
+    },
+    "advisory_only": {
+      "type": "boolean",
+      "const": true,
+      "description": "All registry change receipts are advisory. Must be true."
+    },
+    "custody": {
+      "type": "string",
+      "pattern": "^qa-pilot-local$",
+      "description": "Custody boundary. Must be qa-pilot-local."
+    },
+    "librarian_impact": {
+      "type": "string",
+      "const": "none",
+      "description": "No Librarian mutation permitted. Must be none."
+    },
+    "not_seal_authority": {
+      "type": "string",
+      "minLength": 20,
+      "description": "Explicit assertion that this receipt does not confer sealing authority."
+    },
+    "not_librarian_mutation_authority": {
+      "type": "string",
+      "minLength": 20,
+      "description": "Explicit assertion that this receipt does not authorize Librarian mutation."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp when this receipt was created."
+    },
+    "created_by": {
+      "type": "string",
+      "description": "Agent or tool that created this receipt."
+    }
+  },
+  "allOf": [
+    {
+      "description": "If registry_impact=adds_layer, layer_slot_added is required.",
+      "if": {
+        "properties": {
+          "registry_impact": { "const": "adds_layer" }
+        },
+        "required": ["registry_impact"]
+      },
+      "then": {
+        "required": ["layer_slot_added"]
+      }
+    },
+    {
+      "description": "If registry_impact=deprecates_layer, layer_slot_deprecated is required.",
+      "if": {
+        "properties": {
+          "registry_impact": { "const": "deprecates_layer" }
+        },
+        "required": ["registry_impact"]
+      },
+      "then": {
+        "required": ["layer_slot_deprecated"]
+      }
+    },
+    {
+      "description": "If registry_impact=no_registry_impact, rationale must be >= 20 chars.",
+      "if": {
+        "properties": {
+          "registry_impact": { "const": "no_registry_impact" }
+        },
+        "required": ["registry_impact"]
+      },
+      "then": {
+        "properties": {
+          "rationale": { "minLength": 20 }
+        }
+      }
+    }
+  ]
+}

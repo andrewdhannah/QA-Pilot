@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://qa-pilot.carbideframe/schemas/qa-learning-record-v1",
+  "title": "QA Learning Record",
+  "description": "A record of a lesson learned from a defect, regression, or QA observation in QA Pilot.",
+  "type": "object",
+  "required": [
+    "record_id", "sprint_id", "source_type",
+    "lesson", "advisory"
+  ],
+  "properties": {
+    "record_id": { "type": "string", "pattern": "^LR-" },
+    "sprint_id": { "type": "string" },
+    "defect_ref": { "type": "string" },
+    "source_type": {
+      "type": "string",
+      "enum": ["defect", "regression", "observation", "violation", "improvement"]
+    },
+    "lesson": { "type": "string", "minLength": 10 },
+    "recommendation": { "type": "string" },
+    "tags": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "related_tests": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "advisory": { "type": "boolean", "const": true },
+    "recorded_at": { "type": "string", "format": "date-time" }
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "qa_item_id": "QA-BAD-0405",
+  "title": "Item with seal semantics that must not appear in queries",
+  "source": "manual",
+  "status": "open",
+  "severity": "high",
+  "category": "functional",
+  "description": "This item has seal authority language and should be rejected by WB-5. Items claiming seal authority must never appear in query results.",
+  "evidence_refs": [],
+  "evidence_links": [],
+  "lifecycle_history": [
+    {"from_status": "__init__", "to_status": "open", "transition_reason": "This item has seal authority and claims approval", "actor": "agent", "timestamp": "2026-07-08T00:00:00Z", "advisory_only": true}
+  ],
+  "owner_decision_state": "pending",
+  "created_at": "2026-07-08T00:00:00Z",
+  "updated_at": "2026-07-08T00:00:00Z",
+  "advisory_only": true, "custody": "qa-pilot-local", "librarian_impact": "none"
+}

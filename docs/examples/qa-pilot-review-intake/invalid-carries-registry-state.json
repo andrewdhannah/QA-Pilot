@@ -1,0 +1,18 @@
+{
+  "intake_id": "IR-BAD-0004",
+  "source_packet_id": "XPK-BAD-0004",
+  "source_project": "qa-pilot",
+  "intake_status": "received",
+  "received_at": "2026-07-08T01:55:00Z",
+  "included_item_ids": ["QA-BAD-0004"],
+  "item_count": 1,
+  "evidence_summary": {"total_links": 0, "by_type": {}},
+  "lifecycle_summary": {"total_transitions": 0, "by_status": {"open": 1}},
+  "registry_impact": "adds_layer",
+  "rcr_receipt": "RCR-ADD-LAYER-070",
+  "owner_decision_state": "pending",
+  "authority_disclaimer": "This review intake record is advisory-only. It does not approve packet contents, verify item correctness, accept defects, or close/seal/promote anything. Custody is qa-pilot-local. Librarian impact is none.",
+  "custody": "qa-pilot-local",
+  "advisory_only": true,
+  "librarian_impact": "none"
+}

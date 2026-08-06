@@ -1,0 +1,48 @@
+{
+  "$schema": "qa-pilot-migration-governance-integration-4-v1",
+  "epic": "EPIC-QA-PILOT-OPENWORK-TO-CARBIDEFRAME-MIGRATION-1",
+  "sprint": "QA-PILOT-CARBIDEFRAME-GOVERNANCE-INTEGRATION-1",
+  "approval_token": "apt_5fd5e21b",
+  "changes": {
+    "startup_contract": {
+      "is_web_app": "false -> true",
+      "fields_added": ["web_app_root", "web_app_data_separation"],
+      "verification_surfaces": "4 -> 5 (+ browser-app/)",
+      "required_files": "5 -> 6 (+ browser-app/index.html)",
+      "context_sources": "5 -> 6 (+ browser-app/index.html)"
+    },
+    "project_profile": {
+      "allowed_mutation_paths": "8 -> 9 (+ browser-app/)"
+    },
+    "new_docs": [
+      "docs/governance/QA-PILOT-BROWSER-APP-SEPARATION.md"
+    ],
+    "status_surfaces_updated": [
+      "FEATURE-STATUS.md",
+      "SESSION-HANDOFF.md"
+    ]
+  },
+  "governance_verification": {
+    "passes": 10,
+    "drift_ok": 6,
+    "violations": 0,
+    "validators_unchanged": 59,
+    "test_runners_unchanged": 65
+  },
+  "startup_verification": {
+    "mode": "managed",
+    "mcp": "reachable",
+    "blockers": "none"
+  },
+  "boundaries": {
+    "openwork_source_untouched": true,
+    "librarian_files_untouched": true,
+    "governance_schemas_unchanged": true,
+    "browser_app_not_absorbed_into_governance": true,
+    "browser_assets_design_reference_preserved": true,
+    "browser_app_data_separated_from_governance_data": true
+  },
+  "mcp_advisory_gap": "project_work_result_intake and project_work_packet_draft MCP tools non-functional (carried forward from Sprint 1)",
+  "created_at": "2026-07-13T06:57:00Z",
+  "agent": "OpenWork-Claude"
+}

@@ -1,0 +1,21 @@
+{
+  "qa_item_id": "QA-QUERY-2000",
+  "title": "Item needing review appears in needs_review queries",
+  "source": "advisory_review",
+  "status": "needs_review",
+  "severity": "critical",
+  "category": "security",
+  "description": "This needs_review item should appear in --needs-review filtered queries.",
+  "evidence_refs": [],
+  "evidence_links": [],
+  "lifecycle_history": [
+    {"from_status": "__init__", "to_status": "open", "transition_reason": "Item created", "actor": "agent", "timestamp": "2026-07-08T00:00:00Z", "advisory_only": true},
+    {"from_status": "open", "to_status": "triaged", "transition_reason": "Triaged as critical security", "actor": "agent", "timestamp": "2026-07-08T00:05:00Z", "advisory_only": true},
+    {"from_status": "triaged", "to_status": "evidence_attached", "transition_reason": "Security evidence linked", "actor": "agent", "timestamp": "2026-07-08T00:10:00Z", "advisory_only": true},
+    {"from_status": "evidence_attached", "to_status": "needs_review", "transition_reason": "All evidence collected, flagging for Owner review", "actor": "agent", "timestamp": "2026-07-08T00:15:00Z", "advisory_only": true}
+  ],
+  "owner_decision_state": "pending",
+  "created_at": "2026-07-08T00:00:00Z",
+  "updated_at": "2026-07-08T00:15:00Z",
+  "advisory_only": true, "custody": "qa-pilot-local", "librarian_impact": "none"
+}

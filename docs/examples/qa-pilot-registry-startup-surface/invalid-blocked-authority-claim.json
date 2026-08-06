@@ -1,0 +1,16 @@
+{
+  "registry_posture": {
+    "registry_layer_count": 0,
+    "latest_registry_layer": null,
+    "ph_12_status": "fail",
+    "dr_3_4_status": "fail",
+    "plr_status": "fail",
+    "sr_8_status": "fail",
+    "ph_pass": false,
+    "dr_pass": false,
+    "plr_pass": false,
+    "sr_pass": false,
+    "classification": "blocked",
+    "_authority_claim": "seal broken pipeline"
+  }
+}

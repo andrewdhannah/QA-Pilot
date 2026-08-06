@@ -1,0 +1,17 @@
+{
+  "schema": "owner-decision-custody-receipt-fixture-v1",
+  "fixture_type": "invalid",
+  "description": "Non-deterministic receipt generation rejected",
+  "input": {
+    "custody_source": "write",
+    "source_contract": "#23",
+    "decision": "ALLOW",
+    "project_id": "qa-pilot",
+    "sprint_id": "SPRINT-1",
+    "file_path": "test.py",
+    "reason": "Non-deterministic",
+    "mode": "live",
+    "deterministic": false
+  },
+  "expected_error": "Non-deterministic"
+}

@@ -1,0 +1,21 @@
+{
+  "sealed_head": "#99 QA-PILOT-NONEXISTENT-SPRINT-1",
+  "sealed_number": 99,
+  "active_sprint": "QA-PILOT-NONEXISTENT-SPRINT-2",
+  "next_authorized": "none",
+  "pipeline_layers": [],
+  "custody": "librarian-canonical",
+  "librarian_mutation_authority": true,
+  "advisory": false,
+  "evidence_count": -1,
+  "test_case_count": -1,
+  "result_packet_count": -1,
+  "epic_suite_count": -1,
+  "total_qa_packets": -1,
+  "registry_posture": {
+    "registry_layer_count": 0,
+    "latest_registry_layer": null,
+    "ph_12_status": "fail",
+    "classification": "blocked"
+  }
+}

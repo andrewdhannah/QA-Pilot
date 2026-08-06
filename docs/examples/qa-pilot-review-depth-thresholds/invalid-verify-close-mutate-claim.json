@@ -1,0 +1,20 @@
+{
+  "threshold_id": "TD-VCM-0001",
+  "source_evidence_context": {
+    "evidence_bundle_ref": "E4-BUNDLE-001",
+    "consistency_guard_refs": ["RC-01"],
+    "evidence_item_count": 3,
+    "consistency_check_count": 11,
+    "consistency_pass_count": 3
+  },
+  "threshold_state": "blocked",
+  "rationale": "Threshold evaluation recorded.",
+  "evaluated_at": "2026-07-08T04:00:00Z",
+  "authority_disclaimer": "This review-depth threshold evaluation is advisory-only. It does not auto-accept evidence, auto-reject findings, execute work, approve intake, verify evidence, close workbench items, mutate the evidence chain, or seal anything. Owner remains the final decision point. Custody is qa-pilot-local. Librarian impact is none.",
+  "custody": "qa-pilot-local",
+  "advisory_only": true,
+  "librarian_impact": "none",
+  "evidence_verified": true,
+  "items_closed": true,
+  "mutates_evidence": true
+}

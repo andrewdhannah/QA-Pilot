@@ -1,0 +1,30 @@
+{
+  "sealed_head": "#49 QA-PILOT-PIPELINE-DRIFT-LAYER-REGISTRY-1",
+  "sealed_number": 49,
+  "active_sprint": null,
+  "next_authorized": "none",
+  "pipeline_layers": [
+    {"layer": "evidence", "sprint": "#33 QA-PILOT-MCP-EVIDENCE-INTAKE-1", "id_prefix": "EP-", "description": "Bounded evidence packet ingest/validate/list/read", "advisory": true},
+    {"layer": "tests", "sprint": "#34 QA-PILOT-TEST-COMPOSITION-1", "id_prefix": "TC-", "description": "Evidence -> advisory test case composition", "advisory": true},
+    {"layer": "results", "sprint": "#35 QA-PILOT-RESULT-PACKET-EXPORT-1", "id_prefix": "QR-", "description": "Evidence + tests -> advisory result packet export", "advisory": true},
+    {"layer": "epic", "sprint": "#36 QA-PILOT-EPIC-REGRESSION-BUILDER-1", "id_prefix": "ERS-", "description": "EP + TC + QR -> advisory Epic regression suites", "advisory": true}
+  ],
+  "custody": "qa-pilot-local",
+  "librarian_mutation_authority": false,
+  "advisory": true,
+  "evidence_count": 0,
+  "test_case_count": 0,
+  "result_packet_count": 0,
+  "epic_suite_count": 0,
+  "total_qa_packets": 0,
+  "registry_posture": {
+    "registry_layer_count": 17,
+    "latest_registry_layer": "#49 QA-PILOT-PIPELINE-DRIFT-LAYER-REGISTRY-1",
+    "ph_12_status": "pass",
+    "dr_3_4_status": "pass",
+    "plr_status": "pass",
+    "sr_8_status": "pass",
+    "classification": "ready"
+  },
+  "_authority_claim": "seal and promote pipeline to production"
+}

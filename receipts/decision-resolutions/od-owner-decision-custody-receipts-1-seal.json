@@ -1,0 +1,62 @@
+{
+  "receipt_type": "owner_decision_seal",
+  "decision_id": "OD-OWNER-DECISION-CUSTODY-RECEIPTS-1-SEAL",
+  "project_id": "qa-pilot",
+  "sprint_id": "OWNER-DECISION-CUSTODY-RECEIPTS-1",
+  "ledger_number": 26,
+  "decision": "APPROVE_AND_SEAL",
+  "approved_by": "Andrew Hannah (Owner)",
+  "approved_at": "2026-07-06T01:44:15Z",
+  "decision_basis": [
+    "write custody receipts emitted",
+    "live custody receipts emitted",
+    "lifecycle custody receipts emitted",
+    "custody source preserved",
+    "decision type preserved",
+    "Owner approval provenance preserved",
+    "violation code preserved",
+    "mutation status preserved",
+    "linked sprint ID and ledger references preserved",
+    "sealed contract references preserved for #23, #24, and #25",
+    "approved receipts immutable after write",
+    "denied receipts immutable after write",
+    "dry-run receipts cannot be treated as approval evidence",
+    "warning receipts cannot be treated as approval evidence",
+    "cross-project receipt claims rejected",
+    "broad approval claims rejected",
+    "#23 write custody enforcement remains green at 16/16",
+    "#24 live custody integration remains green at 19/19",
+    "#25 lifecycle custody extension remains green at 24/24",
+    "receipt generation deterministic-only",
+    "non-deterministic receipt generation rejected",
+    "receipt runner passed 36/36",
+    "startup regression passed 15/15",
+    "parity matrix passed 13/13",
+    "existing validators passed 15/15",
+    "startup managed and MCP reachable",
+    "no unrelated QA Pilot files modified",
+    "no Librarian files modified"
+  ],
+  "seal_conditions": [
+    "OWNER-DECISION-CUSTODY-RECEIPTS-1 is accepted as QA Pilot-local custody evidence normalization",
+    "This seal creates a unified Owner-reviewable decision trail for write, live, and lifecycle custody",
+    "It does not grant new write authority, lifecycle authority, approval authority, cross-project receipt authority, auto-approval, auto-seal, auto-promotion, or auto-execution"
+  ],
+  "boundary_assertion": {
+    "project_boundary": "qa-pilot",
+    "lane": "parallel_planning",
+    "librarian_impact": "none",
+    "cross_project_registration": false,
+    "runtime_mutation_authorized": false,
+    "implementation_authorized": true
+  },
+  "evidence": [
+    "scripts/owner-decision-custody-receipts.py (live/dry-run/scan modes, deterministic receipt IDs)",
+    "scripts/test-owner-decision-custody-receipts.sh (36 tests, 36/36 pass)",
+    "docs/governance/OWNER-DECISION-CUSTODY-RECEIPTS.md (7 sections)",
+    "docs/examples/owner-decision-custody-receipts/ (6 fixtures: 3 valid + 3 invalid)",
+    "docs/sprints/OWNER-DECISION-CUSTODY-RECEIPTS-1.md",
+    "project-state/sprint-ledger.json (entry #26)"
+  ],
+  "authorized_next_sprint": "CUSTODY-RECEIPT-INDEX-1 — build a read-only index over unified custody receipts for Owner review queries by source, sprint, ledger reference, violation code, mutation status, and approval provenance"
+}

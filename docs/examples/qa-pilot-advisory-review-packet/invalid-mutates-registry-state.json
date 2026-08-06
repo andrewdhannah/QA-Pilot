@@ -1,0 +1,24 @@
+{
+  "packet_id": "ARP-INVALID-MUTATES-REGISTRY-001",
+  "sprint_id": "QA-PILOT-HYPOTHETICAL-MUTATE-1",
+  "ledger_number": 67,
+  "prior_sealed_head": "#66 hypothetical",
+  "claimed_posture": "Mutates registry.",
+  "completion_summary": "This packet claims to mutate registry state directly.",
+  "posture_sections": {
+    "sealed_head": "#67",
+    "sealed_number": 67,
+    "registry_layer_count": 30,
+    "registry_classification": "ready"
+  },
+  "validator_results": [
+    {"validator": "PLR", "status": "pass", "summary": "mutated to 30 layers"}
+  ],
+  "librarian_impact": "modified",
+  "pending_owner_decision": "sealed",
+  "advisory_only": false,
+  "defines_new_authority": true,
+  "mode_owner": "qa_pilot",
+  "created_at": "2026-07-07T22:36:00Z",
+  "_registry_mutation": "added layer #67 directly via packet"
+}

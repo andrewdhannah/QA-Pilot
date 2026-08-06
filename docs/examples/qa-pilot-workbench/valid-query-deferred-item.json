@@ -1,0 +1,22 @@
+{
+  "qa_item_id": "QA-QUERY-3000",
+  "title": "Deferred item awaiting future capacity",
+  "source": "manual",
+  "status": "deferred",
+  "severity": "medium",
+  "category": "performance",
+  "description": "This deferred item should appear in --deferred filtered queries.",
+  "evidence_refs": [],
+  "evidence_links": [],
+  "lifecycle_history": [
+    {"from_status": "__init__", "to_status": "open", "transition_reason": "Item created", "actor": "agent", "timestamp": "2026-07-08T00:00:00Z", "advisory_only": true},
+    {"from_status": "open", "to_status": "triaged", "transition_reason": "Triaged", "actor": "agent", "timestamp": "2026-07-08T00:05:00Z", "advisory_only": true},
+    {"from_status": "triaged", "to_status": "evidence_attached", "transition_reason": "Evidence linked", "actor": "agent", "timestamp": "2026-07-08T00:10:00Z", "advisory_only": true},
+    {"from_status": "evidence_attached", "to_status": "needs_review", "transition_reason": "Ready for review", "actor": "agent", "timestamp": "2026-07-08T00:15:00Z", "advisory_only": true},
+    {"from_status": "needs_review", "to_status": "deferred", "transition_reason": "Deferred pending infrastructure upgrade", "actor": "agent", "timestamp": "2026-07-08T00:20:00Z", "advisory_only": true}
+  ],
+  "owner_decision_state": "pending",
+  "created_at": "2026-07-08T00:00:00Z",
+  "updated_at": "2026-07-08T00:20:00Z",
+  "advisory_only": true, "custody": "qa-pilot-local", "librarian_impact": "none"
+}

@@ -1,0 +1,25 @@
+{
+  "schema": "live-custody-integration-v1",
+  "fixture_type": "valid",
+  "description": "Valid owner-approved authority file write (uses safe test path)",
+  "mode": "dry-run",
+  "request": {
+    "project_id": "qa-pilot",
+    "sprint_id": "SPRINT-1",
+    "file_path": "scripts/_test_authority_write.py",
+    "content": "# test",
+    "requested_action": "Update test script (authority-like context)",
+    "sprint_allowlisted": true,
+    "custody_class": "READ_ONLY_BY_DEFAULT",
+    "write_authority_source": "sprint_allowlist",
+    "release_state": "pre_release",
+    "sealed_evidence": false,
+    "generated_by_tool": false,
+    "owner_approval_present": true,
+    "owner_approval_ref": "OD-SOME-SEAL-1",
+    "owner_approval_is_broad": false
+  },
+  "expected_decision": "ALLOW",
+  "expected_write_executed": false,
+  "expected_dry_run": true
+}

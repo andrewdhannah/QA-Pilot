@@ -1,0 +1,66 @@
+{
+  "sdk_version": "qa-pilot-evidence-sdk-v1",
+  "generated_at": "2026-07-24T02:30:00Z",
+  "run_id": "eval-20260724-020456",
+  "schema": "evidence-composition-graph-v1",
+  "node_count": 3,
+  "edge_count": 2,
+  "nodes": [
+    {
+      "finding_id": "F-0001",
+      "code": "EV-GOV-002",
+      "category": "CURSOR",
+      "severity": "MEDIUM",
+      "evidence_class": "AUTHORITATIVE",
+      "affected_components": ["agent-bridge"],
+      "root_cause_candidate": true,
+      "symptom": false
+    },
+    {
+      "finding_id": "F-0002",
+      "code": "EV-GOV-001",
+      "category": "CURSOR",
+      "severity": "MEDIUM",
+      "evidence_class": "AUTHORITATIVE",
+      "affected_components": ["claude-conversation-ingestion"],
+      "root_cause_candidate": true,
+      "symptom": false
+    },
+    {
+      "finding_id": "F-0008",
+      "code": "EV-EVID-001",
+      "category": "RECONCILIATION",
+      "severity": "LOW",
+      "evidence_class": "DERIVED",
+      "affected_components": ["db_first_reconciliation"],
+      "root_cause_candidate": false,
+      "symptom": true
+    }
+  ],
+  "edges": [
+    {
+      "source": "F-0001",
+      "target": "F-0008",
+      "type": "affected_by",
+      "rationale": "Reconciliation evidence absence affects all evidence evaluations"
+    },
+    {
+      "source": "F-0002",
+      "target": "F-0008",
+      "type": "affected_by",
+      "rationale": "Reconciliation evidence absence affects all evidence evaluations"
+    }
+  ],
+  "root_cause_candidates": ["F-0001", "F-0002"],
+  "dependency_levels": {
+    "level_0": ["F-0001", "F-0002"],
+    "level_1": ["F-0008"]
+  },
+  "topology": {
+    "root_cause_count": 2,
+    "symptom_count": 1,
+    "evidence_class_breakdown": { "AUTHORITATIVE": 2, "DERIVED": 1 },
+    "severity_breakdown": { "MEDIUM": 2, "LOW": 1 },
+    "category_breakdown": { "CURSOR": 2, "RECONCILIATION": 1 }
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "label": "Valid: post-seal advancement pattern (dynamic pre-pipeline derivation)",
+  "test_type": "dr4_dynamic_prepipeline",
+  "ledger_sprints": [{"id": "QA-PILOT-PROJECT-INIT-1", "sealed_number": 1, "status": "sealed"},
+                     {"id": "QA-PILOT-PIPELINE-HEALTH-LAYER-REGISTRY-1", "sealed_number": 48, "status": "sealed"},
+                     {"id": "QA-PILOT-ADVISORY-REVIEW-PACKET-EXERCISE-1", "sealed_number": 63, "status": "sealed"}],
+  "registry_sprint_ids": ["QA-PILOT-PIPELINE-HEALTH-LAYER-REGISTRY-1"],
+  "expected_dr4_extra": [],
+  "advisory_only": true
+}

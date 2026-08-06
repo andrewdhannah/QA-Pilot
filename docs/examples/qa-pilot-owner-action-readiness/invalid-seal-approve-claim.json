@@ -1,0 +1,20 @@
+{
+  "readiness_id": "RD-SEAL-0001",
+  "source_outcome_id": "HO-READY-0001",
+  "source_handoff_id": "HI-ACTION-0001",
+  "source_export_id": "AXPK-ACTION-0001",
+  "source_action_packet_id": "AP-ACTION-0001",
+  "source_receipt_id": "WDR-ACTION-0001",
+  "source_summary_id": "DS-REVIEW-0003",
+  "source_intake_id": "IR-REVIEW-0003",
+  "source_item_ids": ["QA-SEC-0001"],
+  "readiness_state": "ready_for_owner_decision",
+  "readiness_rationale": "Readiness derived from chain analysis.",
+  "recorded_at": "2026-07-08T03:45:00Z",
+  "authority_disclaimer": "This readiness record derives action readiness from the full workbench chain for Owner review only. It does not authorize action, execute work, approve intake, verify evidence, close workbench items, mutate the chain, or seal anything. Custody is qa-pilot-local. Librarian impact is none.",
+  "custody": "qa-pilot-local",
+  "advisory_only": true,
+  "librarian_impact": "none",
+  "sealed": true,
+  "approval_status": "approved"
+}

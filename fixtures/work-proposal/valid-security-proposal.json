@@ -1,0 +1,54 @@
+{
+  "proposal_id": "WP-QA-SEC-10002",
+  "source_diagnostic_id": "DIAG-SEC-0002",
+  "source_test_id": "test-broker-audit-trail-integrity",
+  "failure_summary": {
+    "expected": "Broker audit trail should contain all 15 BA rules with zero gaps",
+    "actual": "BA-9 missing from audit trail — receipt store did not record the validation step for entry #003",
+    "reproduction": "Run: python3 scripts/validate-qa-pilot-broker-audit-store.py",
+    "contract_ref": "qa-pilot-broker-audit-receipt.schema.json",
+    "evidence_refs": ["evidence/ba-run-20260724.json"]
+  },
+  "severity": "CRITICAL",
+  "affected_domain": "security",
+  "suggested_objective": "Repair security failure detected by test-broker-audit-trail-integrity. Expected: Broker audit trail should contain all 15 BA rules with zero gaps. Actual: BA-9 missing from audit trail. Severity: CRITICAL.",
+  "constraints": {
+    "must_not_modify": ["active/librarian/Sources/", "active/librarian/receipts/"],
+    "required_validation": ["python3 scripts/validate-qa-pilot-broker-audit-store.py", "python3 scripts/validate-qa-pilot-broker-audit-receipt.py"]
+  },
+  "verification_requirements": {
+    "rerun_tests": ["python3 scripts/validate-qa-pilot-broker-audit-store.py", "python3 scripts/validate-qa-pilot-broker-audit-receipt.py"],
+    "pass_criteria": "All tests in test-broker-audit-trail-integrity must pass with zero failures. Expected: Broker audit trail should contain all 15 BA rules with zero gaps. The fix must not introduce new failures.",
+    "regression_test_proposed": false
+  },
+  "compliance_mappings": {
+    "diagnostic_to_proposal": "report_id->source_diagnostic_id, test_id->source_test_id, failure->failure_summary, severity->severity, domain->affected_domain",
+    "proposal_to_work_packet": "suggested_objective->scope, source_diagnostic_id->work_id_provenance, constraints.must_not_modify->forbidden_paths",
+    "status_mapping": [
+      {"proposal_status": "OPEN", "librarian_equivalent": "proposal_created"},
+      {"proposal_status": "REVIEW_REQUIRED", "librarian_equivalent": "owner_review"},
+      {"proposal_status": "APPROVED", "librarian_equivalent": "packet_authorized"},
+      {"proposal_status": "EXECUTING", "librarian_equivalent": "agent_active"},
+      {"proposal_status": "VERIFIED", "librarian_equivalent": "validation_passed"},
+      {"proposal_status": "CLOSED", "librarian_equivalent": "owner_closed"}
+    ]
+  },
+  "limitations": {
+    "advisory_only": true,
+    "no_execution_authority": true,
+    "no_mutation_authority": true,
+    "requires_owner_approval": true,
+    "requires_librarian_draft": true,
+    "notes": "This proposal is advisory-only. It confers no authority."
+  },
+  "provenance": {
+    "advisory": true,
+    "no_authority_conferred": true,
+    "compiled_by": "qa_pilot_work_proposal_compiler.py",
+    "compiled_from": "DIAG-SEC-0002",
+    "detected_by": "qa-pilot-broker-audit-store",
+    "validation_run": "ba-run-20260724",
+    "pipeline_run": "pipeline-20260724-002",
+    "compiled_at": "2026-07-24T11:05:00Z"
+  }
+}

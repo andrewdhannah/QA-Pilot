@@ -1,0 +1,28 @@
+{
+  "qa_item_id": "QA-BAD-0205",
+  "title": "Item with unsupported evidence type",
+  "source": "manual",
+  "status": "open",
+  "severity": "high",
+  "category": "functional",
+  "description": "This item has an evidence link with an unsupported evidence_type.",
+  "evidence_refs": [],
+  "evidence_links": [
+    {
+      "evidence_link_id": "EL-BAD-0205-001",
+      "evidence_type": "machine_learning_model_output",
+      "evidence_ref": "EP-TEST-001",
+      "attachment_reason": "This uses an unsupported evidence type.",
+      "custody": "qa-pilot-local",
+      "advisory_only": true,
+      "authority_note": "Evidence attachment does not prove defect validity or imply Owner approval.",
+      "attached_at": "2026-07-08T00:00:00Z"
+    }
+  ],
+  "owner_decision_state": "pending",
+  "created_at": "2026-07-08T00:00:00Z",
+  "updated_at": "2026-07-08T00:00:00Z",
+  "advisory_only": true,
+  "custody": "qa-pilot-local",
+  "librarian_impact": "none"
+}

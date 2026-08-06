@@ -1,0 +1,69 @@
+{
+  "guard_id": "MG-INVALID-CROSS-LANE-001",
+  "session_id": "ses_cross_lane_001",
+  "title": "Invalid — Cross-Lane Librarian MCP Calls from QA Pilot",
+  "description": "Agent session called Librarian MCP mutation tools from QA Pilot context without explicit authorization. These calls are not permitted for add-on projects operating in advisory-only mode.",
+  "mcp_calls": [
+    {
+      "call_number": 1,
+      "tool": "project_get_profile",
+      "params_summary": "profile_id=qa-pilot-full-governance",
+      "result": "not_found",
+      "result_detail": "MCP error -32602.",
+      "phase": "startup",
+      "retry": false,
+      "stop_reason": null
+    },
+    {
+      "call_number": 2,
+      "tool": "project_get_cursor",
+      "params_summary": "project_id=qa-pilot",
+      "result": "not_found",
+      "result_detail": "MCP error -32602.",
+      "phase": "startup",
+      "retry": false,
+      "stop_reason": null
+    },
+    {
+      "call_number": 3,
+      "tool": "project_work_get_summary",
+      "params_summary": "project_id=librarian",
+      "result": "success",
+      "result_detail": "Work summary for librarian project retrieved.",
+      "phase": "diagnostic",
+      "retry": false,
+      "stop_reason": null
+    },
+    {
+      "call_number": 4,
+      "tool": "project_work_list_open",
+      "params_summary": "project_id=librarian",
+      "result": "success",
+      "result_detail": "Open work items for librarian project.",
+      "phase": "diagnostic",
+      "retry": false,
+      "stop_reason": null
+    }
+  ],
+  "aggregate": {
+    "total_calls": 4,
+    "unique_tools": 4,
+    "repeated_identical_calls": 0,
+    "repeated_health_checks": 0,
+    "stop_reason_present": false,
+    "cross_lane_detected": true,
+    "bounded": false,
+    "no_auto_retry_loop": true,
+    "terminal_result_recognized": false,
+    "cross_lane_calls": [
+      "project_work_get_summary(project_id=librarian) — Librarian project MCP call from QA Pilot context without authorization",
+      "project_work_list_open(project_id=librarian) — Librarian project MCP call from QA Pilot context without authorization"
+    ]
+  },
+  "advisory_only": true,
+  "custody": "qa-pilot-local",
+  "librarian_impact": "none",
+  "not_seal_authority": "This test fixture does not confer sealing authority.",
+  "not_librarian_mutation_authority": "This test fixture does not authorize Librarian mutation.",
+  "created_at": "2026-07-07T17:54:00Z"
+}

@@ -1,0 +1,37 @@
+{
+  "receipt_id": "odcr-f1aadd9ea5d938c0",
+  "schema": "owner-decision-custody-receipt-v1",
+  "custody_source": "lifecycle",
+  "source_contract": "#23",
+  "decision_type": "approved",
+  "generated_at": "2026-07-06T20:47:40Z",
+  "deterministic": true,
+  "immutable": true,
+  "request": {
+    "project_id": "qa-pilot",
+    "sprint_id": "AG-4",
+    "file_path": "docs/test.md",
+    "transition": "",
+    "reason": "Source test"
+  },
+  "enforcement": {
+    "decision": "ALLOW",
+    "blocker_code": "",
+    "violation_code": "",
+    "triggered_rules": []
+  },
+  "provenance": {
+    "owner_approval_present": false,
+    "owner_approval_ref": "",
+    "approval_is_broad": false
+  },
+  "mutation_status": "mutated",
+  "linked_references": {
+    "sprint_id": "AG-4",
+    "ledger_numbers": [],
+    "source_receipt_id": ""
+  },
+  "sealed_contracts_referenced": [
+    "#25"
+  ]
+}

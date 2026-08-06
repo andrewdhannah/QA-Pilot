@@ -1,0 +1,169 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>PowerPoint</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+      font-size: 13px;
+      background: #fff;
+      color: #1a1a1a;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    :root { --pp-accent: #C43E1C; --pp-accent-dark: #8F2D14; }
+
+    .of-titlebar {
+      height: 32px; background: var(--pp-accent); display: flex; align-items: center;
+      padding: 0 12px; color: #fff; font-size: 12px; font-weight: 500;
+      flex-shrink: 0; gap: 8px;
+    }
+    .of-titlebar svg { width: 16px; height: 16px; fill: #fff; flex-shrink: 0; }
+    .of-titlebar span { flex: 1; }
+    .of-titlebar-btn {
+      border: none; background: transparent; color: #fff;
+      width: 32px; height: 28px; cursor: pointer; border-radius: 3px;
+      display: flex; align-items: center; justify-content: center; font-size: 14px;
+    }
+    .of-titlebar-btn:hover { background: rgba(255,255,255,0.15); }
+
+    .of-ribbon {
+      background: #f6f6f6; border-bottom: 1px solid #d0d0d0; flex-shrink: 0;
+    }
+    .of-ribbon-tabs {
+      display: flex; align-items: center; height: 28px; padding: 0 8px; gap: 0;
+    }
+    .of-ribbon-tab {
+      padding: 4px 14px; font-size: 11px; color: #444; cursor: default;
+      border: 1px solid transparent; border-bottom: none; margin-bottom: -1px;
+      border-radius: 3px 3px 0 0;
+    }
+    .of-ribbon-tab.active {
+      background: #fff; border-color: #d0d0d0; color: #000; font-weight: 500;
+    }
+    .of-ribbon-toolbar {
+      display: flex; align-items: center; height: 36px; padding: 0 8px; gap: 2px;
+      background: #fff; border-bottom: 1px solid #d0d0d0;
+    }
+    .of-ribbon-btn {
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      width: 40px; height: 30px; border: none; background: transparent;
+      border-radius: 3px; cursor: default; color: #444; font-size: 9px; gap: 1px;
+    }
+    .of-ribbon-btn svg { width: 16px; height: 16px; fill: #666; }
+    .of-ribbon-btn:hover { background: #e5e5e5; }
+    .of-sep { width: 1px; height: 20px; background: #d0d0d0; margin: 0 4px; flex-shrink: 0; }
+
+    .of-body { flex: 1; display: flex; overflow: hidden; }
+
+    /* Slide thumbnail panel */
+    .of-thumbs {
+      width: 140px; background: #e8e8e8; border-right: 1px solid #d0d0d0;
+      padding: 8px; overflow-y: auto; flex-shrink: 0; display: flex; flex-direction: column; gap: 8px;
+    }
+    .of-thumb {
+      background: #fff; border: 2px solid transparent; border-radius: 4px;
+      padding: 8px 10px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      font-size: 9px; cursor: default; min-height: 60px;
+      display: flex; align-items: center; justify-content: center; text-align: center;
+    }
+    .of-thumb.active { border-color: var(--pp-accent); }
+    .of-thumb .thumb-label { color: #999; font-size: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+    .of-thumb.num { font-weight: 600; color: #666; font-size: 11px; }
+    .of-thumb.slide-title { font-weight: 600; font-size: 10px; }
+
+    /* Slide canvas */
+    .of-slide-area {
+      flex: 1; display: flex; align-items: center; justify-content: center;
+      background: #e8e8e8; overflow: auto; padding: 24px;
+    }
+    .of-slide {
+      width: 680px; max-width: 100%; aspect-ratio: 16/9;
+      background: #fff; box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+      border-radius: 4px; padding: 48px 56px;
+      display: flex; flex-direction: column; position: relative;
+    }
+    .of-slide h1 { font-size: 28pt; font-weight: 600; color: #C43E1C; margin-bottom: 8px; }
+    .of-slide h2 { font-size: 16pt; font-weight: 400; color: #333; margin-bottom: 24px; }
+    .of-slide ul { padding-left: 24px; font-size: 14pt; line-height: 2; color: #444; }
+    .of-slide .stub-badge {
+      position: absolute; bottom: 16px; right: 20px;
+      font-size: 8pt; color: #bbb;
+    }
+
+    .of-statusbar {
+      height: 24px; background: #f6f6f6; border-top: 1px solid #d0d0d0;
+      display: flex; align-items: center; padding: 0 12px;
+      font-size: 11px; color: #666; flex-shrink: 0; gap: 16px;
+    }
+    .of-statusbar .right { margin-left: auto; }
+  </style>
+</head>
+<body>
+  <div class="of-titlebar">
+    <svg viewBox="0 0 32 32"><rect x="2" y="2" width="28" height="28" rx="4" fill="#C43E1C"/><path d="M10 10h12v2H10zm0 5h12v2H10zm0 5h8v2H10z" fill="white"/></svg>
+    <span>Presentation1 - PowerPoint</span>
+    <button class="of-titlebar-btn">―</button>
+    <button class="of-titlebar-btn">□</button>
+    <button class="of-titlebar-btn">✕</button>
+  </div>
+  <div class="of-ribbon">
+    <div class="of-ribbon-tabs">
+      <span class="of-ribbon-tab active">Home</span>
+      <span class="of-ribbon-tab">Insert</span>
+      <span class="of-ribbon-tab">Design</span>
+      <span class="of-ribbon-tab">Transitions</span>
+      <span class="of-ribbon-tab">Animations</span>
+      <span class="of-ribbon-tab">Slide Show</span>
+      <span class="of-ribbon-tab">Review</span>
+    </div>
+    <div class="of-ribbon-toolbar">
+      <button class="of-ribbon-btn"><svg viewBox="0 0 24 24"><path d="M3 17v-2l16-8 2 2-16 8zm0 4v-2h18v2H3z" fill="currentColor"/></svg><span>Paste</span></button>
+      <button class="of-ribbon-btn"><svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z" fill="currentColor"/></svg><span>New Slide</span></button>
+      <div class="of-sep"></div>
+      <button class="of-ribbon-btn"><svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" fill="currentColor"/></svg><span>Bold</span></button>
+      <button class="of-ribbon-btn"><svg viewBox="0 0 24 24"><path d="M10 4v3h2.21l-3.42 8h-2.6L4 17h12v-3h-2.21l3.42-8h2.6L20 7h-3V4H7z" fill="currentColor"/></svg><span>Italic</span></button>
+      <button class="of-ribbon-btn"><svg viewBox="0 0 24 24"><path d="M5 4h14v2H5zm0 7h14v2H5zm0 7h8v2H5z" fill="currentColor"/></svg><span>Underline</span></button>
+    </div>
+  </div>
+  <div class="of-body">
+    <div class="of-thumbs">
+      <div class="of-thumb active">
+        <div><div class="thumb-label">Slide 1</div></div>
+      </div>
+      <div class="of-thumb">
+        <div><div class="thumb-label">Slide 2</div></div>
+      </div>
+      <div class="of-thumb">
+        <div><div class="thumb-label">Slide 3</div></div>
+      </div>
+      <div class="of-thumb" style="border:1px dashed #ccc;background:#f6f6f6">
+        <span style="color:#999;font-size:20px">+</span>
+      </div>
+    </div>
+    <div class="of-slide-area">
+      <div class="of-slide">
+        <h1>QA Pilot</h1>
+        <h2>Sprint 12 — Release Review</h2>
+        <ul>
+          <li>Checkout validation fix (Bug #4471)</li>
+          <li>Payment gateway timeout (Case #9912)</li>
+          <li>Invoice PDF formatting</li>
+          <li>Regression suite: 142/145 passed</li>
+          <li>Bilingual UI (EN/FR) launch</li>
+        </ul>
+        <div class="stub-badge">Simulator Preview · Edit in full version</div>
+      </div>
+    </div>
+  </div>
+  <div class="of-statusbar">
+    <span>Slide 1 of 3</span>
+    <span>"Office" theme</span>
+    <span class="right">English (Canada)</span>
+  </div>
+</body>
+</html>

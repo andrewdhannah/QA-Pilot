@@ -1,0 +1,18 @@
+{
+  "entry_id": "CDQ-20260706-010",
+  "queued_at": "2026-07-06T17:40:00Z",
+  "status": "owner_reviewed",
+  "source": "startup_report",
+  "finding_type": "review_item",
+  "description": "Duplicate receipt entry detected in index — Owner reviewed and accepted as valid",
+  "custody_context": {
+    "contract_id": "#26",
+    "receipt_count": 12,
+    "detail": "Duplicate receipt CD-20260705-003 reviewed and accepted by Owner"
+  },
+  "advisory": true,
+  "owner_required": true,
+  "owner_decision": "accept",
+  "owner_decided_at": "2026-07-06T17:42:00Z",
+  "cross_project": false
+}

@@ -1,0 +1,15 @@
+{
+  "review_id": "qa-pilot-review-project-state-001",
+  "source_sim_id": "qa-pilot-sim-valid-project-state-001",
+  "review_type": "detailed",
+  "summary": "Project-state sim review: ingested project-state snapshot consumed as reference only. No mutation path was derived from state content. Sim remained advisory throughout. No cross-project data written.",
+  "advisory": true,
+  "no_apply_path": true,
+  "no_train_behavior": true,
+  "no_bridge_behavior": true,
+  "no_mutation_authorized": true,
+  "no_cross_project_write": true,
+  "owner_decision_required": true,
+  "generated_at": "2026-07-05T23:23:00Z",
+  "notes": "Valid detailed review: project-state sim, all invariants held."
+}

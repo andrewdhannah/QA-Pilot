@@ -1,0 +1,33 @@
+{
+  "packet_id": "RP-DEMO-STANDARD-001",
+  "source_evaluation_id": "RD-EVAL-DEMO-PARTIAL-003",
+  "assigned_depth": "standard",
+  "evidence_bundle_review": "E4 evidence bundle: 10 checks, 0 failures. All E4 checks pass.",
+  "per_finding_commentary": [
+    {
+      "finding_ref": "E4-OVERALL",
+      "commentary": "Evidence bundle complete. All 10 E4 checks passed."
+    },
+    {
+      "finding_ref": "RC-OVERALL",
+      "commentary": "All 11 RC consistency checks passed."
+    }
+  ],
+  "consistency_guard_evaluation": "RC guards: 11 checks, 0 failures. All consistency checks pass.",
+  "risk_input_breakdown": {
+    "authority_change": false,
+    "production_path_impact": false,
+    "ledger_registry_change": false,
+    "cross_node_involvement": false,
+    "partial_completion": true,
+    "incomplete_requirements_count": 2,
+    "rc_failures": "0/11",
+    "e4_failures": "0/10"
+  },
+  "recommendation_summary": "Risk score 8 — standard review depth assigned due to partial completion and incomplete requirements. Evidence quality is high. Recommend Owner review with focus on completion plan.",
+  "generated_at": "2026-07-08T07:35:00Z",
+  "authority_disclaimer": "This standard review packet is advisory-only. It does not approve intake, verify evidence, close workbench items, seal results, execute work, or replace Owner decision authority. Owner remains the final decision point. Custody is qa-pilot-local. Librarian impact is none.",
+  "custody": "qa-pilot-local",
+  "advisory_only": true,
+  "librarian_impact": "none"
+}

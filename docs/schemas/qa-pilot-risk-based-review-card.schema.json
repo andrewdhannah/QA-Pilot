@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://qa-pilot.carbideframe/schemas/qa-pilot-risk-based-review-card-v1",
+  "title": "QA Pilot Light Review Card",
+  "description": "Schema for a light review card produced for low-risk results assigned 'light' review depth. 1-page advisory summary. Does not approve, seal, verify, or authorize. Owner remains the final decision point.",
+  "type": "object",
+  "required": [
+    "card_id",
+    "source_evaluation_id",
+    "assigned_depth",
+    "risk_summary",
+    "rc_pass_count",
+    "rc_total_count",
+    "eb_pass_count",
+    "eb_total_count",
+    "clearance_status",
+    "generated_at",
+    "authority_disclaimer",
+    "advisory_only",
+    "custody",
+    "librarian_impact"
+  ],
+  "properties": {
+    "card_id": { "type": "string", "pattern": "^RC-[A-Z0-9_-]+-[0-9]{3,6}$" },
+    "source_evaluation_id": { "type": "string", "pattern": "^RD-EVAL-" },
+    "assigned_depth": { "type": "string", "const": "light" },
+    "risk_summary": { "type": "string", "minLength": 3, "maxLength": 500 },
+    "rc_pass_count": { "type": "integer", "minimum": 0 },
+    "rc_total_count": { "type": "integer", "minimum": 0 },
+    "rc_pass_rate": { "type": "number", "minimum": 0, "maximum": 1 },
+    "eb_pass_count": { "type": "integer", "minimum": 0 },
+    "eb_total_count": { "type": "integer", "minimum": 0 },
+    "eb_pass_rate": { "type": "number", "minimum": 0, "maximum": 1 },
+    "clearance_status": { "type": "string", "enum": ["cleared", "needs_attention"] },
+    "generated_at": { "type": "string", "format": "date-time" },
+    "authority_disclaimer": {
+      "type": "string",
+      "const": "This light review card is advisory-only. It does not approve intake, verify evidence, close workbench items, seal results, execute work, or replace Owner decision authority. Owner remains the final decision point. Custody is qa-pilot-local. Librarian impact is none."
+    },
+    "custody": { "type": "string", "const": "qa-pilot-local" },
+    "advisory_only": { "type": "boolean", "const": true },
+    "librarian_impact": { "type": "string", "const": "none" }
+  },
+  "additionalProperties": false
+}

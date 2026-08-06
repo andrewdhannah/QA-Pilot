@@ -1,0 +1,7 @@
+{
+  "label": "Valid: current evidence store path",
+  "test_type": "ph5_valid_path",
+  "store_path_exists": true,
+  "store_path_valid_json": true,
+  "advisory_only": true
+}

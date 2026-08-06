@@ -1,0 +1,29 @@
+{
+  "$schema": "owner-decision-v1",
+  "decision_id": "OD-EPIC-QA-PILOT-BROWSER-ONLY-DEPLOYMENT-AND-STARTUP-1-BATCH-SEAL",
+  "date": "2026-07-08",
+  "owner": "Andrew Hannah",
+  "epic": "EPIC-QA-PILOT-BROWSER-ONLY-DEPLOYMENT-AND-STARTUP-1",
+  "decision": "BATCH_APPROVE_AND_SEAL",
+  "sprints_sealed": [
+    {"id": "QA-PILOT-BROWSER-ONLY-STARTUP-AND-DEPLOYMENT-CONTRACT-1", "ledger_number": 111},
+    {"id": "QA-PILOT-BROWSER-SPLASH-AND-STARTUP-FLOW-1", "ledger_number": 112},
+    {"id": "QA-PILOT-ADMIN-TEAM-PACKAGE-BUILDER-1", "ledger_number": 113},
+    {"id": "QA-PILOT-LEARNER-LOCAL-IDENTITY-IMPORT-1", "ledger_number": 114},
+    {"id": "QA-PILOT-BROWSER-COURSE-RUNTIME-1", "ledger_number": 115},
+    {"id": "QA-PILOT-LOCAL-PROGRESS-TRACKING-1", "ledger_number": 116},
+    {"id": "QA-PILOT-LEARNER-RESULT-EXPORT-1", "ledger_number": 117},
+    {"id": "QA-PILOT-ADMIN-RESULT-IMPORT-1", "ledger_number": 118},
+    {"id": "QA-PILOT-BROWSER-ONLY-OPERATIONAL-BASELINE-1", "ledger_number": 119}
+  ],
+  "basis": "Browser-only QA Pilot deployment workflow complete. Full trainer→learner→trainer workflow: admin workspace creates deployment-v1 JSON, learner imports identity and completes training via browser-only runtime, exports result-v1 JSON, admin imports results. 7 browser HTML assets. No backend, no auth, no install, no Librarian mutation.",
+  "stop_conditions_clear": {
+    "backend_required": false, "install_required": false, "auth_required": false,
+    "cloud_account_required": false, "cross_project_write": false,
+    "librarian_mutation": false, "authority_expansion": false
+  },
+  "classification": "epic_completion_browser_only_deployment",
+  "authority": "Owner",
+  "status": "sealed",
+  "sealed_at": "2026-07-09T00:00:00Z"
+}

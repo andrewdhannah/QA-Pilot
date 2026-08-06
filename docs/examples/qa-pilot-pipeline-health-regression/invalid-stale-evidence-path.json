@@ -1,0 +1,8 @@
+{
+  "label": "Invalid: stale evidence store path (wrong location)",
+  "test_type": "ph5_stale_path",
+  "store_path": "/Users/andrew/Desktop/CarbideFrame/data/evidence-index.json",
+  "store_path_exists": false,
+  "expected_failure": true,
+  "advisory_only": true
+}

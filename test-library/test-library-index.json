@@ -1,0 +1,51 @@
+{
+  "library_version": "qa-pilot-test-library-v2",
+  "library_name": "QA Pilot Test Library",
+  "description": "Governed test library for the QA-Pilot validation framework. All tests are advisory-only. Test results do not confer authority, seal, or approval.",
+  "generated_at": "2026-07-24",
+  "domains": {
+    "regression": {
+      "count": 3,
+      "path": "regression/",
+      "description": "Regression tests derived from sealed work orders, acceptance gates, and evidence plane invariants"
+    },
+    "security": {
+      "count": 4,
+      "path": "security/",
+      "description": "Security boundary tests: mutation path absence, evidence isolation, authority separation, scoring integrity"
+    },
+    "uat": {
+      "count": 3,
+      "path": "uat/",
+      "description": "User acceptance test workflows: onboarding, owner review, AI agent boundary reception"
+    },
+    "accessibility": {
+      "count": 3,
+      "path": "accessibility/",
+      "description": "Accessibility conformance tests: keyboard navigation, contrast, screen reader semantics"
+    },
+    "performance": {
+      "count": 0,
+      "path": "performance/",
+      "description": "Performance baseline tests (future: startup, SDK latency, validation throughput)"
+    },
+    "ai": {
+      "count": 3,
+      "path": "ai/",
+      "description": "AI qualification benchmarks: instruction adherence, governance awareness, hallucination resistance"
+    },
+    "compliance": {
+      "count": 0,
+      "path": "compliance/",
+      "description": "Regulatory compliance evidence mappings (future: SOC 2, PIPEDA, EU AI Act)"
+    }
+  },
+  "total_tests": 16,
+  "schema": "docs/schemas/qa-test-definition.schema.json",
+  "provenance": {
+    "advisory": true,
+    "no_authority_conferred": true,
+    "source_contract": "qa-test-definition-v1",
+    "expansion_priority": ["uat", "ai", "accessibility", "performance", "compliance"]
+  }
+}

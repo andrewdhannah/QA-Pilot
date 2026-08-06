@@ -1,0 +1,20 @@
+{
+  "checklist_id": "EC-INVALID-ADVISORY-001",
+  "title": "Invalid — advisory_only not true",
+  "description": "This checklist claims approval authority, which violates EC-2.",
+  "evidence_class": "required",
+  "items": [
+    {
+      "item_id": "ECI-INVALID-001",
+      "description": "Claiming seal authority.",
+      "state": "ready",
+      "rationale": "This should be rejected."
+    }
+  ],
+  "pipeline_refs": [
+    { "layer_id": "layer_1", "layer_name": "Evidence Intake", "sprint_id": "QA-PILOT-MCP-EVIDENCE-INTAKE-1", "sealed_number": 33 }
+  ],
+  "advisory_only": false,
+  "custody": "qa-pilot-local",
+  "librarian_impact": "none"
+}

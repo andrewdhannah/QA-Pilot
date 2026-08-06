@@ -1,0 +1,27 @@
+{
+  "packet_id": "ARP-GAP-001",
+  "sprint_id": "QA-PILOT-HYPOTHETICAL-GAP-1",
+  "ledger_number": 63,
+  "prior_sealed_head": "#62 hypothetical",
+  "claimed_posture": "Evidence gap test packet.",
+  "completion_summary": "Packet with missing validator results to test gap detection.",
+  "posture_sections": {
+    "sealed_head": "#63",
+    "sealed_number": 63,
+    "registry_layer_count": 28,
+    "registry_classification": "unknown",
+    "rcr_receipts_found": null,
+    "rcr_status": null,
+    "rcg_coverage_gap": null,
+    "rcg_status": null,
+    "srs_captured_at": null,
+    "srs_current": null
+  },
+  "validator_results": [],
+  "librarian_impact": "none",
+  "pending_owner_decision": "unknown",
+  "advisory_only": true,
+  "defines_new_authority": false,
+  "mode_owner": "librarian",
+  "created_at": "2026-07-07T22:32:00Z"
+}

@@ -1,0 +1,171 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://qa-pilot.carbideframe/schemas/qa-pilot-checklist-review-packet-v1",
+  "title": "QA Pilot Checklist Review Packet",
+  "description": "Schema for QA Pilot checklist review packets. A review packet summarizes an evidence checklist (#44) into an Owner-facing decision surface. It reports checklist identity, item counts by state (blocked/degraded/ready), source evidence references, and explicit authority boundary assertions. Advisory-only, QA Pilot-local custody, no Librarian mutation.",
+  "type": "object",
+  "required": [
+    "review_packet_id",
+    "source_checklist_id",
+    "title",
+    "item_summary",
+    "advisory_only",
+    "custody",
+    "librarian_impact",
+    "not_seal_authority",
+    "not_librarian_mutation_authority",
+    "created_at"
+  ],
+  "properties": {
+    "review_packet_id": {
+      "type": "string",
+      "pattern": "^CRP-[A-Z0-9-]+$",
+      "description": "Unique review packet identifier (e.g. CRP-PIPELINE-REVIEW-001)."
+    },
+    "source_checklist_id": {
+      "type": "string",
+      "pattern": "^EC-[A-Z0-9-]+$",
+      "description": "The evidence checklist this packet reviews (must reference an existing EC-* ID)."
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Human-readable title for this review packet."
+    },
+    "description": {
+      "type": "string",
+      "minLength": 10,
+      "description": "What this review packet covers and the context of the review."
+    },
+    "item_summary": {
+      "type": "object",
+      "required": ["total", "blocked", "degraded", "ready"],
+      "properties": {
+        "total": { "type": "integer", "minimum": 0 },
+        "blocked": { "type": "integer", "minimum": 0 },
+        "degraded": { "type": "integer", "minimum": 0 },
+        "ready": { "type": "integer", "minimum": 0 }
+      },
+      "additionalProperties": false,
+      "description": "Count of checklist items by readiness state. total = blocked + degraded + ready."
+    },
+    "overall_state": {
+      "type": "string",
+      "enum": ["blocked", "degraded", "ready"],
+      "description": "Aggregate readiness state. 'blocked' if any required item is blocked, 'degraded' if any required item is degraded and none blocked, 'ready' if all required items are ready."
+    },
+    "source_evidence_refs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["pipeline_layer", "ref"],
+        "properties": {
+          "pipeline_layer": { "type": "string" },
+          "packet_type": { "type": "string" },
+          "ref": { "type": "string" }
+        },
+        "additionalProperties": false
+      },
+      "description": "References to the evidence sources that informed this review."
+    },
+    "blocked_items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["item_id", "description", "rationale"],
+        "properties": {
+          "item_id": { "type": "string" },
+          "description": { "type": "string" },
+          "rationale": { "type": "string", "minLength": 10 }
+        },
+        "additionalProperties": false
+      },
+      "description": "Items that are blocked, with rationale. Present if any blocked items exist."
+    },
+    "advisory_only": {
+      "type": "boolean",
+      "const": true,
+      "description": "All QA Pilot review packets are advisory. Must be true."
+    },
+    "custody": {
+      "type": "string",
+      "pattern": "^qa-pilot-local$",
+      "description": "Custody boundary. Must be qa-pilot-local."
+    },
+    "librarian_impact": {
+      "type": "string",
+      "const": "none",
+      "description": "No Librarian mutation permitted. Must be none."
+    },
+    "not_seal_authority": {
+      "type": "string",
+      "minLength": 20,
+      "description": "Explicit assertion that this packet does not confer sealing authority. Must be at least 20 characters."
+    },
+    "not_librarian_mutation_authority": {
+      "type": "string",
+      "minLength": 20,
+      "description": "Explicit assertion that this packet does not authorize Librarian mutation. Must be at least 20 characters."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp when this review packet was created."
+    },
+    "created_by": {
+      "type": "string",
+      "description": "Agent or tool that created this review packet."
+    },
+    "pipeline_refs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["layer_id", "layer_name", "sprint_id", "sealed_number"],
+        "properties": {
+          "layer_id": { "type": "string" },
+          "layer_name": { "type": "string" },
+          "sprint_id": { "type": "string" },
+          "sealed_number": { "type": "integer", "minimum": 33 }
+        },
+        "additionalProperties": false
+      },
+      "description": "References to the sealed pipeline layers that source this review."
+    }
+  },
+  "allOf": [
+    {
+      "description": "total must equal blocked + degraded + ready.",
+      "if": {
+        "required": ["item_summary"]
+      },
+      "then": {
+        "properties": {
+          "item_summary": {
+            "type": "object",
+            "required": ["total", "blocked", "degraded", "ready"]
+          }
+        }
+      }
+    },
+    {
+      "description": "If any blocked items exist, blocked_items must be present and non-empty.",
+      "if": {
+        "properties": {
+          "item_summary": {
+            "properties": {
+              "blocked": { "type": "integer", "minimum": 1 }
+            },
+            "required": ["blocked"]
+          }
+        },
+        "required": ["item_summary"]
+      },
+      "then": {
+        "required": ["blocked_items"],
+        "properties": {
+          "blocked_items": { "minItems": 1 }
+        }
+      }
+    }
+  ]
+}

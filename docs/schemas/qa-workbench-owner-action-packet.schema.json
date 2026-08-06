@@ -1,0 +1,103 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://qa-pilot.carbideframe/schemas/qa-workbench-owner-action-packet-v1",
+  "title": "QA Workbench Owner Action Packet",
+  "description": "Schema for a bounded Owner action packet. Converts an Owner review decision receipt into an executable-but-not-self-executing action path for downstream work. Packet creation records the intended next action path only. It does not execute the action, approve intake, verify evidence, close items, seal work, mutate source records, or create autonomous authority.",
+  "type": "object",
+  "required": [
+    "action_packet_id",
+    "source_receipt_id",
+    "source_summary_id",
+    "source_intake_id",
+    "source_item_ids",
+    "source_evidence_ids",
+    "action_state",
+    "decision",
+    "rationale",
+    "created_at",
+    "authority_disclaimer",
+    "advisory_only",
+    "custody",
+    "librarian_impact"
+  ],
+  "properties": {
+    "action_packet_id": {
+      "type": "string",
+      "pattern": "^AP-[A-Z0-9]+-[0-9]{4,6}$",
+      "description": "Unique action packet identifier (e.g. AP-ACTION-0001)."
+    },
+    "source_receipt_id": {
+      "type": "string",
+      "pattern": "^WDR-",
+      "description": "The workbench decision receipt ID that this action packet derives from."
+    },
+    "source_summary_id": {
+      "type": "string",
+      "pattern": "^DS-",
+      "description": "The decision summary ID that this action packet references."
+    },
+    "source_intake_id": {
+      "type": "string",
+      "pattern": "^IR-",
+      "description": "The intake record ID that this action packet references."
+    },
+    "source_item_ids": {
+      "type": "array",
+      "items": { "type": "string", "pattern": "^QA-" },
+      "minItems": 1,
+      "description": "Workbench item IDs relevant to this action packet."
+    },
+    "source_evidence_ids": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Evidence artifact IDs (EP-*, QR-*, etc.) relevant to this action packet."
+    },
+    "action_state": {
+      "type": "string",
+      "enum": ["proposed", "owner_authorized", "deferred", "rejected"],
+      "description": "Current state of the action packet. proposed = created from decision, not yet acted. owner_authorized = Owner explicitly authorized. deferred = postponed. rejected = declined."
+    },
+    "decision": {
+      "type": "string",
+      "enum": ["accepted_for_action", "authorized", "deferred", "rejected"],
+      "description": "The Owner decision from the source receipt."
+    },
+    "rationale": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 2000,
+      "description": "Owner rationale for the action. Must not imply execution, approval, verification, or seal authority."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp when the action packet was created."
+    },
+    "owner_note": {
+      "type": "string",
+      "maxLength": 2000,
+      "description": "Optional additional Owner note for downstream workers."
+    },
+    "authority_disclaimer": {
+      "type": "string",
+      "const": "This Owner action packet records the intended next action path only. It does not execute the action, approve intake, verify evidence, close workbench items, seal work, mutate source records, or create autonomous authority. Custody is qa-pilot-local. Librarian impact is none.",
+      "description": "Standard authority disclaimer. Must match exactly."
+    },
+    "custody": {
+      "type": "string",
+      "const": "qa-pilot-local",
+      "description": "Must always be qa-pilot-local."
+    },
+    "advisory_only": {
+      "type": "boolean",
+      "const": true,
+      "description": "Must always be true. Action packets are advisory-only."
+    },
+    "librarian_impact": {
+      "type": "string",
+      "const": "none",
+      "description": "Must always be none."
+    }
+  },
+  "additionalProperties": false
+}

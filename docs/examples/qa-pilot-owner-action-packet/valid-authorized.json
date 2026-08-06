@@ -1,0 +1,16 @@
+{
+  "action_packet_id": "AP-AUTH-0001",
+  "source_receipt_id": "WDR-AUTH-0001",
+  "source_summary_id": "DS-REVIEW-0001",
+  "source_intake_id": "IR-REVIEW-0001",
+  "source_item_ids": ["QA-FUNC-0001"],
+  "source_evidence_ids": [],
+  "action_state": "owner_authorized",
+  "decision": "authorized",
+  "rationale": "Owner explicitly authorizes triage and evidence collection for the functional finding.",
+  "created_at": "2026-07-08T02:46:00Z",
+  "authority_disclaimer": "This Owner action packet records the intended next action path only. It does not execute the action, approve intake, verify evidence, close workbench items, seal work, mutate source records, or create autonomous authority. Custody is qa-pilot-local. Librarian impact is none.",
+  "custody": "qa-pilot-local",
+  "advisory_only": true,
+  "librarian_impact": "none"
+}

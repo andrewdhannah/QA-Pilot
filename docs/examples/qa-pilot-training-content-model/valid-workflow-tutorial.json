@@ -1,0 +1,44 @@
+{
+  "schema_version": "training-content-v1",
+  "pack_id": "TC-VALID-06",
+  "title": "Workflow Tutorial",
+  "artifact_type": "workflow_tutorial",
+  "intended_audience": "developer",
+  "generated_at": "2026-07-08T22:00:00Z",
+  "content": {
+    "sections": [
+      {
+        "id": "pipeline-setup",
+        "title": "Setting Up the CI Pipeline",
+        "body": "Step-by-step walkthrough for configuring a continuous integration pipeline.",
+        "sources": [
+          "docs/workflows/ci-pipeline.md"
+        ],
+        "exercises": [
+          {
+            "prompt": "Configure a new CI pipeline for the sample project.",
+            "expected_outcome": "Pipeline runs successfully with all stages passing."
+          }
+        ]
+      }
+    ]
+  },
+  "provenance": {
+    "librarian_sources": [
+      {
+        "path": "docs/workflows/ci-pipeline.md",
+        "revision": "pqr678"
+      }
+    ],
+    "generator": "qa-pilot-content-model-test",
+    "generator_version": "1.0.0",
+    "source_hash": "6aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+  },
+  "governance": {
+    "authority_posture": "advisory",
+    "owner_decision_required_for_publish": true,
+    "validation_status": "draft",
+    "source_coverage_pct": 85,
+    "ownership_state": "owned_by_librarian"
+  }
+}

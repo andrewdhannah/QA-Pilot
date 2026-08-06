@@ -1,0 +1,55 @@
+{
+  "receipt_type": "owner_decision_seal",
+  "decision_id": "OD-LIFECYCLE-CUSTODY-EXTENSION-1-SEAL",
+  "project_id": "qa-pilot",
+  "sprint_id": "LIFECYCLE-CUSTODY-EXTENSION-1",
+  "ledger_number": 25,
+  "decision": "APPROVE_AND_SEAL",
+  "approved_by": "Andrew Hannah (Owner)",
+  "approved_at": "2026-07-06T01:44:15Z",
+  "decision_basis": [
+    "lifecycle transition attempts invoke custody before state mutation",
+    "unauthorized lifecycle transitions rejected",
+    "governed lifecycle transitions require Owner approval",
+    "approval provenance preserved",
+    "denied lifecycle transitions produce receipts without mutation",
+    "dry-run lifecycle transition returns decision without mutation",
+    "does not bypass PROJECT-WIDE-WRITE-CUSTODY-ENFORCEMENT-1",
+    "does not alter LIVE-CUSTODY-INTEGRATION-1",
+    "authority-file lifecycle effects warn and require Owner approval",
+    "sealed lifecycle evidence immutable",
+    "generated lifecycle state deterministic-tool-only",
+    "non-deterministic lifecycle mutation blocked",
+    "broad lifecycle approval rejected",
+    "auto-promotion blocked",
+    "lifecycle custody runner passed 24/24",
+    "live custody integration runner passed 19/19",
+    "project-wide write custody enforcement runner passed 16/16",
+    "startup regression passed 15/15",
+    "parity matrix passed 13/13",
+    "existing validators passed 14/14",
+    "startup managed and MCP reachable"
+  ],
+  "seal_conditions": [
+    "LIFECYCLE-CUSTODY-EXTENSION-1 is accepted as QA Pilot-local lifecycle custody governance",
+    "The sprint extends custody checks across lifecycle transitions while preserving sealed #23 and #24 contracts unchanged",
+    "This seal does not grant Librarian mutation authority, cross-project lifecycle authority, auto-promotion, auto-approval, auto-seal, or auto-execution"
+  ],
+  "boundary_assertion": {
+    "project_boundary": "qa-pilot",
+    "lane": "parallel_planning",
+    "librarian_impact": "none",
+    "cross_project_registration": false,
+    "runtime_mutation_authorized": false,
+    "implementation_authorized": true
+  },
+  "evidence": [
+    "scripts/lifecycle-custody-extension.py (15 LC rules, live/dry-run modes)",
+    "scripts/test-lifecycle-custody-extension.sh (24 tests, 24/24 pass)",
+    "docs/governance/LIFECYCLE-CUSTODY-EXTENSION.md (9 sections)",
+    "docs/examples/lifecycle-custody-extension/ (6 fixtures: 2 valid + 4 invalid)",
+    "docs/sprints/LIFECYCLE-CUSTODY-EXTENSION-1.md",
+    "project-state/sprint-ledger.json (entry #25)"
+  ],
+  "authorized_next_sprint": "OWNER-DECISION-CUSTODY-RECEIPTS-1 — unify receipts for write custody, live custody, and lifecycle custody into a single Owner-reviewable decision trail"
+}

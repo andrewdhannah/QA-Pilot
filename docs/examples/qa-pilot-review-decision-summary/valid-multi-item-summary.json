@@ -1,0 +1,61 @@
+{
+  "summary_id": "DS-REVIEW-0002",
+  "intake_id": "IR-REVIEW-0002",
+  "source_packet_id": "XPK-QUERY-0708-3",
+  "item_count": 3,
+  "status_counts": {
+    "open": 1,
+    "triaged": 1,
+    "evidence_attached": 1
+  },
+  "severity_counts": {
+    "low": 1,
+    "medium": 1,
+    "high": 1
+  },
+  "evidence_summary": {
+    "total_links": 1,
+    "by_type": {
+      "validator_output": 1
+    },
+    "found": 1,
+    "missing": 1,
+    "stale": 0
+  },
+  "lifecycle_summary": {
+    "total_transitions": 3,
+    "by_status": {
+      "open": 2,
+      "triaged": 1,
+      "evidence_attached": 1
+    }
+  },
+  "unresolved_items": [
+    {
+      "qa_item_id": "QA-QUERY-1000",
+      "status": "open",
+      "severity": "medium"
+    },
+    {
+      "qa_item_id": "QA-QUERY-2000",
+      "status": "triaged",
+      "severity": "high"
+    },
+    {
+      "qa_item_id": "QA-QUERY-3000",
+      "status": "evidence_attached",
+      "severity": "low"
+    }
+  ],
+  "needs_review_items": [],
+  "deferred_items": [],
+  "resolved_locally_items": [],
+  "advisory_next_actions": [
+    "collect_evidence",
+    "triage_intake"
+  ],
+  "authority_disclaimer": "This review decision summary is advisory-only. It does not approve the intake, verify evidence, accept defects, close items, or seal anything. It does not mutate intake records, source packets, or Librarian. Custody is qa-pilot-local. Librarian impact is none.",
+  "custody": "qa-pilot-local",
+  "advisory_only": true,
+  "librarian_impact": "none"
+}

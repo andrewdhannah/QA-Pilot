@@ -1,0 +1,36 @@
+{
+  "packet_id": "EP-20260706-011",
+  "project": "librarian",
+  "sprint_id": "SOME-LIBRARIAN-SPRINT",
+  "source_ledger": "librarian",
+  "changed_files": [
+    {
+      "path": "Sources/App/Feature.swift",
+      "change_type": "modified",
+      "diff_summary": "Modified feature per sprint"
+    }
+  ],
+  "validation_output": {
+    "tests_passed": 42,
+    "tests_failed": 0,
+    "summary": "All Librarian tests pass"
+  },
+  "receipt_references": ["librarian-receipt-042"],
+  "boundary_assertions": {
+    "librarian_impact": "none",
+    "cross_project_registration": false
+  },
+  "known_defects": [],
+  "evidence_artifacts": [],
+  "provenance": {
+    "source": "librarian-export",
+    "timestamp": "2026-07-06T19:00:00Z"
+  },
+  "hash": "b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3",
+  "_source_project_metadata": {
+    "source_project_id": "librarian",
+    "exported_by": "Agent workflow",
+    "export_timestamp": "2026-07-06T19:00:00Z",
+    "cross_project_authorization": "advisory-only"
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "$schema": "owner-decision-v1",
+  "decision_id": "OD-EPIC-QA-PILOT-ASSURANCE-OPERATIONS-INTEGRATION-1-AUTHORIZATION",
+  "date": "2026-07-20",
+  "owner": "Andrew Hannah",
+  "epic": "EPIC-QA-PILOT-ASSURANCE-OPERATIONS-INTEGRATION-1",
+  "decision": "AUTHORIZE_EPIC_WITH_BOUNDED_CONTINUATION",
+  "basis": "Transition from building assurance primitives to proving assurance operates continuously across projects, surfaces, evidence sources, and Owner decisions. The #166-#200 capability build-out is complete (milestone QA-PILOT-ASSURANCE-OPERATING-LAYER-1). The next phase is Assurance Operations Integration — demonstrating the loop works repeatedly in real project operation, not adding more isolated capabilities.",
+  "epic_sequence": [
+    {"sprint": "QA-PILOT-CANONICAL-ASSURANCE-BASELINE-RECONCILIATION-1", "purpose": "Freeze the post-#200 operating baseline. Verify lifecycle chain integrity. Establish operational baseline metrics before introducing new surfaces. Entry gate for the new epic."},
+    {"sprint": "QA-PILOT-ASSURANCE-LAYER-REGISTRY-RECONCILIATION-1", "purpose": "Pre-dashboard data reconciliation. Extend pipeline layer registry coverage through slot 200. Regenerate health expected layers. Ensure source-of-truth layer map is complete before dashboard renders assurance state."},
+    {"sprint": "QA-PILOT-OWNER-DASHBOARD-INTEGRATION-1", "purpose": "Expose assurance state through the main governance dashboard. Inputs: finding lifecycle, risk prioritization, release readiness, evidence freshness. Output: Owner-facing assurance surface."},
+    {"sprint": "QA-PILOT-PROJECT-ASSURANCE-ROUTING-1", "purpose": "Validate that multiple projects can independently produce assurance state. Needs: project isolation, finding routing, evidence namespace separation, cross-project overview."},
+    {"sprint": "QA-PILOT-ASSURANCE-CALIBRATION-1", "purpose": "Run the system over sustained project activity. Measure: finding aging, false-positive rate, MONITOR growth, Owner workload, escalation thresholds."},
+    {"sprint": "QA-PILOT-ASSURANCE-GOVERNANCE-MATURITY-1", "purpose": "Potential additions: assurance SLAs, historical trend analysis, assurance scorecards, release gates as recommendations only."}
+  ],
+  "bounded_continuation": true,
+  "stop_conditions": {
+    "scope_exceeded": false,
+    "backend_required": false,
+    "auth_required": false,
+    "install_required": false,
+    "cross_project_write": false,
+    "librarian_mutation": false,
+    "autonomous_publication": false,
+    "sealed_epic_mutated": false
+  },
+  "classification": "epic_authorization_assurance_operations_integration",
+  "authority": "Owner",
+  "status": "authorized",
+  "authorized_at": "2026-07-20T00:00:00Z"
+}

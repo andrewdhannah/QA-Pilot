@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QA Pilot — Session Launcher</title>
+    <style>
+        /*
+         * QA-Pilot-Session.html — Session Launcher
+         * ==========================================
+         * Opens QA Pilot (index.html) AND the Debugger (debug/index.html)
+         * in two separate browser tabs in a single click.
+         *
+         * Both window.open() calls live in the same click handler so browsers
+         * treat them as one user gesture — popup blockers won't interfere.
+         *
+         * If a browser still blocks the second tab, the individual buttons
+         * at the bottom let Elyse open each one manually.
+         */
+
+        *, *::before, *::after { box-sizing: border-box; }
+
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #1b1a19;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .launcher {
+            text-align: center;
+            max-width: 520px;
+            padding: 48px 32px;
+            width: 100%;
+        }
+
+        /* Bug emoji logo */
+        .launcher-logo {
+            font-size: 64px;
+            line-height: 1;
+            margin-bottom: 24px;
+        }
+
+        .launcher-title {
+            font-size: 32px;
+            font-weight: 700;
+            color: #ffffff;
+            margin: 0 0 8px;
+            letter-spacing: -0.5px;
+        }
+
+        .launcher-subtitle {
+            font-size: 15px;
+            color: #a19f9d;
+            margin: 0 0 40px;
+        }
+
+        /* Big primary launch button */
+        .btn-launch {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            padding: 18px 32px;
+            background: #0078d4;
+            color: #ffffff;
+            border: none;
+            border-radius: 4px;
+            font-size: 17px;
+            font-weight: 600;
+            font-family: inherit;
+            cursor: pointer;
+            transition: background 0.15s, transform 0.1s;
+            margin-bottom: 16px;
+        }
+
+        .btn-launch:hover  { background: #106ebe; }
+        .btn-launch:active { transform: scale(0.98); }
+
+        .btn-launch .btn-icon { font-size: 20px; }
+
+        /* What will open — pill labels */
+        .opens-label {
+            font-size: 12px;
+            color: #605e5c;
+            margin-bottom: 32px;
+        }
+
+        .opens-label .pill {
+            display: inline-block;
+            background: #323130;
+            border: 1px solid #484644;
+            border-radius: 10px;
+            padding: 2px 10px;
+            margin: 0 3px;
+            font-size: 11px;
+            color: #a19f9d;
+        }
+
+        /* Divider */
+        .divider {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #484644;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 16px;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: #484644;
+        }
+
+        /* Individual buttons row */
+        .btn-row {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn-individual {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px 16px;
+            background: #323130;
+            color: #d2d0ce;
+            border: 1px solid #484644;
+            border-radius: 4px;
+            font-size: 13px;
+            font-weight: 500;
+            font-family: inherit;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background 0.1s, border-color 0.1s, color 0.1s;
+        }
+
+        .btn-individual:hover {
+            background: #3b3a39;
+            border-color: #605e5c;
+            color: #ffffff;
+        }
+
+        .btn-individual .icon { font-size: 16px; }
+
+        /* Status message (shown after launch) */
+        .status-msg {
+            margin-top: 24px;
+            padding: 10px 16px;
+            border-radius: 4px;
+            font-size: 13px;
+            display: none;
+        }
+
+        .status-msg.success {
+            display: block;
+            background: #1b3a1b;
+            border: 1px solid #107c10;
+            color: #57a300;
+        }
+
+        .status-msg.blocked {
+            display: block;
+            background: #3a2a1b;
+            border: 1px solid #835b00;
+            color: #ffb900;
+        }
+
+        /* Footer note */
+        .launcher-note {
+            margin-top: 32px;
+            font-size: 11px;
+            color: #484644;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+
+<div class="launcher">
+
+    <div class="launcher-logo">🐞</div>
+
+    <h1 class="launcher-title">QA Pilot</h1>
+    <p class="launcher-subtitle">Session Launcher — opens the training app and debugger together</p>
+
+    <!-- Primary: open both -->
+    <button class="btn-launch" id="btn-launch-both" onclick="launchBoth()">
+        <span class="btn-icon">🚀</span>
+        Start QA Session
+    </button>
+
+    <div class="opens-label">
+        Opens <span class="pill">🖥 QA Pilot</span> and <span class="pill">🐞 Debugger</span> in separate tabs
+    </div>
+
+    <div class="status-msg" id="status-msg"></div>
+
+    <!-- Fallback: open individually -->
+    <div class="divider">or open individually</div>
+
+    <div class="btn-row">
+        <a class="btn-individual" href="index.html" target="_blank" rel="noopener">
+            <span class="icon">🖥</span>
+            QA Pilot
+        </a>
+        <a class="btn-individual" href="debug/index.html" target="_blank" rel="noopener">
+            <span class="icon">🐞</span>
+            Debugger
+        </a>
+    </div>
+
+    <p class="launcher-note">
+        If only one tab opens, your browser may have blocked a popup.<br>
+        Allow popups for this page, or use the individual buttons above.
+    </p>
+
+</div>
+
+<script>
+    /**
+     * launchBoth()
+     * ============
+     * Opens QA Pilot and the Debugger in two separate tabs.
+     *
+     * Both window.open() calls are inside one click handler (one user
+     * gesture) so browsers grant both without triggering popup blockers.
+     *
+     * We check whether window.open() returned a valid window object —
+     * if either returns null, the popup was blocked and we show a warning.
+     */
+    function launchBoth() {
+        var tab1 = window.open('index.html',       '_blank', 'noopener');
+        var tab2 = window.open('debug/index.html', '_blank', 'noopener');
+
+        var msg = document.getElementById('status-msg');
+        var btn = document.getElementById('btn-launch-both');
+
+        var blocked = (!tab1 || !tab2);
+
+        if (!blocked) {
+            // Both tabs opened successfully
+            msg.className  = 'status-msg success';
+            msg.textContent = '✓ Both tabs opened. Switch over to get started!';
+            btn.textContent = '✓ Session launched';
+            btn.style.background = '#107c10';
+        } else {
+            // At least one was blocked
+            msg.className  = 'status-msg blocked';
+            msg.textContent = '⚠ A popup was blocked. Allow popups for this page, ' +
+                              'then try again — or use the individual buttons below.';
+        }
+    }
+</script>
+
+</body>
+</html>

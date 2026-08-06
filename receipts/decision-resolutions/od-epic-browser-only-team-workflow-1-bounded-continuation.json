@@ -1,0 +1,26 @@
+{
+  "$schema": "owner-decision-v1",
+  "decision_id": "OD-EPIC-QA-PILOT-BROWSER-ONLY-TEAM-WORKFLOW-1-BOUNDED-CONTINUATION",
+  "date": "2026-07-08",
+  "owner": "Andrew Hannah",
+  "epic": "EPIC-QA-PILOT-BROWSER-ONLY-DEPLOYMENT-AND-STARTUP-1",
+  "sprints_authorized": [
+    "QA-PILOT-ADMIN-TEAM-PACKAGE-BUILDER-1",
+    "QA-PILOT-LEARNER-LOCAL-IDENTITY-IMPORT-1",
+    "QA-PILOT-BROWSER-COURSE-RUNTIME-1",
+    "QA-PILOT-LOCAL-PROGRESS-TRACKING-1",
+    "QA-PILOT-LEARNER-RESULT-EXPORT-1",
+    "QA-PILOT-ADMIN-RESULT-IMPORT-1",
+    "QA-PILOT-BROWSER-ONLY-OPERATIONAL-BASELINE-1"
+  ],
+  "decision": "AUTHORIZE_BOUNDED_CONTINUATION",
+  "guardrails": [
+    "Static browser only", "No backend", "No install", "No server authentication",
+    "No password/account system", "Deployment/result JSON is custody boundary",
+    "Local identity ≠ authentication", "No Librarian mutation",
+    "No cross-project write", "No autonomous publication"
+  ],
+  "authority": "Owner",
+  "status": "authorized",
+  "authorized_at": "2026-07-08T23:55:00Z"
+}

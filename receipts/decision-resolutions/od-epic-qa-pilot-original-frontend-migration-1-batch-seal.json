@@ -1,0 +1,35 @@
+{
+  "$schema": "owner-decision-v1",
+  "decision_id": "OD-EPIC-QA-PILOT-ORIGINAL-FRONTEND-MIGRATION-1-BATCH-SEAL",
+  "date": "2026-07-09",
+  "owner": "Andrew Hannah",
+  "epic": "EPIC-QA-PILOT-ORIGINAL-FRONTEND-MIGRATION-1",
+  "decision": "BATCH_APPROVE_AND_SEAL",
+  "sprints_sealed": [
+    {"id": "QA-PILOT-ORIGINAL-FRONTEND-PARITY-AUDIT-1", "ledger_number": 125},
+    {"id": "QA-PILOT-ORIGINAL-ASSET-INVENTORY-1", "ledger_number": 126},
+    {"id": "QA-PILOT-ADMIN-CONSOLE-DESIGN-PORT-1", "ledger_number": 127},
+    {"id": "QA-PILOT-LEARNER-PORTAL-DESIGN-PORT-1", "ledger_number": 128},
+    {"id": "QA-PILOT-COURSE-RUNTIME-DESIGN-PORT-1", "ledger_number": 129},
+    {"id": "QA-PILOT-QUIZ-FLOW-PORT-1", "ledger_number": 130},
+    {"id": "QA-PILOT-CERTIFICATE-PORT-1", "ledger_number": 131},
+    {"id": "QA-PILOT-I18N-PORT-1", "ledger_number": 132},
+    {"id": "QA-PILOT-WORKFLOW-INTEGRATION-1", "ledger_number": 133},
+    {"id": "QA-PILOT-FRONTEND-OPERATIONAL-BASELINE-1", "ledger_number": 134}
+  ],
+  "basis": "Frontend migration epic complete. All 9 sprints sealed (#125-#134): parity audit identified gaps, asset inventory ported 8 original assets, admin console/learner portal/course runtime/quiz flow/certificate/i18n/workflow integration all ported original design into browser-only assets. Operational baseline (#134) locks design parity checklist, file inventory, browser-only constraints, maintenance rules. No backend, no auth, no install, no Librarian mutation. Original design language preserved across all 8 pages.",
+  "stop_conditions_clear": {
+    "backend_required": false,
+    "install_required": false,
+    "auth_required": false,
+    "cloud_account_required": false,
+    "cross_project_write": false,
+    "librarian_mutation": false,
+    "authority_expansion": false,
+    "greenfield_replacement": false
+  },
+  "classification": "epic_completion_frontend_migration",
+  "authority": "Owner",
+  "status": "sealed",
+  "sealed_at": "2026-07-09T19:55:00Z"
+}

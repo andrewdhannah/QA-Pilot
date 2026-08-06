@@ -1,0 +1,31 @@
+{
+  "profile_schema": "qa-project-validation-profile-v1",
+  "profile_id": "VP-LIBRARIAN-001",
+  "project_id": "librarian",
+  "project_type": "governance",
+  "validation_profile": "release-validation-v1",
+  "qa_pilot_version": ">=1.0.0",
+  "enabled_domains": [
+    "regression",
+    "security",
+    "uat",
+    "accessibility",
+    "ai"
+  ],
+  "required_reviews": ["owner"],
+  "contract_refs": [
+    "learning-object-v1",
+    "qa-pilot-sdk-integration",
+    "qa-pilot-epic-scenario-suite",
+    "qa-pilot-receipt"
+  ],
+  "evidence_source": "sdk",
+  "adapter_ref": "active/qa-pilot/adapters/project-adapter-librarian.json",
+  "startup_routing": {
+    "resolved_by": "startup plugin",
+    "available": true,
+    "next_pipeline_action": "run-pipeline"
+  },
+  "advisory_only": true,
+  "no_seal_authority": true
+}

@@ -1,0 +1,47 @@
+{
+  "authority" : {
+    "applies_changes" : false,
+    "closes_work" : false,
+    "owner_decision_recorded" : false,
+    "packet_authorized" : true,
+    "result_validated" : false,
+    "worker_trusted" : false
+  },
+  "canonical_intake" : {
+    "http_endpoint" : "\/api\/work-results\/intake",
+    "mcp_tool" : "project_work_result_intake",
+    "required_packet_linkage" : true
+  },
+  "created_at" : "2026-07-10T18:54:29Z",
+  "dispatch_id" : "spd-qa-pilot-20260710-1",
+  "dispatch_status" : "dispatched",
+  "governance_mode" : "DELEGATED_DISPATCH",
+  "packet_authorization_id" : "OD-qa-pilot-20260710-260710-1",
+  "project_id" : "qa-pilot",
+  "work_packet_id" : "wp-qa-pilot-20260710-1",
+  "worker_context" : {
+    "allowed_scope" : [
+      "Capture and verify Owner authorization for Option A migration (apr_e18aa164 \/ apt_bb2995d2)",
+      "Inspect exact paths in both sources (read-only) for Sprint 1 inventory",
+      "Snapshot current CarbideFrame QA Pilot state and archive docs\/schemas\/browser-assets\/ as design reference",
+      "Verify no governance files will be overwritten by the future copy step",
+      "Produce final copy manifest at reports\/qa-pilot-migration-copy-manifest-1.json",
+      "Correct overstated status in FEATURE-STATUS.md and SESSION-HANDOFF.md (visual parity 3\/5 -> 2\/5; I18N '5\/5 complete' -> paused\/unsealed)",
+      "Re-scope in-flight visual parity and paused I18N epics in SESSION-HANDOFF.md",
+      "Create the epic governance doc and the Sprint 1 doc",
+      "Run startup checks; confirm managed; confirm no governance regression",
+      "Emit Sprint 1 completion report and stop for Owner direction"
+    ],
+    "execution_context_id" : "spd-qa-pilot-20260710-1",
+    "forbidden_actions" : [
+      "mutate_carbideframe_governance_files",
+      "mutate_carbideframe_librarian_files",
+      "mutate_openwork_qa_pilot_source",
+      "add_backend_auth_telemetry_external_dependencies",
+      "continue_visual_parity_or_i18n_wiring_work",
+      "archive_or_supersede_openwork_source",
+      "seal_epic_without_owner_decision"
+    ],
+    "worker_type" : "qa-pilot-migration-worker"
+  }
+}

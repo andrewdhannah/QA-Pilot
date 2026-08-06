@@ -1,0 +1,1474 @@
+/* ============================================================
+   os.css — QA Simulator Desktop v4
+   Visual style inspired by Windows 11
+   ─────────────────────────────────────────────────────────────
+   Windows 11 Desktop Simulator (MIT licence)
+     github.com/username/windows-11-desktop-simulator
+   QA Simulator Desktop
+     Built collaboratively with GitHub Copilot & Claude (Anthropic)
+   ============================================================ */
+
+/* ── Design tokens ────────────────────────────────────────── */
+:root {
+  /* Win11 accent (Mica blue) */
+  --qa-accent:       #60cdff;
+  --qa-accent-soft:  rgba(96, 205, 255, 0.18);
+  --qa-accent-dim:   rgba(96, 205, 255, 0.08);
+
+  /* Taskbar / overlay surfaces — always dark like real Win11 */
+  --qa-taskbar-bg:   rgba(28, 28, 28, 0.88);
+  --qa-glass-dark:   rgba(32, 32, 32, 0.96);
+  --qa-glass-mid:    rgba(44, 44, 44, 0.94);
+
+  /* Text on dark surfaces */
+  --qa-text-light:   rgba(255, 255, 255, 0.92);
+  --qa-muted-light:  rgba(255, 255, 255, 0.52);
+
+  /* Borders on dark surfaces */
+  --qa-border-dark:  rgba(255, 255, 255, 0.08);
+  --qa-border-mid:   rgba(255, 255, 255, 0.13);
+
+  /* Hover states on dark surfaces */
+  --qa-hover-dark:   rgba(255, 255, 255, 0.08);
+  --qa-hover-mid:    rgba(255, 255, 255, 0.13);
+
+  /* Window / app surfaces — light by default, flipped in dark theme */
+  --qa-win-bg:       rgba(249, 249, 249, 0.96);
+  --qa-win-header:   rgba(243, 243, 243, 0.98);
+  --qa-win-border:   rgba(0, 0, 0, 0.14);
+  --qa-win-text:     #1a1a1a;
+  --qa-win-muted:    #6b7280;
+
+  /* Desktop background variables (overridden by theme + data-bg) */
+  --qa-desktop-bg:   #1a1a2e;
+
+  /* Brightness (set by JS) */
+  --qa-brightness: 100;
+
+  --qa-font: "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  --qa-radius-win: 8px;
+  --qa-radius-sm:  6px;
+}
+
+/* ── Light theme overrides (desktop wallpaper + window colours) */
+.qa-shell.qa-theme-light {
+  --qa-win-bg:      rgba(255, 255, 255, 0.96);
+  --qa-win-header:  rgba(243, 243, 243, 0.98);
+  --qa-win-border:  rgba(0, 0, 0, 0.12);
+  --qa-win-text:    #1a1a1a;
+  --qa-win-muted:   #6b7280;
+}
+
+/* ── Dark theme overrides */
+.qa-shell.qa-theme-dark {
+  --qa-win-bg:      rgba(28, 28, 28, 0.97);
+  --qa-win-header:  rgba(36, 36, 36, 0.98);
+  --qa-win-border:  rgba(255, 255, 255, 0.08);
+  --qa-win-text:    rgba(255, 255, 255, 0.92);
+  --qa-win-muted:   rgba(255, 255, 255, 0.5);
+}
+
+/* ── Reset ────────────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--qa-font);
+  height: 100vh;
+  overflow: hidden;
+  background: #000;
+}
+
+/* ── Shell ────────────────────────────────────────────────── */
+.qa-shell {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  position: relative;          /* anchors all absolute overlays */
+  overflow: hidden;
+  filter: brightness(calc(var(--qa-brightness) / 100));
+
+  /* Default light desktop — Win11 "Bloom" inspired gradient */
+  background:
+    radial-gradient(ellipse 80% 60% at 60% 110%, rgba(96,165,250,0.55) 0%, transparent 65%),
+    radial-gradient(ellipse 55% 70% at 20%  70%, rgba(167,139,250,0.45) 0%, transparent 65%),
+    radial-gradient(ellipse 40% 40% at 80%  20%, rgba(56,189,248,0.35)  0%, transparent 60%),
+    linear-gradient(160deg, #c7dfff 0%, #d4c8f8 45%, #b8d8f8 100%);
+}
+
+.qa-shell.qa-theme-dark {
+  background:
+    radial-gradient(ellipse 60% 50% at 70% 100%, rgba(37,99,235,0.45)  0%, transparent 65%),
+    radial-gradient(ellipse 50% 60% at 20%  70%, rgba(109,40,217,0.35) 0%, transparent 65%),
+    linear-gradient(160deg, #0f172a 0%, #1e1b4b 50%, #0c1a2e 100%);
+}
+
+/* Background variants (data-bg attribute set by JS) */
+.qa-shell[data-bg="sunrise"] {
+  background:
+    radial-gradient(ellipse 60% 50% at 100% 100%, rgba(251,146,60,0.6)  0%, transparent 65%),
+    radial-gradient(ellipse 50% 60% at 0%    80%, rgba(234,179,8,0.35)  0%, transparent 65%),
+    linear-gradient(160deg, #0f172a 0%, #1d4ed8 45%, #c2410c 100%);
+}
+
+.qa-shell[data-bg="glow"] {
+  background:
+    radial-gradient(ellipse 60% 50% at 10% 90%, rgba(56,189,248,0.5)  0%, transparent 60%),
+    radial-gradient(ellipse 50% 60% at 90% 10%, rgba(129,140,248,0.5) 0%, transparent 60%),
+    linear-gradient(160deg, #020617 0%, #0f172a 50%, #1e293b 100%);
+}
+
+/* ── Lock screen ──────────────────────────────────────────── */
+.qa-lock-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 20000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  background:
+    radial-gradient(ellipse 70% 60% at 50% 100%, rgba(59,130,246,0.55) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 50% at 80%  20%, rgba(56,189,248,0.4)  0%, transparent 60%),
+    radial-gradient(ellipse at 30% 60%, rgba(37,99,235,0.18) 0%, transparent 60%),
+    radial-gradient(ellipse at 75% 25%, rgba(139,92,246,0.12) 0%, transparent 55%),
+    #020617;
+  animation: qa-fade-in 0.4s ease-out;
+}
+
+.qa-lock-hidden { display: none; }
+
+.qa-lock-center { text-align: center; }
+
+.qa-lock-time {
+  font-size: 72px;
+  font-weight: 300;
+  letter-spacing: -2px;
+}
+
+.qa-lock-date {
+  font-size: 16px;
+  opacity: 0.85;
+  margin-top: 4px;
+}
+
+.qa-lock-user {
+  margin-top: 28px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.qa-lock-avatar {
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  font-weight: 600;
+}
+
+.qa-lock-username { font-size: 15px; }
+
+.qa-lock-notifications {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-width: 280px;
+  text-align: left;
+}
+
+.qa-lock-notify-item {
+  font-size: 12px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 999px;
+  padding: 4px 12px;
+}
+
+.qa-lock-swipe-hint {
+  margin-top: 24px;
+  font-size: 13px;
+  opacity: 0.7;
+}
+
+/* ── Topbar (QA context bar — Win11 dark glass style) ─────── */
+.qa-topbar {
+  height: 40px;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  background: rgba(20, 20, 20, 0.82);
+  backdrop-filter: blur(20px) saturate(160%);
+  border-bottom: 1px solid var(--qa-border-dark);
+  flex-shrink: 0;
+  z-index: 100;
+}
+
+.qa-topbar-left {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.qa-topbar-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--qa-text-light);
+  letter-spacing: 0.3px;
+}
+
+.qa-topbar-subtitle {
+  font-size: 10px;
+  color: var(--qa-muted-light);
+  margin-top: 1px;
+}
+
+.qa-topbar-right { margin-left: auto; }
+
+.qa-role-label {
+  font-size: 11px;
+  color: var(--qa-text-light);
+  background: var(--qa-accent-dim);
+  border: 1px solid rgba(96,205,255,0.25);
+  border-radius: 999px;
+  padding: 3px 10px;
+}
+
+/* ── Workspace ────────────────────────────────────────────── */
+.qa-workspace {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+}
+
+/* ── Desktop icons ────────────────────────────────────────── */
+.qa-desktop-icons {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  z-index: 1;
+}
+
+.qa-desktop-icon {
+  width: 80px;
+  padding: 8px 4px 6px;
+  border: none;
+  background: transparent;
+  border-radius: 6px;
+  cursor: pointer;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  transition: background 0.15s;
+}
+
+.qa-desktop-icon:hover {
+  background: rgba(255,255,255,0.14);
+}
+
+.qa-desktop-icon:active {
+  background: rgba(255,255,255,0.2);
+  transform: scale(0.97);
+}
+
+.qa-desktop-icon-img {
+  font-size: 32px;
+  line-height: 1;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.4));
+}
+
+.qa-desktop-icon-label {
+  font-size: 11px;
+  text-align: center;
+  color: #fff;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.75), 0 0 8px rgba(0,0,0,0.5);
+  line-height: 1.2;
+  max-width: 76px;
+  overflow-wrap: break-word;
+}
+
+/* ── Desktop folder (expandable group for webpages) ───────── */
+.qa-desktop-folder {
+  width: 80px;
+  padding: 8px 4px 6px;
+  border: none;
+  background: transparent;
+  border-radius: 6px;
+  cursor: pointer;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  transition: background 0.15s;
+}
+
+.qa-desktop-folder:hover {
+  background: rgba(255,255,255,0.14);
+}
+
+.qa-desktop-folder:active {
+  transform: scale(0.97);
+}
+
+.qa-desktop-folder .qa-desktop-icon-img {
+  font-size: 32px;
+  line-height: 1;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.4));
+}
+
+.qa-desktop-folder .qa-desktop-icon-label {
+  font-size: 11px;
+  text-align: center;
+  color: #fff;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.75), 0 0 8px rgba(0,0,0,0.5);
+  line-height: 1.2;
+  max-width: 76px;
+  overflow-wrap: break-word;
+}
+
+/* Children container — hidden by default, shown when expanded */
+.qa-desktop-folder-children {
+  display: none;
+  flex-direction: column;
+  padding-left: 12px;
+  border-left: 1px solid rgba(255,255,255,0.15);
+  margin-left: 4px;
+  margin-top: 2px;
+  gap: 2px;
+}
+
+.qa-desktop-folder-children.qa-folder-expanded {
+  display: flex;
+}
+
+/* Child icons are slightly smaller to visually nest */
+.qa-desktop-icon--child {
+  width: 72px;
+  padding: 6px 4px 4px;
+  gap: 4px;
+}
+
+.qa-desktop-icon--child .qa-desktop-icon-img svg {
+  width: 28px;
+  height: 28px;
+}
+
+.qa-desktop-icon--child .qa-desktop-icon-label {
+  font-size: 10px;
+  max-width: 68px;
+}
+
+/* ── Window area ──────────────────────────────────────────── */
+.qa-window-area {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+/* ── Windows ──────────────────────────────────────────────── */
+.qa-window {
+  position: absolute;
+  top: 60px;
+  left: 120px;
+  width: 68%;
+  height: 68%;
+  min-width: 380px;
+  min-height: 280px;
+  border-radius: var(--qa-radius-win);
+  background: var(--qa-win-bg);
+  border: 1px solid var(--qa-win-border);
+  box-shadow:
+    0 22px 56px rgba(0,0,0,0.28),
+    0 6px 16px  rgba(0,0,0,0.18),
+    0 0   0 0.5px rgba(0,0,0,0.08);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition:
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.qa-window.qa-active {
+  box-shadow:
+    0 28px 70px rgba(0,0,0,0.36),
+    0 8px  20px rgba(0,0,0,0.24),
+    0 0   0 1px rgba(96,205,255,0.3);
+}
+
+/* Closing animation */
+.qa-window.qa-closing {
+  opacity: 0;
+  transform: scale(0.97);
+  transition: opacity 0.16s ease, transform 0.16s ease;
+}
+
+/* Snap / maximized layouts */
+.qa-window.snap-left {
+  top: 0 !important;
+  left: 0 !important;
+  width: 50% !important;
+  height: calc(100% - 48px) !important;
+  border-radius: 0;
+  transition: none;
+}
+
+.qa-window.snap-right {
+  top: 0 !important;
+  left: 50% !important;
+  width: 50% !important;
+  height: calc(100% - 48px) !important;
+  border-radius: 0;
+  transition: none;
+}
+
+.qa-window.maximized {
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: calc(100% - 48px) !important;
+  border-radius: 0;
+  transition: none;
+}
+
+/* ── Window header / title bar ────────────────────────────── */
+.qa-window-header {
+  height: 36px;
+  min-height: 36px;
+  display: flex;
+  align-items: center;
+  padding: 0 8px 0 14px;
+  background: var(--qa-win-header);
+  border-bottom: 1px solid var(--qa-win-border);
+  cursor: move;
+  user-select: none;
+  flex-shrink: 0;
+}
+
+.qa-window-title {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--qa-win-text);
+  pointer-events: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex: 1;
+}
+
+/* ── Window control buttons ───────────────────────────────── */
+.qa-window-controls {
+  display: flex;
+  gap: 0;
+  margin-left: auto;
+}
+
+.qa-window-btn {
+  width: 46px;
+  height: 32px;
+  border: none;
+  background: transparent;
+  color: var(--qa-win-text);
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.12s;
+  border-radius: 0;
+}
+
+.qa-window-btn::before {
+  line-height: 1;
+  pointer-events: none;
+}
+
+.qa-window-btn.minimize::before { content: "─"; font-size: 13px; }
+.qa-window-btn.maximize::before { content: "□"; font-size: 12px; }
+.qa-window-btn.close::before    { content: "✕"; font-size: 12px; }
+
+.qa-window-btn:hover             { background: rgba(0,0,0,0.08); }
+.qa-window-btn.close:hover       { background: #c42b1c; color: #fff; }
+.qa-shell.qa-theme-dark .qa-window-btn:hover { background: rgba(255,255,255,0.1); }
+
+/* ── Window body ──────────────────────────────────────────── */
+.qa-window-body {
+  flex: 1;
+  background: var(--qa-win-bg);
+  overflow: hidden;
+  position: relative;
+}
+
+.qa-window-frame {
+  width: 100%;
+  height: 100%;
+  border: none;
+  display: block;
+}
+
+/* ── Focus-capture overlay ────────────────────────────────────
+   Sits above iframe content on inactive windows. One click brings
+   the window to front (JS hides the overlay afterwards so the next
+   click reaches the real app content). display toggled by JS.      */
+.qa-focus-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  cursor: default;
+  /* transparent — purely an event-capture layer */
+}
+
+/* ── AC panel (inline — no iframe) ────────────────────────── */
+.qa-ac-panel {
+  padding: 16px;
+  color: var(--qa-win-text);
+  font-size: 13px;
+  overflow-y: auto;
+  height: 100%;
+}
+
+.qa-ac-title {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.qa-ac-subtitle {
+  font-size: 12px;
+  color: var(--qa-win-muted);
+  margin-bottom: 12px;
+}
+
+.qa-ac-section-title {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--qa-win-muted);
+  margin: 12px 0 6px;
+}
+
+.qa-ac-card {
+  background: rgba(0,0,0,0.03);
+  border: 1px solid rgba(0,0,0,0.08);
+  border-radius: 6px;
+  padding: 10px 12px;
+  font-size: 12px;
+  margin-bottom: 6px;
+  line-height: 1.5;
+}
+
+.qa-shell.qa-theme-dark .qa-ac-card {
+  background: rgba(255,255,255,0.04);
+  border-color: rgba(255,255,255,0.08);
+}
+
+/* ── Taskbar ──────────────────────────────────────────────── */
+/* Always dark like real Windows 11 */
+.qa-taskbar {
+  height: 48px;
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 8px;
+  background: var(--qa-taskbar-bg);
+  backdrop-filter: blur(20px) saturate(180%);
+  border-top: 1px solid var(--qa-border-dark);
+  flex-shrink: 0;
+  z-index: 1000;
+  position: relative;
+}
+
+/* Center group — start, taskview, running apps */
+.qa-taskbar-center {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  height: 100%;
+}
+
+/* Right group — system tray */
+.qa-taskbar-right {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  margin-left: auto;
+  height: 100%;
+}
+
+/* Taskbar left (kept for layout balance) */
+.qa-taskbar-left {
+  display: flex;
+  align-items: center;
+  min-width: 48px;        /* mirrors tray width so center is truly centered */
+}
+
+/* ── Start button ─────────────────────────────────────────── */
+.qa-start-button,
+.qa-taskview-button {
+  width: 44px;
+  height: 44px;
+  border: none;
+  background: transparent;
+  border-radius: var(--qa-radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--qa-text-light);
+  transition: background 0.15s, transform 0.1s;
+  flex-shrink: 0;
+}
+
+.qa-start-button:hover,
+.qa-taskview-button:hover { background: var(--qa-hover-dark); }
+
+.qa-start-button:active,
+.qa-taskview-button:active { transform: scale(0.94); }
+
+/* Windows logo — intentionally larger (it IS the brand mark) */
+.qa-start-button svg {
+  width: 22px;
+  height: 22px;
+  pointer-events: none;
+}
+
+/* Task-view icon — slightly smaller and a touch dimmer */
+.qa-taskview-button svg {
+  width: 15px;
+  height: 15px;
+  pointer-events: none;
+  opacity: 0.75;
+}
+
+.qa-taskview-button:hover svg { opacity: 1; }
+
+/* ── Taskbar running-app buttons ──────────────────────────── */
+.qa-taskbar-apps {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  height: 100%;
+}
+
+.qa-taskbar-app-btn {
+  width: 44px;
+  height: 44px;
+  border: none;
+  background: transparent;
+  border-radius: var(--qa-radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  position: relative;
+  transition: background 0.15s, transform 0.1s;
+  flex-shrink: 0;
+}
+
+.qa-taskbar-app-btn:hover  { background: var(--qa-hover-mid); }
+.qa-taskbar-app-btn:active { transform: scale(0.94); }
+
+.qa-taskbar-app-icon {
+  font-size: 20px;
+  line-height: 1;
+  pointer-events: none;
+}
+
+/* Win11-style running indicator — small centred line under active app */
+.qa-taskbar-app-btn::after {
+  content: '';
+  position: absolute;
+  bottom: 3px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 4px;
+  height: 4px;
+  border-radius: 2px;
+  background: currentColor;
+  opacity: 0;
+  transition: width 0.15s, opacity 0.15s;
+}
+
+.qa-taskbar-app-btn.running::after {
+  opacity: 0.55;
+  width: 4px;
+}
+
+.qa-taskbar-app-btn.running.focused::after {
+  opacity: 1;
+  width: 16px;
+}
+
+/* Highlighted bg for active */
+.qa-taskbar-app-btn.qa-active { background: var(--qa-hover-mid); }
+
+/* ── Floating tooltip above taskbar icons (Win11 style) ───────
+   Uses the data-label attribute set by renderTaskbar() in JS.
+   0.4 s delay before appearing matches real Windows 11 behaviour.  */
+.qa-taskbar-app-btn::before {
+  content: attr(data-label);
+  position: absolute;
+  bottom: calc(100% + 10px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--qa-glass-dark);
+  color: var(--qa-text-light);
+  font-size: 11px;
+  font-family: var(--qa-font);
+  white-space: nowrap;
+  padding: 4px 10px;
+  border-radius: 4px;
+  border: 1px solid var(--qa-border-mid);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.45);
+  pointer-events: none;
+  opacity: 0;
+  /* fade in after a short hover — delay matches Win11 feel */
+  transition: opacity 0.15s ease 0.4s;
+}
+
+.qa-taskbar-app-btn:hover::before { opacity: 1; }
+
+/* ── System tray area ─────────────────────────────────────── */
+.qa-system-tray-icons {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 0 4px;
+  height: 40px;
+  border-radius: var(--qa-radius-sm);
+  cursor: default;
+  transition: background 0.15s;
+}
+
+.qa-system-tray-icons:hover { background: var(--qa-hover-dark); }
+
+.qa-tray-icon {
+  width: 16px;
+  height: 16px;
+  opacity: 0.88;
+  fill: var(--qa-text-light);
+  pointer-events: none;
+}
+
+.qa-tray-btn {
+  width: 36px;
+  height: 36px;
+  border: none;
+  background: transparent;
+  border-radius: var(--qa-radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--qa-text-light);
+  transition: background 0.15s;
+}
+
+.qa-tray-btn:hover { background: var(--qa-hover-dark); }
+
+.qa-tray-btn svg {
+  width: 16px;
+  height: 16px;
+  fill: currentColor;
+  pointer-events: none;
+}
+
+/* ── Clock widget ─────────────────────────────────────────── */
+.qa-clock-widget {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 0 12px;
+  height: 40px;
+  border-radius: var(--qa-radius-sm);
+  cursor: default;
+  transition: background 0.15s;
+}
+
+.qa-clock-widget:hover { background: var(--qa-hover-dark); }
+
+.qa-taskbar-clock {
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--qa-text-light);
+  line-height: 1.2;
+}
+
+.qa-taskbar-date {
+  font-size: 11px;
+  color: var(--qa-text-light);
+  line-height: 1.2;
+  opacity: 0.85;
+}
+
+/* Role label in tray */
+.qa-taskbar-role {
+  font-size: 10px;
+  color: var(--qa-accent);
+  padding: 2px 8px;
+  border: 1px solid rgba(96,205,255,0.3);
+  border-radius: 999px;
+  white-space: nowrap;
+  margin-right: 4px;
+}
+
+/* ── Start menu ───────────────────────────────────────────── */
+.qa-start-menu {
+  position: absolute;
+  bottom: 56px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 580px;
+  background: var(--qa-glass-dark);
+  backdrop-filter: blur(60px) saturate(180%);
+  border: 1px solid var(--qa-border-mid);
+  border-radius: 10px;
+  padding: 20px 24px 16px;
+  box-shadow: 0 16px 48px rgba(0,0,0,0.55), 0 4px 12px rgba(0,0,0,0.35);
+  z-index: 9999;
+  color: var(--qa-text-light);
+}
+
+.qa-start-menu-hidden { display: none; }
+
+.qa-start-search {
+  margin-bottom: 18px;
+}
+
+.qa-start-search input {
+  width: 100%;
+  padding: 8px 14px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 4px;
+  color: var(--qa-text-light);
+  font-size: 13px;
+  font-family: var(--qa-font);
+  outline: none;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.qa-start-search input:focus {
+  border-color: var(--qa-accent);
+  background: rgba(255,255,255,0.09);
+}
+
+.qa-start-search input::placeholder { color: var(--qa-muted-light); }
+
+.qa-start-section { margin-bottom: 16px; }
+
+.qa-start-section-title {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--qa-muted-light);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 10px;
+}
+
+/* Pinned apps grid */
+.qa-start-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+  gap: 4px;
+}
+
+.qa-start-item {
+  border: none;
+  background: transparent;
+  border-radius: 6px;
+  padding: 10px 6px 8px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  transition: background 0.15s, transform 0.1s;
+  color: var(--qa-text-light);
+  font-family: var(--qa-font);
+}
+
+.qa-start-item:hover {
+  background: var(--qa-hover-dark);
+  transform: translateY(-1px);
+}
+
+.qa-start-item:active { transform: scale(0.96); }
+
+.qa-start-icon {
+  font-size: 24px;
+  line-height: 1;
+}
+
+.qa-start-label {
+  font-size: 11px;
+  text-align: center;
+  color: var(--qa-text-light);
+}
+
+/* Recommended section */
+.qa-start-section-secondary { border-top: 1px solid var(--qa-border-dark); padding-top: 14px; }
+
+/* ── Package Manager ─────────────────────────────────────────── */
+.qa-pkg-mgr-overlay {
+  position: fixed; inset: 0; z-index: 30000;
+  background: rgba(0,0,0,0.5);
+  display: flex; align-items: center; justify-content: center;
+  backdrop-filter: blur(4px);
+}
+.qa-pkg-hidden { display: none !important; }
+.qa-pkg-mgr-panel {
+  background: var(--qa-bg, #1e1e2e);
+  border: 1px solid var(--qa-border-mid, #3a3a4a);
+  border-radius: 12px;
+  width: 520px; max-width: 90vw;
+  max-height: 80vh;
+  display: flex; flex-direction: column;
+  box-shadow: 0 16px 48px rgba(0,0,0,0.5);
+  color: var(--qa-text-light, #eee);
+  font-family: var(--qa-font);
+}
+.qa-pkg-mgr-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--qa-border-mid, #3a3a4a);
+}
+.qa-pkg-mgr-title { font-size: 14px; font-weight: 600; }
+.qa-pkg-mgr-close {
+  background: none; border: none; color: inherit;
+  font-size: 18px; cursor: pointer; padding: 4px 8px;
+  border-radius: 4px;
+}
+.qa-pkg-mgr-close:hover { background: rgba(255,255,255,0.1); }
+.qa-pkg-mgr-body {
+  flex: 1; overflow-y: auto;
+  padding: 12px 18px;
+  min-height: 100px;
+}
+.qa-pkg-mgr-empty {
+  text-align: center; padding: 32px 16px;
+  color: var(--qa-muted-light); font-size: 13px;
+}
+.qa-pkg-mgr-list { display: flex; flex-direction: column; gap: 6px; }
+.qa-pkg-row {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: rgba(255,255,255,0.04);
+}
+.qa-pkg-row:hover { background: rgba(255,255,255,0.08); }
+.qa-pkg-row-info {
+  display: flex; align-items: center; gap: 10px; flex: 1; min-width: 0;
+}
+.qa-pkg-row-icon { font-size: 20px; flex-shrink: 0; }
+.qa-pkg-row-name { font-size: 13px; font-weight: 500; }
+.qa-pkg-row-id {
+  font-size: 11px; color: var(--qa-muted-light);
+  font-family: monospace;
+}
+.qa-pkg-row-uninstall {
+  background: rgba(255,80,80,0.15); border: 1px solid rgba(255,80,80,0.3);
+  color: #ff6b6b; border-radius: 6px; padding: 6px 14px;
+  font-size: 12px; cursor: pointer; flex-shrink: 0;
+}
+.qa-pkg-row-uninstall:hover { background: rgba(255,80,80,0.25); }
+.qa-pkg-mgr-footer {
+  padding: 12px 18px;
+  border-top: 1px solid var(--qa-border-mid, #3a3a4a);
+  display: flex; justify-content: flex-end;
+}
+.qa-pkg-mgr-footer-btn {
+  background: var(--qa-accent, #60a5fa);
+  border: none; color: #fff; border-radius: 6px;
+  padding: 8px 20px; font-size: 13px; cursor: pointer;
+}
+.qa-pkg-mgr-footer-btn:hover { filter: brightness(1.1); }
+
+.qa-start-recommended {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+}
+
+.qa-start-reco-item {
+  padding: 8px 10px;
+  border-radius: 6px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--qa-border-dark);
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.qa-start-reco-item:hover { background: var(--qa-hover-dark); }
+
+.qa-start-reco-title {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--qa-text-light);
+}
+
+.qa-start-reco-sub {
+  font-size: 10px;
+  color: var(--qa-muted-light);
+  margin-top: 2px;
+}
+
+/* ── Notification centre ──────────────────────────────────── */
+.qa-notify-center {
+  position: absolute;
+  bottom: 56px;
+  right: 8px;
+  width: 300px;
+  max-height: 60vh;
+  background: var(--qa-glass-dark);
+  backdrop-filter: blur(40px) saturate(180%);
+  border: 1px solid var(--qa-border-mid);
+  border-radius: 10px;
+  box-shadow: 0 16px 48px rgba(0,0,0,0.5);
+  display: flex;
+  flex-direction: column;
+  z-index: 9999;
+  overflow: hidden;
+}
+
+.qa-notify-hidden { display: none; }
+
+.qa-notify-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--qa-border-dark);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--qa-text-light);
+}
+
+.qa-notify-clear {
+  border: none;
+  background: transparent;
+  font-size: 11px;
+  color: var(--qa-accent);
+  cursor: pointer;
+  font-family: var(--qa-font);
+}
+
+.qa-notify-list {
+  padding: 8px 10px 10px;
+  overflow-y: auto;
+}
+
+.qa-notify-item {
+  padding: 8px 10px;
+  border-radius: 6px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid var(--qa-border-dark);
+  font-size: 12px;
+  color: var(--qa-text-light);
+  margin-bottom: 6px;
+}
+
+/* ── Quick settings panel ─────────────────────────────────── */
+.qa-quick-panel {
+  position: absolute;
+  bottom: 56px;
+  right: 8px;
+  width: 280px;
+  background: var(--qa-glass-dark);
+  backdrop-filter: blur(40px) saturate(180%);
+  border: 1px solid var(--qa-border-mid);
+  border-radius: 10px;
+  box-shadow: 0 16px 48px rgba(0,0,0,0.5);
+  padding: 14px;
+  z-index: 9999;
+}
+
+.qa-quick-hidden { display: none; }
+
+.qa-quick-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.qa-quick-toggle {
+  flex: 1;
+  border-radius: 8px;
+  border: 1px solid var(--qa-border-mid);
+  background: rgba(255,255,255,0.06);
+  color: var(--qa-text-light);
+  font-size: 11px;
+  padding: 6px 8px;
+  cursor: pointer;
+  font-family: var(--qa-font);
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.qa-quick-toggle:hover { background: var(--qa-hover-mid); }
+
+.qa-quick-active {
+  border-color: var(--qa-accent);
+  background: var(--qa-accent-soft);
+  color: var(--qa-accent);
+}
+
+.qa-quick-slider-label {
+  font-size: 11px;
+  color: var(--qa-text-light);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+
+.qa-quick-slider-label input[type="range"] {
+  width: 100%;
+  accent-color: var(--qa-accent);
+}
+
+.qa-quick-theme-row { justify-content: space-between; }
+
+/* ── Task view overlay ────────────────────────────────────── */
+.qa-taskview-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  backdrop-filter: blur(20px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9000;
+}
+
+.qa-taskview-hidden { display: none; }
+
+.qa-taskview-inner {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  padding: 20px;
+  max-width: 90vw;
+  justify-content: center;
+}
+
+.qa-taskview-thumb {
+  width: 240px;
+  height: 150px;
+  border-radius: 8px;
+  background: var(--qa-glass-mid);
+  border: 2px solid transparent;
+  cursor: pointer;
+  position: relative;
+  transition: border-color 0.15s, transform 0.15s;
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+}
+
+.qa-taskview-thumb-preview {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100px;
+  border-radius: 6px 6px 0 0;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+
+.qa-taskview-thumb:hover .qa-taskview-thumb-preview {
+  opacity: 0.9;
+}
+
+.qa-submit-btn {
+  height: 30px;
+  padding: 0 14px;
+  background: var(--qa-accent);
+  color: #000;
+  border: none;
+  border-radius: var(--qa-radius-sm);
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: var(--qa-font);
+  transition: opacity 0.15s;
+  white-space: nowrap;
+  margin-right: 4px;
+}
+.qa-submit-btn:hover { opacity: 0.85; }
+
+.qa-taskview-thumb:hover { transform: scale(1.03); }
+
+.qa-taskview-thumb.qa-active { border-color: var(--qa-accent); }
+
+.qa-taskview-thumb-title {
+  position: absolute;
+  bottom: 8px;
+  left: 10px;
+  right: 10px;
+  font-size: 11px;
+  color: var(--qa-text-light);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ── Fidelity modes ───────────────────────────────────────── */
+/* win11 — heavier blur + glass */
+.qa-shell[data-fidelity="win11"] .qa-window {
+  backdrop-filter: blur(32px) saturate(200%);
+}
+
+/* classic — lighter, no blur */
+.qa-shell[data-fidelity="classic"] .qa-window {
+  backdrop-filter: none;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.22);
+}
+
+.qa-shell[data-fidelity="classic"] .qa-taskbar,
+.qa-shell[data-fidelity="classic"] .qa-topbar {
+  backdrop-filter: none;
+}
+
+/* ── BOOT SCREEN ──────────────────────────────────────────────────────── */
+
+.qa-boot-screen {
+  position: fixed;
+  inset: 0;
+  background: #050a14;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 30000;
+  transition: opacity 0.6s ease;
+}
+
+.qa-boot-screen.qa-boot-hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.qa-boot-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.qa-boot-logo {
+  animation: qa-boot-logo-in 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+@keyframes qa-boot-logo-in {
+  from { opacity: 0; transform: scale(0.7); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+.qa-boot-product {
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: -0.01em;
+  animation: qa-boot-fade-up 0.5s 0.2s ease both;
+}
+
+.qa-boot-slogan {
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-size: 13px;
+  color: rgba(255,255,255,0.45);
+  letter-spacing: 0.02em;
+  animation: qa-boot-fade-up 0.5s 0.35s ease both;
+}
+
+@keyframes qa-boot-fade-up {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Win11-style bouncing dot spinner */
+.qa-boot-spinner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 32px;
+  animation: qa-boot-fade-up 0.5s 0.5s ease both;
+}
+
+.qa-boot-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.85);
+  animation: qa-boot-bounce 1.4s ease-in-out infinite both;
+}
+
+.qa-boot-dot:nth-child(1) { animation-delay: 0.0s; }
+.qa-boot-dot:nth-child(2) { animation-delay: 0.16s; }
+.qa-boot-dot:nth-child(3) { animation-delay: 0.32s; }
+.qa-boot-dot:nth-child(4) { animation-delay: 0.48s; }
+.qa-boot-dot:nth-child(5) { animation-delay: 0.64s; }
+
+@keyframes qa-boot-bounce {
+  0%, 80%, 100% { transform: scale(0.6); opacity: 0.3; }
+  40%            { transform: scale(1.0); opacity: 1.0; }
+}
+
+/* ── Animations ───────────────────────────────────────────── */
+@keyframes qa-fade-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Resize handles ────────────────────────────────────────── */
+.qa-resize-handles { position: absolute; inset: 0; pointer-events: none; z-index: 20; }
+.qa-resize-h { position: absolute; pointer-events: auto; }
+.qa-resize-e { top: 4px; right: 0; width: 6px; bottom: 4px; cursor: ew-resize; }
+.qa-resize-s { bottom: 0; left: 4px; right: 4px; height: 6px; cursor: ns-resize; }
+.qa-resize-se { bottom: 0; right: 0; width: 14px; height: 14px; cursor: nwse-resize;
+  background: linear-gradient(135deg, transparent 50%, rgba(96,205,255,0.35) 50%); border-radius: 0 0 8px 0; }
+.qa-resize-se:hover { background: linear-gradient(135deg, transparent 50%, rgba(96,205,255,0.7) 50%); }
+
+/* ── Snap layout flyout ────────────────────────────────────── */
+.qa-snap-flyout {
+  position: absolute; top: 100%; right: 4px;
+  width: 120px; padding: 6px;
+  background: var(--qa-glass-dark); backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid var(--qa-border-mid); border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+  display: grid; grid-template-columns: 1fr 1fr; gap: 3px;
+  z-index: 100;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.12s ease, transform 0.12s ease;
+  transform: translateY(-3px);
+}
+.qa-snap-flyout.visible {
+  opacity: 1; pointer-events: auto; transform: translateY(0);
+}
+.qa-snap-cell {
+  aspect-ratio: 1.6;
+  border: 1px solid var(--qa-border-dark);
+  background: rgba(255,255,255,0.04);
+  border-radius: 3px; cursor: pointer;
+  transition: background 0.1s, border-color 0.1s;
+}
+.qa-snap-cell:hover {
+  background: var(--qa-accent-soft);
+  border-color: var(--qa-accent);
+}
+.qa-snap-max { grid-column: 1 / -1; aspect-ratio: 4; }
+
+/* ── Quadrant snap layouts ─────────────────────────────────── */
+.qa-window.snap-tl { top: 0 !important; left: 0 !important;
+  width: 50% !important; height: 50% !important; border-radius: 0; transition: none; }
+.qa-window.snap-tr { top: 0 !important; left: 50% !important;
+  width: 50% !important; height: 50% !important; border-radius: 0; transition: none; }
+.qa-window.snap-bl { top: 50% !important; left: 0 !important;
+  width: 50% !important; height: 50% !important; border-radius: 0; transition: none; }
+.qa-window.snap-br { top: 50% !important; left: 50% !important;
+  width: 50% !important; height: 50% !important; border-radius: 0; transition: none; }
+
+/* ── Context menu ──────────────────────────────────────────── */
+.qa-context-menu {
+  position: fixed; z-index: 30000; min-width: 180px;
+  background: var(--qa-glass-dark); backdrop-filter: blur(30px) saturate(180%);
+  border: 1px solid var(--qa-border-mid); border-radius: 8px;
+  padding: 4px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+  animation: qa-menu-in 0.1s ease-out;
+}
+@keyframes qa-menu-in {
+  from { opacity: 0; transform: scale(0.96); }
+  to { opacity: 1; transform: scale(1); }
+}
+.qa-context-item {
+  display: block; width: 100%; padding: 6px 12px;
+  border: none; background: transparent;
+  color: var(--qa-text-light); font-size: 12px;
+  font-family: var(--qa-font); text-align: left; cursor: pointer;
+  border-radius: 4px;
+}
+.qa-context-item:hover { background: var(--qa-accent-soft); color: var(--qa-accent); }
+.qa-context-separator { height: 1px; background: var(--qa-border-dark); margin: 4px 8px; }
+
+/* ── Window open/close animations ──────────────────────────── */
+.qa-window.qa-opening {
+  animation: qa-window-open 0.22s ease-out;
+}
+@keyframes qa-window-open {
+  from { opacity: 0; transform: scale(0.94); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* ── Taskbar running indicator polish ──────────────────────── */
+.qa-taskbar-app-btn::after {
+  transition: width 0.2s, opacity 0.2s, background 0.2s;
+}
+.qa-taskbar-app-btn.running.focused::after,
+.qa-taskbar-app-btn:hover::after {
+  background: var(--qa-accent);
+  opacity: 0.9;
+}
+
+/* ── Acrylic noise texture on windows ──────────────────────── */
+.qa-window::before {
+  content: '';
+  position: absolute; inset: 0; z-index: 0;
+  opacity: 0.015;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-repeat: repeat; background-size: 256px 256px;
+  pointer-events: none; mix-blend-mode: overlay;
+}
+.qa-shell.qa-theme-dark .qa-window::before { opacity: 0.025; }
+.qa-shell[data-fidelity="classic"] .qa-window::before { display: none; }
+
+/* ── Notifier toasts ───────────────────────────────────────── */
+.qa-notifier {
+  position: fixed; bottom: 60px; right: 16px; z-index: 40000;
+  display: flex; flex-direction: column; gap: 8px;
+  pointer-events: none;
+}
+.qa-notifier-toast {
+  pointer-events: auto;
+  background: var(--qa-glass-dark); backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid var(--qa-border-mid); border-radius: 8px;
+  padding: 10px 14px;
+  color: var(--qa-text-light); font-size: 12px;
+  font-family: var(--qa-font);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+  animation: qa-toast-in 0.25s ease-out;
+  max-width: 320px;
+}
+@keyframes qa-toast-in {
+  from { transform: translateX(100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+.qa-notifier-toast.out {
+  animation: qa-toast-out 0.2s ease-in forwards;
+}
+@keyframes qa-toast-out {
+  from { transform: translateX(0); opacity: 1; }
+  to { transform: translateX(-100%); opacity: 0; }
+}

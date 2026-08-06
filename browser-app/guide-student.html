@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QA Pilot Academy — Student Quick Start</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --font-sans: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text',
+                   'Helvetica Neue', Helvetica, Arial, sans-serif;
+      --color-bg: #F5F5F7;
+      --color-white: #FFFFFF;
+      --color-label: #1D1D1F;
+      --color-secondary: #6E6E73;
+      --color-tertiary: #86868B;
+      --color-border: rgba(0,0,0,0.06);
+      --color-blue: #007AFF;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.04);
+      --shadow-md: 0 4px 12px rgba(0,0,0,0.06);
+      --space-2: 8px;
+      --space-3: 12px;
+      --space-4: 16px;
+      --space-5: 20px;
+      --space-6: 24px;
+      --space-8: 40px;
+      --space-10: 56px;
+      --space-12: 80px;
+    }
+
+    html { font-size: 16px; -webkit-font-smoothing: antialiased; }
+    body {
+      font-family: var(--font-sans);
+      background: var(--color-bg);
+      color: var(--color-label);
+      line-height: 1.6;
+    }
+
+    /* ── APPLE-STYLE TOPBAR ────────────────────────────────────────── */
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 var(--space-6);
+      height: 56px;
+      background: rgba(255,255,255,0.80);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .topbar-brand {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--color-label);
+      letter-spacing: -0.01em;
+      text-decoration: none;
+    }
+
+    .topbar-brand svg {
+      width: 26px;
+      height: 26px;
+      flex-shrink: 0;
+    }
+
+    .topbar-actions {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+    }
+
+    .topbar-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 14px;
+      font-size: 13px;
+      font-weight: 500;
+      font-family: var(--font-sans);
+      border: 1px solid #E5E5EA;
+      border-radius: 9999px;
+      background: var(--color-white);
+      color: var(--color-label);
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+
+    .topbar-btn:hover {
+      background: #F5F5F7;
+    }
+
+    .topbar-btn.primary {
+      background: var(--color-blue);
+      border-color: var(--color-blue);
+      color: var(--color-white);
+    }
+
+    .topbar-btn.primary:hover {
+      background: #0066D6;
+    }
+
+    /* ── PAGE HEADER ───────────────────────────────────────────────── */
+    .page-header {
+      background: linear-gradient(135deg, #001D3D 0%, #003566 40%, #1A3A6B 70%, #2A1F5E 100%);
+      padding: var(--space-10) var(--space-6) var(--space-8);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .page-header::before {
+      content: '';
+      position: absolute;
+      top: -30%;
+      right: -5%;
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(0,122,255,0.12) 0%, transparent 60%);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .page-header-inner {
+      max-width: 720px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    .page-header h1 {
+      font-size: 36px;
+      font-weight: 700;
+      color: var(--color-white);
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+      margin-bottom: var(--space-3);
+    }
+
+    .page-header p {
+      font-size: 16px;
+      color: rgba(255,255,255,0.7);
+      max-width: 560px;
+    }
+
+    /* ── MAIN CONTENT ──────────────────────────────────────────────── */
+    .main {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: var(--space-8) var(--space-6) var(--space-12);
+    }
+
+    .guide-section {
+      background: var(--color-white);
+      border-radius: 14px;
+      padding: var(--space-6);
+      margin-bottom: var(--space-5);
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--color-border);
+    }
+
+    .guide-section h2 {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--color-label);
+      margin-bottom: var(--space-4);
+      letter-spacing: -0.02em;
+    }
+
+    .guide-section h3 {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--color-label);
+      margin-bottom: var(--space-2);
+      margin-top: var(--space-5);
+    }
+
+    .guide-section h3:first-child {
+      margin-top: 0;
+    }
+
+    .guide-section p {
+      font-size: 14px;
+      color: var(--color-secondary);
+      line-height: 1.7;
+      margin-bottom: var(--space-3);
+    }
+
+    .guide-section ul, .guide-section ol {
+      margin: var(--space-3) 0 var(--space-4) var(--space-5);
+    }
+
+    .guide-section li {
+      font-size: 14px;
+      color: var(--color-secondary);
+      line-height: 1.7;
+      margin-bottom: var(--space-2);
+    }
+
+    .guide-section code {
+      font-family: 'SF Mono', 'Menlo', monospace;
+      font-size: 13px;
+      background: #F5F5F7;
+      padding: 2px 8px;
+      border-radius: 4px;
+      color: var(--color-label);
+    }
+
+    .guide-step {
+      display: flex;
+      gap: var(--space-4);
+      padding: var(--space-4) 0;
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .guide-step:last-child {
+      border-bottom: none;
+    }
+
+    .guide-step-num {
+      flex-shrink: 0;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--color-blue);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .guide-step-body {
+      flex: 1;
+    }
+
+    .guide-step-body strong {
+      display: block;
+      font-size: 14px;
+      color: var(--color-label);
+      margin-bottom: 4px;
+    }
+
+    .guide-step-body p {
+      font-size: 13px;
+      color: var(--color-tertiary);
+      margin: 0;
+    }
+
+    .callout {
+      padding: var(--space-4);
+      border-radius: 10px;
+      margin: var(--space-4) 0;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .callout.tip {
+      background: rgba(0, 122, 255, 0.06);
+      border: 1px solid rgba(0, 122, 255, 0.12);
+      color: var(--color-secondary);
+    }
+
+    .callout.tip strong {
+      color: var(--color-blue);
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    /* ── SITE FOOTER ──────────────────────────────────────────────── */
+    .site-footer-wrap {
+      background: #1D1D1F;
+      color: rgba(255,255,255,0.5);
+      padding: var(--space-8) var(--space-6);
+    }
+
+    .site-footer-inner {
+      max-width: 720px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+    }
+
+    .site-footer-inner a {
+      color: rgba(255,255,255,0.5);
+      text-decoration: none;
+      margin-left: var(--space-4);
+    }
+
+    .site-footer-inner a:hover {
+      color: rgba(255,255,255,0.8);
+    }
+
+    @media (max-width: 640px) {
+      .page-header h1 { font-size: 26px; }
+      .topbar { padding: 0 var(--space-4); }
+      .main { padding: var(--space-6) var(--space-4) var(--space-10); }
+      .site-footer-inner { flex-direction: column; gap: var(--space-3); text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ════════════════════════════════════════════════════════════════
+       TOPBAR
+       ════════════════════════════════════════════════════════════════ -->
+  <nav class="topbar">
+    <a href="portal.html" class="topbar-brand">
+      <svg viewBox="0 0 48 48" fill="none">
+        <rect width="48" height="48" rx="10" fill="#007AFF"/>
+        <path d="M14 24L20 30L34 16" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="24" cy="24" r="10" stroke="white" stroke-width="2" fill="none" opacity="0.3"/>
+      </svg>
+      QA Pilot Academy
+    </a>
+    <div class="topbar-actions">
+      <a href="portal.html" class="topbar-btn">← Back to Portal</a>
+    </div>
+  </nav>
+
+  <!-- ════════════════════════════════════════════════════════════════
+       PAGE HEADER
+       ════════════════════════════════════════════════════════════════ -->
+  <div class="page-header">
+    <div class="page-header-inner">
+      <h1>Student Quick Start</h1>
+      <p>Get up and running with QA Pilot Academy in minutes. This guide walks you through your first login, course enrollment, and daily workflow.</p>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════════════════════════
+       MAIN CONTENT
+       ════════════════════════════════════════════════════════════════ -->
+  <main class="main">
+
+    <!-- Section 1: Getting Started -->
+    <div class="guide-section">
+      <h2>Getting Started</h2>
+
+      <div class="guide-step">
+        <div class="guide-step-num">1</div>
+        <div class="guide-step-body">
+          <strong>Log In to Your Account</strong>
+          <p>Open the portal and sign in with the email and password provided by your training coordinator. If you're exploring, use the "Try Demo Account" button to access a pre-configured demo.</p>
+        </div>
+      </div>
+
+      <div class="guide-step">
+        <div class="guide-step-num">2</div>
+        <div class="guide-step-body">
+          <strong>Browse Available Courses</strong>
+          <p>Once logged in, you'll see the "Available Courses" section. Courses are organized by category — QA Fundamentals, Development, and Capstone assessments. Each card shows the course title, module count, and estimated time.</p>
+        </div>
+      </div>
+
+      <div class="guide-step">
+        <div class="guide-step-num">3</div>
+        <div class="guide-step-body">
+          <strong>Enroll in a Course</strong>
+          <p>Click any course card to enroll. You'll be taken directly into the course viewer where you can start learning immediately. Your progress is saved automatically as you complete modules.</p>
+        </div>
+      </div>
+
+      <div class="callout tip">
+        <strong>💡 Tip — Course Prerequisites</strong>
+        Some courses require completion of a prerequisite before you can enroll. For example, Capstone 1 requires QA Onboarding Training. Completed prerequisites are indicated with a green checkmark in your sidebar.
+      </div>
+    </div>
+
+    <!-- Section 2: Navigating a Course -->
+    <div class="guide-section">
+      <h2>Navigating a Course</h2>
+      <p>Each course is divided into modules, and each module contains sub-modules (lessons, labs, and quizzes). Use the sidebar on the left to jump between modules or click "Next" at the bottom of each lesson.</p>
+
+      <h3>Lesson Types</h3>
+      <ul>
+        <li><strong>Reading lessons</strong> — Text-based content with examples. Click "Mark Complete" when you're done.</li>
+        <li><strong>Interactive Labs</strong> — Hands-on simulations of Dynamics 365 CRM or Azure DevOps. Follow the guided steps.</li>
+        <li><strong>Quizzes</strong> — Multiple-choice questions to test your understanding. Quizzes are learning-focused — no pass/fail gate.</li>
+        <li><strong>Capstone Assessments</strong> — Real-world scenarios that test your cumulative skills. These are evaluated against a rubric.</li>
+      </ul>
+
+      <h3>Progress Tracking</h3>
+      <p>Your progress is shown as a percentage bar on each enrolled course card. Completed modules are marked in the sidebar, and your overall course progress updates in real time. You can resume any course from where you left off.</p>
+    </div>
+
+    <!-- Section 3: Certificates &amp; Completion -->
+    <div class="guide-section">
+      <h2>Certificates &amp; Completion</h2>
+      <p>When you complete all modules in a course, you'll earn a certificate. Here's what to expect:</p>
+
+      <div class="guide-step">
+        <div class="guide-step-num">✓</div>
+        <div class="guide-step-body">
+          <strong>Certificate Awarded</strong>
+          <p>Upon completing the final module, a certificate is automatically generated. You'll see a confetti animation and be redirected to your certificate page.</p>
+        </div>
+      </div>
+
+      <div class="guide-step">
+        <div class="guide-step-num">✓</div>
+        <div class="guide-step-body">
+          <strong>View Your Certificates</strong>
+          <p>All earned certificates are listed in the sidebar under "Certificates". Click any certificate to view or print it. Certificates include your name, course title, completion date, and a unique credential ID.</p>
+        </div>
+      </div>
+
+      <div class="guide-step">
+        <div class="guide-step-num">✓</div>
+        <div class="guide-step-body">
+          <strong>Next Course Auto-Enrollment</strong>
+          <p>When you complete a course that unlocks a follow-up, you'll be automatically enrolled in the next course. For example, completing QA Onboarding Training unlocks Capstone Assessment 1.</p>
+        </div>
+      </div>
+
+      <div class="callout tip">
+        <strong>📄 Printing Your Certificate</strong>
+        Certificates are designed for printing. Use your browser's Print command (⌘P) to save as PDF or print a physical copy. Each certificate includes a double-border credential-style layout.
+      </div>
+    </div>
+
+    <!-- Section 4: Getting Help -->
+    <div class="guide-section">
+      <h2>Getting Help</h2>
+      <p>If you get stuck or have questions:</p>
+      <ul>
+        <li><strong>Your Training Coordinator</strong> — Reach out to your instructor for course guidance, password resets, or enrollment questions.</li>
+        <li><strong>Facilitator Guide</strong> — Your training coordinator has a detailed facilitator guide with platform administration instructions.</li>
+        <li><strong>Data Privacy</strong> — All your learning data is stored locally on your device. Nothing is transmitted to external servers.</li>
+      </ul>
+      <p style="margin-top:var(--space-4);font-size:12px;color:var(--color-tertiary);">For platform issues, contact your training coordinator directly.</p>
+    </div>
+
+  </main>
+
+  <!-- ════════════════════════════════════════════════════════════════
+       FOOTER
+       ════════════════════════════════════════════════════════════════ -->
+  <footer class="site-footer-wrap">
+    <div class="site-footer-inner">
+      <span>&copy; 2026 QA Pilot Academy</span>
+      <div>
+        <a href="portal.html">Back to Portal</a>
+        <a href="guide-facilitator.html">Facilitator Guide</a>
+        <a href="#" onclick="history.back();return false;">Help</a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

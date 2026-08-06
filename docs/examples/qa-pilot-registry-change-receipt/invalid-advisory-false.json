@@ -1,0 +1,16 @@
+{
+  "receipt_id": "RCR-INVALID-ADVISORY-FALSE-001",
+  "sprint_id": "QA-PILOT-HYPOTHETICAL-UNAUTHORIZED-1",
+  "ledger_number": 54,
+  "registry_impact": "adds_layer",
+  "registry_before_summary": "Registry had 17 layers.",
+  "registry_after_summary": "Registry has 18 layers after unauthorized mutation.",
+  "layer_slot_added": 54,
+  "rationale": "This sprint adds a layer and claims approval authority, violating RCR-2 and RCR-14.",
+  "advisory_only": false,
+  "custody": "qa-pilot-local",
+  "librarian_impact": "none",
+  "not_seal_authority": "No sealing authority claimed.",
+  "not_librarian_mutation_authority": "No Librarian mutation claimed.",
+  "created_at": "2026-07-07T19:20:00Z"
+}

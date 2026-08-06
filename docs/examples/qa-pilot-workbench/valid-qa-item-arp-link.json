@@ -1,0 +1,46 @@
+{
+  "qa_item_id": "QA-GOV-0040",
+  "title": "Advisory review packet produced from live posture",
+  "source": "advisory_review",
+  "status": "resolved_locally",
+  "severity": "info",
+  "category": "governance",
+  "description": "ARP-LIVE-062 was produced from sealed posture. All 10 AR rules pass.",
+  "evidence_refs": [
+    "ARP-LIVE-062",
+    "ARP-QA-PILOT-CONSUMER-002"
+  ],
+  "validator_refs": [
+    "AR-1",
+    "AR-2",
+    "AR-3",
+    "AR-4",
+    "AR-5",
+    "AR-6",
+    "AR-7",
+    "AR-8",
+    "AR-9",
+    "AR-10"
+  ],
+  "evidence_links": [
+    {
+      "evidence_link_id": "EL-GOV-0040-001",
+      "evidence_type": "arp_packet",
+      "evidence_ref": "ARP-LIVE-062",
+      "source_path": "data/advisory-review-packets/ARP-LIVE-062.json",
+      "producing_command": "python3 scripts/generate-advisory-review-packet.py live review",
+      "attachment_reason": "Live advisory review packet produced from sealed #62 posture. All 10 AR rules validated.",
+      "custody": "qa-pilot-local",
+      "advisory_only": true,
+      "authority_note": "Evidence attachment does not prove defect validity or imply Owner approval.",
+      "attached_at": "2026-07-08T00:00:00Z"
+    }
+  ],
+  "owner_decision_state": "accepted",
+  "owner_decision_ref": "OD-ADVISORY-REVIEW-001",
+  "created_at": "2026-07-08T00:00:00Z",
+  "updated_at": "2026-07-08T00:02:00Z",
+  "advisory_only": true,
+  "custody": "qa-pilot-local",
+  "librarian_impact": "none"
+}

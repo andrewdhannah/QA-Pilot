@@ -1,0 +1,37 @@
+{
+  "record_id": "QR-EXMPOL-0001",
+  "qualification_type": "artifact",
+  "target_id": "DESIGN-TOKEN-REF-001",
+  "target_type": "startup_surface",
+  "qualification_level": "exempt",
+  "qualification_criteria": {
+    "required_level": "exempt",
+    "pass_rate_threshold": 0.0,
+    "evidence_count_min": 0,
+    "authority_check_required": false
+  },
+  "evidence_refs": [
+    {
+      "evidence_id": "POLICY-EXEMPT-001",
+      "evidence_type": "receipt",
+      "evidence_source": "docs/examples/qa-pilot-qualification/valid/exempt-by-policy.json",
+      "verification_status": "verified",
+      "verified_at": "2026-07-16T12:00:00Z"
+    }
+  ],
+  "overall_score": 0.0,
+  "sub_dimension_scores": {"policy_exempt": 0.0},
+  "lifecycle_state": "completed",
+  "provenance": {
+    "assessor_id": "OpenWork-DeepSeek-V4-Flash",
+    "session_id": "qual-schema-1-session",
+    "tool_call_log": "validate-qa-pilot-qualification.py fixture mode"
+  },
+  "expiry_date": "2027-07-16",
+  "notes": "Exempt by policy: design token references are not qualification targets per Owner decision 2026-07-09",
+  "advisory_only": true,
+  "custody": "qa-pilot-local",
+  "librarian_impact": "none",
+  "assessed_at": "2026-07-16T12:00:00Z",
+  "assessed_by": "OpenWork (DeepSeek V4 Flash)"
+}

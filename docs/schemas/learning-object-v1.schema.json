@@ -1,0 +1,219 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/andrewdhannah/QA-Pilot/schemas/learning-object-v1.schema.json",
+  "title": "Learning Object v1",
+  "description": "A learning object is a governed teaching artifact that references Librarian evidence findings. It defines lesson content, exercises, assessment references, and certification criteria derived from a diagnostic finding. It does NOT create evidence, authority, or seal capability.",
+  "type": "object",
+  "required": [
+    "schema",
+    "id",
+    "source",
+    "learning",
+    "assessment",
+    "certification"
+  ],
+  "properties": {
+    "schema": {
+      "type": "string",
+      "const": "learning-object-v1",
+      "description": "Schema version identifier"
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^LO-[A-Z0-9]+(-[A-Z0-9]+)*-?[0-9]{3,}$",
+      "description": "Unique learning object identifier, e.g. LO-EV-GOV-002-001"
+    },
+    "title": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 200,
+      "description": "Human-readable title for the learning object"
+    },
+    "source": {
+      "type": "object",
+      "required": ["finding_code", "evidence_refs", "confidence"],
+      "properties": {
+        "finding_code": {
+          "type": "string",
+          "pattern": "^EV-[A-Z]+-[0-9]{3,}$|^F-[0-9]{4,}$",
+          "description": "The diagnostic finding code this learning object derives from"
+        },
+        "finding_id": {
+          "type": "string",
+          "description": "Optional finding_id for direct reference"
+        },
+        "evidence_refs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["type", "ref"],
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": ["cursor_file", "registry_entry", "reconciliation_report", "receipt", "evidence_snapshot", "provenance_record"]
+              },
+              "ref": { "type": "string" },
+              "description": { "type": "string" }
+            }
+          },
+          "minItems": 1,
+          "description": "Evidence references that support this learning object"
+        },
+        "confidence": {
+          "type": "string",
+          "enum": ["VERIFIED", "DIRECT", "DERIVED", "ESTIMATED", "UNKNOWN"],
+          "description": "Confidence level of the source finding"
+        }
+      },
+      "description": "Source finding reference. Links the learning object to governed evidence. The learning object references evidence; it does not become evidence."
+    },
+    "learning": {
+      "type": "object",
+      "required": ["objective", "explanation"],
+      "properties": {
+        "title": {
+          "type": "string",
+          "description": "Optional lesson title (defaults to parent title)"
+        },
+        "objective": {
+          "type": "string",
+          "minLength": 10,
+          "description": "What the learner will understand after completing this object"
+        },
+        "explanation": {
+          "type": "string",
+          "minLength": 20,
+          "description": "Teaching content — explains the finding in educational context. Must be distinct from the raw finding text, adding teaching-specific context, analogies, and implications."
+        },
+        "prerequisites": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^LO-[A-Z]+-[0-9]{3,}$"
+          },
+          "description": "Optional prerequisite learning object IDs"
+        },
+        "tags": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Optional topic tags for grouping"
+        }
+      },
+      "description": "Lesson content — the teaching material derived from the source finding. Contains explanation, objectives, and prerequisites."
+    },
+    "exercise": {
+      "type": "object",
+      "properties": {
+        "scenario_id": {
+          "type": "string",
+          "description": "Reference to a scenario definition (in V1.5 format or future format)"
+        },
+        "setup": {
+          "type": "string",
+          "description": "Context given to the learner before the exercise begins"
+        },
+        "expected_observations": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "observation": { "type": "string" },
+              "evidence_link": { "type": "string" }
+            }
+          },
+          "description": "What the learner should observe or discover during the exercise"
+        }
+      },
+      "description": "Optional exercise — a scenario-based activity that tests the learner's understanding of the finding."
+    },
+    "assessment": {
+      "type": "object",
+      "required": ["quiz_refs", "scoring_model"],
+      "properties": {
+        "quiz_refs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "description": "Reference to quiz question IDs from the question bank (e.g. 'l1-q1', 'l2-q3')"
+          },
+          "minItems": 1,
+          "description": "References to existing quiz questions. Quiz content is NOT embedded in the learning object — it is referenced."
+        },
+        "scoring_model": {
+          "type": "string",
+          "enum": ["evaluateSubmission", "quiz_only", "exercise_only", "composite"],
+          "description": "Which scoring model to use. 'evaluateSubmission' maps to V1.5's scoring.js"
+        }
+      },
+      "description": "Assessment configuration. References quiz questions and scoring model. Does NOT contain quiz content inline."
+    },
+    "certification": {
+      "type": "object",
+      "required": ["criteria", "passing_score"],
+      "properties": {
+        "criteria": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["id", "description"],
+            "properties": {
+              "id": { "type": "string" },
+              "description": { "type": "string", "minLength": 10 },
+              "required": { "type": "boolean", "default": true }
+            }
+          },
+          "minItems": 1,
+          "description": "Certification criteria. These evaluate understanding of the governed system, NOT system correctness. They MUST NOT overlap with Librarian seal authority."
+        },
+        "passing_score": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100,
+          "description": "Percentage required to earn certification for this learning object"
+        }
+      },
+      "description": "Certification criteria. Defines what passing means in educational terms. Does NOT confer seal, approval, or production-readiness authority."
+    },
+    "metadata": {
+      "type": "object",
+      "properties": {
+        "generated_at": { "type": "string", "format": "date-time" },
+        "version": { "type": "string" },
+        "author": { "type": "string" }
+      },
+      "description": "Optional metadata about the learning object's generation"
+    },
+    "advisory_only": {
+      "type": "boolean",
+      "const": true,
+      "description": "Learning objects are advisory-only. They do not confer authority."
+    },
+    "no_seal_authority": {
+      "type": "boolean",
+      "const": true,
+      "description": "Learning objects do not confer seal authority."
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "assessment": {
+            "properties": {
+              "scoring_model": { "const": "evaluateSubmission" }
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "exercise": {
+            "type": "object",
+            "required": ["scenario_id", "setup"]
+          }
+        }
+      }
+    }
+  ],
+  "additionalProperties": false
+}

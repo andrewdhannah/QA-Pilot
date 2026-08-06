@@ -1,0 +1,86 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://qa-pilot.carbideframe/schemas/qa-pilot-risk-based-heavy-packet-v1",
+  "title": "QA Pilot Heavy Evidence Review Packet",
+  "description": "Schema for a heavy evidence review packet produced for results assigned 'heavy' review depth. Full evidence trace, cross-node trace, authority assessment, and escalation documentation. Does not approve, seal, verify, or authorize. Owner remains the final decision point.",
+  "type": "object",
+  "required": [
+    "packet_id",
+    "source_evaluation_id",
+    "assigned_depth",
+    "evidence_bundle_review",
+    "per_finding_commentary",
+    "consistency_guard_evaluation",
+    "risk_input_breakdown",
+    "cross_node_involvement_trace",
+    "authority_boundary_assessment",
+    "registry_ledger_impact_analysis",
+    "partial_completion_gap_evaluation",
+    "escalation_chain_documentation",
+    "full_evidence_trace",
+    "recommendation_summary",
+    "generated_at",
+    "authority_disclaimer",
+    "advisory_only",
+    "custody",
+    "librarian_impact"
+  ],
+  "properties": {
+    "packet_id": { "type": "string", "pattern": "^HP-[A-Z0-9_-]+-[0-9]{3,6}$" },
+    "source_evaluation_id": { "type": "string", "pattern": "^RD-EVAL-" },
+    "assigned_depth": { "type": "string", "const": "heavy" },
+    "evidence_bundle_review": { "type": "string", "minLength": 3, "maxLength": 2000 },
+    "per_finding_commentary": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "finding_ref": { "type": "string" },
+          "commentary": { "type": "string" }
+        },
+        "required": ["finding_ref", "commentary"]
+      }
+    },
+    "consistency_guard_evaluation": { "type": "string", "minLength": 3, "maxLength": 2000 },
+    "risk_input_breakdown": {
+      "type": "object",
+      "properties": {
+        "authority_change": { "type": "boolean" },
+        "production_path_impact": { "type": "boolean" },
+        "ledger_registry_change": { "type": "boolean" },
+        "cross_node_involvement": { "type": "boolean" },
+        "partial_completion": { "type": "boolean" },
+        "incomplete_requirements_count": { "type": "integer" },
+        "rc_failures": { "type": "string" },
+        "e4_failures": { "type": "string" }
+      }
+    },
+    "cross_node_involvement_trace": { "type": "string", "minLength": 3, "maxLength": 2000 },
+    "authority_boundary_assessment": { "type": "string", "minLength": 3, "maxLength": 2000 },
+    "registry_ledger_impact_analysis": { "type": "string", "minLength": 3, "maxLength": 2000 },
+    "partial_completion_gap_evaluation": { "type": "string", "minLength": 3, "maxLength": 2000 },
+    "escalation_chain_documentation": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "rule_id": { "type": "string" },
+          "triggered": { "type": "boolean" },
+          "effect": { "type": "string" }
+        },
+        "required": ["rule_id", "triggered", "effect"]
+      }
+    },
+    "full_evidence_trace": { "type": "string", "minLength": 3, "maxLength": 2000 },
+    "recommendation_summary": { "type": "string", "minLength": 3, "maxLength": 1000 },
+    "generated_at": { "type": "string", "format": "date-time" },
+    "authority_disclaimer": {
+      "type": "string",
+      "const": "This heavy evidence review packet is advisory-only. It does not approve intake, verify evidence, close workbench items, seal results, execute work, or replace Owner decision authority. Owner remains the final decision point. Custody is qa-pilot-local. Librarian impact is none."
+    },
+    "custody": { "type": "string", "const": "qa-pilot-local" },
+    "advisory_only": { "type": "boolean", "const": true },
+    "librarian_impact": { "type": "string", "const": "none" }
+  },
+  "additionalProperties": false
+}

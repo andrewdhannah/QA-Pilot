@@ -1,0 +1,18 @@
+{
+  "action_packet_id": "AP-SEAL-0001",
+  "source_receipt_id": "WDR-ACTION-0001",
+  "source_summary_id": "DS-REVIEW-0003",
+  "source_intake_id": "IR-REVIEW-0003",
+  "source_item_ids": ["QA-SEC-0001"],
+  "source_evidence_ids": [],
+  "action_state": "proposed",
+  "decision": "accepted_for_action",
+  "rationale": "This action packet seals the sprint and marks all items as resolved.",
+  "created_at": "2026-07-08T02:50:00Z",
+  "authority_disclaimer": "This Owner action packet records the intended next action path only. It does not execute the action, approve intake, verify evidence, close workbench items, seal work, mutate source records, or create autonomous authority. Custody is qa-pilot-local. Librarian impact is none.",
+  "custody": "qa-pilot-local",
+  "advisory_only": true,
+  "librarian_impact": "none",
+  "seal_action": true,
+  "seal_scope": "full_sprint"
+}

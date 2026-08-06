@@ -1,0 +1,34 @@
+{
+  "$schema": "qa-pilot-migration-roundtrip-5-v1",
+  "epic": "EPIC-QA-PILOT-OPENWORK-TO-CARBIDEFRAME-MIGRATION-1",
+  "sprint": "QA-PILOT-MIGRATION-ROUNDTRIP-VALIDATION-1",
+  "sealed_number": 160,
+  "approval_token": "apt_95de2494",
+  "ledger_status": "sealed",
+  "roundtrip_summary": {
+    "manifest_total": 123,
+    "sha_matches": 120,
+    "intentional_deviations": 3,
+    "functional_flows_pass": 8,
+    "functional_flows_total": 8,
+    "broken_refs_remaining": 0,
+    "governance_integration": "PASS"
+  },
+  "intentional_deviations": [
+    {"file": "certificate.html", "fix": "course.html -> course-view.html", "sprint": 3},
+    {"file": "desktop/index.html", "fix": "os.css -> ../os.css", "sprint": 3},
+    {"file": "desktop/dist.html", "fix": "data/bug-keys.js -> ../data/bug-keys.js", "sprint": 3}
+  ],
+  "recommendation": {
+    "canonical_source": "PROMOTE_TO_CANONICAL_WITH_NOTES",
+    "confidence": "HIGH",
+    "rationale": "120/123 byte-identical, 3 intentional path fixes, all flows complete, governance green."
+  },
+  "epic_seal_record": {
+    "total_sealed_sprints": 5,
+    "ledger_range": "#156-#160",
+    "epic_status": "fully_sealed"
+  },
+  "created_at": "2026-07-13T07:27:00Z",
+  "agent": "OpenWork-Claude"
+}

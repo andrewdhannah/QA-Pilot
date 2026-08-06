@@ -1,0 +1,32 @@
+{
+  "$schema": "owner-decision-v1",
+  "decision_id": "OD-QA-PILOT-LIBRARIAN-KNOWLEDGE-ADAPTER-1-SEAL",
+  "date": "2026-07-08",
+  "owner": "Andrew Hannah",
+  "sprint": "QA-PILOT-LIBRARIAN-KNOWLEDGE-ADAPTER-1",
+  "epic": "EPIC-QA-PILOT-TRAINING-SYSTEM-1",
+  "decision": "APPROVE_AND_SEAL",
+  "ledger_number": 95,
+  "basis": "Knowledge adapter implementation complete. Read-only bridge from Librarian canonical knowledge to QA Pilot training layer. CLI with 6 operations (scan/query/reference/provenance/verify/status). 14 KA rules validated across 7 fixtures. 17/17 tests pass. All operations read-only, advisory-only posture preserved, provenance records with hash integrity. No training generation, no Librarian mutation, no cross-project write.",
+  "deliverables": {
+    "schema": "docs/schemas/qa-pilot-knowledge-adapter.schema.json",
+    "cli": "scripts/qa_pilot_knowledge_adapter.py",
+    "validator": "scripts/validate-qa-pilot-knowledge-adapter.py",
+    "test_runner": "scripts/test-qa-pilot-knowledge-adapter.sh",
+    "governance": "docs/governance/QA-PILOT-LIBRARIAN-KNOWLEDGE-ADAPTER.md",
+    "sprint_doc": "docs/sprints/QA-PILOT-LIBRARIAN-KNOWLEDGE-ADAPTER-1.md"
+  },
+  "validation": {
+    "tests_passing": 17,
+    "valid_fixtures": 4,
+    "invalid_fixtures_rejected": 3,
+    "validator_rules": 14,
+    "no_librarian_mutation": true,
+    "no_cross_project_write": true,
+    "no_training_generation": true
+  },
+  "classification": "implementation_knowledge_adapter",
+  "authority": "Owner",
+  "status": "sealed",
+  "sealed_at": "2026-07-08T22:10:00Z"
+}

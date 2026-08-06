@@ -1,0 +1,15 @@
+{
+  "$schema": "owner-decision-v1",
+  "decision_id": "OD-QA-PILOT-BROWSER-ONLY-STARTUP-AND-DEPLOYMENT-CONTRACT-1-SEAL",
+  "date": "2026-07-08",
+  "owner": "Andrew Hannah",
+  "sprint": "QA-PILOT-BROWSER-ONLY-STARTUP-AND-DEPLOYMENT-CONTRACT-1",
+  "epic": "EPIC-QA-PILOT-BROWSER-ONLY-DEPLOYMENT-AND-STARTUP-1",
+  "decision": "APPROVE_AND_SEAL",
+  "ledger_number": 111,
+  "basis": "Browser-only deployment contract sealed. 4 startup modes defined (solo/returning/team/admin). JSON custody boundary with 3 schemas (deployment/result/backup). 8 custody rules. 11 stop conditions. 8 recommended future sprints. 20/20 validation checks pass. No implementation performed.",
+  "classification": "planning_contract",
+  "authority": "Owner",
+  "status": "sealed",
+  "sealed_at": "2026-07-08T23:50:00Z"
+}

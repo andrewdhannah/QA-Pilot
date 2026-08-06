@@ -1,0 +1,14 @@
+{
+  "registry_posture": {
+    "rcg_posture": {
+      "latest_sealed_ledger": null,
+      "latest_sealed_sprint": null,
+      "latest_rcr_ledger": null,
+      "latest_rcr_receipt": null,
+      "coverage_gap": null,
+      "rcg_status": "unknown",
+      "classification": "unknown",
+      "_authority_claim": "seal without closeout"
+    }
+  }
+}

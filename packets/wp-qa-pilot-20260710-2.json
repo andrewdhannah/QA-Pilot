@@ -1,0 +1,157 @@
+{
+  "acceptance_gates" : [
+    {
+      "description" : "Manifest match: 123 files copied, byte count and SHA-256 verified",
+      "id" : "AG-COPY-1",
+      "pass_criteria" : "Every file in reports\/qa-pilot-migration-copy-manifest-1.json exists at its declared destination under active\/qa-pilot\/browser-app\/ with the same SHA-256."
+    },
+    {
+      "description" : "No-overwrite verification of governance files (refresh from Sprint 1)",
+      "id" : "AG-COPY-2",
+      "pass_criteria" : "No file in scripts\/, docs\/governance\/, docs\/schemas\/*.schema.json, fixtures\/, project-state\/, receipts\/, data\/ (root), config\/ has been modified or added by this sprint. docs\/schemas\/browser-assets\/ remains intact."
+    },
+    {
+      "description" : "OpenWork source untouched",
+      "id" : "AG-COPY-3",
+      "pass_criteria" : "No file in \/Users\/andrew\/Desktop\/OpenWork\/QA Pilot\/ was modified. mtime check confirms source untouched."
+    },
+    {
+      "description" : "browser-app\/ sole destination and data\/ separation",
+      "id" : "AG-COPY-4",
+      "pass_criteria" : "Every destination path begins with active\/qa-pilot\/browser-app\/. The 6 data\/*.js files land on browser-app\/data\/* and are visibly distinct from root data\/."
+    },
+    {
+      "description" : "CarbideFrame governance framework remains green",
+      "id" : "AG-COPY-5",
+      "pass_criteria" : "Startup checks remain managed after the copy. No script\/doc\/schema\/fixture\/ledger\/receipt was modified."
+    },
+    {
+      "description" : "Relative path risk audit (no broad rewrites)",
+      "id" : "AG-COPY-6",
+      "pass_criteria" : "Each HTML page references the expected relative JS\/CSS assets; no path requires a broad rewrite. Any path anomaly recorded but not auto-fixed unless a page cannot open."
+    },
+    {
+      "description" : "Migrated app opens at file:\/\/ target",
+      "id" : "AG-COPY-7",
+      "pass_criteria" : "browser-app\/index.html is reachable, well-formed, and references all expected sibling assets without 404."
+    },
+    {
+      "description" : "Skipped or added-outside-manifest files are explained",
+      "id" : "AG-COPY-8",
+      "pass_criteria" : "Each deviation from the manifest is recorded with reason; nothing added or removed silently."
+    }
+  ],
+  "authority_basis" : "Owner decision 2026-07-10: 'Approve completion of QA-PILOT-MIGRATION-PREP-AND-SNAPSHOT-1. Proceed to Sprint 2 only: QA-PILOT-OPENWORK-APP-COPY-1.' Approval token apt_3ed7340e recorded; use reports\/qa-pilot-migration-copy-manifest-1.json as source of truth; keep browser-app\/data\/ distinct from root data\/; preserve all governance files and docs\/schemas\/browser-assets\/; do not mutate OpenWork source or CarbideFrame Librarian; do not resume visual parity or I18N.",
+  "authority_envelope" : {
+    "agent_role" : "qa-pilot-migration-worker",
+    "allowed_actions" : [
+      "read_openwork_qa_pilot_source_for_inventory",
+      "read_carbideframe_qa_pilot_governance_files",
+      "copy_files_into_browser_app_per_manifest",
+      "write_sprint_doc_to_docs_sprints",
+      "produce_copy_audit_json_under_reports",
+      "produce_copy_result_json_under_reports",
+      "write_sprint_completion_report_under_reports",
+      "write_sprint_receipt_under_receipts",
+      "register_approval_for_sprint_creation_via_librarian"
+    ],
+    "forbidden_actions" : [
+      "mutate_carbideframe_governance_files",
+      "mutate_carbideframe_librarian_files",
+      "mutate_openwork_qa_pilot_source",
+      "add_backend_auth_telemetry_external_dependencies",
+      "continue_visual_parity_or_i18n_wiring_work",
+      "rename_browser_app_data_to_browser_app_courses",
+      "archive_or_supersede_openwork_source",
+      "delete_docs_schemas_browser_assets",
+      "seal_epic_without_owner_decision"
+    ],
+    "forbidden_paths" : [
+      "\/Users\/andrew\/Desktop\/OpenWork\/**",
+      "\/Users\/andrew\/Desktop\/CarbideFrame\/active\/librarian\/**",
+      "\/Users\/andrew\/Desktop\/CarbideFrame\/active\/qa-pilot\/scripts\/**",
+      "\/Users\/andrew\/Desktop\/CarbideFrame\/active\/qa-pilot\/docs\/governance\/**",
+      "\/Users\/andrew\/Desktop\/CarbideFrame\/active\/qa-pilot\/docs\/schemas\/**",
+      "\/Users\/andrew\/Desktop\/CarbideFrame\/active\/qa-pilot\/fixtures\/**",
+      "\/Users\/andrew\/Desktop\/CarbideFrame\/active\/qa-pilot\/project-state\/sprint-ledger.json",
+      "\/Users\/andrew\/Desktop\/CarbideFrame\/active\/qa-pilot\/receipts\/**",
+      "\/Users\/andrew\/Desktop\/CarbideFrame\/active\/qa-pilot\/data\/**",
+      "\/Users\/andrew\/Desktop\/CarbideFrame\/active\/qa-pilot\/config\/**",
+      "\/Users\/andrew\/Desktop\/CarbideFrame\/active\/qa-pilot\/PROJECT-IDENTITY.md",
+      "\/Users\/andrew\/Desktop\/CarbideFrame\/active\/qa-pilot\/PROJECT-PROFILE.json",
+      "\/Users\/andrew\/Desktop\/CarbideFrame\/active\/qa-pilot\/startup-contract.json",
+      "\/Users\/andrew\/Desktop\/CarbideFrame\/active\/qa-pilot\/CLAUDE.md",
+      "\/Users\/andrew\/Desktop\/CarbideFrame\/active\/qa-pilot\/FEATURE-STATUS.md",
+      "\/Users\/andrew\/Desktop\/CarbideFrame\/active\/qa-pilot\/SESSION-HANDOFF.md"
+    ],
+    "may_authorize_continuation" : false,
+    "read_paths" : [
+      "\/Users\/andrew\/Desktop\/OpenWork\/QA Pilot\/**",
+      "\/Users\/andrew\/Desktop\/CarbideFrame\/active\/qa-pilot\/**",
+      "\/Users\/andrew\/Desktop\/CarbideFrame\/active\/qa-pilot\/reports\/qa-pilot-migration-copy-manifest-1.json",
+      "\/Users\/andrew\/Desktop\/CarbideFrame\/active\/qa-pilot\/reports\/qa-pilot-migration-overwrite-protection-1.json"
+    ],
+    "requires_receipt" : true,
+    "write_paths" : [
+      "\/Users\/andrew\/Desktop\/CarbideFrame\/active\/qa-pilot\/browser-app\/**",
+      "\/Users\/andrew\/Desktop\/CarbideFrame\/active\/qa-pilot\/docs\/sprints\/QA-PILOT-OPENWORK-APP-COPY-1.md",
+      "\/Users\/andrew\/Desktop\/CarbideFrame\/active\/qa-pilot\/reports\/qa-pilot-migration-copy-result-2.json",
+      "\/Users\/andrew\/Desktop\/CarbideFrame\/active\/qa-pilot\/reports\/qa-pilot-migration-copy-manifest-2-audit.json",
+      "\/Users\/andrew\/Desktop\/CarbideFrame\/active\/qa-pilot\/reports\/qa-pilot-migration-app-copy-2.md",
+      "\/Users\/andrew\/Desktop\/CarbideFrame\/active\/qa-pilot\/receipts\/migration-app-copy-2.json"
+    ]
+  },
+  "authorized_at" : "2026-07-10T19:05:46Z",
+  "context_packet_id" : "ctx-qa-pilot-20260710-2",
+  "created_at" : "2026-07-10T19:05:42Z",
+  "expected_output" : {
+    "description" : "Sprint 2 completion report covering: (1) files\/directories copied; (2) manifest match result; (3) overwrite-protection result; (4) SHA\/hash verification result; (5) any files skipped or added outside manifest with reason; (6) relative path risks found; (7) whether the migrated app opens at the target location; (8) working tree delta; (9) validation commands and results; (10) unresolved issues; (11) Owner review posture.",
+    "format" : "documentation_plus_audit_artifact"
+  },
+  "non_goals" : [
+    "Renaming browser-app\/data\/ to browser-app\/courses\/",
+    "Re-applying Librarian visual design or I18N wiring",
+    "Archiving or superseding OpenWork QA Pilot source",
+    "Sealing the epic",
+    "Deleting or restructuring docs\/schemas\/browser-assets\/",
+    "Touching any CarbideFrame governance root outside the new docs\/sprints\/, reports\/, and receipts\/ artifacts explicitly listed"
+  ],
+  "owner_decision_id" : "OD-qa-pilot-20260710-260710-2",
+  "packet_id" : "wp-qa-pilot-20260710-2",
+  "packet_status" : "authorized",
+  "project_id" : "qa-pilot",
+  "project_name" : "Qa Pilot",
+  "scope" : [
+    "Capture and verify Owner authorization (apr_952575e5 \/ apt_3ed7340e)",
+    "Re-read the approved manifest reports\/qa-pilot-migration-copy-manifest-1.json and verify SHA-256s of every source file right before copy",
+    "Perform the copy into active\/qa-pilot\/browser-app\/ per the manifest, preserving relative paths",
+    "Verify every copied file's SHA-256 matches the manifest post-copy; record any mismatch",
+    "Verify no CarbideFrame governance file was modified or overwritten (refresh overwrite-protection verdict)",
+    "Verify OpenWork source mtimes are unchanged",
+    "Audit relative path risks (e.g., admin\/dashboard.html referencing ..\/js\/app.js) without auto-rewriting; record the audit",
+    "Verify the migrated app opens: read browser-app\/index.html, walk referenced assets, confirm presence; do not perform a browser launch",
+    "Run startup checks; confirm managed; confirm governance framework remains green",
+    "Produce Sprint 2 audit (JSON), result (JSON), completion report (MD), and receipt (JSON)",
+    "Carry forward the Sprint 1 advisory gap (missing project_work_result_intake server-side record) explicitly",
+    "Emit Sprint 2 completion report and stop for Owner direction"
+  ],
+  "status" : "created",
+  "verification_plan" : {
+    "evidence_required" : [
+      "manifest_match_result_json_file_count_bytes_sha256",
+      "overwrite_protection_verification_log",
+      "sha256_verification_report_for_all_copied_files",
+      "list_of_files_skipped_or_added_with_reason",
+      "relative_path_risk_log",
+      "file_open_check_for_browser_app_index_html",
+      "working_tree_delta_summary"
+    ],
+    "validators_required" : [
+      "qa-pilot-delegation",
+      "qa-pilot-startup-regression",
+      "qa-pilot-startup-parity-matrix"
+    ]
+  },
+  "work_id" : "QA-PILOT-OPENWORK-APP-COPY-1",
+  "work_type" : "implementation"
+}

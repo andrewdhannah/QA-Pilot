@@ -1,0 +1,13 @@
+{
+  "manifest_version": 3,
+  "name": "QA Pilot — Sprint Primer",
+  "version": "1.0.0",
+  "description": "One-click sprint prompt injection for DeepSeek, Copilot, and any web AI. Injects FlightPlan instructions, project context, and today's date automatically.",
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "QA Pilot Sprint Primer"
+  },
+  "permissions": [
+    "clipboardWrite"
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://qa-pilot.carbideframe/schemas/qa-test-case-v1",
+  "title": "QA Test Case",
+  "description": "A test case composed by QA Pilot from sprint evidence, acceptance criteria, or regression history.",
+  "type": "object",
+  "required": [
+    "test_id", "sprint_id", "source_artifact",
+    "criteria", "status"
+  ],
+  "properties": {
+    "test_id": { "type": "string", "pattern": "^TC-" },
+    "sprint_id": { "type": "string" },
+    "source_artifact": { "type": "string" },
+    "criteria": { "type": "string", "minLength": 10 },
+    "expected": { "type": "string" },
+    "preconditions": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "steps": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 1
+    },
+    "postconditions": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "status": {
+      "type": "string",
+      "enum": ["composed", "ready", "run", "passed", "failed", "blocked"]
+    },
+    "tags": {
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  }
+}

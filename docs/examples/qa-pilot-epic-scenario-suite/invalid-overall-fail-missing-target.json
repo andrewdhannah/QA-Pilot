@@ -1,0 +1,10 @@
+{
+  "suite_version": "qa-pilot-epic-scenario-suite-v1",
+  "generated_at": "2026-07-24T02:50:51Z",
+  "scenario_id": "EP-MISSING-TARGET",
+  "title": "Missing target_epic field",
+  "overall": "FAIL",
+  "details": [],
+  "read_only": true,
+  "no_authority_conferred": true
+}

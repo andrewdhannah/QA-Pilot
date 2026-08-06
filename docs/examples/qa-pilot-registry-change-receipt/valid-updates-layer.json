@@ -1,0 +1,15 @@
+{
+  "receipt_id": "RCR-UPDATE-TITLE-050",
+  "sprint_id": "QA-PILOT-REGISTRY-STARTUP-SURFACE-1",
+  "ledger_number": 50,
+  "registry_impact": "updates_layer",
+  "registry_before_summary": "Registry had 16 layers (#33-#49). Registry posture not yet exposed in startup surface.",
+  "registry_after_summary": "Registry unchanged at 17 layers. Registry posture now exposed in startup surface with RSS-1 through RSS-10 rules. Layer #49 was renamed to reflect drift registry purpose.",
+  "rationale": "Sprint #50 added startup surface registry posture reporting but did not add or remove registry layers. It introduced RSS validation rules for registry posture.",
+  "advisory_only": true,
+  "custody": "qa-pilot-local",
+  "librarian_impact": "none",
+  "not_seal_authority": "This registry change receipt does not confer sealing authority.",
+  "not_librarian_mutation_authority": "This receipt does not authorize Librarian file mutation.",
+  "created_at": "2026-07-07T19:17:00Z"
+}

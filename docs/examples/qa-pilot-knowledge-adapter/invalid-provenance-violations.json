@@ -1,0 +1,16 @@
+{
+  "adapter_version": "knowledge-adapter-v1",
+  "generated_at": "2026-07-08T21:00:00Z",
+  "operation": "provenance",
+  "sources": [],
+  "result": {
+    "provenance": {
+      "provenance_id": "KAP-BAD-00000000",
+      "generated_at": "2026-07-08T21:00:00Z",
+      "sources": [],
+      "source_hash": "not-a-valid-hash",
+      "advisory": false,
+      "no_authority_promotion": false
+    }
+  }
+}

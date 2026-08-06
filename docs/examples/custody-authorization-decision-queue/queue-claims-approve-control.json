@@ -1,0 +1,23 @@
+{
+  "entry_id": "CDQ-20260706-103",
+  "queued_at": "2026-07-06T17:45:00Z",
+  "status": "pending",
+  "source": "startup_report",
+  "finding_type": "degraded_custody",
+  "description": "This entry claims approve authority",
+  "custody_context": {
+    "contract_id": "#23",
+    "receipt_count": 5,
+    "detail": "Approve control test"
+  },
+  "advisory": true,
+  "owner_required": true,
+  "owner_decision": null,
+  "controls": {
+    "approve": true,
+    "seal": false,
+    "execute": false,
+    "write": false
+  },
+  "cross_project": false
+}

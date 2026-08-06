@@ -1,0 +1,87 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://qa-pilot.carbideframe/schemas/custody-authorization-decision-queue-v1",
+  "title": "Custody Authorization Decision Queue Entry",
+  "description": "A governed Owner decision queue entry for custody posture findings surfaced during startup. Advisory only, pending Owner action, no authority conferred.",
+  "type": "object",
+  "required": [
+    "entry_id", "queued_at", "status", "source", "finding_type",
+    "description", "custody_context", "advisory", "owner_required"
+  ],
+  "properties": {
+    "entry_id": {
+      "type": "string",
+      "pattern": "^CDQ-"
+    },
+    "queued_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["pending", "owner_reviewed", "deferred"]
+    },
+    "source": {
+      "type": "string",
+      "enum": ["startup_report"]
+    },
+    "finding_type": {
+      "type": "string",
+      "enum": [
+        "degraded_custody", "missing_receipt", "stale_index",
+        "violation_detected", "review_item", "cross_project_reference"
+      ]
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 500
+    },
+    "custody_context": {
+      "type": "object",
+      "required": ["contract_id", "receipt_count", "detail"],
+      "properties": {
+        "contract_id": { "type": "string" },
+        "receipt_count": { "type": "integer", "minimum": 0 },
+        "detail": { "type": "string", "maxLength": 200 }
+      }
+    },
+    "advisory": {
+      "type": "boolean",
+      "const": true
+    },
+    "owner_required": {
+      "type": "boolean",
+      "const": true
+    },
+    "owner_decision": {
+      "type": ["string", "null"],
+      "enum": [null, "accept", "reject", "defer"]
+    },
+    "owner_decided_at": {
+      "type": ["string", "null"],
+      "format": "date-time"
+    },
+    "cross_project": {
+      "type": "boolean",
+      "default": false
+    },
+    "owner_authorized": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": { "cross_project": { "const": true } }
+      },
+      "then": {
+        "required": ["owner_authorized"],
+        "properties": {
+          "owner_authorized": { "const": true }
+        }
+      }
+    }
+  ]
+}

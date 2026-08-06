@@ -1,0 +1,90 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://qa-pilot.carbideframe/schemas/qa-workbench-review-decision-receipt-v1",
+  "title": "QA Workbench Review Decision Receipt",
+  "description": "Schema for a governed workbench review decision receipt. Records an Owner review disposition over a decision summary. Does not approve intake, verify evidence, close workbench items, seal work, mutate source records, or create autonomous authority.",
+  "type": "object",
+  "required": [
+    "receipt_id",
+    "source_summary_id",
+    "source_intake_id",
+    "relevant_item_ids",
+    "decision",
+    "rationale",
+    "recorded_at",
+    "authority_disclaimer",
+    "advisory_only",
+    "custody",
+    "librarian_impact"
+  ],
+  "properties": {
+    "receipt_id": {
+      "type": "string",
+      "pattern": "^WDR-[A-Z0-9]+-[0-9]{4,6}$",
+      "description": "Unique workbench decision receipt identifier (e.g. WDR-ACTION-0001)."
+    },
+    "source_summary_id": {
+      "type": "string",
+      "pattern": "^DS-",
+      "description": "The decision summary ID that this receipt was created from."
+    },
+    "source_intake_id": {
+      "type": "string",
+      "pattern": "^IR-",
+      "description": "The intake record ID that this receipt references."
+    },
+    "relevant_item_ids": {
+      "type": "array",
+      "items": { "type": "string", "pattern": "^QA-" },
+      "minItems": 1,
+      "description": "Workbench item IDs relevant to this decision."
+    },
+    "decision": {
+      "type": "string",
+      "enum": ["accepted_for_action", "authorized", "deferred", "rejected"],
+      "description": "Owner decision disposition. accepted_for_action means the item is accepted for further action — not that defects are accepted or evidence is verified. authorized means Owner authorizes the recommended action. deferred means postponed. rejected means declined."
+    },
+    "rationale": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 2000,
+      "description": "Owner rationale for the decision. Must not imply approval, verification, or seal authority."
+    },
+    "recorded_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp when the receipt was recorded."
+    },
+    "source_summary_timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Optional timestamp from the source decision summary."
+    },
+    "owner_note": {
+      "type": "string",
+      "maxLength": 2000,
+      "description": "Optional additional Owner note."
+    },
+    "authority_disclaimer": {
+      "type": "string",
+      "const": "A workbench review decision receipt records an Owner review disposition over a decision summary. It does not approve intake, verify evidence, close workbench items, seal work, mutate source records, or create autonomous authority. Custody is qa-pilot-local. Librarian impact is none.",
+      "description": "Standard authority disclaimer. Must match exactly."
+    },
+    "custody": {
+      "type": "string",
+      "const": "qa-pilot-local",
+      "description": "Must always be qa-pilot-local."
+    },
+    "advisory_only": {
+      "type": "boolean",
+      "const": true,
+      "description": "Must always be true. Receipts are advisory-only."
+    },
+    "librarian_impact": {
+      "type": "string",
+      "const": "none",
+      "description": "Must always be none."
+    }
+  },
+  "additionalProperties": false
+}

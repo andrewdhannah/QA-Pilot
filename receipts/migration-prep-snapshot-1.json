@@ -1,0 +1,90 @@
+{
+  "$schema": "qa-pilot-migration-prep-snapshot-receipt-v1",
+  "epic": "EPIC-QA-PILOT-OPENWORK-TO-CARBIDEFRAME-MIGRATION-1",
+  "sprint": "QA-PILOT-MIGRATION-PREP-AND-SNAPSHOT-1",
+  "owner_authorization": {
+    "approval_request_id": "apr_e18aa164",
+    "approval_token_id": "apt_bb2995d2",
+    "approved_by": "Andrew Hannah (Owner)",
+    "approved_at": "2026-07-10T18:53:52Z",
+    "expires_at": "2026-07-11T18:53:52Z",
+    "basis": "Owner authorization: Approve Option A from QA-PILOT-SOURCE-OF-TRUTH-RECONCILIATION-1"
+  },
+  "work_packet": {
+    "packet_id": "wp-qa-pilot-20260710-1",
+    "packet_status": "authorized",
+    "dispatch_id": "spd-qa-pilot-20260710-1",
+    "authority_basis": "Owner authorization 'Approve Option A from QA-PILOT-SOURCE-OF-TRUTH-RECONCILIATION-1' received 2026-07-10; approval token apt_bb2995d2 recorded; Sprint 1 (QA-PILOT-MIGRATION-PREP-AND-SNAPSHOT-1) authorized as bounded prep + snapshot. No copy from OpenWork into browser-app/ during Sprint 1."
+  },
+  "snapshots": {
+    "browser_assets_archive": {
+      "path": "receipts/browser-assets-snapshot.tar.gz",
+      "absolute_path": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/receipts/browser-assets-snapshot.tar.gz",
+      "sha256": "ad86d395c7e37c1ca84da3a48e67d81a2efb3073f743b827f5b8f93f6bfa603a",
+      "size_bytes": 110750,
+      "entries": 21,
+      "captured_at": "2026-07-10T18:54:00Z",
+      "purpose": "Preserves the current CarbideFrame browser-assets (Librarian-converged design) as archived design reference per Owner direction (do not delete). Sprint 4 will keep this archive untouched while re-applying the design language to the migrated app."
+    },
+    "governance_status_surface_checksums": {
+      "captured_at": "2026-07-10T18:54:00Z",
+      "files": {
+        "STARTUP-STATE.md": "5c84af4091f344f58526d3f2945e21938f26c79bf92aaf4a37dc22e8583ffe06",
+        "PROJECT-IDENTITY.md": "c2a5740823c0f1c33f7516f64b744499c52cbeaeffa04958b6a5ff668812ea03",
+        "PROJECT-PROFILE.json": "67b6c79cc6a66320b8634cd0172ea37133256541f8313ee70d2daf15f76edd7e",
+        "startup-contract.json": "e3bbc1c8b1c734371adc5f445d6e135690c71968543975e61e1bc2ca085d4379",
+        "FEATURE-STATUS.md": "ef1c091eb76ad00043c01e0206129f795ff9a14c73c6e28fbcdc81df1c4e9ab0",
+        "SESSION-HANDOFF.md": "5fb241adeef2469fb40441968f95dcb06b25538e990328f65ba7628c0dff4a54",
+        "project-state/sprint-ledger.json": "7259bd7e30b940102cc165b985079b3ef651f2767aaeca812a956602ee83b21d"
+      }
+    }
+  },
+  "copy_manifest": {
+    "path": "reports/qa-pilot-migration-copy-manifest-1.json",
+    "absolute_path": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/reports/qa-pilot-migration-copy-manifest-1.json",
+    "sha256": "c85fda640f617ef2dc2b6162496e2d05c09a409206b1382f0479aa7c57406ef0",
+    "file_count": 123,
+    "total_bytes": 9014064,
+    "overwrite_collisions": 0,
+    "governance_collisions": 0,
+    "data_dir_files_annotated": 6
+  },
+  "overwrite_protection": {
+    "path": "reports/qa-pilot-migration-overwrite-protection-1.json",
+    "verdict": "PASS",
+    "destination_root_empty": true
+  },
+  "protected_paths": [
+    "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/scripts/",
+    "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/docs/governance/",
+    "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/docs/schemas/",
+    "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/fixtures/",
+    "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/project-state/",
+    "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/receipts/",
+    "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/data/",
+    "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/config/",
+    "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/PROJECT-IDENTITY.md",
+    "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/PROJECT-PROFILE.json",
+    "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/startup-contract.json",
+    "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/PROJECT-STARTUP.md",
+    "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/FEATURE-STATUS.md",
+    "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/SESSION-HANDOFF.md",
+    "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/STARTUP-STATE.md",
+    "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot/CLAUDE.md",
+    "/Users/andrew/Desktop/CarbideFrame/active/librarian/",
+    "/Users/andrew/Desktop/OpenWork/QA Pilot/"
+  ],
+  "status_corrections": {
+    "FEATURE-STATUS.md": {
+      "visual_parity_row": "Sprint 3/5 → Sprint 2/5 (with Sprint 1+2 verified, Sprints 3,4,5 re-scoped; current 'In Progress' label replaced with explicit re-scope marker)",
+      "i18n_row": "Dropped '5/5 sprints complete' claim; row now states 'paused, 5 sprints run but not sealed, pending revalidation against migrated app'"
+    },
+    "SESSION-HANDOFF.md": {
+      "active_epic": "EPIC-QA-PILOT-LIBRARIAN-VISUAL-PARITY-CORRECTION-1 re-scoped to paused pending migration",
+      "paused_epic": "EPIC-QA-PILOT-I18N-WIRING-1 — corrected: 5 sprints run, none sealed; paused by Owner 2026-07-09; must be re-validated against migrated app before any seal",
+      "new_epic_section": "EPIC-QA-PILOT-OPENWORK-TO-CARBIDEFRAME-MIGRATION-1 created with 5 bounded sprints; Sprint 1 in progress"
+    }
+  },
+  "created_at": "2026-07-10T18:55:00Z",
+  "agent": "OpenWork-Claude"
+}

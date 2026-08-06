@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://qa-pilot.carbideframe/schemas/qa-pilot-risk-based-review-depth-v1",
+  "title": "QA Pilot Risk-Based Review Depth Evaluation",
+  "description": "Schema for a risk-based review depth evaluation. Consumes 9 risk inputs and produces an advisory review depth assignment (none/light/standard/heavy) with escalation chain traceability. Does not auto-accept, auto-reject, execute, approve, seal, verify, close, mutate, or replace Owner decision authority. Owner remains the final decision point.",
+  "type": "object",
+  "required": [
+    "evaluation_id",
+    "result_packet_ref",
+    "risk_inputs",
+    "composite_risk_score",
+    "assigned_depth",
+    "escalation_chain",
+    "evaluated_at",
+    "authority_disclaimer",
+    "advisory_only",
+    "custody",
+    "librarian_impact"
+  ],
+  "properties": {
+    "evaluation_id": { "type": "string", "pattern": "^RD-EVAL-[A-Z0-9_-]+-[0-9]{3,6}$" },
+    "result_packet_ref": { "type": "string" },
+    "risk_inputs": {
+      "type": "object",
+      "required": [
+        "authority_change",
+        "production_path_impact",
+        "ledger_registry_change",
+        "cross_node_involvement",
+        "partial_completion",
+        "incomplete_requirements",
+        "rc_failure_count",
+        "rc_total_count",
+        "e4_failure_count",
+        "e4_total_count",
+        "lightweight_lane"
+      ],
+      "properties": {
+        "authority_change": { "type": "boolean", "description": "Whether the result involves authority boundary changes" },
+        "production_path_impact": { "type": "boolean", "description": "Whether the result affects production code or data paths" },
+        "ledger_registry_change": { "type": "boolean", "description": "Whether the result modifies ledger, index, or registry records" },
+        "cross_node_involvement": { "type": "boolean", "description": "Whether the result spans multiple agent nodes" },
+        "partial_completion": { "type": "boolean", "description": "Whether the result has partial completion status" },
+        "incomplete_requirements": { "type": "integer", "minimum": 0, "description": "Number of incomplete requirements (0 = none)" },
+        "rc_failure_count": { "type": "integer", "minimum": 0, "description": "Number of failed RC consistency checks" },
+        "rc_total_count": { "type": "integer", "minimum": 0, "description": "Total RC consistency checks" },
+        "e4_failure_count": { "type": "integer", "minimum": 0, "description": "Number of failed E4 evidence checks" },
+        "e4_total_count": { "type": "integer", "minimum": 0, "description": "Total E4 evidence checks" },
+        "lightweight_lane": { "type": "boolean", "description": "Whether this result is in a lightweight lane" }
+      },
+      "additionalProperties": false
+    },
+    "composite_risk_score": { "type": "integer", "minimum": 0, "description": "Composite risk score derived from weighted risk inputs before escalation" },
+    "assigned_depth": {
+      "type": "string",
+      "enum": ["none", "light", "standard", "heavy"],
+      "description": "Final review depth after base score + escalation rules"
+    },
+    "escalation_chain": {
+      "type": "array",
+      "items": { "type": "string", "pattern": "^ER-1[0]$|^ER-[1-9]$" },
+      "description": "List of escalation rule IDs that fired (ER-1 through ER-10)"
+    },
+    "evaluated_at": { "type": "string", "format": "date-time" },
+    "authority_disclaimer": {
+      "type": "string",
+      "const": "This risk-based review depth evaluation is advisory-only. It does not auto-accept evidence, auto-reject findings, execute work, approve intake, verify evidence, close workbench items, seal anything, mutate the evidence chain, or replace Owner decision authority. Owner remains the final decision point. Custody is qa-pilot-local. Librarian impact is none."
+    },
+    "custody": { "type": "string", "const": "qa-pilot-local" },
+    "advisory_only": { "type": "boolean", "const": true },
+    "librarian_impact": { "type": "string", "const": "none" }
+  },
+  "additionalProperties": false
+}

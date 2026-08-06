@@ -1,0 +1,28 @@
+{
+  "adapter_id": "project-adapter-agent-bridge",
+  "adapter_version": "v1",
+  "project_id": "agent-bridge",
+  "project_name": "Agent Bridge",
+  "project_type": "mcp_bridge_runtime",
+  "project_root": "/Users/andrew/Desktop/CarbideFrame/active/agent-bridge",
+  "description": "Project adapter for the Agent Bridge project. Translates Agent Bridge's project structure into QA-Pilot's validation contracts. Agent Bridge is an MCP bridge runtime extension — different architecture, stack, and governance model from Librarian.",
+  "adapter_type": "project_local",
+  "evidence_source": "project-specific evidence files under active/agent-bridge/",
+  "contracts": {
+    "learning_object_v1": "active/qa-pilot/docs/schemas/learning-object-v1.schema.json"
+  },
+  "supported_queries": [],
+  "governance_boundary": "advisory_only",
+  "no_authority_conferred": true,
+  "librarian_independent": true,
+  "provenance": {
+    "advisory": true,
+    "no_authority_conferred": true,
+    "source_package": "QA Pilot",
+    "adapter_type": "project_adapter",
+    "target_project": "agent-bridge",
+    "librarian_independent": true,
+    "no_librarian_imports": true
+  },
+  "validated_at": null
+}

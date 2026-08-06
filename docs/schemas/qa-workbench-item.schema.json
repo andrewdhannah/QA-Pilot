@@ -1,0 +1,196 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://qa-pilot.carbideframe/schemas/qa-workbench-item-v1",
+  "title": "QA Workbench Item",
+  "description": "Schema for a bounded QA workbench item. QA items are advisory tracking artifacts — they do not imply defect acceptance, Owner approval, or seal authority. Each item captures a discrete QA finding, observation, or claim with evidence references and optional Owner decision state.",
+  "type": "object",
+  "required": [
+    "qa_item_id",
+    "title",
+    "source",
+    "status",
+    "severity",
+    "category",
+    "created_at",
+    "updated_at",
+    "advisory_only"
+  ],
+  "properties": {
+    "qa_item_id": {
+      "type": "string",
+      "pattern": "^QA-[A-Z0-9]+-[0-9]{4,6}$",
+      "description": "Unique QA workbench item identifier (e.g. QA-FUNC-0001)."
+    },
+    "title": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 200,
+      "description": "Short, descriptive title of the QA item."
+    },
+    "source": {
+      "type": "string",
+      "enum": ["evidence_intake", "test_composition", "result_export", "epic_regression", "train_sim", "manual", "advisory_review"],
+      "description": "Origin of this QA item within the QA Pilot pipeline or external input."
+    },
+    "status": {
+      "type": "string",
+      "enum": ["draft", "open", "triaged", "evidence_attached", "needs_review", "deferred", "resolved_locally"],
+      "description": "Current lifecycle state. All states are advisory-local — no status implies Owner approval, defect acceptance, verification, or seal authority."
+    },
+    "lifecycle_history": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["from_status", "to_status", "transition_reason", "timestamp", "advisory_only"],
+        "properties": {
+          "from_status": {
+            "type": "string",
+            "enum": ["draft", "open", "triaged", "evidence_attached", "needs_review", "deferred", "resolved_locally", "__init__"],
+            "description": "Previous status, or __init__ for the item creation entry."
+          },
+          "to_status": {
+            "type": "string",
+            "enum": ["draft", "open", "triaged", "evidence_attached", "needs_review", "deferred", "resolved_locally"],
+            "description": "New status after this transition."
+          },
+          "transition_reason": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 1000,
+            "description": "Required reason for the transition. Must not claim approval, verification, or seal authority."
+          },
+          "actor": {
+            "type": "string",
+            "description": "Optional identifier for who or what performed the transition (e.g. agent_name, session_id)."
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time",
+            "description": "ISO 8601 timestamp of the transition."
+          },
+          "evidence_refs": {
+            "type": "array",
+            "items": { "type": "string", "pattern": "^(EP-|EPIC-|QR-|TC-|ARP-|OD-|EL-|TS-)" },
+            "description": "Optional evidence references associated with this transition."
+          },
+          "advisory_only": {
+            "type": "boolean",
+            "const": true,
+            "description": "Must always be true. Lifecycle history entries are advisory-only."
+          }
+        },
+        "additionalProperties": false
+      },
+      "description": "Append-only lifecycle history. Each entry records a status transition with reason, actor, and optional evidence refs. History is advisory-only and does not confer approval, verification, or seal authority."
+    },
+    "severity": {
+      "type": "string",
+      "enum": ["critical", "high", "medium", "low", "info"],
+      "description": "Impact severity. Advisory-only classification — does not imply priority or action requirement."
+    },
+    "category": {
+      "type": "string",
+      "enum": ["functional", "regression", "security", "performance", "usability", "governance", "documentation", "other"],
+      "description": "Functional category of the QA finding."
+    },
+    "description": {
+      "type": "string",
+      "maxLength": 5000,
+      "description": "Detailed description of the QA finding, observation, or claim."
+    },
+    "evidence_refs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^(EP-|EPIC-|QR-|TC-|ARP-|TS-)",
+        "description": "Reference to a pipeline evidence artifact (evidence packet, epic regression suite, result packet, test case, or advisory review packet)."
+      },
+      "uniqueItems": true,
+      "description": "List of evidence artifact references supporting this QA item."
+    },
+    "validator_refs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[A-Z]+-[0-9]+$",
+        "description": "Reference to a validation rule (e.g. PH-12, DR-4, AR-1)."
+      },
+      "uniqueItems": true,
+      "description": "List of validator rules associated with this QA item."
+    },
+    "evidence_links": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "evidence_link_id",
+          "evidence_type",
+          "evidence_ref",
+          "custody",
+          "advisory_only",
+          "attached_at"
+        ],
+        "properties": {
+          "evidence_link_id": {
+            "type": "string",
+            "pattern": "^EL-[A-Z]+-[0-9]{4,6}-[0-9]{3,6}$"
+          },
+          "evidence_type": {
+            "type": "string",
+            "enum": ["validator_output","arp_packet","evidence_packet","test_result","epic_regression_suite","train_sim_result","result_packet","checklist_item","owner_decision_receipt","manual_observation"]
+          },
+          "evidence_ref": {
+            "type": "string",
+            "pattern": "^(EP-|EPIC-|QR-|TC-|ARP-|OD-|EL-|TS-)"
+          },
+          "source_path": { "type": "string" },
+          "producing_validator": { "type": "string" },
+          "producing_command": { "type": "string" },
+          "attachment_reason": { "type": "string", "maxLength": 1000 },
+          "custody": { "type": "string", "const": "qa-pilot-local" },
+          "advisory_only": { "type": "boolean", "const": true },
+          "authority_note": { "type": "string", "const": "Evidence attachment does not prove defect validity or imply Owner approval." },
+          "attached_at": { "type": "string", "format": "date-time" }
+        },
+        "additionalProperties": false
+      },
+      "description": "Structured evidence references attached to this QA item. Each link records the evidence artifact, its type, producing validator, and an authority disclaimer. Evidence links are advisory-only — they do not prove defect validity, imply Owner approval, or confer seal authority."
+    },
+    "owner_decision_state": {
+      "type": "string",
+      "enum": ["pending", "in_review", "accepted", "rejected", "deferred"],
+      "description": "Current Owner decision state. 'accepted' does not confer seal authority — see advisory_only flag."
+    },
+    "owner_decision_ref": {
+      "type": "string",
+      "pattern": "^OD-",
+      "description": "Optional reference to an Owner decision receipt ID."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp when the QA item was created."
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp of the last modification."
+    },
+    "advisory_only": {
+      "type": "boolean",
+      "const": true,
+      "description": "Must always be true. QA items are advisory-only and never confer seal or approval authority."
+    },
+    "custody": {
+      "type": "string",
+      "const": "qa-pilot-local",
+      "description": "Must always be qa-pilot-local. Items cannot claim cross-project custody."
+    },
+    "librarian_impact": {
+      "type": "string",
+      "const": "none",
+      "description": "Must always be none. No QA item may claim Librarian mutation."
+    }
+  },
+  "additionalProperties": false
+}

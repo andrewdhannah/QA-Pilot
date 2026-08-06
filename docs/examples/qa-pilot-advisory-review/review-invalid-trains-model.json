@@ -1,0 +1,15 @@
+{
+  "review_id": "qa-pilot-review-invalid-train-001",
+  "source_sim_id": "qa-pilot-sim-valid-boundary-test-001",
+  "review_type": "summary",
+  "summary": "INVALID: review output claims training behavior exists",
+  "advisory": true,
+  "no_apply_path": true,
+  "no_train_behavior": false,
+  "no_bridge_behavior": true,
+  "no_mutation_authorized": true,
+  "no_cross_project_write": true,
+  "owner_decision_required": true,
+  "generated_at": "2026-07-05T23:31:00Z",
+  "notes": "INVALID: no_train_behavior=false — should be rejected"
+}

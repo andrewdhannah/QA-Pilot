@@ -1,0 +1,37 @@
+{
+  "test_id": "SEC-004",
+  "domain": "security",
+  "title": "Scenario adapter scoring does not mutate state",
+  "objective": "Verify that the scenario adapter's scoring engine (evaluate_submission) is a pure function with no side effects — no file writes, no database access, no state changes.",
+  "source": {
+    "type": "work_order",
+    "reference": "QA-PILOT-SCENARIO-ADAPTER-1",
+    "description": "The scenario adapter is a port of V1.5 scoring.js — a pure function with no side effects"
+  },
+  "execution": {
+    "type": "validator",
+    "criteria": "Evaluate the same scenario with the same inputs twice and verify identical results",
+    "expected_outcome": "evaluate_submission() is deterministic — same inputs always produce same outputs"
+  },
+  "pass_criteria": [
+    {
+      "id": "SEC-004-A",
+      "description": "Scoring function is deterministic",
+      "evidence_required": ["Same inputs produce identical score, percentage, passed"]
+    },
+    {
+      "id": "SEC-004-B",
+      "description": "No file system writes during evaluation",
+      "evidence_required": ["Adapter produces no output files — result returned as JSON"]
+    },
+    {
+      "id": "SEC-004-C",
+      "description": "Result includes provenance block with advisory_only=True",
+      "evidence_required": ["Every evaluation result has provenance.advisory=True"]
+    }
+  ],
+  "contract_refs": [],
+  "status": "active",
+  "advisory_only": true,
+  "no_seal_authority": true
+}

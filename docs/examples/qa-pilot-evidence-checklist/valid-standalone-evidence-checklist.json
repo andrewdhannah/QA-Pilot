@@ -1,0 +1,50 @@
+{
+  "checklist_id": "EC-STANDALONE-REVIEW-001",
+  "title": "Standalone Sprint Review Evidence Checklist",
+  "description": "Evidence requirements for reviewing a standalone QA Pilot sprint that does not span the full pipeline.",
+  "evidence_class": "optional",
+  "items": [
+    {
+      "item_id": "ECI-SPRINT-RESULTS-001",
+      "description": "Sprint receipt must document all deliverables and acceptance gate results.",
+      "evidence_class": "required",
+      "state": "ready",
+      "rationale": "Sprint receipts are the primary artifact for reviewing sprint completeness.",
+      "evidence_refs": [
+        { "pipeline_layer": "result_export", "packet_type": "QR-", "ref": "QR-SPRINT-REVIEW-001" }
+      ]
+    },
+    {
+      "item_id": "ECI-OWNER-DECISION-001",
+      "description": "Owner decision receipt must be present if sprint was sealed.",
+      "evidence_class": "optional",
+      "state": "ready",
+      "rationale": "Owner decision receipts provide the authorization trail for sealed sprints.",
+      "evidence_refs": [
+        { "pipeline_layer": "owner_decision_receipt", "packet_type": "ODR-", "ref": "data/owner-decisions/" }
+      ]
+    },
+    {
+      "item_id": "ECI-BOUNDARY-001",
+      "description": "No Librarian files were modified during the sprint.",
+      "evidence_class": "required",
+      "state": "ready",
+      "rationale": "QA Pilot sprints must not mutate Librarian state.",
+      "evidence_refs": [
+        { "pipeline_layer": "pipeline_health", "packet_type": "PH-", "ref": "PH-BOUNDARY-CHECK-001" }
+      ]
+    }
+  ],
+  "pipeline_refs": [
+    { "layer_id": "layer_4", "layer_name": "Epic Regression", "sprint_id": "QA-PILOT-EPIC-REGRESSION-BUILDER-1", "sealed_number": 36 },
+    { "layer_id": "layer_9", "layer_name": "Owner Review Packet", "sprint_id": "QA-PILOT-PIPELINE-OWNER-REVIEW-PACKET-1", "sealed_number": 41 }
+  ],
+  "advisory_only": true,
+  "custody": "qa-pilot-local",
+  "librarian_impact": "none",
+  "metadata": {
+    "created_at": "2026-07-07T03:16:00Z",
+    "created_by": "QA-PILOT-EVIDENCE-CHECKLIST-1",
+    "status": "draft"
+  }
+}

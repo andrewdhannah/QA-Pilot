@@ -1,0 +1,42 @@
+{
+  "test_id": "UAT-001",
+  "domain": "uat",
+  "title": "New project onboarding — user creates and understands project state",
+  "objective": "Verify that a new user can onboard into a governed project: understand identity, view current state, identify required actions, and receive boundaries without needing external assistance.",
+  "source": {
+    "type": "work_order",
+    "reference": "QA-PILOT-000, QA-PILOT-SDK-INTEGRATION-1",
+    "description": "Onboarding is the first user journey — a new participant must be able to understand project context from governed evidence"
+  },
+  "execution": {
+    "type": "scenario",
+    "criteria": "User receives project identity, active contracts, current lifecycle state, and prohibited actions from the SDK evidence snapshot",
+    "expected_outcome": "User can describe project purpose, current phase, and boundary rules without accessing raw filesystem paths"
+  },
+  "pass_criteria": [
+    {
+      "id": "UAT-001-A",
+      "description": "Project identity is accessible through SDK — not filesystem",
+      "evidence_required": ["getEvidenceSnapshot() returns operational_mode, source_count"]
+    },
+    {
+      "id": "UAT-001-B",
+      "description": "Current lifecycle state is visible with phase and cursor position",
+      "evidence_required": ["Evidence provenance includes lifecycle cursor records"]
+    },
+    {
+      "id": "UAT-001-C",
+      "description": "User receives boundary information — what actions are prohibited",
+      "evidence_required": ["SDK status returns forbidden_operations list"]
+    },
+    {
+      "id": "UAT-001-D",
+      "description": "User does not need to read active/librarian/* paths directly",
+      "evidence_required": ["Knowledge adapter uses SDK as primary data source"]
+    }
+  ],
+  "contract_refs": ["qa-pilot-sdk-integration", "learning-object-v1"],
+  "status": "active",
+  "advisory_only": true,
+  "no_seal_authority": true
+}

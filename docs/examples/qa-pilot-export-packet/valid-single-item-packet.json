@@ -1,0 +1,38 @@
+{
+  "packet_id": "XPK-EXPORT-0001",
+  "packet_type": "single_item",
+  "created_at": "2026-07-08T01:00:00Z",
+  "source_query": {
+    "command": "export-item QA-FUNC-0001",
+    "filters": {"item_id": "QA-FUNC-0001"},
+    "item_count": 1
+  },
+  "item_ids": ["QA-FUNC-0001"],
+  "included_items": [
+    {
+      "qa_item_id": "QA-FUNC-0001",
+      "title": "Evidence intake rejects malformed packets",
+      "source": "evidence_intake",
+      "status": "open",
+      "severity": "high",
+      "category": "functional",
+      "description": "Evidence intake correctly rejects malformed packets.",
+      "evidence_refs": [],
+      "evidence_links": [],
+      "lifecycle_history": [
+        {"from_status": "__init__", "to_status": "open", "transition_reason": "Item created", "actor": "agent", "timestamp": "2026-07-08T00:00:00Z", "advisory_only": true}
+      ],
+      "owner_decision_state": "pending",
+      "created_at": "2026-07-08T00:00:00Z",
+      "updated_at": "2026-07-08T00:00:00Z",
+      "advisory_only": true, "custody": "qa-pilot-local", "librarian_impact": "none"
+    }
+  ],
+  "evidence_links_aggregate": {"total_links": 0, "by_type": {}},
+  "lifecycle_summary": {"total_transitions": 1, "by_status": {"open": 1}},
+  "validator_summary": null,
+  "authority_disclaimer": "This export packet is advisory-only. It does not verify item correctness, imply defect acceptance, imply Owner approval, or close/seal/promote QA items. Custody is qa-pilot-local. Librarian impact is none.",
+  "custody": "qa-pilot-local",
+  "advisory_only": true,
+  "librarian_impact": "none"
+}

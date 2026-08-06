@@ -1,0 +1,18 @@
+{
+  "qa_item_id": "QA-QUERY-5000",
+  "title": "Medium severity governance item for severity queries",
+  "source": "test_composition",
+  "status": "open",
+  "severity": "medium",
+  "category": "governance",
+  "description": "This medium severity governance item should appear in --severity medium and --category governance queries.",
+  "evidence_refs": [],
+  "evidence_links": [],
+  "lifecycle_history": [
+    {"from_status": "__init__", "to_status": "open", "transition_reason": "Item created from test composition", "actor": "agent", "timestamp": "2026-07-08T00:00:00Z", "advisory_only": true}
+  ],
+  "owner_decision_state": "pending",
+  "created_at": "2026-07-08T00:00:00Z",
+  "updated_at": "2026-07-08T00:00:00Z",
+  "advisory_only": true, "custody": "qa-pilot-local", "librarian_impact": "none"
+}

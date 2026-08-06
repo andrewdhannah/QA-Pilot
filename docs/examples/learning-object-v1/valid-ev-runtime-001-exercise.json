@@ -1,0 +1,60 @@
+{
+  "schema": "learning-object-v1",
+  "id": "LO-EV-RUNTIME-001",
+  "title": "Identifying Provenance Breaks",
+  "source": {
+    "finding_code": "EV-SRC-001",
+    "evidence_refs": [
+      {
+        "type": "provenance_record",
+        "ref": "agent-bridge git status",
+        "description": "Runtime provenance for agent-bridge"
+      }
+    ],
+    "confidence": "DIRECT"
+  },
+  "learning": {
+    "objective": "The learner will understand how runtime provenance is tracked, how to identify a provenance break, and why broken lineage prevents evidence trust.",
+    "explanation": "Runtime provenance traces evidence from its source code through build, test, and deployment. Think of it like the chain of custody in a forensic investigation \u2014 each link must be intact for the evidence to be trusted. A provenance break (uncommitted changes, rebase activity, or binary hash mismatch) means the current state cannot be verified against the governed record. The training technician's role is to identify the break, not to repair it. Repair is a separate governed workflow."
+  },
+  "exercise": {
+    "scenario_id": "provenance-break-scenario",
+    "setup": "You are looking at a project's evidence provenance. The evaluation shows uncommitted changes in the working tree. The provenance chain has a 'dirty' flag. Your task: identify the break and explain why it matters.",
+    "expected_observations": [
+      {
+        "observation": "Identify that the working tree is dirty (uncommitted changes)",
+        "evidence_link": "SOURCE_STATE evidence_status"
+      },
+      {
+        "observation": "Explain that build provenance cannot be verified against source",
+        "evidence_link": "EV-SRC-001 finding code"
+      }
+    ]
+  },
+  "assessment": {
+    "quiz_refs": ["l2-q1", "l2-q2", "l3-q1"],
+    "scoring_model": "composite"
+  },
+  "certification": {
+    "criteria": [
+      {
+        "id": "LO-CERT-001",
+        "description": "Learner can explain what runtime provenance means in governed development",
+        "required": true
+      },
+      {
+        "id": "LO-CERT-002",
+        "description": "Learner can identify provenance breaks from evidence plane output",
+        "required": true
+      },
+      {
+        "id": "LO-CERT-003",
+        "description": "Learner can describe why broken provenance prevents trust but does not attempt to self-repair",
+        "required": true
+      }
+    ],
+    "passing_score": 75
+  },
+  "advisory_only": true,
+  "no_seal_authority": true
+}

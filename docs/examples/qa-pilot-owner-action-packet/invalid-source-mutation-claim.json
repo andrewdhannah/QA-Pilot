@@ -1,0 +1,19 @@
+{
+  "action_packet_id": "AP-MUTATE-0001",
+  "source_receipt_id": "WDR-ACTION-0001",
+  "source_summary_id": "DS-REVIEW-0003",
+  "source_intake_id": "IR-REVIEW-0003",
+  "source_item_ids": ["QA-SEC-0001"],
+  "source_evidence_ids": [],
+  "action_state": "proposed",
+  "decision": "accepted_for_action",
+  "rationale": "This action packet updates the intake record and modifies the summary.",
+  "created_at": "2026-07-08T02:52:00Z",
+  "authority_disclaimer": "This Owner action packet records the intended next action path only. It does not execute the action, approve intake, verify evidence, close workbench items, seal work, mutate source records, or create autonomous authority. Custody is qa-pilot-local. Librarian impact is none.",
+  "custody": "qa-pilot-local",
+  "advisory_only": true,
+  "librarian_impact": "none",
+  "mutates_intake": true,
+  "mutates_summary": true,
+  "mutates_receipt": true
+}

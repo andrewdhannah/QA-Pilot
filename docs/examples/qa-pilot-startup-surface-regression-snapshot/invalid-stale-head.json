@@ -1,0 +1,6 @@
+{
+  "label": "Invalid stale head fixture",
+  "snapshot_id": "SRS-FIXTURE-STALE-001",
+  "expected_sealed_head": "#99 QA-PILOT-STALE-SPRINT-99",
+  "advisory_only": true
+}

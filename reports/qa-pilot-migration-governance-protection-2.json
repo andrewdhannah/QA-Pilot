@@ -1,0 +1,106 @@
+{
+  "$schema": "qa-pilot-migration-governance-protection-2-v1",
+  "verdict": "PASS",
+  "checked_at": "2026-07-10T19:10:00Z",
+  "findings": {
+    "passes": [
+      {
+        "check": "browser-assets archive integrity (content-hash)",
+        "fresh_content_sha256": "a273b029d883de8dda783e54196ea1d369cb38f0f048747cd7a8db63ca218d0a",
+        "receipt_content_sha256": "a273b029d883de8dda783e54196ea1d369cb38f0f048747cd7a8db63ca218d0a",
+        "receipt_raw_tarball_sha256": "ad86d395c7e37c1ca84da3a48e67d81a2efb3073f743b827f5b8f93f6bfa603a",
+        "note": "raw tarball SHA includes pax metadata (mtime/uid); content hash is the integrity check"
+      },
+      {
+        "check": "status surface unchanged",
+        "rel": "PROJECT-IDENTITY.md",
+        "sha256": "c2a5740823c0f1c33f7516f64b744499c52cbeaeffa04958b6a5ff668812ea03"
+      },
+      {
+        "check": "governance root file count",
+        "root": "scripts",
+        "file_count": 175
+      },
+      {
+        "check": "governance root file count",
+        "root": "docs/governance",
+        "file_count": 69
+      },
+      {
+        "check": "governance root file count",
+        "root": "docs/schemas",
+        "file_count": 67
+      },
+      {
+        "check": "governance root file count",
+        "root": "fixtures",
+        "file_count": 22
+      },
+      {
+        "check": "governance root file count",
+        "root": "project-state",
+        "file_count": 1
+      },
+      {
+        "check": "governance root file count",
+        "root": "data",
+        "file_count": 218
+      },
+      {
+        "check": "governance root file count",
+        "root": "config",
+        "file_count": 1
+      }
+    ],
+    "drift_ok": [
+      {
+        "check": "status surface drift (intentional)",
+        "rel": "STARTUP-STATE.md",
+        "baseline_sha256": "5c84af4091f344f58526d3f2945e21938f26c79bf92aaf4a37dc22e8583ffe06",
+        "current_sha256": "ae3c52e176e6b9c556e6f75ea7a02c8e61a57dcf5d945ec629647077eb8d6a42"
+      },
+      {
+        "check": "status surface drift (intentional)",
+        "rel": "PROJECT-PROFILE.json",
+        "baseline_sha256": "67b6c79cc6a66320b8634cd0172ea37133256541f8313ee70d2daf15f76edd7e",
+        "current_sha256": "60cf153e323906ae1af418c96d6982bfc7b899ada4b4f50e9f8a9ad5d2fadc61"
+      },
+      {
+        "check": "status surface drift (intentional)",
+        "rel": "startup-contract.json",
+        "baseline_sha256": "e3bbc1c8b1c734371adc5f445d6e135690c71968543975e61e1bc2ca085d4379",
+        "current_sha256": "60862a879e0a49a324583e1b387dd9943feb96ac26c6cce9982720d3efad0dec"
+      },
+      {
+        "check": "status surface drift (intentional)",
+        "rel": "FEATURE-STATUS.md",
+        "baseline_sha256": "ef1c091eb76ad00043c01e0206129f795ff9a14c73c6e28fbcdc81df1c4e9ab0",
+        "current_sha256": "aca9681d4d3f264085b00c51e7edd96724784d4e8b0bde8c4177877b667dba4d"
+      },
+      {
+        "check": "status surface drift (intentional)",
+        "rel": "SESSION-HANDOFF.md",
+        "baseline_sha256": "5fb241adeef2469fb40441968f95dcb06b25538e990328f65ba7628c0dff4a54",
+        "current_sha256": "de25ce03d9806da01e3f68bc6f4f53e5779dbccaa2f4cfb430f0ba026e946bb9"
+      },
+      {
+        "check": "status surface drift (intentional)",
+        "rel": "project-state/sprint-ledger.json",
+        "baseline_sha256": "7259bd7e30b940102cc165b985079b3ef651f2767aaeca812a956602ee83b21d",
+        "current_sha256": "b6c57fd4cc797844e5b5360599700e54e3df4b74d5b3631a232663e23abc81ba"
+      },
+      {
+        "check": "receipts/ count grew (Sprint 2 writes its own receipt)",
+        "root": "receipts",
+        "expected_pre_sprint2_count": 67,
+        "actual_count": 71
+      }
+    ],
+    "violations": []
+  },
+  "summary": {
+    "passes": 9,
+    "drift_ok": 7,
+    "violations": 0
+  }
+}

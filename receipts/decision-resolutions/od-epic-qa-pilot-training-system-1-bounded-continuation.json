@@ -1,0 +1,25 @@
+{
+  "$schema": "owner-decision-v1",
+  "decision_id": "OD-EPIC-QA-PILOT-TRAINING-SYSTEM-1-BOUNDED-CONTINUATION",
+  "date": "2026-07-08",
+  "owner": "Andrew Hannah",
+  "epic": "EPIC-QA-PILOT-TRAINING-SYSTEM-1",
+  "sprints_authorized": ["QA-PILOT-TRAINING-CONTENT-MODEL-1", "QA-PILOT-TRAINING-PACKAGE-GENERATOR-1", "QA-PILOT-TRAINING-VALIDATION-ENGINE-1", "QA-PILOT-LEARNING-PATHS-1", "QA-PILOT-TRAINING-SIMULATION-EXPANSION-1", "QA-PILOT-PROJECT-TRAINING-PACKAGE-EXPORT-1", "QA-PILOT-TRAINING-SYSTEM-MCP-SURFACE-1", "QA-PILOT-TRAINING-SYSTEM-OPERATIONAL-BASELINE-1"],
+  "decision": "AUTHORIZE_BOUNDED_CONTINUATION",
+  "guardrails": [
+    "No sprint may exceed the already defined epic scope",
+    "No authority model changes",
+    "No Librarian mutation",
+    "No autonomous publication",
+    "No cross-project write path",
+    "Any failed validation stops the lane",
+    "Any new design question stops the lane",
+    "Any need to change sprint order stops the lane",
+    "Any MCP authority expansion beyond approved Sprint 10 scope stops the lane",
+    "Sealing still requires Owner decision"
+  ],
+  "authority": "Owner",
+  "status": "authorized",
+  "authorized_at": "2026-07-08T22:15:00Z",
+  "note": "Bounded continuation. Agent may execute Sprints 4-11 in order. Stop on any guardrail violation. Report at epic completion unless a stop condition occurs."
+}

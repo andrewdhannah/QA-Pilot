@@ -5,19 +5,27 @@
   "identity_source": "PROJECT-IDENTITY.md",
   "startup_state_file": "STARTUP-STATE.md",
   "startup_checks_script": "scripts/run-startup-checks.sh",
-  "is_web_app": false,
+  "is_web_app": true,
+  "web_app_root": "active/qa-pilot/browser-app/",
+  "web_app_data_separation": {
+    "governance_data_root": "active/qa-pilot/data/",
+    "application_data_root": "active/qa-pilot/browser-app/data/",
+    "note": "governance data/ contains receipts, audits, custody, owner-decisions, registry changes, and operational state. browser-app/data/ contains course content (content.js, quiz-questions.js, assignments.js, etc.). These are intentionally distinct per Owner direction (EPIC-QA-PILOT-OPENWORK-TO-CARBIDEFRAME-MIGRATION-1 Sprint 2)."
+  },
   "verification_surfaces": [
     "Python validators under scripts/validate-*.py",
     "Shell test runners under scripts/test-*.sh",
     "JSON schema fixtures under docs/schemas/",
-    "Example fixtures under docs/examples/"
+    "Example fixtures under docs/examples/",
+    "Web application under browser-app/ (124 files, validated Sprint 3)"
   ],
   "required_files": [
     "PROJECT-IDENTITY.md",
     "PROJECT-PROFILE.json",
     "project-state/sprint-ledger.json",
     "SESSION-HANDOFF.md",
-    "FEATURE-STATUS.md"
+    "FEATURE-STATUS.md",
+    "browser-app/index.html"
   ],
   "forbidden_terms_in_generic": [
     "Public/index.html",
@@ -41,6 +49,29 @@
     { "path": "PROJECT-PROFILE.json", "required": true },
     { "path": "SESSION-HANDOFF.md", "required": true },
     { "path": "FEATURE-STATUS.md", "required": false },
-    { "path": "project-state/sprint-ledger.json", "required": false }
+    { "path": "project-state/sprint-ledger.json", "required": false },
+    { "path": "browser-app/index.html", "required": false, "note": "migrated web application entry point — referenced for context, not validated as governance surface" }
+  ],
+  "mcp_context": {
+    "required": true,
+    "profile_tool": "project_get_profile",
+    "cursor_tool": "project_get_cursor",
+    "transitions_tool": "project_get_allowed_transitions",
+    "context_tool": "project_assemble_context"
+  },
+  "operational_state": {
+    "transitional_source": "project-state/sprint-ledger.json",
+    "transitional_note": "DB-backed project_work_* tools are target architecture but not yet populated for qa-pilot. Use sprint-ledger.json until a DB backfill sprint completes.",
+    "target_tools": [
+      "project_work_get_summary",
+      "project_work_get_latest_closed",
+      "project_work_list_open",
+      "project_work_search"
+    ]
+  },
+  "fallback_docs": [
+    "PROJECT-STARTUP.md",
+    "SessionStartup/STARTUP-DEGRADED-MODE.md",
+    "SessionStartup/STARTUP-REFERENCE.md"
   ]
 }

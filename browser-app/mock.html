@@ -1,0 +1,1040 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QA Pilot Academy — Design Mock</title>
+  <style>
+    /* ═══════════════════════════════════════════════════════════════════
+       APPLE-INSPIRED DESIGN SYSTEM — Mock
+       ═══════════════════════════════════════════════════════════════════ */
+
+    /* ── Reset & Base ──────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      /* ── Typography ── */
+      --font-sans: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text',
+                   'Helvetica Neue', Helvetica, Arial, sans-serif;
+      --font-weight-regular: 400;
+      --font-weight-medium: 500;
+      --font-weight-semibold: 600;
+      --font-weight-bold: 700;
+
+      /* ── Apple System Colors ── */
+      --color-blue:        #007AFF;
+      --color-purple:      #AF52DE;
+      --color-green:       #34C759;
+      --color-indigo:      #5856D6;
+      --color-orange:      #FF9500;
+      --color-red:         #FF3B30;
+      --color-teal:        #5AC8FA;
+      --color-pink:        #FF2D55;
+
+      /* ── Neutrals ── */
+      --color-white:       #FFFFFF;
+      --color-bg:          #F5F5F7;
+      --color-bg-alt:      #FAFAFA;
+      --color-border:      #E5E5EA;
+      --color-border-light: #F0F0F2;
+      --color-label:       #1D1D1F;
+      --color-secondary:   #6E6E73;
+      --color-tertiary:    #86868B;
+      --color-quaternary:  #AEAEB2;
+
+      /* ── Shadows ── */
+      --shadow-sm:   0 1px 3px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.02);
+      --shadow-md:   0 4px 12px rgba(0,0,0,0.06), 0 2px 4px rgba(0,0,0,0.03);
+      --shadow-lg:   0 12px 32px rgba(0,0,0,0.08), 0 4px 8px rgba(0,0,0,0.04);
+      --shadow-xl:   0 20px 48px rgba(0,0,0,0.10), 0 8px 16px rgba(0,0,0,0.04);
+
+      /* ── Radii ── */
+      --radius-sm:   6px;
+      --radius-md:   10px;
+      --radius-lg:   14px;
+      --radius-xl:   18px;
+      --radius-full: 9999px;
+
+      /* ── Spacing (8px grid) ── */
+      --space-1: 4px;
+      --space-2: 8px;
+      --space-3: 12px;
+      --space-4: 16px;
+      --space-5: 20px;
+      --space-6: 24px;
+      --space-7: 32px;
+      --space-8: 40px;
+      --space-9: 48px;
+      --space-10: 56px;
+      --space-11: 64px;
+      --space-12: 80px;
+
+      /* ── Course Colors ── */
+      --course-qa:        #007AFF;
+      --course-qa-light:  rgba(0, 122, 255, 0.08);
+      --course-advanced:  #AF52DE;
+      --course-advanced-light: rgba(175, 82, 222, 0.08);
+      --course-capstone1: #34C759;
+      --course-capstone1-light: rgba(52, 199, 89, 0.08);
+      --course-capstone2: #5856D6;
+      --course-capstone2-light: rgba(88, 86, 214, 0.08);
+      --course-agile:     #FF9500;
+      --course-agile-light: rgba(255, 149, 0, 0.08);
+    }
+
+    html { font-size: 16px; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--color-bg);
+      color: var(--color-label);
+      line-height: 1.5;
+    }
+
+    /* ── TOPBAR ────────────────────────────────────────────────────── */
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 var(--space-8);
+      height: 56px;
+      background: rgba(255,255,255,0.80);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(0,0,0,0.06);
+    }
+
+    .topbar-brand {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      font-size: 15px;
+      font-weight: var(--font-weight-semibold);
+      color: var(--color-label);
+      letter-spacing: -0.01em;
+    }
+
+    .topbar-brand svg {
+      width: 26px;
+      height: 26px;
+      flex-shrink: 0;
+    }
+
+    .topbar-actions {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+    }
+
+    .topbar-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 14px;
+      font-size: 13px;
+      font-weight: var(--font-weight-medium);
+      font-family: var(--font-sans);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-full);
+      background: var(--color-white);
+      color: var(--color-label);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .topbar-btn:hover {
+      background: var(--color-bg);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .topbar-btn.primary {
+      background: var(--color-blue);
+      border-color: var(--color-blue);
+      color: var(--color-white);
+    }
+    .topbar-btn.primary:hover {
+      background: #0066D6;
+      border-color: #0066D6;
+    }
+
+    .avatar-btn {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: 1px solid var(--color-border);
+      background: var(--color-blue);
+      color: white;
+      font-size: 13px;
+      font-weight: var(--font-weight-semibold);
+      font-family: var(--font-sans);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.2s;
+    }
+    .avatar-btn:hover { opacity: 0.8; }
+
+    /* ── HERO ──────────────────────────────────────────────────────── */
+    .hero {
+      position: relative;
+      padding: var(--space-11) var(--space-8) var(--space-9);
+      background: linear-gradient(135deg, #001D3D 0%, #003566 30%, #1A3A6B 60%, #2A1F5E 100%);
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -40%;
+      right: -10%;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(0, 122, 255, 0.15) 0%, transparent 60%);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: -30%;
+      left: -5%;
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(175, 82, 222, 0.10) 0%, transparent 55%);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .hero-inner {
+      position: relative;
+      z-index: 1;
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    .hero h1 {
+      font-size: 40px;
+      font-weight: var(--font-weight-bold);
+      color: var(--color-white);
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+      margin-bottom: var(--space-3);
+    }
+
+    .hero p {
+      font-size: 17px;
+      color: rgba(255,255,255,0.75);
+      font-weight: var(--font-weight-regular);
+      line-height: 1.5;
+      max-width: 600px;
+    }
+
+    /* ── MAIN LAYOUT ───────────────────────────────────────────────── */
+    .main {
+      max-width: 1040px;
+      margin: 0 auto;
+      padding: var(--space-8) var(--space-8) var(--space-12);
+    }
+
+    /* ── SECTION HEADERS ───────────────────────────────────────────── */
+    .section-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: var(--space-6);
+    }
+
+    .section-header h2 {
+      font-size: 22px;
+      font-weight: var(--font-weight-bold);
+      color: var(--color-label);
+      letter-spacing: -0.02em;
+    }
+
+    .section-header .count {
+      font-size: 14px;
+      color: var(--color-tertiary);
+      font-weight: var(--font-weight-regular);
+      margin-left: var(--space-2);
+    }
+
+    .section-header a {
+      font-size: 14px;
+      color: var(--color-blue);
+      text-decoration: none;
+      font-weight: var(--font-weight-medium);
+    }
+    .section-header a:hover { text-decoration: underline; }
+
+    /* ── MY ENROLLMENTS (In Progress) ──────────────────────────────── */
+    .enrolled-scroll {
+      display: flex;
+      gap: var(--space-4);
+      overflow-x: auto;
+      padding-bottom: var(--space-3);
+      margin-bottom: var(--space-9);
+      scrollbar-width: thin;
+      scrollbar-color: var(--color-border) transparent;
+    }
+    .enrolled-scroll::-webkit-scrollbar { height: 4px; }
+    .enrolled-scroll::-webkit-scrollbar-track { background: transparent; }
+    .enrolled-scroll::-webkit-scrollbar-thumb { background: var(--color-border); border-radius: var(--radius-full); }
+
+    .enrolled-card {
+      flex: 0 0 280px;
+      background: var(--color-white);
+      border-radius: var(--radius-lg);
+      padding: var(--space-5);
+      box-shadow: var(--shadow-md);
+      transition: all 0.25s ease;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+    .enrolled-card:hover {
+      box-shadow: var(--shadow-lg);
+      transform: translateY(-3px);
+    }
+
+    .enrolled-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+    }
+    .enrolled-card.c-qa::before      { background: var(--course-qa); }
+    .enrolled-card.c-advanced::before { background: var(--course-advanced); }
+    .enrolled-card.c-capstone2::before { background: var(--course-capstone2); }
+    .enrolled-card.c-agile::before    { background: var(--course-agile); }
+
+    .enrolled-card-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: var(--radius-md);
+      margin-bottom: var(--space-3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .enrolled-card-icon svg {
+      width: 36px;
+      height: 36px;
+      display: block;
+    }
+
+    .enrolled-card h3 {
+      font-size: 15px;
+      font-weight: var(--font-weight-semibold);
+      color: var(--color-label);
+      margin-bottom: 2px;
+      letter-spacing: -0.01em;
+    }
+
+    .enrolled-card .status {
+      font-size: 12px;
+      color: var(--color-tertiary);
+      margin-bottom: var(--space-3);
+    }
+
+    .enrolled-card .progress-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      color: var(--color-secondary);
+      font-weight: var(--font-weight-medium);
+      margin-bottom: var(--space-2);
+    }
+
+    .enrolled-card .progress-row .pct {
+      color: var(--color-label);
+      font-weight: var(--font-weight-semibold);
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 5px;
+      background: var(--color-border-light);
+      border-radius: var(--radius-full);
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      border-radius: var(--radius-full);
+      transition: width 0.6s ease;
+    }
+    .enrolled-card.c-qa .progress-fill      { background: var(--course-qa); }
+    .enrolled-card.c-advanced .progress-fill { background: var(--course-advanced); }
+    .enrolled-card.c-capstone2 .progress-fill { background: var(--course-capstone2); }
+    .enrolled-card.c-agile .progress-fill    { background: var(--course-agile); }
+
+    .empty-enrolled {
+      text-align: center;
+      padding: var(--space-9) var(--space-6);
+      background: var(--color-white);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-sm);
+      margin-bottom: var(--space-9);
+      border: 1px dashed var(--color-border);
+    }
+
+    .empty-enrolled p {
+      font-size: 15px;
+      color: var(--color-tertiary);
+    }
+
+    /* ── COURSE CATALOG GRID ───────────────────────────────────────── */
+    .catalog-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-4);
+    }
+
+    /* ── CATALOG CARD ──────────────────────────────────────────────── */
+    .catalog-card {
+      background: var(--color-white);
+      border-radius: var(--radius-lg);
+      padding: var(--space-5);
+      box-shadow: var(--shadow-sm);
+      transition: all 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid transparent;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .catalog-card:hover {
+      box-shadow: var(--shadow-lg);
+      border-color: rgba(0,0,0,0.04);
+      transform: translateY(-4px);
+    }
+
+    .catalog-card:active {
+      transform: translateY(-1px) scale(0.99);
+      box-shadow: var(--shadow-md);
+    }
+
+    /* Card top gradient accent bar */
+    .catalog-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 4px;
+      border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    }
+
+    /* Hover glow effect (course-colored) */
+    .catalog-card::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      border-radius: var(--radius-lg);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      pointer-events: none;
+    }
+
+    .catalog-card:hover::after {
+      opacity: 1;
+    }
+
+    /* ── Course-specific colors ── */
+    .catalog-card.c-qa::before       { background: linear-gradient(90deg, #007AFF, #00C6FF); }
+    .catalog-card.c-qa::after        { box-shadow: inset 0 0 0 1.5px rgba(0, 122, 255, 0.20); }
+    .catalog-card.c-qa:hover         { box-shadow: 0 12px 32px rgba(0, 122, 255, 0.15), 0 4px 8px rgba(0,0,0,0.04); }
+
+    .catalog-card.c-advanced::before { background: linear-gradient(90deg, #AF52DE, #DA8FFF); }
+    .catalog-card.c-advanced::after  { box-shadow: inset 0 0 0 1.5px rgba(175, 82, 222, 0.20); }
+    .catalog-card.c-advanced:hover   { box-shadow: 0 12px 32px rgba(175, 82, 222, 0.15), 0 4px 8px rgba(0,0,0,0.04); }
+
+    .catalog-card.c-cap1::before     { background: linear-gradient(90deg, #34C759, #68E891); }
+    .catalog-card.c-cap1::after      { box-shadow: inset 0 0 0 1.5px rgba(52, 199, 89, 0.20); }
+    .catalog-card.c-cap1:hover       { box-shadow: 0 12px 32px rgba(52, 199, 89, 0.15), 0 4px 8px rgba(0,0,0,0.04); }
+
+    .catalog-card.c-cap2::before     { background: linear-gradient(90deg, #5856D6, #7C7AFF); }
+    .catalog-card.c-cap2::after      { box-shadow: inset 0 0 0 1.5px rgba(88, 86, 214, 0.20); }
+    .catalog-card.c-cap2:hover       { box-shadow: 0 12px 32px rgba(88, 86, 214, 0.15), 0 4px 8px rgba(0,0,0,0.04); }
+
+    .catalog-card.c-agile::before    { background: linear-gradient(90deg, #FF9500, #FFCC00); }
+    .catalog-card.c-agile::after     { box-shadow: inset 0 0 0 1.5px rgba(255, 149, 0, 0.20); }
+    .catalog-card.c-agile:hover      { box-shadow: 0 12px 32px rgba(255, 149, 0, 0.15), 0 4px 8px rgba(0,0,0,0.04); }
+
+    /* Card content — relative to sit above ::after */
+    .card-content {
+      position: relative;
+      z-index: 1;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card-header {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--space-3);
+      margin-bottom: var(--space-3);
+    }
+
+    .card-icon {
+      flex-shrink: 0;
+      width: 44px;
+      height: 44px;
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .card-icon svg {
+      width: 44px;
+      height: 44px;
+      display: block;
+    }
+
+    .card-title-group {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .card-title {
+      font-size: 17px;
+      font-weight: var(--font-weight-semibold);
+      color: var(--color-label);
+      line-height: 1.3;
+      letter-spacing: -0.01em;
+      margin-bottom: 2px;
+    }
+
+    .card-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .card-tag {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: var(--font-weight-medium);
+      padding: 2px 8px;
+      border-radius: var(--radius-full);
+      letter-spacing: 0.01em;
+    }
+
+    .tag-qa         { background: rgba(0, 122, 255, 0.10); color: #007AFF; }
+    .tag-advanced   { background: rgba(175, 82, 222, 0.10); color: #AF52DE; }
+    .tag-capstone   { background: rgba(88, 86, 214, 0.10); color: #5856D6; }
+    .tag-agile      { background: rgba(255, 149, 0, 0.10); color: #FF9500; }
+
+    .card-desc {
+      font-size: 13px;
+      color: var(--color-secondary);
+      line-height: 1.5;
+      margin-bottom: var(--space-4);
+      flex: 1;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .card-meta {
+      display: flex;
+      align-items: center;
+      gap: var(--space-4);
+      padding-top: var(--space-3);
+      border-top: 1px solid var(--color-border-light);
+    }
+
+    .card-meta-item {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 12px;
+      color: var(--color-tertiary);
+      font-weight: var(--font-weight-medium);
+    }
+
+    .card-meta-item svg {
+      width: 14px;
+      height: 14px;
+      opacity: 0.6;
+      flex-shrink: 0;
+    }
+
+    .card-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-left: auto;
+      font-size: 13px;
+      font-weight: var(--font-weight-semibold);
+      color: var(--color-blue);
+      transition: gap 0.2s ease;
+      white-space: nowrap;
+    }
+
+    .catalog-card:hover .card-cta {
+      gap: 10px;
+    }
+
+    /* Course-specific CTA colors */
+    .c-qa .card-cta        { color: #007AFF; }
+    .c-advanced .card-cta  { color: #AF52DE; }
+    .c-cap1 .card-cta      { color: #34C759; }
+    .c-cap2 .card-cta      { color: #5856D6; }
+    .c-agile .card-cta     { color: #FF9500; }
+
+    .card-cta svg {
+      width: 16px;
+      height: 16px;
+      transition: transform 0.2s ease;
+    }
+
+    .catalog-card:hover .card-cta svg {
+      transform: translateX(3px);
+    }
+
+    /* ── SINGLE-CARD ROW (Agile in row 3) ────────────────────────────── */
+    .catalog-card.span-2 {
+      grid-column: 1 / -1;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: center;
+    }
+    .catalog-card.span-2 .card-content {
+      flex-direction: row;
+      align-items: center;
+      gap: var(--space-6);
+    }
+    .catalog-card.span-2 .card-header {
+      margin-bottom: 0;
+      flex-shrink: 0;
+    }
+    .catalog-card.span-2 .card-desc {
+      margin-bottom: 0;
+      max-width: 400px;
+      -webkit-line-clamp: 2;
+    }
+    .catalog-card.span-2 .card-meta {
+      padding-top: 0;
+      border-top: none;
+      flex-shrink: 0;
+    }
+
+    /* ── FOOTER ──────────────────────────────────────────────────────── */
+    .site-footer {
+      max-width: 1040px;
+      margin: 0 auto;
+      padding: var(--space-8) var(--space-8) var(--space-10);
+      border-top: 1px solid var(--color-border-light);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .site-footer p {
+      font-size: 12px;
+      color: var(--color-quaternary);
+    }
+
+    .site-footer a {
+      font-size: 12px;
+      color: var(--color-tertiary);
+      text-decoration: none;
+      margin-left: var(--space-4);
+    }
+    .site-footer a:hover { color: var(--color-blue); }
+
+    /* ── TOAST / NOTIFICATION ────────────────────────────────────────── */
+    .toast {
+      position: fixed;
+      bottom: var(--space-8);
+      left: 50%;
+      transform: translateX(-50%) translateY(80px);
+      background: rgba(29, 29, 31, 0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      color: white;
+      padding: 12px 24px;
+      border-radius: var(--radius-full);
+      font-size: 14px;
+      font-weight: var(--font-weight-medium);
+      font-family: var(--font-sans);
+      box-shadow: var(--shadow-xl);
+      opacity: 0;
+      transition: all 0.4s cubic-bezier(0.25, 0.1, 0.25, 1);
+      pointer-events: none;
+      z-index: 200;
+      white-space: nowrap;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* ── RESPONSIVE ────────────────────────────────────────────────── */
+    @media (max-width: 768px) {
+      .topbar { padding: 0 var(--space-5); }
+      .hero { padding: var(--space-8) var(--space-5) var(--space-7); }
+      .hero h1 { font-size: 28px; }
+      .hero p { font-size: 15px; }
+      .main { padding: var(--space-6) var(--space-5) var(--space-10); }
+      .catalog-grid { grid-template-columns: 1fr; }
+      .catalog-card.span-2 .card-content { flex-direction: column; align-items: flex-start; gap: var(--space-3); }
+      .catalog-card.span-2 .card-desc { max-width: 100%; }
+      .enrolled-card { flex: 0 0 240px; }
+      .section-header { flex-wrap: wrap; gap: var(--space-2); }
+      .site-footer { flex-direction: column; gap: var(--space-3); text-align: center; }
+    }
+
+    @media (max-width: 480px) {
+      .hero h1 { font-size: 24px; }
+      .topbar .topbar-btn span { display: none; }
+    }
+
+    /* ── DEMO DATA (for mock only) ─────────────────────────────────── */
+    .mock-badge {
+      position: fixed;
+      top: var(--space-3);
+      right: var(--space-3);
+      z-index: 999;
+      background: var(--color-red);
+      color: white;
+      font-size: 11px;
+      font-weight: var(--font-weight-semibold);
+      font-family: var(--font-sans);
+      padding: 4px 10px;
+      border-radius: var(--radius-full);
+      opacity: 0.7;
+      letter-spacing: 0.03em;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ════════════════════════════════════════════════════════════════
+       MOCK BADGE — This is a mockup, not the real portal
+       ════════════════════════════════════════════════════════════════ -->
+  <div class="mock-badge">DESIGN MOCK</div>
+
+  <!-- ════════════════════════════════════════════════════════════════
+       TOPBAR
+       ════════════════════════════════════════════════════════════════ -->
+  <nav class="topbar">
+    <div class="topbar-brand">
+      <svg viewBox="0 0 48 48" fill="none">
+        <rect width="48" height="48" rx="10" fill="#007AFF"/>
+        <path d="M14 24L20 30L34 16" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="24" cy="24" r="10" stroke="white" stroke-width="2" fill="none" opacity="0.3"/>
+      </svg>
+      QA Pilot Academy
+    </div>
+
+    <div class="topbar-actions">
+      <button class="topbar-btn" onclick="showToast('Student data exported')">
+        <svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M10 3v10m0 0l-4-4m4 4l4-4M3 15v2a1 1 0 001 1h12a1 1 0 001-1v-2"/>
+        </svg>
+        <span>Export Data</span>
+      </button>
+      <button class="topbar-btn primary" onclick="showToast('Signed out')">
+        <svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M7 17h10a1 1 0 001-1V4a1 1 0 00-1-1H7m-4 5l4 4m-4-4l4-4"/>
+        </svg>
+        <span>Sign Out</span>
+      </button>
+      <button class="avatar-btn" onclick="showToast('Profile panel')">A</button>
+    </div>
+  </nav>
+
+  <!-- ════════════════════════════════════════════════════════════════
+       HERO BANNER
+       ════════════════════════════════════════════════════════════════ -->
+  <div class="hero">
+    <div class="hero-inner">
+      <h1>Welcome back, Andrew.</h1>
+      <p>Pick up where you left off or explore a new course. Your training progress syncs automatically.</p>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════════════════════════
+       MAIN CONTENT
+       ════════════════════════════════════════════════════════════════ -->
+  <main class="main">
+
+    <!-- ── MY LEARNING ──────────────────────────────────────────────── -->
+    <div class="section-header">
+      <h2>Continue Learning <span class="count">2 in progress</span></h2>
+      <a href="#" onclick="showToast('Showing all courses'); return false;">View All</a>
+    </div>
+
+    <div class="enrolled-scroll">
+      <!-- Enrolled card: QA Onboarding Training -->
+      <div class="enrolled-card c-qa">
+        <div class="enrolled-card-icon">
+          <svg viewBox="0 0 48 48" fill="none"><rect width="48" height="48" rx="10" fill="#007AFF"/><path d="M14 24L20 30L34 16" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><circle cx="24" cy="24" r="10" stroke="white" stroke-width="2" fill="none" opacity="0.3"/></svg>
+        </div>
+        <h3>QA Onboarding Training</h3>
+        <div class="status">42% complete · Module 3 of 6</div>
+        <div class="progress-row">
+          <span>Progress</span>
+          <span class="pct">42%</span>
+        </div>
+        <div class="progress-track">
+          <div class="progress-fill" style="width:42%"></div>
+        </div>
+      </div>
+
+      <!-- Enrolled card: Agile & Scrum -->
+      <div class="enrolled-card c-agile">
+        <div class="enrolled-card-icon">
+          <svg viewBox="0 0 48 48" fill="none"><rect width="48" height="48" rx="10" fill="#FF9500"/><circle cx="24" cy="24" r="14" stroke="white" stroke-width="2.5" fill="none"/><path d="M24 14v10l7 4" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <h3>Agile & Scrum for Developers</h3>
+        <div class="status">18% complete · Module 2 of 9</div>
+        <div class="progress-row">
+          <span>Progress</span>
+          <span class="pct">18%</span>
+        </div>
+        <div class="progress-track">
+          <div class="progress-fill" style="width:18%"></div>
+        </div>
+      </div>
+
+      <!-- Enrolled card: QA Advanced -->
+      <div class="enrolled-card c-advanced">
+        <div class="enrolled-card-icon">
+          <svg viewBox="0 0 48 48" fill="none"><rect width="48" height="48" rx="10" fill="#AF52DE"/><path d="M16 32V20l8-6 8 6v12a2 2 0 01-2 2H18a2 2 0 01-2-2z" stroke="white" stroke-width="2.5" fill="none"/><path d="M24 22v4m0 4v0" stroke="white" stroke-width="2.5" stroke-linecap="round"/></svg>
+        </div>
+        <h3>QA Onboarding Advanced</h3>
+        <div class="status">Not started</div>
+        <div class="progress-row">
+          <span>Progress</span>
+          <span class="pct">0%</span>
+        </div>
+        <div class="progress-track">
+          <div class="progress-fill" style="width:0%"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── AVAILABLE COURSES ─────────────────────────────────────────── -->
+    <div class="section-header">
+      <h2>Available Courses <span class="count">5 courses</span></h2>
+    </div>
+
+    <div class="catalog-grid">
+
+      <!-- CARD 1: QA Onboarding Training → Row 1, Col 1 -->
+      <div class="catalog-card c-qa">
+        <div class="card-content">
+          <div class="card-header">
+            <div class="card-icon">
+              <svg viewBox="0 0 48 48" fill="none"><rect width="48" height="48" rx="10" fill="#007AFF"/><path d="M14 24L20 30L34 16" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><circle cx="24" cy="24" r="10" stroke="white" stroke-width="2" fill="none" opacity="0.3"/></svg>
+            </div>
+            <div class="card-title-group">
+              <div class="card-title">QA Onboarding Training</div>
+              <div class="card-tags">
+                <span class="card-tag tag-qa">QA Fundamentals</span>
+                <span class="card-tag tag-qa">Beginner</span>
+              </div>
+            </div>
+          </div>
+          <div class="card-desc">Learn QA fundamentals: testing methodology, bug reporting, CRM tools, Azure DevOps, and test planning. Includes a hands-on capstone assessment.</div>
+          <div class="card-meta">
+            <span class="card-meta-item">
+              <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="10" cy="10" r="8"/><path d="M10 6v4l3 2"/></svg>
+              6 modules
+            </span>
+            <span class="card-meta-item">
+              <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 2a8 8 0 100 16 8 8 0 000-16z"/><path d="M10 6v4l2.5 1.5"/></svg>
+              ~4 hours
+            </span>
+            <span class="card-cta">
+              Start Learning
+              <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/></svg>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- CARD 2: QA Onboarding Advanced → Row 1, Col 2 -->
+      <div class="catalog-card c-advanced">
+        <div class="card-content">
+          <div class="card-header">
+            <div class="card-icon">
+              <svg viewBox="0 0 48 48" fill="none"><rect width="48" height="48" rx="10" fill="#AF52DE"/><path d="M16 32V20l8-6 8 6v12a2 2 0 01-2 2H18a2 2 0 01-2-2z" stroke="white" stroke-width="2.5" fill="none"/><path d="M24 22v4m0 4v0" stroke="white" stroke-width="2.5" stroke-linecap="round"/></svg>
+            </div>
+            <div class="card-title-group">
+              <div class="card-title">QA Onboarding Advanced</div>
+              <div class="card-tags">
+                <span class="card-tag tag-advanced">Advanced</span>
+                <span class="card-tag tag-advanced">Intermediate</span>
+              </div>
+            </div>
+          </div>
+          <div class="card-desc">Deep dive into advanced testing scenarios, complex bug patterns, and enterprise-level QA processes. Build on your foundational knowledge.</div>
+          <div class="card-meta">
+            <span class="card-meta-item">
+              <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="10" cy="10" r="8"/><path d="M10 6v4l3 2"/></svg>
+              3 modules
+            </span>
+            <span class="card-meta-item">
+              <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 2a8 8 0 100 16 8 8 0 000-16z"/><path d="M10 6v4l2.5 1.5"/></svg>
+              ~3 hours
+            </span>
+            <span class="card-cta">
+              Enroll Free
+              <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/></svg>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- CARD 3: Capstone 1 → Row 2, Col 1 -->
+      <div class="catalog-card c-cap1">
+        <div class="card-content">
+          <div class="card-header">
+            <div class="card-icon">
+              <svg viewBox="0 0 48 48" fill="none"><rect width="48" height="48" rx="10" fill="#34C759"/><path d="M14 26l6 6 14-14" stroke="white" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="24" cy="24" r="16" stroke="white" stroke-width="2" fill="none" opacity="0.25"/></svg>
+            </div>
+            <div class="card-title-group">
+              <div class="card-title">Capstone Assessment 1</div>
+              <div class="card-tags">
+                <span class="card-tag tag-capstone">Capstone</span>
+                <span class="card-tag tag-qa">Hands-on</span>
+              </div>
+            </div>
+          </div>
+          <div class="card-desc">Apply everything you've learned in a real-world QA scenario. File bugs, test a CRM workflow, and complete a full testing cycle.</div>
+          <div class="card-meta">
+            <span class="card-meta-item">
+              <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="10" cy="10" r="8"/><path d="M10 6v4l3 2"/></svg>
+              1 assessment
+            </span>
+            <span class="card-meta-item">
+              <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 2a8 8 0 100 16 8 8 0 000-16z"/><path d="M10 6v4l2.5 1.5"/></svg>
+              ~60 min
+            </span>
+            <span class="card-cta">
+              Start Assessment
+              <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/></svg>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- CARD 4: Capstone 2 → Row 2, Col 2 -->
+      <div class="catalog-card c-cap2">
+        <div class="card-content">
+          <div class="card-header">
+            <div class="card-icon">
+              <svg viewBox="0 0 48 48" fill="none"><rect width="48" height="48" rx="10" fill="#5856D6"/><path d="M16 16h16v16H16z" stroke="white" stroke-width="2.5" fill="none"/><path d="M20 20h8v8h-8z" stroke="white" stroke-width="2" fill="none"/><path d="M12 12h24v24H12z" stroke="white" stroke-width="1.5" fill="none" opacity="0.4"/></svg>
+            </div>
+            <div class="card-title-group">
+              <div class="card-title">Capstone Assessment 2</div>
+              <div class="card-tags">
+                <span class="card-tag tag-capstone">Advanced Capstone</span>
+                <span class="card-tag tag-capstone">Final</span>
+              </div>
+            </div>
+          </div>
+          <div class="card-desc">The final challenge: navigate a complex multi-system scenario spanning Dynamics CRM, Azure DevOps, and Outlook. Demonstrate mastery.</div>
+          <div class="card-meta">
+            <span class="card-meta-item">
+              <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="10" cy="10" r="8"/><path d="M10 6v4l3 2"/></svg>
+              1 assessment
+            </span>
+            <span class="card-meta-item">
+              <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 2a8 8 0 100 16 8 8 0 000-16z"/><path d="M10 6v4l2.5 1.5"/></svg>
+              ~90 min
+            </span>
+            <span class="card-cta">
+              Enroll Free
+              <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/></svg>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- CARD 5: Agile & Scrum → Row 3, Span 2 columns (featured) -->
+      <div class="catalog-card c-agile span-2">
+        <div class="card-content">
+          <div class="card-header">
+            <div class="card-icon">
+              <svg viewBox="0 0 48 48" fill="none"><rect width="48" height="48" rx="10" fill="#FF9500"/><circle cx="24" cy="24" r="14" stroke="white" stroke-width="2.5" fill="none"/><path d="M24 14v10l7 4" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <div class="card-title-group">
+              <div class="card-title">Agile &amp; Scrum for Developers</div>
+              <div class="card-tags">
+                <span class="card-tag tag-agile">Development</span>
+                <span class="card-tag tag-agile">Collaboration</span>
+              </div>
+            </div>
+          </div>
+          <div class="card-desc">A comprehensive course covering Agile principles, the Scrum framework, roles, events, artifacts, and practical application for software developers.</div>
+          <div class="card-meta">
+            <span class="card-meta-item">
+              <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="10" cy="10" r="8"/><path d="M10 6v4l3 2"/></svg>
+              9 modules
+            </span>
+            <span class="card-meta-item">
+              <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 2a8 8 0 100 16 8 8 0 000-16z"/><path d="M10 6v4l2.5 1.5"/></svg>
+              ~5 hours
+            </span>
+            <span class="card-cta">
+              Enroll Free
+              <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/></svg>
+            </span>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /catalog-grid -->
+
+  </main>
+
+  <!-- ════════════════════════════════════════════════════════════════
+       FOOTER
+       ════════════════════════════════════════════════════════════════ -->
+  <footer class="site-footer">
+    <p>&copy; 2026 QA Pilot Academy. All rights reserved.</p>
+    <div>
+      <a href="#" onclick="showToast('Help & Documentation'); return false;">Help</a>
+      <a href="#" onclick="showToast('About QA Pilot'); return false;">About</a>
+      <a href="#" onclick="showToast('Privacy Notice — Your data is stored locally'); return false;">Privacy</a>
+    </div>
+  </footer>
+
+  <!-- ════════════════════════════════════════════════════════════════
+       TOAST
+       ════════════════════════════════════════════════════════════════ -->
+  <div class="toast" id="toast"></div>
+
+  <script>
+    // ── Toast helper ────────────────────────────────────────────────
+    function showToast(msg) {
+      var el = document.getElementById('toast');
+      el.textContent = msg;
+      el.classList.add('show');
+      if (window._toastTimeout) clearTimeout(window._toastTimeout);
+      window._toastTimeout = setTimeout(function() { el.classList.remove('show'); }, 2200);
+    }
+
+    // ── Card click previews ─────────────────────────────────────────
+    document.querySelectorAll('.catalog-card, .enrolled-card').forEach(function(card) {
+      card.addEventListener('click', function() {
+        var title = (this.querySelector('.card-title') || this.querySelector('h3')).textContent;
+        showToast('Opening "' + title.trim() + '"…');
+      });
+    });
+  </script>
+</body>
+</html>

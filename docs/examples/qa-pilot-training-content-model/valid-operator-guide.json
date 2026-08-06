@@ -1,0 +1,38 @@
+{
+  "schema_version": "training-content-v1",
+  "pack_id": "TC-VALID-02",
+  "title": "Operator Guide",
+  "artifact_type": "operator_guide",
+  "intended_audience": "operator",
+  "generated_at": "2026-07-08T22:00:00Z",
+  "content": {
+    "sections": [
+      {
+        "id": "daily-tasks",
+        "title": "Daily Operational Tasks",
+        "body": "Procedures for monitoring system health, reviewing logs, and responding to alerts.",
+        "sources": [
+          "docs/ops/daily-tasks.md"
+        ]
+      }
+    ]
+  },
+  "provenance": {
+    "librarian_sources": [
+      {
+        "path": "docs/ops/daily-tasks.md",
+        "revision": "def456"
+      }
+    ],
+    "generator": "qa-pilot-content-model-test",
+    "generator_version": "1.0.0",
+    "source_hash": "2aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+  },
+  "governance": {
+    "authority_posture": "advisory",
+    "owner_decision_required_for_publish": true,
+    "validation_status": "draft",
+    "source_coverage_pct": 85,
+    "ownership_state": "owned_by_librarian"
+  }
+}

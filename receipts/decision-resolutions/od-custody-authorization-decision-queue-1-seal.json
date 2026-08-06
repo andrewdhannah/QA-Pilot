@@ -1,0 +1,49 @@
+{
+  "receipt_type": "owner_decision_seal",
+  "decision_id": "OD-CUSTODY-AUTHORIZATION-DECISION-QUEUE-1-SEAL",
+  "project_id": "qa-pilot",
+  "sprint_id": "CUSTODY-AUTHORIZATION-DECISION-QUEUE-1",
+  "ledger_number": 31,
+  "decision": "APPROVE_AND_SEAL",
+  "approved_by": "Andrew Hannah (Owner)",
+  "approved_at": "2026-07-06T17:55:00Z",
+  "decision_basis": [
+    "fixture validation: 16/16 pass (5 positive + 11 negative correctly classified)",
+    "external regression: 4/4 pass",
+    "startup regression: 15/15 pass",
+    "parity matrix: 13/13 pass",
+    "existing validators: 15/15 pass",
+    "CRL lock live posture: 7/7 pass",
+    "total acceptance gates: 20/20, 0 failures",
+    "authorization defect healed by Owner ratification 2026-07-06"
+  ],
+  "seal_conditions": [
+    "Queue entries are advisory only (advisory: true)",
+    "Queue entries require explicit Owner decision before any custody state change",
+    "Queue entries cannot approve, seal, execute, or write",
+    "Queue entries cannot mutate custody indexes (#27)",
+    "Queue entries cannot create custody receipts",
+    "Queue entries cannot advance the active sprint",
+    "Queue source is restricted to startup_report only",
+    "Cross-project queue entries require owner_authorized: true",
+    "Decision lifecycle: pending (creation) → owner_reviewed/deferred (post-Owner-action)",
+    "Contract references and finding types are validated against sealed contract list"
+  ],
+  "boundary_assertion": {
+    "project_boundary": "qa-pilot",
+    "lane": "parallel_planning",
+    "librarian_impact": "none",
+    "cross_project_registration": false,
+    "runtime_mutation_authorized": false,
+    "implementation_authorized": true
+  },
+  "evidence": [
+    "docs/governance/CUSTODY-AUTHORIZATION-DECISION-QUEUE.md (8 sections, 12 CDQ rules)",
+    "docs/schemas/custody-authorization-decision-queue.schema.json (Draft 2020-12)",
+    "scripts/validate-custody-authorization-decision-queue.py (fixture/validate modes)",
+    "scripts/test-custody-authorization-decision-queue.sh (20 gates)",
+    "docs/examples/custody-authorization-decision-queue/ (16 fixtures)",
+    "project-state/sprint-ledger.json (entry #31)"
+  ],
+  "authorized_next_sprint": null
+}

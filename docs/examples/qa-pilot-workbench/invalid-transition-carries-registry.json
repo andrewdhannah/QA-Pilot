@@ -1,0 +1,29 @@
+{
+  "qa_item_id": "QA-BAD-0306",
+  "title": "Item with lifecycle entry carrying registry state",
+  "source": "manual",
+  "status": "open",
+  "severity": "high",
+  "category": "functional",
+  "description": "This item has a lifecycle entry with additional registry/RCR state fields.",
+  "evidence_refs": [],
+  "evidence_links": [],
+  "lifecycle_history": [
+    {
+      "from_status": "__init__",
+      "to_status": "open",
+      "transition_reason": "Item created",
+      "registry_impact": "adds_layer",
+      "rcr_receipt": "RCR-ADD-LAYER-065",
+      "actor": "agent",
+      "timestamp": "2026-07-08T00:00:00Z",
+      "advisory_only": true
+    }
+  ],
+  "owner_decision_state": "pending",
+  "created_at": "2026-07-08T00:00:00Z",
+  "updated_at": "2026-07-08T00:00:00Z",
+  "advisory_only": true,
+  "custody": "qa-pilot-local",
+  "librarian_impact": "none"
+}
