@@ -1,0 +1,629 @@
+{
+  "$schema": "qa-test-result-v1",
+  "test_id": "E2E-4",
+  "title": "Sealed-Sprint Assurance Discovery",
+  "domain": "regression",
+  "objective": "Mechanically reconstruct assurance plan from Librarian sealed sprints",
+  "results": {
+    "total_requirements": 4,
+    "discovered": 4,
+    "executable": 4,
+    "executed": 4,
+    "reported": 4,
+    "pass": 4,
+    "fail": 0,
+    "capability_missing": 0,
+    "discovery_coverage_pct": 100.0,
+    "execution_coverage_pct": 100.0,
+    "reporting_coverage_pct": 100.0,
+    "pass_rate_pct": 100.0,
+    "status": "COMPLETE"
+  },
+  "test_cases": [
+    {
+      "requirement": "Sprint classification complete",
+      "test": "classify-sprints",
+      "status": "PASS",
+      "detail": "447 sprints classified",
+      "timestamp": "2026-08-11T05:11:41.771613+00:00"
+    },
+    {
+      "requirement": "Claims extracted from sealed sprints",
+      "test": "extract-claims",
+      "status": "PASS",
+      "detail": "149 claims from 122 sprints",
+      "timestamp": "2026-08-11T05:11:41.774008+00:00"
+    },
+    {
+      "requirement": "Capabilities mapped to requirements",
+      "test": "map-capabilities",
+      "status": "PASS",
+      "detail": "149/149 executable",
+      "timestamp": "2026-08-11T05:11:41.774957+00:00"
+    },
+    {
+      "requirement": "Test plans generated",
+      "test": "generate-plans",
+      "status": "PASS",
+      "detail": "10 plans, 30 test requirements",
+      "timestamp": "2026-08-11T05:11:41.775080+00:00"
+    }
+  ],
+  "discovery_report": {
+    "discovery_summary": {
+      "sealed_sprints_total": 447,
+      "assurance_ready": 122,
+      "assurance_partial": 13,
+      "non_executable": 13,
+      "insufficient_source": 299
+    },
+    "extraction_summary": {
+      "claims_extracted": 149,
+      "test_requirements_derived": 149
+    },
+    "capability_summary": {
+      "requirements_mapped": 149,
+      "executable": 149,
+      "capability_missing": 0
+    },
+    "test_plan_summary": {
+      "plans_generated": 10,
+      "total_test_requirements": 30,
+      "executable_tests": 30
+    }
+  },
+  "test_plans": [
+    {
+      "sprint_id": "ZVEC-BACKEND-1",
+      "sprint_title": "Embedded Vector Index Backend",
+      "claims": [
+        {
+          "type": "harness_pass",
+          "claim": "All 277 tests passed (277/277 PASS)",
+          "testable": true,
+          "requirement": "Sprint ZVEC-BACKEND-1 harness tests must pass"
+        },
+        {
+          "type": "implementation_exists",
+          "claim": "Implementation exists: feat(vector): embedded vector index backend selection + adapter seam",
+          "testable": true,
+          "requirement": "Sprint ZVEC-BACKEND-1 must have implementing artifacts"
+        },
+        {
+          "type": "evidence_recorded",
+          "claim": "Evidence recorded: ZVEC-BACKEND-1: Retroactive seal #2 \u2014 Owner-authorized 2026-07-13 under EPIC-LIB...",
+          "testable": true,
+          "requirement": "Sprint ZVEC-BACKEND-1 must have verifiable evidence"
+        }
+      ],
+      "test_requirements": [
+        {
+          "id": "ZVEC-BACKEND-1-T001",
+          "requirement": "Sprint ZVEC-BACKEND-1 harness tests must pass",
+          "test_type": "regression",
+          "required_capability": "SCRIPT_EXECUTION",
+          "description": "Verify harness test results for ZVEC-BACKEND-1",
+          "matched_capability": "validator",
+          "status": "EXECUTABLE"
+        },
+        {
+          "id": "ZVEC-BACKEND-1-T002",
+          "requirement": "Sprint ZVEC-BACKEND-1 must have implementing artifacts",
+          "test_type": "existence",
+          "required_capability": "SCRIPT_EXECUTION",
+          "description": "Verify implementation artifacts exist for ZVEC-BACKEND-1",
+          "matched_capability": "validator",
+          "status": "EXECUTABLE"
+        },
+        {
+          "id": "ZVEC-BACKEND-1-T003",
+          "requirement": "Sprint ZVEC-BACKEND-1 must have verifiable evidence",
+          "test_type": "evidence_verification",
+          "required_capability": "SCRIPT_EXECUTION",
+          "description": "Verify evidence references for ZVEC-BACKEND-1",
+          "matched_capability": "validator",
+          "status": "EXECUTABLE"
+        }
+      ],
+      "executable_count": 3,
+      "total_count": 3
+    },
+    {
+      "sprint_id": "SQLITE-VEC-VENDOR-1",
+      "sprint_title": "Vendored sqlite-vec",
+      "claims": [
+        {
+          "type": "harness_pass",
+          "claim": "All 293 tests passed (293/293 PASS)",
+          "testable": true,
+          "requirement": "Sprint SQLITE-VEC-VENDOR-1 harness tests must pass"
+        },
+        {
+          "type": "implementation_exists",
+          "claim": "Implementation exists: feat(vector): vendored sqlite-vec v0.1.9",
+          "testable": true,
+          "requirement": "Sprint SQLITE-VEC-VENDOR-1 must have implementing artifacts"
+        },
+        {
+          "type": "evidence_recorded",
+          "claim": "Evidence recorded: CSqliteVec C target. SQLiteVecVectorBackend behind RetrievalVectorBackend seam. ...",
+          "testable": true,
+          "requirement": "Sprint SQLITE-VEC-VENDOR-1 must have verifiable evidence"
+        }
+      ],
+      "test_requirements": [
+        {
+          "id": "SQLITE-VEC-VENDOR-1-T001",
+          "requirement": "Sprint SQLITE-VEC-VENDOR-1 harness tests must pass",
+          "test_type": "regression",
+          "required_capability": "SCRIPT_EXECUTION",
+          "description": "Verify harness test results for SQLITE-VEC-VENDOR-1",
+          "matched_capability": "validator",
+          "status": "EXECUTABLE"
+        },
+        {
+          "id": "SQLITE-VEC-VENDOR-1-T002",
+          "requirement": "Sprint SQLITE-VEC-VENDOR-1 must have implementing artifacts",
+          "test_type": "existence",
+          "required_capability": "SCRIPT_EXECUTION",
+          "description": "Verify implementation artifacts exist for SQLITE-VEC-VENDOR-1",
+          "matched_capability": "validator",
+          "status": "EXECUTABLE"
+        },
+        {
+          "id": "SQLITE-VEC-VENDOR-1-T003",
+          "requirement": "Sprint SQLITE-VEC-VENDOR-1 must have verifiable evidence",
+          "test_type": "evidence_verification",
+          "required_capability": "SCRIPT_EXECUTION",
+          "description": "Verify evidence references for SQLITE-VEC-VENDOR-1",
+          "matched_capability": "validator",
+          "status": "EXECUTABLE"
+        }
+      ],
+      "executable_count": 3,
+      "total_count": 3
+    },
+    {
+      "sprint_id": "RERANK-1",
+      "sprint_title": "Governed Evidence Reranking",
+      "claims": [
+        {
+          "type": "harness_pass",
+          "claim": "All 295 tests passed (295/295 PASS)",
+          "testable": true,
+          "requirement": "Sprint RERANK-1 harness tests must pass"
+        },
+        {
+          "type": "implementation_exists",
+          "claim": "Implementation exists: feat(rerank): governed evidence selection / reranking layer",
+          "testable": true,
+          "requirement": "Sprint RERANK-1 must have implementing artifacts"
+        },
+        {
+          "type": "evidence_recorded",
+          "claim": "Evidence recorded: RerankerProtocol, NoOpReranker, DeterministicReranker, FallbackReranker. Reranke...",
+          "testable": true,
+          "requirement": "Sprint RERANK-1 must have verifiable evidence"
+        }
+      ],
+      "test_requirements": [
+        {
+          "id": "RERANK-1-T001",
+          "requirement": "Sprint RERANK-1 harness tests must pass",
+          "test_type": "regression",
+          "required_capability": "SCRIPT_EXECUTION",
+          "description": "Verify harness test results for RERANK-1",
+          "matched_capability": "validator",
+          "status": "EXECUTABLE"
+        },
+        {
+          "id": "RERANK-1-T002",
+          "requirement": "Sprint RERANK-1 must have implementing artifacts",
+          "test_type": "existence",
+          "required_capability": "SCRIPT_EXECUTION",
+          "description": "Verify implementation artifacts exist for RERANK-1",
+          "matched_capability": "validator",
+          "status": "EXECUTABLE"
+        },
+        {
+          "id": "RERANK-1-T003",
+          "requirement": "Sprint RERANK-1 must have verifiable evidence",
+          "test_type": "evidence_verification",
+          "required_capability": "SCRIPT_EXECUTION",
+          "description": "Verify evidence references for RERANK-1",
+          "matched_capability": "validator",
+          "status": "EXECUTABLE"
+        }
+      ],
+      "executable_count": 3,
+      "total_count": 3
+    },
+    {
+      "sprint_id": "JUDGE-1",
+      "sprint_title": "Advisory Faithfulness Check Layer",
+      "claims": [
+        {
+          "type": "harness_pass",
+          "claim": "All 310 tests passed (310/310 PASS)",
+          "testable": true,
+          "requirement": "Sprint JUDGE-1 harness tests must pass"
+        },
+        {
+          "type": "implementation_exists",
+          "claim": "Implementation exists: feat(judge): advisory faithfulness check layer",
+          "testable": true,
+          "requirement": "Sprint JUDGE-1 must have implementing artifacts"
+        },
+        {
+          "type": "evidence_recorded",
+          "claim": "Evidence recorded: JudgeProtocol, DeterministicFixtureJudge, NoOpJudge, JudgeMetadataGate, JudgePro...",
+          "testable": true,
+          "requirement": "Sprint JUDGE-1 must have verifiable evidence"
+        }
+      ],
+      "test_requirements": [
+        {
+          "id": "JUDGE-1-T001",
+          "requirement": "Sprint JUDGE-1 harness tests must pass",
+          "test_type": "regression",
+          "required_capability": "SCRIPT_EXECUTION",
+          "description": "Verify harness test results for JUDGE-1",
+          "matched_capability": "validator",
+          "status": "EXECUTABLE"
+        },
+        {
+          "id": "JUDGE-1-T002",
+          "requirement": "Sprint JUDGE-1 must have implementing artifacts",
+          "test_type": "existence",
+          "required_capability": "SCRIPT_EXECUTION",
+          "description": "Verify implementation artifacts exist for JUDGE-1",
+          "matched_capability": "validator",
+          "status": "EXECUTABLE"
+        },
+        {
+          "id": "JUDGE-1-T003",
+          "requirement": "Sprint JUDGE-1 must have verifiable evidence",
+          "test_type": "evidence_verification",
+          "required_capability": "SCRIPT_EXECUTION",
+          "description": "Verify evidence references for JUDGE-1",
+          "matched_capability": "validator",
+          "status": "EXECUTABLE"
+        }
+      ],
+      "executable_count": 3,
+      "total_count": 3
+    },
+    {
+      "sprint_id": "RECALL-BROKER-IMPL-1",
+      "sprint_title": "Recall Broker Implementation",
+      "claims": [
+        {
+          "type": "harness_pass",
+          "claim": "All 315 tests passed (315/315 PASS)",
+          "testable": true,
+          "requirement": "Sprint RECALL-BROKER-IMPL-1 harness tests must pass"
+        },
+        {
+          "type": "implementation_exists",
+          "claim": "Implementation exists: feat(recall): recall broker implementation",
+          "testable": true,
+          "requirement": "Sprint RECALL-BROKER-IMPL-1 must have implementing artifacts"
+        },
+        {
+          "type": "evidence_recorded",
+          "claim": "Evidence recorded: Deterministic recall broker implementation. Group 39 RBROKER-001-008. implementa...",
+          "testable": true,
+          "requirement": "Sprint RECALL-BROKER-IMPL-1 must have verifiable evidence"
+        }
+      ],
+      "test_requirements": [
+        {
+          "id": "RECALL-BROKER-IMPL-1-T001",
+          "requirement": "Sprint RECALL-BROKER-IMPL-1 harness tests must pass",
+          "test_type": "regression",
+          "required_capability": "SCRIPT_EXECUTION",
+          "description": "Verify harness test results for RECALL-BROKER-IMPL-1",
+          "matched_capability": "validator",
+          "status": "EXECUTABLE"
+        },
+        {
+          "id": "RECALL-BROKER-IMPL-1-T002",
+          "requirement": "Sprint RECALL-BROKER-IMPL-1 must have implementing artifacts",
+          "test_type": "existence",
+          "required_capability": "SCRIPT_EXECUTION",
+          "description": "Verify implementation artifacts exist for RECALL-BROKER-IMPL-1",
+          "matched_capability": "validator",
+          "status": "EXECUTABLE"
+        },
+        {
+          "id": "RECALL-BROKER-IMPL-1-T003",
+          "requirement": "Sprint RECALL-BROKER-IMPL-1 must have verifiable evidence",
+          "test_type": "evidence_verification",
+          "required_capability": "SCRIPT_EXECUTION",
+          "description": "Verify evidence references for RECALL-BROKER-IMPL-1",
+          "matched_capability": "validator",
+          "status": "EXECUTABLE"
+        }
+      ],
+      "executable_count": 3,
+      "total_count": 3
+    },
+    {
+      "sprint_id": "RECALL-RETRIEVAL-BRIDGE-1",
+      "sprint_title": "Recall Retrieval Bridge",
+      "claims": [
+        {
+          "type": "harness_pass",
+          "claim": "All 322 tests passed (322/322 PASS)",
+          "testable": true,
+          "requirement": "Sprint RECALL-RETRIEVAL-BRIDGE-1 harness tests must pass"
+        },
+        {
+          "type": "implementation_exists",
+          "claim": "Implementation exists: feat(recall): bridge RecallPacket to governed retrieval evidence",
+          "testable": true,
+          "requirement": "Sprint RECALL-RETRIEVAL-BRIDGE-1 must have implementing artifacts"
+        },
+        {
+          "type": "evidence_recorded",
+          "claim": "Evidence recorded: DeterministicRecallRetrievalBridge, RecallRetrievalBridgeProtocol, BridgeOutput,...",
+          "testable": true,
+          "requirement": "Sprint RECALL-RETRIEVAL-BRIDGE-1 must have verifiable evidence"
+        }
+      ],
+      "test_requirements": [
+        {
+          "id": "RECALL-RETRIEVAL-BRIDGE-1-T001",
+          "requirement": "Sprint RECALL-RETRIEVAL-BRIDGE-1 harness tests must pass",
+          "test_type": "regression",
+          "required_capability": "SCRIPT_EXECUTION",
+          "description": "Verify harness test results for RECALL-RETRIEVAL-BRIDGE-1",
+          "matched_capability": "validator",
+          "status": "EXECUTABLE"
+        },
+        {
+          "id": "RECALL-RETRIEVAL-BRIDGE-1-T002",
+          "requirement": "Sprint RECALL-RETRIEVAL-BRIDGE-1 must have implementing artifacts",
+          "test_type": "existence",
+          "required_capability": "SCRIPT_EXECUTION",
+          "description": "Verify implementation artifacts exist for RECALL-RETRIEVAL-BRIDGE-1",
+          "matched_capability": "validator",
+          "status": "EXECUTABLE"
+        },
+        {
+          "id": "RECALL-RETRIEVAL-BRIDGE-1-T003",
+          "requirement": "Sprint RECALL-RETRIEVAL-BRIDGE-1 must have verifiable evidence",
+          "test_type": "evidence_verification",
+          "required_capability": "SCRIPT_EXECUTION",
+          "description": "Verify evidence references for RECALL-RETRIEVAL-BRIDGE-1",
+          "matched_capability": "validator",
+          "status": "EXECUTABLE"
+        }
+      ],
+      "executable_count": 3,
+      "total_count": 3
+    },
+    {
+      "sprint_id": "RECALL-EVIDENCE-RECEIPT-1",
+      "sprint_title": "Deterministic Evidence Receipt Layer",
+      "claims": [
+        {
+          "type": "harness_pass",
+          "claim": "All 330 tests passed (330/330 PASS)",
+          "testable": true,
+          "requirement": "Sprint RECALL-EVIDENCE-RECEIPT-1 harness tests must pass"
+        },
+        {
+          "type": "implementation_exists",
+          "claim": "Implementation exists: feat(recall): deterministic evidence receipt layer",
+          "testable": true,
+          "requirement": "Sprint RECALL-EVIDENCE-RECEIPT-1 must have implementing artifacts"
+        },
+        {
+          "type": "evidence_recorded",
+          "claim": "Evidence recorded: RecallEvidenceReceiptServiceProtocol, DeterministicRecallEvidenceReceiptService,...",
+          "testable": true,
+          "requirement": "Sprint RECALL-EVIDENCE-RECEIPT-1 must have verifiable evidence"
+        }
+      ],
+      "test_requirements": [
+        {
+          "id": "RECALL-EVIDENCE-RECEIPT-1-T001",
+          "requirement": "Sprint RECALL-EVIDENCE-RECEIPT-1 harness tests must pass",
+          "test_type": "regression",
+          "required_capability": "SCRIPT_EXECUTION",
+          "description": "Verify harness test results for RECALL-EVIDENCE-RECEIPT-1",
+          "matched_capability": "validator",
+          "status": "EXECUTABLE"
+        },
+        {
+          "id": "RECALL-EVIDENCE-RECEIPT-1-T002",
+          "requirement": "Sprint RECALL-EVIDENCE-RECEIPT-1 must have implementing artifacts",
+          "test_type": "existence",
+          "required_capability": "SCRIPT_EXECUTION",
+          "description": "Verify implementation artifacts exist for RECALL-EVIDENCE-RECEIPT-1",
+          "matched_capability": "validator",
+          "status": "EXECUTABLE"
+        },
+        {
+          "id": "RECALL-EVIDENCE-RECEIPT-1-T003",
+          "requirement": "Sprint RECALL-EVIDENCE-RECEIPT-1 must have verifiable evidence",
+          "test_type": "evidence_verification",
+          "required_capability": "SCRIPT_EXECUTION",
+          "description": "Verify evidence references for RECALL-EVIDENCE-RECEIPT-1",
+          "matched_capability": "validator",
+          "status": "EXECUTABLE"
+        }
+      ],
+      "executable_count": 3,
+      "total_count": 3
+    },
+    {
+      "sprint_id": "WORK-PACKAGE-CONTEXT-1",
+      "sprint_title": "Deterministic Work-Package Context Assembly",
+      "claims": [
+        {
+          "type": "harness_pass",
+          "claim": "All 338 tests passed (338/338 PASS)",
+          "testable": true,
+          "requirement": "Sprint WORK-PACKAGE-CONTEXT-1 harness tests must pass"
+        },
+        {
+          "type": "implementation_exists",
+          "claim": "Implementation exists: feat(work): deterministic work-package context assembly",
+          "testable": true,
+          "requirement": "Sprint WORK-PACKAGE-CONTEXT-1 must have implementing artifacts"
+        },
+        {
+          "type": "evidence_recorded",
+          "claim": "Evidence recorded: WorkPackageContextServiceProtocol, DeterministicWorkPackageContextService, WorkP...",
+          "testable": true,
+          "requirement": "Sprint WORK-PACKAGE-CONTEXT-1 must have verifiable evidence"
+        }
+      ],
+      "test_requirements": [
+        {
+          "id": "WORK-PACKAGE-CONTEXT-1-T001",
+          "requirement": "Sprint WORK-PACKAGE-CONTEXT-1 harness tests must pass",
+          "test_type": "regression",
+          "required_capability": "SCRIPT_EXECUTION",
+          "description": "Verify harness test results for WORK-PACKAGE-CONTEXT-1",
+          "matched_capability": "validator",
+          "status": "EXECUTABLE"
+        },
+        {
+          "id": "WORK-PACKAGE-CONTEXT-1-T002",
+          "requirement": "Sprint WORK-PACKAGE-CONTEXT-1 must have implementing artifacts",
+          "test_type": "existence",
+          "required_capability": "SCRIPT_EXECUTION",
+          "description": "Verify implementation artifacts exist for WORK-PACKAGE-CONTEXT-1",
+          "matched_capability": "validator",
+          "status": "EXECUTABLE"
+        },
+        {
+          "id": "WORK-PACKAGE-CONTEXT-1-T003",
+          "requirement": "Sprint WORK-PACKAGE-CONTEXT-1 must have verifiable evidence",
+          "test_type": "evidence_verification",
+          "required_capability": "SCRIPT_EXECUTION",
+          "description": "Verify evidence references for WORK-PACKAGE-CONTEXT-1",
+          "matched_capability": "validator",
+          "status": "EXECUTABLE"
+        }
+      ],
+      "executable_count": 3,
+      "total_count": 3
+    },
+    {
+      "sprint_id": "WORK-DISPATCH-1",
+      "sprint_title": "Deterministic Governed Dispatch Envelope",
+      "claims": [
+        {
+          "type": "harness_pass",
+          "claim": "All 346 tests passed (346/346 PASS)",
+          "testable": true,
+          "requirement": "Sprint WORK-DISPATCH-1 harness tests must pass"
+        },
+        {
+          "type": "implementation_exists",
+          "claim": "Implementation exists: feat(work): deterministic governed dispatch envelope",
+          "testable": true,
+          "requirement": "Sprint WORK-DISPATCH-1 must have implementing artifacts"
+        },
+        {
+          "type": "evidence_recorded",
+          "claim": "Evidence recorded: WorkDispatchServiceProtocol, DeterministicWorkDispatchService, WorkDispatchEnvel...",
+          "testable": true,
+          "requirement": "Sprint WORK-DISPATCH-1 must have verifiable evidence"
+        }
+      ],
+      "test_requirements": [
+        {
+          "id": "WORK-DISPATCH-1-T001",
+          "requirement": "Sprint WORK-DISPATCH-1 harness tests must pass",
+          "test_type": "regression",
+          "required_capability": "SCRIPT_EXECUTION",
+          "description": "Verify harness test results for WORK-DISPATCH-1",
+          "matched_capability": "validator",
+          "status": "EXECUTABLE"
+        },
+        {
+          "id": "WORK-DISPATCH-1-T002",
+          "requirement": "Sprint WORK-DISPATCH-1 must have implementing artifacts",
+          "test_type": "existence",
+          "required_capability": "SCRIPT_EXECUTION",
+          "description": "Verify implementation artifacts exist for WORK-DISPATCH-1",
+          "matched_capability": "validator",
+          "status": "EXECUTABLE"
+        },
+        {
+          "id": "WORK-DISPATCH-1-T003",
+          "requirement": "Sprint WORK-DISPATCH-1 must have verifiable evidence",
+          "test_type": "evidence_verification",
+          "required_capability": "SCRIPT_EXECUTION",
+          "description": "Verify evidence references for WORK-DISPATCH-1",
+          "matched_capability": "validator",
+          "status": "EXECUTABLE"
+        }
+      ],
+      "executable_count": 3,
+      "total_count": 3
+    },
+    {
+      "sprint_id": "WORK-RESULT-INTAKE-1",
+      "sprint_title": "Deterministic Governed Result Intake",
+      "claims": [
+        {
+          "type": "harness_pass",
+          "claim": "All 354 tests passed (354/354 PASS)",
+          "testable": true,
+          "requirement": "Sprint WORK-RESULT-INTAKE-1 harness tests must pass"
+        },
+        {
+          "type": "implementation_exists",
+          "claim": "Implementation exists: feat(work): deterministic governed result intake",
+          "testable": true,
+          "requirement": "Sprint WORK-RESULT-INTAKE-1 must have implementing artifacts"
+        },
+        {
+          "type": "evidence_recorded",
+          "claim": "Evidence recorded: WorkResultIntakeServiceProtocol, DeterministicWorkResultIntakeService, WorkResul...",
+          "testable": true,
+          "requirement": "Sprint WORK-RESULT-INTAKE-1 must have verifiable evidence"
+        }
+      ],
+      "test_requirements": [
+        {
+          "id": "WORK-RESULT-INTAKE-1-T001",
+          "requirement": "Sprint WORK-RESULT-INTAKE-1 harness tests must pass",
+          "test_type": "regression",
+          "required_capability": "SCRIPT_EXECUTION",
+          "description": "Verify harness test results for WORK-RESULT-INTAKE-1",
+          "matched_capability": "validator",
+          "status": "EXECUTABLE"
+        },
+        {
+          "id": "WORK-RESULT-INTAKE-1-T002",
+          "requirement": "Sprint WORK-RESULT-INTAKE-1 must have implementing artifacts",
+          "test_type": "existence",
+          "required_capability": "SCRIPT_EXECUTION",
+          "description": "Verify implementation artifacts exist for WORK-RESULT-INTAKE-1",
+          "matched_capability": "validator",
+          "status": "EXECUTABLE"
+        },
+        {
+          "id": "WORK-RESULT-INTAKE-1-T003",
+          "requirement": "Sprint WORK-RESULT-INTAKE-1 must have verifiable evidence",
+          "test_type": "evidence_verification",
+          "required_capability": "SCRIPT_EXECUTION",
+          "description": "Verify evidence references for WORK-RESULT-INTAKE-1",
+          "matched_capability": "validator",
+          "status": "EXECUTABLE"
+        }
+      ],
+      "executable_count": 3,
+      "total_count": 3
+    }
+  ],
+  "advisory_only": true,
+  "no_seal_authority": true
+}

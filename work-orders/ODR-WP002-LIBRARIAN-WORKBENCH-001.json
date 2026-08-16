@@ -1,0 +1,111 @@
+{
+  "receipt_type": "OWNER_DECISION_RECEIPT",
+  "receipt_id": "ODR-WP002-LIBRARIAN-WORKBENCH-001",
+  "decision_date": "2026-08-16T05:10:00Z",
+  "decision_authority": "Owner",
+  "work_order": "GOVERNANCE-INTEGRITY-RECOVERY-1/WP-002",
+
+  "entity": {
+    "entity_id": "librarian-workbench",
+    "display_name": "Librarian Workbench",
+    "previous_phase": "bootstrap",
+    "proposed_phase": "execution",
+    "canonical_lifecycle_state": "Operational",
+    "state_spelling_source": "librarian-contracts/src/lifecycle.rs"
+  },
+
+  "transition": {
+    "from": "bootstrap",
+    "to": "execution",
+    "canonical_from": null,
+    "canonical_to": "Operational",
+    "transition_type": "lifecycle_reconciliation",
+    "description": "Registry metadata stale relative to sealed lifecycle evidence. Entity has completed 37 seals across all 8 phases. Cursor at phase 8, position 37."
+  },
+
+  "evidence": {
+    "basis": [
+      {
+        "source": "lifecycle_cursor",
+        "location": "lifecycle-cursor.json (librarian-workbench)",
+        "fields": {
+          "phase": 8,
+          "position": 37,
+          "cycle": 1,
+          "label": "Next Cycle",
+          "seal_count": 37
+        }
+      },
+      {
+        "source": "sealed_transitions",
+        "count": 37,
+        "range": "seal #1 through seal #37",
+        "phases_covered": [1, 2, 3, 4, 5, 6, 7, 8]
+      },
+      {
+        "source": "transition_history",
+        "entries": 37,
+        "first_entry": "WORKBENCH-PROJECT-BOOTSTRAP-1: seal #1",
+        "last_entry": "WORKBENCH-OPERATIONAL-HEALTH-SURFACE-1: seal #37"
+      },
+      {
+        "source": "governance_audit",
+        "document": "active/qa-pilot/work-orders/WP-002-classification-evidence.md",
+        "classification_confidence": "HIGH"
+      }
+    ],
+    "immutability": "Evidence references are location + hash based. The classification decision is derived from these sources, not from the human description."
+  },
+
+  "authorization": {
+    "type": "Owner decision",
+    "scope": "Permit lifecycle registry mutation only",
+    "restrictions": [
+      "This authorization applies only to the entity and transition specified above",
+      "Does not authorize subsequent mutations without separate decision",
+      "Does not authorize cursor advancement",
+      "Does not authorize capability changes"
+    ]
+  },
+
+  "validation": {
+    "enum_valid": true,
+    "enum_value": "Operational",
+    "enum_source": "Rust LifecycleState enum (librarian-contracts/src/lifecycle.rs)",
+    "valid_transitions_from_current": ["Suspended", "Retired"],
+    "note": "Operational → Operational is not a lifecycle transition; this is a registry metadata correction, not a state transition. The entity's cursor is already at phase 8 (Operational). The registry phase ('bootstrap') is stale and needs reconciliation to match."
+  },
+
+  "expected_receipt": {
+    "tool": "governance_lifecycle_reconcile",
+    "parameters": {
+      "entity_id": "librarian-workbench",
+      "proposed_state": "Operational",
+      "evidence_basis": "cursor position 37, 37 sealed transitions, phase 8, governance audit WP-002",
+      "authorization_basis": "ODR-WP002-LIBRARIAN-WORKBENCH-001"
+    }
+  },
+
+  "chain_of_custody": [
+    {
+      "step": 1,
+      "artifact": "WP-002-classification-evidence.md",
+      "action": "Classification evidence produced by agent"
+    },
+    {
+      "step": 2,
+      "artifact": "ODR-WP002-LIBRARIAN-WORKBENCH-001.json",
+      "action": "Owner decision receipt created"
+    },
+    {
+      "step": 3,
+      "artifact": "LCR-*.json",
+      "action": "Lifecycle reconciliation receipt (pending execution)"
+    },
+    {
+      "step": 4,
+      "artifact": "project-index.json",
+      "action": "Registry state updated (pending execution)"
+    }
+  ]
+}

@@ -1,0 +1,47 @@
+{
+  "$schema": "assurance-evidence-v1",
+  "evidence_class": "record",
+  "identity": {
+    "evidence_id": "E2E-1-RUN3-EXEC-001",
+    "timestamp": "2026-08-11T04:33:30Z",
+    "source": "qa-pilot"
+  },
+  "observation": {
+    "observed_state": "E2E-1 Run 3 executed. 2 previously CAPABILITY_MISSING requirements now tested via MCP/API capability. 4 tests executed, 4 PASS, 0 FAIL, 0 CAPABILITY_MISSING. MCP/API capability is functional and qualified.",
+    "artifact_refs": [
+      "reports/E2E-1-run3-mcp-test-result.json",
+      "scripts/e2e-1-run3-mcp-tests.py",
+      "scripts/mcp-capability.py"
+    ],
+    "measurements": {
+      "total_tests": 4,
+      "pass": 4,
+      "fail": 0,
+      "capability_missing": 0,
+      "mcp_target": "http://127.0.0.1:3456/mcp",
+      "mcp_healthy": true,
+      "mcp_tools_available": 73
+    }
+  },
+  "context": {
+    "environment": "QA-Pilot workspace, Librarian MCP service reachable",
+    "consumer_shape": "qa-pilot-mcp-testing",
+    "execution_context": {
+      "capability_used": "MCP_API_INTERACTION",
+      "capability_qualified": "2026-08-11",
+      "error_taxonomy": "MCPError — distinguishes MCP failures from test failures",
+      "provenance_captured": true
+    }
+  },
+  "custody": {
+    "origin": "e2e-1-run3-mcp-tests.py",
+    "chain": ["E2E-1-RUN3-EXEC-001"],
+    "verification_state": "verified"
+  },
+  "freshness": {
+    "captured_at": "2026-08-11T04:33:30Z",
+    "validated_at": "2026-08-11T04:33:30Z",
+    "refresh_expected_at": null,
+    "confidence_label": "historical"
+  }
+}

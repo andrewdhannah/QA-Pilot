@@ -1,0 +1,27 @@
+{
+  "test_id": "WORK-RESULT-INTAKE-1-T002-CONSTRUCTED",
+  "source_requirement": "Sprint WORK-RESULT-INTAKE-1 must have implementing artifacts",
+  "source_sprint": "WORK-RESULT-INTAKE-1",
+  "source_plan": "WORK-RESULT-INTAKE-1-PLAN",
+  "required_capabilities": [
+    "SCRIPT_EXECUTION"
+  ],
+  "matched_capability": "validator",
+  "skills_used": [],
+  "target_adapter": "mcp-jsonrpc",
+  "description": "Verify implementation artifacts exist for WORK-RESULT-INTAKE-1",
+  "test_type": "existence",
+  "assertions": [
+    {
+      "type": "file_exists",
+      "expected": "ARTIFACTS_PRESENT"
+    }
+  ],
+  "provenance": {
+    "constructed_at": "2026-08-11T05:19:27.860630+00:00",
+    "construction_agent": "qa-pilot-agent",
+    "source_claim": "All 354 tests passed (354/354 PASS)"
+  },
+  "execution_status": "NOT_EXECUTED",
+  "result": null
+}

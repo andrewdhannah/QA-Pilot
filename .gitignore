@@ -19,3 +19,4 @@ data/
 
 # Generated test-runner artifacts (recursive generation bug)
 docs/examples/*/test-runs/
+benchmark-harness/

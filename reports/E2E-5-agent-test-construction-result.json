@@ -1,0 +1,962 @@
+{
+  "$schema": "qa-test-result-v1",
+  "test_id": "E2E-5",
+  "title": "Agent Test Construction",
+  "domain": "regression",
+  "objective": "Construct executable test artifacts from E2E-4 plans",
+  "results": {
+    "total_requirements": 12,
+    "discovered": 12,
+    "executable": 12,
+    "executed": 12,
+    "reported": 12,
+    "pass": 12,
+    "fail": 0,
+    "capability_missing": 0,
+    "discovery_coverage_pct": 100.0,
+    "execution_coverage_pct": 100.0,
+    "reporting_coverage_pct": 100.0,
+    "pass_rate_pct": 100.0,
+    "status": "COMPLETE"
+  },
+  "test_cases": [
+    {
+      "requirement": "All 10 plans consumed",
+      "test": "consume-plans",
+      "status": "PASS",
+      "detail": "10 plans consumed",
+      "timestamp": "2026-08-11T05:19:27.860658+00:00"
+    },
+    {
+      "requirement": "All tests reference source requirement",
+      "test": "E5-2-source-requirement",
+      "status": "PASS",
+      "detail": "Issues: 0",
+      "timestamp": "2026-08-11T05:19:27.860737+00:00"
+    },
+    {
+      "requirement": "All tests declare required capability",
+      "test": "E5-3-required-capability",
+      "status": "PASS",
+      "detail": "Issues: 0",
+      "timestamp": "2026-08-11T05:19:27.860749+00:00"
+    },
+    {
+      "requirement": "All capabilities resolve through registry",
+      "test": "E5-4-capability-resolution",
+      "status": "PASS",
+      "detail": "Issues: 0",
+      "timestamp": "2026-08-11T05:19:27.860756+00:00"
+    },
+    {
+      "requirement": "Skills used are recorded",
+      "test": "E5-5-skills-recorded",
+      "status": "PASS",
+      "detail": "Issues: 0",
+      "timestamp": "2026-08-11T05:19:27.860760+00:00"
+    },
+    {
+      "requirement": "Target adapter resolved through registry",
+      "test": "E5-6-adapter-resolution",
+      "status": "PASS",
+      "detail": "Issues: 0",
+      "timestamp": "2026-08-11T05:19:27.860764+00:00"
+    },
+    {
+      "requirement": "Tests conform to schema",
+      "test": "E5-7-schema-conformance",
+      "status": "PASS",
+      "detail": "Issues: 0",
+      "timestamp": "2026-08-11T05:19:27.860768+00:00"
+    },
+    {
+      "requirement": "Tests contain executable assertions",
+      "test": "E5-8-executable-assertions",
+      "status": "PASS",
+      "detail": "Issues: 0",
+      "timestamp": "2026-08-11T05:19:27.860771+00:00"
+    },
+    {
+      "requirement": "Agent cannot declare execution result",
+      "test": "E5-9-no-result-declaration",
+      "status": "PASS",
+      "detail": "Issues: 0",
+      "timestamp": "2026-08-11T05:19:27.860775+00:00"
+    },
+    {
+      "requirement": "Agent cannot claim execution",
+      "test": "E5-10-no-execution-claim",
+      "status": "PASS",
+      "detail": "Issues: 0",
+      "timestamp": "2026-08-11T05:19:27.860778+00:00"
+    },
+    {
+      "requirement": "Same plan produces deterministic structure",
+      "test": "E5-11-determinism",
+      "status": "PASS",
+      "detail": "Deterministic: True",
+      "timestamp": "2026-08-11T05:19:27.860838+00:00"
+    },
+    {
+      "requirement": "Invalid plan fails construction",
+      "test": "E5-12-invalid-plan-failure",
+      "status": "PASS",
+      "detail": "Graceful failure: True",
+      "timestamp": "2026-08-11T05:19:27.860844+00:00"
+    }
+  ],
+  "constructed_tests": [
+    {
+      "test_id": "ZVEC-BACKEND-1-T001-CONSTRUCTED",
+      "source_requirement": "Sprint ZVEC-BACKEND-1 harness tests must pass",
+      "source_sprint": "ZVEC-BACKEND-1",
+      "source_plan": "ZVEC-BACKEND-1-PLAN",
+      "required_capabilities": [
+        "SCRIPT_EXECUTION"
+      ],
+      "matched_capability": "validator",
+      "skills_used": [],
+      "target_adapter": "mcp-jsonrpc",
+      "description": "Verify harness test results for ZVEC-BACKEND-1",
+      "test_type": "regression",
+      "assertions": [
+        {
+          "type": "harness_result",
+          "expected": "ALL_TESTS_PASS"
+        },
+        {
+          "type": "test_count",
+          "expected": "NON_ZERO"
+        }
+      ],
+      "provenance": {
+        "constructed_at": "2026-08-11T05:19:27.860044+00:00",
+        "construction_agent": "qa-pilot-agent",
+        "source_claim": "All 277 tests passed (277/277 PASS)"
+      },
+      "execution_status": "NOT_EXECUTED",
+      "result": null
+    },
+    {
+      "test_id": "ZVEC-BACKEND-1-T002-CONSTRUCTED",
+      "source_requirement": "Sprint ZVEC-BACKEND-1 must have implementing artifacts",
+      "source_sprint": "ZVEC-BACKEND-1",
+      "source_plan": "ZVEC-BACKEND-1-PLAN",
+      "required_capabilities": [
+        "SCRIPT_EXECUTION"
+      ],
+      "matched_capability": "validator",
+      "skills_used": [],
+      "target_adapter": "mcp-jsonrpc",
+      "description": "Verify implementation artifacts exist for ZVEC-BACKEND-1",
+      "test_type": "existence",
+      "assertions": [
+        {
+          "type": "file_exists",
+          "expected": "ARTIFACTS_PRESENT"
+        }
+      ],
+      "provenance": {
+        "constructed_at": "2026-08-11T05:19:27.860344+00:00",
+        "construction_agent": "qa-pilot-agent",
+        "source_claim": "All 277 tests passed (277/277 PASS)"
+      },
+      "execution_status": "NOT_EXECUTED",
+      "result": null
+    },
+    {
+      "test_id": "ZVEC-BACKEND-1-T003-CONSTRUCTED",
+      "source_requirement": "Sprint ZVEC-BACKEND-1 must have verifiable evidence",
+      "source_sprint": "ZVEC-BACKEND-1",
+      "source_plan": "ZVEC-BACKEND-1-PLAN",
+      "required_capabilities": [
+        "SCRIPT_EXECUTION"
+      ],
+      "matched_capability": "validator",
+      "skills_used": [],
+      "target_adapter": "mcp-jsonrpc",
+      "description": "Verify evidence references for ZVEC-BACKEND-1",
+      "test_type": "evidence_verification",
+      "assertions": [
+        {
+          "type": "evidence_reference",
+          "expected": "EVIDENCE_CHAIN_VALID"
+        }
+      ],
+      "provenance": {
+        "constructed_at": "2026-08-11T05:19:27.860362+00:00",
+        "construction_agent": "qa-pilot-agent",
+        "source_claim": "All 277 tests passed (277/277 PASS)"
+      },
+      "execution_status": "NOT_EXECUTED",
+      "result": null
+    },
+    {
+      "test_id": "SQLITE-VEC-VENDOR-1-T001-CONSTRUCTED",
+      "source_requirement": "Sprint SQLITE-VEC-VENDOR-1 harness tests must pass",
+      "source_sprint": "SQLITE-VEC-VENDOR-1",
+      "source_plan": "SQLITE-VEC-VENDOR-1-PLAN",
+      "required_capabilities": [
+        "SCRIPT_EXECUTION"
+      ],
+      "matched_capability": "validator",
+      "skills_used": [],
+      "target_adapter": "mcp-jsonrpc",
+      "description": "Verify harness test results for SQLITE-VEC-VENDOR-1",
+      "test_type": "regression",
+      "assertions": [
+        {
+          "type": "harness_result",
+          "expected": "ALL_TESTS_PASS"
+        },
+        {
+          "type": "test_count",
+          "expected": "NON_ZERO"
+        }
+      ],
+      "provenance": {
+        "constructed_at": "2026-08-11T05:19:27.860380+00:00",
+        "construction_agent": "qa-pilot-agent",
+        "source_claim": "All 293 tests passed (293/293 PASS)"
+      },
+      "execution_status": "NOT_EXECUTED",
+      "result": null
+    },
+    {
+      "test_id": "SQLITE-VEC-VENDOR-1-T002-CONSTRUCTED",
+      "source_requirement": "Sprint SQLITE-VEC-VENDOR-1 must have implementing artifacts",
+      "source_sprint": "SQLITE-VEC-VENDOR-1",
+      "source_plan": "SQLITE-VEC-VENDOR-1-PLAN",
+      "required_capabilities": [
+        "SCRIPT_EXECUTION"
+      ],
+      "matched_capability": "validator",
+      "skills_used": [],
+      "target_adapter": "mcp-jsonrpc",
+      "description": "Verify implementation artifacts exist for SQLITE-VEC-VENDOR-1",
+      "test_type": "existence",
+      "assertions": [
+        {
+          "type": "file_exists",
+          "expected": "ARTIFACTS_PRESENT"
+        }
+      ],
+      "provenance": {
+        "constructed_at": "2026-08-11T05:19:27.860392+00:00",
+        "construction_agent": "qa-pilot-agent",
+        "source_claim": "All 293 tests passed (293/293 PASS)"
+      },
+      "execution_status": "NOT_EXECUTED",
+      "result": null
+    },
+    {
+      "test_id": "SQLITE-VEC-VENDOR-1-T003-CONSTRUCTED",
+      "source_requirement": "Sprint SQLITE-VEC-VENDOR-1 must have verifiable evidence",
+      "source_sprint": "SQLITE-VEC-VENDOR-1",
+      "source_plan": "SQLITE-VEC-VENDOR-1-PLAN",
+      "required_capabilities": [
+        "SCRIPT_EXECUTION"
+      ],
+      "matched_capability": "validator",
+      "skills_used": [],
+      "target_adapter": "mcp-jsonrpc",
+      "description": "Verify evidence references for SQLITE-VEC-VENDOR-1",
+      "test_type": "evidence_verification",
+      "assertions": [
+        {
+          "type": "evidence_reference",
+          "expected": "EVIDENCE_CHAIN_VALID"
+        }
+      ],
+      "provenance": {
+        "constructed_at": "2026-08-11T05:19:27.860409+00:00",
+        "construction_agent": "qa-pilot-agent",
+        "source_claim": "All 293 tests passed (293/293 PASS)"
+      },
+      "execution_status": "NOT_EXECUTED",
+      "result": null
+    },
+    {
+      "test_id": "RERANK-1-T001-CONSTRUCTED",
+      "source_requirement": "Sprint RERANK-1 harness tests must pass",
+      "source_sprint": "RERANK-1",
+      "source_plan": "RERANK-1-PLAN",
+      "required_capabilities": [
+        "SCRIPT_EXECUTION"
+      ],
+      "matched_capability": "validator",
+      "skills_used": [],
+      "target_adapter": "mcp-jsonrpc",
+      "description": "Verify harness test results for RERANK-1",
+      "test_type": "regression",
+      "assertions": [
+        {
+          "type": "harness_result",
+          "expected": "ALL_TESTS_PASS"
+        },
+        {
+          "type": "test_count",
+          "expected": "NON_ZERO"
+        }
+      ],
+      "provenance": {
+        "constructed_at": "2026-08-11T05:19:27.860429+00:00",
+        "construction_agent": "qa-pilot-agent",
+        "source_claim": "All 295 tests passed (295/295 PASS)"
+      },
+      "execution_status": "NOT_EXECUTED",
+      "result": null
+    },
+    {
+      "test_id": "RERANK-1-T002-CONSTRUCTED",
+      "source_requirement": "Sprint RERANK-1 must have implementing artifacts",
+      "source_sprint": "RERANK-1",
+      "source_plan": "RERANK-1-PLAN",
+      "required_capabilities": [
+        "SCRIPT_EXECUTION"
+      ],
+      "matched_capability": "validator",
+      "skills_used": [],
+      "target_adapter": "mcp-jsonrpc",
+      "description": "Verify implementation artifacts exist for RERANK-1",
+      "test_type": "existence",
+      "assertions": [
+        {
+          "type": "file_exists",
+          "expected": "ARTIFACTS_PRESENT"
+        }
+      ],
+      "provenance": {
+        "constructed_at": "2026-08-11T05:19:27.860440+00:00",
+        "construction_agent": "qa-pilot-agent",
+        "source_claim": "All 295 tests passed (295/295 PASS)"
+      },
+      "execution_status": "NOT_EXECUTED",
+      "result": null
+    },
+    {
+      "test_id": "RERANK-1-T003-CONSTRUCTED",
+      "source_requirement": "Sprint RERANK-1 must have verifiable evidence",
+      "source_sprint": "RERANK-1",
+      "source_plan": "RERANK-1-PLAN",
+      "required_capabilities": [
+        "SCRIPT_EXECUTION"
+      ],
+      "matched_capability": "validator",
+      "skills_used": [],
+      "target_adapter": "mcp-jsonrpc",
+      "description": "Verify evidence references for RERANK-1",
+      "test_type": "evidence_verification",
+      "assertions": [
+        {
+          "type": "evidence_reference",
+          "expected": "EVIDENCE_CHAIN_VALID"
+        }
+      ],
+      "provenance": {
+        "constructed_at": "2026-08-11T05:19:27.860449+00:00",
+        "construction_agent": "qa-pilot-agent",
+        "source_claim": "All 295 tests passed (295/295 PASS)"
+      },
+      "execution_status": "NOT_EXECUTED",
+      "result": null
+    },
+    {
+      "test_id": "JUDGE-1-T001-CONSTRUCTED",
+      "source_requirement": "Sprint JUDGE-1 harness tests must pass",
+      "source_sprint": "JUDGE-1",
+      "source_plan": "JUDGE-1-PLAN",
+      "required_capabilities": [
+        "SCRIPT_EXECUTION"
+      ],
+      "matched_capability": "validator",
+      "skills_used": [],
+      "target_adapter": "mcp-jsonrpc",
+      "description": "Verify harness test results for JUDGE-1",
+      "test_type": "regression",
+      "assertions": [
+        {
+          "type": "harness_result",
+          "expected": "ALL_TESTS_PASS"
+        },
+        {
+          "type": "test_count",
+          "expected": "NON_ZERO"
+        }
+      ],
+      "provenance": {
+        "constructed_at": "2026-08-11T05:19:27.860461+00:00",
+        "construction_agent": "qa-pilot-agent",
+        "source_claim": "All 310 tests passed (310/310 PASS)"
+      },
+      "execution_status": "NOT_EXECUTED",
+      "result": null
+    },
+    {
+      "test_id": "JUDGE-1-T002-CONSTRUCTED",
+      "source_requirement": "Sprint JUDGE-1 must have implementing artifacts",
+      "source_sprint": "JUDGE-1",
+      "source_plan": "JUDGE-1-PLAN",
+      "required_capabilities": [
+        "SCRIPT_EXECUTION"
+      ],
+      "matched_capability": "validator",
+      "skills_used": [],
+      "target_adapter": "mcp-jsonrpc",
+      "description": "Verify implementation artifacts exist for JUDGE-1",
+      "test_type": "existence",
+      "assertions": [
+        {
+          "type": "file_exists",
+          "expected": "ARTIFACTS_PRESENT"
+        }
+      ],
+      "provenance": {
+        "constructed_at": "2026-08-11T05:19:27.860470+00:00",
+        "construction_agent": "qa-pilot-agent",
+        "source_claim": "All 310 tests passed (310/310 PASS)"
+      },
+      "execution_status": "NOT_EXECUTED",
+      "result": null
+    },
+    {
+      "test_id": "JUDGE-1-T003-CONSTRUCTED",
+      "source_requirement": "Sprint JUDGE-1 must have verifiable evidence",
+      "source_sprint": "JUDGE-1",
+      "source_plan": "JUDGE-1-PLAN",
+      "required_capabilities": [
+        "SCRIPT_EXECUTION"
+      ],
+      "matched_capability": "validator",
+      "skills_used": [],
+      "target_adapter": "mcp-jsonrpc",
+      "description": "Verify evidence references for JUDGE-1",
+      "test_type": "evidence_verification",
+      "assertions": [
+        {
+          "type": "evidence_reference",
+          "expected": "EVIDENCE_CHAIN_VALID"
+        }
+      ],
+      "provenance": {
+        "constructed_at": "2026-08-11T05:19:27.860479+00:00",
+        "construction_agent": "qa-pilot-agent",
+        "source_claim": "All 310 tests passed (310/310 PASS)"
+      },
+      "execution_status": "NOT_EXECUTED",
+      "result": null
+    },
+    {
+      "test_id": "RECALL-BROKER-IMPL-1-T001-CONSTRUCTED",
+      "source_requirement": "Sprint RECALL-BROKER-IMPL-1 harness tests must pass",
+      "source_sprint": "RECALL-BROKER-IMPL-1",
+      "source_plan": "RECALL-BROKER-IMPL-1-PLAN",
+      "required_capabilities": [
+        "SCRIPT_EXECUTION"
+      ],
+      "matched_capability": "validator",
+      "skills_used": [],
+      "target_adapter": "mcp-jsonrpc",
+      "description": "Verify harness test results for RECALL-BROKER-IMPL-1",
+      "test_type": "regression",
+      "assertions": [
+        {
+          "type": "harness_result",
+          "expected": "ALL_TESTS_PASS"
+        },
+        {
+          "type": "test_count",
+          "expected": "NON_ZERO"
+        }
+      ],
+      "provenance": {
+        "constructed_at": "2026-08-11T05:19:27.860495+00:00",
+        "construction_agent": "qa-pilot-agent",
+        "source_claim": "All 315 tests passed (315/315 PASS)"
+      },
+      "execution_status": "NOT_EXECUTED",
+      "result": null
+    },
+    {
+      "test_id": "RECALL-BROKER-IMPL-1-T002-CONSTRUCTED",
+      "source_requirement": "Sprint RECALL-BROKER-IMPL-1 must have implementing artifacts",
+      "source_sprint": "RECALL-BROKER-IMPL-1",
+      "source_plan": "RECALL-BROKER-IMPL-1-PLAN",
+      "required_capabilities": [
+        "SCRIPT_EXECUTION"
+      ],
+      "matched_capability": "validator",
+      "skills_used": [],
+      "target_adapter": "mcp-jsonrpc",
+      "description": "Verify implementation artifacts exist for RECALL-BROKER-IMPL-1",
+      "test_type": "existence",
+      "assertions": [
+        {
+          "type": "file_exists",
+          "expected": "ARTIFACTS_PRESENT"
+        }
+      ],
+      "provenance": {
+        "constructed_at": "2026-08-11T05:19:27.860502+00:00",
+        "construction_agent": "qa-pilot-agent",
+        "source_claim": "All 315 tests passed (315/315 PASS)"
+      },
+      "execution_status": "NOT_EXECUTED",
+      "result": null
+    },
+    {
+      "test_id": "RECALL-BROKER-IMPL-1-T003-CONSTRUCTED",
+      "source_requirement": "Sprint RECALL-BROKER-IMPL-1 must have verifiable evidence",
+      "source_sprint": "RECALL-BROKER-IMPL-1",
+      "source_plan": "RECALL-BROKER-IMPL-1-PLAN",
+      "required_capabilities": [
+        "SCRIPT_EXECUTION"
+      ],
+      "matched_capability": "validator",
+      "skills_used": [],
+      "target_adapter": "mcp-jsonrpc",
+      "description": "Verify evidence references for RECALL-BROKER-IMPL-1",
+      "test_type": "evidence_verification",
+      "assertions": [
+        {
+          "type": "evidence_reference",
+          "expected": "EVIDENCE_CHAIN_VALID"
+        }
+      ],
+      "provenance": {
+        "constructed_at": "2026-08-11T05:19:27.860509+00:00",
+        "construction_agent": "qa-pilot-agent",
+        "source_claim": "All 315 tests passed (315/315 PASS)"
+      },
+      "execution_status": "NOT_EXECUTED",
+      "result": null
+    },
+    {
+      "test_id": "RECALL-RETRIEVAL-BRIDGE-1-T001-CONSTRUCTED",
+      "source_requirement": "Sprint RECALL-RETRIEVAL-BRIDGE-1 harness tests must pass",
+      "source_sprint": "RECALL-RETRIEVAL-BRIDGE-1",
+      "source_plan": "RECALL-RETRIEVAL-BRIDGE-1-PLAN",
+      "required_capabilities": [
+        "SCRIPT_EXECUTION"
+      ],
+      "matched_capability": "validator",
+      "skills_used": [],
+      "target_adapter": "mcp-jsonrpc",
+      "description": "Verify harness test results for RECALL-RETRIEVAL-BRIDGE-1",
+      "test_type": "regression",
+      "assertions": [
+        {
+          "type": "harness_result",
+          "expected": "ALL_TESTS_PASS"
+        },
+        {
+          "type": "test_count",
+          "expected": "NON_ZERO"
+        }
+      ],
+      "provenance": {
+        "constructed_at": "2026-08-11T05:19:27.860518+00:00",
+        "construction_agent": "qa-pilot-agent",
+        "source_claim": "All 322 tests passed (322/322 PASS)"
+      },
+      "execution_status": "NOT_EXECUTED",
+      "result": null
+    },
+    {
+      "test_id": "RECALL-RETRIEVAL-BRIDGE-1-T002-CONSTRUCTED",
+      "source_requirement": "Sprint RECALL-RETRIEVAL-BRIDGE-1 must have implementing artifacts",
+      "source_sprint": "RECALL-RETRIEVAL-BRIDGE-1",
+      "source_plan": "RECALL-RETRIEVAL-BRIDGE-1-PLAN",
+      "required_capabilities": [
+        "SCRIPT_EXECUTION"
+      ],
+      "matched_capability": "validator",
+      "skills_used": [],
+      "target_adapter": "mcp-jsonrpc",
+      "description": "Verify implementation artifacts exist for RECALL-RETRIEVAL-BRIDGE-1",
+      "test_type": "existence",
+      "assertions": [
+        {
+          "type": "file_exists",
+          "expected": "ARTIFACTS_PRESENT"
+        }
+      ],
+      "provenance": {
+        "constructed_at": "2026-08-11T05:19:27.860525+00:00",
+        "construction_agent": "qa-pilot-agent",
+        "source_claim": "All 322 tests passed (322/322 PASS)"
+      },
+      "execution_status": "NOT_EXECUTED",
+      "result": null
+    },
+    {
+      "test_id": "RECALL-RETRIEVAL-BRIDGE-1-T003-CONSTRUCTED",
+      "source_requirement": "Sprint RECALL-RETRIEVAL-BRIDGE-1 must have verifiable evidence",
+      "source_sprint": "RECALL-RETRIEVAL-BRIDGE-1",
+      "source_plan": "RECALL-RETRIEVAL-BRIDGE-1-PLAN",
+      "required_capabilities": [
+        "SCRIPT_EXECUTION"
+      ],
+      "matched_capability": "validator",
+      "skills_used": [],
+      "target_adapter": "mcp-jsonrpc",
+      "description": "Verify evidence references for RECALL-RETRIEVAL-BRIDGE-1",
+      "test_type": "evidence_verification",
+      "assertions": [
+        {
+          "type": "evidence_reference",
+          "expected": "EVIDENCE_CHAIN_VALID"
+        }
+      ],
+      "provenance": {
+        "constructed_at": "2026-08-11T05:19:27.860530+00:00",
+        "construction_agent": "qa-pilot-agent",
+        "source_claim": "All 322 tests passed (322/322 PASS)"
+      },
+      "execution_status": "NOT_EXECUTED",
+      "result": null
+    },
+    {
+      "test_id": "RECALL-EVIDENCE-RECEIPT-1-T001-CONSTRUCTED",
+      "source_requirement": "Sprint RECALL-EVIDENCE-RECEIPT-1 harness tests must pass",
+      "source_sprint": "RECALL-EVIDENCE-RECEIPT-1",
+      "source_plan": "RECALL-EVIDENCE-RECEIPT-1-PLAN",
+      "required_capabilities": [
+        "SCRIPT_EXECUTION"
+      ],
+      "matched_capability": "validator",
+      "skills_used": [],
+      "target_adapter": "mcp-jsonrpc",
+      "description": "Verify harness test results for RECALL-EVIDENCE-RECEIPT-1",
+      "test_type": "regression",
+      "assertions": [
+        {
+          "type": "harness_result",
+          "expected": "ALL_TESTS_PASS"
+        },
+        {
+          "type": "test_count",
+          "expected": "NON_ZERO"
+        }
+      ],
+      "provenance": {
+        "constructed_at": "2026-08-11T05:19:27.860536+00:00",
+        "construction_agent": "qa-pilot-agent",
+        "source_claim": "All 330 tests passed (330/330 PASS)"
+      },
+      "execution_status": "NOT_EXECUTED",
+      "result": null
+    },
+    {
+      "test_id": "RECALL-EVIDENCE-RECEIPT-1-T002-CONSTRUCTED",
+      "source_requirement": "Sprint RECALL-EVIDENCE-RECEIPT-1 must have implementing artifacts",
+      "source_sprint": "RECALL-EVIDENCE-RECEIPT-1",
+      "source_plan": "RECALL-EVIDENCE-RECEIPT-1-PLAN",
+      "required_capabilities": [
+        "SCRIPT_EXECUTION"
+      ],
+      "matched_capability": "validator",
+      "skills_used": [],
+      "target_adapter": "mcp-jsonrpc",
+      "description": "Verify implementation artifacts exist for RECALL-EVIDENCE-RECEIPT-1",
+      "test_type": "existence",
+      "assertions": [
+        {
+          "type": "file_exists",
+          "expected": "ARTIFACTS_PRESENT"
+        }
+      ],
+      "provenance": {
+        "constructed_at": "2026-08-11T05:19:27.860540+00:00",
+        "construction_agent": "qa-pilot-agent",
+        "source_claim": "All 330 tests passed (330/330 PASS)"
+      },
+      "execution_status": "NOT_EXECUTED",
+      "result": null
+    },
+    {
+      "test_id": "RECALL-EVIDENCE-RECEIPT-1-T003-CONSTRUCTED",
+      "source_requirement": "Sprint RECALL-EVIDENCE-RECEIPT-1 must have verifiable evidence",
+      "source_sprint": "RECALL-EVIDENCE-RECEIPT-1",
+      "source_plan": "RECALL-EVIDENCE-RECEIPT-1-PLAN",
+      "required_capabilities": [
+        "SCRIPT_EXECUTION"
+      ],
+      "matched_capability": "validator",
+      "skills_used": [],
+      "target_adapter": "mcp-jsonrpc",
+      "description": "Verify evidence references for RECALL-EVIDENCE-RECEIPT-1",
+      "test_type": "evidence_verification",
+      "assertions": [
+        {
+          "type": "evidence_reference",
+          "expected": "EVIDENCE_CHAIN_VALID"
+        }
+      ],
+      "provenance": {
+        "constructed_at": "2026-08-11T05:19:27.860545+00:00",
+        "construction_agent": "qa-pilot-agent",
+        "source_claim": "All 330 tests passed (330/330 PASS)"
+      },
+      "execution_status": "NOT_EXECUTED",
+      "result": null
+    },
+    {
+      "test_id": "WORK-PACKAGE-CONTEXT-1-T001-CONSTRUCTED",
+      "source_requirement": "Sprint WORK-PACKAGE-CONTEXT-1 harness tests must pass",
+      "source_sprint": "WORK-PACKAGE-CONTEXT-1",
+      "source_plan": "WORK-PACKAGE-CONTEXT-1-PLAN",
+      "required_capabilities": [
+        "SCRIPT_EXECUTION"
+      ],
+      "matched_capability": "validator",
+      "skills_used": [],
+      "target_adapter": "mcp-jsonrpc",
+      "description": "Verify harness test results for WORK-PACKAGE-CONTEXT-1",
+      "test_type": "regression",
+      "assertions": [
+        {
+          "type": "harness_result",
+          "expected": "ALL_TESTS_PASS"
+        },
+        {
+          "type": "test_count",
+          "expected": "NON_ZERO"
+        }
+      ],
+      "provenance": {
+        "constructed_at": "2026-08-11T05:19:27.860553+00:00",
+        "construction_agent": "qa-pilot-agent",
+        "source_claim": "All 338 tests passed (338/338 PASS)"
+      },
+      "execution_status": "NOT_EXECUTED",
+      "result": null
+    },
+    {
+      "test_id": "WORK-PACKAGE-CONTEXT-1-T002-CONSTRUCTED",
+      "source_requirement": "Sprint WORK-PACKAGE-CONTEXT-1 must have implementing artifacts",
+      "source_sprint": "WORK-PACKAGE-CONTEXT-1",
+      "source_plan": "WORK-PACKAGE-CONTEXT-1-PLAN",
+      "required_capabilities": [
+        "SCRIPT_EXECUTION"
+      ],
+      "matched_capability": "validator",
+      "skills_used": [],
+      "target_adapter": "mcp-jsonrpc",
+      "description": "Verify implementation artifacts exist for WORK-PACKAGE-CONTEXT-1",
+      "test_type": "existence",
+      "assertions": [
+        {
+          "type": "file_exists",
+          "expected": "ARTIFACTS_PRESENT"
+        }
+      ],
+      "provenance": {
+        "constructed_at": "2026-08-11T05:19:27.860565+00:00",
+        "construction_agent": "qa-pilot-agent",
+        "source_claim": "All 338 tests passed (338/338 PASS)"
+      },
+      "execution_status": "NOT_EXECUTED",
+      "result": null
+    },
+    {
+      "test_id": "WORK-PACKAGE-CONTEXT-1-T003-CONSTRUCTED",
+      "source_requirement": "Sprint WORK-PACKAGE-CONTEXT-1 must have verifiable evidence",
+      "source_sprint": "WORK-PACKAGE-CONTEXT-1",
+      "source_plan": "WORK-PACKAGE-CONTEXT-1-PLAN",
+      "required_capabilities": [
+        "SCRIPT_EXECUTION"
+      ],
+      "matched_capability": "validator",
+      "skills_used": [],
+      "target_adapter": "mcp-jsonrpc",
+      "description": "Verify evidence references for WORK-PACKAGE-CONTEXT-1",
+      "test_type": "evidence_verification",
+      "assertions": [
+        {
+          "type": "evidence_reference",
+          "expected": "EVIDENCE_CHAIN_VALID"
+        }
+      ],
+      "provenance": {
+        "constructed_at": "2026-08-11T05:19:27.860575+00:00",
+        "construction_agent": "qa-pilot-agent",
+        "source_claim": "All 338 tests passed (338/338 PASS)"
+      },
+      "execution_status": "NOT_EXECUTED",
+      "result": null
+    },
+    {
+      "test_id": "WORK-DISPATCH-1-T001-CONSTRUCTED",
+      "source_requirement": "Sprint WORK-DISPATCH-1 harness tests must pass",
+      "source_sprint": "WORK-DISPATCH-1",
+      "source_plan": "WORK-DISPATCH-1-PLAN",
+      "required_capabilities": [
+        "SCRIPT_EXECUTION"
+      ],
+      "matched_capability": "validator",
+      "skills_used": [],
+      "target_adapter": "mcp-jsonrpc",
+      "description": "Verify harness test results for WORK-DISPATCH-1",
+      "test_type": "regression",
+      "assertions": [
+        {
+          "type": "harness_result",
+          "expected": "ALL_TESTS_PASS"
+        },
+        {
+          "type": "test_count",
+          "expected": "NON_ZERO"
+        }
+      ],
+      "provenance": {
+        "constructed_at": "2026-08-11T05:19:27.860586+00:00",
+        "construction_agent": "qa-pilot-agent",
+        "source_claim": "All 346 tests passed (346/346 PASS)"
+      },
+      "execution_status": "NOT_EXECUTED",
+      "result": null
+    },
+    {
+      "test_id": "WORK-DISPATCH-1-T002-CONSTRUCTED",
+      "source_requirement": "Sprint WORK-DISPATCH-1 must have implementing artifacts",
+      "source_sprint": "WORK-DISPATCH-1",
+      "source_plan": "WORK-DISPATCH-1-PLAN",
+      "required_capabilities": [
+        "SCRIPT_EXECUTION"
+      ],
+      "matched_capability": "validator",
+      "skills_used": [],
+      "target_adapter": "mcp-jsonrpc",
+      "description": "Verify implementation artifacts exist for WORK-DISPATCH-1",
+      "test_type": "existence",
+      "assertions": [
+        {
+          "type": "file_exists",
+          "expected": "ARTIFACTS_PRESENT"
+        }
+      ],
+      "provenance": {
+        "constructed_at": "2026-08-11T05:19:27.860599+00:00",
+        "construction_agent": "qa-pilot-agent",
+        "source_claim": "All 346 tests passed (346/346 PASS)"
+      },
+      "execution_status": "NOT_EXECUTED",
+      "result": null
+    },
+    {
+      "test_id": "WORK-DISPATCH-1-T003-CONSTRUCTED",
+      "source_requirement": "Sprint WORK-DISPATCH-1 must have verifiable evidence",
+      "source_sprint": "WORK-DISPATCH-1",
+      "source_plan": "WORK-DISPATCH-1-PLAN",
+      "required_capabilities": [
+        "SCRIPT_EXECUTION"
+      ],
+      "matched_capability": "validator",
+      "skills_used": [],
+      "target_adapter": "mcp-jsonrpc",
+      "description": "Verify evidence references for WORK-DISPATCH-1",
+      "test_type": "evidence_verification",
+      "assertions": [
+        {
+          "type": "evidence_reference",
+          "expected": "EVIDENCE_CHAIN_VALID"
+        }
+      ],
+      "provenance": {
+        "constructed_at": "2026-08-11T05:19:27.860609+00:00",
+        "construction_agent": "qa-pilot-agent",
+        "source_claim": "All 346 tests passed (346/346 PASS)"
+      },
+      "execution_status": "NOT_EXECUTED",
+      "result": null
+    },
+    {
+      "test_id": "WORK-RESULT-INTAKE-1-T001-CONSTRUCTED",
+      "source_requirement": "Sprint WORK-RESULT-INTAKE-1 harness tests must pass",
+      "source_sprint": "WORK-RESULT-INTAKE-1",
+      "source_plan": "WORK-RESULT-INTAKE-1-PLAN",
+      "required_capabilities": [
+        "SCRIPT_EXECUTION"
+      ],
+      "matched_capability": "validator",
+      "skills_used": [],
+      "target_adapter": "mcp-jsonrpc",
+      "description": "Verify harness test results for WORK-RESULT-INTAKE-1",
+      "test_type": "regression",
+      "assertions": [
+        {
+          "type": "harness_result",
+          "expected": "ALL_TESTS_PASS"
+        },
+        {
+          "type": "test_count",
+          "expected": "NON_ZERO"
+        }
+      ],
+      "provenance": {
+        "constructed_at": "2026-08-11T05:19:27.860621+00:00",
+        "construction_agent": "qa-pilot-agent",
+        "source_claim": "All 354 tests passed (354/354 PASS)"
+      },
+      "execution_status": "NOT_EXECUTED",
+      "result": null
+    },
+    {
+      "test_id": "WORK-RESULT-INTAKE-1-T002-CONSTRUCTED",
+      "source_requirement": "Sprint WORK-RESULT-INTAKE-1 must have implementing artifacts",
+      "source_sprint": "WORK-RESULT-INTAKE-1",
+      "source_plan": "WORK-RESULT-INTAKE-1-PLAN",
+      "required_capabilities": [
+        "SCRIPT_EXECUTION"
+      ],
+      "matched_capability": "validator",
+      "skills_used": [],
+      "target_adapter": "mcp-jsonrpc",
+      "description": "Verify implementation artifacts exist for WORK-RESULT-INTAKE-1",
+      "test_type": "existence",
+      "assertions": [
+        {
+          "type": "file_exists",
+          "expected": "ARTIFACTS_PRESENT"
+        }
+      ],
+      "provenance": {
+        "constructed_at": "2026-08-11T05:19:27.860630+00:00",
+        "construction_agent": "qa-pilot-agent",
+        "source_claim": "All 354 tests passed (354/354 PASS)"
+      },
+      "execution_status": "NOT_EXECUTED",
+      "result": null
+    },
+    {
+      "test_id": "WORK-RESULT-INTAKE-1-T003-CONSTRUCTED",
+      "source_requirement": "Sprint WORK-RESULT-INTAKE-1 must have verifiable evidence",
+      "source_sprint": "WORK-RESULT-INTAKE-1",
+      "source_plan": "WORK-RESULT-INTAKE-1-PLAN",
+      "required_capabilities": [
+        "SCRIPT_EXECUTION"
+      ],
+      "matched_capability": "validator",
+      "skills_used": [],
+      "target_adapter": "mcp-jsonrpc",
+      "description": "Verify evidence references for WORK-RESULT-INTAKE-1",
+      "test_type": "evidence_verification",
+      "assertions": [
+        {
+          "type": "evidence_reference",
+          "expected": "EVIDENCE_CHAIN_VALID"
+        }
+      ],
+      "provenance": {
+        "constructed_at": "2026-08-11T05:19:27.860643+00:00",
+        "construction_agent": "qa-pilot-agent",
+        "source_claim": "All 354 tests passed (354/354 PASS)"
+      },
+      "execution_status": "NOT_EXECUTED",
+      "result": null
+    }
+  ],
+  "advisory_only": true,
+  "no_seal_authority": true
+}

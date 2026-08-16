@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://librarian.dev/schemas/adaptive-qualification-profile-v1.json",
+  "title": "Adaptive Qualification Profile",
+  "description": "Defines a qualification profile with required and optional checks, applicable artifact types, and escalation indicators.",
+  "type": "object",
+  "required": ["profile_id", "name", "applicable_artifact_types", "required_checks", "rationale"],
+  "properties": {
+    "profile_id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Unique profile identifier."
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Human-readable profile name."
+    },
+    "applicable_artifact_types": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 1,
+      "description": "Artifact types this profile applies to."
+    },
+    "required_checks": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 1,
+      "description": "Qualification checks that MUST be performed."
+    },
+    "optional_checks": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Qualification checks that MAY be performed."
+    },
+    "escalation_indicators": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Conditions that trigger selection of this profile."
+    },
+    "rationale": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Why this profile exists and when it applies."
+    },
+    "advisory_only": {
+      "type": "boolean",
+      "const": true,
+      "description": "Always true. Profile selection is advisory."
+    }
+  },
+  "additionalProperties": false
+}

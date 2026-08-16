@@ -1,0 +1,50 @@
+{
+  "$schema": "assurance-evidence-v1",
+  "evidence_class": "record",
+  "identity": {
+    "evidence_id": "E2E-2-EXEC-001",
+    "timestamp": "2026-08-11T05:00:00Z",
+    "source": "qa-pilot"
+  },
+  "observation": {
+    "observed_state": "E2E-2 Librarian Rust Runtime / Platform Equivalence Audit executed. 8 requirements tested against Rust MCP protocol. 7 PASS, 1 FAIL, 0 CAPABILITY_MISSING. Coverage: 87.5%. Audit status: COMPLETE.",
+    "artifact_refs": [
+      "reports/E2E-2-rust-runtime-audit-result.json",
+      "scripts/e2e-2-rust-runtime-audit.py"
+    ],
+    "measurements": {
+      "total_requirements": 8,
+      "pass": 7,
+      "fail": 1,
+      "capability_missing": 0,
+      "coverage_pct": 87.5,
+      "rust_tools_count": 95,
+      "swift_tools_count": 73,
+      "common_tools": 73,
+      "rust_only_tools": 22,
+      "swift_only_tools": 0
+    }
+  },
+  "context": {
+    "environment": "QA-Pilot workspace, Rust MCP protocol on port 3457",
+    "consumer_shape": "qa-pilot-auditing-rust-runtime",
+    "execution_context": {
+      "audit_direction": "QA-Pilot -> Rust MCP Protocol",
+      "audit_target": "Rust MCP protocol observable behavior",
+      "test_execution_type": "mcp_api",
+      "mcp_target": "http://127.0.0.1:3457/mcp",
+      "swift_baseline": "http://127.0.0.1:3456/mcp"
+    }
+  },
+  "custody": {
+    "origin": "e2e-2-rust-runtime-audit.py",
+    "chain": ["E2E-2-EXEC-001"],
+    "verification_state": "verified"
+  },
+  "freshness": {
+    "captured_at": "2026-08-11T05:00:00Z",
+    "validated_at": "2026-08-11T05:00:00Z",
+    "refresh_expected_at": null,
+    "confidence_label": "historical"
+  }
+}

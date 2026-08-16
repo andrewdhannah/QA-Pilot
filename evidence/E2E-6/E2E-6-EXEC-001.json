@@ -1,0 +1,49 @@
+{
+  "$schema": "assurance-evidence-v1",
+  "evidence_class": "record",
+  "identity": {
+    "evidence_id": "E2E-6-EXEC-001",
+    "timestamp": "2026-08-11T05:30:00Z",
+    "source": "qa-pilot"
+  },
+  "observation": {
+    "observed_state": "E2E-6 Constructed-Test Execution executed. 30 E2E-5 artifacts discovered, executed, and reported. Artifact integrity MATCH (no mutation). 46 PASS, 0 FAIL, 0 ERROR, 0 INCOMPLETE, 0 CAPABILITY_MISSING.",
+    "artifact_refs": [
+      "reports/E2E-6-constructed-test-execution-result.json",
+      "scripts/e2e-6-constructed-test-execution.py"
+    ],
+    "measurements": {
+      "artifacts_discovered": 30,
+      "artifacts_executed": 30,
+      "artifact_integrity": "MATCH",
+      "pass": 46,
+      "fail": 0,
+      "error": 0,
+      "incomplete": 0,
+      "capability_missing": 0,
+      "execution_coverage_pct": 100.0,
+      "pass_rate_pct": 100.0
+    }
+  },
+  "context": {
+    "environment": "QA-Pilot workspace, Librarian MCP target",
+    "consumer_shape": "qa-pilot-execution",
+    "execution_context": {
+      "input_source": "E2E-5 constructed artifacts",
+      "execution_layer": "QA-Pilot runner",
+      "target": "Librarian MCP (port 3457)",
+      "artifact_boundary": "hard (SHA-256 verified)"
+    }
+  },
+  "custody": {
+    "origin": "e2e-6-constructed-test-execution.py",
+    "chain": ["E2E-6-EXEC-001"],
+    "verification_state": "verified"
+  },
+  "freshness": {
+    "captured_at": "2026-08-11T05:30:00Z",
+    "validated_at": "2026-08-11T05:30:00Z",
+    "refresh_expected_at": null,
+    "confidence_label": "historical"
+  }
+}

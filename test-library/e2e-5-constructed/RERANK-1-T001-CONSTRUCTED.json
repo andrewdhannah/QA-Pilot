@@ -1,0 +1,31 @@
+{
+  "test_id": "RERANK-1-T001-CONSTRUCTED",
+  "source_requirement": "Sprint RERANK-1 harness tests must pass",
+  "source_sprint": "RERANK-1",
+  "source_plan": "RERANK-1-PLAN",
+  "required_capabilities": [
+    "SCRIPT_EXECUTION"
+  ],
+  "matched_capability": "validator",
+  "skills_used": [],
+  "target_adapter": "mcp-jsonrpc",
+  "description": "Verify harness test results for RERANK-1",
+  "test_type": "regression",
+  "assertions": [
+    {
+      "type": "harness_result",
+      "expected": "ALL_TESTS_PASS"
+    },
+    {
+      "type": "test_count",
+      "expected": "NON_ZERO"
+    }
+  ],
+  "provenance": {
+    "constructed_at": "2026-08-11T05:19:27.860429+00:00",
+    "construction_agent": "qa-pilot-agent",
+    "source_claim": "All 295 tests passed (295/295 PASS)"
+  },
+  "execution_status": "NOT_EXECUTED",
+  "result": null
+}

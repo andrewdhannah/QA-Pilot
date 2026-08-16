@@ -1,0 +1,27 @@
+{
+  "test_id": "WORK-PACKAGE-CONTEXT-1-T003-CONSTRUCTED",
+  "source_requirement": "Sprint WORK-PACKAGE-CONTEXT-1 must have verifiable evidence",
+  "source_sprint": "WORK-PACKAGE-CONTEXT-1",
+  "source_plan": "WORK-PACKAGE-CONTEXT-1-PLAN",
+  "required_capabilities": [
+    "SCRIPT_EXECUTION"
+  ],
+  "matched_capability": "validator",
+  "skills_used": [],
+  "target_adapter": "mcp-jsonrpc",
+  "description": "Verify evidence references for WORK-PACKAGE-CONTEXT-1",
+  "test_type": "evidence_verification",
+  "assertions": [
+    {
+      "type": "evidence_reference",
+      "expected": "EVIDENCE_CHAIN_VALID"
+    }
+  ],
+  "provenance": {
+    "constructed_at": "2026-08-11T05:19:27.860575+00:00",
+    "construction_agent": "qa-pilot-agent",
+    "source_claim": "All 338 tests passed (338/338 PASS)"
+  },
+  "execution_status": "NOT_EXECUTED",
+  "result": null
+}

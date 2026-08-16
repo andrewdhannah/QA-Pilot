@@ -1,0 +1,639 @@
+{
+  "ir_metadata": {
+    "ir_id": "IR-SNA-EPIC-1",
+    "ir_version": "1.0.0",
+    "created_at": "2026-08-15T00:00:00Z",
+    "contract_ref": "EPIC-SPRINT-NUMBER-ALLOCATION-GOVERNANCE-1",
+    "compiler_version": "0.1.0",
+    "source_hash": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "tags": ["sprint-number-allocation", "governance", "invariant"]
+  },
+
+  "contract_source": {
+    "governing_invariant": {
+      "statement": "A sprint cannot become buildable, active, or sealed unless its sprint number has been atomically reserved for that specific sprint through the authoritative allocation mechanism. No production path may assign a sprint number through an alternate mechanism.",
+      "testable_form": "∀ workflow ∈ supported_workflows: creates_sprint(w, s) ∧ buildable(s) → ∃ reservation r: r.number = s.number ∧ r.sprint_id = s.id ∧ r.status ∈ {BOUND, COMMITTED}",
+      "negation": "∃ sprint s: buildable(s) ∧ ¬∃ reservation r with r.number = s.number ∧ r.sprint_id = s.id"
+    },
+
+    "invariants": [
+      {
+        "invariant_id": "INV-1",
+        "statement": "A sprint number must be atomically reserved before a sprint becomes buildable",
+        "testable_form": "buildable(s) → reserved(s.number, s.id)",
+        "violation_shape": "Sprint enters BUILDING state without a reservation record",
+        "defense_layers": ["application", "persistence"]
+      },
+      {
+        "invariant_id": "INV-2",
+        "statement": "No production path may assign a sprint number through an alternate mechanism",
+        "testable_form": "∀ path ∈ production_paths: assigns_number(p, s, n) → p.uses(allocator)",
+        "violation_shape": "Direct assignment of sealed_number without going through SprintNumberAllocator",
+        "defense_layers": ["application"]
+      },
+      {
+        "invariant_id": "INV-3",
+        "statement": "Reservation must bind to specific sprint identity",
+        "testable_form": "bound(r, s) → r.sprint_id = s.id ∧ r.project_id = s.project_id",
+        "violation_shape": "Reservation bound to wrong sprint ID or detached from sprint",
+        "defense_layers": ["application", "persistence"]
+      },
+      {
+        "invariant_id": "INV-4",
+        "statement": "Seal requires valid reservation, commit binding, and evidence gates",
+        "testable_form": "sealed(s) → valid_reservation(s) ∧ commit_binding(s) ∧ evidence_gates(s)",
+        "violation_shape": "Sprint sealed without all three prerequisites",
+        "defense_layers": ["application", "persistence"]
+      },
+      {
+        "invariant_id": "INV-5",
+        "statement": "Persistence layer enforces uniqueness independently of application routing",
+        "testable_form": "committed_store.unique_numbers ∧ seal_gate.validates_against_store",
+        "violation_shape": "Duplicate committed numbers in the store or seal gate skipping validation",
+        "defense_layers": ["persistence"]
+      },
+      {
+        "invariant_id": "INV-6",
+        "statement": "Import/restore distinguishes historical preservation from new allocation",
+        "testable_form": "import(i) → (historical_restore(i) → preserves_number(i)) ∧ (clone_as_new(i) → requires_new_reservation(i))",
+        "violation_shape": "Clone-as-new reuses source number or historical restore triggers unnecessary allocation",
+        "defense_layers": ["application"]
+      }
+    ],
+
+    "acceptance_gates": [
+      {
+        "gate_id": "GATE-A",
+        "statement": "Every supported production creation path uses UWO-008",
+        "testable_form": "∀ p ∈ production_creation_paths: p.calls(sprint_number_allocator)",
+        "evidence_sources": ["sna-9-surface-audit", "code-path-traversal"]
+      },
+      {
+        "gate_id": "GATE-B",
+        "statement": "Contention produces exactly one winner",
+        "testable_form": "∀ n ∈ contested_numbers: |{p : p.succeeds(n)}| = 1",
+        "evidence_sources": ["concurrency-test-results", "barrier-synchronized-race"]
+      },
+      {
+        "gate_id": "GATE-C",
+        "statement": "Reservation precedes build and survives through seal",
+        "testable_form": "∀ s ∈ sprints: buildable(s) → reserved_before_build(s) ∧ reservation_survives_through_seal(s)",
+        "evidence_sources": ["workflow-test-results", "lifecycle-trace"]
+      },
+      {
+        "gate_id": "GATE-D",
+        "statement": "Bypass attempts are mechanically rejected at both application and persistence layers",
+        "testable_form": "∀ a ∈ bypass_attempts: rejected(a, application) ∧ rejected(a, persistence)",
+        "evidence_sources": ["negative-test-results", "adversarial-test-results"]
+      },
+      {
+        "gate_id": "GATE-E",
+        "statement": "The system mechanically prevents producing a live sprint whose number was not atomically reserved and bound to that sprint",
+        "testable_form": "∀ s ∈ live_sprints: ∃ r: r.number = s.number ∧ r.sprint_id = s.id ∧ r.status ∈ {BOUND, COMMITTED}",
+        "evidence_sources": ["critical-adversarial-results", "full-invariant-check"]
+      }
+    ],
+
+    "authority_constraints": [
+      {
+        "constraint_id": "AUTH-1",
+        "statement": "QA-Pilot operates advisory-only — no Librarian state mutation",
+        "boundary_type": "mutation_forbidden"
+      },
+      {
+        "constraint_id": "AUTH-2",
+        "statement": "Broad refactor beyond number allocation scope is forbidden",
+        "boundary_type": "scope_forbidden"
+      },
+      {
+        "constraint_id": "AUTH-3",
+        "statement": "Manual number assignment as fallback is forbidden",
+        "boundary_type": "scope_forbidden"
+      },
+      {
+        "constraint_id": "AUTH-4",
+        "statement": "Bypass paths for any production workflow are forbidden",
+        "boundary_type": "scope_forbidden"
+      }
+    ],
+
+    "lifecycle_rules": [
+      { "rule_id": "LR-1", "from_state": "UNRESERVED", "to_state": "RESERVED", "condition": "atomic_reserve(number, sprint_id)", "is_legal": true },
+      { "rule_id": "LR-2", "from_state": "RESERVED", "to_state": "BOUND", "condition": "bind(number, sprint_id, project_id)", "is_legal": true },
+      { "rule_id": "LR-3", "from_state": "BOUND", "to_state": "BUILDING", "condition": "can_build(sprint_id, number)", "is_legal": true },
+      { "rule_id": "LR-4", "from_state": "BOUND", "to_state": "COMMITTED", "condition": "commit(number, sprint_id)", "is_legal": true },
+      { "rule_id": "LR-5", "from_state": "COMMITTED", "to_state": "SEALED", "condition": "validate_seal(number, sprint_id, project_id)", "is_legal": true },
+      { "rule_id": "LR-6", "from_state": "RESERVED", "to_state": "RELEASED", "condition": "release(number, reason)", "is_legal": true },
+      { "rule_id": "LR-7", "from_state": "UNRESERVED", "to_state": "BUILDING", "condition": "build_without_reservation", "is_legal": false },
+      { "rule_id": "LR-8", "from_state": "RESERVED", "to_state": "BOUND", "condition": "bind_to_wrong_sprint", "is_legal": false },
+      { "rule_id": "LR-9", "from_state": "UNRESERVED", "to_state": "SEALED", "condition": "seal_without_reservation", "is_legal": false },
+      { "rule_id": "LR-10", "from_state": "RELEASED", "to_state": "SEALED", "condition": "seal_with_released_reservation", "is_legal": false },
+      { "rule_id": "LR-11", "from_state": "RESERVED", "to_state": "RESERVED", "condition": "duplicate_reservation", "is_legal": false }
+    ],
+
+    "stop_conditions": [
+      { "condition_id": "STOP-1", "predicate": "any_production_path_unprotected_after_sna_6", "severity": "hard_stop", "message": "Production path remains unprotected" },
+      { "condition_id": "STOP-2", "predicate": "adversarial_scenario_produces_incorrect_outcome", "severity": "hard_stop", "message": "Adversarial test failed" },
+      { "condition_id": "STOP-3", "predicate": "surface_audit_returns_nonzero_unprotected_or_unknown", "severity": "hard_stop", "message": "Surface audit bypass detected" },
+      { "condition_id": "STOP-4", "predicate": "persistence_layer_fails_to_reject_invalid_sealed_number", "severity": "hard_stop", "message": "Persistence enforcement broken" }
+    ],
+
+    "evidence_requirements": [
+      {
+        "requirement_id": "EVREQ-1",
+        "claim": "Every test traces to a specific contract element",
+        "evidence_class": "derivation_trace",
+        "method": "source_contract_elements field in each TestFamily",
+        "freshness": "immutable"
+      },
+      {
+        "requirement_id": "EVREQ-2",
+        "claim": "All 9 layers produce test evidence",
+        "evidence_class": "record",
+        "method": "Layer output with pass/fail counts and test details",
+        "freshness": "immutable"
+      },
+      {
+        "requirement_id": "EVREQ-3",
+        "claim": "Findings classified by severity",
+        "evidence_class": "record",
+        "method": "Severity classification of all findings",
+        "freshness": "immutable"
+      },
+      {
+        "requirement_id": "EVREQ-4",
+        "claim": "Cross-system comparison record",
+        "evidence_class": "record",
+        "method": "Compare independent QA-Pilot results against internal SNA test results",
+        "freshness": "immutable"
+      },
+      {
+        "requirement_id": "EVREQ-5",
+        "claim": "Critical adversarial test proves no bypass exists",
+        "evidence_class": "record",
+        "method": "Fabricate violation without allocator — attempt through every reachable surface",
+        "freshness": "immutable"
+      }
+    ],
+
+    "scope": {
+      "allowed": [
+        "Contract and state model for reservation lifecycle",
+        "Authoritative allocation boundary (SprintNumberAllocator service)",
+        "Sprint creation gate (reserve before build)",
+        "Reservation-to-sprint binding",
+        "Seal gate enforcement",
+        "Elimination of alternate allocation paths (47 direct-assignment sites)",
+        "Import/restore/clone/recovery hardening",
+        "Adversarial qualification fixtures",
+        "Surface re-audit and governance promotion"
+      ],
+      "forbidden": [
+        "Broad refactor beyond number allocation scope",
+        "Silent weakening of existing UWO-008 mechanism",
+        "Manual number assignment as fallback",
+        "Bypass paths for any production workflow"
+      ]
+    },
+
+    "two_layer_defense": {
+      "layer_1_application": "Allocation governance gate prevents normal callers from doing the wrong thing",
+      "layer_2_persistence": "Uniqueness/seal checks prevent programming mistakes in future callers from silently corrupting the ledger"
+    }
+  },
+
+  "derivation_plan": {
+    "layer_derivations": [
+      {
+        "layer_id": "L1",
+        "layer_name": "contract",
+        "layer_number": 1,
+        "purpose": "Does the stated invariant have unambiguous acceptance criteria?",
+        "test_families": [
+          {
+            "family_id": "CONTRACT-STRUCTURE",
+            "family_name": "Contract Well-Formedness",
+            "source_contract_elements": ["INV-1", "INV-2", "INV-3", "INV-4", "INV-5", "INV-6", "GATE-A", "GATE-B", "GATE-C", "GATE-D", "GATE-E"],
+            "test_patterns": [
+              { "pattern_id": "C-001", "description": "Epic contract file exists and is readable", "assertion_type": "element_exists", "assertion": "epic_file.exists ∧ epic_file.readable" },
+              { "pattern_id": "C-002", "description": "Governing invariant is explicitly stated", "assertion_type": "element_exists", "assertion": "epic.governing_invariant.length > 0" },
+              { "pattern_id": "C-003", "description": "Customer safety criterion is defined", "assertion_type": "element_exists", "assertion": "epic.customer_safety_criterion.length > 0" },
+              { "pattern_id": "C-004", "description": "Contract invariants are enumerated", "assertion_type": "structure_valid", "assertion": "epic.invariants.count == ir.contract_source.invariants.count" },
+              { "pattern_id": "C-005", "description": "Acceptance gates are defined", "assertion_type": "structure_valid", "assertion": "epic.acceptance_gates.count == ir.contract_source.acceptance_gates.count" },
+              { "pattern_id": "C-006", "description": "Sprint sequence is complete", "assertion_type": "structure_valid", "assertion": "∀ i ∈ [1..9]: ∃ sprint s: s.id = CONCAT('SNA-', i)" },
+              { "pattern_id": "C-007", "description": "Stop conditions are defined", "assertion_type": "element_exists", "assertion": "epic.stop_conditions.count > 0" },
+              { "pattern_id": "C-008", "description": "Exit criterion is defined", "assertion_type": "element_exists", "assertion": "epic.exit_criterion.length > 0" },
+              { "pattern_id": "C-009", "description": "Two-layer defense model is documented", "assertion_type": "element_exists", "assertion": "epic.two_layer_defense.layer_1_application ∧ epic.two_layer_defense.layer_2_persistence" }
+            ]
+          }
+        ]
+      },
+
+      {
+        "layer_id": "L2",
+        "layer_name": "workflow",
+        "layer_number": 2,
+        "purpose": "Can every supported lifecycle path be exercised?",
+        "test_families": [
+          {
+            "family_id": "WF-CREATE",
+            "family_name": "Normal Creation Workflow",
+            "source_contract_elements": ["INV-1", "LR-1", "LR-2", "GATE-C"],
+            "test_patterns": [
+              { "pattern_id": "W-001", "description": "Normal creation: reserve → bind → BOUND", "assertion_type": "lifecycle_completes", "assertion": "create_sprint(s).success ∧ s.status == BOUND" },
+              { "pattern_id": "W-002", "description": "Full lifecycle: create → can_build check", "assertion_type": "lifecycle_completes", "assertion": "create_sprint(s).success ∧ can_build(s.id, s.number).allowed" },
+              { "pattern_id": "W-003", "description": "Binding verification: reservation ↔ sprint identity", "assertion_type": "deterministic_outcome", "assertion": "verify_binding(r.number, s.id, s.project).valid" },
+              { "pattern_id": "W-004", "description": "Provenance export: reservation_id, sprint_id, number present", "assertion_type": "element_exists", "assertion": "export_binding_provenance(n).found ∧ ∀ k ∈ [reservation_id, sprint_id, number]: provenance[k]" },
+              { "pattern_id": "W-005", "description": "Release and re-reserve: number recycled correctly", "assertion_type": "lifecycle_completes", "assertion": "release(n) ∧ reserve(n, new_sprint).success" },
+              { "pattern_id": "W-006", "description": "can_build rejects committed number for different sprint", "assertion_type": "state_transition_rejected", "assertion": "¬can_build(other_sprint, committed_number).allowed" }
+            ]
+          }
+        ]
+      },
+
+      {
+        "layer_id": "L3",
+        "layer_name": "negative",
+        "layer_number": 3,
+        "purpose": "Can any forbidden state be produced?",
+        "test_families": [
+          {
+            "family_id": "NEG-BYPASS",
+            "family_name": "Bypass Rejection",
+            "source_contract_elements": ["INV-1", "INV-2", "LR-7", "LR-9"],
+            "test_patterns": [
+              { "pattern_id": "N-001", "description": "Build without reservation is rejected", "assertion_type": "state_transition_rejected", "assertion": "¬can_build(NO_RESERVATION, 9999).allowed" },
+              { "pattern_id": "N-004", "description": "Seal without reservation is rejected", "assertion_type": "state_transition_rejected", "assertion": "¬validate_seal(8888, NO_SPRINT, project).allowed" },
+              { "pattern_id": "N-005", "description": "Seal with released reservation is rejected", "assertion_type": "state_transition_rejected", "assertion": "release(n) ∧ ¬validate_seal(n, sprint, project).allowed" }
+            ]
+          },
+          {
+            "family_id": "NEG-CONTENTION",
+            "family_name": "Contention Rejection",
+            "source_contract_elements": ["INV-3", "LR-11", "GATE-B"],
+            "test_patterns": [
+              { "pattern_id": "N-002", "description": "Reserve committed number is rejected", "assertion_type": "state_transition_rejected", "assertion": "committed(n) ∧ ¬reserve(n, wo, agent).success" },
+              { "pattern_id": "N-006", "description": "Duplicate reservation is rejected", "assertion_type": "state_transition_rejected", "assertion": "reserve(n, wo_a, a).success ∧ ¬reserve(n, wo_b, b).success" }
+            ]
+          },
+          {
+            "family_id": "NEG-BINDING",
+            "family_name": "Binding Error Rejection",
+            "source_contract_elements": ["INV-3", "LR-8"],
+            "test_patterns": [
+              { "pattern_id": "N-003", "description": "Bind to wrong sprint (number owns sprint — documented behavior)", "assertion_type": "deterministic_outcome", "assertion": "bind(n, wrong_sprint, project).success — number assigns sprint_id, not validates caller" },
+              { "pattern_id": "N-007", "description": "Seal sprint bound to different sprint is rejected", "assertion_type": "state_transition_rejected", "assertion": "bind(n, sprint_a, p) ∧ ¬validate_seal(n, sprint_b, p).allowed" }
+            ]
+          },
+          {
+            "family_id": "NEG-EXPIRY",
+            "family_name": "Expiry Rejection",
+            "source_contract_elements": ["INV-1", "LR-6"],
+            "test_patterns": [
+              { "pattern_id": "N-008", "description": "Expired reservation cannot build", "assertion_type": "state_transition_rejected", "assertion": "reserve(n, wo, agent, lease=0) ∧ check_expiry() ∧ ¬can_build(sprint, n).allowed" }
+            ]
+          }
+        ]
+      },
+
+      {
+        "layer_id": "L4",
+        "layer_name": "concurrency",
+        "layer_number": 4,
+        "purpose": "Can races defeat reservation/binding?",
+        "test_families": [
+          {
+            "family_id": "CC-CONTENTION",
+            "family_name": "Concurrent Contention",
+            "source_contract_elements": ["INV-1", "GATE-B"],
+            "test_patterns": [
+              { "pattern_id": "CC-001", "description": "Two agents race for same number: exactly one wins", "assertion_type": "contention_exactly_one_winner", "assertion": "barrier_sync(2) ∧ reserve(n) → |{success}| == 1" },
+              { "pattern_id": "CC-002", "description": "Ten agents race for same number: exactly one wins", "assertion_type": "contention_exactly_one_winner", "assertion": "barrier_sync(10) ∧ reserve(n) → |{success}| == 1" },
+              { "pattern_id": "CC-003", "description": "Concurrent bind to same number: exactly one succeeds", "assertion_type": "contention_exactly_one_winner", "assertion": "barrier_sync(2) ∧ bind(n) → |{success}| == 1" }
+            ]
+          }
+        ]
+      },
+
+      {
+        "layer_id": "L5",
+        "layer_name": "persistence",
+        "layer_number": 5,
+        "purpose": "Can restart/mutation/recovery bypass controls?",
+        "test_families": [
+          {
+            "family_id": "PERS-TAMPER",
+            "family_name": "File Tamper Detection",
+            "source_contract_elements": ["INV-5", "GATE-D"],
+            "test_patterns": [
+              { "pattern_id": "P-001", "description": "Direct JSON injection detected by allocator", "assertion_type": "tamper_detected", "assertion": "inject_fake_committed(n) ∧ ¬reserve(n, wo, agent).success" },
+              { "pattern_id": "P-003", "description": "Corrupt JSON: allocator handles gracefully or raises", "assertion_type": "deterministic_outcome", "assertion": "corrupt_store() → reserve(n) ∈ {success, exception}" }
+            ]
+          },
+          {
+            "family_id": "PERS-RESILIENCE",
+            "family_name": "Storage Resilience",
+            "source_contract_elements": ["INV-5"],
+            "test_patterns": [
+              { "pattern_id": "P-002", "description": "File deletion: allocator handles missing store", "assertion_type": "deterministic_outcome", "assertion": "delete_store() ∧ reserve(n).success" },
+              { "pattern_id": "P-004", "description": "Concurrent file writes: exactly one reservation created", "assertion_type": "contention_exactly_one_winner", "assertion": "barrier_sync(5) ∧ atomic_reserve(n) → |{success}| == 1" }
+            ]
+          },
+          {
+            "family_id": "PERS-SEAL",
+            "family_name": "Seal Against Persisted State",
+            "source_contract_elements": ["INV-4", "INV-5"],
+            "test_patterns": [
+              { "pattern_id": "P-005", "description": "Seal gate validates against persisted state", "assertion_type": "deterministic_outcome", "assertion": "commit(n, sprint) ∧ validate_seal(n, sprint, project).allowed" }
+            ]
+          }
+        ]
+      },
+
+      {
+        "layer_id": "L6",
+        "layer_name": "interface",
+        "layer_number": 6,
+        "purpose": "Can MCP/API/CLI paths bypass the allocator?",
+        "test_families": [
+          {
+            "family_id": "IFACE-AUDIT",
+            "family_name": "Interface Surface Audit",
+            "source_contract_elements": ["INV-2", "GATE-A"],
+            "test_patterns": [
+              { "pattern_id": "I-001", "description": "SNA-9 re-audit exists with interface verification", "assertion_type": "element_exists", "assertion": "sna9_audit.exists ∧ 'External Entry-Point Traversal' ∈ sna9_audit.content" },
+              { "pattern_id": "I-002", "description": "CLI repair-bootstrap verified as allocator-integrated", "assertion_type": "path_convergence", "assertion": "'repair-bootstrap' ∈ sna9_audit.content ∧ 'Remediaded' ∈ sna9_audit.content" },
+              { "pattern_id": "I-003", "description": "Import path verified as allocator-integrated", "assertion_type": "path_convergence", "assertion": "'LibrarianSprintImporter' ∈ sna9_audit.content" },
+              { "pattern_id": "I-004", "description": "Zero UNKNOWN production paths in SNA-9 audit", "assertion_type": "deterministic_outcome", "assertion": "'**UNKNOWN** | 0 |' ∈ sna9_audit.content" },
+              { "pattern_id": "I-005", "description": "All allocation-adjacent governance files reference allocator components", "assertion_type": "path_convergence", "assertion": "∀ f ∈ allocation_adjacent_files: references_allocator(f)" }
+            ]
+          }
+        ]
+      },
+
+      {
+        "layer_id": "L7",
+        "layer_name": "exceptional",
+        "layer_number": 7,
+        "purpose": "Can import/restore/clone/recovery create a violation?",
+        "test_families": [
+          {
+            "family_id": "EXC-HISTORICAL",
+            "family_name": "Historical Restore",
+            "source_contract_elements": ["INV-6"],
+            "test_patterns": [
+              { "pattern_id": "E-001", "description": "Historical restore does not require allocation", "assertion_type": "deterministic_outcome", "assertion": "classify_import(historical_restore).requires_allocation == false" }
+            ]
+          },
+          {
+            "family_id": "EXC-CLONE",
+            "family_name": "Clone-as-New",
+            "source_contract_elements": ["INV-6"],
+            "test_patterns": [
+              { "pattern_id": "E-002", "description": "Clone-as-new requires new allocation", "assertion_type": "deterministic_outcome", "assertion": "classify_import(clone_as_new).requires_allocation == true" },
+              { "pattern_id": "E-003", "description": "Clone-as-new rejects source number reuse", "assertion_type": "state_transition_rejected", "assertion": "classify_import(clone_as_new, same_id).errors.count > 0" },
+              { "pattern_id": "E-006", "description": "Clone-as-new validation: new number assigned", "assertion_type": "deterministic_outcome", "assertion": "validate_clone_as_new(source_n, target_id, clone_result).valid" }
+            ]
+          },
+          {
+            "family_id": "EXC-RECOVERY",
+            "family_name": "Recovery Path",
+            "source_contract_elements": ["INV-6"],
+            "test_patterns": [
+              { "pattern_id": "E-004", "description": "Recovery of COMMITTED number preserves identity", "assertion_type": "deterministic_outcome", "assertion": "validate_recovery(n, COMMITTED).valid" }
+            ]
+          },
+          {
+            "family_id": "EXC-IMPORT-NEW",
+            "family_name": "Import-as-New",
+            "source_contract_elements": ["INV-6"],
+            "test_patterns": [
+              { "pattern_id": "E-005", "description": "Import-as-new requires allocation", "assertion_type": "deterministic_outcome", "assertion": "classify_import(import_as_new).requires_allocation == true" }
+            ]
+          }
+        ]
+      },
+
+      {
+        "layer_id": "L8",
+        "layer_name": "evidence",
+        "layer_number": 8,
+        "purpose": "Can QA-Pilot independently prove the observed result?",
+        "test_families": [
+          {
+            "family_id": "EVID-RECORD",
+            "family_name": "Evidence Record Generation",
+            "source_contract_elements": ["EVREQ-1", "EVREQ-2", "EVREQ-3", "EVREQ-4"],
+            "test_patterns": [
+              { "pattern_id": "EV-001", "description": "Suite produces deterministic evidence record", "assertion_type": "evidence_produced", "assertion": "evidence_record.layers_tested.count > 0" },
+              { "pattern_id": "EV-SEV", "description": "Findings classified by severity", "assertion_type": "structure_valid", "assertion": "∀ f ∈ findings: f.severity ∈ {critical, high, medium, low, info}" },
+              { "pattern_id": "EV-XSYS", "description": "Cross-system comparison record generated", "assertion_type": "evidence_produced", "assertion": "cross_system_record.generated" }
+            ]
+          }
+        ]
+      },
+
+      {
+        "layer_id": "L9",
+        "layer_name": "regression",
+        "layer_number": 9,
+        "purpose": "Does the existing test suite remain clean?",
+        "test_families": [
+          {
+            "family_id": "REG-EXISTING",
+            "family_name": "Existing Infrastructure Integrity",
+            "source_contract_elements": ["GATE-A", "GATE-B", "GATE-C"],
+            "test_patterns": [
+              { "pattern_id": "R-001", "description": "SNA-1 test runner exists", "assertion_type": "element_exists", "assertion": "test_sprint_number_allocation.exists" },
+              { "pattern_id": "R-002", "description": "SNA-2 test runner exists", "assertion_type": "element_exists", "assertion": "test_sprint_number_allocator.exists" },
+              { "pattern_id": "R-003", "description": "Sprint ledger is valid JSON with sprints array", "assertion_type": "structure_valid", "assertion": "json_load(sprint_ledger) ∧ 'sprints' ∈ data" },
+              { "pattern_id": "R-004", "description": "Number reservations store exists", "assertion_type": "element_exists", "assertion": "number_reservations.exists" },
+              { "pattern_id": "R-005", "description": "All 6 governance implementation files exist", "assertion_type": "element_exists", "assertion": "∀ f ∈ required_files: f.exists" },
+              { "pattern_id": "R-006", "description": "Lifecycle cursor at SNA-8 or later", "assertion_type": "deterministic_outcome", "assertion": "'SNA-' ∈ cursor.sprint_id" }
+            ]
+          }
+        ]
+      }
+    ],
+
+    "adversarial_rules": [
+      {
+        "rule_id": "ADV-1",
+        "attack_name": "Fabricated number → build attempt",
+        "attack_vector": "Create sprint with invented number, skip reservation, attempt can_build",
+        "contract_target": "INV-1",
+        "expected_outcome": "rejected",
+        "severity_if_pass": "critical",
+        "test_pattern": {
+          "pattern_id": "CRIT-001",
+          "description": "Fabricated number → build attempt: REJECTED",
+          "assertion_type": "state_transition_rejected",
+          "assertion": "¬can_build(FABRICATED_SPRINT, 99999).allowed"
+        }
+      },
+      {
+        "rule_id": "ADV-2",
+        "attack_name": "JSON injection → seal validation",
+        "attack_vector": "Write fake reservation directly to store file, attempt seal",
+        "contract_target": "INV-5",
+        "expected_outcome": "no_violation",
+        "severity_if_pass": "medium",
+        "test_pattern": {
+          "pattern_id": "CRIT-002",
+          "description": "Injected reservation → seal validates state correctly (security boundary = file access)",
+          "assertion_type": "deterministic_outcome",
+          "assertion": "inject_reservation(n, data) ∧ validate_seal(n, sprint, project).result == data.is_well_formed"
+        }
+      },
+      {
+        "rule_id": "ADV-3",
+        "attack_name": "Gate create_sprint always calls reserve",
+        "attack_vector": "Attempt to call create_sprint without going through reserve",
+        "contract_target": "INV-1",
+        "expected_outcome": "no_violation",
+        "severity_if_pass": "critical",
+        "test_pattern": {
+          "pattern_id": "CRIT-003",
+          "description": "Gate create_sprint always calls reserve (no bypass path)",
+          "assertion_type": "deterministic_outcome",
+          "assertion": "create_sprint(s).success ∧ s.reservation_id ≠ null"
+        }
+      },
+      {
+        "rule_id": "ADV-4",
+        "attack_name": "Reservation state tampering",
+        "attack_vector": "Modify sprint_id in reservation after creation, verify binding verifier detects",
+        "contract_target": "INV-3",
+        "expected_outcome": "detected",
+        "severity_if_pass": "critical",
+        "test_pattern": {
+          "pattern_id": "CRIT-004",
+          "description": "Tampered sprint_id detected by binding verifier",
+          "assertion_type": "tamper_detected",
+          "assertion": "tamper_sprint_id(n) ∧ ¬verify_binding(n, original_sprint).valid"
+        }
+      },
+      {
+        "rule_id": "ADV-5",
+        "attack_name": "Mismatched commit binding at seal",
+        "attack_vector": "Commit with one binding, attempt seal with different binding",
+        "contract_target": "INV-4",
+        "expected_outcome": "rejected",
+        "severity_if_pass": "critical",
+        "test_pattern": {
+          "pattern_id": "CRIT-005",
+          "description": "Seal with mismatched commit binding: REJECTED",
+          "assertion_type": "state_transition_rejected",
+          "assertion": "commit(n, binding_a) ∧ ¬validate_seal(n, sprint, project, commit_binding=binding_b).allowed"
+        }
+      },
+      {
+        "rule_id": "ADV-6",
+        "attack_name": "Dual gate number collision",
+        "attack_vector": "Two gates create sprints with same number, exactly one wins",
+        "contract_target": "INV-1",
+        "expected_outcome": "no_violation",
+        "severity_if_pass": "critical",
+        "test_pattern": {
+          "pattern_id": "CRIT-006",
+          "description": "Two gates, same number: exactly one succeeds",
+          "assertion_type": "contention_exactly_one_winner",
+          "assertion": "gate1.create(n) ⊕ gate2.create(n)"
+        }
+      }
+    ],
+
+    "positive_rules": [
+      {
+        "rule_id": "POS-1",
+        "workflow_name": "Full Lifecycle",
+        "lifecycle_path": ["reserve", "bind", "build", "commit", "seal"],
+        "expected_outcome": "completes",
+        "source_contract_elements": ["INV-1", "INV-3", "INV-4"],
+        "test_pattern": {
+          "pattern_id": "POS-001",
+          "description": "Full lifecycle: reserve → bind → build → commit → seal",
+          "assertion_type": "lifecycle_completes",
+          "assertion": "create(s).success ∧ can_build(s).allowed ∧ commit(n).success ∧ validate_seal(n, s).allowed"
+        }
+      },
+      {
+        "rule_id": "POS-2",
+        "workflow_name": "Historical Restore",
+        "lifecycle_path": ["classify_import", "preserve_number"],
+        "expected_outcome": "preserved",
+        "source_contract_elements": ["INV-6"],
+        "test_pattern": {
+          "pattern_id": "POS-002",
+          "description": "Historical restore preserves identity without allocation",
+          "assertion_type": "deterministic_outcome",
+          "assertion": "classify_import(historical_restore).requires_allocation == false"
+        }
+      },
+      {
+        "rule_id": "POS-3",
+        "workflow_name": "Clone-as-New",
+        "lifecycle_path": ["create_sprint", "reserve", "bind"],
+        "expected_outcome": "new_identity",
+        "source_contract_elements": ["INV-6"],
+        "test_pattern": {
+          "pattern_id": "POS-003",
+          "description": "Clone-as-new: new reservation created with new identity",
+          "assertion_type": "lifecycle_completes",
+          "assertion": "create_sprint(clone_target).success ∧ result.sprint_id == clone_target"
+        }
+      },
+      {
+        "rule_id": "POS-4",
+        "workflow_name": "Multiple Sprint Coexistence",
+        "lifecycle_path": ["reserve_1", "reserve_2", "reserve_3"],
+        "expected_outcome": "completes",
+        "source_contract_elements": ["INV-1", "INV-5"],
+        "test_pattern": {
+          "pattern_id": "POS-004",
+          "description": "Multiple sprints coexist with different numbers",
+          "assertion_type": "lifecycle_completes",
+          "assertion": "create(n1).success ∧ create(n2).success ∧ create(n3).success ∧ distinct(n1, n2, n3)"
+        }
+      }
+    ]
+  },
+
+  "output_spec": {
+    "suite_id": "QA-PILOT-SNA-INDEPENDENT-QUALIFICATION-1",
+    "suite_version": "1.0.0",
+    "layers": [
+      { "layer_name": "contract", "output_type": "code", "test_runner": "pytest" },
+      { "layer_name": "workflow", "output_type": "code", "test_runner": "pytest" },
+      { "layer_name": "negative", "output_type": "code", "test_runner": "pytest" },
+      { "layer_name": "concurrency", "output_type": "code", "test_runner": "pytest" },
+      { "layer_name": "persistence", "output_type": "code", "test_runner": "pytest" },
+      { "layer_name": "interface", "output_type": "audit_document", "test_runner": "file-existence-check" },
+      { "layer_name": "exceptional", "output_type": "code", "test_runner": "pytest" },
+      { "layer_name": "evidence", "output_type": "checklist", "test_runner": "assertion-check" },
+      { "layer_name": "regression", "output_type": "code", "test_runner": "pytest" }
+    ],
+    "evidence_format": {
+      "output_path": "evidence/{suite_id}-evidence.json",
+      "schema_ref": "qualification-evidence.schema.json",
+      "required_fields": [
+        "suite_id",
+        "contract_ref",
+        "start_time",
+        "end_time",
+        "total_tests",
+        "passed",
+        "failed",
+        "findings",
+        "evidence_records",
+        "layers",
+        "disposition"
+      ]
+    },
+    "disposition_rules": {
+      "pass": "failed == 0 && findings == 0",
+      "finding": "failed > 0 || findings > 0",
+      "critical": "∃ f ∈ findings: f.severity ∈ {critical, high}"
+    }
+  }
+}

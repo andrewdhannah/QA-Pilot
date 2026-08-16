@@ -1,0 +1,413 @@
+{
+  "ir_metadata": {
+    "ir_id": "IR-RUNTIME-EVIDENCE-QUALIFICATION-1",
+    "ir_version": "1.0.0",
+    "created_at": "2026-08-16T04:00:00Z",
+    "contract_ref": "runtime-evidence-ingestion-contract",
+    "compiler_version": "1.0.0",
+    "source_hash": "sha256:runtime-evidence-qualification-v1",
+    "tags": ["runtime-evidence", "qualification", "trust-calibration", "sprint-222"]
+  },
+  "contract_source": {
+    "governing_invariant": {
+      "statement": "Every runtime evidence record must be provably complete, immutable, fresh, and authority-bounded to serve as a qualification input.",
+      "testable_form": "forall(e in RuntimeEvidence): complete(e.provenance) AND immutable(e) AND fresh(e) AND bounded(e.authority)",
+      "negation": "exists(e in RuntimeEvidence): NOT complete(e.provenance) OR NOT immutable(e) OR NOT fresh(e) OR NOT bounded(e.authority)"
+    },
+    "invariants": [
+      {
+        "invariant_id": "INV-1",
+        "statement": "Every runtime evidence record has complete provenance covering all 6 identity questions.",
+        "testable_form": "forall(e): has_field(e, 'provenance.execution_identity.node_identity') AND has_field(e, 'provenance.execution_identity.runtime_identity') AND has_field(e, 'provenance.execution_identity.agent_identity') AND has_field(e, 'provenance.execution_identity.model_identity') AND has_field(e, 'provenance.execution_identity.session_identity') AND has_field(e, 'provenance.governance_context.authority_scope')",
+        "violation_shape": "Missing provenance field(s) in runtime evidence record",
+        "defense_layers": ["application", "persistence"]
+      },
+      {
+        "invariant_id": "INV-2",
+        "statement": "Runtime evidence records are immutable after ingestion.",
+        "testable_form": "forall(e): immutable_after(e, e.ingested_at)",
+        "violation_shape": "Modified timestamp, content, or provenance after ingestion",
+        "defense_layers": ["persistence"]
+      },
+      {
+        "invariant_id": "INV-3",
+        "statement": "Runtime evidence records age correctly based on their evidence class.",
+        "testable_form": "forall(e): (e.evidence_class == 'record' => label(e) in {current, historical, archived}) AND (e.evidence_class == 'snapshot' => label(e) in {current, stale, unknown})",
+        "violation_shape": "Incorrect freshness label assignment",
+        "defense_layers": ["application"]
+      },
+      {
+        "invariant_id": "INV-4",
+        "statement": "Runtime evidence records do not contain authority-claiming fields.",
+        "testable_form": "forall(e): NOT has_field(e, 'authorization') AND NOT has_field(e, 'dispatch') AND NOT has_field(e, 'executed') AND NOT has_field(e, 'sealed') AND NOT has_field(e, 'approved') AND NOT has_field(e, 'owner_decision')",
+        "violation_shape": "Authority field present in evidence record",
+        "defense_layers": ["application", "persistence"]
+      },
+      {
+        "invariant_id": "INV-5",
+        "statement": "Every runtime evidence record conforms to its source schema.",
+        "testable_form": "forall(e): schema_valid(e, source_schema(e.event_type))",
+        "violation_shape": "Schema validation failure",
+        "defense_layers": ["application"]
+      }
+    ],
+    "acceptance_gates": [
+      {
+        "gate_id": "GATE-A",
+        "statement": "All 5 qualification checks pass against all ingested runtime evidence records.",
+        "testable_form": "forall(e in IngestedEvidence): forall(check in QualificationChecks): check(e) == PASS",
+        "evidence_sources": ["qualification-results.json"]
+      },
+      {
+        "gate_id": "GATE-B",
+        "statement": "Qualification engine produces deterministic results (same input → same output).",
+        "testable_form": "run(qualification_engine, evidence) == run(qualification_engine, evidence)",
+        "evidence_sources": ["qualification-results.json"]
+      },
+      {
+        "gate_id": "GATE-C",
+        "statement": "Qualification engine does not elevate evidence to authority.",
+        "testable_form": "forall(result in QualificationResults): NOT has_field(result, 'authorization') AND NOT has_field(result, 'dispatch')",
+        "evidence_sources": ["qualification-results.json"]
+      }
+    ],
+    "authority_constraints": [
+      {
+        "constraint_id": "AC-1",
+        "statement": "Qualification engine produces PASS/FINDING/NOT_APPLICABLE dispositions only.",
+        "boundary_type": "scope_forbidden"
+      },
+      {
+        "constraint_id": "AC-2",
+        "statement": "Qualification engine MUST NOT produce authorization, dispatch, or execution directives.",
+        "boundary_type": "mutation_forbidden"
+      }
+    ],
+    "lifecycle_rules": [
+      {
+        "rule_id": "LR-1",
+        "from_state": "unqualified",
+        "to_state": "qualified",
+        "condition": "all_checks_pass(evidence)",
+        "is_legal": true
+      },
+      {
+        "rule_id": "LR-2",
+        "from_state": "unqualified",
+        "to_state": "finding",
+        "condition": "any_check_fails(evidence)",
+        "is_legal": true
+      },
+      {
+        "rule_id": "LR-3",
+        "from_state": "qualified",
+        "to_state": "authorized",
+        "condition": "false",
+        "is_legal": false
+      }
+    ],
+    "stop_conditions": [
+      {
+        "condition_id": "STOP-1",
+        "predicate": "evidence_store_empty()",
+        "severity": "hard_stop",
+        "message": "No runtime evidence records to qualify"
+      },
+      {
+        "condition_id": "STOP-2",
+        "predicate": "schema_invalid(ir_file)",
+        "severity": "hard_stop",
+        "message": "IR file does not conform to qualification-ir.schema.json"
+      }
+    ],
+    "evidence_requirements": [
+      {
+        "requirement_id": "ER-1",
+        "claim": "Runtime evidence records exist and are accessible",
+        "evidence_class": "record",
+        "method": "file_exists(data/runtime-evidence/index.json)",
+        "freshness": "immutable"
+      },
+      {
+        "requirement_id": "ER-2",
+        "claim": "Qualification results are deterministic",
+        "evidence_class": "record",
+        "method": "run_twice_same_output()",
+        "freshness": "immutable"
+      }
+    ],
+    "scope": {
+      "allowed": ["runtime-action-event", "runtime-lifecycle-event", "runtime-resource-observation"],
+      "forbidden": ["cross-project-evidence", "non-qa-pilot-evidence"]
+    }
+  },
+  "derivation_plan": {
+    "layer_derivations": [
+      {
+        "layer_id": "L1",
+        "layer_name": "contract",
+        "layer_number": 1,
+        "purpose": "Does the qualification profile have unambiguous acceptance criteria?",
+        "test_families": [
+          {
+            "family_id": "CONTRACT-STRUCTURE",
+            "family_name": "Profile Well-Formedness",
+            "source_contract_elements": ["INV-1", "INV-2", "INV-3", "INV-4", "INV-5"],
+            "test_patterns": [
+              {
+                "pattern_id": "C-001",
+                "description": "IR file conforms to qualification-ir.schema.json",
+                "assertion_type": "structure_valid",
+                "assertion": "schema_valid(ir_file, 'qualification-ir.schema.json')"
+              },
+              {
+                "pattern_id": "C-002",
+                "description": "All 5 invariants are declared",
+                "assertion_type": "element_exists",
+                "assertion": "count(ir.contract_source.invariants) >= 5"
+              },
+              {
+                "pattern_id": "C-003",
+                "description": "All 3 acceptance gates are declared",
+                "assertion_type": "element_exists",
+                "assertion": "count(ir.contract_source.acceptance_gates) >= 3"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "layer_id": "L2",
+        "layer_name": "workflow",
+        "layer_number": 2,
+        "purpose": "Can the qualification lifecycle be exercised end-to-end?",
+        "test_families": [
+          {
+            "family_id": "WF-QUALIFY",
+            "family_name": "Qualification Workflow",
+            "source_contract_elements": ["LR-1", "LR-2"],
+            "test_patterns": [
+              {
+                "pattern_id": "W-001",
+                "description": "Valid evidence produces PASS disposition",
+                "assertion_type": "deterministic_outcome",
+                "assertion": "qualify(valid_evidence) == {disposition: 'PASS'}"
+              },
+              {
+                "pattern_id": "W-002",
+                "description": "Invalid evidence produces FINDING disposition",
+                "assertion_type": "deterministic_outcome",
+                "assertion": "qualify(invalid_evidence) == {disposition: 'FINDING'}"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "layer_id": "L3",
+        "layer_name": "negative",
+        "layer_number": 3,
+        "purpose": "Can forbidden states be produced?",
+        "test_families": [
+          {
+            "family_id": "NEG-AUTHORITY",
+            "family_name": "Authority Elevation Prevention",
+            "source_contract_elements": ["AC-2", "INV-4"],
+            "test_patterns": [
+              {
+                "pattern_id": "N-001",
+                "description": "Qualification result must not contain authorization field",
+                "assertion_type": "state_transition_rejected",
+                "assertion": "NOT has_field(qualify(evidence), 'authorization')"
+              },
+              {
+                "pattern_id": "N-002",
+                "description": "Qualification result must not contain dispatch field",
+                "assertion_type": "state_transition_rejected",
+                "assertion": "NOT has_field(qualify(evidence), 'dispatch')"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "layer_id": "L4",
+        "layer_name": "concurrency",
+        "layer_number": 4,
+        "purpose": "Can concurrent qualification produce inconsistent results?",
+        "test_families": []
+      },
+      {
+        "layer_id": "L5",
+        "layer_name": "persistence",
+        "layer_number": 5,
+        "purpose": "Can modified evidence bypass qualification?",
+        "test_families": [
+          {
+            "family_id": "PERSIST-IMMUTABILITY",
+            "family_name": "Evidence Immutability",
+            "source_contract_elements": ["INV-2"],
+            "test_patterns": [
+              {
+                "pattern_id": "P-001",
+                "description": "Modified evidence record fails re-qualification",
+                "assertion_type": "tamper_detected",
+                "assertion": "qualify(modified_evidence) == {disposition: 'FINDING', reason: 'integrity_violation'}"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "layer_id": "L6",
+        "layer_name": "interface",
+        "layer_number": 6,
+        "purpose": "Can interface paths bypass qualification?",
+        "test_families": []
+      },
+      {
+        "layer_id": "L7",
+        "layer_name": "exceptional",
+        "layer_number": 7,
+        "purpose": "Can edge cases create violations?",
+        "test_families": [
+          {
+            "family_id": "EXCEPT-FRESHNESS",
+            "family_name": "Freshness Edge Cases",
+            "source_contract_elements": ["INV-3"],
+            "test_patterns": [
+              {
+                "pattern_id": "E-001",
+                "description": "Record at boundary age gets correct label",
+                "assertion_type": "deterministic_outcome",
+                "assertion": "freshness_label(record_at_60min) == 'historical'"
+              },
+              {
+                "pattern_id": "E-002",
+                "description": "Snapshot at boundary age gets correct label",
+                "assertion_type": "deterministic_outcome",
+                "assertion": "freshness_label(snapshot_at_15min) == 'stale'"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "layer_id": "L8",
+        "layer_name": "evidence",
+        "layer_number": 8,
+        "purpose": "Can QA-Pilot independently prove the qualification result?",
+        "test_families": [
+          {
+            "family_id": "EVID-PROVENANCE",
+            "family_name": "Provenance Completeness",
+            "source_contract_elements": ["INV-1", "ER-1"],
+            "test_patterns": [
+              {
+                "pattern_id": "V-001",
+                "description": "Every evidence record has all 6 provenance fields",
+                "assertion_type": "evidence_produced",
+                "assertion": "forall(e): has_all_provenance_fields(e, 6)"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "layer_id": "L9",
+        "layer_name": "regression",
+        "layer_number": 9,
+        "purpose": "Does the existing validation suite remain clean?",
+        "test_families": [
+          {
+            "family_id": "REG-EXISTING",
+            "family_name": "Existing Validator Regression",
+            "source_contract_elements": ["GATE-A"],
+            "test_patterns": [
+              {
+                "pattern_id": "R-001",
+                "description": "validate-runtime-evidence.py validate-all passes",
+                "assertion_type": "deterministic_outcome",
+                "assertion": "run('validate-runtime-evidence.py validate-all').exit_code == 0"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "adversarial_rules": [
+      {
+        "rule_id": "ADV-1",
+        "attack_name": "Authority Elevation via Qualification",
+        "attack_vector": "Inject authority-claiming fields into qualification output",
+        "contract_target": "INV-4",
+        "expected_outcome": "rejected",
+        "severity_if_pass": "critical",
+        "test_pattern": {
+          "pattern_id": "CRIT-001",
+          "description": "Qualification engine rejects evidence with authorization field",
+          "assertion_type": "state_transition_rejected",
+          "assertion": "qualify(evidence_with_authorization) == {disposition: 'FINDING', reason: 'authority_boundary_violation'}"
+        }
+      },
+      {
+        "rule_id": "ADV-2",
+        "attack_name": "Provenance Forgery",
+        "attack_vector": "Modify provenance fields after ingestion",
+        "contract_target": "INV-1",
+        "expected_outcome": "detected",
+        "severity_if_pass": "critical",
+        "test_pattern": {
+          "pattern_id": "CRIT-002",
+          "description": "Qualification detects forged provenance",
+          "assertion_type": "tamper_detected",
+          "assertion": "qualify(forged_provenance_evidence) == {disposition: 'FINDING', reason: 'provenance_integrity_violation'}"
+        }
+      }
+    ],
+    "positive_rules": [
+      {
+        "rule_id": "POS-1",
+        "workflow_name": "Complete Qualification Pipeline",
+        "lifecycle_path": ["unqualified", "qualified"],
+        "expected_outcome": "completes",
+        "source_contract_elements": ["INV-1", "INV-2", "INV-3", "INV-4", "INV-5"],
+        "test_pattern": {
+          "pattern_id": "POS-001",
+          "description": "Valid runtime evidence passes all 5 qualification checks",
+          "assertion_type": "lifecycle_completes",
+          "assertion": "qualify(valid_evidence).disposition == 'PASS'"
+        }
+      }
+    ]
+  },
+  "output_spec": {
+    "suite_id": "RUNTIME-EVIDENCE-QUALIFICATION-1",
+    "suite_version": "1.0.0",
+    "layers": [
+      { "layer_name": "contract", "output_type": "code", "test_runner": "python" },
+      { "layer_name": "workflow", "output_type": "code", "test_runner": "python" },
+      { "layer_name": "negative", "output_type": "code", "test_runner": "python" },
+      { "layer_name": "concurrency", "output_type": "audit_document", "test_runner": "manual" },
+      { "layer_name": "persistence", "output_type": "code", "test_runner": "python" },
+      { "layer_name": "interface", "output_type": "audit_document", "test_runner": "manual" },
+      { "layer_name": "exceptional", "output_type": "code", "test_runner": "python" },
+      { "layer_name": "evidence", "output_type": "code", "test_runner": "python" },
+      { "layer_name": "regression", "output_type": "code", "test_runner": "python" }
+    ],
+    "evidence_format": {
+      "output_path": "data/runtime-evidence/qualification-results.json",
+      "schema_ref": "qualification-evidence.schema.json",
+      "required_fields": [
+        "suite_id", "contract_ref", "start_time", "end_time",
+        "total_tests", "passed", "failed", "findings",
+        "evidence_records", "layers", "disposition"
+      ]
+    },
+    "disposition_rules": {
+      "pass": "failed == 0 && findings == 0",
+      "finding": "failed > 0 || findings > 0",
+      "critical": "exists f in findings: f.severity in {critical, high}"
+    }
+  }
+}

@@ -1,0 +1,76 @@
+{
+  "evidence_id": "QE-IR-SNA-EPIC-1",
+  "suite_id": "QS-IR-SNA-EPIC-1",
+  "ir_id": "IR-SNA-EPIC-1",
+  "contract_ref": "EPIC-SPRINT-NUMBER-ALLOCATION-GOVERNANCE-1",
+  "compiler_version": "1.0.0",
+  "executed_at": "2026-08-15T22:14:23.439029+00:00",
+  "source_hash": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "total_tests": 36,
+  "passed": 36,
+  "failed": 0,
+  "disposition": "PASS",
+  "layer_results": {
+    "contract": {
+      "total": 4,
+      "passed": 4,
+      "failed": 0
+    },
+    "workflow": {
+      "total": 11,
+      "passed": 11,
+      "failed": 0
+    },
+    "negative": {
+      "total": 1,
+      "passed": 1,
+      "failed": 0
+    },
+    "concurrency": {
+      "total": 2,
+      "passed": 2,
+      "failed": 0
+    },
+    "persistence": {
+      "total": 3,
+      "passed": 3,
+      "failed": 0
+    },
+    "interface": {
+      "total": 1,
+      "passed": 1,
+      "failed": 0
+    },
+    "exceptional": {
+      "total": 2,
+      "passed": 2,
+      "failed": 0
+    },
+    "evidence": {
+      "total": 1,
+      "passed": 1,
+      "failed": 0
+    },
+    "regression": {
+      "total": 1,
+      "passed": 1,
+      "failed": 0
+    },
+    "adversarial": {
+      "total": 6,
+      "passed": 6,
+      "failed": 0
+    },
+    "positive": {
+      "total": 4,
+      "passed": 4,
+      "failed": 0
+    }
+  },
+  "findings": [],
+  "provenance": {
+    "compiler": "qualification-compiler v1.0.0",
+    "ir_source": "IR-SNA-EPIC-1",
+    "contract_source": "EPIC-SPRINT-NUMBER-ALLOCATION-GOVERNANCE-1"
+  }
+}

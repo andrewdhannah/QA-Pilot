@@ -1,0 +1,36 @@
+{
+  "canonical": {
+    "program": "LIBRARIAN",
+    "project": "LIBRARIAN",
+    "workstream": "QA-PILOT",
+    "sprint": 682,
+    "owner": "Owner",
+    "authority_mode": "OWNER",
+    "governing_state": "DESIGN_AUTHORIZED",
+    "governing_contract": "QA-PILOT-CONTRACT-001"
+  },
+  "session": {
+    "session_id": "LIBRARIAN-QA-PILOT-S682-20260813-03",
+    "session_type": "VERIFY",
+    "objective": "QA_PILOT_INTEGRATION",
+    "date": "2026-08-13",
+    "sequence": 3
+  },
+  "routing": {
+    "relevant_agents": [
+      "LINK",
+      "CLAUDE"
+    ],
+    "relevant_contracts": [
+      "QA-PILOT-CONTRACT-001"
+    ],
+    "canonical_state_authority": "LIBRARIAN",
+    "implementation_authorized": false,
+    "allowed_operating_mode": "DESIGN_ONLY"
+  },
+  "hash_chain": {
+    "prev": "554dad52eea2f1f1c0fc22e127158b13990754c9ceb6ba0d5129e8d38138cae3",
+    "self": "bbd16d07288355c78a7b9f7ed30a1c653f73ba7bd5c8500f80faa2383d0149db"
+  },
+  "routing_code": "LIB/QA/S682/03/VERIFY/O"
+}

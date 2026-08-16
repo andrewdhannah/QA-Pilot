@@ -1,0 +1,181 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "qa-pilot-qualification-evidence-v1",
+  "$ref": "#/$defs/QualificationEvidence",
+  "$defs": {
+    "QualificationEvidence": {
+      "type": "object",
+      "description": "Evidence output from a compiled qualification suite run.",
+      "required": ["suite_id", "suite_version", "contract_ref", "ir_ref", "start_time", "end_time", "total_tests", "passed", "failed", "layers", "disposition"],
+      "properties": {
+        "suite_id": { "type": "string" },
+        "suite_version": { "type": "string" },
+        "contract_ref": { "type": "string" },
+        "ir_ref": { "type": "string", "description": "Reference to the IR that generated this suite" },
+        "ir_source_hash": { "type": "string", "description": "SHA-256 of the IR used (proves which IR version produced these results)" },
+        "start_time": { "type": "string", "format": "date-time" },
+        "end_time": { "type": "string", "format": "date-time" },
+        "total_tests": { "type": "integer", "minimum": 0 },
+        "passed": { "type": "integer", "minimum": 0 },
+        "failed": { "type": "integer", "minimum": 0 },
+        "findings": { "type": "integer", "minimum": 0 },
+        "findings_detail": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/Finding" }
+        },
+        "evidence_records": { "type": "integer", "minimum": 0 },
+        "layers": {
+          "type": "object",
+          "additionalProperties": { "$ref": "#/$defs/LayerEvidence" }
+        },
+        "adversarial_results": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/AdversarialResult" }
+        },
+        "positive_results": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/PositiveResult" }
+        },
+        "disposition": {
+          "type": "string",
+          "enum": ["PASS", "FINDING", "CRITICAL"]
+        },
+        "provenance": { "$ref": "#/$defs/ProvenanceChain" }
+      },
+      "additionalProperties": false
+    },
+
+    "LayerEvidence": {
+      "type": "object",
+      "required": ["layer", "total", "passed", "failed", "tests"],
+      "properties": {
+        "layer": { "type": "integer", "minimum": 1, "maximum": 9 },
+        "total": { "type": "integer", "minimum": 0 },
+        "passed": { "type": "integer", "minimum": 0 },
+        "failed": { "type": "integer", "minimum": 0 },
+        "tests": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/TestResult" }
+        }
+      },
+      "additionalProperties": false
+    },
+
+    "TestResult": {
+      "type": "object",
+      "required": ["test_id", "description", "pass", "source_contract_elements"],
+      "properties": {
+        "test_id": { "type": "string" },
+        "description": { "type": "string" },
+        "pass": { "type": "boolean" },
+        "detail": { "type": "string" },
+        "source_contract_elements": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Provenance: which contract elements this test validates"
+        },
+        "layer_name": { "type": "string" },
+        "family_id": { "type": "string", "description": "The test family this test belongs to" },
+        "timestamp": { "type": "string", "format": "date-time" }
+      },
+      "additionalProperties": false
+    },
+
+    "Finding": {
+      "type": "object",
+      "required": ["severity", "description", "layer", "test_id", "source_contract_elements"],
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": ["critical", "high", "medium", "low", "info"]
+        },
+        "description": { "type": "string" },
+        "layer": { "type": "string" },
+        "test_id": { "type": "string" },
+        "source_contract_elements": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "timestamp": { "type": "string", "format": "date-time" },
+        "recommendation": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+
+    "AdversarialResult": {
+      "type": "object",
+      "required": ["rule_id", "attack_name", "expected_outcome", "actual_outcome", "pass"],
+      "properties": {
+        "rule_id": { "type": "string" },
+        "attack_name": { "type": "string" },
+        "contract_target": { "type": "string" },
+        "expected_outcome": { "type": "string" },
+        "actual_outcome": { "type": "string" },
+        "pass": { "type": "boolean" },
+        "detail": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+
+    "PositiveResult": {
+      "type": "object",
+      "required": ["rule_id", "workflow_name", "expected_outcome", "actual_outcome", "pass"],
+      "properties": {
+        "rule_id": { "type": "string" },
+        "workflow_name": { "type": "string" },
+        "lifecycle_path": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "expected_outcome": { "type": "string" },
+        "actual_outcome": { "type": "string" },
+        "pass": { "type": "boolean" }
+      },
+      "additionalProperties": false
+    },
+
+    "ProvenanceChain": {
+      "type": "object",
+      "description": "Full traceability from evidence back to contract.",
+      "properties": {
+        "contract_source_hash": { "type": "string", "description": "SHA-256 of the source epic contract" },
+        "ir_id": { "type": "string" },
+        "ir_version": { "type": "string" },
+        "ir_source_hash": { "type": "string" },
+        "compiler_version": { "type": "string" },
+        "suite_id": { "type": "string" },
+        "test_count_by_layer": {
+          "type": "object",
+          "additionalProperties": { "type": "integer" }
+        },
+        "coverage_matrix": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/CoverageEntry" },
+          "description": "Maps each contract element to the tests that validate it"
+        }
+      },
+      "additionalProperties": false
+    },
+
+    "CoverageEntry": {
+      "type": "object",
+      "required": ["element_id", "element_type", "test_ids"],
+      "properties": {
+        "element_id": { "type": "string", "description": "e.g. INV-1, GATE-A, LR-7" },
+        "element_type": {
+          "type": "string",
+          "enum": ["invariant", "acceptance_gate", "lifecycle_rule", "stop_condition", "authority_constraint", "evidence_requirement"]
+        },
+        "test_ids": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "layers_touched": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

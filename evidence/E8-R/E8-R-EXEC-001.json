@@ -1,0 +1,48 @@
+{
+  "$schema": "assurance-evidence-v1",
+  "evidence_class": "record",
+  "identity": {
+    "evidence_id": "E8-R-EXEC-001",
+    "timestamp": "2026-08-11T06:00:00Z",
+    "source": "qa-pilot"
+  },
+  "observation": {
+    "observed_state": "E8-R Full Corpus Reproducibility executed. 307 frozen artifacts run twice. Full structural MATCH. Full observational MATCH (228 PASS / 79 FAIL both runs). 0 divergences. Corpus hash: c9b7a99be34ab7abe0811cf54c5e4303...",
+    "artifact_refs": [
+      "reports/E8-R-full-corpus-reproducibility-result.json",
+      "scripts/e8-r-full-corpus-reproducibility.py"
+    ],
+    "measurements": {
+      "corpus_size": 307,
+      "run_a_pass": 228,
+      "run_a_fail": 79,
+      "run_b_pass": 228,
+      "run_b_fail": 79,
+      "structural_match": true,
+      "observational_match": true,
+      "divergences": 0
+    }
+  },
+  "context": {
+    "environment": "QA-Pilot workspace, Librarian MCP target",
+    "consumer_shape": "qa-pilot-reproducibility",
+    "execution_context": {
+      "corpus_hash": "c9b7a99be34ab7abe0811cf54c5e4303...",
+      "run_count": 2,
+      "regeneration": false,
+      "structural_comparison": "MATCH",
+      "observational_comparison": "MATCH"
+    }
+  },
+  "custody": {
+    "origin": "e8-r-full-corpus-reproducibility.py",
+    "chain": ["E8-R-EXEC-001"],
+    "verification_state": "verified"
+  },
+  "freshness": {
+    "captured_at": "2026-08-11T06:00:00Z",
+    "validated_at": "2026-08-11T06:00:00Z",
+    "refresh_expected_at": null,
+    "confidence_label": "historical"
+  }
+}

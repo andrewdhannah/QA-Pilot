@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://librarian.dev/schemas/risk-outcome-v1.json",
+  "title": "Risk Outcome Event Record",
+  "description": "Record of observed outcomes following a risk prediction. Links to prediction for calibration analysis.",
+  "type": "object",
+  "required": ["outcome_id", "prediction_id", "observed_at", "observation_window_days", "findings_discovered"],
+  "properties": {
+    "outcome_id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Unique identifier. Format: RO-<timestamp>-<hex>."
+    },
+    "prediction_id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Reference to the risk prediction this outcome validates."
+    },
+    "observed_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When observation was completed."
+    },
+    "observation_window_days": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "How many days were observed after prediction."
+    },
+    "findings_discovered": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Total findings discovered during observation."
+    },
+    "severity_breakdown": {
+      "type": "object",
+      "properties": {
+        "critical": { "type": "integer", "minimum": 0 },
+        "high": { "type": "integer", "minimum": 0 },
+        "medium": { "type": "integer", "minimum": 0 },
+        "low": { "type": "integer", "minimum": 0 }
+      },
+      "description": "Breakdown of findings by severity."
+    },
+    "remediation_effort_days": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Total remediation effort in days."
+    },
+    "escaped_issues": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Issues that escaped detection."
+    },
+    "qualification_changes": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Number of qualification state changes."
+    },
+    "advisory_only": {
+      "type": "boolean",
+      "const": true,
+      "description": "Always true. This is an outcome record, not authorization."
+    }
+  },
+  "additionalProperties": false
+}

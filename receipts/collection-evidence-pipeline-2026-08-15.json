@@ -1,0 +1,13 @@
+{
+  "receipt_id": "CEP-20260815-001",
+  "collection_id": "COL-20260716-6",
+  "collected_at": "2026-07-16T19:29:05.192088+00:00",
+  "sources": 6,
+  "total_evidence": 35,
+  "total_qr_records": 35,
+  "advisory_only": true,
+  "custody": "qa-pilot-local",
+  "librarian_impact": "none",
+  "generated_at": "2026-08-15T23:46:15.837294+00:00",
+  "generated_by": "qa_pilot_qualification_evidence_pipeline.py receipt"
+}

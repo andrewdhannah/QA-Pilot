@@ -1,0 +1,27 @@
+{
+  "test_id": "RECALL-RETRIEVAL-BRIDGE-1-T002-CONSTRUCTED",
+  "source_requirement": "Sprint RECALL-RETRIEVAL-BRIDGE-1 must have implementing artifacts",
+  "source_sprint": "RECALL-RETRIEVAL-BRIDGE-1",
+  "source_plan": "RECALL-RETRIEVAL-BRIDGE-1-PLAN",
+  "required_capabilities": [
+    "SCRIPT_EXECUTION"
+  ],
+  "matched_capability": "validator",
+  "skills_used": [],
+  "target_adapter": "mcp-jsonrpc",
+  "description": "Verify implementation artifacts exist for RECALL-RETRIEVAL-BRIDGE-1",
+  "test_type": "existence",
+  "assertions": [
+    {
+      "type": "file_exists",
+      "expected": "ARTIFACTS_PRESENT"
+    }
+  ],
+  "provenance": {
+    "constructed_at": "2026-08-11T05:19:27.860525+00:00",
+    "construction_agent": "qa-pilot-agent",
+    "source_claim": "All 322 tests passed (322/322 PASS)"
+  },
+  "execution_status": "NOT_EXECUTED",
+  "result": null
+}

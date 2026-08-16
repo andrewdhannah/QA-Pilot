@@ -1,0 +1,174 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "declared-capability-state-snapshot-v1.schema.json",
+  "title": "Declared Capability State Snapshot",
+  "description": "Immutable snapshot of what *should* be true for a capability at a point in time. Assembled from registry state (existence) and contract metadata (meaning).",
+  "type": "object",
+  "required": [
+    "snapshot_id",
+    "capability_id",
+    "snapshot_time",
+    "assembly_status",
+    "missing_requirements",
+    "registry_source",
+    "declared_lifecycle_state",
+    "authority_declaration",
+    "validator_refs",
+    "schema_versions",
+    "freshness_policy",
+    "evidence_requirements"
+  ],
+  "properties": {
+    "snapshot_id": {
+      "type": "string",
+      "description": "Unique snapshot identifier",
+      "pattern": "^DCS-"
+    },
+    "capability_id": {
+      "type": "string",
+      "description": "The capability this snapshot declares state for"
+    },
+    "snapshot_time": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When this snapshot was assembled (ISO8601)"
+    },
+    "assembly_status": {
+      "type": "string",
+      "enum": ["COMPLETE", "INCOMPLETE"],
+      "description": "Whether assembly was complete or incomplete"
+    },
+    "missing_requirements": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "What inputs were missing (empty if complete)"
+    },
+    "registry_source": {
+      "$ref": "#/$defs/RegistrySource",
+      "description": "Provenance from the registry input"
+    },
+    "contract_source": {
+      "$ref": "#/$defs/ContractSource",
+      "description": "Provenance from the contract input (nil if missing)"
+    },
+    "declared_lifecycle_state": {
+      "type": "string",
+      "enum": ["ACTIVE", "INACTIVE", "DEPRECATED", "RETIRED"],
+      "description": "The declared lifecycle state"
+    },
+    "authority_declaration": {
+      "$ref": "#/$defs/AuthorityDeclaration",
+      "description": "The declared authority boundary"
+    },
+    "validator_refs": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Validator references"
+    },
+    "schema_versions": {
+      "type": "object",
+      "additionalProperties": { "type": "string" },
+      "description": "Schema versions for evidence types"
+    },
+    "freshness_policy": {
+      "$ref": "#/$defs/FreshnessPolicy",
+      "description": "Freshness policy"
+    },
+    "evidence_requirements": {
+      "$ref": "#/$defs/EvidenceRequirements",
+      "description": "Evidence requirements"
+    }
+  },
+  "$defs": {
+    "RegistrySource": {
+      "type": "object",
+      "required": ["entry_id", "assembled_at"],
+      "properties": {
+        "entry_id": {
+          "type": "string",
+          "description": "Registry entry ID"
+        },
+        "assembled_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "When the snapshot was assembled"
+        }
+      }
+    },
+    "ContractSource": {
+      "type": "object",
+      "required": ["contract_id", "version"],
+      "properties": {
+        "contract_id": {
+          "type": "string",
+          "description": "Contract identifier"
+        },
+        "version": {
+          "type": "string",
+          "description": "Contract version"
+        }
+      }
+    },
+    "AuthorityDeclaration": {
+      "type": "object",
+      "required": ["mode", "mutation_allowed", "decision_authority"],
+      "properties": {
+        "mode": {
+          "type": "string",
+          "enum": ["observation", "execution", "delegation"],
+          "description": "Authority mode"
+        },
+        "mutation_allowed": {
+          "type": "boolean",
+          "description": "Whether this capability can mutate state"
+        },
+        "decision_authority": {
+          "type": "boolean",
+          "description": "Whether this capability can make decisions"
+        },
+        "scope": {
+          "type": ["string", "null"],
+          "description": "Optional scope description"
+        }
+      }
+    },
+    "FreshnessPolicy": {
+      "type": "object",
+      "required": ["max_age_hours", "require_heartbeat"],
+      "properties": {
+        "max_age_hours": {
+          "type": "integer",
+          "description": "Maximum hours without an observation before stale signal"
+        },
+        "require_heartbeat": {
+          "type": "boolean",
+          "description": "Whether heartbeat observations are required"
+        },
+        "heartbeat_interval_hours": {
+          "type": ["integer", "null"],
+          "description": "Required heartbeat interval in hours"
+        }
+      }
+    },
+    "EvidenceRequirements": {
+      "type": "object",
+      "required": ["required_classes", "minimum_count", "required_event_types"],
+      "properties": {
+        "required_classes": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Which evidence classes are required"
+        },
+        "minimum_count": {
+          "type": "integer",
+          "description": "Minimum evidence records"
+        },
+        "required_event_types": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Specific event types required"
+        }
+      }
+    }
+  }
+}

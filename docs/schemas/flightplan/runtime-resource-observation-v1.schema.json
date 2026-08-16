@@ -1,0 +1,250 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://librarian.dev/schemas/runtime-resource-observation-v1.json",
+  "title": "Runtime Resource Observation",
+  "description": "Structured observation from FlightPlan to Librarian. Captures what was consumed, what was predicted, and the variance between them. FlightPlan produces this; Librarian decides what to do with it. This is an observation, not a decision. FlightPlan observes. Librarian decides. Extended with provenance chain per QA-PILOT-RUNTIME-EVIDENCE-COMPLETION-1.",
+  "type": "object",
+  "required": [
+    "observation_id", "observation_type", "session_id",
+    "timestamp", "model_identity", "consumed", "estimate", "variance"
+  ],
+  "properties": {
+    "observation_id": {
+      "type": "string",
+      "description": "Unique identifier for this observation. Append-only."
+    },
+    "observation_type": {
+      "type": "string",
+      "const": "runtime_resource",
+      "description": "Observation type. Allows future observation types without schema migration."
+    },
+    "session_id": {
+      "type": "string",
+      "description": "FlightPlan session ID. Links to active_session."
+    },
+    "work_packet_id": {
+      "type": "string",
+      "description": "Work Packet ID if this session is governed. Omit (do not send null) for ungoverned sessions."
+    },
+    "work_order_id": {
+      "type": "string",
+      "description": "Librarian Work Order ID if present. Omit if not applicable."
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When this observation was recorded."
+    },
+    "model_identity": {
+      "type": "object",
+      "required": ["provider", "model"],
+      "properties": {
+        "provider": {
+          "type": "string",
+          "description": "AI provider name (e.g. 'ollama', 'anthropic', 'openai')."
+        },
+        "model": {
+          "type": "string",
+          "description": "Model identifier (e.g. 'llama-3.2-3b', 'claude-sonnet-4-20250514')."
+        },
+        "version": {
+          "type": "string",
+          "description": "Optional model version or tag. Omit if not applicable."
+        }
+      },
+      "description": "Which provider and model produced this session's tokens. Structured to allow future fields without schema migration."
+    },
+    "consumed": {
+      "type": "object",
+      "required": ["tokens_observed", "goose_level", "elapsed_minutes"],
+      "properties": {
+        "tokens_observed": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Tokens consumed so far in this session."
+        },
+        "goose_level": {
+          "type": "string",
+          "enum": [
+            "PREFLIGHT", "CRUISING", "HEADWIND", "TURBULENCE",
+            "HONK", "WAYWARD", "LANDING", "REFUELLED"
+          ],
+          "description": "Current Goose Scale level. The most important field for immediate action."
+        },
+        "elapsed_minutes": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Minutes since session start."
+        },
+        "burn_rate_per_hour": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Tokens per hour. Omit if not yet computed."
+        }
+      },
+      "description": "What has been consumed. This is factual observation data."
+    },
+    "estimate": {
+      "type": "object",
+      "required": ["estimator_id", "confidence", "percentiles"],
+      "properties": {
+        "estimator_id": {
+          "type": "string",
+          "description": "Which estimator produced this estimate."
+        },
+        "confidence": {
+          "type": "string",
+          "enum": ["high", "medium", "low", "wayward"],
+          "description": "Confidence in the estimate, driven by sample count."
+        },
+        "percentiles": {
+          "type": "object",
+          "required": ["p50", "p80", "p95"],
+          "properties": {
+            "p50": { "type": "integer" },
+            "p80": { "type": "integer" },
+            "p95": { "type": "integer" }
+          }
+        },
+        "sample_count": {
+          "type": "integer",
+          "description": "Historical sessions used for this estimate."
+        },
+        "match_scope": {
+          "type": "string",
+          "description": "How tightly the estimate matches the target context."
+        }
+      },
+      "description": "What was predicted before execution started. Links to the CostEstimate that informed the budget."
+    },
+    "variance": {
+      "type": "object",
+      "required": ["state", "consumed_pct_of_p50", "consumed_pct_of_p80"],
+      "properties": {
+        "state": {
+          "type": "string",
+          "enum": ["NOMINAL", "ELEVATED", "AT_RISK", "EXCEEDED"],
+          "description": "Variance classification. IMPORTANT: classifier must evaluate in priority order EXCEEDED > AT_RISK > ELEVATED > NOMINAL, because thresholds are not naturally mutually exclusive — ELEVATED is keyed off p50 while AT_RISK/EXCEEDED are keyed off p80, and p50 < p80 always. Check highest severity first."
+        },
+        "consumed_pct_of_p50": {
+          "type": "number",
+          "description": "tokens_observed / estimate.percentiles.p50 * 100. How much of the median estimate has been consumed."
+        },
+        "consumed_pct_of_p80": {
+          "type": "number",
+          "description": "tokens_observed / estimate.percentiles.p80 * 100. How much of the 80th percentile has been consumed."
+        },
+        "remaining_tokens": {
+          "type": "integer",
+          "description": "Estimated tokens remaining (p80 - tokens_observed). Omit if estimate unavailable."
+        }
+      },
+      "description": "Variance between consumed and predicted. This is the signal Librarian acts on. Classification thresholds: EXCEEDED: consumed_pct_of_p80 > 100. AT_RISK: consumed_pct_of_p80 > 90. ELEVATED: consumed_pct_of_p50 > 75. Everything else: NOMINAL."
+    },
+    "recommended_action": {
+      "type": "string",
+      "description": "FlightPlan's recommendation. Librarian may override."
+    },
+    "execution_identity": {
+      "type": "object",
+      "description": "Execution identity provenance. Answers: what produced this observation?",
+      "required": ["node_identity", "runtime_identity", "agent_identity", "model_identity", "session_identity"],
+      "properties": {
+        "node_identity": {
+          "type": "object",
+          "required": ["project_id", "project_type", "node_id"],
+          "properties": {
+            "project_id": { "type": "string", "minLength": 1 },
+            "project_type": { "type": "string", "enum": ["add_on", "core", "integration", "library"] },
+            "node_id": { "type": "string", "minLength": 1 }
+          },
+          "additionalProperties": false
+        },
+        "runtime_identity": {
+          "type": "object",
+          "required": ["runtime_id", "runtime_type", "runtime_version"],
+          "properties": {
+            "runtime_id": { "type": "string", "minLength": 1 },
+            "runtime_type": { "type": "string", "enum": ["openwork", "codex", "claude-code", "cursor", "vscode", "custom"] },
+            "runtime_version": { "type": "string", "minLength": 1 }
+          },
+          "additionalProperties": false
+        },
+        "agent_identity": {
+          "type": "object",
+          "required": ["agent_id", "agent_version"],
+          "properties": {
+            "agent_id": { "type": "string", "minLength": 1 },
+            "agent_version": { "type": "string", "minLength": 1 }
+          },
+          "additionalProperties": false
+        },
+        "model_identity": {
+          "type": "object",
+          "required": ["provider", "model"],
+          "properties": {
+            "provider": { "type": "string", "minLength": 1 },
+            "model": { "type": "string", "minLength": 1 },
+            "version": { "type": "string" }
+          },
+          "additionalProperties": false
+        },
+        "session_identity": {
+          "type": "object",
+          "required": ["session_id", "started_at"],
+          "properties": {
+            "session_id": { "type": "string", "minLength": 1 },
+            "started_at": { "type": "string", "format": "date-time" }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "governance_context": {
+      "type": "object",
+      "description": "Governance context provenance. Answers: under what governed activity?",
+      "required": ["project_identity", "authority_scope"],
+      "properties": {
+        "project_identity": {
+          "type": "object",
+          "required": ["project_id", "project_type"],
+          "properties": {
+            "project_id": { "type": "string", "minLength": 1 },
+            "project_type": { "type": "string", "enum": ["add_on", "core", "integration", "library"] }
+          },
+          "additionalProperties": false
+        },
+        "work_packet_identity": {
+          "type": "object",
+          "properties": {
+            "work_packet_id": { "type": ["string", "null"] },
+            "work_order_id": { "type": ["string", "null"] }
+          },
+          "additionalProperties": false
+        },
+        "owner_identity": {
+          "type": "object",
+          "properties": {
+            "owner_id": { "type": "string", "minLength": 1 }
+          },
+          "additionalProperties": false
+        },
+        "authority_scope": {
+          "type": "object",
+          "required": ["scope", "constraints"],
+          "properties": {
+            "scope": { "type": "string", "enum": ["qa_pilot_local", "librarian_local", "cross_project", "fleet"] },
+            "constraints": {
+              "type": "array",
+              "items": { "type": "string", "enum": ["advisory_only", "no_cross_project_mutation", "no_auto_remediation", "append_only"] }
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,392 @@
+{
+  "$schema": "qa-pilot-testing-node-contract-v1",
+  "description": "Testing Node Contract — defines the stable boundary for QA-Pilot as a testing node. Derived from E2E-1 implementation evidence, not speculation.",
+  "contract_version": "1.0.0",
+  "derived_from": "E2E-1 Librarian Runtime Audit",
+  "derived_at": "2026-08-11",
+
+  "node_identity": {
+    "description": "Identity of the testing node performing the audit",
+    "fields": {
+      "node_id": {
+        "type": "string",
+        "required": true,
+        "description": "Unique identifier for the testing node (e.g. 'qa-pilot')"
+      },
+      "node_version": {
+        "type": "string",
+        "required": true,
+        "description": "Version of the testing node (e.g. '1.0.0')"
+      },
+      "node_capabilities_version": {
+        "type": "string",
+        "required": true,
+        "description": "Version of the capability registry at execution time"
+      }
+    }
+  },
+
+  "target_identity": {
+    "description": "Identity of the system being tested. Target is configurable — not coupled to any specific system.",
+    "fields": {
+      "target_id": {
+        "type": "string",
+        "required": true,
+        "description": "Unique identifier for the target (e.g. 'librarian-runtime')"
+      },
+      "target_type": {
+        "type": "string",
+        "required": true,
+        "enum": ["mcp", "api", "cli", "file_system", "process", "distributed"],
+        "description": "Type of target system"
+      },
+      "target_endpoint": {
+        "type": "string",
+        "required": false,
+        "description": "Endpoint for MCP/API targets (configured externally)"
+      },
+      "target_version": {
+        "type": "string",
+        "required": false,
+        "description": "Version of the target system"
+      },
+      "target_environment": {
+        "type": "string",
+        "required": true,
+        "description": "Environment description (e.g. 'local', 'staging', 'production')"
+      }
+    }
+  },
+
+  "capability_identity": {
+    "description": "Identity of the capability used to execute a test",
+    "fields": {
+      "capability_id": {
+        "type": "string",
+        "required": true,
+        "description": "Capability identifier (e.g. 'MCP_API_INTERACTION')"
+      },
+      "capability_status": {
+        "type": "string",
+        "required": true,
+        "enum": ["available", "unavailable", "partial", "manual"],
+        "description": "Current qualification state"
+      },
+      "capability_qualified_at": {
+        "type": "string",
+        "required": true,
+        "format": "ISO8601",
+        "description": "When the capability was last qualified"
+      },
+      "capability_implementation": {
+        "type": "string",
+        "required": true,
+        "description": "Implementation reference (e.g. 'mcp-capability.py')"
+      }
+    }
+  },
+
+  "test_identity": {
+    "description": "Identity of a test definition",
+    "fields": {
+      "test_id": {
+        "type": "string",
+        "required": true,
+        "description": "Unique test identifier (e.g. 'E2E-1-T09')"
+      },
+      "test_version": {
+        "type": "string",
+        "required": true,
+        "description": "Version of the test definition"
+      },
+      "test_domain": {
+        "type": "string",
+        "required": true,
+        "enum": ["regression", "security", "uat", "accessibility", "performance", "ai", "compliance"],
+        "description": "Test domain"
+      },
+      "required_capability": {
+        "type": "string",
+        "required": true,
+        "description": "Capability required to execute this test"
+      }
+    }
+  },
+
+  "execution_identity": {
+    "description": "Identity of a test execution",
+    "fields": {
+      "execution_id": {
+        "type": "string",
+        "required": true,
+        "description": "Unique execution identifier"
+      },
+      "execution_timestamp": {
+        "type": "string",
+        "required": true,
+        "format": "ISO8601",
+        "description": "When the execution occurred"
+      },
+      "execution_environment": {
+        "type": "object",
+        "required": true,
+        "description": "Environment details",
+        "fields": {
+          "os": {"type": "string"},
+          "platform": {"type": "string"},
+          "python_version": {"type": "string"},
+          "mcp_target": {"type": "string", "required": false}
+        }
+      },
+      "execution_duration_ms": {
+        "type": "number",
+        "required": true,
+        "description": "Execution duration in milliseconds"
+      }
+    }
+  },
+
+  "result_state": {
+    "description": "The five possible result states with precedence (highest to lowest)",
+    "states": {
+      "CAPABILITY_MISSING": {
+        "precedence": 1,
+        "description": "Required capability is not available. No conclusion about target is permitted.",
+        "semantics": "The test could not be executed because the required capability does not exist or is not qualified.",
+        "target_implication": "NONE — no assertion about target"
+      },
+      "INCOMPLETE": {
+        "precedence": 2,
+        "description": "Capability is available but test discovery is incomplete.",
+        "semantics": "The test definition is incomplete, the target scope is not fully discovered, or prerequisites are not met.",
+        "target_implication": "NONE — assertion about test completeness, not target"
+      },
+      "ERROR": {
+        "precedence": 3,
+        "description": "Execution infrastructure failed. The test could not complete.",
+        "semantics": "The capability is available and the test was discoverable, but execution infrastructure (network, timeout, parsing) failed.",
+        "target_implication": "NONE — assertion about execution infrastructure, not target"
+      },
+      "FAIL": {
+        "precedence": 4,
+        "description": "Execution completed and the test criterion was not met.",
+        "semantics": "The test executed successfully and the assertion against the target was false.",
+        "target_implication": "POSITIVE — assertion about target defect"
+      },
+      "PASS": {
+        "precedence": 5,
+        "description": "Execution completed and the test criterion was met.",
+        "semantics": "The test executed successfully and the assertion against the target was true.",
+        "target_implication": "POSITIVE — assertion about target correctness"
+      }
+    },
+    "resolution_rule": "When multiple states could apply, the state with the LOWEST precedence wins. This prevents masking infrastructure problems as target defects.",
+    "precedence_order": [
+      "CAPABILITY_MISSING",
+      "INCOMPLETE",
+      "ERROR",
+      "FAIL",
+      "PASS"
+    ]
+  },
+
+  "evidence_chain": {
+    "description": "The evidence relationship chain. Each link references the previous.",
+    "chain": [
+      {
+        "link": "test",
+        "references": "test_identity",
+        "description": "Test definition that was executed"
+      },
+      {
+        "link": "execution",
+        "references": "execution_identity",
+        "description": "Execution that ran the test"
+      },
+      {
+        "link": "result",
+        "references": "result_state",
+        "description": "Result of the execution"
+      },
+      {
+        "link": "evidence",
+        "references": "evidence_record",
+        "description": "Immutable evidence record"
+      },
+      {
+        "link": "governance_report",
+        "references": "governance_report",
+        "description": "Advisory-only governance report"
+      }
+    ],
+    "reconstruction_requirement": "Any result can be independently reconstructed from the evidence chain without LLM interpretation."
+  },
+
+  "evidence_record": {
+    "description": "Schema for an evidence record",
+    "fields": {
+      "evidence_id": {
+        "type": "string",
+        "required": true,
+        "description": "Unique evidence identifier"
+      },
+      "evidence_class": {
+        "type": "string",
+        "required": true,
+        "enum": ["record", "snapshot"],
+        "description": "Evidence class per evidence contract"
+      },
+      "test_id": {
+        "type": "string",
+        "required": true,
+        "description": "Reference to test_identity.test_id"
+      },
+      "execution_id": {
+        "type": "string",
+        "required": true,
+        "description": "Reference to execution_identity.execution_id"
+      },
+      "result_state": {
+        "type": "string",
+        "required": true,
+        "enum": ["PASS", "FAIL", "INCOMPLETE", "ERROR", "CAPABILITY_MISSING"],
+        "description": "Result state"
+      },
+      "target_id": {
+        "type": "string",
+        "required": true,
+        "description": "Reference to target_identity.target_id"
+      },
+      "capability_id": {
+        "type": "string",
+        "required": true,
+        "description": "Reference to capability_identity.capability_id"
+      },
+      "content_hash": {
+        "type": "string",
+        "required": true,
+        "description": "SHA-256 hash of the evidence content"
+      },
+      "observed_state": {
+        "type": "string",
+        "required": true,
+        "description": "What was observed (free text)"
+      },
+      "provenance": {
+        "type": "object",
+        "required": true,
+        "description": "Provenance chain",
+        "fields": {
+          "origin": {"type": "string"},
+          "chain": {"type": "array", "items": {"type": "string"}},
+          "verification_state": {"type": "string"}
+        }
+      },
+      "advisory_only": {
+        "type": "boolean",
+        "required": true,
+        "description": "Must be true — evidence is advisory-only"
+      }
+    }
+  },
+
+  "governance_report": {
+    "description": "Schema for a governance report",
+    "fields": {
+      "report_id": {
+        "type": "string",
+        "required": true,
+        "description": "Unique report identifier"
+      },
+      "test_id": {
+        "type": "string",
+        "required": true,
+        "description": "Reference to the test suite"
+      },
+      "target_id": {
+        "type": "string",
+        "required": true,
+        "description": "Reference to target_identity.target_id"
+      },
+      "node_id": {
+        "type": "string",
+        "required": true,
+        "description": "Reference to node_identity.node_id"
+      },
+      "status": {
+        "type": "string",
+        "required": true,
+        "enum": ["COMPLETE", "INCOMPLETE"],
+        "description": "Whether all requirements were executed"
+      },
+      "summary": {
+        "type": "object",
+        "required": true,
+        "description": "Aggregate results",
+        "fields": {
+          "total_requirements": {"type": "integer"},
+          "pass": {"type": "integer"},
+          "fail": {"type": "integer"},
+          "incomplete": {"type": "integer"},
+          "error": {"type": "integer"},
+          "capability_missing": {"type": "integer"},
+          "coverage_pct": {"type": "number"}
+        }
+      },
+      "evidence_refs": {
+        "type": "array",
+        "required": true,
+        "items": {"type": "string"},
+        "description": "References to evidence records"
+      },
+      "content_hash": {
+        "type": "string",
+        "required": true,
+        "description": "SHA-256 hash of the report content"
+      },
+      "advisory_only": {
+        "type": "boolean",
+        "required": true,
+        "description": "Must be true — report is advisory-only"
+      }
+    }
+  },
+
+  "invariants": [
+    {
+      "id": "TNC-1",
+      "rule": "Every test execution produces exactly one result state",
+      "enforcement": "Execution engine"
+    },
+    {
+      "id": "TNC-2",
+      "rule": "Result state precedence is fixed: CAPABILITY_MISSING < INCOMPLETE < ERROR < FAIL < PASS",
+      "enforcement": "Contract"
+    },
+    {
+      "id": "TNC-3",
+      "rule": "CAPABILITY_MISSING produces no conclusion about the target",
+      "enforcement": "Contract"
+    },
+    {
+      "id": "TNC-4",
+      "rule": "Every evidence record has a content_hash for integrity verification",
+      "enforcement": "Evidence production"
+    },
+    {
+      "id": "TNC-5",
+      "rule": "Every governance report has advisory_only = true",
+      "enforcement": "Governance projection"
+    },
+    {
+      "id": "TNC-6",
+      "rule": "Target identity is configurable — not coupled to any specific target",
+      "enforcement": "Contract"
+    },
+    {
+      "id": "TNC-7",
+      "rule": "Any result can be independently reconstructed from the evidence chain",
+      "enforcement": "Evidence contract"
+    }
+  ]
+}

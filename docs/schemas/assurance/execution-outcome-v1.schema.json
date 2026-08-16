@@ -1,0 +1,82 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://librarian.dev/schemas/execution-outcome-v1.json",
+  "title": "Execution Outcome Record",
+  "description": "Record of actual execution outcome. Captures what actually happened compared to what was planned.",
+  "type": "object",
+  "required": ["outcome_id", "intent_id", "executed_at", "actual"],
+  "properties": {
+    "outcome_id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Unique identifier for this outcome. Format: EO-<timestamp>-<hex>."
+    },
+    "intent_id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Reference to the planning intent this outcome fulfills."
+    },
+    "executed_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When execution was completed."
+    },
+    "actual": {
+      "type": "object",
+      "required": ["complexity", "effort_days", "findings"],
+      "properties": {
+        "complexity": {
+          "type": "string",
+          "enum": ["low", "medium", "high", "very_high"],
+          "description": "Actual complexity experienced."
+        },
+        "effort_days": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Actual effort in days."
+        },
+        "findings": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Actual number of findings."
+        },
+        "severity_breakdown": {
+          "type": "object",
+          "properties": {
+            "critical": { "type": "integer", "minimum": 0 },
+            "high": { "type": "integer", "minimum": 0 },
+            "medium": { "type": "integer", "minimum": 0 },
+            "low": { "type": "integer", "minimum": 0 }
+          },
+          "description": "Breakdown of findings by severity."
+        }
+      }
+    },
+    "assurance_impact": {
+      "type": "object",
+      "description": "Impact of assurance context on execution.",
+      "properties": {
+        "qualification_findings": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Findings from qualification during execution."
+        },
+        "risk_band_changed": {
+          "type": "boolean",
+          "description": "Whether risk band changed during execution."
+        },
+        "evidence_gaps_discovered": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Evidence gaps discovered during execution."
+        }
+      }
+    },
+    "advisory_only": {
+      "type": "boolean",
+      "const": true,
+      "description": "Always true. This is an outcome record, not authorization."
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,52 @@
+{
+  "$schema": "assurance-evidence-v1",
+  "evidence_class": "record",
+  "identity": {
+    "evidence_id": "E2E-8-EXEC-001",
+    "timestamp": "2026-08-11T05:50:00Z",
+    "source": "qa-pilot"
+  },
+  "observation": {
+    "observed_state": "E2E-8 Full Historical Assurance executed. 447 sealed sprints classified. 122 ASSURANCE_READY. 307 requirements extracted. 307 artifacts constructed. 307 executed. 228 PASS, 79 FAIL, 0 ERROR. Historical assurance corpus complete.",
+    "artifact_refs": [
+      "reports/E2E-8-full-historical-assurance-result.json",
+      "scripts/e2e-8-full-historical-assurance.py"
+    ],
+    "measurements": {
+      "sealed_sprints_total": 447,
+      "assurance_ready": 122,
+      "assurance_partial": 13,
+      "non_executable": 13,
+      "insufficient_source": 299,
+      "requirements_extracted": 307,
+      "artifacts_constructed": 307,
+      "executed": 307,
+      "pass": 228,
+      "fail": 79,
+      "error": 0,
+      "pass_rate_pct": 74.3
+    }
+  },
+  "context": {
+    "environment": "QA-Pilot workspace, Librarian MCP target",
+    "consumer_shape": "qa-pilot-historical-assurance",
+    "execution_context": {
+      "source": "Librarian sealed sprint ledger (447 sprints)",
+      "extraction_scope": "ASSURANCE_READY sprints",
+      "manifest_hash": "47e30d4511bdf57c32ac3ff2514c1482...",
+      "construction_hash": "fd62a53ee8e32276f2f4b6c00e9fbc37...",
+      "execution_hash": "d0164995b0021111f622f275848e906e..."
+    }
+  },
+  "custody": {
+    "origin": "e2e-8-full-historical-assurance.py",
+    "chain": ["E2E-8-EXEC-001"],
+    "verification_state": "verified"
+  },
+  "freshness": {
+    "captured_at": "2026-08-11T05:50:00Z",
+    "validated_at": "2026-08-11T05:50:00Z",
+    "refresh_expected_at": null,
+    "confidence_label": "historical"
+  }
+}

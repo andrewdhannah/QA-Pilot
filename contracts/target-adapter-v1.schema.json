@@ -1,0 +1,227 @@
+{
+  "$schema": "qa-pilot-target-adapter-v1",
+  "description": "Target Adapter Contract — defines how QA-Pilot connects to and observes target systems. Separates what is being tested from how QA-Pilot reaches it.",
+  "contract_version": "1.0.0",
+  "derived_from": "E2E-1 and E2E-2 implementation evidence",
+
+  "target_adapter": {
+    "description": "A target adapter encapsulates the connection between QA-Pilot's testing engine and the system under test. The adapter is the only point of coupling between QA-Pilot and the target.",
+
+    "fields": {
+      "adapter_id": {
+        "type": "string",
+        "required": true,
+        "description": "Unique adapter identifier (e.g. 'mcp-jsonrpc', 'http-api', 'cli')"
+      },
+      "adapter_version": {
+        "type": "string",
+        "required": true,
+        "description": "Version of the adapter"
+      },
+      "target_type": {
+        "type": "string",
+        "required": true,
+        "enum": ["mcp", "api", "cli", "file_system", "process", "distributed"],
+        "description": "Type of target system this adapter connects to"
+      }
+    }
+  },
+
+  "target_identity": {
+    "description": "Identity of the system being tested. Configurable per target instance.",
+
+    "fields": {
+      "target_id": {
+        "type": "string",
+        "required": true,
+        "description": "Unique identifier for the target (e.g. 'librarian-rust-mcp')"
+      },
+      "target_name": {
+        "type": "string",
+        "required": true,
+        "description": "Human-readable name"
+      },
+      "target_version": {
+        "type": "string",
+        "required": false,
+        "description": "Version of the target system"
+      },
+      "target_endpoint": {
+        "type": "string",
+        "required": true,
+        "description": "Connection endpoint (URL, path, command)"
+      },
+      "target_environment": {
+        "type": "string",
+        "required": true,
+        "description": "Environment (e.g. 'local', 'staging', 'production')"
+      }
+    }
+  },
+
+  "connection_config": {
+    "description": "Configuration for connecting to the target. Adapter-specific.",
+
+    "fields": {
+      "protocol": {
+        "type": "string",
+        "required": true,
+        "description": "Connection protocol (e.g. 'http', 'https', 'stdio', 'ssh')"
+      },
+      "transport": {
+        "type": "string",
+        "required": true,
+        "description": "Transport mechanism (e.g. 'jsonrpc', 'rest', 'grpc')"
+      },
+      "timeout_ms": {
+        "type": "integer",
+        "required": false,
+        "default": 10000,
+        "description": "Connection timeout in milliseconds"
+      },
+      "auth_required": {
+        "type": "boolean",
+        "required": false,
+        "default": false,
+        "description": "Whether authentication is required"
+      },
+      "configurable_via_env": {
+        "type": "boolean",
+        "required": false,
+        "default": false,
+        "description": "Whether endpoint can be overridden via environment variable"
+      },
+      "env_var": {
+        "type": "string",
+        "required": false,
+        "description": "Environment variable for endpoint override (e.g. 'QA_PILOT_MCP_TARGET')"
+      }
+    }
+  },
+
+  "capability_requirements": {
+    "description": "Which QA-Pilot capabilities are required to use this adapter.",
+
+    "fields": {
+      "required_capabilities": {
+        "type": "array",
+        "required": true,
+        "items": {"type": "string"},
+        "description": "Capabilities required (e.g. ['MCP_API_INTERACTION'])"
+      },
+      "optional_capabilities": {
+        "type": "array",
+        "required": false,
+        "items": {"type": "string"},
+        "description": "Capabilities that enhance but are not required"
+      }
+    }
+  },
+
+  "observation_interface": {
+    "description": "How QA-Pilot observes the target through this adapter.",
+
+    "fields": {
+      "observation_methods": {
+        "type": "array",
+        "required": true,
+        "items": {"type": "string"},
+        "description": "Methods available for observation (e.g. ['health_check', 'tool_invocation', 'tool_listing'])"
+      },
+      "observation_provenance": {
+        "type": "object",
+        "required": true,
+        "description": "How observation provenance is captured",
+        "fields": {
+          "request_hash": {"type": "boolean", "description": "Hash of the request"},
+          "response_hash": {"type": "boolean", "description": "Hash of the response"},
+          "duration_ms": {"type": "boolean", "description": "Request duration"},
+          "timestamp": {"type": "boolean", "description": "Request timestamp"}
+        }
+      }
+    }
+  },
+
+  "adapter_contracts": {
+    "description": "Adapter must implement these contracts.",
+
+    "contracts": {
+      "connect": {
+        "description": "Establish connection to target",
+        "input": "target_identity + connection_config",
+        "output": "connection_handle or error",
+        "error_taxonomy": "adapter-specific (see error_classes)"
+      },
+      "observe": {
+        "description": "Execute an observation against the target",
+        "input": "observation_method + parameters",
+        "output": "observation_result or error",
+        "error_taxonomy": "adapter-specific"
+      },
+      "disconnect": {
+        "description": "Cleanly disconnect from target",
+        "input": "connection_handle",
+        "output": "confirmation or error"
+      },
+      "health_check": {
+        "description": "Verify target is reachable",
+        "input": "connection_handle",
+        "output": "healthy boolean + details",
+        "error_taxonomy": "adapter-specific"
+      }
+    }
+  },
+
+  "error_classes": {
+    "description": "Adapter-specific error taxonomy. All adapters must define these base classes.",
+
+    "base_classes": {
+      "ADAPTER_UNREACHABLE": "Target not reachable",
+      "ADAPTER_MALFORMED_RESPONSE": "Response parsing failed",
+      "ADAPTER_TIMEOUT": "Request timed out",
+      "ADAPTER_AUTH_FAILURE": "Authentication failed",
+      "ADAPTER_PROTOCOL_ERROR": "Protocol-level error",
+      "ADAPTER_APPLICATION_ERROR": "Application-level error (target responded but with error)"
+    }
+  },
+
+  "invariants": [
+    {
+      "id": "TA-1",
+      "rule": "The adapter is the only point of coupling between QA-Pilot and the target",
+      "enforcement": "Architecture"
+    },
+    {
+      "id": "TA-2",
+      "rule": "The testing engine remains target-neutral — it only calls adapter methods",
+      "enforcement": "Architecture"
+    },
+    {
+      "id": "TA-3",
+      "rule": "Each adapter observation captures request/response provenance",
+      "enforcement": "Adapter implementation"
+    },
+    {
+      "id": "TA-4",
+      "rule": "Adapter errors are distinguishable from test assertion failures",
+      "enforcement": "Error taxonomy"
+    },
+    {
+      "id": "TA-5",
+      "rule": "New adapters can be added without modifying the testing engine",
+      "enforcement": "Capability Registry"
+    }
+  ],
+
+  "qualified_adapters": [
+    {
+      "adapter_id": "mcp-jsonrpc",
+      "adapter_version": "1.0.0",
+      "target_type": "mcp",
+      "implementation": "mcp-capability.py",
+      "qualification_date": "2026-08-11",
+      "qualification_evidence": ["E2E-1-EXEC-001", "E2E-2-EXEC-001"],
+      "status": "VALIDATED"
+    }
+  ]
+}

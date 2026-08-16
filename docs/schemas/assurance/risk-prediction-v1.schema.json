@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://librarian.dev/schemas/risk-prediction-v1.json",
+  "title": "Risk Prediction Record",
+  "description": "Record of a risk prediction. Captures the risk assessment state at prediction time for later calibration against outcomes.",
+  "type": "object",
+  "required": ["prediction_id", "project_id", "assessment_id", "predicted_at", "risk_score", "risk_band"],
+  "properties": {
+    "prediction_id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Unique identifier. Format: RP-<timestamp>-<hex>."
+    },
+    "project_id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Project identifier."
+    },
+    "assessment_id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Reference to risk assessment."
+    },
+    "predicted_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When prediction was made."
+    },
+    "risk_score": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 100,
+      "description": "Risk score (0-100)."
+    },
+    "risk_band": {
+      "type": "string",
+      "enum": ["healthy", "monitor", "attention_required", "urgent"],
+      "description": "Risk band classification."
+    },
+    "contributing_factors": {
+      "type": "object",
+      "properties": {
+        "impact_weight": { "type": "number" },
+        "confidence_weight": { "type": "number" },
+        "freshness_factor": { "type": "number" },
+        "historical_factor": { "type": "number" }
+      },
+      "description": "Factors contributing to risk score."
+    },
+    "evidence_refs": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "References to supporting evidence."
+    },
+    "advisory_only": {
+      "type": "boolean",
+      "const": true,
+      "description": "Always true. This is a prediction record, not authorization."
+    }
+  },
+  "additionalProperties": false
+}

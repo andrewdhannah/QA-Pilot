@@ -1,6 +1,6 @@
 # Sprint Receipt — QA-PILOT-QUALIFICATION-SCHEMA-1
 
-**Ledger:** Pending — awaiting seal
+**Ledger:** Sealed — ledger #216, Owner-sealed 2026-08-15
 **Lane:** implementation / qualification
 **Type:** Substantive capability — qualification substrate
 **Boundary:** QA Pilot-local advisory surface only
@@ -128,4 +128,4 @@ None. All files are new — no existing governance files were modified.
 
 ## Next
 
-Awaiting Owner seal decision. Next authorized sprint: **QA-PILOT-QUALIFICATION-EVIDENCE-PIPELINE-1**.
+Sealed. Next authorized sprint: **QUALIFICATION-EVIDENCE-PIPELINE-1**.

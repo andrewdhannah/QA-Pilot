@@ -1,6 +1,6 @@
 # Sprint Receipt — QA-PILOT-QUALIFICATION-EVIDENCE-PIPELINE-1
 
-**Ledger:** Pending — awaiting seal
+**Ledger:** Sealed — ledger #217, Owner-sealed 2026-08-15
 **Lane:** implementation / qualification
 **Type:** Substantive capability — evidence ingestion pipeline
 **Boundary:** QA Pilot-local advisory surface only
@@ -108,4 +108,4 @@ None — all files are new or additive (QR- records in existing store).
 
 ## Next
 
-Awaiting Owner seal decision. Next authorized sprint: **QA-PILOT-QUALIFICATION-EXECUTION-1** (evaluation engine, lifecycle, triggers).
+Sealed. Next authorized sprint: **QUALIFICATION-EXECUTION-1** (evaluation engine, lifecycle, triggers).

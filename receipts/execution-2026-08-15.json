@@ -1,0 +1,16 @@
+{
+  "receipt_id": "EXR-20260815-001",
+  "execution_count": 216,
+  "result_count": 105,
+  "by_assessment": {
+    "pass": 0,
+    "advisory": 216,
+    "fail": 0
+  },
+  "last_execution": "2026-08-15T23:47:26.003782+00:00",
+  "advisory_only": true,
+  "custody": "qa-pilot-local",
+  "librarian_impact": "none",
+  "generated_at": "2026-08-15T23:47:27.747796+00:00",
+  "generated_by": "qa_pilot_qualification_execution.py receipt"
+}

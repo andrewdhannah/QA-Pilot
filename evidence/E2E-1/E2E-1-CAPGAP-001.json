@@ -1,0 +1,41 @@
+{
+  "$schema": "assurance-evidence-v1",
+  "evidence_class": "record",
+  "identity": {
+    "evidence_id": "E2E-1-CAPGAP-001",
+    "timestamp": "2026-08-11T03:37:25.885708+00:00",
+    "source": "qa-pilot"
+  },
+  "observation": {
+    "observed_state": "CAPABILITY_MISSING: MCP/API capability required for LINK project identity validation. QA-Pilot correctly stopped at the capability boundary — did not produce PASS or FAIL for requirements requiring MCP tool surface.",
+    "artifact_refs": [
+      "reports/E2E-1-librarian-runtime-audit-result.json"
+    ],
+    "measurements": {
+      "capability_required": "MCP/API capability",
+      "tools_required": ["project_get_profile", "project_get_cursor"],
+      "capability_status": "NOT_AVAILABLE",
+      "test_result": "CAPABILITY_MISSING"
+    }
+  },
+  "context": {
+    "environment": "QA-Pilot workspace, Librarian MCP service not reachable for automated testing",
+    "consumer_shape": "qa-pilot-auditing-librarian",
+    "execution_context": {
+      "requirement": "LINK project identity validation",
+      "why_missing": "MCP service not available for automated testing from QA-Pilot",
+      "correct_behavior": "CAPABILITY_MISSING — no conclusion about Librarian permitted"
+    }
+  },
+  "custody": {
+    "origin": "e2e-1-librarian-runtime-audit.py",
+    "chain": ["E2E-1-CAPGAP-001"],
+    "verification_state": "verified"
+  },
+  "freshness": {
+    "captured_at": "2026-08-11T03:37:25.885708+00:00",
+    "validated_at": "2026-08-11T03:37:25.885708+00:00",
+    "refresh_expected_at": null,
+    "confidence_label": "historical"
+  }
+}

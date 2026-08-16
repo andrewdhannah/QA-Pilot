@@ -284,12 +284,14 @@ Librarian work packet service (P1) is a separate parallel track — no dependenc
 
 ## Active Project State
 
-**Ledger updated:** 2026-07-24
-**Latest sealed sprint:** #214 QA-PILOT-LIBRARIAN-WORK-QUEUE-INTEGRATION-1
-**Active epic:** EPIC-ASSURANCE-CONTRACT-EVOLUTION-1 (Phase 4 — directed)
-**Authorized sprints:** none — #214 sealed; Tier 2 dependency on LIBRARIAN-WORK-PACKET-SERVICE-ACTIVATION-1 (not yet created)
-**Deferred sprints:** QA-PILOT-POST-CANONICAL-SURFACE-REASSESSMENT-1 (→ Phase 2)
-**Future sprint:** QA-PILOT-REGRESSION-LEARNING-LOOP-1 (deferred — requires end-to-end loop operational)
+**Ledger updated:** 2026-08-16
+**Latest sealed sprint:** #220 QA-PILOT-REGRESSION-LEARNING-LOOP-1
+**Active epic:** EPIC-ASSURANCE-CONTRACT-EVOLUTION-1 — COMPLETE
+**Qualification substrate:** COMPLETE — all 5 sprints sealed (#216–#219 + #165 roundtrip)
+**Learning loop:** COMPLETE — end-to-end improvement loop proven (#220)
+**End-to-end loop dependency:** SATISFIED — Librarian work packet service discovered as existing sprint #546; capability projection activated. Tier 2 gates WQI-005/WQI-006 unblocked.
+**Authorized sprints:** Awaiting Owner direction for next sprint (Work Packet Integration recommended)
+**Deferred sprints:** Framework Validation, I18N reassessment, visual parity reassessment, post-canonical surface reassessment
 
 ## Sealed Sprint: ASSURANCE-CONTRACT-EVIDENCE-STATE-CONTRACT-FORMALIZATION-1 (#215)
 
@@ -324,10 +326,183 @@ Librarian work packet service (P1) is a separate parallel track — no dependenc
 |-------|--------|------|--------|
 | 1 | ASSURANCE-CONTRACT-EVIDENCE-STATE-CONTRACT-FORMALIZATION-1 | QA-Pilot | ✅ Sealed (#215) |
 | 2 | QA-PILOT-LIBRARIAN-WORK-QUEUE-INTEGRATION-1 | QA-Pilot | ✅ Sealed (#214) |
-| 3 | LIBRARIAN-WORK-PACKET-SERVICE-ACTIVATION-1 | Librarian | Not yet created — activate DB-backed work packet dispatch/intake/verification/closure |
-| 4 | QA-PILOT-REGRESSION-LEARNING-LOOP-1 | QA-Pilot | Deferred — verified fixes become reusable regression tests |
+| 3 | LIBRARIAN-WORK-PACKET-SERVICE-ACTIVATION-1 | Librarian | ✅ Discovered — existing sprint #546, capability projection activated |
+| 4 | QA-PILOT-REGRESSION-LEARNING-LOOP-1 | QA Pilot | ✅ Sealed (#220) — **Architectural milestone: governed improvement loop proven** |
 
-Sprints 1-2 (QA-Pilot side) are sealed. The end-to-end loop requires sprint 3 (Librarian). The feedback loop requires both.
+**Correction (2026-08-15):** Sprint #3 was not missing. Sprint #546 already existed in the Librarian ledger. The apparent blocker was a capability projection discoverability gap, not an implementation gap. The work packet service is now discoverable via MCP capability projection. Tier 2 gates WQI-005/WQI-006 are unblocked.
+
+**Governance lesson:** Sealed history is immutable. New evidence extends understanding; it does not rewrite history. Sprint vs. Extension distinction — a sprint creates evidence history; a capability projection creates discoverability. They are related but not interchangeable.
+
+**Architectural milestone (2026-08-15):** Sprint #220 proves the governed improvement loop. The system can discover, qualify, teach, authorize, and improve from problems while preserving independent authority boundaries. The thesis is no longer theoretical. Next phase: generalization and operational scaling.
+
+## Qualification Substrate Sequence (COMPLETE)
+
+| Order | Sprint | Contract | Status |
+|-------|--------|----------|--------|
+| 1 | QUALIFICATION-SCHEMA-1 | Qualification Run Record | ✅ Sealed (#216) |
+| 2 | QUALIFICATION-EVIDENCE-PIPELINE-1 | Evidence Boundary | ✅ Sealed (#217) |
+| 3 | QUALIFICATION-EXECUTION-1 | Runtime Boundary | ✅ Sealed (#218) |
+| 4 | QUALIFICATION-REVIEW-SURFACE-1 | Human Authority Boundary | ✅ Sealed (#219) |
+| 5 | QUALIFICATION-ROUNDTRIP-VALIDATION-1 | Complete Loop Proof | ✅ Sealed (#165) |
+
+**Complete.** All 5 qualification substrate sprints sealed. The qualification architecture is a closed, repeatable loop: discover → collect → validate → evaluate → lifecycle → review → status → startup → decision → lineage. Advisory-only boundaries confirmed at every layer.
+
+## Deferred Items
+
+| Item | Reason | Future Process |
+|------|--------|----------------|
+| Framework Validation | Defer until work packet service + qualification substrate complete | Prove "the governed improvement loop works" not just "capabilities exist" — NOW PROVEN by #220 |
+| I18N Reassessment (#148–#152) | Paused — needs revalidation post-migration | Historical UI work → Applicability determination → Qualification → PASS/FINDING/NOT APPLICABLE |
+| Visual Parity Reassessment | Re-scoped — paused pending migration validation | Same process as I18N |
+| Post-Canonical Surface Reassessment | Deferred to Phase 2 | Same process as I18N |
+
+## Phase Transition
+
+**Architecture discovery: COMPLETE** (sprint #220)
+**Next phase: Generalization and operational scaling**
+
+The system has crossed from "build missing primitives" into "system integration and operationalization." The governed improvement loop is proven. The next phase makes it scalable, discoverable, and economically selective.
+
+### Authority Model (Preserved)
+
+| Function | Owner |
+|----------|-------|
+| Build | Agents/projects |
+| Evaluate | QA-Pilot |
+| Record truth | Librarian |
+| Teach | Training system |
+| Accept risk | Owner |
+
+The loop works because the evaluator, recorder, teacher, and authority holder are separated. Do not collapse them together.
+
+### Next Maturity Questions (Sequenced)
+
+The system has crossed from "build missing primitives" into "system integration and operationalization." The governed improvement loop is proven. The next phase makes it scalable, discoverable, and economically selective.
+
+**Sequencing principle:** Complete the assurance engine internally, then generalize it externally. Do not build the ecosystem before the boundary contracts are stable.
+
+| Order | Sprint | Purpose | Status |
+|-------|--------|---------|--------|
+| 1 | QA-PILOT-RUNTIME-EVIDENCE-COMPLETION-1 | Complete QA Pilot's own runtime evidence boundary. Operationalize FlightPlan schemas. 6-identity provenance chain (Execution Identity + Governance Context). | ✅ Complete (#221, all 8 gates PASS) |
+| 2 | QA-PILOT-RUNTIME-EVIDENCE-QUALIFICATION-1 | Trust calibration — prove runtime evidence can be evaluated correctly. 5 qualification checks. Qualification profile IR. First non-sprint artifact. | ✅ Complete (#222, all 8 gates PASS) |
+| 3 | QA-PILOT-RUNTIME-EVIDENCE-FEDERATION-1 | Identity and boundary sprint — multi-project evidence federation. Canonical project identity. Adapter contract. Per-project isolation. Discovery metadata. | ✅ Complete (#223, all 8 gates PASS) |
+| 4 | Fleet Freshness + Discovery | Advisory discovery layer — freshness policy, coverage model, discovery projection, LINK readiness interface. | ✅ Complete (#224, all 8 gates PASS) |
+| 5 | Planning Accuracy Loop | Connect runtime evidence to LINK planning. Estimate → Execution → Evidence → Actual Cost → Accuracy → Improved Estimate. | ⏸ Deferred |
+
+**Key insight:** You cannot measure planning accuracy without reliable execution evidence. Runtime evidence must be stable before LINK integration.
+
+### Scaling Architecture (Target State)
+
+```
+Runtime Observation
+        ↓
+Qualification Context
+        ↓
+Risk Signal
+        ↓
+Planning Decision
+```
+
+Without runtime evidence, LINK and FlightPlan only know declared state.
+With runtime evidence, they can reason about observed behavior.
+
+### Current Phase State
+
+```
+PHASE 6 — GOVERNED IMPROVEMENT ACTIVATION
+
+Improvement Proposal Bridge          ✅ (#242)
+Work Packet Integration              ⏳ next
+```
+
+### Architecture Complete
+
+```
+Observation
+    ↓
+Qualification
+    ↓
+Assessment
+    ↓
+Prediction
+    ↓
+Recommendation
+    ↓
+Human Decision
+```
+
+**Each step reduces uncertainty. No step increases authority.**
+
+### Architecture Complete
+
+```
+State
+   ↓
+Trajectory
+   ↓
+Risk
+   ↓
+Value of Attention
+   ↓
+Human Decision
+```
+
+**The complete decision-support stack is now operational.**
+
+### Architecture Milestone
+
+```
+                  Governance Substrate
+                         │
+                         ▼
+                 QA-Pilot Assurance
+                         │
+       ┌─────────────────┼─────────────────┐
+       ▼                 ▼                 ▼
+  Qualification       Learning        Discovery
+       │                 │                 │
+       └─────────────────┼─────────────────┘
+                         △
+                    LINK Context
+                         △
+                  Better Planning
+                         △
+                  Better Systems
+```
+
+**QA-Pilot has proven its core thesis.**
+
+### Architecture Milestone
+
+```
+GOVERNANCE SUBSTRATE
+         │
+         ▼
+ASSURANCE ENGINE
+         │
+ ┌───────┼───────┐
+ ▼       ▼       ▼
+Evidence Qualify Risk
+ │       │       │
+ └───────┼───────┘
+         ▼
+  LINK Planning Context
+         │
+         ▼
+ Better Human Decisions
+         │
+         ▼
+  Learning Feedback Loop
+```
+
+**QA-Pilot has proven its core thesis.**
+
+### What NOT to Do
+
+- Do not add more governance — the governance substrate is doing its job
+- Do not collapse authority boundaries — separation is the strength
+- Do not treat all artifacts equally — economic prioritization is needed
+- Do not require custom engineering for new projects — generalization is needed
 
 ## Do Not Touch Unless Asked
 

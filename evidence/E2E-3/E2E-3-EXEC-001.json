@@ -1,0 +1,54 @@
+{
+  "$schema": "assurance-evidence-v1",
+  "evidence_class": "record",
+  "identity": {
+    "evidence_id": "E2E-3-EXEC-001",
+    "timestamp": "2026-08-11T05:05:00Z",
+    "source": "qa-pilot"
+  },
+  "observation": {
+    "observed_state": "E2E-3 Browser Testing executed. 10 requirements tested. 10 PASS, 0 FAIL, 0 CAPABILITY_MISSING. BROWSER_INTERACTION capability added via Capability Registry. P3-ADMIN and Q2C-PERSISTENCE previously CAPABILITY_MISSING now have qualified capability.",
+    "artifact_refs": [
+      "reports/E2E-3-browser-test-result.json",
+      "scripts/e2e-3-browser-test.py",
+      "scripts/browser-capability.py"
+    ],
+    "measurements": {
+      "total_requirements": 10,
+      "discovered": 10,
+      "executable": 10,
+      "executed": 10,
+      "reported": 10,
+      "pass": 10,
+      "fail": 0,
+      "capability_missing": 0,
+      "discovery_coverage_pct": 100.0,
+      "execution_coverage_pct": 100.0,
+      "reporting_coverage_pct": 100.0,
+      "pass_rate_pct": 100.0
+    }
+  },
+  "context": {
+    "environment": "QA-Pilot workspace, Playwright browser automation",
+    "consumer_shape": "qa-pilot-browser-testing",
+    "execution_context": {
+      "capability_used": "BROWSER_INTERACTION",
+      "adapter": "browser-playwright",
+      "target": "QA-Pilot course platform",
+      "playwright_version": "1.62.1",
+      "negative_case_proven": true,
+      "positive_case_proven": true
+    }
+  },
+  "custody": {
+    "origin": "e2e-3-browser-test.py",
+    "chain": ["E2E-3-EXEC-001"],
+    "verification_state": "verified"
+  },
+  "freshness": {
+    "captured_at": "2026-08-11T05:05:00Z",
+    "validated_at": "2026-08-11T05:05:00Z",
+    "refresh_expected_at": null,
+    "confidence_label": "historical"
+  }
+}

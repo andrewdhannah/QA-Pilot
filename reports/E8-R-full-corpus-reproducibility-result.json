@@ -1,0 +1,96 @@
+{
+  "$schema": "qa-test-result-v1",
+  "test_id": "E8-R",
+  "title": "Full Corpus Reproducibility",
+  "domain": "regression",
+  "objective": "Prove full 307-test corpus produces reproducible results",
+  "results": {
+    "total_requirements": 8,
+    "discovered": 8,
+    "executable": 8,
+    "executed": 8,
+    "reported": 8,
+    "pass": 8,
+    "fail": 0,
+    "capability_missing": 0,
+    "discovery_coverage_pct": 100.0,
+    "execution_coverage_pct": 100.0,
+    "reporting_coverage_pct": 100.0,
+    "pass_rate_pct": 100.0,
+    "status": "COMPLETE"
+  },
+  "corpus_hash": "c9b7a99be34ab7abe0811cf54c5e4303cb7bcd3f9be049b02299b2387c2c5980",
+  "run_a": {
+    "pass": 228,
+    "fail": 79,
+    "error": 0
+  },
+  "run_b": {
+    "pass": 228,
+    "fail": 79,
+    "error": 0
+  },
+  "structural_match": true,
+  "observational_match": true,
+  "divergences": 0,
+  "test_cases": [
+    {
+      "requirement": "307 requirements accounted for",
+      "test": "E8-1-requirements",
+      "status": "PASS",
+      "detail": "Requirements: 307",
+      "timestamp": "2026-08-11T17:01:13.153275+00:00"
+    },
+    {
+      "requirement": "Structural: Test IDs match",
+      "test": "struct-test-ids",
+      "status": "PASS",
+      "detail": "A=307, B=307",
+      "timestamp": "2026-08-11T17:01:13.198325+00:00"
+    },
+    {
+      "requirement": "Structural: Requirements match",
+      "test": "struct-requirements",
+      "status": "PASS",
+      "detail": "",
+      "timestamp": "2026-08-11T17:01:13.198421+00:00"
+    },
+    {
+      "requirement": "Structural: Source sprints match",
+      "test": "struct-sprints",
+      "status": "PASS",
+      "detail": "",
+      "timestamp": "2026-08-11T17:01:13.198480+00:00"
+    },
+    {
+      "requirement": "Structural: Execution counts match",
+      "test": "struct-counts",
+      "status": "PASS",
+      "detail": "A=307, B=307",
+      "timestamp": "2026-08-11T17:01:13.198509+00:00"
+    },
+    {
+      "requirement": "Structural: Result schema consistent",
+      "test": "struct-schema",
+      "status": "PASS",
+      "detail": "",
+      "timestamp": "2026-08-11T17:01:13.198606+00:00"
+    },
+    {
+      "requirement": "Observational: PASS/FAIL counts match",
+      "test": "obs-pass-fail",
+      "status": "PASS",
+      "detail": "A=228/79, B=228/79",
+      "timestamp": "2026-08-11T17:01:13.198634+00:00"
+    },
+    {
+      "requirement": "Observational: Individual results match",
+      "test": "obs-individual",
+      "status": "PASS",
+      "detail": "Divergences: 0/307",
+      "timestamp": "2026-08-11T17:01:13.198689+00:00"
+    }
+  ],
+  "advisory_only": true,
+  "no_seal_authority": true
+}

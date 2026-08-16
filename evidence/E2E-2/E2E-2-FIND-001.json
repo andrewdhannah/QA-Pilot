@@ -1,0 +1,30 @@
+{
+  "$schema": "assurance-finding-v1",
+  "finding_id": "E2E-2-FIND-001",
+  "source": "E2E-2-EXEC-001",
+  "severity": "violation",
+  "evidence_refs": ["E2E-2-EXEC-001"],
+  "contract_ref": "NODE-TRANSPORT-v1: GET /v1/node/health must return status 'ok' for healthy transport",
+  "classification": "fail",
+  "derived_at": "2026-08-11T05:00:00Z",
+  "derivation_chain": [
+    {"step": "E2E-2 test 1 (MCP service reachable) executed", "evidence": "E2E-2-EXEC-001"},
+    {"step": "Health check endpoint /api/health returned HTTP 404", "evidence": "E2E-2-EXEC-001 test_cases[0]"},
+    {"step": "Rust MCP protocol does not implement /api/health endpoint", "evidence": "E2E-2-EXEC-001 test_cases[0].detail"}
+  ],
+  "finding": {
+    "title": "Health endpoint missing — /api/health returns 404",
+    "description": "The Rust MCP protocol on port 3457 does not implement the /api/health endpoint that the Swift MCP server exposes on port 3456. The health check returns HTTP 404.",
+    "affected_components": ["Rust MCP protocol (port 3457)"],
+    "invariant_violated": "NODE-TRANSPORT-v1 requires a health endpoint that returns status 'ok' for healthy transport",
+    "impact": "Health monitoring cannot verify Rust MCP protocol health via HTTP GET",
+    "note": "This is a finding against the Rust MCP protocol, not against QA-Pilot. The Rust protocol uses diagnostic methods via JSON-RPC instead."
+  },
+  "recommendation": {
+    "description": "Either implement /api/health endpoint on the Rust MCP protocol, or document that health checking uses the diagnostic_methods available via JSON-RPC (status, health)",
+    "proposed_action": "Owner decision required — which health check mechanism is canonical?",
+    "owner_decision_required": true
+  },
+  "advisory_only": true,
+  "no_seal_authority": true
+}

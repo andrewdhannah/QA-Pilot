@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://librarian.dev/schemas/preventive-recommendation-v1.json",
+  "title": "Preventive Recommendation",
+  "description": "Advisory recommendation derived from predictive signals. Does not create work, findings, or authorize action.",
+  "type": "object",
+  "required": ["recommendation_id", "project_id", "trigger_signal", "recommendation_type", "confidence", "rationale", "advisory_only"],
+  "properties": {
+    "recommendation_id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Unique identifier. Format: PR-<timestamp>-<hex>."
+    },
+    "project_id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Project identifier."
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When recommendation was generated."
+    },
+    "trigger_signal": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Reference to predictive signal that triggered this."
+    },
+    "recommendation_type": {
+      "type": "string",
+      "enum": ["evidence_enhancement", "risk_review", "planning_adjustment", "no_recommendation"],
+      "description": "Type of recommendation."
+    },
+    "confidence": {
+      "type": "string",
+      "enum": ["high", "medium", "low", "insufficient"],
+      "description": "Confidence level."
+    },
+    "rationale": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Human-readable explanation of why this recommendation exists."
+    },
+    "evidence_refs": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "References to supporting evidence."
+    },
+    "pattern_refs": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "References to historical patterns."
+    },
+    "expiration": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When this recommendation expires."
+    },
+    "owner_action_required": {
+      "type": "boolean",
+      "const": false,
+      "description": "Always false. Owner decides action."
+    },
+    "advisory_only": {
+      "type": "boolean",
+      "const": true,
+      "description": "Always true. This is a recommendation, not authorization."
+    }
+  },
+  "additionalProperties": false
+}

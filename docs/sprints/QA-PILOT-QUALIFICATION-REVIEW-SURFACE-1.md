@@ -1,6 +1,6 @@
 # Sprint Receipt — QA-PILOT-QUALIFICATION-REVIEW-SURFACE-1
 
-**Ledger:** Pending — awaiting seal
+**Ledger:** Sealed — ledger #219, Owner-sealed 2026-08-15
 **Lane:** implementation / qualification
 **Type:** Substantive capability — review surface and decision workflow
 **Boundary:** QA Pilot-local advisory surface only
@@ -116,4 +116,4 @@ None — all files are new.
 
 ## Next
 
-Awaiting Owner seal decision. Next authorized sprint: **QA-PILOT-QUALIFICATION-ROUNDTRIP-VALIDATION-1** — final proof of the complete qualification loop.
+Sealed. Next authorized sprint: **QUALIFICATION-ROUNDTRIP-VALIDATION-1** — final proof of the complete qualification loop.

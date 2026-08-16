@@ -1,0 +1,418 @@
+{
+  "$schema": "qa-pilot-node-qualification-v1",
+  "qualification_id": "QA-PILOT-TESTING-NODE-QUALIFICATION-1",
+  "contract_version": "1.0.0",
+  "qualified_at": "2026-08-11T04:47:12.838069+00:00",
+  "node_id": "qa-pilot",
+  "node_version": "1.0.0",
+  "fixture": "E2E-1",
+  "fixture_target": "librarian",
+  "fixture_results": {
+    "total_requirements": 10,
+    "pass": 7,
+    "fail": 3,
+    "capability_missing": 0,
+    "coverage_pct": 100.0
+  },
+  "qualification_status": "QUALIFIED",
+  "checks": {
+    "total": 65,
+    "pass": 65,
+    "fail": 0,
+    "warn": 0
+  },
+  "check_results": [
+    {
+      "check_id": "TNC-NI-001",
+      "description": "PROJECT-IDENTITY.md exists",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "check_id": "TNC-NI-002",
+      "description": "PROJECT-IDENTITY.md contains project_id",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "check_id": "TNC-NI-003",
+      "description": "PROJECT-IDENTITY.md contains project_name",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "check_id": "TNC-NI-004",
+      "description": "PROJECT-PROFILE.json exists",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "check_id": "TNC-NI-005",
+      "description": "PROJECT-PROFILE.json has project_id",
+      "status": "PASS",
+      "detail": "project_id: qa-pilot"
+    },
+    {
+      "check_id": "TNC-NI-006",
+      "description": "PROJECT-PROFILE.json has project_name",
+      "status": "PASS",
+      "detail": "project_name: QA Pilot"
+    },
+    {
+      "check_id": "TNC-CR-001",
+      "description": "capability-registry.json exists",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "check_id": "TNC-CR-002",
+      "description": "capability-registry.json is valid JSON",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "check_id": "TNC-CR-003",
+      "description": "Registry has execution_type_capabilities",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "check_id": "TNC-CR-004",
+      "description": "Registry has test_domain_capabilities",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "check_id": "TNC-CR-005",
+      "description": "Registry has capability_gaps",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "check_id": "TNC-CR-006",
+      "description": "MCP_API_INTERACTION capability registered",
+      "status": "PASS",
+      "detail": "Found: ['validator', 'contract_check', 'sdk_query', 'scenario', 'manual', 'mcp_api']"
+    },
+    {
+      "check_id": "TNC-CR-007",
+      "description": "MCP capability has qualification state",
+      "status": "PASS",
+      "detail": "qualification: VALIDATED"
+    },
+    {
+      "check_id": "TNC-CR-008",
+      "description": "MCP capability is VALIDATED",
+      "status": "PASS",
+      "detail": "qualification: VALIDATED"
+    },
+    {
+      "check_id": "TNC-CR-009",
+      "description": "MCP capability has error_taxonomy",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "check_id": "TNC-TD-001",
+      "description": "test-library directory exists",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "check_id": "TNC-TD-002",
+      "description": "test-library-index.json exists",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "check_id": "TNC-TD-003",
+      "description": "Index has domains",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "check_id": "TNC-TD-004",
+      "description": "Index has total_tests",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "check_id": "TNC-TD-005",
+      "description": "E2E-1 test scripts exist",
+      "status": "PASS",
+      "detail": "Found: ['e2e-1-run3-mcp-tests.py', 'e2e-1-librarian-runtime-audit.py']"
+    },
+    {
+      "check_id": "TNC-TD-006",
+      "description": "mcp-capability.py exists",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "check_id": "TNC-EI-001",
+      "description": "scripts/ directory exists",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "check_id": "TNC-EI-002",
+      "description": "capability-assessment.json exists",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "check_id": "TNC-EI-003",
+      "description": "Assessment has suite_assessments",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "check_id": "TNC-EI-004",
+      "description": "Assessment has domain_assessments",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "check_id": "TNC-EI-005",
+      "description": "MCP service reachable",
+      "status": "PASS",
+      "detail": "status: ok"
+    },
+    {
+      "check_id": "TNC-E2E-001",
+      "description": "E2E-1 evidence directory exists",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "check_id": "TNC-E2E-002",
+      "description": "E2E-1-EXEC-001.json exists",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "check_id": "TNC-E2E-003",
+      "description": "Execution record has evidence_class",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "check_id": "TNC-E2E-004",
+      "description": "Execution record has identity",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "check_id": "TNC-E2E-005",
+      "description": "Execution record has observation",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "check_id": "TNC-E2E-006",
+      "description": "Execution record has measurements",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "check_id": "TNC-E2E-007",
+      "description": "Measurements show 10 total requirements",
+      "status": "PASS",
+      "detail": "total: 10"
+    },
+    {
+      "check_id": "TNC-E2E-008",
+      "description": "Measurements show 5 PASS",
+      "status": "PASS",
+      "detail": "pass: 5"
+    },
+    {
+      "check_id": "TNC-E2E-009",
+      "description": "Measurements show 3 FAIL",
+      "status": "PASS",
+      "detail": "fail: 3"
+    },
+    {
+      "check_id": "TNC-E2E-010",
+      "description": "Measurements show 2 CAPABILITY_MISSING",
+      "status": "PASS",
+      "detail": "missing: 2"
+    },
+    {
+      "check_id": "TNC-E2E-011",
+      "description": "E2E-1-RUN3-EXEC-001.json exists",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "check_id": "TNC-E2E-012",
+      "description": "Run 3 has measurements with 4 PASS",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "check_id": "TNC-E2E-013",
+      "description": "E2E-1 finding records exist",
+      "status": "PASS",
+      "detail": "Found: 3"
+    },
+    {
+      "check_id": "TNC-E2E-014",
+      "description": "E2E-1 capability gap records exist",
+      "status": "PASS",
+      "detail": "Found: 2"
+    },
+    {
+      "check_id": "TNC-EC-001",
+      "description": "Evidence directory exists",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "check_id": "TNC-EC-002",
+      "description": "Execution record loads",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "check_id": "TNC-EC-003",
+      "description": "Evidence has evidence_class='record'",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "check_id": "TNC-EC-004",
+      "description": "Evidence has identity.source='qa-pilot'",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "check_id": "TNC-EC-005",
+      "description": "Evidence has custody.origin",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "check_id": "TNC-EC-006",
+      "description": "Evidence has custody.verification_state='verified'",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "check_id": "TNC-EC-007",
+      "description": "Execution record has valid SHA-256",
+      "status": "PASS",
+      "detail": "hash: 7bf550aec58eea4f..."
+    },
+    {
+      "check_id": "TNC-EC-008",
+      "description": "E2E-1 governance report exists",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "check_id": "TNC-EC-009",
+      "description": "Governance report contains SHA-256 hash",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "check_id": "TNC-EC-010",
+      "description": "Governance report is advisory-only",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "check_id": "TNC-EC-011",
+      "description": "E2E-1 closure report exists",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "check_id": "TNC-EC-012",
+      "description": "Closure report shows COMPLETE status",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "check_id": "TNC-EC-013",
+      "description": "Closure report shows 7 PASS / 3 FAIL",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "check_id": "TNC-NEG-001",
+      "description": "CAPABILITY_MISSING record exists",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "check_id": "TNC-NEG-002",
+      "description": "CAPABILITY_MISSING has test_result='CAPABILITY_MISSING'",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "check_id": "TNC-NEG-003",
+      "description": "CAPABILITY_MISSING has no target assertion",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "check_id": "TNC-NEG-004",
+      "description": "FAIL findings exist (3 expected)",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "check_id": "TNC-NEG-005",
+      "description": "All FAIL findings are advisory_only",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "check_id": "TNC-NEG-006",
+      "description": "PASS count is recorded",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "check_id": "TNC-NEG-007",
+      "description": "FAIL count is recorded",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "check_id": "TNC-NEG-008",
+      "description": "CAPABILITY_MISSING count is recorded",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "check_id": "TNC-PRE-001",
+      "description": "Testing Node Contract schema exists",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "check_id": "TNC-PRE-002",
+      "description": "Contract defines 5 result states",
+      "status": "PASS",
+      "detail": "Found: ['CAPABILITY_MISSING', 'INCOMPLETE', 'ERROR', 'FAIL', 'PASS']"
+    },
+    {
+      "check_id": "TNC-PRE-003",
+      "description": "Precedence order defined",
+      "status": "PASS",
+      "detail": "Order: ['CAPABILITY_MISSING', 'INCOMPLETE', 'ERROR', 'FAIL', 'PASS']"
+    },
+    {
+      "check_id": "TNC-PRE-004",
+      "description": "Precedence order matches contract",
+      "status": "PASS",
+      "detail": "Expected: ['CAPABILITY_MISSING', 'INCOMPLETE', 'ERROR', 'FAIL', 'PASS']"
+    }
+  ],
+  "advisory_only": true,
+  "no_seal_authority": true
+}

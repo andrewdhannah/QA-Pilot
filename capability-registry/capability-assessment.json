@@ -1,0 +1,106 @@
+{
+  "$schema": "qa-pilot-capability-assessment-v1",
+  "description": "Capability assessment for each QA-Pilot test suite — maps to required capabilities and identifies gaps",
+  "assessed_at": "2026-08-11T00:00:00Z",
+
+  "suite_assessments": {
+    "P1-SMOKE": {
+      "execution_type": "test-function",
+      "required_capabilities": ["SCRIPT_EXECUTION"],
+      "available_capabilities": ["SCRIPT_EXECUTION"],
+      "gaps": [],
+      "status": "EXECUTABLE",
+      "notes": "Static analysis sufficient — test() calls countable from source"
+    },
+    "P2-COMPAT": {
+      "execution_type": "test-function",
+      "required_capabilities": ["SCRIPT_EXECUTION"],
+      "available_capabilities": ["SCRIPT_EXECUTION"],
+      "gaps": [],
+      "status": "EXECUTABLE",
+      "notes": "Static analysis sufficient — test() calls countable from source"
+    },
+    "P3-ADMIN": {
+      "execution_type": "test-suite-array",
+      "required_capabilities": ["BROWSER_INTERACTION"],
+      "available_capabilities": [],
+      "gaps": ["BROWSER_INTERACTION"],
+      "status": "CAPABILITY_MISSING",
+      "notes": "TEST_SUITE array with runTest() switch — requires browser execution to run JavaScript"
+    },
+    "Q2C-PERSISTENCE": {
+      "execution_type": "log-check",
+      "required_capabilities": ["BROWSER_INTERACTION"],
+      "available_capabilities": [],
+      "gaps": ["BROWSER_INTERACTION"],
+      "status": "CAPABILITY_MISSING",
+      "notes": "IndexedDB operations — requires browser runtime to execute"
+    },
+    "MS13I-REGRESSION": {
+      "execution_type": "test-function",
+      "required_capabilities": ["SCRIPT_EXECUTION"],
+      "available_capabilities": ["SCRIPT_EXECUTION"],
+      "gaps": [],
+      "status": "EXECUTABLE",
+      "notes": "Static analysis sufficient — test() calls countable from source"
+    }
+  },
+
+  "domain_assessments": {
+    "regression": {
+      "total_tests": 3,
+      "executable": 1,
+      "requires_manual": 0,
+      "requires_sdk": 2,
+      "gaps": ["SDK_INTEGRATION"],
+      "status": "PARTIAL"
+    },
+    "security": {
+      "total_tests": 4,
+      "executable": 2,
+      "requires_manual": 0,
+      "requires_analysis": 2,
+      "gaps": [],
+      "status": "PARTIAL"
+    },
+    "uat": {
+      "total_tests": 3,
+      "executable": 0,
+      "requires_manual": 3,
+      "gaps": [],
+      "status": "MANUAL_ONLY"
+    },
+    "accessibility": {
+      "total_tests": 3,
+      "executable": 0,
+      "requires_browser": 2,
+      "requires_manual": 1,
+      "gaps": ["BROWSER_INTERACTION", "ACCESSIBILITY_EVALUATION"],
+      "status": "CAPABILITY_MISSING"
+    },
+    "ai": {
+      "total_tests": 3,
+      "executable": 0,
+      "requires_manual": 3,
+      "gaps": ["MODEL_EVALUATION"],
+      "status": "CAPABILITY_MISSING"
+    },
+    "performance": {
+      "total_tests": 0,
+      "gaps": ["BROWSER_INTERACTION", "PERFORMANCE_MEASUREMENT"],
+      "status": "NO_TESTS_DEFINED"
+    },
+    "compliance": {
+      "total_tests": 0,
+      "gaps": [],
+      "status": "NO_TESTS_DEFINED"
+    }
+  },
+
+  "recommendation": {
+    "immediate_action": "Install Playwright for headless browser execution — resolves P3 and Q2-C capability gap",
+    "capability_to_build": "BROWSER_INTERACTION (headless)",
+    "impact": "Unlocks 36 tests (P3: 20 + Q2-C: 16) that are currently CAPABILITY_MISSING",
+    "priority": "HIGH"
+  }
+}

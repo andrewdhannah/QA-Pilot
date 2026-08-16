@@ -1,0 +1,60 @@
+{
+  "$schema": "assurance-finding-v1",
+  "finding_id": "E2E-1-FIND-003",
+  "source": "E2E-1-EXEC-001",
+  "severity": "violation",
+  "evidence_refs": ["E2E-1-EXEC-001"],
+  "contract_ref": "A project cannot be operated unless startup context can be reconstructed deterministically from the registry",
+  "classification": "fail",
+  "derived_at": "2026-08-11T03:37:25.885708+00:00",
+  "derivation_chain": [
+    {
+      "step": "E2E-1 test 6 (startup contract reconstruction) executed",
+      "evidence": "E2E-1-EXEC-001"
+    },
+    {
+      "step": "Registry entries loaded from .librarian/project-index.json",
+      "evidence": "E2E-1-EXEC-001 test_cases[5]"
+    },
+    {
+      "step": "3 registry entries have incomplete startup metadata",
+      "evidence": "E2E-1-EXEC-001 test_cases[5].detail"
+    },
+    {
+      "step": "scrum-tracker: startup_contract = null; runtime-node: startup_contract = null; working-bibliography-extension: missing required fields",
+      "evidence": "E2E-1-EXEC-001 test_cases[5].detail"
+    }
+  ],
+  "finding": {
+    "title": "Contract reconstruction — three registry entries expose incomplete startup metadata",
+    "description": "Three projects in the workspace registry have incomplete startup metadata: scrum-tracker (startup_contract=null), runtime-node (startup_contract=null), working-bibliography-extension (missing required fields). The invariant says a project cannot be operated unless startup context can be reconstructed deterministically.",
+    "affected_components": [
+      ".librarian/project-index.json (scrum-tracker entry)",
+      ".librarian/project-index.json (runtime-node entry)",
+      ".librarian/project-index.json (working-bibliography-extension entry)"
+    ],
+    "invariant_violated": "Every registered project must have complete startup metadata for deterministic reconstruction",
+    "impact": "These 3 projects cannot be started via the standard startup protocol; their startup context is non-reconstructible",
+    "affected_projects": [
+      {
+        "project_id": "scrum-tracker",
+        "issue": "startup_contract is null"
+      },
+      {
+        "project_id": "runtime-node",
+        "issue": "startup_contract is null"
+      },
+      {
+        "project_id": "working-bibliography-extension",
+        "issue": "missing required fields in startup contract"
+      }
+    ]
+  },
+  "recommendation": {
+    "description": "Either complete the startup metadata for these 3 projects or remove them from the registry if they are not intended to be startup-capable. The registry should not contain entries that cannot be operated.",
+    "proposed_action": "Owner decision required — are these projects intended to be startup-capable?",
+    "owner_decision_required": true
+  },
+  "advisory_only": true,
+  "no_seal_authority": true
+}

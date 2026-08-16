@@ -1,0 +1,98 @@
+{
+  "e2e": "E2E-10",
+  "title": "Multi-Source Assurance Derivation",
+  "timestamp": "2026-08-11T21:13:14.521007+00:00",
+  "source_classes_discovered": 5,
+  "total_sources": 1328,
+  "total_requirements": 5138,
+  "requirements_by_dimension": {
+    "REGRESSION": 19,
+    "CONTRACT": 1,
+    "BOUNDARY": 806,
+    "NEGATIVE": 2447,
+    "STATE_TRANSITION": 2332
+  },
+  "capability_resolution": {
+    "executable": 5138,
+    "capability_missing": 0
+  },
+  "gate_results": {
+    "E10-1": {
+      "description": "Multiple authoritative source classes discovered",
+      "status": "PASS",
+      "detail": "5 source classes with sources discovered"
+    },
+    "E10-2": {
+      "description": "Source provenance preserved for each requirement",
+      "status": "PASS",
+      "detail": "All 5138 requirements have complete provenance"
+    },
+    "E10-3": {
+      "description": "Requirements normalized into one schema",
+      "status": "PASS",
+      "detail": "All 5138 requirements normalized"
+    },
+    "E10-4": {
+      "description": "Requirements carry assurance_dimensions (not single test_type)",
+      "status": "PASS",
+      "detail": "All requirements carry assurance_dimensions array"
+    },
+    "E10-5": {
+      "description": "Historical claims produce regression requirements",
+      "status": "PASS",
+      "detail": "19 requirements from historical_sealed_claims, REGRESSION dimension present"
+    },
+    "E10-6": {
+      "description": "Contracts produce contract requirements",
+      "status": "PASS",
+      "detail": "1 requirements from json_schemas, CONTRACT dimension present"
+    },
+    "E10-7": {
+      "description": "Governance invariants produce boundary requirements",
+      "status": "PASS",
+      "detail": "806 requirements from governance_invariants, BOUNDARY dimension present"
+    },
+    "E10-8": {
+      "description": "Failure semantics produce negative requirements",
+      "status": "PASS",
+      "detail": "1980 requirements from failure_semantics, NEGATIVE dimension present"
+    },
+    "E10-9": {
+      "description": "Lifecycle definitions produce state-transition requirements",
+      "status": "PASS",
+      "detail": "2332 requirements from lifecycle_definitions, STATE_TRANSITION dimension present"
+    },
+    "E10-10": {
+      "description": "No test-type-specific execution path added",
+      "status": "PASS",
+      "detail": "All requirements use existing capabilities (SCRIPT_EXECUTION, SCHEMA_VALIDATION); no new engine modes"
+    },
+    "E10-11": {
+      "description": "Existing capabilities resolve the requirements",
+      "status": "PASS",
+      "detail": "5138 executable, 0 CAPABILITY_MISSING"
+    },
+    "E10-12": {
+      "description": "Existing Target Adapter contract remains unchanged",
+      "status": "PASS",
+      "detail": "Target adapter contract exists at target-adapter-v1.schema.json"
+    },
+    "E10-13": {
+      "description": "Existing result/evidence contracts remain unchanged",
+      "status": "PASS",
+      "detail": "Evidence contract exists"
+    },
+    "E10-14": {
+      "description": "Source provenance preserved for each requirement",
+      "status": "PASS",
+      "detail": "All 5138 requirements have complete provenance"
+    },
+    "E10-15": {
+      "description": "Unsupported requirements become CAPABILITY_MISSING, not silently omitted",
+      "status": "PASS",
+      "detail": "All 5138 requirements present; 0 marked CAPABILITY_MISSING, none silently omitted"
+    }
+  },
+  "gates_pass": 15,
+  "gates_fail": 0
+}

@@ -1,0 +1,36 @@
+{
+  "canonical": {
+    "program": "LIBRARIAN",
+    "project": "LIBRARIAN",
+    "workstream": "QA-PILOT",
+    "sprint": 682,
+    "owner": "Owner",
+    "authority_mode": "OWNER",
+    "governing_state": "DESIGN_AUTHORIZED",
+    "governing_contract": "QA-PILOT-CONTRACT-001"
+  },
+  "session": {
+    "session_id": "LIBRARIAN-QA-PILOT-S682-20260813-01",
+    "session_type": "DESIGN",
+    "objective": "LEGO_LIFECYCLE_INTEGRATION",
+    "date": "2026-08-13",
+    "sequence": 1
+  },
+  "routing": {
+    "relevant_agents": [
+      "LINK",
+      "CLAUDE"
+    ],
+    "relevant_contracts": [
+      "QA-PILOT-CONTRACT-001"
+    ],
+    "canonical_state_authority": "LIBRARIAN",
+    "implementation_authorized": false,
+    "allowed_operating_mode": "DESIGN_ONLY"
+  },
+  "hash_chain": {
+    "prev": null,
+    "self": "82e8ddeb6a79d3e3df35d3abc133d293cd7ae7828573bd93f35bbb1f271d3ffc"
+  },
+  "routing_code": "LIB/QA/S682/01/DESIGN/O"
+}

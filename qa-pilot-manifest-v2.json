@@ -1,0 +1,283 @@
+{
+  "$schema": "qa-pilot-capability-manifest-v2",
+  "description": "QA-Pilot Capability Manifest — granular maturity model replacing binary 'stable' classification",
+  "version": "2.1.0",
+  "replaces": "qa-pilot-manifest.json v1.3.0",
+  "generated_at": "2026-08-15",
+  "updated_at": "2026-08-15T22:30:00Z",
+  "reason": "Mission/capability reconciliation v2 — Option A (Revised) decided. Training platform verified as operational. Qualification compiler implemented.",
+
+  "maturity_levels": {
+    "operational": "Real capability, demonstrated, general-purpose",
+    "demonstrated": "Works in a bounded case, not yet generalized",
+    "partial": "Exists but does not meet the implied mission",
+    "missing": "Architecture exists, implementation absent",
+    "obsolete": "Superseded by later work, no longer relevant"
+  },
+
+  "capabilities": [
+    {
+      "id": "evidence_sdk",
+      "name": "Governed Evidence SDK",
+      "version": "v1",
+      "entry_point": "scripts/qa_pilot_evidence_sdk.py",
+      "implementation_status": "implemented",
+      "validation_status": "validated",
+      "qualification_status": "demonstrated",
+      "maturity": "operational",
+      "scope": "5 query methods over file-backed evidence store",
+      "limitations": ["read-only", "no local SDK server"],
+      "evidence": "Sealed sprints #33+, 558-line implementation"
+    },
+    {
+      "id": "epic_scenarios",
+      "name": "Epic Scenario Suite",
+      "version": "v1",
+      "entry_point": "scripts/qa_pilot_epic_scenario_suite.py",
+      "implementation_status": "implemented",
+      "validation_status": "validated",
+      "qualification_status": "demonstrated",
+      "maturity": "partial",
+      "scope": "5 hardcoded scenarios from V1.5",
+      "limitations": ["scenarios not dynamically generated", "not extensible to new projects"],
+      "evidence": "Sealed, but scenarios are hardcoded"
+    },
+    {
+      "id": "training_sim",
+      "name": "Training Simulation Layer",
+      "version": "v1",
+      "entry_point": "scripts/qa_pilot_training_sim.py",
+      "implementation_status": "implemented",
+      "validation_status": "validated",
+      "qualification_status": "demonstrated",
+      "maturity": "operational",
+      "scope": "advisory case generation from ingested packets",
+      "limitations": ["sim store currently empty — no cases generated yet"],
+      "evidence": "Sealed, CLI functional, sim-index shows 0 cases"
+    },
+    {
+      "id": "learning_objects",
+      "name": "Learning Object Generator",
+      "version": "v1",
+      "entry_point": "scripts/qa_pilot_lesson_generator.py",
+      "implementation_status": "implemented",
+      "validation_status": "validated",
+      "qualification_status": "demonstrated",
+      "maturity": "operational",
+      "scope": "template-based learning object generation from findings",
+      "limitations": ["template-based, not LLM-aware"],
+      "evidence": "Sealed, 574-line implementation, functional"
+    },
+    {
+      "id": "scenario_adapter",
+      "name": "Scenario Adapter (V1.5 scoring bridge)",
+      "version": "v1",
+      "entry_point": "scripts/qa_pilot_scenario_adapter.py",
+      "implementation_status": "implemented",
+      "validation_status": "validated",
+      "qualification_status": "demonstrated",
+      "maturity": "operational",
+      "scope": "5 ported V1.5 scenarios with deterministic scoring",
+      "limitations": ["scenarios are hardcoded, not dynamically generated"],
+      "evidence": "Sealed, scoring engine functional"
+    },
+    {
+      "id": "ai_qualification",
+      "name": "AI Qualification Engine",
+      "version": "v1",
+      "entry_point": "scripts/qa_pilot_ai_qualification.py",
+      "implementation_status": "implemented",
+      "validation_status": "validated",
+      "qualification_status": "demonstrated",
+      "maturity": "partial",
+      "scope": "6 dimensions scored by keyword/regex matching",
+      "limitations": ["no semantic evaluation", "no behavioral model evaluation", "keyword-based proxy only"],
+      "evidence": "Sealed, but scoring is keyword-based"
+    },
+    {
+      "id": "fresh_install",
+      "name": "Fresh Install Kit",
+      "version": "v1",
+      "entry_point": "scripts/qa-pilot-install.sh",
+      "implementation_status": "implemented",
+      "validation_status": "validated",
+      "qualification_status": "demonstrated",
+      "maturity": "operational",
+      "scope": "project-neutral deployment model",
+      "limitations": [],
+      "evidence": "Sealed, functional"
+    },
+    {
+      "id": "knowledge_adapter",
+      "name": "Librarian Knowledge Adapter",
+      "version": "v1",
+      "entry_point": "scripts/qa_pilot_knowledge_adapter.py",
+      "implementation_status": "implemented",
+      "validation_status": "validated",
+      "qualification_status": "demonstrated",
+      "maturity": "operational",
+      "scope": "reads Librarian canonical sources",
+      "limitations": [],
+      "evidence": "Sealed, functional"
+    },
+    {
+      "id": "workbench",
+      "name": "QA Workbench",
+      "version": "v1",
+      "entry_point": "scripts/qa_pilot_workbench.py",
+      "implementation_status": "implemented",
+      "validation_status": "validated",
+      "qualification_status": "demonstrated",
+      "maturity": "operational",
+      "scope": "full CLI surface for QA operations",
+      "limitations": ["no web UI"],
+      "evidence": "Sealed, functional"
+    },
+    {
+      "id": "broker",
+      "name": "Librarian MCP Broker",
+      "version": "v1",
+      "entry_point": "scripts/librarian_broker_qa_pilot.py",
+      "implementation_status": "implemented",
+      "validation_status": "validated",
+      "qualification_status": "demonstrated",
+      "maturity": "operational",
+      "scope": "cross-project MCP with custody verification",
+      "limitations": ["read-only"],
+      "evidence": "Sealed, functional"
+    },
+    {
+      "id": "receipt_store",
+      "name": "Receipt Store",
+      "version": "v1",
+      "entry_point": "scripts/qa_pilot_receipt_store.py",
+      "implementation_status": "implemented",
+      "validation_status": "validated",
+      "qualification_status": "demonstrated",
+      "maturity": "operational",
+      "scope": "file-backed receipt storage",
+      "limitations": ["no query language"],
+      "evidence": "Sealed, functional"
+    },
+    {
+      "id": "validation_profile",
+      "name": "Project Validation Profiles",
+      "version": "v1",
+      "entry_point": "scripts/validate-qa-pilot-validation-profile.py",
+      "implementation_status": "implemented",
+      "validation_status": "validated",
+      "qualification_status": "demonstrated",
+      "maturity": "operational",
+      "scope": "project validation configuration",
+      "limitations": [],
+      "evidence": "Sealed, functional"
+    },
+    {
+      "id": "work_queue",
+      "name": "Diagnostic Work Queue",
+      "version": "v1",
+      "entry_point": "scripts/qa_pilot_work_queue.py",
+      "implementation_status": "implemented",
+      "validation_status": "validated",
+      "qualification_status": "demonstrated",
+      "maturity": "operational",
+      "scope": "diagnostic findings to proposals",
+      "limitations": ["Tier 2 gates blocked by Librarian dependency"],
+      "evidence": "Sealed, Tier 1 operational"
+    },
+    {
+      "id": "evidence_intake",
+      "name": "MCP Evidence Intake",
+      "version": "v1",
+      "entry_point": "scripts/qa_pilot_mcp_evidence_intake.py",
+      "implementation_status": "implemented",
+      "validation_status": "validated",
+      "qualification_status": "demonstrated",
+      "maturity": "operational",
+      "scope": "4 MCP tools for evidence ingestion",
+      "limitations": [],
+      "evidence": "Sealed, functional"
+    },
+    {
+      "id": "owner_dashboard",
+      "name": "Owner Dashboard",
+      "version": "v1",
+      "entry_point": "scripts/qa_pilot_owner_dashboard.py",
+      "implementation_status": "implemented",
+      "validation_status": "validated",
+      "qualification_status": "demonstrated",
+      "maturity": "operational",
+      "scope": "Owner-facing governance surface",
+      "limitations": [],
+      "evidence": "Sealed, functional"
+    }
+  ],
+
+  "declared_mission_capabilities": [
+    {
+      "id": "qualification_compiler",
+      "name": "Qualification Compiler",
+      "maturity": "implemented",
+      "implementation_status": "implemented",
+      "validation_status": "validated",
+      "qualification_status": "demonstrated",
+      "description": "Transforms epic contracts into executable qualification suites via IR",
+      "scope": "IR schema + compiler + evidence generation. 36 tests generated from SNA IR",
+      "limitations": ["generated tests are placeholders — assertion implementation needed", "single-project (not yet generic)"],
+      "is_architectural_center": true,
+      "evidence": "Compiler implemented and tested: IR validation → compilation → execution → evidence generation"
+    },
+    {
+      "id": "generic_adapter",
+      "name": "Generic Project Adapter",
+      "maturity": "missing",
+      "description": "Discovers contracts, invariants, and acceptance gates in any project",
+      "depends_on": "qualification_compiler",
+      "evidence": "2 adapters exist (Agent Bridge, Librarian); no generic framework"
+    },
+    {
+      "id": "continuous_qualification",
+      "name": "Continuous Qualification",
+      "maturity": "missing",
+      "description": "Event-driven re-qualification when target projects change",
+      "depends_on": "qualification_compiler",
+      "evidence": "No trigger mechanism, no drift detection"
+    },
+    {
+      "id": "browser_testing",
+      "name": "Headless Browser Testing",
+      "maturity": "missing",
+      "description": "Playwright/headless Chrome for UI qualification",
+      "evidence": "Capability registry documents as PARTIAL (OpenWork browser only)"
+    },
+    {
+      "id": "accessibility_evaluation",
+      "name": "Accessibility Evaluation",
+      "maturity": "missing",
+      "description": "WCAG compliance testing via axe-core/Lighthouse",
+      "evidence": "Capability registry documents as MISSING"
+    },
+    {
+      "id": "performance_measurement",
+      "name": "Performance Measurement",
+      "maturity": "missing",
+      "description": "Load time, rendering, runtime performance testing",
+      "evidence": "Capability registry documents as MISSING"
+    },
+    {
+      "id": "security_scanning",
+      "name": "Security Scanning",
+      "maturity": "missing",
+      "description": "Automated security analysis",
+      "evidence": "Capability registry documents as MISSING"
+    }
+  ],
+
+  "provenance": {
+    "advisory": true,
+    "no_authority_conferred": true,
+    "source": "Mission/capability reconciliation v2 — 2026-08-15",
+    "replaces": "qa-pilot-manifest.json v1.3.0",
+    "note": "This manifest corrects v1.3.0 capability classifications. Training platform verified as operational. Qualification compiler implemented. v1.3.0 preserved for historical record."
+  }
+}

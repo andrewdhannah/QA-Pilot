@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://librarian.dev/schemas/project-identity-v1.json",
+  "title": "Project Identity",
+  "description": "Canonical project identity for runtime evidence federation. QA-Pilot must never infer project identity from runtime identity. The adapter must provide explicit project identity.",
+  "type": "object",
+  "required": ["project_id", "project_instance", "identity_source"],
+  "properties": {
+    "project_id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Canonical project identifier (e.g. 'librarian', 'qa-pilot', 'agent-bridge')."
+    },
+    "project_instance": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Specific runtime instance (e.g. 'librarian-prod-node-001')."
+    },
+    "identity_source": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Where the identity was verified (e.g. 'librarian-registry', 'qa-pilot-profile')."
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,178 @@
+{
+  "$schema": "qa-test-result-v1",
+  "test_id": "E2E-7",
+  "title": "Reproducibility",
+  "domain": "regression",
+  "objective": "Prove same frozen artifacts produce reproducible results",
+  "results": {
+    "total_requirements": 12,
+    "discovered": 12,
+    "executable": 12,
+    "executed": 12,
+    "reported": 12,
+    "pass": 12,
+    "fail": 0,
+    "capability_missing": 0,
+    "discovery_coverage_pct": 100.0,
+    "execution_coverage_pct": 100.0,
+    "reporting_coverage_pct": 100.0,
+    "pass_rate_pct": 100.0,
+    "status": "COMPLETE"
+  },
+  "run_a": {
+    "artifact_count": 30,
+    "pass": 30,
+    "fail": 0,
+    "error": 0,
+    "integrity": true
+  },
+  "run_b": {
+    "artifact_count": 30,
+    "pass": 30,
+    "fail": 0,
+    "error": 0,
+    "integrity": true
+  },
+  "structural_comparison": [
+    {
+      "name": "Artifacts",
+      "match": true,
+      "detail": "A=30, B=30"
+    },
+    {
+      "name": "Requirements",
+      "match": true,
+      "detail": "MATCH"
+    },
+    {
+      "name": "Capabilities",
+      "match": true,
+      "detail": "MATCH"
+    },
+    {
+      "name": "Adapters",
+      "match": true,
+      "detail": "MATCH"
+    },
+    {
+      "name": "Test IDs",
+      "match": true,
+      "detail": "MATCH"
+    },
+    {
+      "name": "Artifact Hashes",
+      "match": true,
+      "detail": "MATCH"
+    },
+    {
+      "name": "Artifact Integrity",
+      "match": true,
+      "detail": "MATCH"
+    },
+    {
+      "name": "Result Schema",
+      "match": true,
+      "detail": "MATCH"
+    },
+    {
+      "name": "Evidence Structure",
+      "match": true,
+      "detail": "MATCH"
+    },
+    {
+      "name": "No Silent Skips",
+      "match": true,
+      "detail": "MATCH"
+    }
+  ],
+  "observational_match": true,
+  "observational_divergences": 0,
+  "test_cases": [
+    {
+      "requirement": "Structural: Artifacts match",
+      "test": "struct-artifacts",
+      "status": "PASS",
+      "detail": "A=30, B=30",
+      "timestamp": "2026-08-11T16:33:03.174543+00:00"
+    },
+    {
+      "requirement": "Structural: Requirements match",
+      "test": "struct-requirements",
+      "status": "PASS",
+      "detail": "",
+      "timestamp": "2026-08-11T16:33:03.174907+00:00"
+    },
+    {
+      "requirement": "Structural: Capabilities match",
+      "test": "struct-capabilities",
+      "status": "PASS",
+      "detail": "",
+      "timestamp": "2026-08-11T16:33:03.174932+00:00"
+    },
+    {
+      "requirement": "Structural: Adapters match",
+      "test": "struct-adapters",
+      "status": "PASS",
+      "detail": "",
+      "timestamp": "2026-08-11T16:33:03.174947+00:00"
+    },
+    {
+      "requirement": "Structural: Test IDs match",
+      "test": "struct-test-ids",
+      "status": "PASS",
+      "detail": "",
+      "timestamp": "2026-08-11T16:33:03.174958+00:00"
+    },
+    {
+      "requirement": "Structural: Artifact hashes match",
+      "test": "struct-hashes",
+      "status": "PASS",
+      "detail": "",
+      "timestamp": "2026-08-11T16:33:03.174969+00:00"
+    },
+    {
+      "requirement": "Structural: Artifact integrity",
+      "test": "struct-integrity",
+      "status": "PASS",
+      "detail": "",
+      "timestamp": "2026-08-11T16:33:03.174974+00:00"
+    },
+    {
+      "requirement": "Structural: Result schema consistent",
+      "test": "struct-schema",
+      "status": "PASS",
+      "detail": "",
+      "timestamp": "2026-08-11T16:33:03.174988+00:00"
+    },
+    {
+      "requirement": "Structural: Evidence structure complete",
+      "test": "struct-evidence",
+      "status": "PASS",
+      "detail": "",
+      "timestamp": "2026-08-11T16:33:03.174994+00:00"
+    },
+    {
+      "requirement": "Structural: No silent skips",
+      "test": "struct-no-skips",
+      "status": "PASS",
+      "detail": "",
+      "timestamp": "2026-08-11T16:33:03.174997+00:00"
+    },
+    {
+      "requirement": "Observational: PASS/FAIL counts match",
+      "test": "obs-pass-fail",
+      "status": "PASS",
+      "detail": "A=30/0, B=30/0",
+      "timestamp": "2026-08-11T16:33:03.175028+00:00"
+    },
+    {
+      "requirement": "Observational: Individual results match",
+      "test": "obs-individual",
+      "status": "PASS",
+      "detail": "Divergences: 0/30",
+      "timestamp": "2026-08-11T16:33:03.175074+00:00"
+    }
+  ],
+  "advisory_only": true,
+  "no_seal_authority": true
+}

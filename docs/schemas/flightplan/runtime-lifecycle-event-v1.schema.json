@@ -1,0 +1,155 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://librarian.dev/schemas/runtime-lifecycle-event-v1.json",
+  "title": "Runtime Lifecycle Event",
+  "description": "Structured event from FlightPlan to Librarian. Answers: what happened to the session? Independent from resource observations and action events. Contract: AGENT-RUNTIME-EVIDENCE-CONTRACT-001.md §4. Extended with provenance chain per QA-PILOT-RUNTIME-EVIDENCE-COMPLETION-1.",
+  "type": "object",
+  "required": [
+    "event_id", "event_type", "session_id", "timestamp",
+    "lifecycle_event", "failure_reason", "actor"
+  ],
+  "properties": {
+    "event_id": {
+      "type": "string",
+      "description": "Unique identifier for this event. Format: RLE-<timestamp>-<hex>. Append-only."
+    },
+    "event_type": {
+      "type": "string",
+      "const": "runtime_lifecycle",
+      "description": "Event type. Always 'runtime_lifecycle'."
+    },
+    "session_id": {
+      "type": "string",
+      "description": "FlightPlan session ID."
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When this event was recorded."
+    },
+    "lifecycle_event": {
+      "type": "string",
+      "enum": ["started", "completed", "failed", "owner_forced_stop"],
+      "description": "What happened to the session."
+    },
+    "failure_reason": {
+      "type": ["string", "null"],
+      "enum": ["stale", "blocked", "error", "timeout", null],
+      "description": "Why the session failed. Required when lifecycle_event is 'failed'. Null for completed, owner_forced_stop, and started."
+    },
+    "actor": {
+      "type": "string",
+      "enum": ["owner", "agent", "runtime", "system"],
+      "description": "Who caused the state change."
+    },
+    "work_packet_id": {
+      "type": "string",
+      "description": "Work Packet ID if this session is governed. Omit for ungoverned sessions."
+    },
+    "work_order_id": {
+      "type": "string",
+      "description": "Librarian Work Order ID if present. Omit if not applicable."
+    },
+    "execution_identity": {
+      "type": "object",
+      "description": "Execution identity provenance. Answers: what produced this observation?",
+      "required": ["node_identity", "runtime_identity", "agent_identity", "model_identity", "session_identity"],
+      "properties": {
+        "node_identity": {
+          "type": "object",
+          "required": ["project_id", "project_type", "node_id"],
+          "properties": {
+            "project_id": { "type": "string", "minLength": 1 },
+            "project_type": { "type": "string", "enum": ["add_on", "core", "integration", "library"] },
+            "node_id": { "type": "string", "minLength": 1 }
+          },
+          "additionalProperties": false
+        },
+        "runtime_identity": {
+          "type": "object",
+          "required": ["runtime_id", "runtime_type", "runtime_version"],
+          "properties": {
+            "runtime_id": { "type": "string", "minLength": 1 },
+            "runtime_type": { "type": "string", "enum": ["openwork", "codex", "claude-code", "cursor", "vscode", "custom"] },
+            "runtime_version": { "type": "string", "minLength": 1 }
+          },
+          "additionalProperties": false
+        },
+        "agent_identity": {
+          "type": "object",
+          "required": ["agent_id", "agent_version"],
+          "properties": {
+            "agent_id": { "type": "string", "minLength": 1 },
+            "agent_version": { "type": "string", "minLength": 1 }
+          },
+          "additionalProperties": false
+        },
+        "model_identity": {
+          "type": "object",
+          "required": ["provider", "model"],
+          "properties": {
+            "provider": { "type": "string", "minLength": 1 },
+            "model": { "type": "string", "minLength": 1 },
+            "version": { "type": "string" }
+          },
+          "additionalProperties": false
+        },
+        "session_identity": {
+          "type": "object",
+          "required": ["session_id", "started_at"],
+          "properties": {
+            "session_id": { "type": "string", "minLength": 1 },
+            "started_at": { "type": "string", "format": "date-time" }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "governance_context": {
+      "type": "object",
+      "description": "Governance context provenance. Answers: under what governed activity?",
+      "required": ["project_identity", "authority_scope"],
+      "properties": {
+        "project_identity": {
+          "type": "object",
+          "required": ["project_id", "project_type"],
+          "properties": {
+            "project_id": { "type": "string", "minLength": 1 },
+            "project_type": { "type": "string", "enum": ["add_on", "core", "integration", "library"] }
+          },
+          "additionalProperties": false
+        },
+        "work_packet_identity": {
+          "type": "object",
+          "properties": {
+            "work_packet_id": { "type": ["string", "null"] },
+            "work_order_id": { "type": ["string", "null"] }
+          },
+          "additionalProperties": false
+        },
+        "owner_identity": {
+          "type": "object",
+          "properties": {
+            "owner_id": { "type": "string", "minLength": 1 }
+          },
+          "additionalProperties": false
+        },
+        "authority_scope": {
+          "type": "object",
+          "required": ["scope", "constraints"],
+          "properties": {
+            "scope": { "type": "string", "enum": ["qa_pilot_local", "librarian_local", "cross_project", "fleet"] },
+            "constraints": {
+              "type": "array",
+              "items": { "type": "string", "enum": ["advisory_only", "no_cross_project_mutation", "no_auto_remediation", "append_only"] }
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

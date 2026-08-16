@@ -1,0 +1,197 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://librarian.dev/schemas/runtime-evidence-provenance-v1.json",
+  "title": "Runtime Evidence Provenance",
+  "description": "Provenance chain for runtime evidence objects. Separated into Execution Identity (what produced this observation) and Governance Context (under what governed activity). This separation matters because a model/runtime may participate in multiple projects; the project identity must not be inferred from runtime identity.",
+  "type": "object",
+  "required": ["execution_identity", "governance_context"],
+  "properties": {
+    "execution_identity": {
+      "type": "object",
+      "description": "What produced this observation?",
+      "required": ["node_identity", "runtime_identity", "agent_identity", "model_identity", "session_identity"],
+      "properties": {
+        "node_identity": {
+          "type": "object",
+          "description": "Which node produced this?",
+          "required": ["project_id", "project_type", "node_id"],
+          "properties": {
+            "project_id": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Project identifier (e.g. 'qa-pilot', 'librarian')."
+            },
+            "project_type": {
+              "type": "string",
+              "enum": ["add_on", "core", "integration", "library"],
+              "description": "Project classification."
+            },
+            "node_id": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Unique node identifier within the project."
+            }
+          },
+          "additionalProperties": false
+        },
+        "runtime_identity": {
+          "type": "object",
+          "description": "Which runtime (OpenWork, Codex, Claude Code, etc.)?",
+          "required": ["runtime_id", "runtime_type", "runtime_version"],
+          "properties": {
+            "runtime_id": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Unique runtime session identifier."
+            },
+            "runtime_type": {
+              "type": "string",
+              "enum": ["openwork", "codex", "claude-code", "cursor", "vscode", "custom"],
+              "description": "Runtime platform type."
+            },
+            "runtime_version": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Runtime version string."
+            }
+          },
+          "additionalProperties": false
+        },
+        "agent_identity": {
+          "type": "object",
+          "description": "Which agent?",
+          "required": ["agent_id", "agent_version"],
+          "properties": {
+            "agent_id": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Agent identifier (e.g. 'openwork-claude', 'openwork-go')."
+            },
+            "agent_version": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Agent version string."
+            }
+          },
+          "additionalProperties": false
+        },
+        "model_identity": {
+          "type": "object",
+          "description": "Which model?",
+          "required": ["provider", "model"],
+          "properties": {
+            "provider": {
+              "type": "string",
+              "minLength": 1,
+              "description": "AI provider name (e.g. 'anthropic', 'openai', 'ollama')."
+            },
+            "model": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Model identifier (e.g. 'claude-sonnet-4-20250514')."
+            },
+            "version": {
+              "type": "string",
+              "description": "Optional model version or tag."
+            }
+          },
+          "additionalProperties": false
+        },
+        "session_identity": {
+          "type": "object",
+          "description": "Which session?",
+          "required": ["session_id", "started_at"],
+          "properties": {
+            "session_id": {
+              "type": "string",
+              "minLength": 1,
+              "description": "FlightPlan session identifier."
+            },
+            "started_at": {
+              "type": "string",
+              "format": "date-time",
+              "description": "Session start timestamp."
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "governance_context": {
+      "type": "object",
+      "description": "Under what governed activity did this occur?",
+      "required": ["project_identity", "authority_scope"],
+      "properties": {
+        "project_identity": {
+          "type": "object",
+          "description": "Which project?",
+          "required": ["project_id", "project_type"],
+          "properties": {
+            "project_id": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Project identifier."
+            },
+            "project_type": {
+              "type": "string",
+              "enum": ["add_on", "core", "integration", "library"],
+              "description": "Project classification."
+            }
+          },
+          "additionalProperties": false
+        },
+        "work_packet_identity": {
+          "type": "object",
+          "description": "Which work packet? Optional — not all sessions are governed by work packets.",
+          "properties": {
+            "work_packet_id": {
+              "type": ["string", "null"],
+              "description": "Work Packet ID if this session is governed. Null for ungoverned sessions."
+            },
+            "work_order_id": {
+              "type": ["string", "null"],
+              "description": "Librarian Work Order ID if present. Null if not applicable."
+            }
+          },
+          "additionalProperties": false
+        },
+        "owner_identity": {
+          "type": "object",
+          "description": "Who is the owner?",
+          "properties": {
+            "owner_id": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Owner identifier."
+            }
+          },
+          "additionalProperties": false
+        },
+        "authority_scope": {
+          "type": "object",
+          "description": "Under what authority boundary?",
+          "required": ["scope", "constraints"],
+          "properties": {
+            "scope": {
+              "type": "string",
+              "enum": ["qa_pilot_local", "librarian_local", "cross_project", "fleet"],
+              "description": "Authority scope classification."
+            },
+            "constraints": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": ["advisory_only", "no_cross_project_mutation", "no_auto_remediation", "append_only"]
+              },
+              "description": "Authority constraints in effect."
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

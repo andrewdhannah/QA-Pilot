@@ -1,0 +1,27 @@
+{
+  "test_id": "JUDGE-1-T002-CONSTRUCTED",
+  "source_requirement": "Sprint JUDGE-1 must have implementing artifacts",
+  "source_sprint": "JUDGE-1",
+  "source_plan": "JUDGE-1-PLAN",
+  "required_capabilities": [
+    "SCRIPT_EXECUTION"
+  ],
+  "matched_capability": "validator",
+  "skills_used": [],
+  "target_adapter": "mcp-jsonrpc",
+  "description": "Verify implementation artifacts exist for JUDGE-1",
+  "test_type": "existence",
+  "assertions": [
+    {
+      "type": "file_exists",
+      "expected": "ARTIFACTS_PRESENT"
+    }
+  ],
+  "provenance": {
+    "constructed_at": "2026-08-11T05:19:27.860470+00:00",
+    "construction_agent": "qa-pilot-agent",
+    "source_claim": "All 310 tests passed (310/310 PASS)"
+  },
+  "execution_status": "NOT_EXECUTED",
+  "result": null
+}

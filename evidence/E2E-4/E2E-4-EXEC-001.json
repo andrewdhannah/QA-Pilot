@@ -1,0 +1,49 @@
+{
+  "$schema": "assurance-evidence-v1",
+  "evidence_class": "record",
+  "identity": {
+    "evidence_id": "E2E-4-EXEC-001",
+    "timestamp": "2026-08-11T05:15:00Z",
+    "source": "qa-pilot"
+  },
+  "observation": {
+    "observed_state": "E2E-4 Sealed-Sprint Assurance Discovery executed. 447 sealed sprints classified. 122 ASSURANCE_READY. 149 claims extracted. 149 test requirements derived. 149/149 executable. 0 CAPABILITY_MISSING. Test plans generated. Stopped before execution.",
+    "artifact_refs": [
+      "reports/E2E-4-sprint-assurance-discovery-result.json",
+      "scripts/e2e-4-sprint-assurance-discovery.py"
+    ],
+    "measurements": {
+      "sealed_sprints_total": 447,
+      "assurance_ready": 122,
+      "assurance_partial": 13,
+      "non_executable": 13,
+      "insufficient_source": 299,
+      "claims_extracted": 149,
+      "test_requirements_derived": 149,
+      "executable": 149,
+      "capability_missing": 0,
+      "test_plans_generated": 10
+    }
+  },
+  "context": {
+    "environment": "QA-Pilot workspace, Librarian sealed sprint ledger",
+    "consumer_shape": "qa-pilot-assurance-discovery",
+    "execution_context": {
+      "source": "Librarian sprint-ledger.json",
+      "classification_engine": "e2e-4-sprint-assurance-discovery.py",
+      "stopped_before": "execution",
+      "next_phase": "E2E-5 agent test construction"
+    }
+  },
+  "custody": {
+    "origin": "e2e-4-sprint-assurance-discovery.py",
+    "chain": ["E2E-4-EXEC-001"],
+    "verification_state": "verified"
+  },
+  "freshness": {
+    "captured_at": "2026-08-11T05:15:00Z",
+    "validated_at": "2026-08-11T05:15:00Z",
+    "refresh_expected_at": null,
+    "confidence_label": "historical"
+  }
+}

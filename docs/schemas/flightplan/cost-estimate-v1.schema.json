@@ -1,0 +1,77 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://librarian.dev/schemas/cost-estimate-v1.json",
+  "title": "Cost Estimate",
+  "description": "Formalized output of the historical lookup estimator. This is an observation capability — it answers 'what is a reasonable planning range based on previous executions?' not 'what will definitely happen.' Method starts as historical_lookup. If this changes, the schema should version.",
+  "type": "object",
+  "required": [
+    "estimator_id", "method", "job_class", "sample_count",
+    "percentiles", "confidence", "match_scope", "generated_at"
+  ],
+  "properties": {
+    "estimator_id": {
+      "type": "string",
+      "const": "token-cost-estimator-v1",
+      "description": "Estimator identity. Stable across runs."
+    },
+    "method": {
+      "type": "string",
+      "const": "historical_lookup",
+      "description": "Estimation method. Starts as historical_lookup. If this changes, the schema should version."
+    },
+    "job_class": {
+      "type": "string",
+      "description": "Class of work being estimated (e.g. 'implementation_task', 'refactor', 'diagnostic'). Derived from work_type input or inferred from project context."
+    },
+    "sample_count": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Number of historical sessions matching this job class. Drives confidence. Maps to Dead Reckoning's CONFIDENCE_THRESHOLDS: high>=20, medium>=8, low>=3, wayward<3."
+    },
+    "percentiles": {
+      "type": "object",
+      "required": ["p50", "p80", "p95"],
+      "properties": {
+        "p50": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Median token cost for this job class."
+        },
+        "p80": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "80th percentile — reasonable upper bound for planning."
+        },
+        "p95": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "95th percentile — conservative upper bound."
+        }
+      },
+      "description": "Token cost percentiles from historical data. Maps directly to Dead Reckoning's PercentileResult."
+    },
+    "confidence": {
+      "type": "string",
+      "enum": ["high", "medium", "low", "wayward"],
+      "description": "Confidence level based on sample count. high>=20, medium>=8, low>=3, wayward<3."
+    },
+    "match_scope": {
+      "type": "string",
+      "enum": [
+        "model_provider_project", "provider_model", "model_only",
+        "provider_only", "project_only", "global", "fallback_baseline"
+      ],
+      "description": "How tightly the estimate matches the target context. Narrower scope = more relevant."
+    },
+    "baseline_source": {
+      "type": "string",
+      "description": "Where the baseline data came from (calibrated, configured, etc.)."
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When this estimate was generated. Estimates go stale."
+    }
+  },
+  "additionalProperties": false
+}

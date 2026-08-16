@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://librarian.dev/schemas/token-budget-constraint-v1.json",
+  "title": "Token Budget Constraint",
+  "description": "Resource constraint for a Work Packet. Sibling to must_not_modify and required_validation — a constraint, not an authority. Violations route through the same disposition pipeline as scope violations. Token budget originates at the LINK planning layer (or falls back to estimator p80 for auto-generated packets), not at the runtime. The agent receives a constraint. It does not decide the constraint.",
+  "type": "object",
+  "properties": {
+    "planned": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Token budget authorized by LINK planning. Informed by CostEstimate but set by human judgment — may exceed or undercut any percentile based on risk tolerance, deadline pressure, or scope confidence. For auto-generated Work Packets (ad-hoc CLI execution), falls back to the CostEstimate's p80 value."
+    },
+    "tolerance": {
+      "type": "number",
+      "minimum": 1.0,
+      "default": 1.25,
+      "description": "Multiplier on planned before checkpoint trigger. 1.25 = 25% headroom. Accounts for execution variance without hard cutoff. The checkpoint fires at planned * tolerance, not at planned."
+    },
+    "checkpoint_at_pct": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100,
+      "default": 90,
+      "description": "Percentage of (planned * tolerance) at which checkpoint is triggered. Default 90% leaves room for graceful wrap-up. At checkpoint: agent stops, emits evidence, disposition pipeline decides."
+    },
+    "action_on_exceed": {
+      "type": "object",
+      "default": { "type": "checkpoint" },
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["checkpoint", "escalate"],
+          "description": "checkpoint: agent stops, emits evidence, disposition pipeline decides (continue, reduce scope, accept partial, or stop). escalate: owner review required. There is no 'kill' or 'terminate' option — budget exhaustion is governed, not terminal."
+        }
+      }
+    },
+    "estimate_ref": {
+      "type": "string",
+      "description": "CostEstimate observation_id that informed this budget. Traceability link from the Work Packet back to the estimation evidence."
+    }
+  }
+}

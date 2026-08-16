@@ -1,0 +1,41 @@
+{
+  "decision_id": "QUALIFICATION-DECISION-0016",
+  "source_record": "QR-016B8M4T-6035",
+  "target_id": "RCR-NO-IMPACT-051.json",
+  "target_type": "registry_entry",
+  "qualification_type": "artifact",
+  "qualification_level": "spot_checked",
+  "assessment": "advisory",
+  "overall_score": 0.88,
+  "sub_dimension_scores": {
+    "schema_compliance": 1.0,
+    "evidence_freshness": 1.0,
+    "evidence_diversity": 0.2,
+    "authority_boundary": 1.0,
+    "provenance_quality": 1.0
+  },
+  "score_weights": {
+    "schema_compliance": 0.25,
+    "evidence_freshness": 0.2,
+    "evidence_diversity": 0.15,
+    "authority_boundary": 0.25,
+    "provenance_quality": 0.15
+  },
+  "evidence_refs": [
+    {
+      "evidence_id": "RCR-NO-IMPACT-051.json",
+      "evidence_type": "receipt",
+      "evidence_source": "data/registry-change-receipts/RCR-NO-IMPACT-051.json",
+      "verification_status": "verified",
+      "verified_at": "2026-07-16T19:01:34.809230+00:00"
+    }
+  ],
+  "violations": [],
+  "decision": "accept",
+  "rationale": "Roundtrip validation: automated decision from clean proof",
+  "advisory_only": true,
+  "custody": "qa-pilot-local",
+  "librarian_impact": "none",
+  "generated_at": "2026-08-15T23:48:57.843479+00:00",
+  "generated_by": "qa-pilot-qualification-review-surface"
+}

@@ -1,0 +1,56 @@
+{
+  "test_id": "REG-002",
+  "domain": "regression",
+  "title": "Lifecycle translation integrity",
+  "objective": "Verify that the MCP adapter correctly translates external phase labels to canonical lifecycle phases, and that transition resolution works after rehydration from disk.",
+  "source": {
+    "type": "work_order",
+    "reference": "GOVERNANCE-INTEGRITY-RECOVERY-1/WP-001",
+    "description": "WP-001-D2: Prevent vocabulary drift between adapter presentation layer and canonical lifecycle states"
+  },
+  "execution": {
+    "type": "mcp_tool_call",
+    "criteria": "project_get_allowed_transitions returns valid transitions for a project whose cursor was loaded from disk (not initialized through project_init)",
+    "expected_outcome": "Transitions are returned with from/to phase numbers matching the TransitionTable, and no 'Cursor not found' error"
+  },
+  "pass_criteria": [
+    {
+      "id": "REG-002-A",
+      "description": "Rehydration: get_cursor succeeds for disk-only cursor",
+      "evidence_required": ["project_get_cursor returns cursor with phase field"]
+    },
+    {
+      "id": "REG-002-B",
+      "description": "Translation: getAllowedTransitions succeeds after rehydration",
+      "evidence_required": ["project_get_allowed_transitions returns transitions array, not error"]
+    },
+    {
+      "id": "REG-002-C",
+      "description": "Phase mapping: adapter phase labels map to valid TransitionTable phases",
+      "evidence_required": ["All returned transition fromPhase values exist in TransitionTable.all"]
+    },
+    {
+      "id": "REG-002-D",
+      "description": "No vocabulary leak: response does not contain non-canonical phase names",
+      "evidence_required": ["Response phase labels are numeric (1-8), not free-text like 'Plan' or 'Agent Work'"]
+    }
+  ],
+  "translation_map": {
+    "description": "Canonical mapping from adapter phase labels to lifecycle semantics",
+    "mappings": [
+      {"adapter_phase": 1, "adapter_label": "Plan", "canonical_semantic": "Initialize", "note": "First mutable state after Install"},
+      {"adapter_phase": 2, "adapter_label": "Agent Work", "canonical_semantic": "Qualify", "note": "Agent executes work"},
+      {"adapter_phase": 3, "adapter_label": "Owner Review", "canonical_semantic": "Identity", "note": "Owner reviews agent output"},
+      {"adapter_phase": 4, "adapter_label": "Seal Response", "canonical_semantic": "Ready", "note": "Seal decision recorded"},
+      {"adapter_phase": 5, "adapter_label": "Implementation", "canonical_semantic": "Discovered", "note": "Implementation executed"},
+      {"adapter_phase": 6, "adapter_label": "Validation", "canonical_semantic": "Candidate", "note": "Validation performed"},
+      {"adapter_phase": 7, "adapter_label": "Closeout", "canonical_semantic": "Admitted", "note": "Work item closed"},
+      {"adapter_phase": 8, "adapter_label": "Next Cycle", "canonical_semantic": "Operational", "note": "Ready for next cycle"}
+    ]
+  },
+  "contract_refs": ["qa-pilot-sdk-integration", "GOVERNANCE-INTEGRITY-RECOVERY-1"],
+  "status": "active",
+  "advisory_only": false,
+  "no_seal_authority": true,
+  "regression_of": "WP-001-D2/D3"
+}

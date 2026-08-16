@@ -1,0 +1,45 @@
+{
+  "$schema": "assurance-evidence-v1",
+  "evidence_class": "record",
+  "identity": {
+    "evidence_id": "E2E-5-EXEC-001",
+    "timestamp": "2026-08-11T05:20:00Z",
+    "source": "qa-pilot"
+  },
+  "observation": {
+    "observed_state": "E2E-5 Agent Test Construction executed. 10 E2E-4 plans consumed. 30 test artifacts constructed. 30/30 valid. 12/12 acceptance gates pass. Agent cannot declare execution results or create evidence claiming execution.",
+    "artifact_refs": [
+      "reports/E2E-5-agent-test-construction-result.json",
+      "scripts/e2e-5-agent-test-construction.py",
+      "test-library/e2e-5-constructed/*.json"
+    ],
+    "measurements": {
+      "plans_consumed": 10,
+      "tests_constructed": 30,
+      "valid_artifacts": 30,
+      "acceptance_gates_pass": 12,
+      "acceptance_gates_fail": 0
+    }
+  },
+  "context": {
+    "environment": "QA-Pilot workspace, agent test construction",
+    "consumer_shape": "qa-pilot-agent-construction",
+    "execution_context": {
+      "input_source": "E2E-4 test plans",
+      "construction_agent": "qa-pilot-agent",
+      "execution_layer": "QA-Pilot runner (E2E-6)",
+      "evidence_layer": "QA-Pilot evidence system (E2E-6)"
+    }
+  },
+  "custody": {
+    "origin": "e2e-5-agent-test-construction.py",
+    "chain": ["E2E-5-EXEC-001"],
+    "verification_state": "verified"
+  },
+  "freshness": {
+    "captured_at": "2026-08-11T05:20:00Z",
+    "validated_at": "2026-08-11T05:20:00Z",
+    "refresh_expected_at": null,
+    "confidence_label": "historical"
+  }
+}

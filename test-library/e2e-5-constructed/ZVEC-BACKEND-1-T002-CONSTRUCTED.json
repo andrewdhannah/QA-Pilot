@@ -1,0 +1,27 @@
+{
+  "test_id": "ZVEC-BACKEND-1-T002-CONSTRUCTED",
+  "source_requirement": "Sprint ZVEC-BACKEND-1 must have implementing artifacts",
+  "source_sprint": "ZVEC-BACKEND-1",
+  "source_plan": "ZVEC-BACKEND-1-PLAN",
+  "required_capabilities": [
+    "SCRIPT_EXECUTION"
+  ],
+  "matched_capability": "validator",
+  "skills_used": [],
+  "target_adapter": "mcp-jsonrpc",
+  "description": "Verify implementation artifacts exist for ZVEC-BACKEND-1",
+  "test_type": "existence",
+  "assertions": [
+    {
+      "type": "file_exists",
+      "expected": "ARTIFACTS_PRESENT"
+    }
+  ],
+  "provenance": {
+    "constructed_at": "2026-08-11T05:19:27.860344+00:00",
+    "construction_agent": "qa-pilot-agent",
+    "source_claim": "All 277 tests passed (277/277 PASS)"
+  },
+  "execution_status": "NOT_EXECUTED",
+  "result": null
+}

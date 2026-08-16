@@ -1,6 +1,6 @@
 # STARTUP-STATE.md — QA Pilot
 
-**Generated:** 2026-07-27T21:39:15Z
+**Generated:** 2026-08-16T04:48:11Z
 
 ## Current State
 
@@ -12,10 +12,10 @@
 - **Active work session:** none
 - **MCP:** reachable
 - **Git branch:** main
-- **Last commit:** aed58a8 Seal: QA-PILOT-LOCAL-TRAINING-SIM-1 at QA Pilot ledger #19
-- **Working tree:** dirty/685 changed or untracked
-- **Validators:** 73
-- **Test runners:** 82
+- **Last commit:** b406630 docs: add README for Librarian-QA-Pilot
+- **Working tree:** dirty/132 changed or untracked
+- **Validators:** 75
+- **Test runners:** 83
 - **Blockers:** none detected
 
 ## Custody Posture (Startup Integration)
@@ -57,8 +57,8 @@
 - **OS/Version:** Darwin AndrewsMac.local 24.6.0 Darwin Kernel Version 24.6.0: Fri Feb 27 19:33:24 PST 2026; root:xnu-11417.140.69.709.8~1/RELEASE_X86_64 x86_64
 - **Python version:** Python 3.14.4
 - **Startup checks:** /Users/andrew/Desktop/CarbideFrame/active/qa-pilot/scripts/run-startup-checks.sh
-- **Validator count:** 73
-- **Test runner count:** 82
+- **Validator count:** 75
+- **Test runner count:** 83
 
 ## Next
 

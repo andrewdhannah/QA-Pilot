@@ -1,0 +1,27 @@
+{
+  "test_id": "SQLITE-VEC-VENDOR-1-T003-CONSTRUCTED",
+  "source_requirement": "Sprint SQLITE-VEC-VENDOR-1 must have verifiable evidence",
+  "source_sprint": "SQLITE-VEC-VENDOR-1",
+  "source_plan": "SQLITE-VEC-VENDOR-1-PLAN",
+  "required_capabilities": [
+    "SCRIPT_EXECUTION"
+  ],
+  "matched_capability": "validator",
+  "skills_used": [],
+  "target_adapter": "mcp-jsonrpc",
+  "description": "Verify evidence references for SQLITE-VEC-VENDOR-1",
+  "test_type": "evidence_verification",
+  "assertions": [
+    {
+      "type": "evidence_reference",
+      "expected": "EVIDENCE_CHAIN_VALID"
+    }
+  ],
+  "provenance": {
+    "constructed_at": "2026-08-11T05:19:27.860409+00:00",
+    "construction_agent": "qa-pilot-agent",
+    "source_claim": "All 293 tests passed (293/293 PASS)"
+  },
+  "execution_status": "NOT_EXECUTED",
+  "result": null
+}

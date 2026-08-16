@@ -1,0 +1,81 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://librarian.dev/schemas/improvement-proposal-v1.json",
+  "title": "Improvement Proposal",
+  "description": "Bridge between preventive recommendations and governed work proposals. Requires Owner decision before any work creation.",
+  "type": "object",
+  "required": ["proposal_id", "project_id", "recommendation_refs", "expected_outcome", "status", "advisory_only"],
+  "properties": {
+    "proposal_id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Unique identifier. Format: IP-<timestamp>-<hex>."
+    },
+    "project_id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Project identifier."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When proposal was created."
+    },
+    "recommendation_refs": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 1,
+      "description": "References to preventive recommendations."
+    },
+    "evidence_refs": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "References to supporting evidence."
+    },
+    "risk_context": {
+      "type": "object",
+      "properties": {
+        "current_risk": { "type": "integer" },
+        "risk_band": { "type": "string" }
+      },
+      "description": "Risk context at proposal creation."
+    },
+    "economic_context": {
+      "type": "object",
+      "properties": {
+        "attention_score": { "type": "integer" },
+        "attention_level": { "type": "string" }
+      },
+      "description": "Economic context at proposal creation."
+    },
+    "expected_outcome": {
+      "type": "string",
+      "minLength": 1,
+      "description": "What this proposal aims to achieve."
+    },
+    "status": {
+      "type": "string",
+      "enum": ["pending_owner_review", "accepted", "rejected", "deferred", "converted"],
+      "description": "Current proposal status."
+    },
+    "owner_decision": {
+      "type": ["string", "null"],
+      "enum": ["accepted", "rejected", "deferred", null],
+      "description": "Owner decision if made."
+    },
+    "owner_rationale": {
+      "type": ["string", "null"],
+      "description": "Owner rationale for decision."
+    },
+    "work_packet_id": {
+      "type": ["string", "null"],
+      "description": "Work packet ID if converted."
+    },
+    "advisory_only": {
+      "type": "boolean",
+      "const": true,
+      "description": "Always true. This is a proposal, not authorization."
+    }
+  },
+  "additionalProperties": false
+}

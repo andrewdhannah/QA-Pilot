@@ -1,0 +1,427 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "qa-pilot-qualification-ir-v1",
+  "$ref": "#/$defs/QualificationIR",
+  "$defs": {
+    "QualificationIR": {
+      "type": "object",
+      "description": "Qualification Intermediate Representation — the compiler artifact between epic contract and generated test suite.",
+      "required": ["ir_metadata", "contract_source", "derivation_plan", "output_spec"],
+      "properties": {
+        "ir_metadata": { "$ref": "#/$defs/IRMetadata" },
+        "contract_source": { "$ref": "#/$defs/ContractSource" },
+        "derivation_plan": { "$ref": "#/$defs/DerivationPlan" },
+        "output_spec": { "$ref": "#/$defs/OutputSpec" }
+      },
+      "additionalProperties": false
+    },
+
+    "IRMetadata": {
+      "type": "object",
+      "description": "Provenance and lineage for this IR instance.",
+      "required": ["ir_id", "ir_version", "created_at", "contract_ref", "compiler_version", "source_hash"],
+      "properties": {
+        "ir_id": { "type": "string", "description": "Unique IR instance identifier, e.g. IR-SNA-EPIC-1" },
+        "ir_version": { "type": "string", "description": "Semantic version of this IR instance" },
+        "created_at": { "type": "string", "format": "date-time" },
+        "contract_ref": { "type": "string", "description": "Reference to the source epic contract, e.g. EPIC-SPRINT-NUMBER-ALLOCATION-GOVERNANCE-1" },
+        "compiler_version": { "type": "string", "description": "Version of the Qualification Compiler that produced this IR" },
+        "source_hash": { "type": "string", "description": "SHA-256 of the source contract JSON used to derive this IR" },
+        "parent_ir_refs": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "References to parent IRs if this IR was merged/composed from multiple sources"
+        },
+        "tags": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Arbitrary tags for filtering and selection"
+        }
+      },
+      "additionalProperties": false
+    },
+
+    "ContractSource": {
+      "type": "object",
+      "description": "The structured extraction of the epic contract into machine-readable contract elements.",
+      "required": ["governing_invariant", "invariants", "acceptance_gates", "stop_conditions"],
+      "properties": {
+        "governing_invariant": { "$ref": "#/$defs/GoverningInvariant" },
+        "invariants": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/Invariant" },
+          "minItems": 1,
+          "description": "Enumerated contract invariants derived from the epic"
+        },
+        "acceptance_gates": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/AcceptanceGate" },
+          "minItems": 1,
+          "description": "Acceptance gates that must all pass"
+        },
+        "authority_constraints": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/AuthorityConstraint" },
+          "description": "Authority and scope boundaries from the epic"
+        },
+        "lifecycle_rules": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/LifecycleRule" },
+          "description": "Lifecycle state machine rules and allowed transitions"
+        },
+        "stop_conditions": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/StopCondition" },
+          "minItems": 1,
+          "description": "Conditions that halt qualification immediately"
+        },
+        "evidence_requirements": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/EvidenceRequirement" },
+          "description": "What constitutes proof for this contract"
+        },
+        "scope": { "$ref": "#/$defs/Scope" },
+        "two_layer_defense": { "$ref": "#/$defs/TwoLayerDefense" }
+      },
+      "additionalProperties": false
+    },
+
+    "GoverningInvariant": {
+      "type": "object",
+      "required": ["statement", "testable_form"],
+      "properties": {
+        "statement": { "type": "string", "description": "The natural-language invariant from the epic" },
+        "testable_form": { "type": "string", "description": "Predicate logic or testable restatement" },
+        "negation": { "type": "string", "description": "What it would look like if violated" }
+      },
+      "additionalProperties": false
+    },
+
+    "Invariant": {
+      "type": "object",
+      "required": ["invariant_id", "statement", "testable_form"],
+      "properties": {
+        "invariant_id": { "type": "string", "description": "Stable ID, e.g. INV-1" },
+        "statement": { "type": "string" },
+        "testable_form": { "type": "string", "description": "Predicate that can be checked programmatically" },
+        "violation_shape": { "type": "string", "description": "How this invariant can be violated" },
+        "defense_layers": {
+          "type": "array",
+          "items": { "type": "string", "enum": ["application", "persistence"] },
+          "description": "Which defense layers enforce this invariant"
+        }
+      },
+      "additionalProperties": false
+    },
+
+    "AcceptanceGate": {
+      "type": "object",
+      "required": ["gate_id", "statement", "testable_form"],
+      "properties": {
+        "gate_id": { "type": "string", "description": "Stable ID, e.g. GATE-A" },
+        "statement": { "type": "string" },
+        "testable_form": { "type": "string" },
+        "evidence_sources": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "What artifacts constitute evidence for this gate"
+        }
+      },
+      "additionalProperties": false
+    },
+
+    "AuthorityConstraint": {
+      "type": "object",
+      "required": ["constraint_id", "statement"],
+      "properties": {
+        "constraint_id": { "type": "string" },
+        "statement": { "type": "string" },
+        "boundary_type": {
+          "type": "string",
+          "enum": ["scope_forbidden", "scope_allowed", "mutation_forbidden", "mutation_required"]
+        }
+      },
+      "additionalProperties": false
+    },
+
+    "LifecycleRule": {
+      "type": "object",
+      "required": ["rule_id", "from_state", "to_state", "condition"],
+      "properties": {
+        "rule_id": { "type": "string" },
+        "from_state": { "type": "string" },
+        "to_state": { "type": "string" },
+        "condition": { "type": "string", "description": "Predicate that must hold for the transition" },
+        "is_legal": { "type": "boolean", "description": "true = allowed transition, false = forbidden transition" }
+      },
+      "additionalProperties": false
+    },
+
+    "StopCondition": {
+      "type": "object",
+      "required": ["condition_id", "predicate", "severity"],
+      "properties": {
+        "condition_id": { "type": "string" },
+        "predicate": { "type": "string", "description": "If true, qualification halts immediately" },
+        "severity": { "type": "string", "enum": ["hard_stop", "soft_stop"] },
+        "message": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+
+    "EvidenceRequirement": {
+      "type": "object",
+      "required": ["requirement_id", "claim", "evidence_class"],
+      "properties": {
+        "requirement_id": { "type": "string" },
+        "claim": { "type": "string", "description": "What must be proven" },
+        "evidence_class": { "type": "string", "enum": ["record", "snapshot", "derivation_trace"] },
+        "method": { "type": "string", "description": "How to generate the evidence" },
+        "freshness": {
+          "type": "string",
+          "enum": ["immutable", "session_scoped", "time_bounded"]
+        }
+      },
+      "additionalProperties": false
+    },
+
+    "Scope": {
+      "type": "object",
+      "properties": {
+        "allowed": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "forbidden": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      },
+      "additionalProperties": false
+    },
+
+    "TwoLayerDefense": {
+      "type": "object",
+      "properties": {
+        "layer_1_application": { "type": "string" },
+        "layer_2_persistence": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+
+    "DerivationPlan": {
+      "type": "object",
+      "description": "Rules that transform contract elements into test families across the 9 layers.",
+      "required": ["layer_derivations", "adversarial_rules", "positive_rules"],
+      "properties": {
+        "layer_derivations": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/LayerDerivation" },
+          "minItems": 9,
+          "maxItems": 9,
+          "description": "Exactly 9 layer derivations, one per QA-Pilot layer"
+        },
+        "adversarial_rules": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/AdversarialRule" },
+          "description": "Rules for fabricating violations without the allocator pattern"
+        },
+        "positive_rules": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/PositiveRule" },
+          "description": "Rules for ensuring legitimate paths still work"
+        }
+      },
+      "additionalProperties": false
+    },
+
+    "LayerDerivation": {
+      "type": "object",
+      "required": ["layer_id", "layer_name", "layer_number", "purpose", "test_families"],
+      "properties": {
+        "layer_id": { "type": "string", "description": "e.g. L1, L2, ... L9" },
+        "layer_name": {
+          "type": "string",
+          "enum": ["contract", "workflow", "negative", "concurrency", "persistence", "interface", "exceptional", "evidence", "regression"]
+        },
+        "layer_number": { "type": "integer", "minimum": 1, "maximum": 9 },
+        "purpose": { "type": "string", "description": "The question this layer answers" },
+        "test_families": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/TestFamily" },
+          "description": "Groups of related tests derived from contract elements"
+        }
+      },
+      "additionalProperties": false
+    },
+
+    "TestFamily": {
+      "type": "object",
+      "required": ["family_id", "family_name", "source_contract_elements", "test_patterns"],
+      "properties": {
+        "family_id": { "type": "string", "description": "e.g. WF-CREATE, NEG-CONTENTION" },
+        "family_name": { "type": "string" },
+        "source_contract_elements": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "IDs of contract elements this family derives from (provenance)"
+        },
+        "test_patterns": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/TestPattern" }
+        }
+      },
+      "additionalProperties": false
+    },
+
+    "TestPattern": {
+      "type": "object",
+      "required": ["pattern_id", "description", "assertion_type", "assertion"],
+      "properties": {
+        "pattern_id": { "type": "string", "description": "e.g. W-001, N-001, CC-001" },
+        "description": { "type": "string" },
+        "assertion_type": {
+          "type": "string",
+          "enum": [
+            "element_exists",
+            "state_transition_allowed",
+            "state_transition_rejected",
+            "contention_exactly_one_winner",
+            "tamper_detected",
+            "path_convergence",
+            "evidence_produced",
+            "structure_valid",
+            "deterministic_outcome",
+            "lifecycle_completes"
+          ]
+        },
+        "assertion": { "type": "string", "description": "Predicate expression evaluated by the test runner" },
+        "setup": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/TestSetupAction" },
+          "description": "Actions to perform before the assertion"
+        },
+        "teardown": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/TestSetupAction" },
+          "description": "Cleanup actions after the test"
+        },
+        "expected_on_violation": { "type": "string", "description": "What should happen if the invariant is violated" },
+        "evidence_output": { "type": "string", "description": "The evidence artifact this test produces" }
+      },
+      "additionalProperties": false
+    },
+
+    "TestSetupAction": {
+      "type": "object",
+      "required": ["action_type"],
+      "properties": {
+        "action_type": {
+          "type": "string",
+          "enum": ["create_temp_store", "seed_data", "inject_tamper", "start_threads", "delete_file", "corrupt_json", "load_module", "run_operation"]
+        },
+        "target": { "type": "string" },
+        "params": {
+          "type": "object",
+          "additionalProperties": true
+        }
+      },
+      "additionalProperties": false
+    },
+
+    "AdversarialRule": {
+      "type": "object",
+      "required": ["rule_id", "attack_name", "attack_vector", "contract_target", "expected_outcome"],
+      "properties": {
+        "rule_id": { "type": "string", "description": "e.g. ADV-1 through ADV-14" },
+        "attack_name": { "type": "string" },
+        "attack_vector": { "type": "string", "description": "How the attack is attempted" },
+        "contract_target": { "type": "string", "description": "Which contract element is being attacked" },
+        "expected_outcome": { "type": "string", "enum": ["rejected", "detected", "no_violation"] },
+        "severity_if_pass": {
+          "type": "string",
+          "enum": ["critical", "high", "medium", "low"],
+          "description": "Severity if the attack succeeds (meaning the defense failed)"
+        },
+        "test_pattern": { "$ref": "#/$defs/TestPattern" }
+      },
+      "additionalProperties": false
+    },
+
+    "PositiveRule": {
+      "type": "object",
+      "required": ["rule_id", "workflow_name", "lifecycle_path", "expected_outcome"],
+      "properties": {
+        "rule_id": { "type": "string", "description": "e.g. POS-1 through POS-N" },
+        "workflow_name": { "type": "string" },
+        "lifecycle_path": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Ordered list of lifecycle states traversed"
+        },
+        "expected_outcome": { "type": "string", "enum": ["completes", "preserved", "new_identity"] },
+        "source_contract_elements": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "test_pattern": { "$ref": "#/$defs/TestPattern" }
+      },
+      "additionalProperties": false
+    },
+
+    "OutputSpec": {
+      "type": "object",
+      "description": "Defines what the compiled output looks like.",
+      "required": ["suite_id", "layers", "evidence_format"],
+      "properties": {
+        "suite_id": { "type": "string", "description": "Generated suite identifier" },
+        "suite_version": { "type": "string" },
+        "layers": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/LayerOutputSpec" }
+        },
+        "evidence_format": { "$ref": "#/$defs/EvidenceFormat" },
+        "disposition_rules": { "$ref": "#/$defs/DispositionRules" }
+      },
+      "additionalProperties": false
+    },
+
+    "LayerOutputSpec": {
+      "type": "object",
+      "required": ["layer_name", "output_type"],
+      "properties": {
+        "layer_name": { "type": "string" },
+        "output_type": {
+          "type": "string",
+          "enum": ["code", "audit_document", "checklist", "mixed"]
+        },
+        "test_runner": { "type": "string", "description": "How tests in this layer are executed" }
+      },
+      "additionalProperties": false
+    },
+
+    "EvidenceFormat": {
+      "type": "object",
+      "required": ["output_path", "schema_ref"],
+      "properties": {
+        "output_path": { "type": "string", "description": "Relative path for evidence output" },
+        "schema_ref": { "type": "string", "description": "Reference to the evidence JSON schema" },
+        "required_fields": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      },
+      "additionalProperties": false
+    },
+
+    "DispositionRules": {
+      "type": "object",
+      "properties": {
+        "pass": { "type": "string", "description": "Condition for PASS disposition" },
+        "finding": { "type": "string", "description": "Condition for FINDING disposition" },
+        "critical": { "type": "string", "description": "Condition for CRITICAL disposition" }
+      },
+      "additionalProperties": false
+    }
+  }
+}

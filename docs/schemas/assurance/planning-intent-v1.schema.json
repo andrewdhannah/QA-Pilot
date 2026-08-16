@@ -1,0 +1,88 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://librarian.dev/schemas/planning-intent-v1.json",
+  "title": "Planning Intent Record",
+  "description": "Record of planning intent before execution. Captures estimates and assurance context available at planning time.",
+  "type": "object",
+  "required": ["intent_id", "project_id", "planned_at", "estimates", "decision_rationale"],
+  "properties": {
+    "intent_id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Unique identifier for this planning intent. Format: PI-<timestamp>-<hex>."
+    },
+    "project_id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Project identifier."
+    },
+    "planned_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When planning decision was made."
+    },
+    "planning_context": {
+      "type": "object",
+      "description": "Assurance context available at planning time.",
+      "properties": {
+        "assurance_state": {
+          "type": "string",
+          "enum": ["operational", "degraded", "unknown"],
+          "description": "Assurance state at planning time."
+        },
+        "risk_band": {
+          "type": "string",
+          "enum": ["healthy", "monitor", "attention_required", "urgent"],
+          "description": "Risk band at planning time."
+        },
+        "coverage": {
+          "type": "string",
+          "enum": ["full", "partial", "minimal", "none", "unknown"],
+          "description": "Evidence coverage at planning time."
+        },
+        "freshness": {
+          "type": "string",
+          "enum": ["current", "aging", "stale", "unknown"],
+          "description": "Evidence freshness at planning time."
+        }
+      }
+    },
+    "estimates": {
+      "type": "object",
+      "required": ["complexity", "effort_days", "risk_level"],
+      "properties": {
+        "complexity": {
+          "type": "string",
+          "enum": ["low", "medium", "high", "very_high"],
+          "description": "Estimated complexity."
+        },
+        "effort_days": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Estimated effort in days."
+        },
+        "risk_level": {
+          "type": "string",
+          "enum": ["low", "medium", "high", "critical"],
+          "description": "Estimated risk level."
+        },
+        "expected_findings": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Expected number of findings."
+        }
+      }
+    },
+    "decision_rationale": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Why this planning decision was made."
+    },
+    "advisory_only": {
+      "type": "boolean",
+      "const": true,
+      "description": "Always true. This is a planning record, not authorization."
+    }
+  },
+  "additionalProperties": false
+}

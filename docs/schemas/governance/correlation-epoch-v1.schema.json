@@ -1,0 +1,89 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "correlation-epoch-v1.schema.json",
+  "title": "Correlation Epoch",
+  "description": "Immutable context in which correlation occurs. Captures the exact inputs to a correlation run for reproducibility.",
+  "type": "object",
+  "required": [
+    "correlation_epoch_id",
+    "created_at",
+    "declared_snapshot_refs",
+    "evidence_window",
+    "rule_set",
+    "status"
+  ],
+  "properties": {
+    "correlation_epoch_id": {
+      "type": "string",
+      "description": "Unique epoch identifier",
+      "pattern": "^CORR-EPOCH-"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When this epoch was created (ISO8601)"
+    },
+    "declared_snapshot_refs": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "IDs of declared capability state snapshots used",
+      "minItems": 1
+    },
+    "evidence_window": {
+      "$ref": "#/$defs/EvidenceWindow",
+      "description": "The time range of evidence considered"
+    },
+    "rule_set": {
+      "$ref": "#/$defs/CorrelationRuleSet",
+      "description": "The correlation rules applied"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["PENDING", "COMPLETED", "FAILED"],
+      "description": "Status of the correlation run"
+    },
+    "metadata": {
+      "type": ["object", "null"],
+      "additionalProperties": { "type": "string" },
+      "description": "Optional metadata"
+    }
+  },
+  "$defs": {
+    "EvidenceWindow": {
+      "type": "object",
+      "required": ["start_event_timestamp", "end_event_timestamp"],
+      "properties": {
+        "start_event_timestamp": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Start of evidence window (inclusive)"
+        },
+        "end_event_timestamp": {
+          "type": "string",
+          "format": "date-time",
+          "description": "End of evidence window (inclusive)"
+        }
+      }
+    },
+    "CorrelationRuleSet": {
+      "type": "object",
+      "required": ["version", "rules"],
+      "properties": {
+        "version": {
+          "type": "string",
+          "description": "Rule set version identifier"
+        },
+        "rules": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Which rules were applied"
+        },
+        "updated_at": {
+          "type": ["string", "null"],
+          "format": "date-time",
+          "description": "When this rule set was last updated"
+        }
+      }
+    }
+  }
+}

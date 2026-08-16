@@ -1,0 +1,27 @@
+{
+  "test_id": "JUDGE-1-T003-CONSTRUCTED",
+  "source_requirement": "Sprint JUDGE-1 must have verifiable evidence",
+  "source_sprint": "JUDGE-1",
+  "source_plan": "JUDGE-1-PLAN",
+  "required_capabilities": [
+    "SCRIPT_EXECUTION"
+  ],
+  "matched_capability": "validator",
+  "skills_used": [],
+  "target_adapter": "mcp-jsonrpc",
+  "description": "Verify evidence references for JUDGE-1",
+  "test_type": "evidence_verification",
+  "assertions": [
+    {
+      "type": "evidence_reference",
+      "expected": "EVIDENCE_CHAIN_VALID"
+    }
+  ],
+  "provenance": {
+    "constructed_at": "2026-08-11T05:19:27.860479+00:00",
+    "construction_agent": "qa-pilot-agent",
+    "source_claim": "All 310 tests passed (310/310 PASS)"
+  },
+  "execution_status": "NOT_EXECUTED",
+  "result": null
+}

@@ -1,0 +1,207 @@
+{
+  "$schema": "qa-pilot-capability-registry-v1",
+  "description": "QA-Pilot Testing Capability Registry — maps test types to qualified agent capabilities",
+  "last_updated": "2026-08-11T04:33:00Z",
+  "registry_version": 1,
+
+  "execution_type_capabilities": {
+    "validator": {
+      "required_capability": "SCRIPT_EXECUTION",
+      "description": "Run Python/shell validator scripts and parse output",
+      "current_status": "available",
+      "implementation": "static-analysis + subprocess"
+    },
+    "contract_check": {
+      "required_capability": "SCHEMA_VALIDATION",
+      "description": "Validate artifacts against JSON schemas or contract definitions",
+      "current_status": "available",
+      "implementation": "librarian_validate_json + subprocess"
+    },
+    "sdk_query": {
+      "required_capability": "SDK_INTEGRATION",
+      "description": "Query SDK methods and validate responses",
+      "current_status": "unavailable",
+      "implementation": "requires SDK connection",
+      "gap": "No local SDK server running"
+    },
+    "scenario": {
+      "required_capability": "SCENARIO_EXECUTION",
+      "description": "Execute user scenarios with agent guidance or human verification",
+      "current_status": "partial",
+      "implementation": "agent-assisted or manual"
+    },
+    "manual": {
+      "required_capability": "HUMAN_VERIFICATION",
+      "description": "Requires human expert verification",
+      "current_status": "manual",
+      "implementation": "human-only"
+    },
+    "mcp_api": {
+      "required_capability": "MCP_API_INTERACTION",
+      "description": "Read-only MCP tool invocation with provenance capture and error taxonomy",
+      "current_status": "available",
+      "implementation": "mcp-capability.py + JSON-RPC over HTTP",
+      "qualification": "VALIDATED",
+      "qualification_date": "2026-08-11",
+      "target_config": {
+        "default_endpoint": "http://127.0.0.1:3456/mcp",
+        "health_endpoint": "http://127.0.0.1:3456/api/health",
+        "configurable_via": "QA_PILOT_MCP_TARGET env var"
+      },
+      "capabilities": [
+        "health_check",
+        "tool_invocation",
+        "tool_listing",
+        "provenance_capture",
+        "error_taxonomy"
+      ],
+      "limitations": "Read-only initially. Write operations deferred to future capability build.",
+      "error_taxonomy": {
+        "INFRA_UNREACHABLE": "MCP service not reachable",
+        "INFRA_MALFORMED_RESPONSE": "Response parsing failed",
+        "INFRA_TIMEOUT": "Request timed out",
+        "INFRA_AUTH_FAILURE": "Authentication failed",
+        "PROTO_TOOL_NOT_FOUND": "Tool does not exist",
+        "PROTO_INVALID_ARGUMENTS": "Invalid tool arguments",
+        "PROTO_UNKNOWN_CAPABILITY": "Unknown capability",
+        "APP_TOOL_ERROR": "Tool executed but returned error",
+        "APP_VALIDATION_ERROR": "Validation failed",
+        "NONE": "No error"
+      }
+    }
+  },
+
+  "test_domain_capabilities": {
+    "regression": {
+      "required_capabilities": ["SCRIPT_EXECUTION", "SCHEMA_VALIDATION"],
+      "description": "Automated regression testing via validators and contract checks",
+      "coverage": "partial — validators available, SDK queries unavailable"
+    },
+    "security": {
+      "required_capabilities": ["SCRIPT_EXECUTION", "SCHEMA_VALIDATION", "SECURITY_ANALYSIS"],
+      "description": "Security boundary and mutation path testing",
+      "coverage": "partial — validators available, security analysis requires specialized tooling"
+    },
+    "uat": {
+      "required_capabilities": ["SCENARIO_EXECUTION", "HUMAN_VERIFICATION"],
+      "description": "User acceptance testing via scenarios",
+      "coverage": "manual — scenarios require human/agent execution"
+    },
+    "accessibility": {
+      "required_capabilities": ["BROWSER_INTERACTION", "ACCESSIBILITY_EVALUATION"],
+      "description": "WCAG compliance and keyboard navigation testing",
+      "coverage": "unavailable — requires browser automation + a11y evaluation"
+    },
+    "performance": {
+      "required_capabilities": ["BROWSER_INTERACTION", "PERFORMANCE_MEASUREMENT"],
+      "description": "Load time, rendering, and runtime performance testing",
+      "coverage": "unavailable — requires browser automation + performance metrics"
+    },
+    "ai": {
+      "required_capabilities": ["MODEL_EVALUATION", "SCENARIO_EXECUTION"],
+      "description": "AI agent behavior, governance awareness, and hallucination resistance",
+      "coverage": "manual — requires agent evaluation"
+    },
+    "compliance": {
+      "required_capabilities": ["SCHEMA_VALIDATION", "DOCUMENT_REVIEW"],
+      "description": "Compliance framework mapping and evidence verification",
+      "coverage": "partial — schema validation available, document review requires human"
+    }
+  },
+
+  "browser_capabilities": {
+    "browser_automation": {
+      "required_capability": "BROWSER_INTERACTION",
+      "description": "Headless or headed browser execution for HTML test suites",
+      "qualified_providers": [
+        {
+          "provider": "openwork-browser",
+          "qualification": "VALIDATED",
+          "capabilities": ["navigate", "click", "fill", "eval", "screenshot", "snapshot"],
+          "limitations": "Built-in OpenWork browser only, not headless CI"
+        }
+      ],
+      "missing": [
+        {
+          "capability": "PLAYWRIGHT_HEADLESS",
+          "description": "Headless browser for CI/automated execution",
+          "status": "NOT_AVAILABLE",
+          "impact": "P3 and Q2-C suites cannot execute in static/CI environments"
+        }
+      ]
+    }
+  },
+
+  "skill_mapping": {
+    "design-taste-frontend": {
+      "test_capabilities": ["FRONTEND_DESIGN_VALIDATION", "VISUAL_REGRESSION"],
+      "qualification": "CANDIDATE",
+      "notes": "Has pre-flight checklist (50+ items) that could inform accessibility/design testing"
+    },
+    "frontend-design": {
+      "test_capabilities": ["DESIGN_METHODOLOGY_REVIEW"],
+      "qualification": "CANDIDATE",
+      "notes": "Design philosophy guidance, not executable testing"
+    },
+    "brand-guidelines": {
+      "test_capabilities": ["BRAND_COMPLIANCE_CHECK"],
+      "qualification": "VALIDATED",
+      "notes": "Can verify brand color/typography compliance in artifacts"
+    },
+    "canvas-design": {
+      "test_capabilities": [],
+      "qualification": "NOT_TESTING",
+      "notes": "Art generation skill, not testing capability"
+    },
+    "theme-factory": {
+      "test_capabilities": ["THEME_APPLICATION_CHECK"],
+      "qualification": "VALIDATED",
+      "notes": "Can verify theme application in styled artifacts"
+    }
+  },
+
+  "capability_gaps": [
+    {
+      "capability": "BROWSER_INTERACTION",
+      "status": "PARTIAL",
+      "description": "OpenWork browser available but no headless CI-capable browser",
+      "affected_suites": ["P3", "Q2-C"],
+      "resolution": "Playwright integration or headless Chrome"
+    },
+    {
+      "capability": "ACCESSIBILITY_EVALUATION",
+      "status": "MISSING",
+      "description": "No automated a11y testing tool (axe, Lighthouse a11y)",
+      "affected_domains": ["accessibility"],
+      "resolution": "Install axe-core or Lighthouse CLI"
+    },
+    {
+      "capability": "PERFORMANCE_MEASUREMENT",
+      "status": "MISSING",
+      "description": "No performance metrics collection (Lighthouse perf, Web Vitals)",
+      "affected_domains": ["performance"],
+      "resolution": "Install Lighthouse CLI or Web Vitals library"
+    },
+    {
+      "capability": "SECURITY_ANALYSIS",
+      "status": "MISSING",
+      "description": "No automated security scanning tool",
+      "affected_domains": ["security"],
+      "resolution": "Specialized security testing tools"
+    },
+    {
+      "capability": "SDK_INTEGRATION",
+      "status": "UNAVAILABLE",
+      "description": "No local SDK server for qa_pilot_evidence_sdk",
+      "affected_domains": ["regression"],
+      "resolution": "Start local SDK server or mock"
+    },
+    {
+      "capability": "MODEL_EVALUATION",
+      "status": "MISSING",
+      "description": "No automated model behavior evaluation framework",
+      "affected_domains": ["ai"],
+      "resolution": "Agent evaluation framework"
+    }
+  ]
+}

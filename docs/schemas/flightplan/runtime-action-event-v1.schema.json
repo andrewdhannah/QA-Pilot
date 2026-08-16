@@ -1,0 +1,167 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://librarian.dev/schemas/runtime-action-event-v1.json",
+  "title": "Runtime Action Event",
+  "description": "Structured event from FlightPlan to Librarian. Answers: what did the runtime do? Independent from resource observations and lifecycle events. Contract: AGENT-RUNTIME-EVIDENCE-CONTRACT-001.md §5. Extended with provenance chain per QA-PILOT-RUNTIME-EVIDENCE-COMPLETION-1.",
+  "type": "object",
+  "required": [
+    "event_id", "event_type", "session_id", "timestamp",
+    "action", "action_detail"
+  ],
+  "properties": {
+    "event_id": {
+      "type": "string",
+      "description": "Unique identifier for this event. Format: RAE-<timestamp>-<hex>. Append-only."
+    },
+    "event_type": {
+      "type": "string",
+      "const": "runtime_action",
+      "description": "Event type. Always 'runtime_action'."
+    },
+    "session_id": {
+      "type": "string",
+      "description": "FlightPlan session ID."
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When this event was recorded."
+    },
+    "action": {
+      "type": "string",
+      "enum": ["tool_called", "file_modified", "command_executed", "abort_requested"],
+      "description": "What the runtime did."
+    },
+    "action_detail": {
+      "type": "object",
+      "properties": {
+        "tool_name": {
+          "type": ["string", "null"],
+          "description": "Tool name. Populated for tool_called. Null otherwise."
+        },
+        "file_path": {
+          "type": ["string", "null"],
+          "description": "File path. Populated for file_modified. Null otherwise."
+        },
+        "command": {
+          "type": ["string", "null"],
+          "description": "Shell command. Populated for command_executed. Null otherwise."
+        },
+        "target_session_id": {
+          "type": ["string", "null"],
+          "description": "Target session ID. Populated for abort_requested. Null otherwise."
+        }
+      },
+      "description": "Context-specific detail. Null fields are irrelevant to the action type."
+    },
+    "work_packet_id": {
+      "type": "string",
+      "description": "Work Packet ID if this session is governed. Omit for ungoverned sessions."
+    },
+    "work_order_id": {
+      "type": "string",
+      "description": "Librarian Work Order ID if present. Omit if not applicable."
+    },
+    "execution_identity": {
+      "type": "object",
+      "description": "Execution identity provenance. Answers: what produced this observation?",
+      "required": ["node_identity", "runtime_identity", "agent_identity", "model_identity", "session_identity"],
+      "properties": {
+        "node_identity": {
+          "type": "object",
+          "required": ["project_id", "project_type", "node_id"],
+          "properties": {
+            "project_id": { "type": "string", "minLength": 1 },
+            "project_type": { "type": "string", "enum": ["add_on", "core", "integration", "library"] },
+            "node_id": { "type": "string", "minLength": 1 }
+          },
+          "additionalProperties": false
+        },
+        "runtime_identity": {
+          "type": "object",
+          "required": ["runtime_id", "runtime_type", "runtime_version"],
+          "properties": {
+            "runtime_id": { "type": "string", "minLength": 1 },
+            "runtime_type": { "type": "string", "enum": ["openwork", "codex", "claude-code", "cursor", "vscode", "custom"] },
+            "runtime_version": { "type": "string", "minLength": 1 }
+          },
+          "additionalProperties": false
+        },
+        "agent_identity": {
+          "type": "object",
+          "required": ["agent_id", "agent_version"],
+          "properties": {
+            "agent_id": { "type": "string", "minLength": 1 },
+            "agent_version": { "type": "string", "minLength": 1 }
+          },
+          "additionalProperties": false
+        },
+        "model_identity": {
+          "type": "object",
+          "required": ["provider", "model"],
+          "properties": {
+            "provider": { "type": "string", "minLength": 1 },
+            "model": { "type": "string", "minLength": 1 },
+            "version": { "type": "string" }
+          },
+          "additionalProperties": false
+        },
+        "session_identity": {
+          "type": "object",
+          "required": ["session_id", "started_at"],
+          "properties": {
+            "session_id": { "type": "string", "minLength": 1 },
+            "started_at": { "type": "string", "format": "date-time" }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "governance_context": {
+      "type": "object",
+      "description": "Governance context provenance. Answers: under what governed activity?",
+      "required": ["project_identity", "authority_scope"],
+      "properties": {
+        "project_identity": {
+          "type": "object",
+          "required": ["project_id", "project_type"],
+          "properties": {
+            "project_id": { "type": "string", "minLength": 1 },
+            "project_type": { "type": "string", "enum": ["add_on", "core", "integration", "library"] }
+          },
+          "additionalProperties": false
+        },
+        "work_packet_identity": {
+          "type": "object",
+          "properties": {
+            "work_packet_id": { "type": ["string", "null"] },
+            "work_order_id": { "type": ["string", "null"] }
+          },
+          "additionalProperties": false
+        },
+        "owner_identity": {
+          "type": "object",
+          "properties": {
+            "owner_id": { "type": "string", "minLength": 1 }
+          },
+          "additionalProperties": false
+        },
+        "authority_scope": {
+          "type": "object",
+          "required": ["scope", "constraints"],
+          "properties": {
+            "scope": { "type": "string", "enum": ["qa_pilot_local", "librarian_local", "cross_project", "fleet"] },
+            "constraints": {
+              "type": "array",
+              "items": { "type": "string", "enum": ["advisory_only", "no_cross_project_mutation", "no_auto_remediation", "append_only"] }
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

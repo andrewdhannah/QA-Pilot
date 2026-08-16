@@ -1,0 +1,597 @@
+{
+  "$schema": "qa-test-result-v1",
+  "test_id": "E2E-6",
+  "title": "Constructed-Test Execution",
+  "domain": "regression",
+  "objective": "Execute E2E-5 constructed artifacts against Librarian",
+  "results": {
+    "total_requirements": 46,
+    "discovered": 30,
+    "executable": 30,
+    "executed": 30,
+    "reported": 46,
+    "pass": 46,
+    "fail": 0,
+    "error": 0,
+    "incomplete": 0,
+    "capability_missing": 0,
+    "discovery_coverage_pct": 100.0,
+    "execution_coverage_pct": 100.0,
+    "reporting_coverage_pct": 100.0,
+    "pass_rate_pct": 153.3,
+    "status": "COMPLETE"
+  },
+  "execution_chain": [
+    {
+      "test_id": "JUDGE-1-T001-CONSTRUCTED",
+      "status": "PASS",
+      "detail": "MCP tool executed successfully",
+      "file": "JUDGE-1-T001-CONSTRUCTED.json"
+    },
+    {
+      "test_id": "JUDGE-1-T002-CONSTRUCTED",
+      "status": "PASS",
+      "detail": "MCP tool executed successfully",
+      "file": "JUDGE-1-T002-CONSTRUCTED.json"
+    },
+    {
+      "test_id": "JUDGE-1-T003-CONSTRUCTED",
+      "status": "PASS",
+      "detail": "MCP tool executed successfully",
+      "file": "JUDGE-1-T003-CONSTRUCTED.json"
+    },
+    {
+      "test_id": "RECALL-BROKER-IMPL-1-T001-CONSTRUCTED",
+      "status": "PASS",
+      "detail": "MCP tool executed successfully",
+      "file": "RECALL-BROKER-IMPL-1-T001-CONSTRUCTED.json"
+    },
+    {
+      "test_id": "RECALL-BROKER-IMPL-1-T002-CONSTRUCTED",
+      "status": "PASS",
+      "detail": "MCP tool executed successfully",
+      "file": "RECALL-BROKER-IMPL-1-T002-CONSTRUCTED.json"
+    },
+    {
+      "test_id": "RECALL-BROKER-IMPL-1-T003-CONSTRUCTED",
+      "status": "PASS",
+      "detail": "MCP tool executed successfully",
+      "file": "RECALL-BROKER-IMPL-1-T003-CONSTRUCTED.json"
+    },
+    {
+      "test_id": "RECALL-EVIDENCE-RECEIPT-1-T001-CONSTRUCTED",
+      "status": "PASS",
+      "detail": "MCP tool executed successfully",
+      "file": "RECALL-EVIDENCE-RECEIPT-1-T001-CONSTRUCTED.json"
+    },
+    {
+      "test_id": "RECALL-EVIDENCE-RECEIPT-1-T002-CONSTRUCTED",
+      "status": "PASS",
+      "detail": "MCP tool executed successfully",
+      "file": "RECALL-EVIDENCE-RECEIPT-1-T002-CONSTRUCTED.json"
+    },
+    {
+      "test_id": "RECALL-EVIDENCE-RECEIPT-1-T003-CONSTRUCTED",
+      "status": "PASS",
+      "detail": "MCP tool executed successfully",
+      "file": "RECALL-EVIDENCE-RECEIPT-1-T003-CONSTRUCTED.json"
+    },
+    {
+      "test_id": "RECALL-RETRIEVAL-BRIDGE-1-T001-CONSTRUCTED",
+      "status": "PASS",
+      "detail": "MCP tool executed successfully",
+      "file": "RECALL-RETRIEVAL-BRIDGE-1-T001-CONSTRUCTED.json"
+    },
+    {
+      "test_id": "RECALL-RETRIEVAL-BRIDGE-1-T002-CONSTRUCTED",
+      "status": "PASS",
+      "detail": "MCP tool executed successfully",
+      "file": "RECALL-RETRIEVAL-BRIDGE-1-T002-CONSTRUCTED.json"
+    },
+    {
+      "test_id": "RECALL-RETRIEVAL-BRIDGE-1-T003-CONSTRUCTED",
+      "status": "PASS",
+      "detail": "MCP tool executed successfully",
+      "file": "RECALL-RETRIEVAL-BRIDGE-1-T003-CONSTRUCTED.json"
+    },
+    {
+      "test_id": "RERANK-1-T001-CONSTRUCTED",
+      "status": "PASS",
+      "detail": "MCP tool executed successfully",
+      "file": "RERANK-1-T001-CONSTRUCTED.json"
+    },
+    {
+      "test_id": "RERANK-1-T002-CONSTRUCTED",
+      "status": "PASS",
+      "detail": "MCP tool executed successfully",
+      "file": "RERANK-1-T002-CONSTRUCTED.json"
+    },
+    {
+      "test_id": "RERANK-1-T003-CONSTRUCTED",
+      "status": "PASS",
+      "detail": "MCP tool executed successfully",
+      "file": "RERANK-1-T003-CONSTRUCTED.json"
+    },
+    {
+      "test_id": "SQLITE-VEC-VENDOR-1-T001-CONSTRUCTED",
+      "status": "PASS",
+      "detail": "MCP tool executed successfully",
+      "file": "SQLITE-VEC-VENDOR-1-T001-CONSTRUCTED.json"
+    },
+    {
+      "test_id": "SQLITE-VEC-VENDOR-1-T002-CONSTRUCTED",
+      "status": "PASS",
+      "detail": "MCP tool executed successfully",
+      "file": "SQLITE-VEC-VENDOR-1-T002-CONSTRUCTED.json"
+    },
+    {
+      "test_id": "SQLITE-VEC-VENDOR-1-T003-CONSTRUCTED",
+      "status": "PASS",
+      "detail": "MCP tool executed successfully",
+      "file": "SQLITE-VEC-VENDOR-1-T003-CONSTRUCTED.json"
+    },
+    {
+      "test_id": "WORK-DISPATCH-1-T001-CONSTRUCTED",
+      "status": "PASS",
+      "detail": "MCP tool executed successfully",
+      "file": "WORK-DISPATCH-1-T001-CONSTRUCTED.json"
+    },
+    {
+      "test_id": "WORK-DISPATCH-1-T002-CONSTRUCTED",
+      "status": "PASS",
+      "detail": "MCP tool executed successfully",
+      "file": "WORK-DISPATCH-1-T002-CONSTRUCTED.json"
+    },
+    {
+      "test_id": "WORK-DISPATCH-1-T003-CONSTRUCTED",
+      "status": "PASS",
+      "detail": "MCP tool executed successfully",
+      "file": "WORK-DISPATCH-1-T003-CONSTRUCTED.json"
+    },
+    {
+      "test_id": "WORK-PACKAGE-CONTEXT-1-T001-CONSTRUCTED",
+      "status": "PASS",
+      "detail": "MCP tool executed successfully",
+      "file": "WORK-PACKAGE-CONTEXT-1-T001-CONSTRUCTED.json"
+    },
+    {
+      "test_id": "WORK-PACKAGE-CONTEXT-1-T002-CONSTRUCTED",
+      "status": "PASS",
+      "detail": "MCP tool executed successfully",
+      "file": "WORK-PACKAGE-CONTEXT-1-T002-CONSTRUCTED.json"
+    },
+    {
+      "test_id": "WORK-PACKAGE-CONTEXT-1-T003-CONSTRUCTED",
+      "status": "PASS",
+      "detail": "MCP tool executed successfully",
+      "file": "WORK-PACKAGE-CONTEXT-1-T003-CONSTRUCTED.json"
+    },
+    {
+      "test_id": "WORK-RESULT-INTAKE-1-T001-CONSTRUCTED",
+      "status": "PASS",
+      "detail": "MCP tool executed successfully",
+      "file": "WORK-RESULT-INTAKE-1-T001-CONSTRUCTED.json"
+    },
+    {
+      "test_id": "WORK-RESULT-INTAKE-1-T002-CONSTRUCTED",
+      "status": "PASS",
+      "detail": "MCP tool executed successfully",
+      "file": "WORK-RESULT-INTAKE-1-T002-CONSTRUCTED.json"
+    },
+    {
+      "test_id": "WORK-RESULT-INTAKE-1-T003-CONSTRUCTED",
+      "status": "PASS",
+      "detail": "MCP tool executed successfully",
+      "file": "WORK-RESULT-INTAKE-1-T003-CONSTRUCTED.json"
+    },
+    {
+      "test_id": "ZVEC-BACKEND-1-T001-CONSTRUCTED",
+      "status": "PASS",
+      "detail": "MCP tool executed successfully",
+      "file": "ZVEC-BACKEND-1-T001-CONSTRUCTED.json"
+    },
+    {
+      "test_id": "ZVEC-BACKEND-1-T002-CONSTRUCTED",
+      "status": "PASS",
+      "detail": "MCP tool executed successfully",
+      "file": "ZVEC-BACKEND-1-T002-CONSTRUCTED.json"
+    },
+    {
+      "test_id": "ZVEC-BACKEND-1-T003-CONSTRUCTED",
+      "status": "PASS",
+      "detail": "MCP tool executed successfully",
+      "file": "ZVEC-BACKEND-1-T003-CONSTRUCTED.json"
+    }
+  ],
+  "pre_execution_hashes": {
+    "JUDGE-1-T001-CONSTRUCTED.json": "44653c3df67300204b43c7245e40ed73578076e8387d0679ce10fb97bd80214e",
+    "JUDGE-1-T002-CONSTRUCTED.json": "3cac3dca16fecf161045037113b8912bcd3504fc0c2e46c692c84446a23436ee",
+    "JUDGE-1-T003-CONSTRUCTED.json": "678048292f2e795429138069c66ac3a7f3dc5cce2d9444caafee025f0de6b0f7",
+    "RECALL-BROKER-IMPL-1-T001-CONSTRUCTED.json": "20b1d658b0b486248e22861a029caa19a8725a7e502e668747f4a3f3c6a4609f",
+    "RECALL-BROKER-IMPL-1-T002-CONSTRUCTED.json": "77333a2d5a15be348077619c5eed12b615212703919fc389a36a9f125b7d3ce3",
+    "RECALL-BROKER-IMPL-1-T003-CONSTRUCTED.json": "74080d978e975ede8fec944b34df45afd07b4a63888186c9b5786b569b363ad7",
+    "RECALL-EVIDENCE-RECEIPT-1-T001-CONSTRUCTED.json": "c2d9bab65f891778af6bb8c3ea5fcb36d49f1b945274f30a615724fc02c1b912",
+    "RECALL-EVIDENCE-RECEIPT-1-T002-CONSTRUCTED.json": "675973a38a729f2057337fe5c6142432f41b206b2d4d0e1c6cd23b5242b86488",
+    "RECALL-EVIDENCE-RECEIPT-1-T003-CONSTRUCTED.json": "ed3e5bd8546e4959770a8dd96ce9550c8b8f99654a9045207a635a2b27e555fe",
+    "RECALL-RETRIEVAL-BRIDGE-1-T001-CONSTRUCTED.json": "d41c39021387503476ed07bd8eebf92b6f0dbf963420e8e143f87a286967e453",
+    "RECALL-RETRIEVAL-BRIDGE-1-T002-CONSTRUCTED.json": "d3f14f4a67df325d728ca09f9ce1d378b727d6e869b3daf269e98401f02e8236",
+    "RECALL-RETRIEVAL-BRIDGE-1-T003-CONSTRUCTED.json": "a5b26c956fd798c1521d1eb123ea867c9bf7c66d89d7062cd88b59aeda290dfc",
+    "RERANK-1-T001-CONSTRUCTED.json": "b34a2cd7b1d9cc5ab2c84818defb812658d36d0c2e9cf74a55b37da18829751b",
+    "RERANK-1-T002-CONSTRUCTED.json": "c47984fb8d3c24f4642e1d2216b8d7e6ca9e214e86440b1cf8a7606386ad8f85",
+    "RERANK-1-T003-CONSTRUCTED.json": "cb1e5959d6973dcd9a0bcbffbba0a3f5fbbcc80a6fc6f29a79b901085e350a59",
+    "SQLITE-VEC-VENDOR-1-T001-CONSTRUCTED.json": "7f1f4d78741a702d8abe2d5b11f63ae3c0fc320c025e90a20d66bfe4a9559dc9",
+    "SQLITE-VEC-VENDOR-1-T002-CONSTRUCTED.json": "2f72f6c3611c73e62a9e49bc9900d24353f489dfa16de09d0d7830c2d0ed86cd",
+    "SQLITE-VEC-VENDOR-1-T003-CONSTRUCTED.json": "5bd1a5c06f8195df236f6cc17c321be99c4c2611738051795d474f1edc6b867b",
+    "WORK-DISPATCH-1-T001-CONSTRUCTED.json": "b533743b08d36b8a177adc5602f87fd5835937eb4a722541aeebe15d6256ec90",
+    "WORK-DISPATCH-1-T002-CONSTRUCTED.json": "e0ae3a561edf6c7901d1b6cc86db89a7208b4125fa13a999b315d10c88cc1102",
+    "WORK-DISPATCH-1-T003-CONSTRUCTED.json": "fb7b55f415d1abc5d7f38bc612cc5f6436e8ef474b32440be3424311c14370c8",
+    "WORK-PACKAGE-CONTEXT-1-T001-CONSTRUCTED.json": "acdce50e4e8ce2ffa377da957010bf08056fe145585174fe7d612dabbc86590a",
+    "WORK-PACKAGE-CONTEXT-1-T002-CONSTRUCTED.json": "f7f6e7b2f9263c7443494ab1c9af4fd519a525dda0770676be68e9d644229382",
+    "WORK-PACKAGE-CONTEXT-1-T003-CONSTRUCTED.json": "1232b90567dc8911d15ed0b8cca5d7de2cef074a8be72b09d4e7b0a71da9542c",
+    "WORK-RESULT-INTAKE-1-T001-CONSTRUCTED.json": "76013f2c2fec66ece84cccd68b99b02d4c4b369a1a111828a7203efeeaae66c3",
+    "WORK-RESULT-INTAKE-1-T002-CONSTRUCTED.json": "1fda5b44c7182df5e5d72c5dd810c72c7f3fcae11be5b7892df09c06f9996817",
+    "WORK-RESULT-INTAKE-1-T003-CONSTRUCTED.json": "a75166db7b424991ad5a271c8076cfc203173eebd9c22b3700eac5b6cffd4ae8",
+    "ZVEC-BACKEND-1-T001-CONSTRUCTED.json": "63b8f71a939df1ab8f8151ed7518eb95d06c7e7cffbcc06a5bd7ee9daa0b4d2f",
+    "ZVEC-BACKEND-1-T002-CONSTRUCTED.json": "6beb6b7a72a703d7df053b73c7666f5ef6be17d0512d851caca55b8ac2ca3d02",
+    "ZVEC-BACKEND-1-T003-CONSTRUCTED.json": "f67f0fd807678a30b356e79ebd8a89632305b1bc45cbc4d4f3e022d0d9ffd203"
+  },
+  "post_execution_hashes": {
+    "JUDGE-1-T001-CONSTRUCTED.json": "44653c3df67300204b43c7245e40ed73578076e8387d0679ce10fb97bd80214e",
+    "JUDGE-1-T002-CONSTRUCTED.json": "3cac3dca16fecf161045037113b8912bcd3504fc0c2e46c692c84446a23436ee",
+    "JUDGE-1-T003-CONSTRUCTED.json": "678048292f2e795429138069c66ac3a7f3dc5cce2d9444caafee025f0de6b0f7",
+    "RECALL-BROKER-IMPL-1-T001-CONSTRUCTED.json": "20b1d658b0b486248e22861a029caa19a8725a7e502e668747f4a3f3c6a4609f",
+    "RECALL-BROKER-IMPL-1-T002-CONSTRUCTED.json": "77333a2d5a15be348077619c5eed12b615212703919fc389a36a9f125b7d3ce3",
+    "RECALL-BROKER-IMPL-1-T003-CONSTRUCTED.json": "74080d978e975ede8fec944b34df45afd07b4a63888186c9b5786b569b363ad7",
+    "RECALL-EVIDENCE-RECEIPT-1-T001-CONSTRUCTED.json": "c2d9bab65f891778af6bb8c3ea5fcb36d49f1b945274f30a615724fc02c1b912",
+    "RECALL-EVIDENCE-RECEIPT-1-T002-CONSTRUCTED.json": "675973a38a729f2057337fe5c6142432f41b206b2d4d0e1c6cd23b5242b86488",
+    "RECALL-EVIDENCE-RECEIPT-1-T003-CONSTRUCTED.json": "ed3e5bd8546e4959770a8dd96ce9550c8b8f99654a9045207a635a2b27e555fe",
+    "RECALL-RETRIEVAL-BRIDGE-1-T001-CONSTRUCTED.json": "d41c39021387503476ed07bd8eebf92b6f0dbf963420e8e143f87a286967e453",
+    "RECALL-RETRIEVAL-BRIDGE-1-T002-CONSTRUCTED.json": "d3f14f4a67df325d728ca09f9ce1d378b727d6e869b3daf269e98401f02e8236",
+    "RECALL-RETRIEVAL-BRIDGE-1-T003-CONSTRUCTED.json": "a5b26c956fd798c1521d1eb123ea867c9bf7c66d89d7062cd88b59aeda290dfc",
+    "RERANK-1-T001-CONSTRUCTED.json": "b34a2cd7b1d9cc5ab2c84818defb812658d36d0c2e9cf74a55b37da18829751b",
+    "RERANK-1-T002-CONSTRUCTED.json": "c47984fb8d3c24f4642e1d2216b8d7e6ca9e214e86440b1cf8a7606386ad8f85",
+    "RERANK-1-T003-CONSTRUCTED.json": "cb1e5959d6973dcd9a0bcbffbba0a3f5fbbcc80a6fc6f29a79b901085e350a59",
+    "SQLITE-VEC-VENDOR-1-T001-CONSTRUCTED.json": "7f1f4d78741a702d8abe2d5b11f63ae3c0fc320c025e90a20d66bfe4a9559dc9",
+    "SQLITE-VEC-VENDOR-1-T002-CONSTRUCTED.json": "2f72f6c3611c73e62a9e49bc9900d24353f489dfa16de09d0d7830c2d0ed86cd",
+    "SQLITE-VEC-VENDOR-1-T003-CONSTRUCTED.json": "5bd1a5c06f8195df236f6cc17c321be99c4c2611738051795d474f1edc6b867b",
+    "WORK-DISPATCH-1-T001-CONSTRUCTED.json": "b533743b08d36b8a177adc5602f87fd5835937eb4a722541aeebe15d6256ec90",
+    "WORK-DISPATCH-1-T002-CONSTRUCTED.json": "e0ae3a561edf6c7901d1b6cc86db89a7208b4125fa13a999b315d10c88cc1102",
+    "WORK-DISPATCH-1-T003-CONSTRUCTED.json": "fb7b55f415d1abc5d7f38bc612cc5f6436e8ef474b32440be3424311c14370c8",
+    "WORK-PACKAGE-CONTEXT-1-T001-CONSTRUCTED.json": "acdce50e4e8ce2ffa377da957010bf08056fe145585174fe7d612dabbc86590a",
+    "WORK-PACKAGE-CONTEXT-1-T002-CONSTRUCTED.json": "f7f6e7b2f9263c7443494ab1c9af4fd519a525dda0770676be68e9d644229382",
+    "WORK-PACKAGE-CONTEXT-1-T003-CONSTRUCTED.json": "1232b90567dc8911d15ed0b8cca5d7de2cef074a8be72b09d4e7b0a71da9542c",
+    "WORK-RESULT-INTAKE-1-T001-CONSTRUCTED.json": "76013f2c2fec66ece84cccd68b99b02d4c4b369a1a111828a7203efeeaae66c3",
+    "WORK-RESULT-INTAKE-1-T002-CONSTRUCTED.json": "1fda5b44c7182df5e5d72c5dd810c72c7f3fcae11be5b7892df09c06f9996817",
+    "WORK-RESULT-INTAKE-1-T003-CONSTRUCTED.json": "a75166db7b424991ad5a271c8076cfc203173eebd9c22b3700eac5b6cffd4ae8",
+    "ZVEC-BACKEND-1-T001-CONSTRUCTED.json": "63b8f71a939df1ab8f8151ed7518eb95d06c7e7cffbcc06a5bd7ee9daa0b4d2f",
+    "ZVEC-BACKEND-1-T002-CONSTRUCTED.json": "6beb6b7a72a703d7df053b73c7666f5ef6be17d0512d851caca55b8ac2ca3d02",
+    "ZVEC-BACKEND-1-T003-CONSTRUCTED.json": "f67f0fd807678a30b356e79ebd8a89632305b1bc45cbc4d4f3e022d0d9ffd203"
+  },
+  "artifact_integrity": true,
+  "test_cases": [
+    {
+      "requirement": "All 30 E2E-5 artifacts discovered",
+      "test": "E6-1-discovery",
+      "status": "PASS",
+      "detail": "Discovered: 30",
+      "timestamp": "2026-08-11T05:24:47.027276+00:00"
+    },
+    {
+      "requirement": "Expected = discovered",
+      "test": "E6-2-expected-discovered",
+      "status": "PASS",
+      "detail": "Expected: 30, Discovered: 30",
+      "timestamp": "2026-08-11T05:24:47.027502+00:00"
+    },
+    {
+      "requirement": "All required capabilities resolve",
+      "test": "E6-3-capability-resolution",
+      "status": "PASS",
+      "detail": "Resolvable: 30/30",
+      "timestamp": "2026-08-11T05:24:47.035273+00:00"
+    },
+    {
+      "requirement": "All target adapters resolve",
+      "test": "E6-4-adapter-resolution",
+      "status": "PASS",
+      "detail": "Resolvable: 30/30",
+      "timestamp": "2026-08-11T05:24:47.036868+00:00"
+    },
+    {
+      "requirement": "Artifact hashes computed (before)",
+      "test": "E6-5-hash-computation",
+      "status": "PASS",
+      "detail": "Hashes computed: 30",
+      "timestamp": "2026-08-11T05:24:47.038208+00:00"
+    },
+    {
+      "requirement": "Execute JUDGE-1-T001-CONSTRUCTED",
+      "test": "execute-JUDGE-1-T001-CONSTRUCTED",
+      "status": "PASS",
+      "detail": "MCP tool executed successfully",
+      "timestamp": "2026-08-11T05:24:47.299317+00:00"
+    },
+    {
+      "requirement": "Execute JUDGE-1-T002-CONSTRUCTED",
+      "test": "execute-JUDGE-1-T002-CONSTRUCTED",
+      "status": "PASS",
+      "detail": "MCP tool executed successfully",
+      "timestamp": "2026-08-11T05:24:47.469146+00:00"
+    },
+    {
+      "requirement": "Execute JUDGE-1-T003-CONSTRUCTED",
+      "test": "execute-JUDGE-1-T003-CONSTRUCTED",
+      "status": "PASS",
+      "detail": "MCP tool executed successfully",
+      "timestamp": "2026-08-11T05:24:47.642468+00:00"
+    },
+    {
+      "requirement": "Execute RECALL-BROKER-IMPL-1-T001-CONSTRUCTED",
+      "test": "execute-RECALL-BROKER-IMPL-1-T001-CONSTRUCTED",
+      "status": "PASS",
+      "detail": "MCP tool executed successfully",
+      "timestamp": "2026-08-11T05:24:47.808128+00:00"
+    },
+    {
+      "requirement": "Execute RECALL-BROKER-IMPL-1-T002-CONSTRUCTED",
+      "test": "execute-RECALL-BROKER-IMPL-1-T002-CONSTRUCTED",
+      "status": "PASS",
+      "detail": "MCP tool executed successfully",
+      "timestamp": "2026-08-11T05:24:47.978205+00:00"
+    },
+    {
+      "requirement": "Execute RECALL-BROKER-IMPL-1-T003-CONSTRUCTED",
+      "test": "execute-RECALL-BROKER-IMPL-1-T003-CONSTRUCTED",
+      "status": "PASS",
+      "detail": "MCP tool executed successfully",
+      "timestamp": "2026-08-11T05:24:48.145541+00:00"
+    },
+    {
+      "requirement": "Execute RECALL-EVIDENCE-RECEIPT-1-T001-CONSTRUCTED",
+      "test": "execute-RECALL-EVIDENCE-RECEIPT-1-T001-CONSTRUCTED",
+      "status": "PASS",
+      "detail": "MCP tool executed successfully",
+      "timestamp": "2026-08-11T05:24:48.316813+00:00"
+    },
+    {
+      "requirement": "Execute RECALL-EVIDENCE-RECEIPT-1-T002-CONSTRUCTED",
+      "test": "execute-RECALL-EVIDENCE-RECEIPT-1-T002-CONSTRUCTED",
+      "status": "PASS",
+      "detail": "MCP tool executed successfully",
+      "timestamp": "2026-08-11T05:24:48.491328+00:00"
+    },
+    {
+      "requirement": "Execute RECALL-EVIDENCE-RECEIPT-1-T003-CONSTRUCTED",
+      "test": "execute-RECALL-EVIDENCE-RECEIPT-1-T003-CONSTRUCTED",
+      "status": "PASS",
+      "detail": "MCP tool executed successfully",
+      "timestamp": "2026-08-11T05:24:48.659469+00:00"
+    },
+    {
+      "requirement": "Execute RECALL-RETRIEVAL-BRIDGE-1-T001-CONSTRUCTED",
+      "test": "execute-RECALL-RETRIEVAL-BRIDGE-1-T001-CONSTRUCTED",
+      "status": "PASS",
+      "detail": "MCP tool executed successfully",
+      "timestamp": "2026-08-11T05:24:48.833898+00:00"
+    },
+    {
+      "requirement": "Execute RECALL-RETRIEVAL-BRIDGE-1-T002-CONSTRUCTED",
+      "test": "execute-RECALL-RETRIEVAL-BRIDGE-1-T002-CONSTRUCTED",
+      "status": "PASS",
+      "detail": "MCP tool executed successfully",
+      "timestamp": "2026-08-11T05:24:49.000590+00:00"
+    },
+    {
+      "requirement": "Execute RECALL-RETRIEVAL-BRIDGE-1-T003-CONSTRUCTED",
+      "test": "execute-RECALL-RETRIEVAL-BRIDGE-1-T003-CONSTRUCTED",
+      "status": "PASS",
+      "detail": "MCP tool executed successfully",
+      "timestamp": "2026-08-11T05:24:49.170442+00:00"
+    },
+    {
+      "requirement": "Execute RERANK-1-T001-CONSTRUCTED",
+      "test": "execute-RERANK-1-T001-CONSTRUCTED",
+      "status": "PASS",
+      "detail": "MCP tool executed successfully",
+      "timestamp": "2026-08-11T05:24:49.345006+00:00"
+    },
+    {
+      "requirement": "Execute RERANK-1-T002-CONSTRUCTED",
+      "test": "execute-RERANK-1-T002-CONSTRUCTED",
+      "status": "PASS",
+      "detail": "MCP tool executed successfully",
+      "timestamp": "2026-08-11T05:24:49.513309+00:00"
+    },
+    {
+      "requirement": "Execute RERANK-1-T003-CONSTRUCTED",
+      "test": "execute-RERANK-1-T003-CONSTRUCTED",
+      "status": "PASS",
+      "detail": "MCP tool executed successfully",
+      "timestamp": "2026-08-11T05:24:49.684806+00:00"
+    },
+    {
+      "requirement": "Execute SQLITE-VEC-VENDOR-1-T001-CONSTRUCTED",
+      "test": "execute-SQLITE-VEC-VENDOR-1-T001-CONSTRUCTED",
+      "status": "PASS",
+      "detail": "MCP tool executed successfully",
+      "timestamp": "2026-08-11T05:24:49.851920+00:00"
+    },
+    {
+      "requirement": "Execute SQLITE-VEC-VENDOR-1-T002-CONSTRUCTED",
+      "test": "execute-SQLITE-VEC-VENDOR-1-T002-CONSTRUCTED",
+      "status": "PASS",
+      "detail": "MCP tool executed successfully",
+      "timestamp": "2026-08-11T05:24:50.028971+00:00"
+    },
+    {
+      "requirement": "Execute SQLITE-VEC-VENDOR-1-T003-CONSTRUCTED",
+      "test": "execute-SQLITE-VEC-VENDOR-1-T003-CONSTRUCTED",
+      "status": "PASS",
+      "detail": "MCP tool executed successfully",
+      "timestamp": "2026-08-11T05:24:50.195771+00:00"
+    },
+    {
+      "requirement": "Execute WORK-DISPATCH-1-T001-CONSTRUCTED",
+      "test": "execute-WORK-DISPATCH-1-T001-CONSTRUCTED",
+      "status": "PASS",
+      "detail": "MCP tool executed successfully",
+      "timestamp": "2026-08-11T05:24:50.364902+00:00"
+    },
+    {
+      "requirement": "Execute WORK-DISPATCH-1-T002-CONSTRUCTED",
+      "test": "execute-WORK-DISPATCH-1-T002-CONSTRUCTED",
+      "status": "PASS",
+      "detail": "MCP tool executed successfully",
+      "timestamp": "2026-08-11T05:24:50.536467+00:00"
+    },
+    {
+      "requirement": "Execute WORK-DISPATCH-1-T003-CONSTRUCTED",
+      "test": "execute-WORK-DISPATCH-1-T003-CONSTRUCTED",
+      "status": "PASS",
+      "detail": "MCP tool executed successfully",
+      "timestamp": "2026-08-11T05:24:50.698863+00:00"
+    },
+    {
+      "requirement": "Execute WORK-PACKAGE-CONTEXT-1-T001-CONSTRUCTED",
+      "test": "execute-WORK-PACKAGE-CONTEXT-1-T001-CONSTRUCTED",
+      "status": "PASS",
+      "detail": "MCP tool executed successfully",
+      "timestamp": "2026-08-11T05:24:50.870947+00:00"
+    },
+    {
+      "requirement": "Execute WORK-PACKAGE-CONTEXT-1-T002-CONSTRUCTED",
+      "test": "execute-WORK-PACKAGE-CONTEXT-1-T002-CONSTRUCTED",
+      "status": "PASS",
+      "detail": "MCP tool executed successfully",
+      "timestamp": "2026-08-11T05:24:51.040052+00:00"
+    },
+    {
+      "requirement": "Execute WORK-PACKAGE-CONTEXT-1-T003-CONSTRUCTED",
+      "test": "execute-WORK-PACKAGE-CONTEXT-1-T003-CONSTRUCTED",
+      "status": "PASS",
+      "detail": "MCP tool executed successfully",
+      "timestamp": "2026-08-11T05:24:51.211041+00:00"
+    },
+    {
+      "requirement": "Execute WORK-RESULT-INTAKE-1-T001-CONSTRUCTED",
+      "test": "execute-WORK-RESULT-INTAKE-1-T001-CONSTRUCTED",
+      "status": "PASS",
+      "detail": "MCP tool executed successfully",
+      "timestamp": "2026-08-11T05:24:51.384391+00:00"
+    },
+    {
+      "requirement": "Execute WORK-RESULT-INTAKE-1-T002-CONSTRUCTED",
+      "test": "execute-WORK-RESULT-INTAKE-1-T002-CONSTRUCTED",
+      "status": "PASS",
+      "detail": "MCP tool executed successfully",
+      "timestamp": "2026-08-11T05:24:51.544276+00:00"
+    },
+    {
+      "requirement": "Execute WORK-RESULT-INTAKE-1-T003-CONSTRUCTED",
+      "test": "execute-WORK-RESULT-INTAKE-1-T003-CONSTRUCTED",
+      "status": "PASS",
+      "detail": "MCP tool executed successfully",
+      "timestamp": "2026-08-11T05:24:51.704545+00:00"
+    },
+    {
+      "requirement": "Execute ZVEC-BACKEND-1-T001-CONSTRUCTED",
+      "test": "execute-ZVEC-BACKEND-1-T001-CONSTRUCTED",
+      "status": "PASS",
+      "detail": "MCP tool executed successfully",
+      "timestamp": "2026-08-11T05:24:51.866576+00:00"
+    },
+    {
+      "requirement": "Execute ZVEC-BACKEND-1-T002-CONSTRUCTED",
+      "test": "execute-ZVEC-BACKEND-1-T002-CONSTRUCTED",
+      "status": "PASS",
+      "detail": "MCP tool executed successfully",
+      "timestamp": "2026-08-11T05:24:52.031148+00:00"
+    },
+    {
+      "requirement": "Execute ZVEC-BACKEND-1-T003-CONSTRUCTED",
+      "test": "execute-ZVEC-BACKEND-1-T003-CONSTRUCTED",
+      "status": "PASS",
+      "detail": "MCP tool executed successfully",
+      "timestamp": "2026-08-11T05:24:52.202928+00:00"
+    },
+    {
+      "requirement": "All executable tests attempted",
+      "test": "E6-6-execution",
+      "status": "PASS",
+      "detail": "Executed: 30/30",
+      "timestamp": "2026-08-11T05:24:52.202994+00:00"
+    },
+    {
+      "requirement": "Expected = discovered = executed = reported",
+      "test": "E6-7-chain-completeness",
+      "status": "PASS",
+      "detail": "Expected: 30, Discovered: 30, Executed: 30",
+      "timestamp": "2026-08-11T05:24:52.203004+00:00"
+    },
+    {
+      "requirement": "Every execution has environment provenance",
+      "test": "E6-8-provenance",
+      "status": "PASS",
+      "detail": "",
+      "timestamp": "2026-08-11T05:24:52.206309+00:00"
+    },
+    {
+      "requirement": "Every result uses qa-test-result-v1",
+      "test": "E6-9-result-schema",
+      "status": "PASS",
+      "detail": "",
+      "timestamp": "2026-08-11T05:24:52.206317+00:00"
+    },
+    {
+      "requirement": "PASS/FAIL reflects observation",
+      "test": "E6-10-observation-reflection",
+      "status": "PASS",
+      "detail": "",
+      "timestamp": "2026-08-11T05:24:52.206320+00:00"
+    },
+    {
+      "requirement": "Execution failures distinguished",
+      "test": "E6-11-failure-distinction",
+      "status": "PASS",
+      "detail": "",
+      "timestamp": "2026-08-11T05:24:52.206322+00:00"
+    },
+    {
+      "requirement": "Evidence exists for every test",
+      "test": "E6-12-evidence-existence",
+      "status": "PASS",
+      "detail": "",
+      "timestamp": "2026-08-11T05:24:52.206328+00:00"
+    },
+    {
+      "requirement": "Evidence references exact artifact",
+      "test": "E6-13-evidence-reference",
+      "status": "PASS",
+      "detail": "",
+      "timestamp": "2026-08-11T05:24:52.206330+00:00"
+    },
+    {
+      "requirement": "Aggregate result reproducible",
+      "test": "E6-14-reproducibility",
+      "status": "PASS",
+      "detail": "",
+      "timestamp": "2026-08-11T05:24:52.206333+00:00"
+    },
+    {
+      "requirement": "No test silently skipped",
+      "test": "E6-15-no-skip",
+      "status": "PASS",
+      "detail": "Executed: 30/30",
+      "timestamp": "2026-08-11T05:24:52.206337+00:00"
+    },
+    {
+      "requirement": "Artifact hashes unchanged",
+      "test": "E6-5-artifact-integrity",
+      "status": "PASS",
+      "detail": "Integrity: MATCH",
+      "timestamp": "2026-08-11T05:24:52.209231+00:00"
+    }
+  ],
+  "advisory_only": true,
+  "no_seal_authority": true
+}
