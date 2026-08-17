@@ -13,12 +13,21 @@ This file tracks the verification status of features in the QA Pilot project.
 
 ## 1. Current Active / Next
 
-### Phase Transition (2026-08-15)
+### Phase Transition (2026-08-17)
 
-**Architecture discovery: COMPLETE** — Governed improvement loop proven (sprint #220).
-**Next phase: Generalization and operational scaling.**
+**Phase 6 — Governed Improvement Activation: COMPLETE**
 
-The system has crossed from "build missing primitives" into "system integration and operationalization." The next sprints should address scale, freshness, economics, and discovery — not architecture.
+The complete governed improvement lifecycle is now mechanically demonstrable:
+
+```
+Observe → Qualify → Prioritize → Predict → Recommend → Owner Decision → Governed Change → Measure → Learn → Improve
+```
+
+**Architecture Frozen.** No new assurance primitives until Phase 7 adoption/validation demonstrates concrete unmet requirements.
+
+**Next Phase:** Phase 7 — Adoption & Empirical Validation
+
+Determine whether the existing intelligence produces reliable value when repeatedly applied to real governed work.
 
 ### Qualification Substrate (COMPLETE — sealed #216–#219 + #165)
 
@@ -57,6 +66,9 @@ The system has crossed from "build missing primitives" into "system integration 
 | **QA-PILOT-PREDICTIVE-RISK-SIGNALS-1** | ✅ **Complete (ledger #240, all 10 gates PASS)** | Predictive risk signals — forward-looking indicators. 3 projects. 1 actionable signal. 2 no-action (correct). Advisory-only. See `docs/sprints/QA-PILOT-PREDICTIVE-RISK-SIGNALS-1.md`. |
 | **QA-PILOT-PREVENTIVE-RECOMMENDATIONS-1** | ✅ **Complete (ledger #241, all 8 gates PASS)** | Preventive recommendations — advisory guidance. 1 recommendation (agent-bridge). 1 no-recommendation (qa-pilot). No work manufactured. See `docs/sprints/QA-PILOT-PREVENTIVE-RECOMMENDATIONS-1.md`. |
 | **QA-PILOT-IMPROVEMENT-PROPOSAL-BRIDGE-1** | ✅ **Complete (ledger #242, all 7 gates PASS)** | Improvement proposal bridge — recommendation to governed work. Owner decision tracking. 1 proposal (agent-bridge). No auto-mutation. See `docs/sprints/QA-PILOT-IMPROVEMENT-PROPOSAL-BRIDGE-1.md`. |
+| **QA-PILOT-WORK-PACKET-INTEGRATION-1** | ✅ **Complete (ledger #243, all 7 gates PASS)** | Work packet integration — proposal to Librarian. Translation adapter. Complete provenance chain. 1 request (agent-bridge). See `docs/sprints/QA-PILOT-WORK-PACKET-INTEGRATION-1.md`. |
+| **QA-PILOT-IMPROVEMENT-OUTCOME-MEASUREMENT-1** | ✅ **Complete (ledger #244, all 9 gates PASS)** | Improvement outcome measurement — empirical validation. 5 classifications. 1 outcome (unchanged). Negative/inconclusive preserved. See `docs/sprints/QA-PILOT-IMPROVEMENT-OUTCOME-MEASUREMENT-1.md`. |
+| **QA-PILOT-CLOSED-LOOP-OPTIMIZATION-1** | ✅ **Sealed (ledger #245, Owner-sealed 2026-08-16)** | Closed-loop optimization — learning from outcomes. 5 categories. Effectiveness measurement. Sparse-data confidence. 2 signals. Authority isolated. 11/11 gates PASS. See `docs/sprints/QA-PILOT-CLOSED-LOOP-OPTIMIZATION-1.md`. |
 
 ### Previously Sealed (Historical)
 
@@ -154,7 +166,7 @@ The system has crossed from "build missing primitives" into "system integration 
 |-------|-------|
 | project_id | `qa-pilot` |
 | sandbox_boundary | `harness_governed` |
-| latest_sealed_sprint | #240 QA-PILOT-PREDICTIVE-RISK-SIGNALS-1 |
-| phase | Phase 5 — Predictive Assurance Readiness |
-| total_sealed | 240+ sprints |
+| latest_sealed_sprint | #245 QA-PILOT-CLOSED-LOOP-OPTIMIZATION-1 |
+| phase | Phase 6 — Governed Improvement Activation (COMPLETE) |
+| total_sealed | 245 sprints |
 | ledger_path | `project-state/sprint-ledger.json` |

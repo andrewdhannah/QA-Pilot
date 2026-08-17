@@ -1,0 +1,92 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://librarian.dev/schemas/improvement-outcome-v1.json",
+  "title": "Improvement Outcome",
+  "description": "Measurement of intervention outcome. Records what changed, not whether intervention succeeded.",
+  "type": "object",
+  "required": ["outcome_id", "proposal_id", "project_id", "measured_at", "baseline", "post_change", "comparison", "advisory_only"],
+  "properties": {
+    "outcome_id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Unique identifier. Format: IO-<timestamp>-<hex>."
+    },
+    "proposal_id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Reference to improvement proposal."
+    },
+    "work_packet_id": {
+      "type": ["string", "null"],
+      "description": "Reference to work packet if executed."
+    },
+    "project_id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Project identifier."
+    },
+    "measured_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When outcome was measured."
+    },
+    "baseline": {
+      "type": "object",
+      "required": ["metric", "value", "evidence_ref"],
+      "properties": {
+        "metric": { "type": "string" },
+        "value": { "type": "string" },
+        "evidence_ref": { "type": "string" },
+        "captured_at": { "type": "string", "format": "date-time" }
+      },
+      "description": "Pre-intervention state."
+    },
+    "post_change": {
+      "type": "object",
+      "required": ["metric", "value", "evidence_ref"],
+      "properties": {
+        "metric": { "type": "string" },
+        "value": { "type": "string" },
+        "evidence_ref": { "type": "string" },
+        "captured_at": { "type": "string", "format": "date-time" }
+      },
+      "description": "Post-intervention state."
+    },
+    "comparison": {
+      "type": "object",
+      "required": ["direction", "confidence"],
+      "properties": {
+        "direction": {
+          "type": "string",
+          "enum": ["improved", "unchanged", "degraded", "inconclusive", "not_measurable"]
+        },
+        "confidence": {
+          "type": "string",
+          "enum": ["high", "medium", "low"]
+        },
+        "delta": { "type": "string" }
+      },
+      "description": "Comparison result."
+    },
+    "measurement_criteria": {
+      "type": "string",
+      "description": "How improvement was measured."
+    },
+    "provenance_chain": {
+      "type": "object",
+      "properties": {
+        "recommendation_id": { "type": "string" },
+        "proposal_id": { "type": "string" },
+        "owner_decision": { "type": "string" },
+        "work_packet_id": { "type": "string" }
+      },
+      "description": "Full provenance chain."
+    },
+    "advisory_only": {
+      "type": "boolean",
+      "const": true,
+      "description": "Always true. This is a measurement, not authorization."
+    }
+  },
+  "additionalProperties": false
+}

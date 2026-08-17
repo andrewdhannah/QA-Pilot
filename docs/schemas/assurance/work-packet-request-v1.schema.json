@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://librarian.dev/schemas/work-packet-request-v1.json",
+  "title": "Work Packet Request",
+  "description": "Translation of accepted improvement proposal to Librarian work packet request. Advisory until Librarian processes.",
+  "type": "object",
+  "required": ["request_id", "proposal_id", "project_id", "recommendation_refs", "owner_decision_id", "requested_scope", "advisory_only"],
+  "properties": {
+    "request_id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Unique identifier. Format: WPR-<timestamp>-<hex>."
+    },
+    "proposal_id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Reference to improvement proposal."
+    },
+    "project_id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Project identifier."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When request was created."
+    },
+    "recommendation_refs": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "References to preventive recommendations."
+    },
+    "evidence_refs": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "References to supporting evidence."
+    },
+    "risk_context": {
+      "type": "object",
+      "description": "Risk context from proposal."
+    },
+    "owner_decision_id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Reference to owner decision record."
+    },
+    "requested_scope": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Type of work requested."
+    },
+    "expected_outcome": {
+      "type": "string",
+      "description": "What this work aims to achieve."
+    },
+    "status": {
+      "type": "string",
+      "enum": ["submitted", "processing", "completed", "rejected"],
+      "description": "Request status."
+    },
+    "work_packet_id": {
+      "type": ["string", "null"],
+      "description": "Work packet ID if created by Librarian."
+    },
+    "advisory_only": {
+      "type": "boolean",
+      "const": true,
+      "description": "Always true. This is a request, not authorization."
+    }
+  },
+  "additionalProperties": false
+}

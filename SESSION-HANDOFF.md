@@ -290,7 +290,7 @@ Librarian work packet service (P1) is a separate parallel track — no dependenc
 **Qualification substrate:** COMPLETE — all 5 sprints sealed (#216–#219 + #165 roundtrip)
 **Learning loop:** COMPLETE — end-to-end improvement loop proven (#220)
 **End-to-end loop dependency:** SATISFIED — Librarian work packet service discovered as existing sprint #546; capability projection activated. Tier 2 gates WQI-005/WQI-006 unblocked.
-**Authorized sprints:** Awaiting Owner direction for next sprint (Work Packet Integration recommended)
+**Authorized sprints:** Phase 6 COMPLETE. Awaiting Owner direction for Phase 7 adoption/validation plan.
 **Deferred sprints:** Framework Validation, I18N reassessment, visual parity reassessment, post-canonical surface reassessment
 
 ## Sealed Sprint: ASSURANCE-CONTRACT-EVIDENCE-STATE-CONTRACT-FORMALIZATION-1 (#215)
@@ -412,7 +412,88 @@ With runtime evidence, they can reason about observed behavior.
 PHASE 6 — GOVERNED IMPROVEMENT ACTIVATION
 
 Improvement Proposal Bridge          ✅ (#242)
-Work Packet Integration              ⏳ next
+Work Packet Integration              ✅ (#243)
+Improvement Outcome Measurement      ✅ (#244)
+Closed-Loop Optimization             ✅ (#245)
+```
+
+### Phase 6 Complete — Architecture Freeze
+
+**Phase 6 is COMPLETE.** No more architecture-building sprints until Phase 7 adoption/validation demonstrates concrete unmet requirements.
+
+**The governed improvement lifecycle is now mechanically demonstrable:**
+
+```
+Problem Discovery
+       ↓
+Assurance
+       ↓
+Recommendation
+       ↓
+Owner Decision
+       ↓
+Governed Change
+       ↓
+Evidence
+       ↓
+Outcome Measurement
+       ↓
+Learning Signal
+       ↓
+Improved Future Decisions
+```
+
+**No arrow from Learning directly into Authority.** That is the architectural property preserved.
+
+### Phase 7 — Adoption & Empirical Validation
+
+**Objective:** Determine whether the existing intelligence produces reliable value when repeatedly applied to real governed work.
+
+**NOT:** Build more intelligence.
+
+**Empirical Questions:**
+
+| Question | What Must Be Demonstrated |
+|----------|---------------------------|
+| Repeatability | Does the loop work repeatedly? |
+| Cross-project applicability | Does it work beyond QA-Pilot's own fixtures? |
+| Signal quality | Are recommendations useful rather than merely plausible? |
+| Outcome validity | Can improvements actually be measured? |
+| Learning quality | Do accumulated signals become more informative? |
+| Calibration | Do predictions correspond to observed outcomes? |
+| Operational cost | Is the assurance value worth the cost? |
+| Authority integrity | Do repeated workflows preserve all boundaries? |
+| Discoverability | Can another project consume the system correctly? |
+| Failure behavior | Does sparse/contradicted/degraded evidence remain safe? |
+
+**Phase 7 Structure (Recommended):**
+
+1. Cross-Project Trial
+2. Real-Work Evidence Validation
+3. Recommendation Effectiveness Measurement
+4. Decision Utility Measurement
+5. Fleet Learning Validation
+6. Adoption Readiness Review
+
+**Architectural Freeze Rule:**
+
+No new assurance primitive unless empirical operation demonstrates a concrete unmet requirement.
+
+```
+Observed operational deficiency
+          ↓
+Evidence
+          ↓
+Gap classification
+          ↓
+Is existing capability sufficient?
+      ↙             ↘
+    YES              NO
+     ↓                ↓
+Configure/use       Proposed
+existing system     architecture
+                      ↓
+                 Owner review
 ```
 
 ### Architecture Complete

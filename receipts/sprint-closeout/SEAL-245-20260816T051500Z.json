@@ -1,0 +1,33 @@
+{
+  "receipt_schema": "sprint-seal-receipt-v1",
+  "receipt_id": "SEAL-245-20260816T051500Z",
+  "sprint_id": "QA-PILOT-CLOSED-LOOP-OPTIMIZATION-1",
+  "sealed_number": 245,
+  "sealed_at": "2026-08-16T05:15:00Z",
+  "sealed_by": "openwork-claude",
+  "authorization_basis": "Owner-authorized 2026-08-16",
+  "evidence_basis": {
+    "contract": "contracts/assurance/closed-loop-optimization-contract.md",
+    "schema": "docs/schemas/assurance/learning-signal-v1.schema.json",
+    "script": "scripts/generate-learning-signals.py",
+    "learning_signals_generated": 2,
+    "gates_passed": "11/11"
+  },
+  "gates": [
+    {"gate": "CL-001", "criterion": "Closed-loop contract defined", "status": "PASS"},
+    {"gate": "CL-002", "criterion": "Deterministic learning generation", "status": "PASS"},
+    {"gate": "CL-003", "criterion": "Outcome-aware learning semantics", "status": "PASS"},
+    {"gate": "CL-004", "criterion": "Planning consumption", "status": "PASS"},
+    {"gate": "CL-005", "criterion": "Qualification consumption", "status": "PASS"},
+    {"gate": "CL-006", "criterion": "Effectiveness measurement", "status": "PASS"},
+    {"gate": "CL-007", "criterion": "Negative learning preserved", "status": "PASS"},
+    {"gate": "CL-008", "criterion": "Authority isolation", "status": "PASS"},
+    {"gate": "CL-009", "criterion": "Provenance round-trip", "status": "PASS"},
+    {"gate": "CL-010", "criterion": "Sparse-data behavior", "status": "PASS"},
+    {"gate": "CL-011", "criterion": "Existing validators pass", "status": "PASS"}
+  ],
+  "invariant_enforced": "Optimization inputs must be evaluated against current canonical state and finding lifecycle status; stale unresolved findings must not be treated as current conditions.",
+  "architectural_milestone": "Phase 6 — Governed Improvement Activation complete. Closed loop from problem through evidence to learning to future planning is operational.",
+  "advisory_only": true,
+  "no_authority_conferred": true
+}

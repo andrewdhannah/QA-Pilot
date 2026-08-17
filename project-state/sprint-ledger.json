@@ -3457,7 +3457,7 @@
       "final_head": null,
       "commit": null,
       "harness": "Inspect current CarbideFrame Librarian reference files. Extract concrete design primitives: shell, layout rhythm, bento cards, source chips, status chips, typography, elevation, color tokens, footer/custody treatment, navigation density, motion rules. Inspect actual QA Pilot rendered HTML/CSS. Produce page-by-page mismatch matrix. Do not redesign.",
-      "evidence_note": "Sealed 2026-07-27 as reference evidence. One-time audit produced M1-M10 mismatch matrix and remediation order. This analysis informed pre-migration remediation (#154-#155). Current browser-app surface retains same mismatches post-migration (blue hero, emoji, no source-chips) — visual parity intent not yet fulfilled at canonical surface level.",
+      "evidence_note": "Sealed 2026-07-27 as reference evidence. One-time audit produced M1-M10 mismatch matrix and remediation order. This analysis informed pre-migration remediation (#154-#155). Current browser-app surface retains same mismatches post-migration (blue hero, emoji, no source-chips) \u2014 visual parity intent not yet fulfilled at canonical surface level.",
       "doc": "docs/sprints/QA-PILOT-LIBRARIAN-VISUAL-PARITY-REFERENCE-AUDIT-1.md"
     },
     {
@@ -3831,7 +3831,7 @@
       "start_head": null,
       "final_head": null,
       "commit": null,
-      "harness": "ABSORBED 2026-07-27. Original purpose — post-migration surface reassessment — was fulfilled through subsequent sealed validation activities: frontend roundtrip validation (#135, sealed), I18N post-migration wiring (#170-#177, sealed), canonical surface governance rule (CANONICAL-SURFACE-VALIDATION-RULE.md). A separate duplicate reassessment cycle is no longer necessary.",
+      "harness": "ABSORBED 2026-07-27. Original purpose \u2014 post-migration surface reassessment \u2014 was fulfilled through subsequent sealed validation activities: frontend roundtrip validation (#135, sealed), I18N post-migration wiring (#170-#177, sealed), canonical surface governance rule (CANONICAL-SURFACE-VALIDATION-RULE.md). A separate duplicate reassessment cycle is no longer necessary.",
       "evidence_note": "QA-PILOT-POST-CANONICAL-SURFACE-REASSESSMENT-1: Closed as absorbed 2026-07-27. Original migration surface reassessment concern was satisfied by subsequent sealed validation rather than a dedicated rerun. Reassessment function is now a repeatable assurance operation, not a one-time activity. See CANONICAL-SURFACE-VALIDATION-RULE.md for governing principle.",
       "doc": "docs/sprints/QA-PILOT-POST-CANONICAL-SURFACE-REASSESSMENT-1.md",
       "epic": "EPIC-QA-PILOT-ASSURANCE-OPERATIONS-INTEGRATION-1"
@@ -4930,7 +4930,7 @@
       "start_head": "main",
       "final_head": "main",
       "commit": null,
-      "harness": "Evidence pipeline sprint. Implemented 6-command CLI (discover, collect, ingest, status, validate, receipt) for evidence ingestion from existing QA Pilot layers into the qualification store. 15 source adapters for known QA Pilot layer types. Discovered 6/15 real sources (35 data files). 35 QR- records created from real QA Pilot data. All records maintain advisory_only=true, custody=qa-pilot-local, librarian_impact=none. Pipeline validation 19/19 pass. Schema validation 105/105 QR- records pass. Evidence lineage chain proven: QR- → evidence_ref → source artifact. No existing files modified. Owner-authorized, sealed 2026-08-15 as QA Pilot Sprint #217.",
+      "harness": "Evidence pipeline sprint. Implemented 6-command CLI (discover, collect, ingest, status, validate, receipt) for evidence ingestion from existing QA Pilot layers into the qualification store. 15 source adapters for known QA Pilot layer types. Discovered 6/15 real sources (35 data files). 35 QR- records created from real QA Pilot data. All records maintain advisory_only=true, custody=qa-pilot-local, librarian_impact=none. Pipeline validation 19/19 pass. Schema validation 105/105 QR- records pass. Evidence lineage chain proven: QR- \u2192 evidence_ref \u2192 source artifact. No existing files modified. Owner-authorized, sealed 2026-08-15 as QA Pilot Sprint #217.",
       "evidence_note": "QUALIFICATION-EVIDENCE-PIPELINE-1: Created scripts/qa_pilot_qualification_evidence_pipeline.py (6 commands), scripts/test-qa-pilot-qualification-evidence-pipeline.sh (19 gates), 35 QR- records in data/qualification-records/. All tests pass. No existing files modified. Sealed 2026-08-15.",
       "doc": "docs/sprints/QA-PILOT-QUALIFICATION-EVIDENCE-PIPELINE-1.md"
     },
@@ -4954,7 +4954,7 @@
       "start_head": "main",
       "final_head": "main",
       "commit": null,
-      "harness": "Execution engine sprint. Implemented 6-command CLI (evaluate/batch/status/lifecycle/validate/receipt) for qualification evaluation. 5-dimension scoring model (schema_compliance 25%, evidence_freshness 20%, evidence_diversity 15%, authority_boundary 25%, provenance_quality 15%). Level thresholds: audited ≥0.95, peer_reviewed ≥0.90, spot_checked ≥0.80. 6-state lifecycle (proposed→in_progress→completed→expired→superseded→revoked). 105 QR- records evaluated. 105 results created. 20/20 acceptance gates PASS. Advisory-only posture maintained. No existing files modified. Owner-authorized, sealed 2026-08-15 as QA Pilot Sprint #218.",
+      "harness": "Execution engine sprint. Implemented 6-command CLI (evaluate/batch/status/lifecycle/validate/receipt) for qualification evaluation. 5-dimension scoring model (schema_compliance 25%, evidence_freshness 20%, evidence_diversity 15%, authority_boundary 25%, provenance_quality 15%). Level thresholds: audited \u22650.95, peer_reviewed \u22650.90, spot_checked \u22650.80. 6-state lifecycle (proposed\u2192in_progress\u2192completed\u2192expired\u2192superseded\u2192revoked). 105 QR- records evaluated. 105 results created. 20/20 acceptance gates PASS. Advisory-only posture maintained. No existing files modified. Owner-authorized, sealed 2026-08-15 as QA Pilot Sprint #218.",
       "evidence_note": "QUALIFICATION-EXECUTION-1: Created scripts/qa_pilot_qualification_execution.py (6 commands), scripts/test-qa-pilot-qualification-execution.sh (20 gates), 105 results in data/qualification-results/. All tests pass. No existing files modified. Sealed 2026-08-15.",
       "doc": "docs/sprints/QA-PILOT-QUALIFICATION-EXECUTION-1.md"
     },
@@ -5003,7 +5003,7 @@
       "start_head": "main",
       "final_head": "main",
       "commit": null,
-      "harness": "Regression learning loop sprint. Proved the complete improvement loop: qualification finding → learning object → training consumption → feedback → future qualification improvement. 7-command CLI (ingest/generate/consume/feedback/receipt/validate/status). 175 finding patterns extracted from QRX-* records with provenance tracing to QR-* evidence_refs. 175 learning objects generated conforming to learning-object-v1 schema. 175 training completions simulated. 175 feedback records generated. Lifecycle receipt produced. 18/18 acceptance gates PASS. Advisory-only maintained at all layers. No QRX-* records modified. No LO-* records modified. No historical modification. Owner-authorized, sealed 2026-08-15 as QA Pilot Sprint #220.",
+      "harness": "Regression learning loop sprint. Proved the complete improvement loop: qualification finding \u2192 learning object \u2192 training consumption \u2192 feedback \u2192 future qualification improvement. 7-command CLI (ingest/generate/consume/feedback/receipt/validate/status). 175 finding patterns extracted from QRX-* records with provenance tracing to QR-* evidence_refs. 175 learning objects generated conforming to learning-object-v1 schema. 175 training completions simulated. 175 feedback records generated. Lifecycle receipt produced. 18/18 acceptance gates PASS. Advisory-only maintained at all layers. No QRX-* records modified. No LO-* records modified. No historical modification. Owner-authorized, sealed 2026-08-15 as QA Pilot Sprint #220.",
       "evidence_note": "QA-PILOT-REGRESSION-LEARNING-LOOP-1: Created scripts/qa_pilot_regression_learning_loop.py (7 commands), scripts/test-qa-pilot-regression-learning-loop.sh (18 gates), data/learning-loop/ directory structure. All tests pass. No existing files modified. Sealed 2026-08-15.",
       "doc": "docs/sprints/QA-PILOT-REGRESSION-LEARNING-LOOP-1.md"
     },
@@ -5051,7 +5051,7 @@
       "start_head": "main",
       "final_head": null,
       "commit": null,
-      "harness": "Runtime evidence qualification sprint. Trust calibration: proves runtime evidence records are sufficient, consistent, and useful for independent qualification decisions. 5 qualification checks: provenance completeness (16 required fields), evidence integrity (timestamps, custody, schema version), freshness semantics (records vs snapshots), authority boundary (CAG-RUNTIME-008), schema conformance. Qualification profile IR created (5 invariants, 3 gates, 2 authority constraints, 9 layer derivations, 2 adversarial rules). First non-sprint artifact qualification — validates QA-Pilot can qualify operational evidence streams. 3/3 records PASS. 0 findings. All 8 gates PASS.",
+      "harness": "Runtime evidence qualification sprint. Trust calibration: proves runtime evidence records are sufficient, consistent, and useful for independent qualification decisions. 5 qualification checks: provenance completeness (16 required fields), evidence integrity (timestamps, custody, schema version), freshness semantics (records vs snapshots), authority boundary (CAG-RUNTIME-008), schema conformance. Qualification profile IR created (5 invariants, 3 gates, 2 authority constraints, 9 layer derivations, 2 adversarial rules). First non-sprint artifact qualification \u2014 validates QA-Pilot can qualify operational evidence streams. 3/3 records PASS. 0 findings. All 8 gates PASS.",
       "evidence_note": "QA-PILOT-RUNTIME-EVIDENCE-QUALIFICATION-1: All 8 gates PASS. Created docs/sprints/QA-PILOT-RUNTIME-EVIDENCE-QUALIFICATION-1.md, qualification/compiler/ir/runtime-evidence-qualification-ir.json, scripts/qualify-runtime-evidence.py, data/runtime-evidence/qualification-results.json. 3/3 records qualify PASS. 0 findings. First non-sprint artifact qualification.",
       "doc": "docs/sprints/QA-PILOT-RUNTIME-EVIDENCE-QUALIFICATION-1.md"
     },
@@ -5075,7 +5075,7 @@
       "start_head": "main",
       "final_head": null,
       "commit": null,
-      "harness": "Runtime evidence federation sprint. Identity and boundary sprint — proves multiple governed sources can participate without collapsing ownership boundaries. Canonical project identity (project_id, project_instance, identity_source). Adapter contract boundary. Per-project evidence storage. Cross-project isolation. Discovery metadata. 2 projects ingested (QA-Pilot + Librarian). All 8 gates PASS. No centralized authority created. Advisory-only maintained.",
+      "harness": "Runtime evidence federation sprint. Identity and boundary sprint \u2014 proves multiple governed sources can participate without collapsing ownership boundaries. Canonical project identity (project_id, project_instance, identity_source). Adapter contract boundary. Per-project evidence storage. Cross-project isolation. Discovery metadata. 2 projects ingested (QA-Pilot + Librarian). All 8 gates PASS. No centralized authority created. Advisory-only maintained.",
       "evidence_note": "QA-PILOT-RUNTIME-EVIDENCE-FEDERATION-1: All 8 gates PASS. Created docs/sprints/QA-PILOT-RUNTIME-EVIDENCE-FEDERATION-1.md, contracts/assurance/runtime-evidence-federation.md, docs/schemas/flightplan/project-identity-v1.schema.json, scripts/federate-runtime-evidence.py. 2 projects ingested. Isolation verified. Discovery metadata generated.",
       "doc": "docs/sprints/QA-PILOT-RUNTIME-EVIDENCE-FEDERATION-1.md"
     },
@@ -5126,7 +5126,7 @@
       "start_head": "main",
       "final_head": null,
       "commit": null,
-      "harness": "Risk prioritization sprint. Advisory risk ranking model over existing assurance observations. Deterministic, explainable, evidence-backed. Risk score formula (impact × confidence × freshness × historical). 4 risk bands (healthy/monitor/attention_required/urgent). Explain command provides full reasoning. Authority boundary preserved. 2 projects assessed. All 9 gates PASS.",
+      "harness": "Risk prioritization sprint. Advisory risk ranking model over existing assurance observations. Deterministic, explainable, evidence-backed. Risk score formula (impact \u00d7 confidence \u00d7 freshness \u00d7 historical). 4 risk bands (healthy/monitor/attention_required/urgent). Explain command provides full reasoning. Authority boundary preserved. 2 projects assessed. All 9 gates PASS.",
       "evidence_note": "QA-PILOT-RISK-PRIORITIZATION-1: All 9 gates PASS. Created docs/sprints/QA-PILOT-RISK-PRIORITIZATION-1.md, contracts/assurance/risk-prioritization-model.md, scripts/prioritize-risk.py. 2 projects assessed. Advisory-only maintained. Authority boundary preserved.",
       "doc": "docs/sprints/QA-PILOT-RISK-PRIORITIZATION-1.md"
     },
@@ -5198,7 +5198,7 @@
       "start_head": "main",
       "final_head": null,
       "commit": null,
-      "harness": "Round-trip validation sprint. Proves complete governed improvement loop: Planning → Implementation → Evidence → Qualification → Risk → LINK → Better Planning. 3 scenarios: happy path, finding injection, authority boundary. 10 gates all PASS. Planning improvement measured. Authority boundaries validated. Full provenance replay verified.",
+      "harness": "Round-trip validation sprint. Proves complete governed improvement loop: Planning \u2192 Implementation \u2192 Evidence \u2192 Qualification \u2192 Risk \u2192 LINK \u2192 Better Planning. 3 scenarios: happy path, finding injection, authority boundary. 10 gates all PASS. Planning improvement measured. Authority boundaries validated. Full provenance replay verified.",
       "evidence_note": "QA-PILOT-ASSURANCE-ROUNDTRIP-VALIDATION-1: All 10 gates PASS. Created docs/sprints/QA-PILOT-ASSURANCE-ROUNDTRIP-VALIDATION-1.md, scripts/roundtrip-validation.py, data/roundtrip/. 3 scenarios executed. All authority checks pass. Planning improvement verified.",
       "doc": "docs/sprints/QA-PILOT-ASSURANCE-ROUNDTRIP-VALIDATION-1.md"
     },
@@ -5294,7 +5294,7 @@
       "start_head": "main",
       "final_head": null,
       "commit": null,
-      "harness": "Project onboarding sprint. Repeatable onboarding path for new governed projects. Onboarding contract with state model (registered → evidence_connected → qualification_ready → assurance_active). Adapter interface. Isolation verification. 1 project onboarded (agent-bridge). 11 gates PASS.",
+      "harness": "Project onboarding sprint. Repeatable onboarding path for new governed projects. Onboarding contract with state model (registered \u2192 evidence_connected \u2192 qualification_ready \u2192 assurance_active). Adapter interface. Isolation verification. 1 project onboarded (agent-bridge). 11 gates PASS.",
       "evidence_note": "QA-PILOT-PROJECT-ONBOARDING-1: All 11 gates PASS. Created docs/sprints/QA-PILOT-PROJECT-ONBOARDING-1.md, contracts/assurance/project-onboarding-contract.md, scripts/onboard-project.py. 1 project onboarded (agent-bridge). Isolation verified.",
       "doc": "docs/sprints/QA-PILOT-PROJECT-ONBOARDING-1.md"
     },
@@ -5537,6 +5537,78 @@
       "harness": "Improvement proposal bridge sprint. Bridges recommendations to governed work proposals. Owner decision tracking. Rejection valid. No automatic mutation. 1 proposal generated (agent-bridge). Advisory-only maintained. 7 gates PASS.",
       "evidence_note": "QA-PILOT-IMPROVEMENT-PROPOSAL-BRIDGE-1: All 7 gates PASS. Created docs/sprints/QA-PILOT-IMPROVEMENT-PROPOSAL-BRIDGE-1.md, contracts/assurance/improvement-proposal-contract.md, schemas/assurance/improvement-proposal-v1.schema.json, scripts/generate-proposals.py. 1 proposal generated. Advisory-only maintained.",
       "doc": "docs/sprints/QA-PILOT-IMPROVEMENT-PROPOSAL-BRIDGE-1.md"
+    },
+    {
+      "id": "QA-PILOT-WORK-PACKET-INTEGRATION-1",
+      "title": "Work Packet Integration",
+      "area": "assurance",
+      "status": "complete",
+      "lane": "assurance / governance",
+      "boundary": "qa_pilot_local",
+      "librarian_impact": "contract_interface",
+      "required_for_operational_v1": false,
+      "optional": false,
+      "deferred": false,
+      "blocked": false,
+      "dependencies": [
+        "QA-PILOT-IMPROVEMENT-PROPOSAL-BRIDGE-1"
+      ],
+      "epic": null,
+      "sealed_number": 243,
+      "start_head": "main",
+      "final_head": null,
+      "commit": null,
+      "harness": "Work packet integration sprint. Connects accepted proposals to Librarian work packet boundary. Translation-only adapter. Complete provenance chain (PR \u2192 IP \u2192 OD \u2192 WP). 1 request created (agent-bridge). Advisory-only maintained. 7 gates PASS.",
+      "evidence_note": "QA-PILOT-WORK-PACKET-INTEGRATION-1: All 7 gates PASS. Created docs/sprints/QA-PILOT-WORK-PACKET-INTEGRATION-1.md, contracts/assurance/work-packet-request-contract.md, schemas/assurance/work-packet-request-v1.schema.json, scripts/create-work-packet-request.py. 1 request created. Advisory-only maintained.",
+      "doc": "docs/sprints/QA-PILOT-WORK-PACKET-INTEGRATION-1.md"
+    },
+    {
+      "id": "QA-PILOT-IMPROVEMENT-OUTCOME-MEASUREMENT-1",
+      "title": "Improvement Outcome Measurement",
+      "area": "assurance",
+      "status": "complete",
+      "lane": "assurance / outcomes",
+      "boundary": "qa_pilot_local",
+      "librarian_impact": "contract_interface",
+      "required_for_operational_v1": false,
+      "optional": false,
+      "deferred": false,
+      "blocked": false,
+      "dependencies": [
+        "QA-PILOT-WORK-PACKET-INTEGRATION-1"
+      ],
+      "epic": null,
+      "sealed_number": 244,
+      "start_head": "main",
+      "final_head": null,
+      "commit": null,
+      "harness": "Improvement outcome measurement sprint. Measures whether interventions improved conditions. 5 outcome classifications. Deterministic comparison. Negative outcomes preserved. Inconclusive is first-class. 1 outcome measured (agent-bridge unchanged). Advisory-only maintained. 9 gates PASS.",
+      "evidence_note": "QA-PILOT-IMPROVEMENT-OUTCOME-MEASUREMENT-1: All 9 gates PASS. Created docs/sprints/QA-PILOT-IMPROVEMENT-OUTCOME-MEASUREMENT-1.md, contracts/assurance/improvement-outcome-contract.md, schemas/assurance/improvement-outcome-v1.schema.json, scripts/measure-improvement-outcome.py. 1 outcome measured. Advisory-only maintained.",
+      "doc": "docs/sprints/QA-PILOT-IMPROVEMENT-OUTCOME-MEASUREMENT-1.md"
+    },
+    {
+      "id": "QA-PILOT-CLOSED-LOOP-OPTIMIZATION-1",
+      "title": "Closed-Loop Optimization",
+      "area": "assurance",
+      "status": "sealed",
+      "lane": "assurance / optimization",
+      "boundary": "qa_pilot_local",
+      "librarian_impact": "contract_interface",
+      "required_for_operational_v1": false,
+      "optional": false,
+      "deferred": false,
+      "blocked": false,
+      "dependencies": [
+        "QA-PILOT-IMPROVEMENT-OUTCOME-MEASUREMENT-1"
+      ],
+      "epic": null,
+      "sealed_number": 245,
+      "start_head": "main",
+      "final_head": "main",
+      "commit": null,
+      "harness": "Closed-loop optimization sprint. Converts outcomes to learning signals. 5 learning categories. Effectiveness measurement. Sparse-data confidence. Negative learning preserved. Authority isolation. 2 signals generated. Advisory-only maintained. 11 gates PASS.",
+      "evidence_note": "QA-PILOT-CLOSED-LOOP-OPTIMIZATION-1: All 11 gates PASS. Created docs/sprints/QA-PILOT-CLOSED-LOOP-OPTIMIZATION-1.md, contracts/assurance/closed-loop-optimization-contract.md, schemas/assurance/learning-signal-v1.schema.json, scripts/generate-learning-signals.py. 2 learning signals. Advisory-only maintained.",
+      "doc": "docs/sprints/QA-PILOT-CLOSED-LOOP-OPTIMIZATION-1.md"
     }
   ]
 }

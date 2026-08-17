@@ -1,0 +1,99 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://librarian.dev/schemas/learning-signal-v1.json",
+  "title": "Learning Signal",
+  "description": "Durable learning record from improvement outcomes. Advisory optimization input, not governance policy.",
+  "type": "object",
+  "required": ["signal_id", "outcome_id", "project_id", "outcome_classification", "confidence", "learning_category", "learning_content", "advisory_only"],
+  "properties": {
+    "signal_id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Unique identifier. Format: LS-<timestamp>-<hex>."
+    },
+    "outcome_id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Reference to improvement outcome."
+    },
+    "proposal_id": {
+      "type": ["string", "null"],
+      "description": "Reference to improvement proposal."
+    },
+    "recommendation_id": {
+      "type": ["string", "null"],
+      "description": "Reference to preventive recommendation."
+    },
+    "project_id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Project identifier."
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When signal was generated."
+    },
+    "outcome_classification": {
+      "type": "string",
+      "enum": ["improved", "unchanged", "degraded", "inconclusive", "not_measurable"],
+      "description": "Outcome classification."
+    },
+    "intervention_type": {
+      "type": ["string", "null"],
+      "description": "Type of intervention."
+    },
+    "baseline_state": {
+      "type": "object",
+      "description": "Pre-intervention state."
+    },
+    "post_change_state": {
+      "type": "object",
+      "description": "Post-intervention state."
+    },
+    "measured_delta": {
+      "type": "string",
+      "description": "What changed."
+    },
+    "confidence": {
+      "type": "string",
+      "enum": ["observation", "emerging_pattern", "developing_pattern", "established_pattern"],
+      "description": "Learning confidence based on evidence volume."
+    },
+    "learning_category": {
+      "type": "string",
+      "enum": ["planning_insight", "qualification_insight", "risk_calibration_signal", "recommendation_effectiveness"],
+      "description": "Category of learning."
+    },
+    "learning_content": {
+      "type": "string",
+      "minLength": 1,
+      "description": "What was learned."
+    },
+    "effectiveness_signal": {
+      "type": "string",
+      "enum": ["effective", "not_effective", "harmful", "unknown", "measurement_gap"],
+      "description": "How effective the intervention was."
+    },
+    "measurement_quality": {
+      "type": "string",
+      "enum": ["measurable", "partially_measurable", "not_measurable"],
+      "description": "Quality of measurement."
+    },
+    "applicable_context": {
+      "type": "object",
+      "description": "When this learning applies."
+    },
+    "evidence_refs": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "References to supporting evidence."
+    },
+    "advisory_only": {
+      "type": "boolean",
+      "const": true,
+      "description": "Always true. This is learning, not policy."
+    }
+  },
+  "additionalProperties": false
+}
