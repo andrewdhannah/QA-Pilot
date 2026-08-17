@@ -1,0 +1,227 @@
+{
+  "fixture_id": "RECONC-FINDING-LIFECYCLE-001",
+  "fixture_version": "1.0.0",
+  "purpose": "Regression fixture for finding lifecycle management — validates that historical findings are not treated as current governance conditions without revalidation against canonical state",
+  "category": "reconciliation_finding_lifecycle",
+  "derived_from_incident": "DRIFT-librarian-drift_detection (2026-07-20 through 2026-08-16)",
+  "invariant": "A historical finding must never be treated as a current governance condition without revalidation against current authoritative state",
+  "source_incident": {
+    "drift_id": "DRIFT-librarian-drift_detection",
+    "entity": "librarian",
+    "condition": "seed contamination — platform migration initialized Librarian cursor from workbench seed",
+    "detection_date": "2026-07-20",
+    "resolution_date": "2026-07-29",
+    "revalidation_date": "2026-08-16",
+    "severity_at_detection": "critical",
+    "resolution_receipt": "WP-CURSOR-AUTHORITY-MIGRATION-LIBRARIAN-001"
+  },
+  "test_cases": [
+    {
+      "test_id": "TC-001",
+      "name": "finding_detected_is_current",
+      "description": "A newly detected finding is classified as current and actionable",
+      "input": {
+        "finding_status": "open",
+        "detected_at": "2026-07-20T04:10:46Z",
+        "canonical_state_at_detection": {
+          "project_id": "librarian-workbench",
+          "cursor_position": 37
+        },
+        "expected_state": {
+          "project_id": "librarian",
+          "cursor_position": 529
+        }
+      },
+      "expected_outcome": {
+        "finding_classification": "current",
+        "is_actionable": true,
+        "severity": "critical",
+        "requires_owner_action": true
+      }
+    },
+    {
+      "test_id": "TC-002",
+      "name": "remediation_applied_through_authority_path",
+      "description": "A remediation receipt exists proving the finding was addressed through the governance authority path",
+      "input": {
+        "remediation_receipt": "WP-CURSOR-AUTHORITY-MIGRATION-LIBRARIAN-001",
+        "receipt_date": "2026-07-29T03:24:45Z",
+        "receipt_contains": {
+          "previous_state": {
+            "project_id": "librarian-workbench",
+            "cursor_position": 37
+          },
+          "new_state": {
+            "cursor_position": 549
+          },
+          "verification": {
+            "borrowed_events_removed": 37,
+            "evidence_chain_complete": true
+          }
+        }
+      },
+      "expected_outcome": {
+        "remediation_proven": true,
+        "authority_path_used": true,
+        "evidence_chain_complete": true
+      }
+    },
+    {
+      "test_id": "TC-003",
+      "name": "stale_finding_not_treated_as_current",
+      "description": "A finding whose underlying condition has been remediated must not be treated as a current governance condition, even if the detection state has not been updated",
+      "input": {
+        "finding_status": "open",
+        "last_revalidated_at": null,
+        "remediation_receipt_exists": true,
+        "current_canonical_state": {
+          "project_id": "librarian",
+          "cursor_position": 707,
+          "source_revision": "ledger:librarian#707"
+        },
+        "detection_state": {
+          "project_id": "librarian-workbench",
+          "cursor_position": 37
+        }
+      },
+      "expected_outcome": {
+        "finding_classification": "stale_open",
+        "is_actionable": false,
+        "is_current_condition": false,
+        "requires_revalidation": true,
+        "reason": "remediation evidence exists but detection state has not been revalidated against current canonical state"
+      }
+    },
+    {
+      "test_id": "TC-004",
+      "name": "revalidation_resolves_stale_finding",
+      "description": "Revalidation against current canonical state resolves a stale finding when remediation evidence is confirmed",
+      "input": {
+        "finding_status": "open",
+        "remediation_receipt": "WP-CURSOR-AUTHORITY-MIGRATION-LIBRARIAN-001",
+        "current_canonical_state": {
+          "project_id": "librarian",
+          "cursor_position": 707
+        },
+        "revalidation_date": "2026-08-16T05:12:00Z"
+      },
+      "expected_outcome": {
+        "finding_status": "resolved",
+        "resolution_date": "2026-07-29T03:24:45Z",
+        "revalidation_confirms": true,
+        "canonical_state_matches_remediation": true,
+        "historical_finding_preserved": true
+      }
+    },
+    {
+      "test_id": "TC-005",
+      "name": "historical_finding_preserved_after_resolution",
+      "description": "A resolved finding retains its full forensic history — detection, severity, condition, remediation evidence, and resolution",
+      "input": {
+        "resolved_finding": {
+          "drift_id": "DRIFT-librarian-drift_detection",
+          "status": "resolved",
+          "detected_at": "2026-07-20T04:10:46Z",
+          "resolved_at": "2026-07-29T03:24:45Z",
+          "severity_at_detection": "critical"
+        }
+      },
+      "expected_outcome": {
+        "finding_preserved": true,
+        "forensic_history_intact": true,
+        "fields_present": [
+          "detected_at",
+          "severity_at_detection",
+          "entity",
+          "condition",
+          "remediation_receipt",
+          "resolved_at",
+          "current_status",
+          "last_revalidated_at",
+          "forensic_classification"
+        ]
+      }
+    },
+    {
+      "test_id": "TC-006",
+      "name": "remediation_without_evidence_does_not_resolve",
+      "description": "A finding is not resolved merely because time passed or a remediation was attempted — resolution requires evidence of canonical state change",
+      "input": {
+        "finding_status": "open",
+        "days_since_detection": 27,
+        "remediation_receipt_exists": false,
+        "current_canonical_state": "unknown"
+      },
+      "expected_outcome": {
+        "finding_status": "open",
+        "is_actionable": true,
+        "resolution_blocked": true,
+        "reason": "no remediation evidence; time elapsed does not constitute resolution"
+      }
+    },
+    {
+      "test_id": "TC-007",
+      "name": "three_state_layer_distinction",
+      "description": "The system correctly distinguishes canonical state, detection state, and reconciliation input — and identifies when detection state is stale relative to canonical state",
+      "input": {
+        "canonical_state": {
+          "source": "lifecycle-cursor.json",
+          "project_id": "librarian",
+          "cursor_position": 707,
+          "is_current": true
+        },
+        "detection_state": {
+          "source": "drift-events.json",
+          "last_updated": "2026-07-20T05:03:22Z",
+          "reports_project_id": "librarian-workbench",
+          "reports_cursor_position": 37,
+          "is_stale": true
+        },
+        "reconciliation_input": {
+          "source": "governance reconciliation run",
+          "run_date": "2026-08-16T04:02:38Z",
+          "consumed_stale_detection": true,
+          "resulted_in_false_critical": true
+        }
+      },
+      "expected_outcome": {
+        "canonical_state_healthy": true,
+        "detection_state_stale": true,
+        "reconciliation_input_contaminated": true,
+        "recommended_action": "revalidate detection state against canonical state before consuming in reconciliation"
+      }
+    }
+  ],
+  "invariant_tests": [
+    {
+      "invariant_id": "INV-001",
+      "statement": "A historical finding must never be treated as a current governance condition without revalidation against current authoritative state",
+      "test_count": 7,
+      "all_pass_expected": true
+    },
+    {
+      "invariant_id": "INV-002",
+      "statement": "Resolution requires evidence of canonical state change, not merely elapsed time",
+      "test_count": 2,
+      "all_pass_expected": true
+    },
+    {
+      "invariant_id": "INV-003",
+      "statement": "Resolved findings retain full forensic history including detection severity, condition, remediation evidence, and resolution timestamp",
+      "test_count": 2,
+      "all_pass_expected": true
+    }
+  ],
+  "design_principles": {
+    "evidence_based_not_timestamp_based": "A finding should not become resolved merely because enough time passed. It should become resolved because current authoritative state + remediation evidence + fresh re-evaluation → resolution determination.",
+    "measurement_not_intention": "Measure what happened, rather than what was intended. A remediation occurring does not mean the remediation worked — both require subsequent measurement.",
+    "observation_is_not_authority": "The reconciliation system detects and classifies; it does not silently mutate canonical state. Resolution requires Owner authority.",
+    "historical_finding_preservation": "Historical findings are forensic evidence. They are preserved with full lifecycle metadata, not deleted when resolved."
+  },
+  "applicable_to": [
+    "GOVERNANCE-STATE-RECONCILIATION-AUTOMATION-1",
+    "reconciliation engine design",
+    "finding lifecycle management",
+    "drift detection freshness"
+  ]
+}
