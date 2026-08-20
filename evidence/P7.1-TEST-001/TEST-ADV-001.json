@@ -1,0 +1,22 @@
+{
+  "test_id": "TEST-ADV-001",
+  "layer": "L4-adversarial",
+  "description": "lifecycle\u2192qualification substitution detected",
+  "input_ref": {
+    "entity": "fake-entity",
+    "attack": "lifecycle=QUALIFIED"
+  },
+  "validator": "validate-lifecycle-vocabulary.check_lcv_001",
+  "expected": {
+    "findings_count": 1,
+    "rule": "LCV-001"
+  },
+  "actual": {
+    "findings_count": 1,
+    "rule": "LCV-001"
+  },
+  "passed": true,
+  "evidence_ref": "adv-lifecycle-qual-9486d4d189c2cdd8",
+  "receipt": null,
+  "timestamp": "2026-08-19T00:08:26.395619+00:00"
+}

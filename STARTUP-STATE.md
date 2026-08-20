@@ -1,6 +1,6 @@
 # STARTUP-STATE.md — QA Pilot
 
-**Generated:** 2026-08-16T04:48:11Z
+**Generated:** 2026-08-20T02:42:51Z
 
 ## Current State
 
@@ -12,9 +12,9 @@
 - **Active work session:** none
 - **MCP:** reachable
 - **Git branch:** main
-- **Last commit:** b406630 docs: add README for Librarian-QA-Pilot
-- **Working tree:** dirty/132 changed or untracked
-- **Validators:** 75
+- **Last commit:** eb5f801 docs: define Phase 7 success criterion and empirical validation framework
+- **Working tree:** dirty/92 changed or untracked
+- **Validators:** 77
 - **Test runners:** 83
 - **Blockers:** none detected
 
@@ -57,7 +57,7 @@
 - **OS/Version:** Darwin AndrewsMac.local 24.6.0 Darwin Kernel Version 24.6.0: Fri Feb 27 19:33:24 PST 2026; root:xnu-11417.140.69.709.8~1/RELEASE_X86_64 x86_64
 - **Python version:** Python 3.14.4
 - **Startup checks:** /Users/andrew/Desktop/CarbideFrame/active/qa-pilot/scripts/run-startup-checks.sh
-- **Validator count:** 75
+- **Validator count:** 77
 - **Test runner count:** 83
 
 ## Next

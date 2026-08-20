@@ -1,0 +1,15 @@
+{
+  "timestamp": "2026-08-17T19:16:55.983509+00:00",
+  "registry_path": "/Users/andrew/Desktop/CarbideFrame/.librarian/project-index-v2.json",
+  "entities_checked": 8,
+  "rules_applied": [
+    "LCV-001",
+    "LCV-002",
+    "LCV-003",
+    "LCV-004",
+    "LCV-005"
+  ],
+  "findings_count": 0,
+  "findings": [],
+  "verdict": "PASS"
+}

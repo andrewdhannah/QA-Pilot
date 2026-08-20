@@ -1,0 +1,25 @@
+{
+  "test_id": "TEST-REG-002",
+  "layer": "L3-regression",
+  "description": "Authority boundary is deterministic",
+  "input_ref": {
+    "entities": [
+      "librarian",
+      "qa-pilot",
+      "agent-bridge"
+    ]
+  },
+  "validator": "validate-qualification-authority.validate_from_registry",
+  "expected": {
+    "all_deterministic": true
+  },
+  "actual": {
+    "librarian": true,
+    "qa-pilot": true,
+    "agent-bridge": true
+  },
+  "passed": true,
+  "evidence_ref": "regression-authority-c31fd6656f77e437",
+  "receipt": null,
+  "timestamp": "2026-08-19T00:08:26.386807+00:00"
+}

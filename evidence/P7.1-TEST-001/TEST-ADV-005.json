@@ -1,0 +1,19 @@
+{
+  "test_id": "TEST-ADV-005",
+  "layer": "L4-adversarial",
+  "description": "Altered state produces different qualification",
+  "input_ref": {
+    "attack": "replay with modified entity_type"
+  },
+  "validator": null,
+  "expected": {
+    "states_differ": true
+  },
+  "actual": {
+    "states_differ": true
+  },
+  "passed": true,
+  "evidence_ref": "adv-replay-01e36ae55fbf0aaf",
+  "receipt": null,
+  "timestamp": "2026-08-19T00:08:26.397641+00:00"
+}

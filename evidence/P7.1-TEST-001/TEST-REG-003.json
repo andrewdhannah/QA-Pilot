@@ -1,0 +1,19 @@
+{
+  "test_id": "TEST-REG-003",
+  "layer": "L3-regression",
+  "description": "Migration classifications are deterministic",
+  "input_ref": {
+    "input": "/Users/andrew/Desktop/CarbideFrame/.librarian/project-index.json"
+  },
+  "validator": "migrate-governance-state.migrate_registry",
+  "expected": {
+    "classifications_match": true
+  },
+  "actual": {
+    "classifications_match": true
+  },
+  "passed": true,
+  "evidence_ref": "regression-migration-849d4c85facd909d",
+  "receipt": null,
+  "timestamp": "2026-08-19T00:08:26.389528+00:00"
+}

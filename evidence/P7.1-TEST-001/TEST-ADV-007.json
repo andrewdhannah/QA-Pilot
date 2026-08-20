@@ -1,0 +1,20 @@
+{
+  "test_id": "TEST-ADV-007",
+  "layer": "L4-adversarial",
+  "description": "Cross-instance state cannot be injected",
+  "input_ref": {
+    "attack": "read state from wrong instance"
+  },
+  "validator": null,
+  "expected": {
+    "error": true
+  },
+  "actual": {
+    "error": true,
+    "exception": "FileNotFoundError"
+  },
+  "passed": true,
+  "evidence_ref": "adv-cross-instance-287044423a902801",
+  "receipt": null,
+  "timestamp": "2026-08-19T00:08:26.399168+00:00"
+}

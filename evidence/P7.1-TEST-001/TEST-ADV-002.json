@@ -1,0 +1,21 @@
+{
+  "test_id": "TEST-ADV-002",
+  "layer": "L4-adversarial",
+  "description": "qualification\u2192lifecycle mutation blocked",
+  "input_ref": {
+    "attack": "qualification mutated lifecycle_state"
+  },
+  "validator": "validate-qualification-authority.validate_boundary",
+  "expected": {
+    "valid": false,
+    "violations": 1
+  },
+  "actual": {
+    "valid": false,
+    "violations": 1
+  },
+  "passed": true,
+  "evidence_ref": "adv-qual-lifecycle-0eaf06b0cbc4d0ba",
+  "receipt": null,
+  "timestamp": "2026-08-19T00:08:26.396109+00:00"
+}

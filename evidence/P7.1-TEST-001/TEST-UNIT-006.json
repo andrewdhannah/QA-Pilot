@@ -1,0 +1,39 @@
+{
+  "test_id": "TEST-UNIT-006",
+  "layer": "L1-unit",
+  "description": "Migration is deterministic",
+  "input_ref": {
+    "input": "/Users/andrew/Desktop/CarbideFrame/.librarian/project-index.json"
+  },
+  "validator": "migrate-governance-state.migrate_registry",
+  "expected": {
+    "classifications_match": true
+  },
+  "actual": {
+    "classifications_match": true,
+    "run1": {
+      "librarian": "CAPABILITY",
+      "qa-pilot": "CAPABILITY",
+      "agent-bridge": "CAPABILITY",
+      "librarian-workbench": "CAPABILITY",
+      "working-bibliography-extension": "EXTENSION",
+      "claude-conversation-ingestion": "HISTORICAL_LINEAGE",
+      "librarian-vault": "SYSTEM_COMPONENT",
+      "knowledge-ingestion-addon": "CAPABILITY"
+    },
+    "run2": {
+      "librarian": "CAPABILITY",
+      "qa-pilot": "CAPABILITY",
+      "agent-bridge": "CAPABILITY",
+      "librarian-workbench": "CAPABILITY",
+      "working-bibliography-extension": "EXTENSION",
+      "claude-conversation-ingestion": "HISTORICAL_LINEAGE",
+      "librarian-vault": "SYSTEM_COMPONENT",
+      "knowledge-ingestion-addon": "CAPABILITY"
+    }
+  },
+  "passed": true,
+  "evidence_ref": "migration-7063bcfdc155a430",
+  "receipt": null,
+  "timestamp": "2026-08-19T00:08:26.344792+00:00"
+}

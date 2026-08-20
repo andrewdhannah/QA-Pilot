@@ -1,0 +1,105 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "project-index-v2",
+  "title": "CarbideFrame Workspace Project Index v2",
+  "description": "Canonical registry of governed projects with five-dimensional governance state. Extends v1 with orthogonal governance state dimensions.",
+  "type": "object",
+  "properties": {
+    "$schema": { "type": "string" },
+    "description": { "type": "string" },
+    "last_updated": { "type": "string", "format": "date-time" },
+    "project_count": { "type": "integer", "minimum": 0 },
+    "projects": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/project-entry" }
+    },
+    "registry_version": { "type": "integer" },
+    "registry_location": { "type": "string" },
+    "canonical_path": { "type": "string" },
+    "project_local_path": { "type": "string" },
+    "lifecycle_authority": { "type": "string" },
+    "lifecycle_note": { "type": "string" }
+  },
+  "required": ["project_count", "projects", "registry_version"],
+  "definitions": {
+    "governance-state": {
+      "type": "object",
+      "description": "Five-dimensional orthogonal governance state. Instance-specific — values are never shared across instances.",
+      "properties": {
+        "entity_type": {
+          "$ref": "../../active/qa-pilot/contracts/lifecycle-vocabulary.schema.json#/definitions/entity_type"
+        },
+        "lifecycle_state": {
+          "$ref": "../../active/qa-pilot/contracts/lifecycle-vocabulary.schema.json#/definitions/lifecycle_state"
+        },
+        "qualification_state": {
+          "$ref": "../../active/qa-pilot/contracts/lifecycle-vocabulary.schema.json#/definitions/qualification_state"
+        },
+        "health_state": {
+          "$ref": "../../active/qa-pilot/contracts/lifecycle-vocabulary.schema.json#/definitions/health_state"
+        },
+        "execution_policy": {
+          "$ref": "../../active/qa-pilot/contracts/lifecycle-vocabulary.schema.json#/definitions/execution_policy"
+        }
+      },
+      "required": ["entity_type", "lifecycle_state", "qualification_state", "health_state", "execution_policy"],
+      "additionalProperties": false
+    },
+    "legacy-fields": {
+      "type": "object",
+      "description": "Legacy fields retained as provenance. Deprecated — use governance-state dimensions instead.",
+      "properties": {
+        "current_phase": {
+          "type": "string",
+          "description": "DEPRECATED — legacy lifecycle phase. Retained as provenance projection into lifecycle_state."
+        },
+        "current_phase_deprecated": {
+          "type": "string",
+          "description": "DEPRECATED — duplicate of current_phase. Retained as provenance."
+        },
+        "lifecycle_stage": {
+          "type": "integer",
+          "description": "DEPRECATED — numeric lifecycle position (1-8). Not a lifecycle state. Retained as provenance."
+        },
+        "lifecycle_label": {
+          "type": "string",
+          "description": "DEPRECATED — human-readable lifecycle derivative. Retained as provenance."
+        }
+      },
+      "additionalProperties": false
+    },
+    "project-entry": {
+      "type": "object",
+      "properties": {
+        "project_id": { "type": "string" },
+        "display_name": { "type": "string" },
+        "repo_path": { "type": "string" },
+        "startup_contract": { "type": ["string", "null"] },
+        "profile_path": { "type": ["string", "null"] },
+        "startup_files": { "type": "array", "items": { "type": "string" } },
+        "governance_files": { "type": "array", "items": { "type": "string" } },
+        "status_files": { "type": "array", "items": { "type": "string" } },
+        "ledger_files": { "type": "array", "items": { "type": "string" } },
+        "receipt_paths": { "type": "array", "items": { "type": "string" } },
+        "validation_commands": { "type": "array", "items": { "type": "string" } },
+        "default_branch": { "type": "string" },
+        "allowed_startup_modes": { "type": "array", "items": { "type": "string" } },
+        "tags": { "type": "array", "items": { "type": "string" } },
+        "deprecated": { "type": "boolean" },
+        "aliases": { "type": "array", "items": { "type": "string" } },
+        "validation_surfaces": { "type": "array", "items": { "type": "string" } },
+        "created_at": { "type": ["string", "null"] },
+        "created_by": { "type": ["string", "null"] },
+        "creation_receipt_path": { "type": ["string", "null"] },
+        "startup_capable": { "type": "boolean" },
+        "governance_state": {
+          "$ref": "#/definitions/governance-state"
+        },
+        "legacy_fields": {
+          "$ref": "#/definitions/legacy-fields"
+        }
+      },
+      "required": ["project_id", "display_name", "repo_path", "governance_state"]
+    }
+  }
+}

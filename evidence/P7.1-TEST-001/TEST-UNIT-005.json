@@ -1,0 +1,33 @@
+{
+  "test_id": "TEST-UNIT-005",
+  "layer": "L1-unit",
+  "description": "Schema validates clean governance state",
+  "input_ref": {
+    "schema": "lifecycle-vocabulary.schema.json"
+  },
+  "validator": "jsonschema.validate",
+  "expected": {
+    "schema_valid": true,
+    "required_fields": [
+      "entity_type",
+      "lifecycle_state",
+      "qualification_state",
+      "health_state",
+      "execution_policy"
+    ]
+  },
+  "actual": {
+    "schema_valid": true,
+    "required_fields": [
+      "entity_type",
+      "lifecycle_state",
+      "qualification_state",
+      "health_state",
+      "execution_policy"
+    ]
+  },
+  "passed": true,
+  "evidence_ref": "schema-7f3e5bccca46b761",
+  "receipt": null,
+  "timestamp": "2026-08-19T00:08:26.343322+00:00"
+}

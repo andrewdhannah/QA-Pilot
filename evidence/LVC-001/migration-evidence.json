@@ -1,0 +1,128 @@
+{
+  "sprint": "LVC-001",
+  "work_packet": "WP-LVC-002",
+  "timestamp": "2026-08-17T16:44:16.095845+00:00",
+  "input": "/Users/andrew/Desktop/CarbideFrame/.librarian/project-index.json",
+  "output": "/Users/andrew/Desktop/CarbideFrame/.librarian/project-index-v2.json",
+  "dry_run": false,
+  "entity_count": 8,
+  "errors": [],
+  "entities": [
+    {
+      "project_id": "librarian",
+      "entity_type": "CAPABILITY",
+      "lifecycle_state_projected_from": "execution",
+      "lifecycle_state_projected_to": "ACTIVE",
+      "qualification_state": "UNREVIEWED",
+      "health_state": "UNKNOWN",
+      "execution_policy": "BLOCKED",
+      "legacy_fields_retained": [
+        "current_phase",
+        "current_phase_deprecated",
+        "lifecycle_stage",
+        "lifecycle_label"
+      ]
+    },
+    {
+      "project_id": "qa-pilot",
+      "entity_type": "CAPABILITY",
+      "lifecycle_state_projected_from": "init",
+      "lifecycle_state_projected_to": "INITIALIZED",
+      "qualification_state": "UNREVIEWED",
+      "health_state": "UNKNOWN",
+      "execution_policy": "BLOCKED",
+      "legacy_fields_retained": [
+        "current_phase",
+        "current_phase_deprecated",
+        "lifecycle_stage",
+        "lifecycle_label"
+      ]
+    },
+    {
+      "project_id": "agent-bridge",
+      "entity_type": "CAPABILITY",
+      "lifecycle_state_projected_from": "execution",
+      "lifecycle_state_projected_to": "ACTIVE",
+      "qualification_state": "UNREVIEWED",
+      "health_state": "UNKNOWN",
+      "execution_policy": "BLOCKED",
+      "legacy_fields_retained": [
+        "current_phase",
+        "current_phase_deprecated",
+        "lifecycle_stage",
+        "lifecycle_label"
+      ]
+    },
+    {
+      "project_id": "librarian-workbench",
+      "entity_type": "CAPABILITY",
+      "lifecycle_state_projected_from": "execution",
+      "lifecycle_state_projected_to": "ACTIVE",
+      "qualification_state": "UNREVIEWED",
+      "health_state": "UNKNOWN",
+      "execution_policy": "BLOCKED",
+      "legacy_fields_retained": [
+        "current_phase",
+        "current_phase_deprecated",
+        "lifecycle_stage",
+        "lifecycle_label"
+      ]
+    },
+    {
+      "project_id": "working-bibliography-extension",
+      "entity_type": "EXTENSION",
+      "lifecycle_state_projected_from": "init",
+      "lifecycle_state_projected_to": "INITIALIZED",
+      "qualification_state": "UNREVIEWED",
+      "health_state": "UNKNOWN",
+      "execution_policy": "BLOCKED",
+      "legacy_fields_retained": [
+        "current_phase_deprecated",
+        "lifecycle_stage",
+        "lifecycle_label"
+      ]
+    },
+    {
+      "project_id": "claude-conversation-ingestion",
+      "entity_type": "HISTORICAL_LINEAGE",
+      "lifecycle_state_projected_from": null,
+      "lifecycle_state_projected_to": "DISCOVERED",
+      "qualification_state": "N/A",
+      "health_state": "UNKNOWN",
+      "execution_policy": "N/A",
+      "legacy_fields_retained": [
+        "lifecycle_stage",
+        "lifecycle_label"
+      ]
+    },
+    {
+      "project_id": "librarian-vault",
+      "entity_type": "SYSTEM_COMPONENT",
+      "lifecycle_state_projected_from": "init",
+      "lifecycle_state_projected_to": "INITIALIZED",
+      "qualification_state": "N/A",
+      "health_state": "UNKNOWN",
+      "execution_policy": "N/A",
+      "legacy_fields_retained": [
+        "current_phase_deprecated",
+        "lifecycle_stage",
+        "lifecycle_label"
+      ]
+    },
+    {
+      "project_id": "knowledge-ingestion-addon",
+      "entity_type": "CAPABILITY",
+      "lifecycle_state_projected_from": "init",
+      "lifecycle_state_projected_to": "INITIALIZED",
+      "qualification_state": "UNREVIEWED",
+      "health_state": "UNKNOWN",
+      "execution_policy": "BLOCKED",
+      "legacy_fields_retained": [
+        "current_phase",
+        "current_phase_deprecated",
+        "lifecycle_stage",
+        "lifecycle_label"
+      ]
+    }
+  ]
+}

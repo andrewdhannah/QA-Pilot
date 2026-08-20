@@ -1,0 +1,31 @@
+{
+  "test_id": "TEST-INT-001",
+  "layer": "L2-integration",
+  "description": "Full chain: registry \u2192 reader \u2192 qualify \u2192 validate \u2192 receipt",
+  "input_ref": {
+    "entity": "qa-pilot",
+    "chain": "registry\u2192reader\u2192qualify\u2192validate\u2192receipt"
+  },
+  "validator": null,
+  "expected": {
+    "state_read": true,
+    "snapshot_created": true,
+    "state_valid": true,
+    "boundary_intact": true
+  },
+  "actual": {
+    "state_read": true,
+    "snapshot_created": true,
+    "state_valid": true,
+    "boundary_intact": true,
+    "state_snapshot_hash": "f6e57635e2dbc75b"
+  },
+  "passed": true,
+  "evidence_ref": "integration-qa-pilot-885a9493dd9700d2",
+  "receipt": {
+    "chain_complete": true,
+    "entity": "qa-pilot",
+    "state_hash": "f6e57635e2dbc75b"
+  },
+  "timestamp": "2026-08-19T00:08:26.377690+00:00"
+}

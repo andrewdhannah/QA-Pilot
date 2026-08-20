@@ -1,0 +1,21 @@
+{
+  "test_id": "TEST-UNIT-003",
+  "layer": "L1-unit",
+  "description": "Conflation detector finds 0 violations",
+  "input_ref": {
+    "registry": "/Users/andrew/Desktop/CarbideFrame/.librarian/project-index-v2.json"
+  },
+  "validator": "validate-lifecycle-vocabulary.validate_registry",
+  "expected": {
+    "findings_count": 0,
+    "verdict": "PASS"
+  },
+  "actual": {
+    "findings_count": 0,
+    "verdict": "PASS"
+  },
+  "passed": true,
+  "evidence_ref": "conflation-24461522c7daddf7",
+  "receipt": null,
+  "timestamp": "2026-08-19T00:08:26.332029+00:00"
+}

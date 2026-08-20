@@ -1,0 +1,131 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "lifecycle-vocabulary-v1",
+  "title": "Canonical Governance State Vocabulary",
+  "description": "Five-dimensional orthogonal governance state model for governed system instances. Instance-independent — schema is reusable; state is instance-specific.",
+  "type": "object",
+  "definitions": {
+    "entity_type": {
+      "type": "string",
+      "enum": [
+        "CAPABILITY",
+        "SYSTEM_COMPONENT",
+        "EXTENSION",
+        "HISTORICAL_LINEAGE",
+        "RUNTIME_PROVIDER"
+      ],
+      "description": "Structural classification of the entity. Determines which other dimensions are applicable."
+    },
+    "lifecycle_state": {
+      "type": "string",
+      "enum": [
+        "DISCOVERED",
+        "REGISTERED",
+        "INITIALIZED",
+        "ACTIVE",
+        "SUSPENDED",
+        "DEPRECATED",
+        "RETIRED"
+      ],
+      "description": "Entity's position in its governed lifecycle. Authority: canonical lifecycle model."
+    },
+    "qualification_state": {
+      "type": "string",
+      "enum": [
+        "UNREVIEWED",
+        "REVIEW_REQUIRED",
+        "QUALIFIED",
+        "DISQUALIFIED",
+        "N/A"
+      ],
+      "description": "Whether the entity has satisfied qualification requirements. Authority: qualification engine."
+    },
+    "health_state": {
+      "type": "string",
+      "enum": [
+        "HEALTHY",
+        "DEGRADED",
+        "STALE",
+        "UNKNOWN"
+      ],
+      "description": "Observed operational health. Authority: evidence pipeline projection."
+    },
+    "execution_policy": {
+      "type": "string",
+      "enum": [
+        "AUTO",
+        "OWNER_APPROVAL",
+        "BLOCKED",
+        "N/A"
+      ],
+      "description": "Permitted execution behavior. Authority: governance policy / Owner decision."
+    }
+  },
+  "properties": {
+    "entity_type": {
+      "$ref": "#/definitions/entity_type"
+    },
+    "lifecycle_state": {
+      "$ref": "#/definitions/lifecycle_state"
+    },
+    "qualification_state": {
+      "$ref": "#/definitions/qualification_state"
+    },
+    "health_state": {
+      "$ref": "#/definitions/health_state"
+    },
+    "execution_policy": {
+      "$ref": "#/definitions/execution_policy"
+    }
+  },
+  "required": [
+    "entity_type",
+    "lifecycle_state",
+    "qualification_state",
+    "health_state",
+    "execution_policy"
+  ],
+  "additionalProperties": false,
+  "x-orthogonality-invariant": "No dimension may be used as a proxy for another. No dimension silently derives authority from another.",
+  "x-qualification-applicability": {
+    "CAPABILITY": "qualification_state is applicable",
+    "SYSTEM_COMPONENT": "qualification_state is N/A",
+    "EXTENSION": "qualification_state is applicable",
+    "HISTORICAL_LINEAGE": "qualification_state is N/A",
+    "RUNTIME_PROVIDER": "qualification_state is applicable"
+  },
+  "x-execution-policy-applicability": {
+    "CAPABILITY": "execution_policy is applicable",
+    "SYSTEM_COMPONENT": "execution_policy is N/A",
+    "EXTENSION": "execution_policy is applicable",
+    "HISTORICAL_LINEAGE": "execution_policy is N/A",
+    "RUNTIME_PROVIDER": "execution_policy is applicable"
+  },
+  "x-conflation-rules": [
+    {
+      "rule": "LCV-001",
+      "description": "lifecycle_state must not be used as qualification_state",
+      "severity": "error"
+    },
+    {
+      "rule": "LCV-002",
+      "description": "health_state must not imply qualification",
+      "severity": "error"
+    },
+    {
+      "rule": "LCV-003",
+      "description": "qualification_state must not imply execution permission",
+      "severity": "error"
+    },
+    {
+      "rule": "LCV-004",
+      "description": "entity_type SYSTEM_COMPONENT or HISTORICAL_LINEAGE must have qualification_state N/A",
+      "severity": "error"
+    },
+    {
+      "rule": "LCV-005",
+      "description": "entity_type SYSTEM_COMPONENT or HISTORICAL_LINEAGE must have execution_policy N/A",
+      "severity": "error"
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "test_id": "TEST-UNIT-002",
+  "layer": "L1-unit",
+  "description": "All 8 entities have independently populated dimensions",
+  "input_ref": {
+    "entity_count": 8
+  },
+  "validator": "governance_state_reader.validate_state_independence",
+  "expected": {
+    "all_entities_valid": true
+  },
+  "actual": {
+    "librarian": true,
+    "qa-pilot": true,
+    "agent-bridge": true,
+    "librarian-workbench": true,
+    "working-bibliography-extension": true,
+    "claude-conversation-ingestion": true,
+    "librarian-vault": true,
+    "knowledge-ingestion-addon": true
+  },
+  "passed": true,
+  "evidence_ref": "state-independence-1f4b7f665586c118",
+  "receipt": null,
+  "timestamp": "2026-08-19T00:08:26.330168+00:00"
+}

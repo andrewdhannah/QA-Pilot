@@ -1,0 +1,19 @@
+{
+  "test_id": "TEST-UNIT-004",
+  "layer": "L1-unit",
+  "description": "Authority boundary validator passes",
+  "input_ref": {
+    "entity": "qa-pilot"
+  },
+  "validator": "validate-qualification-authority.validate_from_registry",
+  "expected": {
+    "valid": true
+  },
+  "actual": {
+    "valid": true
+  },
+  "passed": true,
+  "evidence_ref": "authority-qa-pilot-c69213a13d2c8421",
+  "receipt": null,
+  "timestamp": "2026-08-19T00:08:26.334955+00:00"
+}

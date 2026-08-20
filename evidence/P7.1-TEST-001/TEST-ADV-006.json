@@ -1,0 +1,19 @@
+{
+  "test_id": "TEST-ADV-006",
+  "layer": "L4-adversarial",
+  "description": "Legacy field manipulation isolated",
+  "input_ref": {
+    "attack": "modify legacy current_phase"
+  },
+  "validator": null,
+  "expected": {
+    "lifecycle_state": "INITIALIZED"
+  },
+  "actual": {
+    "lifecycle_state": "INITIALIZED"
+  },
+  "passed": true,
+  "evidence_ref": "adv-legacy-e6840511958fbc98",
+  "receipt": null,
+  "timestamp": "2026-08-19T00:08:26.398469+00:00"
+}

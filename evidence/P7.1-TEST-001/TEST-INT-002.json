@@ -1,0 +1,19 @@
+{
+  "test_id": "TEST-INT-002",
+  "layer": "L2-integration",
+  "description": "Invalid state input is rejected",
+  "input_ref": {
+    "entity": "nonexistent-entity"
+  },
+  "validator": "governance_state_reader.get_entity_governance_state",
+  "expected": {
+    "state": null
+  },
+  "actual": {
+    "state": null
+  },
+  "passed": true,
+  "evidence_ref": "invalid-composition-6479534e148bb143",
+  "receipt": null,
+  "timestamp": "2026-08-19T00:08:26.384545+00:00"
+}

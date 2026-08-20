@@ -284,14 +284,44 @@ Librarian work packet service (P1) is a separate parallel track — no dependenc
 
 ## Active Project State
 
-**Ledger updated:** 2026-08-16
+**Ledger updated:** 2026-08-17
 **Latest sealed sprint:** #220 QA-PILOT-REGRESSION-LEARNING-LOOP-1
-**Active epic:** EPIC-ASSURANCE-CONTRACT-EVOLUTION-1 — COMPLETE
+**Latest completed sprint:** P7.1-TEST-001 Cross-Layer Governance Validation (19/19 PASS)
+**Active epic:** Phase 7 — Adoption & Empirical Validation (P7.1 Cross-Project Trial)
 **Qualification substrate:** COMPLETE — all 5 sprints sealed (#216–#219 + #165 roundtrip)
 **Learning loop:** COMPLETE — end-to-end improvement loop proven (#220)
+**Governance vocabulary:** COMPLETE — canonical five-dimensional model established (LVC-001)
+**Runtime qualification:** COMPLETE — qualification operates against canonical state (GPI-001)
+**Controlled validation:** COMPLETE — governance/qualification composition verified (P7.1-TEST-001)
 **End-to-end loop dependency:** SATISFIED — Librarian work packet service discovered as existing sprint #546; capability projection activated. Tier 2 gates WQI-005/WQI-006 unblocked.
-**Authorized sprints:** Phase 6 COMPLETE. Awaiting Owner direction for Phase 7 adoption/validation plan.
+**Authorized sprints:** LVC-001 + GPI-001 + P7.1-TEST-001 COMPLETE. P7.1-OPS-001 RECORDED (finding, not yet authorized for execution).
 **Deferred sprints:** Framework Validation, I18N reassessment, visual parity reassessment, post-canonical surface reassessment
+
+## P7.1 Operational Findings
+
+**P7.1-OPS-001 — Project Session Availability**
+
+During this session, the agent attempted to close the Librarian session and received "session tools unavailable." The agent fell back to direct file editing. This is the first real P7.1 operational finding.
+
+The gap is a project registration → session binding → MCP/tool exposure path, not a governance architecture primitive. The project needs a Librarian session interface, not a local Librarian implementation.
+
+Absence of the session interface must not cause silent fallback to unmanaged direct operation when the work is declared governed.
+
+Recorded at `work-orders/P7.1-OPS-001-project-session-availability.md`. Awaiting Owner direction.
+
+**LIBRARIAN-QA-CAPABILITY-ACTIVATION-001 — Capability Activation Audit**
+
+Cross-system capability activation audit. Phase 1 baseline + Phase 2 characterization complete.
+
+Key finding: The system is not primarily dead code. Implementation maturity exceeds activation maturity. 55% ACTIVE, 18% AVAILABLE, 9% BROKEN, 5% UNWIRED.
+
+Root cause: `GeneratedMCPDispatchMap.swift` single-point defect — all tools have `handlerFunction: "unknown"`. Affects 7+ broken MCP tools.
+
+Authorization flow (B2) unwired — three competing implementations, OwnerDecision never injected upstream.
+
+Remediation candidates P0–P3 established. Awaiting Owner decision.
+
+Recorded at `audits/capability-activation-audit-2026-08-17.md` and `work-orders/CAPABILITY-ACTIVATION-AUDIT-001.md`.
 
 ## Sealed Sprint: ASSURANCE-CONTRACT-EVIDENCE-STATE-CONTRACT-FORMALIZATION-1 (#215)
 
@@ -409,12 +439,14 @@ With runtime evidence, they can reason about observed behavior.
 ### Current Phase State
 
 ```
-PHASE 6 — GOVERNED IMPROVEMENT ACTIVATION
+PHASE 7 — ADOPTION & EMPIRICAL VALIDATION
 
-Improvement Proposal Bridge          ✅ (#242)
-Work Packet Integration              ✅ (#243)
-Improvement Outcome Measurement      ✅ (#244)
-Closed-Loop Optimization             ✅ (#245)
+P7.1 Cross-Project Trial                    IN PROGRESS
+  └── LVC-001 Vocabulary Consolidation      ✅ Complete (16/16 gates PASS)
+  └── WP-003B Completion                    ✅ Complete (vault + bibliography)
+  └── GPI-001 Runtime Qualification         ✅ Complete (15/15 gates PASS)
+  └── P7.1-TEST-001 Validation Suite        ✅ Complete (19/19 tests PASS)
+  └── P7.1:      CONTINUES — awaiting operational evidence
 ```
 
 ### Phase 6 Complete — Architecture Freeze
@@ -447,54 +479,82 @@ Improved Future Decisions
 
 ### Phase 7 — Adoption & Empirical Validation
 
-**Objective:** Determine whether the existing intelligence produces reliable value when repeatedly applied to real governed work.
+**Objective:** Determine whether the completed QA-Pilot lifecycle produces reliable, useful, and repeatable decision support when applied to real governed work across multiple projects.
 
-**NOT:** Build more intelligence.
+**The test is no longer:** "Can QA-Pilot do this?"
+**The test is:** "Does doing this improve governed engineering decisions enough to justify continued operation?"
 
-**Empirical Questions:**
+### Architecture Freeze Governance Rule
 
-| Question | What Must Be Demonstrated |
-|----------|---------------------------|
-| Repeatability | Does the loop work repeatedly? |
-| Cross-project applicability | Does it work beyond QA-Pilot's own fixtures? |
-| Signal quality | Are recommendations useful rather than merely plausible? |
-| Outcome validity | Can improvements actually be measured? |
-| Learning quality | Do accumulated signals become more informative? |
-| Calibration | Do predictions correspond to observed outcomes? |
-| Operational cost | Is the assurance value worth the cost? |
-| Authority integrity | Do repeated workflows preserve all boundaries? |
-| Discoverability | Can another project consume the system correctly? |
-| Failure behavior | Does sparse/contradicted/degraded evidence remain safe? |
+During Phase 7:
 
-**Phase 7 Structure (Recommended):**
+**No new QA-Pilot assurance primitive may be introduced solely because a theoretically desirable capability has been identified.**
 
-1. Cross-Project Trial
-2. Real-Work Evidence Validation
-3. Recommendation Effectiveness Measurement
-4. Decision Utility Measurement
-5. Fleet Learning Validation
-6. Adoption Readiness Review
-
-**Architectural Freeze Rule:**
-
-No new assurance primitive unless empirical operation demonstrates a concrete unmet requirement.
+A proposed architectural change requires:
 
 ```
 Observed operational deficiency
-          ↓
+        ↓
 Evidence
-          ↓
-Gap classification
-          ↓
-Is existing capability sufficient?
-      ↙             ↘
-    YES              NO
-     ↓                ↓
-Configure/use       Proposed
-existing system     architecture
-                      ↓
-                 Owner review
+        ↓
+Existing capability assessed
+        ↓
+Concrete unmet requirement established
+        ↓
+Owner review
+        ↓
+Architecture change permitted
 ```
+
+### Phase 7 Validation Stages
+
+| Stage | Question | Primary Evidence |
+|-------|----------|------------------|
+| P7.1 | Does the lifecycle operate across projects? | Complete lifecycle traces |
+| P7.2 | Does it work with actual evidence? | Runtime/work/evidence records |
+| P7.3 | Do recommendations produce useful outcomes? | Recommendation → outcome history |
+| P7.4 | Do signals improve decisions? | Decision comparisons / owner outcomes |
+| P7.5 | Does accumulated evidence produce meaningful learning? | Cross-project learning signals |
+| P7.6 | Is the system ready for sustained use? | Readiness assessment |
+
+### Phase 7 Success Condition
+
+```
+QA-Pilot Phase 7
+        │
+        ├── Real work demonstrated
+        ├── Cross-project operation demonstrated
+        ├── Evidence provenance demonstrated
+        ├── Recommendation effectiveness measured
+        ├── Decision utility measured
+        ├── Learning validity demonstrated
+        ├── Operational economics understood
+        └── Authority boundaries preserved
+                    │
+                    ▼
+          ADOPTION READINESS DECISION
+```
+
+**Possible outcomes:**
+- READY
+- READY WITH CONSTRAINTS
+- EXTEND VALIDATION
+- ARCHITECTURE GAP IDENTIFIED
+- NOT READY
+
+### Phase 7 Status
+
+| Stage | Status |
+|-------|--------|
+| P7.1 Cross-Project Trial | ✅ IN PROGRESS |
+| P7.2 Real-Work Evidence | Ready |
+| P7.3 Recommendation Effectiveness | Ready |
+| P7.4 Decision Utility | Ready |
+| P7.5 Fleet Learning | Ready |
+| P7.6 Adoption Review | Ready |
+
+**Phase 7 Authorization:** ✅ Owner-authorized 2026-08-17
+**Current Stage:** P7.1 Cross-Project Trial — IN PROGRESS
 
 ### Architecture Complete
 

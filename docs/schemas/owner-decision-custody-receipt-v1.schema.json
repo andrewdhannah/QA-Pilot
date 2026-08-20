@@ -1,0 +1,156 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://qa-pilot.carbideframe/schemas/owner-decision-custody-receipt-v1",
+  "title": "Owner Decision Custody Receipt",
+  "description": "Records Owner decisions (approve/deny) on write-custody enforcement. Preserves the decision custody chain for audit and governance review. Advisory-only — does not approve, seal, or mutate.",
+  "type": "object",
+  "required": [
+    "receipt_id", "schema", "custody_source", "source_contract",
+    "decision_type", "generated_at", "deterministic", "immutable",
+    "request", "enforcement", "provenance", "mutation_status",
+    "linked_references", "sealed_contracts_referenced"
+  ],
+  "properties": {
+    "receipt_id": {
+      "type": "string",
+      "pattern": "^odcr-[a-f0-9]+$",
+      "description": "Unique receipt identifier. Generated deterministically from request content."
+    },
+    "schema": {
+      "type": "string",
+      "const": "owner-decision-custody-receipt-v1",
+      "description": "Schema identifier. Must be exactly 'owner-decision-custody-receipt-v1'."
+    },
+    "custody_source": {
+      "type": "string",
+      "enum": ["live", "write", "dry-run"],
+      "description": "Whether this receipt was generated from a live enforcement, a write-custody check, or a dry-run."
+    },
+    "source_contract": {
+      "type": "string",
+      "pattern": "^#[0-9]+$",
+      "description": "Reference to the sealed contract that authorized the enforcement (e.g. '#23')."
+    },
+    "decision_type": {
+      "type": "string",
+      "enum": ["approved", "denied"],
+      "description": "The Owner's decision on the write request."
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp when this receipt was generated."
+    },
+    "deterministic": {
+      "type": "boolean",
+      "const": true,
+      "description": "Whether this receipt was generated deterministically from the request content."
+    },
+    "immutable": {
+      "type": "boolean",
+      "const": true,
+      "description": "Whether this receipt is immutable after generation."
+    },
+    "request": {
+      "type": "object",
+      "required": ["project_id", "sprint_id", "file_path"],
+      "properties": {
+        "project_id": {
+          "type": "string",
+          "description": "The project that requested the write."
+        },
+        "sprint_id": {
+          "type": "string",
+          "description": "The sprint that requested the write."
+        },
+        "file_path": {
+          "type": "string",
+          "description": "The file path that was requested to be written."
+        },
+        "transition": {
+          "type": "string",
+          "description": "The lifecycle transition requested, if any."
+        },
+        "reason": {
+          "type": "string",
+          "description": "The reason for the write request."
+        }
+      },
+      "description": "The original write request that was evaluated."
+    },
+    "enforcement": {
+      "type": "object",
+      "required": ["decision", "blocker_code", "violation_code", "triggered_rules"],
+      "properties": {
+        "decision": {
+          "type": "string",
+          "description": "The enforcement decision code (e.g. 'ALLOW', 'BLOCK_WRITE_SCOPE_VIOLATION')."
+        },
+        "blocker_code": {
+          "type": "string",
+          "description": "The blocker code if the write was denied, empty string if allowed."
+        },
+        "violation_code": {
+          "type": "string",
+          "description": "The violation code if the write violated a rule, empty string if allowed."
+        },
+        "triggered_rules": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "List of enforcement rules that were triggered during evaluation."
+        }
+      },
+      "description": "The enforcement outcome and details."
+    },
+    "provenance": {
+      "type": "object",
+      "required": ["owner_approval_present", "owner_approval_ref", "approval_is_broad"],
+      "properties": {
+        "owner_approval_present": {
+          "type": "boolean",
+          "description": "Whether explicit Owner approval was present for this write."
+        },
+        "owner_approval_ref": {
+          "type": "string",
+          "description": "Reference to the Owner approval, if present."
+        },
+        "approval_is_broad": {
+          "type": "boolean",
+          "description": "Whether the approval was broad (covering multiple writes) or specific."
+        }
+      },
+      "description": "Provenance information about the Owner's approval."
+    },
+    "mutation_status": {
+      "type": "string",
+      "enum": ["mutated", "blocked", "dry-run"],
+      "description": "Whether the write was actually executed, blocked, or dry-run."
+    },
+    "linked_references": {
+      "type": "object",
+      "required": ["sprint_id", "ledger_numbers", "source_receipt_id"],
+      "properties": {
+        "sprint_id": {
+          "type": "string",
+          "description": "The sprint this receipt is linked to."
+        },
+        "ledger_numbers": {
+          "type": "array",
+          "items": { "type": "integer" },
+          "description": "Ledger numbers this receipt is linked to."
+        },
+        "source_receipt_id": {
+          "type": "string",
+          "description": "Source receipt ID if this receipt was derived from another."
+        }
+      },
+      "description": "Links to related sprint and ledger entries."
+    },
+    "sealed_contracts_referenced": {
+      "type": "array",
+      "items": { "type": "string", "pattern": "^#[0-9]+$" },
+      "description": "List of sealed contract numbers referenced by this receipt."
+    }
+  },
+  "additionalProperties": false
+}

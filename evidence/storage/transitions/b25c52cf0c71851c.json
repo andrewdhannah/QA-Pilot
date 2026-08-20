@@ -1,0 +1,15 @@
+{
+  "receipt_type": "governed_transition",
+  "receipt_id": "b25c52cf0c71851c",
+  "extension_id": "knowledge-ingestion-addon-extension",
+  "from_state": "discovered",
+  "to_state": "produced",
+  "evidence": {
+    "source_hash": "4f941f7f310d69c2caffb8d51afc52d9190b1a53e2acae8ab502d7e43df2605e",
+    "receipt_id": "IR-980fa2b62fe09370",
+    "page_count": 1,
+    "total_characters": 13,
+    "validation_accepted": true
+  },
+  "timestamp": "2026-08-18T18:31:57.504727+00:00"
+}

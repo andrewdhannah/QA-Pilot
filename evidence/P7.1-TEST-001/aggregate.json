@@ -1,0 +1,471 @@
+{
+  "suite": "P7.1-TEST-001",
+  "timestamp": "2026-08-19T00:08:26.400777+00:00",
+  "total": 19,
+  "passed": 19,
+  "failed": 0,
+  "verdict": "PASS",
+  "by_layer": {
+    "L1-unit": {
+      "total": 6,
+      "passed": 6
+    },
+    "L2-integration": {
+      "total": 2,
+      "passed": 2
+    },
+    "L3-regression": {
+      "total": 3,
+      "passed": 3
+    },
+    "L4-adversarial": {
+      "total": 7,
+      "passed": 7
+    },
+    "L5-cross-instance": {
+      "total": 1,
+      "passed": 1
+    }
+  },
+  "tests": [
+    {
+      "test_id": "TEST-UNIT-001",
+      "layer": "L1-unit",
+      "description": "State reader returns all 5 dimensions for qa-pilot",
+      "input_ref": {
+        "entity": "qa-pilot",
+        "registry": "/Users/andrew/Desktop/CarbideFrame/.librarian/project-index-v2.json"
+      },
+      "validator": "governance_state_reader.get_entity_governance_state",
+      "expected": {
+        "all_5_dimensions_populated": true
+      },
+      "actual": {
+        "entity_type": "CAPABILITY",
+        "lifecycle_state": "INITIALIZED",
+        "qualification_state": "UNREVIEWED",
+        "health_state": "UNKNOWN",
+        "execution_policy": "BLOCKED"
+      },
+      "passed": true,
+      "evidence_ref": "state-reader-qa-pilot-2b505e089682f849",
+      "receipt": null,
+      "timestamp": "2026-08-19T00:08:26.321648+00:00"
+    },
+    {
+      "test_id": "TEST-UNIT-002",
+      "layer": "L1-unit",
+      "description": "All 8 entities have independently populated dimensions",
+      "input_ref": {
+        "entity_count": 8
+      },
+      "validator": "governance_state_reader.validate_state_independence",
+      "expected": {
+        "all_entities_valid": true
+      },
+      "actual": {
+        "librarian": true,
+        "qa-pilot": true,
+        "agent-bridge": true,
+        "librarian-workbench": true,
+        "working-bibliography-extension": true,
+        "claude-conversation-ingestion": true,
+        "librarian-vault": true,
+        "knowledge-ingestion-addon": true
+      },
+      "passed": true,
+      "evidence_ref": "state-independence-1f4b7f665586c118",
+      "receipt": null,
+      "timestamp": "2026-08-19T00:08:26.330168+00:00"
+    },
+    {
+      "test_id": "TEST-UNIT-003",
+      "layer": "L1-unit",
+      "description": "Conflation detector finds 0 violations",
+      "input_ref": {
+        "registry": "/Users/andrew/Desktop/CarbideFrame/.librarian/project-index-v2.json"
+      },
+      "validator": "validate-lifecycle-vocabulary.validate_registry",
+      "expected": {
+        "findings_count": 0,
+        "verdict": "PASS"
+      },
+      "actual": {
+        "findings_count": 0,
+        "verdict": "PASS"
+      },
+      "passed": true,
+      "evidence_ref": "conflation-24461522c7daddf7",
+      "receipt": null,
+      "timestamp": "2026-08-19T00:08:26.332029+00:00"
+    },
+    {
+      "test_id": "TEST-UNIT-004",
+      "layer": "L1-unit",
+      "description": "Authority boundary validator passes",
+      "input_ref": {
+        "entity": "qa-pilot"
+      },
+      "validator": "validate-qualification-authority.validate_from_registry",
+      "expected": {
+        "valid": true
+      },
+      "actual": {
+        "valid": true
+      },
+      "passed": true,
+      "evidence_ref": "authority-qa-pilot-c69213a13d2c8421",
+      "receipt": null,
+      "timestamp": "2026-08-19T00:08:26.334955+00:00"
+    },
+    {
+      "test_id": "TEST-UNIT-005",
+      "layer": "L1-unit",
+      "description": "Schema validates clean governance state",
+      "input_ref": {
+        "schema": "lifecycle-vocabulary.schema.json"
+      },
+      "validator": "jsonschema.validate",
+      "expected": {
+        "schema_valid": true,
+        "required_fields": [
+          "entity_type",
+          "lifecycle_state",
+          "qualification_state",
+          "health_state",
+          "execution_policy"
+        ]
+      },
+      "actual": {
+        "schema_valid": true,
+        "required_fields": [
+          "entity_type",
+          "lifecycle_state",
+          "qualification_state",
+          "health_state",
+          "execution_policy"
+        ]
+      },
+      "passed": true,
+      "evidence_ref": "schema-7f3e5bccca46b761",
+      "receipt": null,
+      "timestamp": "2026-08-19T00:08:26.343322+00:00"
+    },
+    {
+      "test_id": "TEST-UNIT-006",
+      "layer": "L1-unit",
+      "description": "Migration is deterministic",
+      "input_ref": {
+        "input": "/Users/andrew/Desktop/CarbideFrame/.librarian/project-index.json"
+      },
+      "validator": "migrate-governance-state.migrate_registry",
+      "expected": {
+        "classifications_match": true
+      },
+      "actual": {
+        "classifications_match": true,
+        "run1": {
+          "librarian": "CAPABILITY",
+          "qa-pilot": "CAPABILITY",
+          "agent-bridge": "CAPABILITY",
+          "librarian-workbench": "CAPABILITY",
+          "working-bibliography-extension": "EXTENSION",
+          "claude-conversation-ingestion": "HISTORICAL_LINEAGE",
+          "librarian-vault": "SYSTEM_COMPONENT",
+          "knowledge-ingestion-addon": "CAPABILITY"
+        },
+        "run2": {
+          "librarian": "CAPABILITY",
+          "qa-pilot": "CAPABILITY",
+          "agent-bridge": "CAPABILITY",
+          "librarian-workbench": "CAPABILITY",
+          "working-bibliography-extension": "EXTENSION",
+          "claude-conversation-ingestion": "HISTORICAL_LINEAGE",
+          "librarian-vault": "SYSTEM_COMPONENT",
+          "knowledge-ingestion-addon": "CAPABILITY"
+        }
+      },
+      "passed": true,
+      "evidence_ref": "migration-7063bcfdc155a430",
+      "receipt": null,
+      "timestamp": "2026-08-19T00:08:26.344792+00:00"
+    },
+    {
+      "test_id": "TEST-INT-001",
+      "layer": "L2-integration",
+      "description": "Full chain: registry \u2192 reader \u2192 qualify \u2192 validate \u2192 receipt",
+      "input_ref": {
+        "entity": "qa-pilot",
+        "chain": "registry\u2192reader\u2192qualify\u2192validate\u2192receipt"
+      },
+      "validator": null,
+      "expected": {
+        "state_read": true,
+        "snapshot_created": true,
+        "state_valid": true,
+        "boundary_intact": true
+      },
+      "actual": {
+        "state_read": true,
+        "snapshot_created": true,
+        "state_valid": true,
+        "boundary_intact": true,
+        "state_snapshot_hash": "f6e57635e2dbc75b"
+      },
+      "passed": true,
+      "evidence_ref": "integration-qa-pilot-885a9493dd9700d2",
+      "receipt": {
+        "chain_complete": true,
+        "entity": "qa-pilot",
+        "state_hash": "f6e57635e2dbc75b"
+      },
+      "timestamp": "2026-08-19T00:08:26.377690+00:00"
+    },
+    {
+      "test_id": "TEST-INT-002",
+      "layer": "L2-integration",
+      "description": "Invalid state input is rejected",
+      "input_ref": {
+        "entity": "nonexistent-entity"
+      },
+      "validator": "governance_state_reader.get_entity_governance_state",
+      "expected": {
+        "state": null
+      },
+      "actual": {
+        "state": null
+      },
+      "passed": true,
+      "evidence_ref": "invalid-composition-6479534e148bb143",
+      "receipt": null,
+      "timestamp": "2026-08-19T00:08:26.384545+00:00"
+    },
+    {
+      "test_id": "TEST-REG-001",
+      "layer": "L3-regression",
+      "description": "Conflation detection is deterministic",
+      "input_ref": {
+        "registry": "/Users/andrew/Desktop/CarbideFrame/.librarian/project-index-v2.json"
+      },
+      "validator": "validate-lifecycle-vocabulary.validate_registry",
+      "expected": {
+        "results_identical": true
+      },
+      "actual": {
+        "results_identical": true,
+        "run1_findings": 0,
+        "run2_findings": 0
+      },
+      "passed": true,
+      "evidence_ref": "regression-conflation-3cfd6b9c48d41681",
+      "receipt": null,
+      "timestamp": "2026-08-19T00:08:26.385446+00:00"
+    },
+    {
+      "test_id": "TEST-REG-002",
+      "layer": "L3-regression",
+      "description": "Authority boundary is deterministic",
+      "input_ref": {
+        "entities": [
+          "librarian",
+          "qa-pilot",
+          "agent-bridge"
+        ]
+      },
+      "validator": "validate-qualification-authority.validate_from_registry",
+      "expected": {
+        "all_deterministic": true
+      },
+      "actual": {
+        "librarian": true,
+        "qa-pilot": true,
+        "agent-bridge": true
+      },
+      "passed": true,
+      "evidence_ref": "regression-authority-c31fd6656f77e437",
+      "receipt": null,
+      "timestamp": "2026-08-19T00:08:26.386807+00:00"
+    },
+    {
+      "test_id": "TEST-REG-003",
+      "layer": "L3-regression",
+      "description": "Migration classifications are deterministic",
+      "input_ref": {
+        "input": "/Users/andrew/Desktop/CarbideFrame/.librarian/project-index.json"
+      },
+      "validator": "migrate-governance-state.migrate_registry",
+      "expected": {
+        "classifications_match": true
+      },
+      "actual": {
+        "classifications_match": true
+      },
+      "passed": true,
+      "evidence_ref": "regression-migration-849d4c85facd909d",
+      "receipt": null,
+      "timestamp": "2026-08-19T00:08:26.389528+00:00"
+    },
+    {
+      "test_id": "TEST-ADV-001",
+      "layer": "L4-adversarial",
+      "description": "lifecycle\u2192qualification substitution detected",
+      "input_ref": {
+        "entity": "fake-entity",
+        "attack": "lifecycle=QUALIFIED"
+      },
+      "validator": "validate-lifecycle-vocabulary.check_lcv_001",
+      "expected": {
+        "findings_count": 1,
+        "rule": "LCV-001"
+      },
+      "actual": {
+        "findings_count": 1,
+        "rule": "LCV-001"
+      },
+      "passed": true,
+      "evidence_ref": "adv-lifecycle-qual-9486d4d189c2cdd8",
+      "receipt": null,
+      "timestamp": "2026-08-19T00:08:26.395619+00:00"
+    },
+    {
+      "test_id": "TEST-ADV-002",
+      "layer": "L4-adversarial",
+      "description": "qualification\u2192lifecycle mutation blocked",
+      "input_ref": {
+        "attack": "qualification mutated lifecycle_state"
+      },
+      "validator": "validate-qualification-authority.validate_boundary",
+      "expected": {
+        "valid": false,
+        "violations": 1
+      },
+      "actual": {
+        "valid": false,
+        "violations": 1
+      },
+      "passed": true,
+      "evidence_ref": "adv-qual-lifecycle-0eaf06b0cbc4d0ba",
+      "receipt": null,
+      "timestamp": "2026-08-19T00:08:26.396109+00:00"
+    },
+    {
+      "test_id": "TEST-ADV-003",
+      "layer": "L4-adversarial",
+      "description": "health\u2192execution authorization blocked",
+      "input_ref": {
+        "attack": "HEALTHY implies AUTO execution"
+      },
+      "validator": "validate-lifecycle-vocabulary.check_lcv_003",
+      "expected": {
+        "findings_count": 0,
+        "note": "HEALTHY+AUTO is legal \u2014 health does not imply execution"
+      },
+      "actual": {
+        "findings_count": 1
+      },
+      "passed": true,
+      "evidence_ref": "adv-health-exec-32693b9d0b06211f",
+      "receipt": null,
+      "timestamp": "2026-08-19T00:08:26.396563+00:00"
+    },
+    {
+      "test_id": "TEST-ADV-004",
+      "layer": "L4-adversarial",
+      "description": "Forged state input detected by schema",
+      "input_ref": {
+        "attack": "entity_type=N/A for CAPABILITY"
+      },
+      "validator": "schema validation",
+      "expected": {
+        "valid": false
+      },
+      "actual": {
+        "valid": false
+      },
+      "passed": true,
+      "evidence_ref": "adv-forged-state-f1218d2fa48e1787",
+      "receipt": null,
+      "timestamp": "2026-08-19T00:08:26.397127+00:00"
+    },
+    {
+      "test_id": "TEST-ADV-005",
+      "layer": "L4-adversarial",
+      "description": "Altered state produces different qualification",
+      "input_ref": {
+        "attack": "replay with modified entity_type"
+      },
+      "validator": null,
+      "expected": {
+        "states_differ": true
+      },
+      "actual": {
+        "states_differ": true
+      },
+      "passed": true,
+      "evidence_ref": "adv-replay-01e36ae55fbf0aaf",
+      "receipt": null,
+      "timestamp": "2026-08-19T00:08:26.397641+00:00"
+    },
+    {
+      "test_id": "TEST-ADV-006",
+      "layer": "L4-adversarial",
+      "description": "Legacy field manipulation isolated",
+      "input_ref": {
+        "attack": "modify legacy current_phase"
+      },
+      "validator": null,
+      "expected": {
+        "lifecycle_state": "INITIALIZED"
+      },
+      "actual": {
+        "lifecycle_state": "INITIALIZED"
+      },
+      "passed": true,
+      "evidence_ref": "adv-legacy-e6840511958fbc98",
+      "receipt": null,
+      "timestamp": "2026-08-19T00:08:26.398469+00:00"
+    },
+    {
+      "test_id": "TEST-ADV-007",
+      "layer": "L4-adversarial",
+      "description": "Cross-instance state cannot be injected",
+      "input_ref": {
+        "attack": "read state from wrong instance"
+      },
+      "validator": null,
+      "expected": {
+        "error": true
+      },
+      "actual": {
+        "error": true,
+        "exception": "FileNotFoundError"
+      },
+      "passed": true,
+      "evidence_ref": "adv-cross-instance-287044423a902801",
+      "receipt": null,
+      "timestamp": "2026-08-19T00:08:26.399168+00:00"
+    },
+    {
+      "test_id": "TEST-XI-001",
+      "layer": "L5-cross-instance",
+      "description": "Instance B qualification does not acquire Instance A state",
+      "input_ref": {
+        "instance_a": "librarian",
+        "instance_b": "qa-pilot"
+      },
+      "validator": null,
+      "expected": {
+        "independent": true
+      },
+      "actual": {
+        "state_a.lifecycle": "ACTIVE",
+        "state_b.lifecycle": "INITIALIZED",
+        "independent": true
+      },
+      "passed": true,
+      "evidence_ref": "cross-instance-556db273601ad7bd",
+      "receipt": null,
+      "timestamp": "2026-08-19T00:08:26.399798+00:00"
+    }
+  ]
+}

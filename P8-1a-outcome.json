@@ -1,0 +1,42 @@
+{
+  "trial": "P8-1a",
+  "target": "The Librarian",
+  "work_item": "flightplan-mcp discovery candidate disposition",
+  "timestamp": "2026-08-18T13:51:58.978128+00:00",
+  "baseline": {
+    "entities": 8,
+    "pending_decisions": 9,
+    "knowledge_findings": 10,
+    "knowledge_entities": 53
+  },
+  "execution": {
+    "candidate_selected": true,
+    "governed_path_used": true,
+    "owner_authority_exclusive": true,
+    "new_primitives_introduced": false,
+    "disposition_recorded": true
+  },
+  "outcome": {
+    "disposition": "register",
+    "registration_succeeded": false,
+    "gap_exposed": true,
+    "gap_description": "project_registry_create tool validates against existing projects before creating - cannot create new projects"
+  },
+  "findings": [
+    {
+      "finding_id": "P8-1a-GAP-001",
+      "finding_type": "wiring_gap",
+      "description": "project_registry_create tool does not create new projects - it validates against existing project list first",
+      "severity": "medium",
+      "evidence": "Error: 'Project flightplan-mcp is not registered. Valid projects: librarian, qa-pilot...'",
+      "recommendation": "Record as finding, do not repair within P8-1a"
+    }
+  ],
+  "comparison_with_qa_pilot": {
+    "governance_pattern_identical": true,
+    "owner_authority_preserved": true,
+    "evidence_produced": true,
+    "gap_exposed": true,
+    "generalization_result": "PARTIAL - governance pattern works, but registration path has wiring gap"
+  }
+}

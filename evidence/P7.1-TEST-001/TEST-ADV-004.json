@@ -1,0 +1,19 @@
+{
+  "test_id": "TEST-ADV-004",
+  "layer": "L4-adversarial",
+  "description": "Forged state input detected by schema",
+  "input_ref": {
+    "attack": "entity_type=N/A for CAPABILITY"
+  },
+  "validator": "schema validation",
+  "expected": {
+    "valid": false
+  },
+  "actual": {
+    "valid": false
+  },
+  "passed": true,
+  "evidence_ref": "adv-forged-state-f1218d2fa48e1787",
+  "receipt": null,
+  "timestamp": "2026-08-19T00:08:26.397127+00:00"
+}

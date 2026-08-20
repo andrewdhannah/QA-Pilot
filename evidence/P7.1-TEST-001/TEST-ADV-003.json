@@ -1,0 +1,20 @@
+{
+  "test_id": "TEST-ADV-003",
+  "layer": "L4-adversarial",
+  "description": "health\u2192execution authorization blocked",
+  "input_ref": {
+    "attack": "HEALTHY implies AUTO execution"
+  },
+  "validator": "validate-lifecycle-vocabulary.check_lcv_003",
+  "expected": {
+    "findings_count": 0,
+    "note": "HEALTHY+AUTO is legal \u2014 health does not imply execution"
+  },
+  "actual": {
+    "findings_count": 1
+  },
+  "passed": true,
+  "evidence_ref": "adv-health-exec-32693b9d0b06211f",
+  "receipt": null,
+  "timestamp": "2026-08-19T00:08:26.396563+00:00"
+}

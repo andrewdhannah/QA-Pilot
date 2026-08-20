@@ -1,0 +1,416 @@
+{
+  "$schema": "project-index-v1",
+  "description": "CarbideFrame workspace project index — canonical registry of all governed projects. Workspace-level (not project-owned). Used by project selector protocol (AGENT-START.md §13) to resolve start <project-id>.",
+  "last_updated": "2026-08-16T05:49:39Z",
+  "project_count": 8,
+  "projects": [
+    {
+      "project_id": "librarian",
+      "display_name": "The Librarian",
+      "repo_path": "/Users/andrew/Desktop/CarbideFrame/active/librarian",
+      "startup_contract": "startup-contract.json",
+      "profile_path": "project-state/project-index.json",
+      "startup_files": [
+        "PROJECT-STARTUP.md",
+        "CLAUDE.md",
+        "STARTUP-STATE.md",
+        "SESSION-HANDOFF.md",
+        "FEATURE-STATUS.md"
+      ],
+      "governance_files": [
+        "docs/governance/",
+        "docs/schemas/",
+        "docs/rules/"
+      ],
+      "status_files": [
+        "FEATURE-STATUS.md",
+        "SESSION-HANDOFF.md",
+        "project-state/sprint-ledger.json"
+      ],
+      "ledger_files": [
+        "project-state/sprint-ledger.json"
+      ],
+      "receipt_paths": [
+        "receipts/",
+        "receipts/decision-resolutions/"
+      ],
+      "validation_commands": [
+        "swift build --target App",
+        "python3 scripts/validate-model-runtime-authority-envelope.py --all",
+        "python3 scripts/validate-model-runtime-egress-policy.py --all",
+        "bash scripts/test-model-runtime-authority-envelope.sh",
+        "bash scripts/test-model-runtime-egress-policy.sh"
+      ],
+      "default_branch": "sprint-3",
+      "allowed_startup_modes": [
+        "managed",
+        "degraded",
+        "read-only"
+      ],
+      "tags": [
+        "core",
+        "governance",
+        "runtime"
+      ],
+      "deprecated": false,
+      "aliases": [],
+      "validation_surfaces": [],
+      "created_at": null,
+      "created_by": null,
+      "creation_receipt_path": null,
+      "lifecycle_policy_version": "1.1",
+      "lifecycle_stage": 8,
+      "lifecycle_cycle": 1,
+      "lifecycle_label": "Next Cycle",
+      "current_phase_deprecated": "execution",
+      "startup_capable": true,
+      "current_phase": "execution"
+    },
+    {
+      "project_id": "qa-pilot",
+      "display_name": "QA Pilot",
+      "repo_path": "/Users/andrew/Desktop/CarbideFrame/active/qa-pilot",
+      "startup_contract": "startup-contract.json",
+      "profile_path": null,
+      "startup_files": [
+        "STARTUP-STATE.md",
+        "SESSION-HANDOFF.md",
+        "FEATURE-STATUS.md"
+      ],
+      "governance_files": [
+        "docs/governance/",
+        "docs/schemas/"
+      ],
+      "status_files": [
+        "FEATURE-STATUS.md",
+        "SESSION-HANDOFF.md",
+        "project-state/sprint-ledger.json"
+      ],
+      "ledger_files": [
+        "project-state/sprint-ledger.json"
+      ],
+      "receipt_paths": [
+        "receipts/",
+        "receipts/decision-resolutions/"
+      ],
+      "validation_commands": [
+        "python3 scripts/validate-qa-pilot-delegation.py"
+      ],
+      "default_branch": "main",
+      "allowed_startup_modes": [
+        "managed",
+        "degraded",
+        "read-only"
+      ],
+      "tags": [
+        "add-on",
+        "qa",
+        "harness-governed"
+      ],
+      "deprecated": false,
+      "aliases": [],
+      "validation_surfaces": [],
+      "created_at": null,
+      "created_by": null,
+      "creation_receipt_path": null,
+      "lifecycle_policy_version": "1.1",
+      "lifecycle_stage": 8,
+      "lifecycle_cycle": 1,
+      "lifecycle_label": "Next Cycle",
+      "current_phase_deprecated": "init",
+      "startup_capable": true,
+      "current_phase": "init"
+    },
+    {
+      "project_id": "agent-bridge",
+      "display_name": "Agent Bridge",
+      "repo_path": "/Users/andrew/Desktop/CarbideFrame/active/agent-bridge",
+      "startup_contract": "startup-contract.json",
+      "profile_path": "PACKAGE-MANIFEST.txt",
+      "startup_files": [
+        "SESSION-HANDOFF.md",
+        "FEATURE-STATUS.md",
+        "HANDOFF.md",
+        "README.md"
+      ],
+      "governance_files": [],
+      "status_files": [
+        "FEATURE-STATUS.md",
+        "SESSION-HANDOFF.md"
+      ],
+      "ledger_files": [],
+      "receipt_paths": [],
+      "validation_commands": [],
+      "default_branch": "main",
+      "allowed_startup_modes": [
+        "managed",
+        "degraded",
+        "read-only"
+      ],
+      "tags": [
+        "bridge",
+        "mcp",
+        "governed"
+      ],
+      "deprecated": false,
+      "aliases": [],
+      "validation_surfaces": [],
+      "created_at": "2026-07-20",
+      "created_by": "PROJECT-GOVERNANCE-MIGRATION-AGENT-BRIDGE-1",
+      "creation_receipt_path": "active/agent-bridge/lifecycle-cursor.json",
+      "lifecycle_policy_version": "1.1",
+      "lifecycle_stage": 8,
+      "lifecycle_cycle": 1,
+      "lifecycle_label": "Next Cycle",
+      "current_phase_deprecated": "active",
+      "startup_capable": true,
+      "current_phase": "execution"
+    },
+    {
+      "project_id": "librarian-workbench",
+      "display_name": "Librarian Workbench",
+      "repo_path": "/Users/andrew/Desktop/CarbideFrame/active/librarian-workbench",
+      "startup_contract": "startup-contract.json",
+      "profile_path": "project-state/PROJECT-STATE.json",
+      "startup_files": [
+        "CLAUDE.md",
+        "AGENTS.md",
+        "README.md",
+        "SESSION-HANDOFF.md",
+        "project-state/PROJECT-STATE.json"
+      ],
+      "governance_files": [
+        "docs/governance/",
+        "docs/schemas/"
+      ],
+      "status_files": [
+        "SESSION-HANDOFF.md",
+        "project-state/sprint-ledger.json",
+        "project-state/sprint-index.json"
+      ],
+      "ledger_files": [
+        "project-state/sprint-ledger.json"
+      ],
+      "receipt_paths": [
+        "receipts/"
+      ],
+      "validation_commands": [
+        "python3 scripts/validate-workbench-project.py"
+      ],
+      "default_branch": "main",
+      "allowed_startup_modes": [
+        "managed",
+        "degraded",
+        "read-only"
+      ],
+      "tags": [
+        "satellite",
+        "workbench",
+        "openwork-audit",
+        "governed"
+      ],
+      "deprecated": false,
+      "aliases": [],
+      "validation_surfaces": [],
+      "created_at": "2026-07-20",
+      "created_by": "PROJECT-GOVERNANCE-MIGRATION-WORKBENCH-1",
+      "creation_receipt_path": "active/librarian-workbench/lifecycle-cursor.json",
+      "lifecycle_policy_version": "1.1",
+      "lifecycle_stage": 8,
+      "lifecycle_cycle": 1,
+      "lifecycle_label": "Next Cycle",
+      "current_phase_deprecated": "governed",
+      "startup_capable": true,
+      "current_phase": "execution"
+    },
+    {
+      "project_id": "working-bibliography-extension",
+      "display_name": "Working Bibliography Extension",
+      "repo_path": "/Users/andrew/Desktop/CarbideFrame/working-bibliography-extension",
+      "startup_contract": "startup-contract.json",
+      "profile_path": "docs/identity/PROJECT-IDENTITY.md",
+      "startup_files": [
+        "CLAUDE.md",
+        "docs/identity/PROJECT-IDENTITY.md"
+      ],
+      "governance_files": [
+        "docs/identity/",
+        "docs/vision/",
+        "docs/architecture/",
+        "docs/contracts/",
+        "docs/governance/",
+        "docs/schemas/"
+      ],
+      "status_files": [
+        "docs/identity/PROJECT-IDENTITY.md"
+      ],
+      "ledger_files": [],
+      "receipt_paths": [
+        "receipts/"
+      ],
+      "validation_commands": [],
+      "default_branch": "main",
+      "allowed_startup_modes": [
+        "managed",
+        "degraded",
+        "read-only"
+      ],
+      "tags": [
+        "add-on",
+        "extension",
+        "reference-implementation",
+        "governed"
+      ],
+      "deprecated": false,
+      "aliases": [],
+      "validation_surfaces": [],
+      "created_at": "2026-07-21",
+      "created_by": "Owner authorization (Step 1)",
+      "creation_receipt_path": null,
+      "lifecycle_policy_version": "1.1",
+      "lifecycle_stage": 8,
+      "lifecycle_cycle": 1,
+      "lifecycle_label": "Next Cycle",
+      "current_phase_deprecated": "init",
+      "startup_capable": true
+    },
+    {
+      "project_id": "claude-conversation-ingestion",
+      "display_name": "Claude Conversation Ingestion",
+      "repo_path": "claude-conversation-ingestion",
+      "startup_contract": null,
+      "profile_path": "docs/identity/PROJECT-IDENTITY.md",
+      "startup_files": [
+        "CLAUDE.md",
+        "docs/identity/PROJECT-IDENTITY.md"
+      ],
+      "governance_files": [
+        "docs/contracts/",
+        "docs/schemas/"
+      ],
+      "status_files": [
+        "docs/identity/PROJECT-IDENTITY.md"
+      ],
+      "ledger_files": [],
+      "receipt_paths": [
+        "receipts/"
+      ],
+      "validation_commands": [],
+      "default_branch": "main",
+      "lifecycle_stage": 1,
+      "lifecycle_cycle": 1,
+      "lifecycle_label": "Foundation",
+      "tags": [
+        "add-on",
+        "provider",
+        "knowledge-custody",
+        "governed"
+      ],
+      "deprecated": false,
+      "aliases": [],
+      "validation_surfaces": [],
+      "created_at": "2026-07-23T21:35:00Z",
+      "created_by": "CI-001",
+      "creation_receipt_path": null,
+      "lifecycle_policy_version": "1.1",
+      "startup_capable": false
+    },
+    {
+      "project_id": "librarian-vault",
+      "display_name": "Librarian Vault",
+      "repo_path": "/Users/andrew/Desktop/CarbideFrame/active/librarian-vault",
+      "startup_contract": "startup-contract.json",
+      "profile_path": "docs/PROJECT-IDENTITY.md",
+      "startup_files": [
+        "README.md",
+        "docs/PROJECT-IDENTITY.md"
+      ],
+      "governance_files": [
+        "docs/"
+      ],
+      "status_files": [],
+      "ledger_files": [],
+      "receipt_paths": [
+        "receipts/"
+      ],
+      "validation_commands": [],
+      "default_branch": "main",
+      "allowed_startup_modes": [
+        "managed",
+        "degraded",
+        "read-only"
+      ],
+      "tags": [
+        "add-on",
+        "vault",
+        "knowledge",
+        "mcp",
+        "governed"
+      ],
+      "deprecated": false,
+      "aliases": [],
+      "validation_surfaces": [],
+      "created_at": "2026-07-25T00:00:00Z",
+      "created_by": "KVAI-001",
+      "creation_receipt_path": null,
+      "lifecycle_policy_version": "1.1",
+      "lifecycle_stage": 1,
+      "lifecycle_cycle": 1,
+      "lifecycle_label": "Foundation",
+      "current_phase_deprecated": "init",
+      "startup_capable": true
+    },
+    {
+      "project_id": "knowledge-ingestion-addon",
+      "display_name": "Knowledge Ingestion Addon",
+      "repo_path": "/Users/andrew/Desktop/CarbideFrame/active/knowledge-ingestion-addon",
+      "startup_contract": "startup-contract.json",
+      "profile_path": "docs/PROJECT-IDENTITY.md",
+      "startup_files": [
+        "README.md",
+        "docs/PROJECT-IDENTITY.md"
+      ],
+      "governance_files": [
+        "docs/"
+      ],
+      "status_files": [],
+      "ledger_files": [],
+      "receipt_paths": [
+        "receipts/"
+      ],
+      "validation_commands": [],
+      "default_branch": "main",
+      "allowed_startup_modes": [
+        "managed",
+        "degraded",
+        "read-only"
+      ],
+      "tags": [
+        "add-on",
+        "ingestion",
+        "knowledge",
+        "mcp",
+        "governed"
+      ],
+      "deprecated": false,
+      "aliases": [],
+      "validation_surfaces": [],
+      "created_at": "2026-07-25T00:00:00Z",
+      "created_by": "KVAI-001",
+      "creation_receipt_path": null,
+      "lifecycle_policy_version": "1.1",
+      "lifecycle_stage": 1,
+      "lifecycle_cycle": 1,
+      "lifecycle_label": "Foundation",
+      "current_phase_deprecated": "init",
+      "startup_capable": true,
+      "current_phase": "init"
+    }
+  ],
+  "registry_version": 2,
+  "registry_location": "workspace-level",
+  "canonical_path": ".librarian/project-index.json",
+  "project_local_path": "active/librarian/project-state/project-index.json",
+  "lifecycle_authority": "cursor",
+  "lifecycle_note": "lifecycle_stage/lifecycle_cycle/lifecycle_label are canonical (from cursor). current_phase_deprecated preserved for migration (was human-authored)."
+}

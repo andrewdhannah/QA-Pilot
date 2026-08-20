@@ -1,0 +1,22 @@
+{
+  "test_id": "TEST-XI-001",
+  "layer": "L5-cross-instance",
+  "description": "Instance B qualification does not acquire Instance A state",
+  "input_ref": {
+    "instance_a": "librarian",
+    "instance_b": "qa-pilot"
+  },
+  "validator": null,
+  "expected": {
+    "independent": true
+  },
+  "actual": {
+    "state_a.lifecycle": "ACTIVE",
+    "state_b.lifecycle": "INITIALIZED",
+    "independent": true
+  },
+  "passed": true,
+  "evidence_ref": "cross-instance-556db273601ad7bd",
+  "receipt": null,
+  "timestamp": "2026-08-19T00:08:26.399798+00:00"
+}

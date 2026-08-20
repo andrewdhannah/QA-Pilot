@@ -1,0 +1,24 @@
+{
+  "test_id": "TEST-UNIT-001",
+  "layer": "L1-unit",
+  "description": "State reader returns all 5 dimensions for qa-pilot",
+  "input_ref": {
+    "entity": "qa-pilot",
+    "registry": "/Users/andrew/Desktop/CarbideFrame/.librarian/project-index-v2.json"
+  },
+  "validator": "governance_state_reader.get_entity_governance_state",
+  "expected": {
+    "all_5_dimensions_populated": true
+  },
+  "actual": {
+    "entity_type": "CAPABILITY",
+    "lifecycle_state": "INITIALIZED",
+    "qualification_state": "UNREVIEWED",
+    "health_state": "UNKNOWN",
+    "execution_policy": "BLOCKED"
+  },
+  "passed": true,
+  "evidence_ref": "state-reader-qa-pilot-2b505e089682f849",
+  "receipt": null,
+  "timestamp": "2026-08-19T00:08:26.321648+00:00"
+}

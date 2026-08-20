@@ -27,7 +27,9 @@ Observe → Qualify → Prioritize → Predict → Recommend → Owner Decision 
 
 **Next Phase:** Phase 7 — Adoption & Empirical Validation
 
-Determine whether the existing intelligence produces reliable value when repeatedly applied to real governed work.
+Determine whether the existing intelligence produces reliable value when repeatedly applied to real governed work. Architecture frozen — no new primitives until empirical operation demonstrates concrete unmet requirements.
+
+**Phase 7 Status:** ✅ Owner-authorized. P7.1 Cross-Project Trial in progress.
 
 ### Qualification Substrate (COMPLETE — sealed #216–#219 + #165)
 
@@ -69,6 +71,16 @@ Determine whether the existing intelligence produces reliable value when repeate
 | **QA-PILOT-WORK-PACKET-INTEGRATION-1** | ✅ **Complete (ledger #243, all 7 gates PASS)** | Work packet integration — proposal to Librarian. Translation adapter. Complete provenance chain. 1 request (agent-bridge). See `docs/sprints/QA-PILOT-WORK-PACKET-INTEGRATION-1.md`. |
 | **QA-PILOT-IMPROVEMENT-OUTCOME-MEASUREMENT-1** | ✅ **Complete (ledger #244, all 9 gates PASS)** | Improvement outcome measurement — empirical validation. 5 classifications. 1 outcome (unchanged). Negative/inconclusive preserved. See `docs/sprints/QA-PILOT-IMPROVEMENT-OUTCOME-MEASUREMENT-1.md`. |
 | **QA-PILOT-CLOSED-LOOP-OPTIMIZATION-1** | ✅ **Sealed (ledger #245, Owner-sealed 2026-08-16)** | Closed-loop optimization — learning from outcomes. 5 categories. Effectiveness measurement. Sparse-data confidence. 2 signals. Authority isolated. 11/11 gates PASS. See `docs/sprints/QA-PILOT-CLOSED-LOOP-OPTIMIZATION-1.md`. |
+| **LVC-001** | ✅ **Complete (all 16 gates PASS)** | Lifecycle Vocabulary Consolidation — canonical five-dimensional governance state model. Instance-independent. 6 work packets. 16 acceptance gates (A–P). No new assurance primitives. Architecture freeze preserved. See `evidence/LVC-001/LVC-001-SPRINT-SUMMARY.md`. |
+| **GPI-001** | ✅ **Complete (all 15 gates PASS)** | Runtime Qualification Activation — qualification operates against canonical five-dimensional state. 5 work packets. 15 acceptance gates (A–O). Authority boundary preserved. No mutations to non-qualification dimensions. See `evidence/GPI-001/GPI-001-SPRINT-SUMMARY.md`. |
+| **P7.1-TEST-001** | ✅ **Complete (19/19 tests PASS)** | Cross-Layer Governance Validation Suite — 5 layers (unit/integration/regression/adversarial/cross-instance). Controlled validation of governance/qualification composition. No architecture expansion. See `evidence/P7.1-TEST-001/P7.1-TEST-001-SPRINT-SUMMARY.md`. |
+
+### P7.1 Operational Findings
+
+| Finding | Status | Detail |
+|---------|--------|--------|
+| **P7.1-OPS-001** | RECORDED | Project Session Availability — Librarian session tools unavailable, agent fell back to direct file editing. Gap is project registration → session binding → MCP/tool exposure path. Awaiting Owner direction. See `work-orders/P7.1-OPS-001-project-session-availability.md`. |
+| **LIBRARIAN-QA-CAPABILITY-ACTIVATION-001** | OWNER DECISION REQUIRED | Cross-system capability activation audit. Phase 1 baseline + Phase 2 characterization complete. 55% ACTIVE, 18% AVAILABLE, 9% BROKEN, 5% UNWIRED. Root cause: GeneratedMCPDispatchMap.swift single-point defect. Authorization flow (B2) unwired — three competing implementations, OwnerDecision never injected upstream. Remediation candidates P0–P3 established. See `audits/capability-activation-audit-2026-08-17.md`. |
 
 ### Previously Sealed (Historical)
 
@@ -167,6 +179,7 @@ Determine whether the existing intelligence produces reliable value when repeate
 | project_id | `qa-pilot` |
 | sandbox_boundary | `harness_governed` |
 | latest_sealed_sprint | #245 QA-PILOT-CLOSED-LOOP-OPTIMIZATION-1 |
-| phase | Phase 6 — Governed Improvement Activation (COMPLETE) |
+| latest_completed_sprint | LVC-001 Lifecycle Vocabulary Consolidation |
+| phase | Phase 7 — Adoption & Empirical Validation (P7.1 IN PROGRESS) |
 | total_sealed | 245 sprints |
 | ledger_path | `project-state/sprint-ledger.json` |
